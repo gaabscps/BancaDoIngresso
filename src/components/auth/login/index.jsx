@@ -56,8 +56,10 @@ const Login = (props) => {
 
       const url = baseUrl + prefixBaseUrl;
       const result = await api.post(
-        url + "signin",
-        {},
+        url + "auth",
+        {
+          grant_type: 'client_credentials'
+        },
         {
           headers: {
             Authorization: `Basic ${initialToken}`,
