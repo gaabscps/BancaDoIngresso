@@ -3,14 +3,14 @@ import { useSelector } from "react-redux";
 import Breadcrumb from "../../../layout/breadcrumb";
 import { Container, Row, Col, Card, CardHeader } from "reactstrap";
 
-// import { getLocalStorage } from "../../../helpers/localStorage";
+import { getLocalStorage } from "../../../helpers/localStorage";
 
 const Sample = (props) => {
   const [welcomeMessage, setWelcomeMessage] = useState("");
   const d = new Date();
   const hour = d.getHours();
 
-  const user = useSelector((content) => content.User.user);
+  const user = useSelector((content) => content.User?.user);
 
   useEffect(() => {
     if (hour < 5) {
@@ -28,16 +28,17 @@ const Sample = (props) => {
 
   return (
     <Fragment>
-      <Breadcrumb parent="Dashboard" title="Admin" />
+      <Breadcrumb parent="Dashboard" title="Visão Geral" />
       <Container fluid={true}>
         <Row>
           <Col sm="12">
             <Card>
               <CardHeader>
                 <h5>
-                  {welcomeMessage}, {user?.name}!
+                  {/* {welcomeMessage}, {user?.name}! */}
+                  {welcomeMessage}, "userName"!
                 </h5>
-                <span>Este é o seu painel de controle</span>
+                <span>Este é o seu painel de controle. Aqui aparecerão os seus eventos criados.</span>
               </CardHeader>
               {/* <CardBody>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do

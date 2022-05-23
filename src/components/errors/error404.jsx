@@ -27,11 +27,11 @@ const Error404 = (props) => {
               <h2 className="headline font-danger">{"404"}</h2>
             </div>
             <Col md="8 offset-md-2">
-              <p className="sub-content">{props.t("PageNotFound")}</p>
+              <p className="sub-content">Página não encontrada.</p>
             </Col>
             <Link to={`/`}>
               <Button color="danger-gradien" size="lg">
-                {props.t("BackToHome")}
+                Voltar para a Home
               </Button>
             </Link>
           </Container>

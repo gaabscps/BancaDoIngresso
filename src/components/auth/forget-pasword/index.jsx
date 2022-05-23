@@ -198,7 +198,7 @@ const ForgetPassword = (props) => {
 
   useEffect(() => {
     if (isAuthenticated()) {
-      history.push("/dashboard/admin");
+      history.push("/dashboard/default");
     }
     const cookieLang = cookies.get("language");
     if (!cookieLang) {

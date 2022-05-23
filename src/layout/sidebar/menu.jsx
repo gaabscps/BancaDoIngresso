@@ -3,9 +3,9 @@ export const MENUITEMS = [
   {
     Items: [
       {
-        title: "Home",
+        title: "Início",
         icon: Home,
-        active: false,
+        active: true,
         path: `${process.env.PUBLIC_URL}`,
         type: "link",
       },

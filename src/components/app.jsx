@@ -13,7 +13,7 @@ import { getLocalStorage } from "../helpers/localStorage";
 
 const App = ({ children }) => {
   const dispatch = useDispatch();
-  const user = useSelector((content) => content.User.user);
+  // const user = useSelector((content) => content.User.user);
 
   const handlePageLayouts = (type) => {
     let key = Object.keys(type).pop();
@@ -23,15 +23,15 @@ const App = ({ children }) => {
     localStorage.setItem("layout", key);
   };
 
-  const initInfoUser = () => {
-    const user = getLocalStorage(process.env.REACT_APP_USER);
-    dispatch({ type: ADD_USER, payload: JSON.parse(user) });
-  };
+  // const initInfoUser = () => {
+  //   const user = getLocalStorage(process.env.REACT_APP_USER);
+  //   dispatch({ type: ADD_USER, payload: JSON.parse(user) });
+  // };
 
-  useEffect(() => {
-    initInfoUser();
-    handlePageLayouts(classes[2]);
-  }, [handlePageLayouts, initInfoUser]);
+  // useEffect(() => {
+  //   initInfoUser();
+  //   handlePageLayouts(classes[2]);
+  // }, [handlePageLayouts, initInfoUser]);
 
   console.warn = () => {};
   return (

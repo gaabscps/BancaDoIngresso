@@ -1,28 +1,20 @@
 import React, { Fragment, useState } from 'react';
 import man from '../../assets/images/dashboard/profile.jpg'
-import { FileText, LogIn, Mail, User, Bell, Search } from 'react-feather';
+import { LogIn, Bell, Search } from 'react-feather';
+import { useHistory } from 'react-router-dom';
+
 import {
-  setTranslations,
-  setDefaultLanguage,
-  setLanguageCookie,
-  translate,
-} from 'react-switch-lang';
+  Admin,
+  LogOut
+} from '../../constant'
 
-import {Notification,DeliveryProcessing,OrderComplete,TicketsGenerated,DeliveryComplete,CheckAllNotification, Admin,Account,Inbox,Taskboard,LogOut} from '../../constant'
+import {
+  removeAuthLocalStorage,
+  getLocalStorage,
+} from "../../helpers/localStorage";
 
-import en from '../../assets/i18n/en.json';
-import es from '../../assets/i18n/es.json';
-import pt from '../../assets/i18n/pt.json';
-import fr from '../../assets/i18n/fr.json';
-import du from '../../assets/i18n/du.json';
-import cn from '../../assets/i18n/cn.json';
-import ae from '../../assets/i18n/ae.json';
-
-setTranslations({ en, es, pt, fr, du, cn, ae });
-setDefaultLanguage('en');
-setLanguageCookie();
-
-const Rightbar = (props) => {    
+const Rightbar = (props) => {
+  const history = useHistory();    
   const [searchresponsive, setSearchresponsive] = useState(false)
   const [notificationDropDown, setNotificationDropDown] = useState(false)
 
@@ -39,7 +31,10 @@ const Rightbar = (props) => {
     }
   }
 
-
+  const logoutUser = () => {
+    removeAuthLocalStorage();
+    history.push("/");
+  };
   
 
   return (
@@ -48,40 +43,38 @@ const Rightbar = (props) => {
         <ul className="nav-menus">
           <li><span className="header-search"><Search onClick={() => SeacrhResposive(searchresponsive)} /></span></li>
           <li className="onhover-dropdown">
-            <div className="notification-box" onClick={() => setNotificationDropDown(!notificationDropDown)}><Bell /><span className="badge badge-pill badge-secondary">2</span></div>
+            <div className="notification-box" onClick={() => setNotificationDropDown(!notificationDropDown)}><Bell /><span className="badge badge-pill badge-secondary"></span></div>
             <ul className={`notification-dropdown onhover-show-div ${notificationDropDown ? "active" : ""}`}>
               <li>
                 <Bell />
-                <h6 className="f-18 mb-0">{Notification}</h6>
+                <h6 className="f-18 mb-0">Notificações</h6>
               </li>
               <li>
-                <p><i className="fa fa-circle-o mr-3 font-primary"> </i>{DeliveryProcessing} <span className="pull-right">{"10 min."}</span></p>
+                <p><i className="fa fa-circle-o mr-3 font-primary"> </i>Exemplo 1<span className="pull-right">{"10 min."}</span></p>
               </li>
               <li>
-                <p><i className="fa fa-circle-o mr-3 font-success"></i>{OrderComplete}<span className="pull-right">{"1 hr"}</span></p>
+                <p><i className="fa fa-circle-o mr-3 font-success"></i>Exemplo 2<span className="pull-right">{"1 hr"}</span></p>
               </li>
               <li>
-                <p><i className="fa fa-circle-o mr-3 font-info"></i>{TicketsGenerated}<span className="pull-right">{"3 hr"}</span></p>
+                <p><i className="fa fa-circle-o mr-3 font-info"></i>Exemplo 3<span className="pull-right">{"3 hr"}</span></p>
               </li>
               <li>
-                <p><i className="fa fa-circle-o mr-3 font-danger"></i>{DeliveryComplete}<span className="pull-right">{"6 hr"}</span></p>
+                <p><i className="fa fa-circle-o mr-3 font-danger"></i>Exemplo 4<span className="pull-right">{"6 hr"}</span></p>
               </li>
-              <li><button className="btn btn-primary" >{CheckAllNotification}</button>
+              <li><button className="btn btn-primary" >Verifique todas as notificações</button>
               </li>
             </ul>
           </li>
           <li className="profile-nav onhover-dropdown p-0">
             <div className="media profile-media">
               <img className="b-r-10" src={man} alt="" />
-              <div className="media-body"><span>{'Emay Walter'}</span>
+              <div className="media-body"><span>"UserName"</span>
                 <p className="mb-0 font-roboto">{Admin} <i className="middle fa fa-angle-down"></i></p>
               </div>
             </div>
             <ul className="profile-dropdown onhover-show-div">
-              <li><User /><span>{Account} </span></li>
-              <li><Mail /><span>{Inbox}</span></li>
-              <li><FileText /><span>{Taskboard}</span></li>
-              <li><LogIn /><span>{LogOut}</span></li>
+              {/* <li><User /><span>{Account} </span></li> */}
+              <li onClick={logoutUser}><LogIn /><span>{LogOut}</span></li>
             </ul>
           </li>
         </ul>
@@ -90,4 +83,4 @@ const Rightbar = (props) => {
 
   );
 }
-export default translate(Rightbar);
+export default Rightbar;

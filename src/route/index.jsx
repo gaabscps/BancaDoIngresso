@@ -5,11 +5,18 @@ import userForgetPassword from "../components/auth/forget-pasword";
 
 // Dashbaord
 import AdminDashboard from "../components/dashboard/admin";
+// import DefaultDashboard from "../components/dashboard/default";
 
 // Errors
 import Page404 from "../components/errors/error404";
 
 export const routes = [
+  // {
+  //   path: `/dashboard/default`,
+  //   component: App,
+  //   child: DefaultDashboard,
+  //   privateRoute: true,
+  // },
   {
     path: `/dashboard/admin`,
     component: App,
