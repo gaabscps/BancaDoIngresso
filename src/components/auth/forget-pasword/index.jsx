@@ -45,7 +45,7 @@ const ForgetPassword = (props) => {
 
   const cookies = new Cookies();
 
-  const loading = useSelector((content) => content.General.loading);
+  const loading = useSelector((content) => content.General?.loading);
 
   const handleForm = ({ currentTarget: { value, name } }) => {
     setForm({
@@ -198,15 +198,10 @@ const ForgetPassword = (props) => {
 
   useEffect(() => {
     if (isAuthenticated()) {
-      history.push("/dashboard/default");
+      history.push("/dashboard/admin");
     }
-    const cookieLang = cookies.get("language");
-    if (!cookieLang) {
-      setLanguage("en");
-    } else {
-      setLanguage(cookieLang);
-    }
-  }, [cookies, history]);
+    
+  }, [ history]);
 
   return (
     <>
@@ -279,4 +274,4 @@ const ForgetPassword = (props) => {
   );
 };
 
-export default translate(ForgetPassword);
+export default ForgetPassword;
