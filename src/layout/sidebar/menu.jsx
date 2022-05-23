@@ -1,4 +1,6 @@
-import { Home } from "react-feather";
+import { Home, Calendar } from "react-feather";
+const isPathName = (route) => window.location.pathname === route;
+
 export const MENUITEMS = [
   {
     Items: [
@@ -6,8 +8,17 @@ export const MENUITEMS = [
         title: "Início",
         icon: Home,
         active: true,
-        path: `${process.env.PUBLIC_URL}`,
+        active: isPathName("/dashboard/admin"),
+        path: `/dashboard/admin`,
         type: "link",
+      },
+      
+      {
+        path: `/events`,
+        icon: Calendar,
+        title: "Eventos",
+        type: "link",
+        active: isPathName("/events"),
       },
     ],
   },
