@@ -10,3 +10,75 @@
 @import "vendors/animate/animate";
 @import "vendors/sticky/sticky";
 @import "vendors/todo/todo";
+
+.mainContainer{
+    padding: 50px  !important;
+}
+.subContainer{
+    padding: 30px  !important;
+}
+
+.pageTitle {
+    font-style: normal !important;
+    font-size: 28px !important;
+    line-height: 42px !important;
+    padding-bottom: 55px !important;
+    text-decoration: underline;
+}
+
+.secondPageTitle {
+    font-style: normal !important;
+    font-size: 28px !important;
+    line-height: 42px !important;
+    padding-bottom: 20px !important;
+    text-decoration: underline;
+}
+
+.pageSubTitle {
+    font-style: normal !important;
+    font-size: 21px !important;
+    line-height: 31.5px !important;
+    padding-bottom: 10px !important;
+}
+
+.infoSubTitle {
+    font-style: normal !important;
+    font-size: 21px !important;
+    line-height: 31.5px !important;
+    padding-bottom: 30px !important;
+    color: #828282;
+}
+
+.fieldLabel {
+    font-size: 16px !important;
+    padding-bottom: 15px !important;
+    color: #828282 !important;
+}
+
+.fieldSpacing {
+    padding-bottom: 50px !important;
+    padding-right: 30px !important;
+}
+
+.checkFieldSpacing {
+    padding-bottom: 20px !important;
+    padding-right: 30px !important;
+    color: #828282 !important;
+}
+
+.eventStatus{
+    padding-right: 25px  !important;
+    padding-bottom: 50px !important;
+}
+
+.groupButton{
+    display: grid !important;
+    padding-bottom: 50px !important;
+}
+
+.nextPageButton {
+    display: flex !important;
+    justify-content: end !important;
+    padding-top: 30px !important;
+}
+
