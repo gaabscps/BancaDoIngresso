@@ -3,22 +3,12 @@ import Breadcrumb from "../../../../layout/breadcrumb";
 import {
   Container,
   Row,
-  Col,
-  Card,
-  Table,
-  Button,
-  ButtonDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
 } from "reactstrap";
 import SuperTable from "../../../sharedComponents/SuperTable";
 import SuperButton from "../../../sharedComponents/SuperButton";
-import data from "../../../../mock-data.json";
 import { useHistory } from "react-router-dom";
 
 const Sample = () => {
-  const [events, setEvents] = useState(data);
   const history = useHistory();
 
   const createEvent = () => {
