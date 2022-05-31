@@ -1,5 +1,11 @@
-import { Home, Calendar } from "react-feather";
+import { Home, Calendar, Power } from "react-feather";
+import { removeAuthLocalStorage } from "../../helpers/localStorage";
 const isPathName = (route) => window.location.pathname === route;
+
+const logoutUser = () => {
+  removeAuthLocalStorage();
+};
+
 
 export const MENUITEMS = [
   {
