@@ -1,98 +1,97 @@
 import React, { Fragment, useEffect, useState } from "react";
 import {
   Container,
-  Row,
-  Col,
-  Card,
   Input,
   FormGroup,
   Label,
-  ButtonGroup,
-  Button,
 } from "reactstrap";
-import SuperButton from "../../../../../sharedComponents/SuperButton";
-import SuperInput from "../../../../../sharedComponents/SuperInput";
-
+import { Button, ButtonGroup } from "react-bootstrap";
 const Sample = (props) => {
   return (
     <Fragment>
       <Container className="subContainer" fluid={true}>
-        <div className="fieldSpacing">
-          <Label className="fieldLabel">Camarote &gt; Setor</Label>
-          <FormGroup classname="checkFieldSpacing" check>
+        <hr className="dividerUp" />
+        <FormGroup className="fieldSpacing">
+          <Label className="infoSubTitle">Camarote &gt;&gt; Setor</Label>
+          <div classname="checkFieldSpacing" check>
             <Input type="checkbox" />
-            <Label check>Camarote Masculino</Label>
+            <Label className="checkLabel" check>Camarote Masculino</Label>
+          </div>
+          <div classname="checkFieldSpacing" check>
+            <Input type="checkbox" />
+            <Label className="checkLabel" check>Camarote Meia entrada</Label>
+          </div>
+          <div classname="checkFieldSpacing" check>
+            <Input type="checkbox" />
+            <Label className="checkLabel" check>Camarote Feminino</Label>
+          </div>
+        </FormGroup>
+        <hr className="dividerUp" />
+        <div className="d-flex">
+          <FormGroup className="fieldSpacing" style={{ marginRight: "250px" }}>
+            <Label className="infoSubTitle">Área VIP</Label>
+            <div classname="checkFieldSpacing" check>
+              <Input type="checkbox" />
+              <Label check className="checkLabel">Geral</Label>
+            </div>
+            <div classname="checkFieldSpacing" check>
+              <Input type="checkbox" />
+              <Label check className="checkLabel">Meia entrada</Label>
+            </div>
+            <div classname="checkFieldSpacing" check>
+              <Input type="checkbox" />
+              <Label check className="checkLabel">Universitário</Label>
+            </div>
+            <div classname="checkFieldSpacing" check>
+              <Input type="checkbox" />
+              <Label check className="checkLabel">Camarote</Label>
+            </div>
+            <div classname="checkFieldSpacing" check>
+              <Input type="checkbox" />
+              <Label check className="checkLabel">Área Vip</Label>
+            </div>
           </FormGroup>
-          <FormGroup classname="checkFieldSpacing" check>
-            <Input type="checkbox" />
-            <Label check>Camarote Meia entrada</Label>
-          </FormGroup>
-          <FormGroup classname="checkFieldSpacing" check>
-            <Input type="checkbox" />
-            <Label check>Camarote Feminino</Label>
-          </FormGroup>
-        </div>
-        <div className="fieldSpacing">
-          <Label className="fieldLabel">Área VIP</Label>
-          <FormGroup classname="checkFieldSpacing" check>
-            <Input type="checkbox" />
-            <Label check>Geral</Label>
-          </FormGroup>
-          <FormGroup classname="checkFieldSpacing" check>
-            <Input type="checkbox" />
-            <Label check>Meia entrada</Label>
-          </FormGroup>
-          <FormGroup classname="checkFieldSpacing" check>
-            <Input type="checkbox" />
-            <Label check>Universitário</Label>
-          </FormGroup>
-          <FormGroup classname="checkFieldSpacing" check>
-            <Input type="checkbox" />
-            <Label check>Camarote</Label>
-          </FormGroup>
-          <FormGroup classname="checkFieldSpacing" check>
-            <Input type="checkbox" />
-            <Label check>Área Vip</Label>
-          </FormGroup>
-        </div>
-        <div className="fieldSpacing">
-          <Label className="fieldLabel">Pista</Label>
-          <FormGroup classname="checkFieldSpacing" check>
-            <Input type="checkbox" />
-            <Label check>Pista Masculina</Label>
-          </FormGroup>
-          <FormGroup classname="checkFieldSpacing" check>
-            <Input type="checkbox" />
-            <Label check>Pista Meia entrada</Label>
-          </FormGroup>
-          <FormGroup classname="checkFieldSpacing" check>
-            <Input type="checkbox" />
-            <Label check>Pista Feminina</Label>
-          </FormGroup>
-          <FormGroup classname="checkFieldSpacing" check>
-            <Input type="checkbox" />
-            <Label check>Camarote</Label>
-          </FormGroup>
-          <FormGroup classname="checkFieldSpacing" check>
-            <Input type="checkbox" />
-            <Label check>Área Vip</Label>
-          </FormGroup>
-          <FormGroup classname="checkFieldSpacing" check>
-            <Input type="checkbox" />
-            <Label check>Geral</Label>
-          </FormGroup>
-          <FormGroup classname="checkFieldSpacing" check>
-            <Input type="checkbox" />
-            <Label check>Universitário</Label>
+          <FormGroup className="fieldSpacing">
+            <Label className="infoSubTitle">Pista</Label>
+            <div classname="checkFieldSpacing" check>
+              <Input type="checkbox" />
+              <Label check className="checkLabel">Pista Masculina</Label>
+            </div>
+            <div classname="checkFieldSpacing" check>
+              <Input type="checkbox" />
+              <Label check className="checkLabel">Pista Meia entrada</Label>
+            </div>
+            <div classname="checkFieldSpacing" check>
+              <Input type="checkbox" />
+              <Label check className="checkLabel">Pista Feminina</Label>
+            </div>
+            <div classname="checkFieldSpacing" check>
+              <Input type="checkbox" />
+              <Label check className="checkLabel">Camarote</Label>
+            </div>
+            <div classname="checkFieldSpacing" check>
+              <Input type="checkbox" />
+              <Label check className="checkLabel">Área Vip</Label>
+            </div>
+            <div classname="checkFieldSpacing" check>
+              <Input type="checkbox" />
+              <Label check className="checkLabel">Geral</Label>
+            </div>
+            <div classname="checkFieldSpacing" check>
+              <Input type="checkbox" />
+              <Label check className="checkLabel">Universitário</Label>
+            </div>
           </FormGroup>
         </div>
         <div className="nextPageButton">
-          <SuperButton
-            color="primary"
-            style={{ width: "144px", height: "50px" }}
-          >
-            Adcionar PDV
-          </SuperButton>
+          <div style={{ color: "#fff" }}>
+            <Button
+              style={{ height: "50px", width: "200px", borderColor: "#A5A5A5" }}
+              variant="outline-light"
+            >
+              <div className="greyNormalText">Adicionar PDV</div>
+            </Button>
+          </div>
         </div>
       </Container>
     </Fragment>

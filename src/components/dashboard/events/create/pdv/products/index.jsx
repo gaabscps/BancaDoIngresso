@@ -1,67 +1,69 @@
 import React, { Fragment, useEffect, useState } from "react";
 import {
   Container,
-  Row,
-  Col,
-  Card,
   FormGroup,
   Label,
-  ButtonGroup,
-  Button,
 } from "reactstrap";
-import SuperButton from "../../../../../sharedComponents/SuperButton";
+import { Button, ButtonGroup } from "react-bootstrap";
 import SuperInput from "../../../../../sharedComponents/SuperInput";
 
 const Sample = (props) => {
   return (
     <Fragment>
       <Container className="subContainer" fluid={true}>
-        <div className="groupButton">
+      <hr className="dividerUp" />
+      <div className="groupButton">
           <Label className="fieldLabel">Permitir produto?</Label>
           <ButtonGroup style={{ width: "100px" }}>
-            <SuperButton>Sim</SuperButton>
-            <SuperButton>Não</SuperButton>
+            <Button
+              variant="outline-dark"
+              style={{ height: "62px", width: "100px" }}
+            >
+              Sim
+            </Button>
+            <Button
+              variant="outline-dark"
+              style={{ height: "62px", width: "100px" }}
+            >
+              Não
+            </Button>
           </ButtonGroup>
         </div>
+        <hr className="dividerUp" />
         <div className="d-flex">
-          <FormGroup className="fieldSpacing">
+          <FormGroup style={{marginRight: "50px"}}>
             <Label className="fieldLabel" for="exampleSelect">
               Setor
             </Label>
             <SuperInput
               style={{ width: "359px" }}
-              placeholder="Selecione ou digite a cidade"
+              placeholder="Digite ou selecione o setor"
               id="exampleSelect"
-              name="select"
-              type="select"
-            >
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-              <option>5</option>
-            </SuperInput>
+            />
           </FormGroup>
-          <FormGroup className="fieldSpacing">
+          <FormGroup >
             <Label className="fieldLabel" for="exampleNumber">
-              Porcentagem do Garçom (%)
+              Produtos
             </Label>
             <SuperInput
               style={{ width: "359px" }}
               id="exampleNumber"
-              name="number"
-              placeholder="0%"
-              type="number"
+              placeholder="Digite ou selecione o produto"
             />
           </FormGroup>
         </div>
+        <div className="auxGrayText pb-2">
+          Inserir TODOS produtos desse setor
+        </div>
         <div className="nextPageButton">
-          <SuperButton
-            color="primary"
-            style={{ width: "144px", height: "50px" }}
-          >
-            Adcionar PDV
-          </SuperButton>
+          <div style={{ color: "#fff" }}>
+            <Button
+              style={{ height: "50px", width: "200px", borderColor: "#A5A5A5" }}
+              variant="outline-light"
+            >
+              <div className="greyNormalText">Adicionar PDV</div>
+            </Button>
+          </div>
         </div>
       </Container>
     </Fragment>

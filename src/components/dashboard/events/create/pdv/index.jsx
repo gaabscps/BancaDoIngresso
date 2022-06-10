@@ -1,16 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  Form,
-  FormGroup,
-  Label,
-  ButtonGroup,
-  Button,
-} from "reactstrap";
+import { Container, Col, Form, FormGroup, Label } from "reactstrap";
+import { Button, ButtonGroup } from "react-bootstrap";
 import SuperButton from "../../../../sharedComponents/SuperButton";
 import SuperInput from "../../../../sharedComponents/SuperInput";
 
@@ -55,59 +46,210 @@ const Sample = (props) => {
   return (
     <Fragment>
       <Container className="mainContainer" fluid={true}>
-        <div className="pageTitle">PDV</div>
-        <div className="groupButton">
-          <Label className="fieldLabel">Permitir código de desconto?</Label>
-          <ButtonGroup style={{ width: "100px" }}>
-            <SuperButton>Sim</SuperButton>
-            <SuperButton>Não</SuperButton>
-          </ButtonGroup>
+        <div className="d-flex justify-content-center stepContainer">
+          <img
+            src={require("../../../../../assets/images/svg/stepByStep/step4.svg")}
+          />
         </div>
-        <Form>
-          <FormGroup className="fieldSpacing">
-            <Label className="fieldLabel" for="exampleEmail">PDV</Label>
-            <SuperInput
-              id="exampleEmail"
-              name="email"
-              placeholder="Digite ou selecione o PDV"
-              type="email"
+        <Col>
+          <div style={{ display: "grid", paddingBottom: "50px" }}>
+            <div className="pageTitle">PDV</div>
+            <img
+              src={require("../../../../../assets/images/svg/titleLine.svg")}
+              style={{ paddingTop: "-20px" }}
             />
-          </FormGroup>
-        </Form>
-        <div className="pageSubTitle">Adicionando PDV</div>
-        <div className="infoSubTitle">
-        Preencha as cinco (5) etapas abaixo para adicionar um PDV
-        </div>
-        <div className="d-flex justify-content-around">
-          <SuperButton color="primary" onClick={() => setStep(0)}>
-            Ingressos por PDV
-          </SuperButton>
-          <SuperButton color="primary" onClick={() => setStep(1)}>
-            Inserir POS
-          </SuperButton>
-          <SuperButton color="primary " onClick={() => setStep(2)}>
-            Inserir produtos
-          </SuperButton>
-
-          <SuperButton color="primary " onClick={() => setStep(3)}>
-            Inserir usuários
-          </SuperButton>
-
-          <SuperButton color="primary " onClick={() => setStep(4)}>
-            Inserir Sub PDV’s
-          </SuperButton>
-        </div>
-        <div>
-          <ShowInformation />
-        </div>
-        <div className="nextPageButton">
-        <SuperButton
-            onClick={goBack}
-          >
-            Voltar
-          </SuperButton>
-          <SuperButton onClick={nextStep}>Avançar para confirmação</SuperButton>
-        </div>
+          </div>
+          <div className="groupButton">
+            <Label className="fieldLabel">Permitir PDV?</Label>
+            <ButtonGroup style={{ width: "100px" }}>
+              <Button
+                variant="outline-dark"
+                style={{ height: "62px", width: "100px" }}
+              >
+                Sim
+              </Button>
+              <Button
+                variant="outline-dark"
+                style={{ height: "62px", width: "100px" }}
+              >
+                Não
+              </Button>
+            </ButtonGroup>
+          </div>
+          <hr className="dividerUp" />
+          <div className="fieldSpacing">
+            <Label className="fieldLabel" for="exampleNumber">
+            PDV
+            </Label>
+            <SuperInput
+              id="exampleNumber"
+              name="number"
+              placeholder="Digite ou selecione o PDV"
+              type="number"
+            />
+          </div>
+          <div className="groupButton">
+            <Label className="fieldLabel">Permitir dinheiro?</Label>
+            <ButtonGroup style={{ width: "100px" }}>
+              <Button
+                variant="outline-dark"
+                style={{ height: "62px", width: "100px" }}
+              >
+                Sim
+              </Button>
+              <Button
+                variant="outline-dark"
+                style={{ height: "62px", width: "100px" }}
+              >
+                Não
+              </Button>
+            </ButtonGroup>
+          </div>
+          <div className="groupButton">
+            <Label className="fieldLabel">Permitir taxa antecipada?</Label>
+            <ButtonGroup style={{ width: "100px" }}>
+              <Button
+                variant="outline-dark"
+                style={{ height: "62px", width: "100px" }}
+              >
+                Sim
+              </Button>
+              <Button
+                variant="outline-dark"
+                style={{ height: "62px", width: "100px" }}
+              >
+                Não
+              </Button>
+            </ButtonGroup>
+          </div>
+          <div className="groupButton">
+            <Label className="fieldLabel">Permitir débito?</Label>
+            <ButtonGroup style={{ width: "100px" }}>
+              <Button
+                variant="outline-dark"
+                style={{ height: "62px", width: "100px" }}
+              >
+                Sim
+              </Button>
+              <Button
+                variant="outline-dark"
+                style={{ height: "62px", width: "100px" }}
+              >
+                Não
+              </Button>
+            </ButtonGroup>
+          </div>
+          <div className="groupButton">
+            <Label className="fieldLabel">Permitir crédito?</Label>
+            <ButtonGroup style={{ width: "100px" }}>
+              <Button
+                variant="outline-dark"
+                style={{ height: "62px", width: "100px" }}
+              >
+                Sim
+              </Button>
+              <Button
+                variant="outline-dark"
+                style={{ height: "62px", width: "100px" }}
+              >
+                Não
+              </Button>
+            </ButtonGroup>
+          </div>
+          <div className="groupButton">
+            <Label className="fieldLabel">Permitir PIX?</Label>
+            <ButtonGroup style={{ width: "100px" }}>
+              <Button
+                variant="outline-dark"
+                style={{ height: "62px", width: "100px" }}
+              >
+                Sim
+              </Button>
+              <Button
+                variant="outline-dark"
+                style={{ height: "62px", width: "100px" }}
+              >
+                Não
+              </Button>
+            </ButtonGroup>
+          </div>
+          <div className="d-flex">
+            <div className="groupButton" style={{ marginRight: "100px" }}>
+              <Label className="fieldLabel">Permitir venda online?</Label>
+              <ButtonGroup style={{ width: "100px" }}>
+                <Button
+                  variant="outline-dark"
+                  style={{ height: "62px", width: "100px" }}
+                >
+                  Sim
+                </Button>
+                <Button
+                  variant="outline-dark"
+                  style={{ height: "62px", width: "100px" }}
+                >
+                  Não
+                </Button>
+              </ButtonGroup>
+            </div>
+            <div className="groupButton">
+              <Label className="fieldLabel">Permitir desconto?</Label>
+              <ButtonGroup style={{ width: "100px" }}>
+                <Button
+                  variant="outline-dark"
+                  style={{ height: "62px", width: "100px" }}
+                >
+                  Sim
+                </Button>
+                <Button
+                  variant="outline-dark"
+                  style={{ height: "62px", width: "100px" }}
+                >
+                  Não
+                </Button>
+              </ButtonGroup>
+            </div>
+          </div>
+          <hr className="dividerUp" />
+          <div className="secondPageTitle">Adicionando PDV</div>
+          <div className="infoSubTitle">
+            Preencha as 5 (CINCO) etapas abaixo para adicionar um PDV
+          </div>
+          <div className="infoContainer">
+            <div className="d-flex justify-content-around">
+              <Button variant="outline-light" onClick={() => setStep(0)}>
+                <div className="buttonText">Ingressos por PDV</div>
+              </Button>
+              <Button variant="outline-light" onClick={() => setStep(1)}>
+                <div className="buttonText">Inserir POS</div>
+              </Button>
+              <Button variant="outline-light" onClick={() => setStep(2)}>
+                <div className="buttonText">Inserir produtos</div>
+              </Button>
+              <Button variant="outline-light" onClick={() => setStep(3)}>
+                <div className="buttonText">Inserir usuários</div>
+              </Button>
+              <Button variant="outline-light" onClick={() => setStep(4)}>
+                <div className="buttonText">Cadastrar Sub PDV’s</div>
+              </Button>
+            </div>
+            <ShowInformation />
+          </div>
+          <hr className="dividerDown" />
+          <div className="nextPageButton">
+            <div style={{ color: "#fff" }}>
+              <Button
+                style={{ height: "50px" }}
+                variant="outline-light"
+                onClick={goBack}
+              >
+                Voltar
+              </Button>
+            </div>
+            <Button variant="dark" onClick={nextStep}>
+              Avançar para confirmação
+            </Button>
+          </div>
+        </Col>
       </Container>
     </Fragment>
   );
