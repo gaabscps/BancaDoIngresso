@@ -11,22 +11,100 @@
 @import "vendors/sticky/sticky";
 @import "vendors/todo/todo";
 
+
 .mainContainer{
-    padding: 50px  !important;
+    padding: 50px !important;
 }
 .subContainer{
-    padding: 30px  !important;
+    padding: 30px !important;
+}
+
+.infoContainer{
+  padding: 50px !important;
+  background-color: #f1f1f1 !important;
+  border-radius: 5px !important;
+}
+
+.whiteContainer{
+  padding: 50px !important;
+  background-color: #ffffff !important;
+  border-radius: 5px !important;
 }
 
 .pageTitle {
-    font-style: normal !important;
-    font-size: 28px !important;
-    line-height: 42px !important;
-    padding-bottom: 55px !important;
-    text-decoration: underline;
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 28px;
+    line-height: 42px;
+}
+
+.subTitleMain {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400 !important;
+    font-size: 16px !important;
+    line-height: 24px !important;
+    color: #828282 !important;
 }
 
 .secondPageTitle {
+  text-decoration: none !important;
+  font-family: 'Poppins' !important;
+  font-weight: 400 !important;
+  font-size: 21px !important;
+  line-height: 32px !important;
+  color: #222222 !important;
+}
+
+.normalText {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400 !important;
+    font-size: 16px !important;
+    line-height: 24px !important;
+    color: #222222 !important;
+}
+
+.subText {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 300 !important;
+    font-size: 12px !important;
+    line-height: 18px !important;
+    color: #222222 !important;
+}
+
+.buttonText {
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 700 !important;
+    font-size: 16px !important;
+    line-height: 24px !important;
+    color: #222222 !important;
+}
+
+.greyNormalText {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400 !important;
+    font-size: 16px !important;
+    line-height: 24px !important;
+    color: #A5A5A5 !important;
+}
+
+.auxSucessText {
+    color: #7AD81B !important;
+    font-weight: 400 !important;
+    font-size: 16px !important;
+    line-height: 24px !important;
+}
+
+.auxGrayText {
+    color: #C4C4C4 !important;
+    font-weight: 500px !important;
+    font-size: 16px !important;
+    line-height: 24px !important;
+}
+
+.secondPageTitle {
+    font-family: 'Poppins', sans-serif;
     font-style: normal !important;
     font-size: 28px !important;
     line-height: 42px !important;
@@ -42,17 +120,40 @@
 }
 
 .infoSubTitle {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400 !important; 
     font-style: normal !important;
     font-size: 21px !important;
-    line-height: 31.5px !important;
+    line-height: 32px !important;
     padding-bottom: 30px !important;
     color: #828282;
 }
 
 .fieldLabel {
-    font-size: 16px !important;
-    padding-bottom: 15px !important;
-    color: #828282 !important;
+  font-family: 'Poppins' !important;
+  font-style: normal !important;
+  font-weight: 500 !important;
+  font-size: 16px !important;
+  padding-bottom: 15px !important;
+  color: #828282 !important;
+}
+
+.loginFormText {
+  font-family: 'Poppins' !important;
+  font-style: normal !important;
+  font-weight: 500 !important;
+  font-size: 16px !important;
+  color: #828282 !important;
+  margin-bottom: 15px !important;
+}
+
+.checkLabel {
+  margin-left: 10px !important;
+  font-family: 'Poppins' !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  font-size: 16px !important;
+  color: #a5a5a5 !important;
 }
 
 .fieldSpacing {
@@ -79,6 +180,336 @@
 .nextPageButton {
     display: flex !important;
     justify-content: end !important;
-    padding-top: 30px !important;
 }
 
+.dividerUp {
+  margin-bottom: 50px !important ;
+}
+.dividerDown {
+  margin-top: 50px !important ;
+  margin-bottom: 50px !important ;
+}
+
+.stepContainer {
+  height: 59px !important;
+  margin-bottom: 59px;
+}
+
+//----- Contador de Eventos -----//
+
+
+
+.cardHeader {
+    height: 165px !important;
+    background: #ffffff !important;
+    border-radius: 10px !important;
+  }
+  
+  .firstDiv {
+    height: 165px !important;
+    border-right-width: 1px !important;
+    border-right-style: solid !important;
+    display: inline-block !important;
+    border-right-color: #F1F1F1 !important;
+  }
+  
+  .lastDiv {
+    height: 165px !important;
+    width: 264px !important;
+    display: inline-block !important;
+  }
+  
+  .firstContent {
+    margin-top: 30px !important;
+    margin-left: 25px !important;
+  }
+  
+  .textContent{
+    text-align: initial !important;
+    font-style: normal !important;
+    font-weight: 500 !important;
+    font-size: 16px !important;
+    line-height: 24px !important;
+  }
+  .count{
+    color: #828282 !important;
+  }
+
+  .partyCard{
+    width: 334px;
+    height: 223px;
+    border-radius: 10px;
+    display: inline-block;
+  }
+
+  .partyImage1 {
+    background-image: url(../images/party/evento1.jpg);
+    width: 334px;
+    height: 223px;
+    border-radius: 10px;
+  }
+
+  .partyImage2 {
+    background-image: url(../images/party/evento2.jpeg);
+    width: 334px;
+    height: 223px;
+    border-radius: 10px;
+  }
+
+  .partyImage3 {
+    background-image: url(../images/party/evento3.jpg);
+    width: 334px;
+    height: 223px;
+    border-radius: 10px;
+  }
+
+  .partyBlur {
+      z-index: 1;
+    position: absolute;
+    width: 334px;
+    height: 120px;
+    
+    background: rgba(34, 34, 34, 0.3);
+  }
+
+//----- Tabela de Eventos -----//
+
+.rows {
+    display: flex;
+    width: 100%;
+    height: 83px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    background-color: #ffffff !important;
+  }
+  
+  .linhaDaTabela {
+    display: inline-block;
+  }
+  
+  .campoFoto {
+    width: 99px;
+    height: 83px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    background-image: url(../images/party/partyTable.jpg);
+  }
+
+  .campoFoto2 {
+    width: 99px;
+    height: 83px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    background-image: url(../images/party/partyTable2.png);
+  }
+
+  .campoFoto3 {
+    width: 99px;
+    height: 83px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    background-image: url(../images/party/partyTable3.png);
+  }
+
+  .campoFoto4 {
+    width: 99px;
+    height: 83px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    background-image: url(../images/party/partyTable4.png);
+  }
+  
+  .campoStatus {
+    width: 4px;
+    height: 83px;
+    background-color: #7AD81B;
+  }
+  .campoNome {
+    width: 400px;
+    height: 83px;
+    align-items: center;
+  }
+  .campoCidade {
+    width: 180px;
+    height: 83px;
+  }
+  
+  .campoData {
+    width: 182px;
+    height: 83px;
+  }
+  .campoAção {
+    width: 144px;
+    height: 83px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+
+  .celulaNome {
+    width: 236px;
+    margin-top: 32px; 
+    margin-bottom: 32px; 
+    margin-left: 22px; 
+    position: absolute;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; 
+  }
+  .celulaCidade {
+    width: 180px;
+    margin-top: 32px; 
+    // margin-bottom: 32px; 
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: absolute;
+  }
+  .celulaData {
+    margin-top: 32px; 
+    margin-bottom: 32px; 
+    position: absolute;
+  }
+  
+  .celulaAção {
+    width: 110px;
+    margin-top: 32px; 
+    margin-bottom: 32px; 
+    position: absolute;
+  }
+
+  .header {
+    display: flex;
+    width: 1062px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+  }
+
+  .headerFoto {
+    margin-bottom: 18px;
+    width: 99px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+  }
+  
+  .headerStatus {
+    width: 4px;
+  }
+  .headerNome {
+    margin-bottom: 18px;
+    width: 400px;
+  }
+  .headerCidade {
+    margin-bottom: 18px;
+    width: 180px;
+  }
+  
+  .headerData {
+    margin-bottom: 18px;
+    width: 182px;
+  }
+  .headerAção {
+    margin-bottom: 18px;
+    width: 144px;
+  }
+
+  .modal-backdrop {
+      width: 100% !important;
+      height: 100% !important;
+  }
+
+//----- Card de Eventos -----//
+
+.descriptionEvent{
+  margin-top: 103px !important;
+  border-radius: 10px !important;
+  // border: solid !important;
+  // border-width: 1px !important;
+  // border-color: black !important;
+  position: absolute !important;
+  width: 334px !important;
+  height: 120px !important;
+  background-color: transparent !important;
+  backdrop-filter: blur(5px)  !important;
+  -webkit-backdrop-filter: blur(5px) !important;
+}
+
+.nameEvent {
+  font-family: 'Poppins', sans-serif;
+  color: white !important;
+  font-style: normal !important;
+  font-weight: 700 !important;
+  font-size: 16px !important;
+  line-height: 24px !important;
+
+  padding-top: 11px !important;
+  margin-bottom: 11px !important;
+  padding-left: 25px !important;
+  text-align: start !important;
+  width: 240px !important;
+  height: 44px !important;
+}
+
+.dateEvent {
+  font-family: 'Poppins', sans-serif;
+  color: white !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  font-size: 12px !important;
+  line-height: 18px !important;
+
+  margin-bottom: 11px !important;
+  padding-top: 10px !important;
+  padding-left: 25px !important;
+  text-align: start !important;
+  height: 18px !important;
+}
+
+.locationEvent {
+  font-family: 'Poppins', sans-serif;
+  color: white;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+
+  padding-top: 8px;
+  padding-bottom: 11px;
+  padding-left: 25px;
+  text-align: start;
+  height: 18px;
+}
+
+//----- Login -----//
+
+.loginForm {
+  width: 592px !important;
+  height: 64px !important;
+  border-radius: 5px !important;
+  background-color: #f1f1f1 !important;
+  color: #a5a5a5 !important;
+  border-color: #f1f1f1 !important;
+}
+
+.loginCard {
+  padding-left: 50px !important;
+  padding-right: 50px !important;
+}
+
+.passwordIcon {
+  margin-top: 25px !important;
+}
+
+.loginField {
+  margin-bottom: 35px !important;
+}
+
+.forgotPassword {
+  margin-top: 40px !important;
+  font-family: 'Poppins' !important;
+  font-style: normal !important;
+  font-weight: 700 !important;
+  font-size: 16px !important;
+  line-height: 24px !important;
+  text-decoration: underline !important;
+  color: #b3140c !important;
+}

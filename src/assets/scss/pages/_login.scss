@@ -4,7 +4,8 @@
 
 .login-card {
   width: auto;
-  min-height: 100vh;
+  // height: auto;
+  min-height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -40,7 +41,7 @@
   }
 
   .login-main {
-    width: 770px;
+    width: 800px;
     height: 800px;
     padding: 40px;
     border-radius: 10px 10px 10px 10px;
@@ -78,7 +79,7 @@
       }
 
       input {
-        background-color: #f3f3ff;
+        background-color: #f1f1f1;
         transition: all 0.3s ease;
 
         &::-webkit-input-placeholder {
@@ -221,8 +222,8 @@
 
 .show-hide {
   position: absolute;
-  top: 52px;
-  right: 20px;
+  top: 57px;
+  right: 50px;
   transform: translateY(-50%);
 
   span {
