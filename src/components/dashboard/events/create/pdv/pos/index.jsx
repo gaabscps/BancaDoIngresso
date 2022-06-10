@@ -1,66 +1,63 @@
 import React, { Fragment, useEffect, useState } from "react";
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  FormGroup,
-  Label,
-  ButtonGroup,
-  Button,
-} from "reactstrap";
-import SuperButton from "../../../../../sharedComponents/SuperButton";
+import { Container, Row, Col, Card, FormGroup, Label } from "reactstrap";
+import { Button, ButtonGroup } from "react-bootstrap";
 import SuperInput from "../../../../../sharedComponents/SuperInput";
 
 const Sample = (props) => {
   return (
     <Fragment>
       <Container className="subContainer" fluid={true}>
+        <hr className="dividerUp" />
         <div className="groupButton">
-          <Label className="fieldLabel">Permitir código de desconto?</Label>
+          <Label className="fieldLabel">Permitir POS?</Label>
           <ButtonGroup style={{ width: "100px" }}>
-            <SuperButton>Sim</SuperButton>
-            <SuperButton>Não</SuperButton>
+            <Button
+              variant="outline-dark"
+              style={{ height: "62px", width: "100px" }}
+            >
+              Sim
+            </Button>
+            <Button
+              variant="outline-dark"
+              style={{ height: "62px", width: "100px" }}
+            >
+              Não
+            </Button>
           </ButtonGroup>
         </div>
-        <div className="d-flex">
-          <FormGroup className="fieldSpacing">
-            <Label className="fieldLabel" for="exampleSelect">
-              Cidade
+        <hr className="dividerUp" />
+        <div className="d-flex pt-2">
+          <FormGroup  className="fieldSpacing">
+            <Label className="fieldLabel" for="exampleNumber">
+            POS
             </Label>
             <SuperInput
-              placeholder="Selecione ou digite a cidade"
-              id="exampleSelect"
-              name="select"
-              type="select"
-            >
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-              <option>5</option>
-            </SuperInput>
+              id="exampleNumber"
+              placeholder="Digite ou selecione a POS"
+            />
           </FormGroup>
-          <FormGroup className="fieldSpacing">
+          <FormGroup  className="fieldSpacing">
             <Label className="fieldLabel" for="exampleNumber">
-              Porcentagem do Garçom (%)
+            Porcentagem do Garçom (%)
             </Label>
             <SuperInput
               style={{ width: "135px" }}
               id="exampleNumber"
               name="number"
               placeholder="0%"
-              type="number"
             />
           </FormGroup>
         </div>
+        
         <div className="nextPageButton">
-          <SuperButton
-            color="primary"
-            style={{ width: "144px", height: "50px" }}
-          >
-            Adcionar PDV
-          </SuperButton>
+          <div style={{ color: "#fff" }}>
+            <Button
+              style={{ height: "50px", width: "200px", borderColor: "#A5A5A5" }}
+              variant="outline-light"
+            >
+              <div className="greyNormalText">Adicionar PDV</div>
+            </Button>
+          </div>
         </div>
       </Container>
     </Fragment>
