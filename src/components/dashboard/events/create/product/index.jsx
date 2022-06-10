@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useState } from "react";
 import { useHistory } from "react-router-dom";
 import {
   Container,
@@ -7,13 +7,19 @@ import {
   Card,
   Label,
   FormGroup,
-  Button,
-  ButtonGroup,
 } from "reactstrap";
+import { Button, ButtonGroup } from "react-bootstrap";
+
+import GroupInformation from "./group/index";
+import ProductInformation from "./product/index";
+import ComboInformation from "./combo/index";
+import SectorInformation from "./sector/index";
+import PosInformation from "./pos/index";
+
 import SuperButton from "../../../../sharedComponents/SuperButton";
-import SuperInput from "../../../../sharedComponents/SuperInput";
 
 const Sample = (props) => {
+  const [step, setStep] = useState(null);
   const history = useHistory();
 
   const nextStep = () => {
@@ -23,353 +29,107 @@ const Sample = (props) => {
     history.goBack();
   };
 
+  const ShowInformation = () => {
+    if (step === 0) {
+      return <GroupInformation />;
+    }
+    if (step === 1) {
+      return <ProductInformation />;
+    }
+    if (step === 2) {
+      return <ComboInformation />;
+    }
+    if (step === 3) {
+      return <SectorInformation />;
+    }
+    if (step === 4) {
+      return <PosInformation />;
+    }
+    if (step === null) {
+      return null;
+    }
+  };
+
   return (
     <Fragment>
       <Container className="mainContainer" fluid={true}>
-        <div className="pageTitle">Setor e Produto</div>
-        <div className="groupButton">
-          <Label className="fieldLabel">Este evento terá produtos?</Label>
-          <ButtonGroup style={{ width: "100px" }}>
-            <SuperButton>Sim</SuperButton>
-            <SuperButton>Não</SuperButton>
-          </ButtonGroup>
-        </div>
-        <div className="pageSubTitle">Adicionando setor e produto</div>
-        <div className="infoSubTitle">
-          Preencha os campos abaixo para adicionar um setor e produto
-        </div>
-        <div className="groupButton">
-          <Label className="fieldLabel">
-            Esse produto faz parte de um combo?
-          </Label>
-          <ButtonGroup style={{ width: "100px" }}>
-            <SuperButton>Sim</SuperButton>
-            <SuperButton>Não</SuperButton>
-          </ButtonGroup>
-        </div>
-        <FormGroup className="fieldSpacing">
-          <Label className="fieldLabel" for="exampleSearch">
-            Combo
-          </Label>
-          <SuperInput
-            id="exampleSearch"
-            name="search"
-            placeholder="Digite ou selecione o cambor"
-            type="search"
+        <div className="d-flex justify-content-center stepContainer">
+          <img
+            src={require("../../../../../assets/images/svg/stepByStep/step3.svg")}
           />
-        </FormGroup>
-        <div className="groupButton">
-          <Label className="fieldLabel">
-            Impressão da ficha por Item ou Total?
-          </Label>
-          <ButtonGroup style={{ width: "100px" }}>
-            <SuperButton>Sim</SuperButton>
-            <SuperButton>Não</SuperButton>
-          </ButtonGroup>
         </div>
-        <div className="groupButton">
-          <Label className="fieldLabel">Permitir cortesia?</Label>
-          <ButtonGroup style={{ width: "100px" }}>
-            <SuperButton>Sim</SuperButton>
-            <SuperButton>Não</SuperButton>
-          </ButtonGroup>
-        </div>
-        <FormGroup className="fieldSpacing">
-          <Label className="fieldLabel" for="exampleSearch">
-            Nome do setor
-          </Label>
-          <SuperInput
-            id="exampleSearch"
-            name="search"
-            placeholder="Digite ou selecione o nome do setor"
-            type="search"
-          />
-        </FormGroup>
-        <FormGroup className="fieldSpacing">
-          <Label className="fieldLabel" for="exampleSearch">
-            Nome do produto
-          </Label>
-          <SuperInput
-            id="exampleSearch"
-            name="search"
-            placeholder="Digite ou selecione o tipo o nome do produto"
-            type="search"
-          />
-        </FormGroup>
-        <FormGroup className="fieldSpacing">
-          <Label className="fieldLabel" for="exampleSearch">
-            Grupo do produto
-          </Label>
-          <SuperInput
-            id="exampleSearch"
-            name="search"
-            placeholder="Digite ou selecione o grupo do produto"
-            type="search"
-          />
-        </FormGroup>
-        <FormGroup className="fieldSpacing">
-          <Label className="fieldLabel" for="exampleSearch">
-            Subgrupo do produto
-          </Label>
-          <SuperInput
-            id="exampleSearch"
-            name="search"
-            placeholder="Digite ou selecione o subgrupo do produto"
-            type="search"
-          />
-        </FormGroup>
-        <div className="d-flex">
-          <FormGroup className="fieldSpacing">
-            <Label className="fieldLabel" for="exampleDateNumber">
-              Quantidade
-            </Label>
-            <SuperInput
-              style={{ width: "243px" }}
-              id="exampleNumber"
-              name="text"
-              placeholder="Ex: 200"
-              type="text"
+        <Col>
+          <div style={{ display: "grid", paddingBottom: "50px" }}>
+            <div className="pageTitle">Setor e produto</div>
+            <img
+              src={require("../../../../../assets/images/svg/titleLine.svg")}
+              style={{ paddingTop: "-20px" }}
             />
-          </FormGroup>
-          <FormGroup className="fieldSpacing">
-            <Label className="fieldLabel" for="exampleDateNumber">
-              Valor unitário
-            </Label>
-            <SuperInput
-              style={{ width: "243px" }}
-              id="exampleNumber"
-              name="number"
-              placeholder="Ex 20,00 R$"
-              type="number"
-            />
-          </FormGroup>
-        </div>
-        <FormGroup className="fieldSpacing">
-          <Label className="fieldLabel" for="exampleDateNumber">
-            Valor total
-          </Label>
-          <SuperInput
-            style={{ width: "243px" }}
-            id="exampleNumber"
-            name="text"
-            placeholder="R$ 200,00"
-            type="text"
-          />
-        </FormGroup>
-        <div>
-          <FormGroup className="fieldSpacing">
-            <Label className="fieldLabel" for="exampleFile" sm={2}>
-              Imagem do produto (opcional)
-            </Label>
-            <Col sm={10}>
-              <SuperInput
-                id="exampleFile"
-                placeholder="Nenhum arquivo selecionado"
-                name="file"
-                type="file"
-              />
-            </Col>
-          </FormGroup>
-        </div>
-        <div className="secondPageTitle">Taxas de cartão</div>
-        <div className="pageSubTitle">Venda física</div>
-        <div className="groupButton">
-          <Label className="fieldLabel">Permitir venda com cartão?</Label>
-          <ButtonGroup style={{ width: "100px" }}>
-            <SuperButton>Sim</SuperButton>
-            <SuperButton>Não</SuperButton>
-          </ButtonGroup>
-        </div>
-        <FormGroup className="fieldSpacing">
-          <Label className="fieldLabel" for="exampleNumber">
-            Débito
-          </Label>
-          <SuperInput
-            style={{ width: "135px" }}
-            id="exampleNumber"
-            name="number"
-            placeholder="0%"
-            type="number"
-          />
-        </FormGroup>
-        <FormGroup className="fieldSpacing">
-          <Label className="fieldLabel" for="exampleNumber">
-            Crédito
-          </Label>
-          <SuperInput
-            style={{ width: "135px" }}
-            id="exampleNumber"
-            name="number"
-            placeholder="0%"
-            type="number"
-          />
-        </FormGroup>
-        <FormGroup className="fieldSpacing">
-          <Label className="fieldLabel" for="exampleNumber">
-            PIX
-          </Label>
-          <SuperInput
-            style={{ width: "135px" }}
-            id="exampleNumber"
-            name="number"
-            placeholder="0%"
-            type="number"
-          />
-        </FormGroup>
-        <FormGroup className="fieldSpacing">
-          <Label className="fieldLabel" for="exampleNumber">
-            Taxa administrativa
-          </Label>
-          <SuperInput
-            style={{ width: "135px" }}
-            id="exampleNumber"
-            name="number"
-            placeholder="0%"
-            type="number"
-          />
-        </FormGroup>
-        <div>
-          <FormGroup className="fieldSpacing">
-            <Label className="fieldLabel" for="exampleNumber">
-              Qtd parcelas
-            </Label>
-            <SuperInput
-              style={{ width: "135px" }}
-              id="exampleNumber"
-              name="number"
-              placeholder="Ex: 2"
-              type="number"
-            />
-          </FormGroup>
-          <FormGroup className="fieldSpacing">
-            <Label className="fieldLabel" for="exampleNumber">
-              Juros ao mês
-            </Label>
-            <SuperInput
-              style={{ width: "135px" }}
-              id="exampleNumber"
-              name="number"
-              placeholder="Ex: 2%"
-              type="number"
-            />
-          </FormGroup>
-        </div>
-        <div className="pageSubTitle">Venda e-commerce</div>
-        <div className="groupButton">
-          <Label className="fieldLabel">Permitir venda com cartão?</Label>
-          <ButtonGroup style={{ width: "100px" }}>
-            <SuperButton>Sim</SuperButton>
-            <SuperButton>Não</SuperButton>
-          </ButtonGroup>
-        </div>
-        <FormGroup className="fieldSpacing">
-          <Label className="fieldLabel" for="exampleNumber">
-            Débito
-          </Label>
-          <SuperInput
-            style={{ width: "135px" }}
-            id="exampleNumber"
-            name="number"
-            placeholder="0%"
-            type="number"
-          />
-        </FormGroup>
-        <FormGroup className="fieldSpacing">
-          <Label className="fieldLabel" for="exampleNumber">
-            Crédito
-          </Label>
-          <SuperInput
-            style={{ width: "135px" }}
-            id="exampleNumber"
-            name="number"
-            placeholder="0%"
-            type="number"
-          />
-        </FormGroup>
-        <FormGroup className="fieldSpacing">
-          <Label className="fieldLabel" for="exampleNumber">
-            PIX
-          </Label>
-          <SuperInput
-            style={{ width: "135px" }}
-            id="exampleNumber"
-            name="number"
-            placeholder="0%"
-            type="number"
-          />
-        </FormGroup>
-        <FormGroup className="fieldSpacing">
-          <Label className="fieldLabel" for="exampleNumber">
-            Taxa administrativa
-          </Label>
-          <SuperInput
-            style={{ width: "135px" }}
-            id="exampleNumber"
-            name="number"
-            placeholder="0%"
-            type="number"
-          />
-        </FormGroup>
-        <div>
-          <FormGroup className="fieldSpacing">
-            <Label className="fieldLabel" for="exampleNumber">
-              Qtd parcelas
-            </Label>
-            <SuperInput
-              style={{ width: "135px" }}
-              id="exampleNumber"
-              name="number"
-              placeholder="Ex: 2"
-              type="number"
-            />
-          </FormGroup>
-          <FormGroup className="fieldSpacing">
-            <Label className="fieldLabel" for="exampleNumber">
-              Juros ao mês
-            </Label>
-            <SuperInput
-              style={{ width: "135px" }}
-              id="exampleNumber"
-              name="number"
-              placeholder="Ex: 2%"
-              type="number"
-            />
-          </FormGroup>
-        </div>
-        <div className="pageSubTitle">Informações complementares</div>
-        <FormGroup className="fieldSpacing">
-          <Label className="fieldLabel" for="exampleNumber">
-            Porcentagem do Garçom (%)
-          </Label>
-          <SuperInput
-            id="exampleNumber"
-            name="number"
-            placeholder="0%"
-            type="number"
-          />
-        </FormGroup>
-        <div className="groupButton">
-          <Label className="fieldLabel">Pagamento parcial(rateio)?</Label>
-          <ButtonGroup style={{ width: "100px" }}>
-            <SuperButton>Sim</SuperButton>
-            <SuperButton>Não</SuperButton>
-          </ButtonGroup>
-        </div>
-        <div className="groupButton">
-          <Label className="fieldLabel">Permitir código de desconto?</Label>
-          <ButtonGroup style={{ width: "100px" }}>
-            <SuperButton>Sim</SuperButton>
-            <SuperButton>Não</SuperButton>
-          </ButtonGroup>
-        </div>
-        <div className="nextPageButton">
-        <SuperButton
-            onClick={goBack}
-          >
-            Voltar
-          </SuperButton>
-          <SuperButton onClick={nextStep}>Avançar para PDV</SuperButton>
-        </div>
+          </div>
+          <div className="groupButton">
+            <Label className="fieldLabel">Este evento terá produtos?</Label>
+            <ButtonGroup style={{ width: "100px" }}>
+              <Button
+                variant="outline-dark"
+                style={{ height: "62px", width: "100px" }}
+              >
+                Sim
+              </Button>
+              <Button
+                variant="outline-dark"
+                style={{ height: "62px", width: "100px" }}
+              >
+                Não
+              </Button>
+            </ButtonGroup>
+          </div>
+          <hr className="dividerUp" />
+          <div className="secondPageTitle">Adicionando setor e produto</div>
+          <div className="infoSubTitle">
+             Preencha as 5 (CINCO) etapas abaixo para adicionar um setor e produto
+          </div>
+          <div className="infoContainer">
+            <div className="d-flex justify-content-around">
+              <Button variant="outline-light" onClick={() => setStep(0)}>
+                <div className="buttonText">
+                  Cadastro de grupos
+                </div>
+              </Button>
+              <Button variant="outline-light" onClick={() => setStep(1)}>
+                <div className="buttonText">
+                  Cadastro de produtos
+                </div>
+              </Button>
+              <Button variant="outline-light" onClick={() => setStep(2)}>
+                <div className="buttonText">
+                 Cadastro de combos
+                </div>
+              </Button>
+              <Button variant="outline-light" onClick={() => setStep(3)}>
+                <div className="buttonText">
+                 Cadastro de setores
+                </div>
+              </Button>
+              <Button variant="outline-light" onClick={() => setStep(4)}>
+                <div className="buttonText">
+                 Canfigurações de POS
+                </div>
+              </Button>
+            </div>
+            <ShowInformation />
+          </div>
+          <hr className="dividerDown" />
+          <div className="nextPageButton">
+            <div style={{ color: "#fff" }}>
+              <Button style={{ height: "50px" }} variant="outline-light" onClick={goBack}>
+                Voltar
+              </Button>
+            </div>
+            <Button variant="dark" onClick={nextStep}>
+              Avançar para PDV
+            </Button>
+          </div>
+        </Col>
       </Container>
     </Fragment>
   );
