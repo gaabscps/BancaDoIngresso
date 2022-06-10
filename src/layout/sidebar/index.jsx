@@ -1,14 +1,20 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { MENUITEMS } from "./menu";
-import { ArrowRight, ArrowLeft, Grid } from "react-feather";
+import { ArrowRight, ArrowLeft, Grid, Power } from "react-feather";
 import { Link } from "react-router-dom";
 // import { translate } from "react-switch-lang";
 import configDB from "../../data/customizer/config";
 import { DefaultLayout } from "../theme-customizer";
+import { useHistory } from "react-router-dom";
+
+import {
+  removeAuthLocalStorage,
+} from "../../helpers/localStorage";
 
 const Sidebar = (props) => {
   // eslint-disable-next-line
+  const history = useHistory();  
   const [mainmenu, setMainMenu] = useState(MENUITEMS);
   const [margin, setMargin] = useState(0);
   const [width, setWidth] = useState(0);
@@ -29,6 +35,11 @@ const Sidebar = (props) => {
     } else {
       document.querySelector(".sidebar-main").className = "sidebar-main";
     }
+  };
+
+  const logoutUser = () => {
+    removeAuthLocalStorage();
+    history.push("/");
   };
 
   const isPathName = (route) => window.location.pathname === route;
@@ -428,10 +439,21 @@ const Sidebar = (props) => {
                       ) : (
                         ""
                       )}
+                      
                     </li>
                   ))}
                 </Fragment>
               ))}
+              <li className="sidebar-list">
+                <Link
+                  to='#!'
+                  className={`sidebar-link sidebar-title link-nav `}
+                  onClick={() => logoutUser()}
+                >
+                  <Power />
+                  <span>Sair</span>
+                </Link>
+              </li>
             </ul>
           </div>
           <div className="right-arrow" onClick={scrollToRight}>

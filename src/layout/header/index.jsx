@@ -164,7 +164,7 @@ const Header = (props) => {
               </div>
             </div>
           </Form>
-          {/* <LeftHeader /> */}
+          <LeftHeader />
           <RightHeader />
         </Row>
       </div>
