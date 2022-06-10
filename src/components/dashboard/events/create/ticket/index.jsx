@@ -1,21 +1,11 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  Input,
-  FormGroup,
-  Label,
-  ButtonGroup,
-  Button,
-} from "reactstrap";
+import { Container, Label, Col } from "reactstrap";
+import { Button, ButtonGroup } from "react-bootstrap";
 
 import MainInformation from "./main/index";
 import PaymentInformation from "./payment/index";
 import GeneralInformation from "./general/index";
-import SuperButton from "../../../../sharedComponents/SuperButton";
 
 const Sample = (props) => {
   const [step, setStep] = useState(null);
@@ -46,38 +36,73 @@ const Sample = (props) => {
   return (
     <Fragment>
       <Container className="mainContainer" fluid={true}>
-        <div className="pageTitle">Setor e ingresso</div>
-        <div className="groupButton">
-          <Label className="fieldLabel">Este evento terá ingressos?</Label>
-          <ButtonGroup style={{width: "100px"}}>
-            <SuperButton >Sim</SuperButton>
-            <SuperButton >Não</SuperButton>
-          </ButtonGroup>
+        <div className="d-flex justify-content-center stepContainer">
+          <img
+            src={require("../../../../../assets/images/svg/stepByStep/step2.svg")}
+          />
         </div>
-        <div className="pageSubTitle">Adicionando setor e ingresso</div>
-        <div className="infoSubTitle">
-          Preencha as três (3) etapas abaixo para adicionar um setor e ingresso
-        </div>
-        <div className="d-flex justify-content-around">
-          <SuperButton color="primary" onClick={() => setStep(0)}>
-            Configurações principais
-          </SuperButton>
-          <SuperButton color="primary" onClick={() => setStep(1)}>
-            Configurações de pagamento
-          </SuperButton>
-          <SuperButton color="primary " onClick={() => setStep(2)}>
-            Configurações gerais
-          </SuperButton>
-        </div>
-        <ShowInformation />
-        <div className="nextPageButton">
-        <SuperButton
-            onClick={goBack}
-          >
-            Voltar
-          </SuperButton>
-          <SuperButton onClick={nextStep}>Avançar para Produtos</SuperButton>
-        </div>
+        <Col>
+          <div style={{ display: "grid", paddingBottom: "50px" }}>
+            <div className="pageTitle">Setor e ingresso</div>
+            <img
+              src={require("../../../../../assets/images/svg/titleLine.svg")}
+              style={{ paddingTop: "-20px" }}
+            />
+          </div>
+          <div className="groupButton">
+            <Label className="fieldLabel">Este evento terá ingressos?</Label>
+            <ButtonGroup style={{ width: "100px" }}>
+              <Button
+                variant="outline-dark"
+                style={{ height: "62px", width: "100px" }}
+              >
+                Sim
+              </Button>
+              <Button
+                variant="outline-dark"
+                style={{ height: "62px", width: "100px" }}
+              >
+                Não
+              </Button>
+            </ButtonGroup>
+          </div>
+          <hr className="dividerUp" />
+          <div className="secondPageTitle">Adicionando setor e ingresso</div>
+          <div className="infoSubTitle">
+            Preencha as 3 (TRÊS) etapas abaixo para adicionar um setor e ingresso
+          </div>
+          <div className="infoContainer">
+            <div className="d-flex justify-content-around">
+              <Button variant="outline-light" onClick={() => setStep(0)}>
+                <div className="buttonText">
+                  Configurações principais
+                </div>
+              </Button>
+              <Button variant="outline-light" onClick={() => setStep(1)}>
+                <div className="buttonText">
+                  Configurações de pagamento
+                </div>
+              </Button>
+              <Button variant="outline-light" onClick={() => setStep(2)}>
+                <div className="buttonText">
+                  Configurações gerais
+                </div>
+              </Button>
+            </div>
+            <ShowInformation />
+          </div>
+          <hr className="dividerDown" />
+          <div className="nextPageButton">
+            <div style={{ color: "#fff" }}>
+              <Button style={{ height: "50px" }} variant="outline-light" onClick={goBack}>
+                Voltar
+              </Button>
+            </div>
+            <Button variant="dark" onClick={nextStep}>
+              Avançar para Produtos
+            </Button>
+          </div>
+        </Col>
       </Container>
     </Fragment>
   );
