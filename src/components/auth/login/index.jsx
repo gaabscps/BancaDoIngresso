@@ -66,7 +66,16 @@ const Login = (props) => {
           },
         }
       );
-      const {
+      // const userData = await api.get(
+      //   url + "/client/" + result.data.user.id,
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer ${result.data.token}`,
+      //     },
+      //   }
+      //   )
+        // console.log("ID", userData);
+        const {
         data: { token, user },
       } = result;
       const localStorage = {
@@ -107,26 +116,28 @@ const Login = (props) => {
               />
             </a>
             <Form
-              className="needs-validation"
+              className="loginCard"
               noValidate=""
               onSubmit={handleSubmit}
-            >
-              <h4>Seja bem-vindo(a)! Entre com a sua conta</h4>
-              <p>Digite abaixo o seu e-mail e sua senha para entrar</p>
-              <div className="form-row">
-                <Col md="12">
-                  <Label className="col-form-label">
+            > 
+              <div style={{marginBottom: '50px'}}>
+                <div className="pageTitle">Seja bem-vindo(a)! Entre com a sua conta</div>
+                <div className="subTitleMain">Digite abaixo o seu CPF e sua senha para entrar</div>
+              </div>
+              <div className="form-row ">
+                <Col className="loginField">
+                  <Label className="loginFormText">
                     <img
                       className="mr-2"
-                      src={require("../../../assets/images/login/mail.svg")}
+                      src={require("../../../assets/images/svg/idCard.svg")}
                     />
-                    Seu e-mail
+                    Seu CPF
                   </Label>
                   <Input
-                    className="form-control"
-                    type="email"
+                    className="form-control loginForm"
+                    // type="email"
                     required=""
-                    placeholder=""
+                    placeholder="123.456.789-00"
                     name="username"
                     value={form?.username || ""}
                     onChange={handleChange}
@@ -134,23 +145,23 @@ const Login = (props) => {
                   />
                   <span>
                     {errors.username &&
-                      "O campo endereço de email é obrigatório!"}
+                      "O campo do CPF é obrigatório!"}
                   </span>
                   <div className="valid-feedback">{"Looks good!"}</div>
                 </Col>
-                <Col md="12 mb-2 mt-4">
-                  <Label className="col-form-label">
+                <Col>
+                  <Label className="loginFormText">
                     <img
                       className="mr-2"
-                      src={require("../../../assets/images/login/lock.svg")}
+                      src={require("../../../assets/images/svg/loginLock.svg")}
                     />
                     Senha
                     </Label>
                   <Input
-                    className="form-control"
+                    className="form-control loginForm"
                     type={togglePassword ? "text" : "password"}
                     required=""
-                    placeholder=""
+                    placeholder="1234567"
                     name="password"
                     value={form?.password || ""}
                     onChange={handleChange}
@@ -160,7 +171,7 @@ const Login = (props) => {
                     onClick={() => HideShowPassword(togglePassword)}
                   >
                     <img
-                      className="d-flex justify-content-center align-items-center mt-2"
+                      className="d-flex justify-content-center align-items-center passwordIcon"
                       src={require("../../../assets/images/login/eye.png")}
                     />
                   </div>
@@ -171,17 +182,17 @@ const Login = (props) => {
                 </Col>
               </div>
               <FormGroup className="d-flex justify-content-between align-items-center mb-2">
-                <div className="checkbox ml-3">
+                <div className="checkbox ml-3" style={{marginTop: "25px"}}>
                   <Input id="checkbox1" type="checkbox" />
-                  <Label className="text-muted" for="checkbox1">
+                  <Label className="loginFormText" for="checkbox1">
                     Lembrar senha
                   </Label>
                 </div>
               </FormGroup>
-              <Button color="primary" className="btn-block">
+              <Button color="primary" className="btn-block loginForm" style={{marginTop: "60px"}}>
                 Entrar
               </Button>
-              <div className="d-flex justify-content-center align-items-center pt-4">
+              <div className="d-flex justify-content-center align-items-center forgotPassword">
                 <a
                   onClick={() => history.push("/forget-pwd")}
                   className="link"
