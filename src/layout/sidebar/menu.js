@@ -1,15 +1,14 @@
 import { Home, Calendar, Power } from "react-feather";
+import { useHistory } from "react-router-dom";
 import { removeAuthLocalStorage } from "../../helpers/localStorage";
 const isPathName = (route) => window.location.pathname === route;
 
-const logoutUser = () => {
-  removeAuthLocalStorage();
-};
 
 
 export const MENUITEMS = [
   {
     Items: [
+      
       {
         title: "Início",
         icon: Home,
