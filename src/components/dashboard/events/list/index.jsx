@@ -2,18 +2,14 @@ import React, { Fragment, useState } from "react";
 import Breadcrumb from "../../../../layout/breadcrumb";
 import { Modal, Button } from "react-bootstrap";
 import { Container, Row, Card, Col, Label, Input, FormGroup } from "reactstrap";
-import SuperTable from "../../../sharedComponents/SuperTable";
 import SuperButton from "../../../sharedComponents/SuperButton";
 import { useHistory } from "react-router-dom";
-import { Circle } from "react-feather";
-import SuperInput from "../../../sharedComponents/SuperInput";
+import DiscountVoucher from "../../../modal/DiscountVoucher"
+
 
 const Sample = () => {
   const history = useHistory();
   const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
 
   const createEvent = () => {
     history.push("/general");
@@ -21,6 +17,7 @@ const Sample = () => {
 
   return (
     <Fragment>
+      <DiscountVoucher show={show} setShow={setShow} />
       <Container className="mainContainer" fluid={true}>
         <div
           className="d-flex justify-content-between"
@@ -145,6 +142,7 @@ const Sample = () => {
                   />
                   <img
                     src={require("../../../../assets/images/svg/ticket.svg")}
+                    onClick={() => setShow(true)}
                   />
                 </div>
               </div>
@@ -180,7 +178,7 @@ const Sample = () => {
                   />
                   <img
                     src={require("../../../../assets/images/svg/ticket.svg")}
-                    onClick={handleShow}
+                    onClick={() => setShow(true)}
                   />
                 </div>
               </div>
@@ -218,7 +216,7 @@ const Sample = () => {
                   />
                   <img
                     src={require("../../../../assets/images/svg/ticket.svg")}
-                    onClick={handleShow}
+                    onClick={() => setShow(true)}
                   />
                 </div>
               </div>
@@ -250,7 +248,7 @@ const Sample = () => {
                   />
                   <img
                     src={require("../../../../assets/images/svg/ticket.svg")}
-                    onClick={handleShow}
+                    onClick={() => setShow(true)}
                   />
                 </div>
               </div>
@@ -258,77 +256,6 @@ const Sample = () => {
           </Col>
         </Row>
       </Container>
-      <Modal
-        size="lg"
-        backdrop={{ width: "100%", height: "100%" }}
-        show={show}
-        onHide={handleClose}
-      >
-        <Modal.Header onHide={() => setShow(false)}>
-          <Modal.Title className="pageTitle">
-            Cadastrar voucher de desconto
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Container>
-            <Row>
-              <Col xs={12}>
-                <Card
-                  className="mainContainer"
-                  style={{ backgroundColor: "#F1F1F1" }}
-                >
-                  <FormGroup className="fieldSpacing">
-                    <Label className="fieldLabel" for="exampleEmail">
-                      Descrição do voucher (opcional)
-                    </Label>
-                    <SuperInput
-                      id="exampleEmail"
-                      name="email"
-                      placeholder="Digite a descrição do voucher de desconto"
-                      type="email"
-                    />
-                  </FormGroup>
-                  <div>
-                    <FormGroup className="fieldSpacing">
-                      <Label className="fieldLabel" for="exampleDatetime">
-                        Valor do voucher
-                      </Label>
-                      <SuperInput
-                        style={{ width: "243px" }}
-                        id="exampleTime"
-                        name="time"
-                        placeholder="Ex:R$ 200,00"
-                        type="number"
-                      />
-                    </FormGroup>
-                    <FormGroup className="fieldSpacing">
-                      <Label className="fieldLabel" for="exampleDatetime">
-                        Código do voucher (gerar automatico, só número e 6 dig)
-                      </Label>
-                      <SuperInput
-                        style={{ width: "243px" }}
-                        id="exampleTime"
-                        name="time"
-                        placeholder="EX: JOA200"
-                        type="number"
-                      />
-                    </FormGroup>
-                  </div>
-                </Card>
-              </Col>
-            </Row>
-          </Container>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button
-            style={{ height: "56px" }}
-            variant="dark"
-            onClick={handleClose}
-          >
-            Gerar voucher
-          </Button>
-        </Modal.Footer>
-      </Modal>
     </Fragment>
   );
 };

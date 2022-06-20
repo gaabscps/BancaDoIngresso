@@ -9,7 +9,7 @@ const Sample = (props) => {
     <Fragment>
       <Container className="subContainer" fluid={true}>
         <hr className="divider" />
-        <div className="groupButton">
+        <div className="groupButton" style={{marginTop: "50px"}}>
           <Label className="fieldLabel">Enviar ingresso por WhatsApp?</Label>
           <ButtonGroup style={{ width: "100px" }}>
             <Button

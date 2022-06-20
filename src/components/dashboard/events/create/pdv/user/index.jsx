@@ -1,9 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
-import {
-  Container,
-  FormGroup,
-  Label,
-} from "reactstrap";
+import { Container, FormGroup, Label } from "reactstrap";
 import { Button, ButtonGroup } from "react-bootstrap";
 import SuperInput from "../../../../../sharedComponents/SuperInput";
 
@@ -21,7 +17,18 @@ const Sample = (props) => {
               placeholder="Digite ou selecione o usuário do PDV"
               id="exampleSelect"
             />
+            <div className="auxSucessText" style={{ paddingTop: "20px" }}>
+              + cadastrar novo usuário
+            </div>
           </FormGroup>
+          <div style={{ color: "#fff", marginTop: "50px" }}>
+            <Button
+              style={{ height: "50px", width: "200px"}}
+              variant="outline-light"
+            >
+              <div className="greyNormalText">Inserir usuário</div>
+            </Button>
+          </div>
         </div>
         <div className="nextPageButton">
           <div style={{ color: "#fff" }}>

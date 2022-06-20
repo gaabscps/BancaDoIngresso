@@ -3,6 +3,8 @@ import { Container, Col, FormGroup, Label } from "reactstrap";
 
 import { Button, ButtonGroup } from "react-bootstrap";
 import SuperInput from "../../../../../sharedComponents/SuperInput";
+import SuperCollapse from "../../../../../sharedComponents/SuperCollapse";
+import DoubleTicketIcon from "../../../../../../assets/images/svg/DoubleTicket";
 
 const Sample = (props) => {
   return (
@@ -57,7 +59,7 @@ const Sample = (props) => {
                 Porcentagem de meia entrada (%)
               </Label>
               <SuperInput
-                style={{ width: "243px" }}
+                style={{ width: "135px" }}
                 id="exampleNumber"
                 name="number"
                 placeholder="0%"
@@ -211,23 +213,6 @@ const Sample = (props) => {
               </Button>
             </ButtonGroup>
           </div>
-          <div className="groupButton">
-            <Label className="fieldLabel">Reimprimir ingresso?</Label>
-            <ButtonGroup style={{ width: "100px" }}>
-              <Button
-                variant="outline-dark"
-                style={{ height: "62px", width: "100px" }}
-              >
-                Sim
-              </Button>
-              <Button
-                variant="outline-dark"
-                style={{ height: "62px", width: "100px" }}
-              >
-                Não
-              </Button>
-            </ButtonGroup>
-          </div>
           <div className="fieldSpacing">
             <Label className="fieldLabel" for="exampleText">
               Observação
@@ -240,9 +225,11 @@ const Sample = (props) => {
               type="textarea"
             />
           </div>
-          <div className="pageTitle" style={{ marginBottom: "25px" }}>
-            Lotes
-          </div>
+          <div className="pageTitle">Lotes</div>
+          <img
+            src={require("../../../../../../assets/images/svg/thirdTitleLine.svg")}
+            style={{ paddingTop: "-20px", marginBottom: "25px" }}
+          />
           <div className="secondPageTitle">Cadastrar lote</div>
           <div className="whiteContainer">
             <div className="fieldSpacing">
@@ -361,7 +348,7 @@ const Sample = (props) => {
             <div>
               <div className="fieldSpacing">
                 <Label className="fieldLabel" for="exampleFile">
-                  Imagem de impressão
+                  Imagem do lote (opcional)
                 </Label>
                 <SuperInput
                   id="exampleFile"
@@ -376,6 +363,14 @@ const Sample = (props) => {
                 </div>
               </div>
             </div>
+          </div>
+          <div style={{marginTop: "50px"}}>
+
+            <SuperCollapse
+              title="Lotes cadastrados"
+              content="Nenhum lote foi cadastrado. Aqui será exibida uma lista dos seus lotes cadastrados"
+              leftIcon={DoubleTicketIcon}
+            />
           </div>
           <div className="nextPageButton" style={{ marginTop: "50px" }}>
             <div style={{ color: "#fff" }}>

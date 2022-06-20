@@ -1,13 +1,6 @@
 import React, { Fragment, useState } from "react";
 import { useHistory } from "react-router-dom";
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  Label,
-  FormGroup,
-} from "reactstrap";
+import { Container, Row, Col, Card, Label, FormGroup } from "reactstrap";
 import { Button, ButtonGroup } from "react-bootstrap";
 
 import GroupInformation from "./group/index";
@@ -19,7 +12,8 @@ import PosInformation from "./pos/index";
 import SuperButton from "../../../../sharedComponents/SuperButton";
 
 const Sample = (props) => {
-  const [step, setStep] = useState(null);
+  const [step, setStep] = useState(0);
+  const [show, setShow] = useState(false);
   const history = useHistory();
 
   const nextStep = () => {
@@ -72,56 +66,58 @@ const Sample = (props) => {
               <Button
                 variant="outline-dark"
                 style={{ height: "62px", width: "100px" }}
+                onClick={() => setShow(true)}
               >
                 Sim
               </Button>
               <Button
                 variant="outline-dark"
                 style={{ height: "62px", width: "100px" }}
+                onClick={nextStep}
               >
                 Não
               </Button>
             </ButtonGroup>
           </div>
           <hr className="dividerUp" />
-          <div className="secondPageTitle">Adicionando setor e produto</div>
-          <div className="infoSubTitle">
-             Preencha as 5 (CINCO) etapas abaixo para adicionar um setor e produto
-          </div>
-          <div className="infoContainer">
-            <div className="d-flex justify-content-around">
-              <Button variant="outline-light" onClick={() => setStep(0)}>
-                <div className="buttonText">
-                  Cadastro de grupos
+          {show ? (
+            <>
+              <div className="secondPageTitle">Adicionando setor e produto</div>
+              <div className="infoSubTitle">
+                Preencha as 5 (CINCO) etapas abaixo para adicionar um setor e
+                produto
+              </div>
+              <div className="infoContainer">
+                <div className="d-flex justify-content-around">
+                  <Button variant="outline-light" onClick={() => setStep(0)}>
+                    <div className="buttonText">Cadastro de grupos</div>
+                  </Button>
+                  <Button variant="outline-light" onClick={() => setStep(1)}>
+                    <div className="buttonText">Cadastro de produtos</div>
+                  </Button>
+                  <Button variant="outline-light" onClick={() => setStep(2)}>
+                    <div className="buttonText">Cadastro de combos</div>
+                  </Button>
+                  <Button variant="outline-light" onClick={() => setStep(3)}>
+                    <div className="buttonText">Cadastro de setores</div>
+                  </Button>
+                  <Button variant="outline-light" onClick={() => setStep(4)}>
+                    <div className="buttonText">Canfigurações de POS</div>
+                  </Button>
                 </div>
-              </Button>
-              <Button variant="outline-light" onClick={() => setStep(1)}>
-                <div className="buttonText">
-                  Cadastro de produtos
-                </div>
-              </Button>
-              <Button variant="outline-light" onClick={() => setStep(2)}>
-                <div className="buttonText">
-                 Cadastro de combos
-                </div>
-              </Button>
-              <Button variant="outline-light" onClick={() => setStep(3)}>
-                <div className="buttonText">
-                 Cadastro de setores
-                </div>
-              </Button>
-              <Button variant="outline-light" onClick={() => setStep(4)}>
-                <div className="buttonText">
-                 Canfigurações de POS
-                </div>
-              </Button>
-            </div>
-            <ShowInformation />
-          </div>
-          <hr className="dividerDown" />
+                <ShowInformation />
+              </div>
+              <hr className="dividerDown" />
+            </>
+          ) : null}
+
           <div className="nextPageButton">
             <div style={{ color: "#fff" }}>
-              <Button style={{ height: "50px" }} variant="outline-light" onClick={goBack}>
+              <Button
+                style={{ height: "50px" }}
+                variant="outline-light"
+                onClick={goBack}
+              >
                 Voltar
               </Button>
             </div>

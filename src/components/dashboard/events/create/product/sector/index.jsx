@@ -1,5 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Container, Col, FormGroup, Label } from "reactstrap";
+import SectorIcon from "../../../../../../assets/images/svg/Sector";
+import SuperCollapse from "../../../../../sharedComponents/SuperCollapse";
 
 import SuperInput from "../../../../../sharedComponents/SuperInput";
 
@@ -44,6 +46,13 @@ const Sample = (props) => {
                + cadastrar setor
             </div>
           </div>
+        </div>
+        <div style={{ marginTop: "50px" }}>
+          <SuperCollapse
+            title="Setores cadastrados"
+            content="Nenhum setor foi cadastrado. Aqui será exibida uma lista dos seus setores cadastrados"
+            leftIcon={SectorIcon}
+          />
         </div>
       </Container>
     </Fragment>

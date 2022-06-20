@@ -1,14 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
-import {Button, ButtonGroup} from "react-bootstrap";
+import { Button, ButtonGroup } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
-import {
-  Container,
-  Col,
-  Form,
-  FormGroup,
-  Label,
-  FormText,
-} from "reactstrap";
+import { Container, Col, Form, FormGroup, Label, FormText } from "reactstrap";
 import SuperButton from "../../../../sharedComponents/SuperButton";
 import SuperInput from "../../../../sharedComponents/SuperInput";
 
@@ -174,7 +167,7 @@ const Sample = (props) => {
             <div className="d-flex">
               <FormGroup className="fieldSpacing">
                 <Label className="fieldLabel" for="exampleDatetime">
-                  Data Início do Evento
+                  Hora Início do Evento
                 </Label>
                 <SuperInput
                   style={{ width: "243px" }}
@@ -186,7 +179,7 @@ const Sample = (props) => {
               </FormGroup>
               <FormGroup className="fieldSpacing">
                 <Label className="fieldLabel" for="exampleDatetime">
-                  Data Fim do Evento
+                  Hora Fim do Evento
                 </Label>
                 <SuperInput
                   style={{ width: "243px" }}
@@ -219,22 +212,14 @@ const Sample = (props) => {
             </FormGroup>
             <FormGroup className="fieldSpacing">
               <Label className="fieldLabel" for="exampleSelect">
-                Cliente ou contratante
+                Empresa ou contratante
               </Label>
               <SuperInput
                 placeholder="Digite ou selecione o cliente/contratante"
                 id="exampleSelect"
-                name="select"
-                type="select"
-              >
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-              </SuperInput>
+              />
               <div className="auxSucessText" style={{ paddingTop: "20px" }}>
-                + cadastrar novo cliente ou contratante
+                + cadastrar nova empresa ou contratante
               </div>
             </FormGroup>
             <FormGroup className="fieldSpacing">
@@ -252,7 +237,7 @@ const Sample = (props) => {
           <div style={{ display: "grid", paddingBottom: "50px" }}>
             <Label className="pageTitle">Informações complementares</Label>
             <img
-              src={require("../../../../../assets/images/svg/titleLine.svg")}
+              src={require("../../../../../assets/images/svg/secondTitleLine.svg")}
               style={{ paddingTop: "-20px" }}
             />
           </div>
@@ -295,7 +280,23 @@ const Sample = (props) => {
                 <Label className="fieldLabel" for="exampleFile">
                   Imagem POS (jpg ou png)
                   <FormText className="greyNormalText">
-                    Resolução: 500x500
+                    Resolução: 384x168
+                  </FormText>
+                </Label>
+                <SuperInput
+                  id="exampleFile"
+                  placeholder="Nenhum arquivo selecionado"
+                  name="file"
+                  type="file"
+                />
+              </FormGroup>
+            </div>
+            <div>
+              <FormGroup className="fieldSpacing">
+                <Label className="fieldLabel" for="exampleFile">
+                  Imagem principal do evento (jpg ou png)
+                  <FormText className="greyNormalText">
+                   Resolução: 500x500
                   </FormText>
                 </Label>
                 <SuperInput
@@ -309,18 +310,42 @@ const Sample = (props) => {
             <div className="groupButton">
               <Label className="fieldLabel">Publicar evento no site?</Label>
               <ButtonGroup style={{ width: "100px" }}>
-                <Button variant="outline-dark" style={{ height: "62px", width: "100px"}}>Sim</Button>
-                <Button variant="outline-dark" style={{ height: "62px", width: "100px"}}>Não</Button>
+                <Button
+                  variant="outline-dark"
+                  style={{ height: "62px", width: "100px" }}
+                >
+                  Sim
+                </Button>
+                <Button
+                  variant="outline-dark"
+                  style={{ height: "62px", width: "100px" }}
+                >
+                  Não
+                </Button>
               </ButtonGroup>
             </div>
             <div className="groupButton">
               <Label className="fieldLabel">Tamanho do texto</Label>
               <ButtonGroup style={{ width: "100px" }}>
-                <Button variant="outline-dark" style={{ height: "62px", width: "121px"}}>Pequeno</Button>
-                <Button variant="outline-dark" style={{ height: "62px", width: "121px"}}>Médio</Button>
-                <Button variant="outline-dark" style={{ height: "62px", width: "121px"}}>Grande</Button>
+                <Button
+                  variant="outline-dark"
+                  style={{ height: "62px", width: "121px" }}
+                >
+                  Pequeno
+                </Button>
+                <Button
+                  variant="outline-dark"
+                  style={{ height: "62px", width: "121px" }}
+                >
+                  Médio
+                </Button>
+                <Button
+                  variant="outline-dark"
+                  style={{ height: "62px", width: "121px" }}
+                >
+                  Grande
+                </Button>
               </ButtonGroup>
-              
             </div>
             <FormGroup className="fieldSpacing">
               <Label className="fieldLabel" for="exampleEmail">

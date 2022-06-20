@@ -1,5 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Container, Col, FormGroup, Label } from "reactstrap";
+import ProductIcon from "../../../../../../assets/images/svg/Product";
+import SuperCollapse from "../../../../../sharedComponents/SuperCollapse";
 
 import SuperInput from "../../../../../sharedComponents/SuperInput";
 
@@ -104,6 +106,13 @@ const Sample = (props) => {
               + cadastrar produto
             </div>
           </div>
+        </div>
+        <div style={{ marginTop: "50px" }}>
+          <SuperCollapse
+            title="Produtos cadastrados"
+            content="Nenhum produto foi cadastrado. Aqui será exibida uma lista dos seus produtos cadastrados"
+            leftIcon={ProductIcon}
+          />
         </div>
       </Container>
     </Fragment>

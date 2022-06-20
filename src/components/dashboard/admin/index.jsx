@@ -90,151 +90,181 @@ const Sample = (props) => {
             </div>
             <Label className="fieldLabel">Últimos 7 dias</Label>
           </div>
-          <div
-            className="d-flex justify-content-between"
-            style={{ paddingBottom: "30px" }}
-          >
-            <div className="partyCard">
-              <div class="partyImage2">
-                <div className="descriptionEvent">
-                  <div className="nameEvent">Revoada do Tatu</div>
-                  <div className="dateEvent">
-                    <img
-                      src={require("../../../assets/images/svg/calendar.svg")}
-                      style={{ paddingRight: "10px" }}
-                    />
-                    07/05/2022
-                  </div>
+          <div style={{ width: "1062px", display: "contents" }}>
+            <div
+              className="d-flex justify-content-between"
+              style={{ paddingBottom: "30px" }}
+            >
+              <div className="partyCard">
+                <div class="partyImage2">
+                <img
+                    className="actionCard"
+                    src={require("../../../assets/images/svg/actionCard.svg")}
+                    style={{ paddingRight: "10px" }}
+                  />
+                  <div className="descriptionEvent">
+                    <div className="nameEvent">Revoada do Tatu</div>
+                    <div className="dateEvent">
+                      <img
+                        src={require("../../../assets/images/svg/calendar.svg")}
+                        style={{ paddingRight: "10px" }}
+                      />
+                      07/05/2022
+                    </div>
 
-                  <div className="locationEvent">
-                    <img
-                      src={require("../../../assets/images/svg/locationPin.svg")}
-                      style={{ paddingRight: "10px" }}
-                    />
-                    Campinas/SP
+                    <div className="locationEvent">
+                      <img
+                        src={require("../../../assets/images/svg/locationPin.svg")}
+                        style={{ paddingRight: "10px" }}
+                      />
+                      Campinas/SP
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="partyCard">
+                <div class="partyImage1">
+                  <img
+                    className="actionCard"
+                    src={require("../../../assets/images/svg/actionCard.svg")}
+                    style={{ paddingRight: "10px" }}
+                  />
+                  <div className="descriptionEvent">
+                    <div className="nameEvent">Vans Warped Tour - Issues</div>
+                    <div className="dateEvent">
+                      <img
+                        src={require("../../../assets/images/svg/calendar.svg")}
+                        style={{ paddingRight: "10px" }}
+                      />
+                      10/05/2022
+                    </div>
+
+                    <div className="locationEvent">
+                      {" "}
+                      <img
+                        src={require("../../../assets/images/svg/locationPin.svg")}
+                        style={{ paddingRight: "10px" }}
+                      />
+                      Aparecida do Taboado/MS
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="partyCard">
+                <div class="partyImage3">
+                <img
+                    className="actionCard"
+                    src={require("../../../assets/images/svg/actionCard.svg")}
+                    style={{ paddingRight: "10px" }}
+                  />
+                  <div className="descriptionEvent">
+                    <div className="nameEvent">João Rock 2022</div>
+                    <div className="dateEvent">
+                      <img
+                        src={require("../../../assets/images/svg/calendar.svg")}
+                        style={{ paddingRight: "10px" }}
+                      />
+                      10/05/2022
+                    </div>
+
+                    <div className="locationEvent">
+                      {" "}
+                      <img
+                        src={require("../../../assets/images/svg/locationPin.svg")}
+                        style={{ paddingRight: "10px" }}
+                      />
+                      Ribeirão Preto/SP
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="partyCard">
-              <div class="partyImage1">
-                <div className="descriptionEvent">
-                  <div className="nameEvent">Vans Warped Tour - Issues</div>
-                  <div className="dateEvent">
-                    <img
-                      src={require("../../../assets/images/svg/calendar.svg")}
-                      style={{ paddingRight: "10px" }}
-                    />
-                    10/05/2022
-                  </div>
+            <div className="d-flex justify-content-between">
+              <div className="partyCard">
+                <div class="partyImage1">
+                <img
+                    className="actionCard"
+                    src={require("../../../assets/images/svg/actionCard.svg")}
+                    style={{ paddingRight: "10px" }}
+                  />
+                  <div className="descriptionEvent">
+                    <div className="nameEvent">
+                      Camarote Bacana - Fabiano Henrique
+                    </div>
+                    <div className="dateEvent">
+                      <img
+                        src={require("../../../assets/images/svg/calendar.svg")}
+                        style={{ paddingRight: "10px" }}
+                      />
+                      11/05/2022
+                    </div>
 
-                  <div className="locationEvent">
-                    {" "}
-                    <img
-                      src={require("../../../assets/images/svg/locationPin.svg")}
-                      style={{ paddingRight: "10px" }}
-                    />
-                    Aparecida do Taboado/MS
+                    <div className="locationEvent">
+                      {" "}
+                      <img
+                        src={require("../../../assets/images/svg/locationPin.svg")}
+                        style={{ paddingRight: "10px" }}
+                      />
+                      Campinas/SP
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="partyCard">
-              <div class="partyImage3">
-                <div className="descriptionEvent">
-                  <div className="nameEvent">João Rock 2022</div>
-                  <div className="dateEvent">
-                    <img
-                      src={require("../../../assets/images/svg/calendar.svg")}
-                      style={{ paddingRight: "10px" }}
-                    />
-                    10/05/2022
-                  </div>
+              <div className="partyCard">
+                <div class="partyImage2">
+                <img
+                    className="actionCard"
+                    src={require("../../../assets/images/svg/actionCard.svg")}
+                    style={{ paddingRight: "10px" }}
+                  />
+                  <div className="descriptionEvent">
+                    <div className="nameEvent">
+                      Vans Warped Tour - Slow Bleeding
+                    </div>
+                    <div className="dateEvent">
+                      <img
+                        src={require("../../../assets/images/svg/calendar.svg")}
+                        style={{ paddingRight: "10px" }}
+                      />
+                      11/05/2022
+                    </div>
 
-                  <div className="locationEvent">
-                    {" "}
-                    <img
-                      src={require("../../../assets/images/svg/locationPin.svg")}
-                      style={{ paddingRight: "10px" }}
-                    />
-                    Ribeirão Preto/SP
+                    <div className="locationEvent">
+                      {" "}
+                      <img
+                        src={require("../../../assets/images/svg/locationPin.svg")}
+                        style={{ paddingRight: "10px" }}
+                      />
+                      Campinas/SP
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-          <div className="d-flex justify-content-between">
-            <div className="partyCard">
-              <div class="partyImage1">
-                <div className="descriptionEvent">
-                  <div className="nameEvent">
-                    Camarote Bacana - Fabiano Henrique
-                  </div>
-                  <div className="dateEvent">
-                    <img
-                      src={require("../../../assets/images/svg/calendar.svg")}
-                      style={{ paddingRight: "10px" }}
-                    />
-                    11/05/2022
-                  </div>
+              <div className="partyCard">
+                <div class="partyImage3">
+                <img
+                    className="actionCard"
+                    src={require("../../../assets/images/svg/actionCard.svg")}
+                    style={{ paddingRight: "10px" }}
+                  />
+                  <div className="descriptionEvent">
+                    <div className="nameEvent">Festa Universitária</div>
+                    <div className="dateEvent">
+                      <img
+                        src={require("../../../assets/images/svg/calendar.svg")}
+                        style={{ paddingRight: "10px" }}
+                      />
+                      11/05/2022
+                    </div>
 
-                  <div className="locationEvent">
-                    {" "}
-                    <img
-                      src={require("../../../assets/images/svg/locationPin.svg")}
-                      style={{ paddingRight: "10px" }}
-                    />
-                    Campinas/SP
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="partyCard">
-              <div class="partyImage2">
-                <div className="descriptionEvent">
-                  <div className="nameEvent">
-                    Vans Warped Tour - Slow Bleeding
-                  </div>
-                  <div className="dateEvent">
-                    <img
-                      src={require("../../../assets/images/svg/calendar.svg")}
-                      style={{ paddingRight: "10px" }}
-                    />
-                    11/05/2022
-                  </div>
-
-                  <div className="locationEvent">
-                    {" "}
-                    <img
-                      src={require("../../../assets/images/svg/locationPin.svg")}
-                      style={{ paddingRight: "10px" }}
-                    />
-                    Campinas/SP
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="partyCard">
-              <div class="partyImage3">
-                <div className="descriptionEvent">
-                  <div className="nameEvent">
-                    Festa Universitária
-                  </div>
-                  <div className="dateEvent">
-                    <img
-                      src={require("../../../assets/images/svg/calendar.svg")}
-                      style={{ paddingRight: "10px" }}
-                    />
-                    11/05/2022
-                  </div>
-
-                  <div className="locationEvent">
-                    {" "}
-                    <img
-                      src={require("../../../assets/images/svg/locationPin.svg")}
-                      style={{ paddingRight: "10px" }}
-                    />
-                    Campinas/SP
+                    <div className="locationEvent">
+                      {" "}
+                      <img
+                        src={require("../../../assets/images/svg/locationPin.svg")}
+                        style={{ paddingRight: "10px" }}
+                      />
+                      Campinas/SP
+                    </div>
                   </div>
                 </div>
               </div>

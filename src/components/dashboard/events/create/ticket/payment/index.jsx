@@ -1,15 +1,20 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useState } from "react";
 import { Container, Input, FormGroup, Label } from "reactstrap";
 import { Button, ButtonGroup } from "react-bootstrap";
-import SuperButton from "../../../../../sharedComponents/SuperButton";
 import SuperInput from "../../../../../sharedComponents/SuperInput";
+import DiscountTicket from "../../../../../modal/DiscountTicket";
+import TicketIcon from "../../../../../../assets/images/svg/Ticket";
+import SuperCollapse from "../../../../../sharedComponents/SuperCollapse";
 
 const Sample = (props) => {
+  const [show, setShow] = useState(false);
+
   return (
     <Fragment>
+      <DiscountTicket show={show} setShow={setShow} />
       <Container className="subContainer" fluid={true}>
         <hr className="divider" />
-        <FormGroup>
+        <FormGroup style={{marginTop: "50px"}}>
           <div className="fieldSpacing">
             <Label className="fieldLabel">Gateway Pagamento POS</Label>
             <div classname="checkFieldSpacing" check>
@@ -164,6 +169,23 @@ const Sample = (props) => {
             </ButtonGroup>
           </div>
           <div className="groupButton">
+            <Label className="fieldLabel">Permitir pagamento com PIX?</Label>
+            <ButtonGroup style={{ width: "100px" }}>
+              <Button
+                variant="outline-dark"
+                style={{ height: "62px", width: "100px" }}
+              >
+                Sim
+              </Button>
+              <Button
+                variant="outline-dark"
+                style={{ height: "62px", width: "100px" }}
+              >
+                Não
+              </Button>
+            </ButtonGroup>
+          </div>
+          <div className="groupButton">
             <Label className="fieldLabel">
               Permitir pagamento por aproximação?
             </Label>
@@ -234,6 +256,10 @@ const Sample = (props) => {
             </ButtonGroup>
           </div>
           <div className="secondPageTitle">Taxas de cartão</div>
+          <img
+              src={require("../../../../../../assets/images/svg/titleLine.svg")}
+              style={{ paddingTop: "-40px", marginBottom: "25px" }}
+            />
           <div className="pageSubTitle">Venda física</div>
           <div className="groupButton">
             <Label className="fieldLabel">Permitir venda com cartão?</Label>
@@ -300,7 +326,7 @@ const Sample = (props) => {
               type="number"
             />
           </div>
-          <div>
+          <div className="d-flex">
             <div className="fieldSpacing">
               <Label className="fieldLabel" for="exampleNumber">
                 Qtd parcelas
@@ -312,6 +338,9 @@ const Sample = (props) => {
                 placeholder="Ex: 2"
                 type="number"
               />
+            </div>
+            <div className="fieldSpacing">
+              +
             </div>
             <div className="fieldSpacing">
               <Label className="fieldLabel" for="exampleNumber">
@@ -418,7 +447,13 @@ const Sample = (props) => {
               />
             </div>
           </div>
-          <div className="pageSubTitle">Cupons e descontos</div>
+          <div style={{ display: "grid", paddingBottom: "40px" }}>
+            <div className="pageTitle">Cupons e descontos</div>
+            <img
+              src={require("../../../../../../assets/images/svg/titleLine.svg")}
+              style={{ paddingTop: "-20px" }}
+            />
+          </div>
           <div className="groupButton">
             <Label className="fieldLabel">Permitir desconto?</Label>
             <ButtonGroup style={{ width: "100px" }}>
@@ -452,9 +487,17 @@ const Sample = (props) => {
                 Não
               </Button>
             </ButtonGroup>
-            <a className="auxSucessText" style={{ paddingTop: "20px" }}>
+            <div className="auxSucessText" style={{ paddingTop: "20px" }} onClick={() => setShow(true)}>
               + adicionar cupom de desconto
-            </a>
+            </div>
+            <div style={{marginTop: "50px"}}>
+
+            <SuperCollapse
+              title="Cupons de desconto adicionados"
+              content="Nenhum cupom de desconto foi adicionado. Aqui será exibida uma lista dos seus cupons adicionados"
+              leftIcon={TicketIcon}
+            />
+          </div>
           </div>
           <div className="nextPageButton">
             <div style={{ color: "#fff" }}>
