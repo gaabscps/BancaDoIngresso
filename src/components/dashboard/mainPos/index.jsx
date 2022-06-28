@@ -1,61 +1,31 @@
 import React, { Fragment, useState } from "react";
 import { Container, Row, Col, Label, Input, FormGroup } from "reactstrap";
-import SuperButton from "../../../sharedComponents/SuperButton";
+import SuperButton from "../../sharedComponents/SuperButton";
 import { useHistory } from "react-router-dom";
-import DiscountVoucher from "../../../modal/DiscountVoucher"
-
+import DiscountVoucher from "../../modal/DiscountVoucher";
+import RegisterPos from "../../modal/RegisterPos";
 
 const Sample = () => {
   const history = useHistory();
-  const [show, setShow] = useState(false);
+  const [showPos, setShowPos] = useState(false);
 
-  const createEvent = () => {
-    history.push("/event/general");
-  };
+ 
 
   return (
     <Fragment>
-      <DiscountVoucher show={show} setShow={setShow} />
+       <RegisterPos show={showPos} setShowPdv={setShowPos} />
       <Container className="mainContainer" fluid={true}>
         <div
           className="d-flex justify-content-between"
           style={{ paddingBottom: "30px" }}
         >
           <div style={{ display: "grid" }}>
-            <Label className="pageTitle">Todos os eventos cadastrados</Label>
-            <Label className="fieldLabel">
-              <img
-                src={require("../../../../assets/images/svg/blackAlert.svg")}
-                style={{ paddingRight: "10px" }}
-              />
-              Você tem <b>3 eventos</b> em rascunho
-            </Label>
+            <Label className="pageTitle">POS</Label>
           </div>
           <Row className="justify-content-between">
-            <SuperButton color="primary" onClick={createEvent}>
-              + Cadastrar evento
+            <SuperButton color="primary" onClick={() => setShowPos(true)}>
+              + Cadastrar nova POS
             </SuperButton>
-            <FormGroup>
-              <Input
-                id="exampleSelect"
-                name="select"
-                type="select"
-                style={{
-                  width: "182px",
-                  height: "50px",
-                  borderColor: "#222222",
-                  marginLeft: "15px",
-                }}
-              >
-                <option>20 por página</option>
-                <option>40 por página</option>
-                <option>60 por página</option>
-              </Input>
-            </FormGroup>
-            {/* <img
-              style={{ paddingLeft: "15px" }}
-              src={require("../../../../assets/images/svg/filterVector.svg")}
-            /> */}
           </Row>
         </div>
         <Row>
@@ -63,31 +33,25 @@ const Sample = () => {
             <div className="d-flex pb-2">
               <div className="eventStatus subText">
                 <img
-                  src={require("../../../../assets/images/svg/yellowStatus.svg")}
+                  src={require("../../../assets/images/svg/greenStatus.svg")}
                   style={{ paddingRight: "10px" }}
                 />
-                Evento com liberação pendente
+                POS em uso
               </div>
               <div className="eventStatus subText">
                 <img
-                  src={require("../../../../assets/images/svg/greenStatus.svg")}
+                  src={require("../../../assets/images/svg/yellowStatus.svg")}
                   style={{ paddingRight: "10px" }}
                 />
-                Evento liberado
+                POS reservada
               </div>
+
               <div className="eventStatus subText">
                 <img
-                  src={require("../../../../assets/images/svg/redStatus.svg")}
+                  src={require("../../../assets/images/svg/redStatus.svg")}
                   style={{ paddingRight: "10px" }}
                 />
-                Evento recusado
-              </div>
-              <div className="eventStatus subText">
-                <img
-                  src={require("../../../../assets/images/svg/blueStatus.svg")}
-                  style={{ paddingRight: "10px" }}
-                />
-                Rascunho
+                POS inativa
               </div>
             </div>
           </Col>
@@ -95,24 +59,22 @@ const Sample = () => {
         <Row>
           <Col sm="12">
             <div className="cabeçalho">
-              <div className="linhaDaTabela headerFoto normalText">Imagem</div>
               <div className="linhaDaTabela headerStatus"></div>
               <div className="linhaDaTabela headerNome normalText">
-                Nome do evento
+                Nome da POS
               </div>
               <div className="linhaDaTabela headerCidade normalText">
-                Cidade
+                N° de serie
               </div>
               <div className="linhaDaTabela headerData normalText">
                 Inicio evento
               </div>
               <div className="linhaDaTabela headerData normalText">
-                Fim evento
+                Evento atual
               </div>
-              <div className="linhaDaTabela headerAção normalText">Ação</div>
+              <div className="linhaDaTabela headerAção normalText">Ações</div>
             </div>
             <div className="rows">
-              <div className="linhaDaTabela campoFoto"></div>
               <div className="linhaDaTabela campoStatus"></div>
               <div className="linhaDaTabela campoNome">
                 <div>
@@ -131,22 +93,17 @@ const Sample = () => {
               <div className="linhaDaTabela campoAção">
                 <div className="celulaAção">
                   <img
-                    src={require("../../../../assets/images/svg/pen.svg")}
+                    src={require("../../../assets/images/svg/pen.svg")}
                     style={{ paddingRight: "25px" }}
                   />
                   <img
-                    src={require("../../../../assets/images/svg/lixeira.svg")}
+                    src={require("../../../assets/images/svg/lixeira.svg")}
                     style={{ paddingRight: "25px" }}
-                  />
-                  <img
-                    src={require("../../../../assets/images/svg/ticket.svg")}
-                    onClick={() => setShow(true)}
                   />
                 </div>
               </div>
             </div>
             <div className="rows">
-              <div className="linhaDaTabela campoFoto4"></div>
               <div className="linhaDaTabela campoStatus"></div>
               <div className="linhaDaTabela campoNome">
                 <div>
@@ -167,22 +124,17 @@ const Sample = () => {
               <div className="linhaDaTabela campoAção">
                 <div className="celulaAção">
                   <img
-                    src={require("../../../../assets/images/svg/pen.svg")}
+                    src={require("../../../assets/images/svg/pen.svg")}
                     style={{ paddingRight: "25px" }}
                   />
                   <img
-                    src={require("../../../../assets/images/svg/lixeira.svg")}
+                    src={require("../../../assets/images/svg/lixeira.svg")}
                     style={{ paddingRight: "25px" }}
-                  />
-                  <img
-                    src={require("../../../../assets/images/svg/ticket.svg")}
-                    onClick={() => setShow(true)}
                   />
                 </div>
               </div>
             </div>
             <div className="rows">
-              <div className="linhaDaTabela campoFoto2"></div>
               <div className="linhaDaTabela campoStatus"></div>
               <div className="linhaDaTabela campoNome">
                 <div>
@@ -205,22 +157,17 @@ const Sample = () => {
               <div className="linhaDaTabela campoAção">
                 <div className="celulaAção">
                   <img
-                    src={require("../../../../assets/images/svg/pen.svg")}
+                    src={require("../../../assets/images/svg/pen.svg")}
                     style={{ paddingRight: "25px" }}
                   />
                   <img
-                    src={require("../../../../assets/images/svg/lixeira.svg")}
+                    src={require("../../../assets/images/svg/lixeira.svg")}
                     style={{ paddingRight: "25px" }}
-                  />
-                  <img
-                    src={require("../../../../assets/images/svg/ticket.svg")}
-                    onClick={() => setShow(true)}
                   />
                 </div>
               </div>
             </div>
             <div className="rows">
-              <div className="linhaDaTabela campoFoto3"></div>
               <div className="linhaDaTabela campoStatus"></div>
               <div className="linhaDaTabela campoNome">
                 <div className="celulaNome subText">João Rock 2022</div>
@@ -237,16 +184,12 @@ const Sample = () => {
               <div className="linhaDaTabela campoAção">
                 <div className="celulaAção">
                   <img
-                    src={require("../../../../assets/images/svg/pen.svg")}
+                    src={require("../../../assets/images/svg/pen.svg")}
                     style={{ paddingRight: "25px" }}
                   />
                   <img
-                    src={require("../../../../assets/images/svg/lixeira.svg")}
+                    src={require("../../../assets/images/svg/lixeira.svg")}
                     style={{ paddingRight: "25px" }}
-                  />
-                  <img
-                    src={require("../../../../assets/images/svg/ticket.svg")}
-                    onClick={() => setShow(true)}
                   />
                 </div>
               </div>

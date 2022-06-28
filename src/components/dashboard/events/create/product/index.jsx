@@ -17,7 +17,7 @@ const Sample = (props) => {
   const history = useHistory();
 
   const nextStep = () => {
-    history.push("/pdv");
+    history.push("/event/pdv");
   };
   const goBack = () => {
     history.goBack();

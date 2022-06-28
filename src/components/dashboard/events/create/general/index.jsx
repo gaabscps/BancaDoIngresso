@@ -9,7 +9,7 @@ const Sample = (props) => {
   const history = useHistory();
 
   const nextStep = () => {
-    history.push("/ticket");
+    history.push("/event/ticket");
   };
   const goBack = () => {
     history.goBack();

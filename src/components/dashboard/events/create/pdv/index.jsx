@@ -19,7 +19,7 @@ const Sample = (props) => {
   const history = useHistory();
 
   const nextStep = () => {
-    history.push("/confirmation");
+    history.push("/event/confirmation");
   };
   const goBack = () => {
     history.goBack();
