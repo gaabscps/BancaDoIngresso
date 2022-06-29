@@ -13,6 +13,7 @@ import { useHistory } from "react-router";
 import api from "../../../services/api";
 
 import Loader from "../../../layout/loader";
+import { cpfMask } from "../../../utils/input-mask";
 
 const baseUrl = process.env.REACT_APP_BASE_URL;
 const prefixBaseUrl = process.env.REACT_APP_SUFFIX_BASE_URL;
@@ -21,7 +22,8 @@ const Login = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [togglePassword, setTogglePassword] = useState(false);
-  const [form, setForrm] = useState({});
+  const [values, setValues] = useState({ cpf: "" });
+  const [form, setForm] = useState({});
   const [errors, setErrors] = useState({
     username: false,
     password: false,
@@ -58,7 +60,7 @@ const Login = (props) => {
       const result = await api.post(
         url + "auth",
         {
-          grant_type: 'client_credentials'
+          grant_type: "client_credentials",
         },
         {
           headers: {
@@ -74,8 +76,8 @@ const Login = (props) => {
       //     },
       //   }
       //   )
-        // console.log("ID", userData);
-        const {
+      // console.log("ID", userData);
+      const {
         data: { token, user },
       } = result;
       const localStorage = {
@@ -97,11 +99,12 @@ const Login = (props) => {
   };
 
   const handleChange = ({ currentTarget: { name, value } }) => {
-    setForrm({
+    setForm({
       ...form,
       [name]: value,
     });
   };
+
   return (
     <>
       <Loader />
@@ -115,14 +118,14 @@ const Login = (props) => {
                 alt="looginpage"
               />
             </a>
-            <Form
-              className="loginCard"
-              noValidate=""
-              onSubmit={handleSubmit}
-            > 
-              <div style={{marginBottom: '50px'}}>
-                <div className="pageTitle">Seja bem-vindo(a)! Entre com a sua conta</div>
-                <div className="subTitleMain">Digite abaixo o seu CPF e sua senha para entrar</div>
+            <Form className="loginCard" noValidate="" onSubmit={handleSubmit}>
+              <div style={{ marginBottom: "50px" }}>
+                <div className="pageTitle">
+                  Seja bem-vindo(a)! Entre com a sua conta
+                </div>
+                <div className="subTitleMain">
+                  Digite abaixo o seu CPF e sua senha para entrar
+                </div>
               </div>
               <div className="form-row ">
                 <Col className="loginField">
@@ -134,18 +137,17 @@ const Login = (props) => {
                     Seu CPF
                   </Label>
                   <Input
+                    name="username"
                     className="form-control loginForm"
-                    // type="email"
                     required=""
                     placeholder="123.456.789-00"
-                    name="username"
-                    value={form?.username || ""}
+                    value={form?.username ? cpfMask(form?.username) : ""}
                     onChange={handleChange}
                     isValid={!errors.username}
+                    maxLength="14"
                   />
                   <span>
-                    {errors.username &&
-                      "O campo do CPF é obrigatório!"}
+                    {errors.username && "O campo do CPF é obrigatório!"}
                   </span>
                   <div className="valid-feedback">{"Looks good!"}</div>
                 </Col>
@@ -156,7 +158,7 @@ const Login = (props) => {
                       src={require("../../../assets/images/svg/loginLock.svg")}
                     />
                     Senha
-                    </Label>
+                  </Label>
                   <Input
                     className="form-control loginForm"
                     type={togglePassword ? "text" : "password"}
@@ -182,14 +184,18 @@ const Login = (props) => {
                 </Col>
               </div>
               <FormGroup className="d-flex justify-content-between align-items-center mb-2">
-                <div className="checkbox ml-3" style={{marginTop: "25px"}}>
+                <div className="checkbox ml-3" style={{ marginTop: "25px" }}>
                   <Input id="checkbox1" type="checkbox" />
                   <Label className="loginFormText" for="checkbox1">
                     Lembrar senha
                   </Label>
                 </div>
               </FormGroup>
-              <Button color="primary" className="btn-block loginForm" style={{marginTop: "60px"}}>
+              <Button
+                color="primary"
+                className="btn-block loginForm"
+                style={{ marginTop: "60px" }}
+              >
                 Entrar
               </Button>
               <div className="d-flex justify-content-center align-items-center forgotPassword">

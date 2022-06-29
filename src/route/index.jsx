@@ -14,6 +14,9 @@ import MainPayment from "../components/dashboard/mainPayment";
 import MainDocument from "../components/dashboard/mainDocument";
 import MainReports from "../components/dashboard/mainReport";
 import MainLogs from "../components/dashboard/mainLogs";
+import MainProduct from "../components/dashboard/mainProduct";
+import MainMetrics from "../components/dashboard/mainMetrics";
+import MainModule from "../components/dashboard/mainModule";
 
 //Report Detail
 import ReportDetail from "../components/dashboard/mainReport/salesReport"
@@ -97,6 +100,24 @@ export const routes = [
     path: `/logs`,
     component: App,
     child: MainLogs,
+    privateRoute: true,
+  },
+  {
+    path: `/product`,
+    component: App,
+    child: MainProduct,
+    privateRoute: true,
+  },
+  {
+    path: `/metrics`,
+    component: App,
+    child: MainMetrics,
+    privateRoute: true,
+  },
+  {
+    path: `/modules`,
+    component: App,
+    child: MainModule,
     privateRoute: true,
   },
 

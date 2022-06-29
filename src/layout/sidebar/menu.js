@@ -48,7 +48,7 @@ export const MENUITEMS = [
           },
           {
             path: `/gateway`,
-            title: "Gatway de pagamento",
+            title: "Gateway de pagamento",
             type: "link",
           },
           {
@@ -61,16 +61,21 @@ export const MENUITEMS = [
             title: "Documentos",
             type: "link",
           },
-          // {
-          //   path: `${process.env.PUBLIC_URL}/starter-kits/sample-page`,
-          //   title: "Métricas",
-          //   type: "link",
-          // },
-          // {
-          //   path: `${process.env.PUBLIC_URL}/starter-kits/sample-page`,
-          //   title: "Módulos",
-          //   type: "link",
-          // },
+          {
+            path: `/product`,
+            title: "Produtos",
+            type: "link",
+          },
+          {
+            path: `/metrics`,
+            title: "Métricas",
+            type: "link",
+          },
+          {
+            path: `/modules`,
+            title: "Módulos",
+            type: "link",
+          },
           {
             path: `/report`,
             title: "Relatórios",
