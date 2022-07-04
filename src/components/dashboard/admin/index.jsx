@@ -11,8 +11,6 @@ import {
   NavLink,
 } from "reactstrap";
 
-import { getLocalStorage } from "../../../helpers/localStorage";
-
 const Sample = (props) => {
   const [welcomeMessage, setWelcomeMessage] = useState("");
   const d = new Date();
@@ -92,12 +90,18 @@ const Sample = (props) => {
           </div>
           <div style={{ width: "1062px", display: "contents" }}>
             <div
-              className="d-flex justify-content-between"
-              style={{ paddingBottom: "30px" }}
+              className="d-inline-block justify-content-between"
+              style={{
+                paddingBottom: "30px",
+                borderStyle: "solid",
+                borderColor: "#0ff",
+                borderWidth: "1px",
+                minWidth: "auto",
+              }}
             >
               <div className="partyCard">
                 <div class="partyImage2">
-                <img
+                  <img
                     className="actionCard"
                     src={require("../../../assets/images/svg/actionCard.svg")}
                     style={{ paddingRight: "10px" }}
@@ -152,13 +156,72 @@ const Sample = (props) => {
               </div>
               <div className="partyCard">
                 <div class="partyImage3">
-                <img
+                  <img
                     className="actionCard"
                     src={require("../../../assets/images/svg/actionCard.svg")}
                     style={{ paddingRight: "10px" }}
                   />
                   <div className="descriptionEvent">
                     <div className="nameEvent">João Rock 2022</div>
+                    <div className="dateEvent">
+                      <img
+                        src={require("../../../assets/images/svg/calendar.svg")}
+                        style={{ paddingRight: "10px" }}
+                      />
+                      10/05/2022
+                    </div>
+
+                    <div className="locationEvent">
+                      <img
+                        src={require("../../../assets/images/svg/locationPin.svg")}
+                        style={{ paddingRight: "10px" }}
+                      />
+                      Ribeirão Preto/SP
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="partyCard">
+                <div class="partyImage3">
+                  <img
+                    className="actionCard"
+                    src={require("../../../assets/images/svg/actionCard.svg")}
+                    style={{ paddingRight: "10px" }}
+                  />
+                  <div className="descriptionEvent">
+                    <div className="nameEvent">
+                      {" "}
+                      Camarote Bacana - Fabiano Henrique
+                    </div>
+                    <div className="dateEvent">
+                      <img
+                        src={require("../../../assets/images/svg/calendar.svg")}
+                        style={{ paddingRight: "10px" }}
+                      />
+                      11/05/2022
+                    </div>
+
+                    <div className="locationEvent">
+                      <img
+                        src={require("../../../assets/images/svg/locationPin.svg")}
+                        style={{ paddingRight: "10px" }}
+                      />
+                      Campinas/SP
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="partyCard">
+                <div class="partyImage1">
+                  <img
+                    className="actionCard"
+                    src={require("../../../assets/images/svg/actionCard.svg")}
+                    style={{ paddingRight: "10px" }}
+                  />
+                  <div className="descriptionEvent">
+                    <div className="nameEvent">
+                      Vans Warped Tour - Slow Bleeding
+                    </div>
                     <div className="dateEvent">
                       <img
                         src={require("../../../assets/images/svg/calendar.svg")}
@@ -178,71 +241,9 @@ const Sample = (props) => {
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="d-flex justify-content-between">
-              <div className="partyCard">
-                <div class="partyImage1">
-                <img
-                    className="actionCard"
-                    src={require("../../../assets/images/svg/actionCard.svg")}
-                    style={{ paddingRight: "10px" }}
-                  />
-                  <div className="descriptionEvent">
-                    <div className="nameEvent">
-                      Camarote Bacana - Fabiano Henrique
-                    </div>
-                    <div className="dateEvent">
-                      <img
-                        src={require("../../../assets/images/svg/calendar.svg")}
-                        style={{ paddingRight: "10px" }}
-                      />
-                      11/05/2022
-                    </div>
-
-                    <div className="locationEvent">
-                      {" "}
-                      <img
-                        src={require("../../../assets/images/svg/locationPin.svg")}
-                        style={{ paddingRight: "10px" }}
-                      />
-                      Campinas/SP
-                    </div>
-                  </div>
-                </div>
-              </div>
               <div className="partyCard">
                 <div class="partyImage2">
-                <img
-                    className="actionCard"
-                    src={require("../../../assets/images/svg/actionCard.svg")}
-                    style={{ paddingRight: "10px" }}
-                  />
-                  <div className="descriptionEvent">
-                    <div className="nameEvent">
-                      Vans Warped Tour - Slow Bleeding
-                    </div>
-                    <div className="dateEvent">
-                      <img
-                        src={require("../../../assets/images/svg/calendar.svg")}
-                        style={{ paddingRight: "10px" }}
-                      />
-                      11/05/2022
-                    </div>
-
-                    <div className="locationEvent">
-                      {" "}
-                      <img
-                        src={require("../../../assets/images/svg/locationPin.svg")}
-                        style={{ paddingRight: "10px" }}
-                      />
-                      Campinas/SP
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="partyCard">
-                <div class="partyImage3">
-                <img
+                  <img
                     className="actionCard"
                     src={require("../../../assets/images/svg/actionCard.svg")}
                     style={{ paddingRight: "10px" }}
@@ -254,7 +255,7 @@ const Sample = (props) => {
                         src={require("../../../assets/images/svg/calendar.svg")}
                         style={{ paddingRight: "10px" }}
                       />
-                      11/05/2022
+                      10/05/2022
                     </div>
 
                     <div className="locationEvent">
@@ -263,7 +264,7 @@ const Sample = (props) => {
                         src={require("../../../assets/images/svg/locationPin.svg")}
                         style={{ paddingRight: "10px" }}
                       />
-                      Campinas/SP
+                      Ribeirão Preto/SP
                     </div>
                   </div>
                 </div>

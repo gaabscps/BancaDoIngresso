@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Button, ButtonGroup } from "react-bootstrap";
 import { Card, Col, Container, FormGroup, Label, Row } from "reactstrap";
+import CloseModal from "../../assets/images/svg/CloseModal";
 import SuperInput from "../sharedComponents/SuperInput";
 
 const SubPdvRegistration = ({ show, setShow }) => {
@@ -14,13 +15,21 @@ const SubPdvRegistration = ({ show, setShow }) => {
         dialogClassName="modal-550px"
         aria-labelledby="example-custom-modal-styling-title"
       >
-        <Modal.Header closeButton>
+        <Modal.Header>
           <Modal.Title
             id="example-custom-modal-styling-title"
             className="pageTitle"
           >
             Cadastrar novo Sub PDV
           </Modal.Title>
+          <div
+            onClick={() => {
+              handleClose();
+            }}
+            style={{ cursor: "pointer" }}
+          >
+            <CloseModal />
+          </div>
         </Modal.Header>
         <Modal.Body>
           <Container>
@@ -28,125 +37,123 @@ const SubPdvRegistration = ({ show, setShow }) => {
               className="mainContainer"
               style={{ backgroundColor: "#F1F1F1" }}
             >
-                <div className="fieldSpacing">
-                  <Label className="fieldLabel" for="exampleEmail">
-                    Nome do Sub PDV
-                  </Label>
-                  <SuperInput
-                    id="exampleEmail"
-                    placeholder="Digite o nome do Sub PDV"
-                  />
-                </div>
-                <div className="groupButton">
-                  <Label className="fieldLabel">Permitir dinheiro?</Label>
-                  <ButtonGroup style={{ width: "100px" }}>
-                    <Button
-                      variant="outline-dark"
-                      style={{ height: "62px", width: "100px" }}
-                      onClick={() => setShow(true)}
-                    >
-                      Sim
-                    </Button>
-                    <Button
-                      variant="outline-dark"
-                      style={{ height: "62px", width: "100px" }}
-                    >
-                      Não
-                    </Button>
-                  </ButtonGroup>
-                </div>
-                <div className="groupButton">
-                  <Label className="fieldLabel">
-                    Permitir taxa antecipada?
-                  </Label>
-                  <ButtonGroup style={{ width: "100px" }}>
-                    <Button
-                      variant="outline-dark"
-                      style={{ height: "62px", width: "100px" }}
-                      onClick={() => setShow(true)}
-                    >
-                      Sim
-                    </Button>
-                    <Button
-                      variant="outline-dark"
-                      style={{ height: "62px", width: "100px" }}
-                    >
-                      Não
-                    </Button>
-                  </ButtonGroup>
-                </div>
-                <div className="groupButton">
-                  <Label className="fieldLabel">Permitir débito?</Label>
-                  <ButtonGroup style={{ width: "100px" }}>
-                    <Button
-                      variant="outline-dark"
-                      style={{ height: "62px", width: "100px" }}
-                      onClick={() => setShow(true)}
-                    >
-                      Sim
-                    </Button>
-                    <Button
-                      variant="outline-dark"
-                      style={{ height: "62px", width: "100px" }}
-                    >
-                      Não
-                    </Button>
-                  </ButtonGroup>
-                </div>
-                <div className="groupButton">
-                  <Label className="fieldLabel">Permitir crédito?</Label>
-                  <ButtonGroup style={{ width: "100px" }}>
-                    <Button
-                      variant="outline-dark"
-                      style={{ height: "62px", width: "100px" }}
-                      onClick={() => setShow(true)}
-                    >
-                      Sim
-                    </Button>
-                    <Button
-                      variant="outline-dark"
-                      style={{ height: "62px", width: "100px" }}
-                    >
-                      Não
-                    </Button>
-                  </ButtonGroup>
-                </div>
-                <div className="groupButton">
-                  <Label className="fieldLabel">Permitir PIX?</Label>
-                  <ButtonGroup style={{ width: "100px" }}>
-                    <Button
-                      variant="outline-dark"
-                      style={{ height: "62px", width: "100px" }}
-                      onClick={() => setShow(true)}
-                    >
-                      Sim
-                    </Button>
-                    <Button
-                      variant="outline-dark"
-                      style={{ height: "62px", width: "100px" }}
-                    >
-                      Não
-                    </Button>
-                  </ButtonGroup>
-                </div>
-                <div className="groupButton">
-                  <Label className="fieldLabel">Permitir venda online?</Label>
-                  <ButtonGroup style={{ width: "100px" }}>
-                    <Button
-                      variant="outline-dark"
-                      style={{ height: "62px", width: "100px" }}
-                      onClick={() => setShow(true)}
-                    >
-                      Sim
-                    </Button>
-                    <Button
-                      variant="outline-dark"
-                      style={{ height: "62px", width: "100px" }}
-                    >
-                      Não
-                    </Button>
-                  </ButtonGroup>
-                </div>
+              <div className="fieldSpacing">
+                <Label className="fieldLabel" for="exampleEmail">
+                  Nome do Sub PDV
+                </Label>
+                <SuperInput
+                  id="exampleEmail"
+                  placeholder="Digite o nome do Sub PDV"
+                />
+              </div>
+              <div className="groupButton">
+                <Label className="fieldLabel">Permitir dinheiro?</Label>
+                <ButtonGroup style={{ width: "100px" }}>
+                  <Button
+                    variant="outline-dark"
+                    style={{ height: "62px", width: "100px" }}
+                    onClick={() => setShow(true)}
+                  >
+                    Sim
+                  </Button>
+                  <Button
+                    variant="outline-dark"
+                    style={{ height: "62px", width: "100px" }}
+                  >
+                    Não
+                  </Button>
+                </ButtonGroup>
+              </div>
+              <div className="groupButton">
+                <Label className="fieldLabel">Permitir taxa antecipada?</Label>
+                <ButtonGroup style={{ width: "100px" }}>
+                  <Button
+                    variant="outline-dark"
+                    style={{ height: "62px", width: "100px" }}
+                    onClick={() => setShow(true)}
+                  >
+                    Sim
+                  </Button>
+                  <Button
+                    variant="outline-dark"
+                    style={{ height: "62px", width: "100px" }}
+                  >
+                    Não
+                  </Button>
+                </ButtonGroup>
+              </div>
+              <div className="groupButton">
+                <Label className="fieldLabel">Permitir débito?</Label>
+                <ButtonGroup style={{ width: "100px" }}>
+                  <Button
+                    variant="outline-dark"
+                    style={{ height: "62px", width: "100px" }}
+                    onClick={() => setShow(true)}
+                  >
+                    Sim
+                  </Button>
+                  <Button
+                    variant="outline-dark"
+                    style={{ height: "62px", width: "100px" }}
+                  >
+                    Não
+                  </Button>
+                </ButtonGroup>
+              </div>
+              <div className="groupButton">
+                <Label className="fieldLabel">Permitir crédito?</Label>
+                <ButtonGroup style={{ width: "100px" }}>
+                  <Button
+                    variant="outline-dark"
+                    style={{ height: "62px", width: "100px" }}
+                    onClick={() => setShow(true)}
+                  >
+                    Sim
+                  </Button>
+                  <Button
+                    variant="outline-dark"
+                    style={{ height: "62px", width: "100px" }}
+                  >
+                    Não
+                  </Button>
+                </ButtonGroup>
+              </div>
+              <div className="groupButton">
+                <Label className="fieldLabel">Permitir PIX?</Label>
+                <ButtonGroup style={{ width: "100px" }}>
+                  <Button
+                    variant="outline-dark"
+                    style={{ height: "62px", width: "100px" }}
+                    onClick={() => setShow(true)}
+                  >
+                    Sim
+                  </Button>
+                  <Button
+                    variant="outline-dark"
+                    style={{ height: "62px", width: "100px" }}
+                  >
+                    Não
+                  </Button>
+                </ButtonGroup>
+              </div>
+              <div className="groupButton">
+                <Label className="fieldLabel">Permitir venda online?</Label>
+                <ButtonGroup style={{ width: "100px" }}>
+                  <Button
+                    variant="outline-dark"
+                    style={{ height: "62px", width: "100px" }}
+                    onClick={() => setShow(true)}
+                  >
+                    Sim
+                  </Button>
+                  <Button
+                    variant="outline-dark"
+                    style={{ height: "62px", width: "100px" }}
+                  >
+                    Não
+                  </Button>
+                </ButtonGroup>
+              </div>
             </Card>
           </Container>
         </Modal.Body>

@@ -52,10 +52,6 @@ const Sample = () => {
                 <option>60 por página</option>
               </Input>
             </FormGroup>
-            {/* <img
-              style={{ paddingLeft: "15px" }}
-              src={require("../../../../assets/images/svg/filterVector.svg")}
-            /> */}
           </Row>
         </div>
         <Row>

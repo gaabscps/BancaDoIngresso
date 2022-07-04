@@ -2,6 +2,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { Container, Col, FormGroup, Label } from "reactstrap";
 import ComboIcon from "../../../../../../assets/images/svg/Combo";
+import RemoveX from "../../../../../../assets/images/svg/RemoveX";
 import SuperCollapse from "../../../../../sharedComponents/SuperCollapse";
 
 import SuperInput from "../../../../../sharedComponents/SuperInput";
@@ -27,6 +28,12 @@ const Sample = (props) => {
 
   const handleAddFields = () => {
     setInputFields([...inputFields, { productName: "", amount: "" }]);
+  };
+
+  const handleDeleteFields = (index) => {
+    const values = [...inputFields];
+    values.splice(index, 1);
+    setInputFields(values);
   };
 
   return (
@@ -134,7 +141,21 @@ const Sample = (props) => {
                     onChange={(event) => handleChangeInput(index, event)}
                   />
                 </div>
-                <div style={{ color: "#fff", marginTop: "55px" }}>
+                <div
+                  style={{ color: "#fff", marginTop: "55px" }}
+                  className="d-flex"
+                >
+                  <div
+                    style={{
+                      height: "50px",
+                      cursor: "pointer",
+                      paddingTop: "15px",
+                      marginRight: "25px",
+                    }}
+                    onClick={() => handleDeleteFields(index)}
+                  >
+                    <RemoveX />
+                  </div>
                   <Button
                     style={{ height: "50px" }}
                     variant="outline-light"

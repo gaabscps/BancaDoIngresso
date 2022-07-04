@@ -33,16 +33,13 @@ const Sample = (props) => {
               </Button>
             </ButtonGroup>
           </div>
-          <div style={{ color: "#fff", marginTop: "50px", marginLeft: "20px" }}>
-            <Button
-              style={{ height: "50px", width: "270px" }}
-              variant="outline-light"
-            >
-              <div className="greyNormalText" onClick={() => setShow(true)}>+ cadastrar novo Sub PDV</div>
-            </Button>
+          <div style={{ color: "#fff", marginTop: "65px", marginLeft: "50px" }}>
+            <div className="auxSucessText" onClick={() => setShow(true)}>
+              + cadastrar novo Sub PDV
+            </div>
           </div>
         </div>
-          <div style={{ marginTop: "50px" }}>
+        <div style={{ marginTop: "50px" }}>
           <SuperCollapse
             title="Sub PDV’s cadastrados"
             content="Nenhum sub PDV cadastrado. Aqui será exibida uma lista dos seus sub PDV’s cadastrados"

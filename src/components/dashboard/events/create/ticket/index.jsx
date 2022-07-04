@@ -8,6 +8,8 @@ import PaymentInformation from "./payment/index";
 import GeneralInformation from "./general/index";
 import SuperCollapse from "../../../../sharedComponents/SuperCollapse";
 import TicketIcon from "../../../../../assets/images/svg/Ticket";
+import BackOnTop from "../../../../sharedComponents/BackOnTop";
+import SuperButton from "../../../../sharedComponents/SuperButton";
 
 const Sample = (props) => {
   const [step, setStep] = useState(0);
@@ -87,16 +89,43 @@ const Sample = (props) => {
                 ingresso
               </div>
               <div className="infoContainer">
-                <div className="d-flex justify-content-around">
-                  <Button variant="outline-light" onClick={() => setStep(0)}>
-                    <div className="buttonText">Configurações principais</div>
-                  </Button>
-                  <Button variant="outline-light" onClick={() => setStep(1)}>
-                    <div className="buttonText">Configurações de pagamento</div>
-                  </Button>
-                  <Button variant="outline-light" onClick={() => setStep(2)}>
-                    <div className="buttonText">Configurações gerais</div>
-                  </Button>
+                <div className="d-flex justify-content-center">
+                  <div
+                    style={{
+                      marginRight: "50px",
+                    }}
+                  >
+                    <button
+                      className={step === 0 ? "tabButtonActive" : "tabButtonDesactive"}
+                      onClick={() => setStep(0)}
+                    >
+                      <div className="textButtonsTab">
+                        Configurações principais
+                      </div>
+                    </button>
+                  </div>
+                  <div
+                    style={{
+                      marginRight: "50px",
+                    }}
+                  >
+                    <button
+                      className={step === 1 ? "tabButtonActive" : "tabButtonDesactive"}
+                      onClick={() => setStep(1)}
+                    >
+                      <div className="textButtonsTab">
+                        Configurações de pagamento
+                      </div>
+                    </button>
+                  </div>
+                  <div>
+                    <button
+                      className={step === 2 ? "tabButtonActive" : "tabButtonDesactive"}
+                      onClick={() => setStep(2)}
+                    >
+                      <div className="textButtonsTab">Configurações gerais</div>
+                    </button>
+                  </div>
                 </div>
                 <ShowInformation />
               </div>
@@ -114,9 +143,9 @@ const Sample = (props) => {
                 Voltar
               </Button>
             </div>
-            <Button variant="dark" onClick={nextStep}>
-              Avançar para Produtos
-            </Button>
+            <SuperButton style={{width: "278px"}} onClick={nextStep}>
+              Avançar para Setor e Produtos
+            </SuperButton>
           </div>
         </Col>
       </Container>

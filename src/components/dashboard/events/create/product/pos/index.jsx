@@ -45,7 +45,7 @@ const Sample = (props) => {
                   id="exampleNumber"
                   placeholder="Digite ou selecione o produto"
                 />
-                  <div className="auxSucessText" style={{ paddingTop: "20px" }}>
+                  <div className="auxSucessText" style={{ paddingTop: "20px" }} >
                    + cadastrar nova POS
                   </div>
               </div>

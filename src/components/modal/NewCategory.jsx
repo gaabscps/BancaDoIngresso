@@ -4,13 +4,13 @@ import { Card, Col, Container, Label, Input } from "reactstrap";
 import CloseModal from "../../assets/images/svg/CloseModal";
 import SuperInput from "../sharedComponents/SuperInput";
 
-const RegisterPayment = ({ show, setShowPayment }) => {
-  const handleClose = () => setShowPayment(false);
+const NewCategory = ({ show, setShowNewCategory }) => {
+  const handleClose = () => setShowNewCategory(false);
   return (
     <Modal
       size={"xl"}
       show={show}
-      onHide={() => setShowPayment(false)}
+      onHide={() => setShowNewCategory(false)}
       dialogClassName="modal-550px"
       aria-labelledby="example-custom-modal-styling-title"
     >
@@ -19,7 +19,7 @@ const RegisterPayment = ({ show, setShowPayment }) => {
           id="example-custom-modal-styling-title"
           className="pageTitle"
         >
-          Cadastrar nova forma de pagamento
+          Cadastrar nova categoria de evento
         </Modal.Title>
         <div onClick={() => {handleClose()}} style={{cursor: "pointer"}}>
           <CloseModal />
@@ -34,24 +34,12 @@ const RegisterPayment = ({ show, setShowPayment }) => {
             <div className="d-flex">
               <div className="fieldSpacing">
                 <Label className="fieldLabel" for="exampleEmail">
-                  Nome da forma de pagamento
+                  Nome da categoria
                 </Label>
                 <SuperInput
                   id="exampleEmail"
                   name="email"
-                  placeholder="Digite o nome da forma de pagamento"
-                />
-              </div>
-            </div>
-            <div className="d-flex">
-              <div className="fieldSpacing">
-                <Label className="fieldLabel" for="exampleEmail">
-                  Gateway de pagamento
-                </Label>
-                <SuperInput
-                  id="exampleEmail"
-                  name="email"
-                  placeholder="Selecione ou digite o gateway de pagamento"
+                  placeholder="Digite o nome da categoria"
                 />
               </div>
             </div>
@@ -67,11 +55,11 @@ const RegisterPayment = ({ show, setShowPayment }) => {
               Cancelar
             </Button>
           </div>
-          <Button variant="dark">Cadastrar nova forma de pagamento</Button>
+          <Button variant="dark">Cadastrar nova categoria de evento</Button>
         </div>
       </Modal.Body>
     </Modal>
   );
 };
 
-export default RegisterPayment;
+export default NewCategory;
