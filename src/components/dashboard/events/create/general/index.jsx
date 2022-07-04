@@ -2,11 +2,17 @@ import React, { Fragment, useEffect, useState } from "react";
 import { Button, ButtonGroup } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { Container, Col, Form, FormGroup, Label, FormText } from "reactstrap";
+import NewCategory from "../../../../modal/NewCategory";
+import ParentEvent from "../../../../modal/ParentEvent";
+import RegisterCompany from "../../../../modal/RegisterCompany";
 import SuperButton from "../../../../sharedComponents/SuperButton";
 import SuperInput from "../../../../sharedComponents/SuperInput";
 
 const Sample = (props) => {
   const history = useHistory();
+  const [showNewCategory, setShowNewCategory] = useState(false);
+  const [showCompany, setShowCompany] = useState(false);
+  const [showParentEvent, setShowParentEvent] = useState(false);
 
   const nextStep = () => {
     history.push("/event/ticket");
@@ -17,6 +23,15 @@ const Sample = (props) => {
 
   return (
     <Fragment>
+      <NewCategory
+        show={showNewCategory}
+        setShowNewCategory={setShowNewCategory}
+      />
+      <RegisterCompany show={showCompany} setShowCompany={setShowCompany} />
+      <ParentEvent
+        show={showParentEvent}
+        setShowParentEvent={setShowParentEvent}
+      />
       <Container className="mainContainer" fluid={true}>
         <div className="d-flex justify-content-center stepContainer">
           <img
@@ -48,7 +63,11 @@ const Sample = (props) => {
                 <option>4</option>
                 <option>5</option>
               </SuperInput>
-              <div className="auxSucessText" style={{ paddingTop: "20px" }}>
+              <div
+                className="auxSucessText"
+                style={{ paddingTop: "20px" }}
+                onClick={() => setShowParentEvent(true)}
+              >
                 <img
                   style={{ paddingRight: "6px" }}
                   src={require("../../../../../assets/images/svg/auxSucess.svg")}
@@ -206,7 +225,11 @@ const Sample = (props) => {
                 <option>4</option>
                 <option>5</option>
               </SuperInput>
-              <div className="auxSucessText" style={{ paddingTop: "20px" }}>
+              <div
+                className="auxSucessText"
+                style={{ paddingTop: "20px" }}
+                onClick={() => setShowNewCategory(true)}
+              >
                 + cadastrar nova categoria
               </div>
             </FormGroup>
@@ -218,7 +241,11 @@ const Sample = (props) => {
                 placeholder="Digite ou selecione o cliente/contratante"
                 id="exampleSelect"
               />
-              <div className="auxSucessText" style={{ paddingTop: "20px" }}>
+              <div
+                className="auxSucessText"
+                style={{ paddingTop: "20px" }}
+                onClick={() => setShowCompany(true)}
+              >
                 + cadastrar nova empresa ou contratante
               </div>
             </FormGroup>
@@ -296,7 +323,7 @@ const Sample = (props) => {
                 <Label className="fieldLabel" for="exampleFile">
                   Imagem principal do evento (jpg ou png)
                   <FormText className="greyNormalText">
-                   Resolução: 500x500
+                    Resolução: 500x500
                   </FormText>
                 </Label>
                 <SuperInput
@@ -382,9 +409,9 @@ const Sample = (props) => {
                 Voltar{" "}
               </Button>
             </div>
-            <Button variant="dark" onClick={nextStep}>
+            <SuperButton style={{width: "278px"}} onClick={nextStep}>
               Avançar para Setor e ingresso
-            </Button>
+            </SuperButton>
           </div>
         </Col>
       </Container>

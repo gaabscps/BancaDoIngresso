@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import { Container, Col } from "reactstrap";
 import { Button} from "react-bootstrap";
 import { useHistory } from "react-router-dom";
+import SuperButton from "../../../../sharedComponents/SuperButton";
 
 const Sample = (props) => {
   const history = useHistory();
@@ -36,9 +37,9 @@ const Sample = (props) => {
                 Voltar
               </Button>
             </div>
-            <Button variant="dark" onClick={nextStep}>
+            <SuperButton style={{width: "278px"}} onClick={nextStep}>
               Finalizar cadastro do evento
-            </Button>
+            </SuperButton>
           </div>
         </Col>
       </Container>

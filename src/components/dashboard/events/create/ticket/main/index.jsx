@@ -5,10 +5,15 @@ import { Button, ButtonGroup } from "react-bootstrap";
 import SuperInput from "../../../../../sharedComponents/SuperInput";
 import SuperCollapse from "../../../../../sharedComponents/SuperCollapse";
 import DoubleTicketIcon from "../../../../../../assets/images/svg/DoubleTicket";
+import NewSector from "../../../../../modal/NewSector";
+import BackOnTop from "../../../../../sharedComponents/BackOnTop";
 
 const Sample = (props) => {
+  const [showNewSector, setShowNewSector] = useState(false);
+
   return (
     <Fragment>
+      <NewSector show={showNewSector} setShowNewSector={setShowNewSector} />
       <Container className="subContainer" fluid={true}>
         <hr className="dividerUp" />
         <FormGroup>
@@ -21,7 +26,7 @@ const Sample = (props) => {
               placeholder="Digite ou selecione o nome do setor"
               name="email"
             ></SuperInput>
-            <div className="auxSucessText" style={{ paddingTop: "20px" }}>
+            <div className="auxSucessText" style={{ paddingTop: "20px" }} onClick={() => setShowNewSector(true)}>
               + cadastrar novo setor
             </div>
           </div>
@@ -373,6 +378,9 @@ const Sample = (props) => {
             />
           </div>
           <div className="nextPageButton" style={{ marginTop: "50px" }}>
+            <div style={{marginRight: "25px", paddingTop: "5px"}}>
+              <BackOnTop />
+            </div>
             <div style={{ color: "#fff" }}>
               <Button
                 style={{
@@ -382,7 +390,7 @@ const Sample = (props) => {
                 }}
                 variant="outline-light"
               >
-                <div className="greyNormalText">Adicionar ingresso</div>
+                <div className="greyNormalText">Próxima etapa</div>
               </Button>
             </div>
           </div>

@@ -5,6 +5,7 @@ import SuperInput from "../../../../../sharedComponents/SuperInput";
 import DiscountTicket from "../../../../../modal/DiscountTicket";
 import TicketIcon from "../../../../../../assets/images/svg/Ticket";
 import SuperCollapse from "../../../../../sharedComponents/SuperCollapse";
+import BackOnTop from "../../../../../sharedComponents/BackOnTop";
 
 const Sample = (props) => {
   const [show, setShow] = useState(false);
@@ -14,35 +15,35 @@ const Sample = (props) => {
       <DiscountTicket show={show} setShow={setShow} />
       <Container className="subContainer" fluid={true}>
         <hr className="divider" />
-        <FormGroup style={{marginTop: "50px"}}>
+        <FormGroup style={{ marginTop: "50px" }}>
           <div className="fieldSpacing">
             <Label className="fieldLabel">Gateway Pagamento POS</Label>
             <div classname="checkFieldSpacing" check>
-              <Input type="checkbox" />
+              <Input type="radio" />
               <Label check className="checkLabel">
                 Paypal
               </Label>
             </div>
             <div classname="checkFieldSpacing" check>
-              <Input type="checkbox" />
+              <Input type="radio" />
               <Label check className="checkLabel">
                 Pagseguro
               </Label>
             </div>
             <div classname="checkFieldSpacing" check>
-              <Input type="checkbox" />
+              <Input type="radio" />
               <Label check className="checkLabel">
                 Picpay
               </Label>
             </div>
             <div classname="checkFieldSpacing" check>
-              <Input type="checkbox" />
+              <Input type="radio" />
               <Label check className="checkLabel">
                 Rico
               </Label>
             </div>
             <div classname="checkFieldSpacing" check>
-              <Input type="checkbox" />
+              <Input type="radio" />
               <Label check className="checkLabel">
                 Ricopay
               </Label>
@@ -257,9 +258,9 @@ const Sample = (props) => {
           </div>
           <div className="secondPageTitle">Taxas de cartão</div>
           <img
-              src={require("../../../../../../assets/images/svg/titleLine.svg")}
-              style={{ paddingTop: "-40px", marginBottom: "25px" }}
-            />
+            src={require("../../../../../../assets/images/svg/titleLine.svg")}
+            style={{ paddingTop: "-40px", marginBottom: "25px" }}
+          />
           <div className="pageSubTitle">Venda física</div>
           <div className="groupButton">
             <Label className="fieldLabel">Permitir venda com cartão?</Label>
@@ -339,9 +340,7 @@ const Sample = (props) => {
                 type="number"
               />
             </div>
-            <div className="fieldSpacing">
-              +
-            </div>
+            <div className="fieldSpacing">+</div>
             <div className="fieldSpacing">
               <Label className="fieldLabel" for="exampleNumber">
                 Juros ao mês
@@ -487,19 +486,25 @@ const Sample = (props) => {
                 Não
               </Button>
             </ButtonGroup>
-            <div className="auxSucessText" style={{ paddingTop: "20px" }} onClick={() => setShow(true)}>
+            <div
+              className="auxSucessText"
+              style={{ paddingTop: "20px" }}
+              onClick={() => setShow(true)}
+            >
               + adicionar cupom de desconto
             </div>
-            <div style={{marginTop: "50px"}}>
-
-            <SuperCollapse
-              title="Cupons de desconto adicionados"
-              content="Nenhum cupom de desconto foi adicionado. Aqui será exibida uma lista dos seus cupons adicionados"
-              leftIcon={TicketIcon}
-            />
-          </div>
+            <div style={{ marginTop: "50px" }}>
+              <SuperCollapse
+                title="Cupons de desconto adicionados"
+                content="Nenhum cupom de desconto foi adicionado. Aqui será exibida uma lista dos seus cupons adicionados"
+                leftIcon={TicketIcon}
+              />
+            </div>
           </div>
           <div className="nextPageButton">
+            <div style={{ marginRight: "25px", paddingTop: "5px" }}>
+              <BackOnTop />
+            </div>
             <div style={{ color: "#fff" }}>
               <Button
                 style={{
@@ -509,7 +514,7 @@ const Sample = (props) => {
                 }}
                 variant="outline-light"
               >
-                <div className="greyNormalText">Adicionar ingresso</div>
+                <div className="greyNormalText">Próxima etapa</div>
               </Button>
             </div>
           </div>

@@ -89,21 +89,46 @@ const Sample = (props) => {
               </div>
               <div className="infoContainer">
                 <div className="d-flex justify-content-around">
-                  <Button variant="outline-light" onClick={() => setStep(0)}>
-                    <div className="buttonText">Cadastro de grupos</div>
-                  </Button>
-                  <Button variant="outline-light" onClick={() => setStep(1)}>
-                    <div className="buttonText">Cadastro de produtos</div>
-                  </Button>
-                  <Button variant="outline-light" onClick={() => setStep(2)}>
-                    <div className="buttonText">Cadastro de combos</div>
-                  </Button>
-                  <Button variant="outline-light" onClick={() => setStep(3)}>
-                    <div className="buttonText">Cadastro de setores</div>
-                  </Button>
-                  <Button variant="outline-light" onClick={() => setStep(4)}>
-                    <div className="buttonText">Canfigurações de POS</div>
-                  </Button>
+                  <button
+                    className={
+                      step === 0 ? "tabButtonActive" : "tabButtonDesactive"
+                    }
+                    onClick={() => setStep(0)}
+                  >
+                    <div className="textButtonsTab">Cadastro de grupos</div>
+                  </button>
+                  <button
+                    className={
+                      step === 1 ? "tabButtonActive" : "tabButtonDesactive"
+                    }
+                    onClick={() => setStep(1)}
+                  >
+                    <div className="textButtonsTab">Cadastro de produtos</div>
+                  </button>
+                  <button
+                    className={
+                      step === 2 ? "tabButtonActive" : "tabButtonDesactive"
+                    }
+                    onClick={() => setStep(2)}
+                  >
+                    <div className="textButtonsTab">Cadastro de combos</div>
+                  </button>
+                  <button
+                    className={
+                      step === 3 ? "tabButtonActive" : "tabButtonDesactive"
+                    }
+                    onClick={() => setStep(3)}
+                  >
+                    <div className="textButtonsTab">Cadastro de setores</div>
+                  </button>
+                  <button
+                    className={
+                      step === 4 ? "tabButtonActive" : "tabButtonDesactive"
+                    }
+                    onClick={() => setStep(4)}
+                  >
+                    <div className="textButtonsTab">Canfigurações de POS</div>
+                  </button>
                 </div>
                 <ShowInformation />
               </div>
@@ -121,9 +146,9 @@ const Sample = (props) => {
                 Voltar
               </Button>
             </div>
-            <Button variant="dark" onClick={nextStep}>
+            <SuperButton style={{width: "278px"}} onClick={nextStep}>
               Avançar para PDV
-            </Button>
+            </SuperButton>
           </div>
         </Col>
       </Container>

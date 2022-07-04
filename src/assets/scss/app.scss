@@ -56,6 +56,15 @@
   color: #222222 !important;
 }
 
+.forgotPasswordLabel {
+  text-decoration: none !important;
+  font-family: 'Poppins' !important;
+  font-weight: 700 !important;
+  font-size: 28px !important;
+  line-height: 42px !important;
+  color: #222222 !important;
+}
+
 .normalText {
     font-family: 'Poppins', sans-serif;
     font-weight: 400 !important;
@@ -80,6 +89,14 @@
     line-height: 24px !important;
     color: #222222 !important;
 }
+.textButtonsTab {
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 500 !important;
+    font-size: 16px !important;
+    line-height: 24px !important;
+    color: #050100 !important;
+}
 
 .greyNormalText {
     font-family: 'Poppins', sans-serif;
@@ -94,6 +111,7 @@
     font-weight: 400 !important;
     font-size: 16px !important;
     line-height: 24px !important;
+    cursor: pointer !important;
 }
 
 .auxGrayText {
@@ -138,13 +156,21 @@
   color: #828282 !important;
 }
 
-.loginFormText {
+.loginFormLabel {
   font-family: 'Poppins' !important;
   font-style: normal !important;
   font-weight: 500 !important;
   font-size: 16px !important;
   color: #828282 !important;
   margin-bottom: 15px !important;
+}
+
+.loginFormText{
+  font-family: 'Poppins' !important;
+  font-style: normal !important;
+  font-weight: 500 !important;
+  font-size: 21px !important;
+  color: #f1f1f1 !important;
 }
 
 .checkLabel {
@@ -159,6 +185,42 @@
 .fieldSpacing {
     padding-bottom: 50px !important;
     padding-right: 30px !important;
+}
+
+.mainButton {
+  width: 592px !important;
+  height: 64px !important;
+  border-radius: 5px !important;
+}
+.tabButton {
+  width: 592px !important;
+  height: 64px !important;
+  border-radius: 5px !important;
+}
+
+.tabButtonActive {
+  width: 270px !important;
+  height: 64px !important;
+  background-color: transparent !important;
+  border-left: 0;
+  border-right: 0;
+  border-top: 0;
+  transition: 0.1s;
+  border-bottom-style: solid !important;
+  border-bottom-width: 3px !important;
+  border-bottom-color: black !important;
+}
+
+.ordinaryButton {
+  background-color: #222222;
+  border-radius: 5px;
+}
+
+.tabButtonDesactive {
+  width: 270px !important;
+  height: 64px !important;
+  background-color: transparent !important;
+  border-color: transparent !important;
 }
 
 .checkFieldSpacing {
@@ -266,6 +328,8 @@
     height: 223px;
     border-radius: 10px;
     display: inline-block;
+    margin-right: 60px;
+    margin-bottom: 30px;
   }
 
   .actionCard {
@@ -322,7 +386,7 @@
   }
   
   .campoFoto {
-    width: 99px;
+    min-width: 99px;
     height: 83px;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
@@ -354,33 +418,39 @@
   }
   
   .campoStatus {
-    width: 4px;
+    min-width: 4px;
+    max-width: 4px;
     height: 83px;
     background-color: #7AD81B;
   }
   .campoNome {
-    width: 400px;
+    min-width: 400px;
+    max-width: 400px;
     height: 83px;
     align-items: center;
   }
   .campoCidade {
-    width: 180px;
+    min-width: 180px;
+    max-width: 180px;
     height: 83px;
   }
   
   .campoData {
-    width: 182px;
+    min-width: 182px;
+    max-width: 182px;
     height: 83px;
   }
   .campoAção {
-    width: 144px;
+    min-width: 144px;
+    max-width: 144px;
     height: 83px;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
   }
 
   .celulaNome {
-    width: 236px;
+    min-width: 236px;
+    max-width: 236px;
     margin-top: 32px; 
     margin-bottom: 32px; 
     margin-left: 22px; 
@@ -390,7 +460,8 @@
     white-space: nowrap; 
   }
   .celulaCidade {
-    width: 180px;
+    min-width: 180px;
+    max-width: 180px;
     margin-top: 32px; 
     // margin-bottom: 32px; 
     white-space: nowrap; 
@@ -405,7 +476,8 @@
   }
   
   .celulaAção {
-    width: 110px;
+    min-width: 110px;
+    max-width: 110px;
     margin-top: 32px; 
     margin-bottom: 32px; 
     position: absolute;

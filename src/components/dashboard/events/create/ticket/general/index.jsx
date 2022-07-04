@@ -3,13 +3,14 @@ import { Container, Row, Col, Card, Input, FormGroup, Label } from "reactstrap";
 import { Button, ButtonGroup } from "react-bootstrap";
 import SuperButton from "../../../../../sharedComponents/SuperButton";
 import SuperInput from "../../../../../sharedComponents/SuperInput";
+import BackOnTop from "../../../../../sharedComponents/BackOnTop";
 
 const Sample = (props) => {
   return (
     <Fragment>
       <Container className="subContainer" fluid={true}>
         <hr className="divider" />
-        <div className="groupButton" style={{marginTop: "50px"}}>
+        <div className="groupButton" style={{ marginTop: "50px" }}>
           <Label className="fieldLabel">Enviar ingresso por WhatsApp?</Label>
           <ButtonGroup style={{ width: "100px" }}>
             <Button
@@ -157,6 +158,9 @@ const Sample = (props) => {
           </SuperInput>
         </FormGroup>
         <div className="nextPageButton" style={{ marginTop: "50px" }}>
+          <div style={{ marginRight: "25px", paddingTop: "5px" }}>
+            <BackOnTop />
+          </div>
           <div style={{ color: "#fff" }}>
             <Button
               style={{

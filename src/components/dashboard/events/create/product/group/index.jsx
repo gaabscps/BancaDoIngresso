@@ -2,6 +2,7 @@ import React, { Fragment, useState } from "react";
 import { Button } from "react-bootstrap";
 import { Container, FormGroup, Label } from "reactstrap";
 import BottleIcon from "../../../../../../assets/images/svg/Bottle";
+import RemoveX from "../../../../../../assets/images/svg/RemoveX";
 import SuperCollapse from "../../../../../sharedComponents/SuperCollapse";
 
 import SuperInput from "../../../../../sharedComponents/SuperInput";
@@ -26,6 +27,12 @@ const Sample = (props) => {
 
   const handleAddFields = () => {
     setInputFields([...inputFields, { groupName: "" }]);
+  };
+
+  const handleDeleteFields = (index) => {
+    const values = [...inputFields];
+    values.splice(index, 1);
+    setInputFields(values);
   };
 
   return (
@@ -77,7 +84,22 @@ const Sample = (props) => {
                     />
                   </div>
                 </div>
-                <div style={{ color: "#fff", marginTop: "55px" }}>
+
+                <div
+                  style={{ color: "#fff", marginTop: "55px" }}
+                  className="d-flex"
+                >
+                  <div
+                    style={{
+                      height: "50px",
+                      cursor: "pointer",
+                      paddingTop: "15px",
+                      marginRight: "25px",
+                    }}
+                    onClick={() => handleDeleteFields(index)}
+                  >
+                    <RemoveX />
+                  </div>
                   <Button
                     style={{ height: "50px" }}
                     variant="outline-light"
@@ -87,7 +109,6 @@ const Sample = (props) => {
                   </Button>
                 </div>
               </div>
-              
             ))}
           </FormGroup>
           <div className="nextPageButton">
@@ -100,13 +121,13 @@ const Sample = (props) => {
             </div>
           </div>
         </div>
-          <div style={{marginTop: "50px"}}>
-            <SuperCollapse
-              title="Grupos cadastrados"
-              content="Nenhum grupo foi cadastrado. Aqui será exibida uma lista dos seus grupos cadastrados"
-              leftIcon={BottleIcon}
-            />
-          </div>
+        <div style={{ marginTop: "50px" }}>
+          <SuperCollapse
+            title="Grupos cadastrados"
+            content="Nenhum grupo foi cadastrado. Aqui será exibida uma lista dos seus grupos cadastrados"
+            leftIcon={BottleIcon}
+          />
+        </div>
       </Container>
     </Fragment>
   );

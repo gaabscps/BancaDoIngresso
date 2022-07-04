@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { Card, Col, Container, FormGroup, Label, Row } from "reactstrap";
+import CloseModal from "../../assets/images/svg/CloseModal";
 import SuperInput from "../sharedComponents/SuperInput";
 
 const DiscountTicket = ({ show, setShow }) => {
@@ -13,13 +14,16 @@ const DiscountTicket = ({ show, setShow }) => {
         onHide={() => setShow(false)}
         aria-labelledby="example-custom-modal-styling-title"
       >
-        <Modal.Header closeButton>
+        <Modal.Header>
           <Modal.Title
             id="example-custom-modal-styling-title"
             className="pageTitle"
           >
             Configurações do produto
           </Modal.Title>
+          <div onClick={() => {handleClose()}} style={{cursor: "pointer"}}>
+          <CloseModal />
+        </div>
         </Modal.Header>
         <Modal.Body>
           <Container>
