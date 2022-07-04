@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { Col, Form, FormGroup, Input, Label, Button } from "reactstrap";
 import { translate, setLanguage } from "react-switch-lang";
@@ -7,6 +7,7 @@ import { IS_LOADING, ADD_USER } from "../../../redux/actionTypes";
 import {
   setAuthLocalStorage,
   isAuthenticated,
+  getLocalStorage,
 } from "../../../helpers/localStorage";
 import { useHistory } from "react-router";
 
@@ -14,6 +15,7 @@ import api from "../../../services/api";
 
 import Loader from "../../../layout/loader";
 import { cpfMask } from "../../../utils/input-mask";
+import { setAuthSessionStorage } from "../../../helpers/sessionStorage ";
 
 const baseUrl = process.env.REACT_APP_BASE_URL;
 const prefixBaseUrl = process.env.REACT_APP_SUFFIX_BASE_URL;
@@ -24,6 +26,7 @@ const Login = (props) => {
   const [togglePassword, setTogglePassword] = useState(false);
   const [values, setValues] = useState({ cpf: "" });
   const [form, setForm] = useState({});
+  const [isCheck, setIsCheck] = useState(false);
   const [errors, setErrors] = useState({
     username: false,
     password: false,
@@ -36,7 +39,11 @@ const Login = (props) => {
   };
 
   useEffect(() => {
-    if (isAuthenticated()) {
+    if (getLocalStorage("token")) {
+      setAuthSessionStorage({
+        token: getLocalStorage("token"),
+        user: getLocalStorage("user"),
+      });
       history.push("/dashboard/admin");
     }
   }, [cookies, history]);
@@ -68,25 +75,20 @@ const Login = (props) => {
           },
         }
       );
-      // const userData = await api.get(
-      //   url + "/client/" + result.data.user.id,
-      //   {
-      //     headers: {
-      //       Authorization: `Bearer ${result.data.token}`,
-      //     },
-      //   }
-      //   )
-      // console.log("ID", userData);
       const {
         data: { token, user },
       } = result;
-      const localStorage = {
+      const storage = {
         token,
         user,
       };
-      setAuthLocalStorage(localStorage);
+      if (isCheck) {
+        setAuthLocalStorage(storage);
+      }
+      setAuthSessionStorage(storage);
+      console.log("Check:", isCheck);
 
-      window.location.href = "/";
+      history.push("/dashboard/admin");
     } catch (error) {
     } finally {
       dispatch({
@@ -129,7 +131,7 @@ const Login = (props) => {
               </div>
               <div className="form-row ">
                 <Col className="loginField">
-                  <Label className="loginFormText">
+                  <Label className="loginFormLabel">
                     <img
                       className="mr-2"
                       src={require("../../../assets/images/svg/idCard.svg")}
@@ -140,7 +142,7 @@ const Login = (props) => {
                     name="username"
                     className="form-control loginForm"
                     required=""
-                    placeholder="123.456.789-00"
+                    placeholder="Digite seu CPF"
                     value={form?.username ? cpfMask(form?.username) : ""}
                     onChange={handleChange}
                     isValid={!errors.username}
@@ -152,7 +154,7 @@ const Login = (props) => {
                   <div className="valid-feedback">{"Looks good!"}</div>
                 </Col>
                 <Col>
-                  <Label className="loginFormText">
+                  <Label className="loginFormLabel">
                     <img
                       className="mr-2"
                       src={require("../../../assets/images/svg/loginLock.svg")}
@@ -163,7 +165,7 @@ const Login = (props) => {
                     className="form-control loginForm"
                     type={togglePassword ? "text" : "password"}
                     required=""
-                    placeholder="1234567"
+                    placeholder="Digite sua senha"
                     name="password"
                     value={form?.password || ""}
                     onChange={handleChange}
@@ -185,18 +187,23 @@ const Login = (props) => {
               </div>
               <FormGroup className="d-flex justify-content-between align-items-center mb-2">
                 <div className="checkbox ml-3" style={{ marginTop: "25px" }}>
-                  <Input id="checkbox1" type="checkbox" />
-                  <Label className="loginFormText" for="checkbox1">
-                    Lembrar senha
+                  <Input
+                    id="checkbox1"
+                    type="checkbox"
+                    onChange={() => setIsCheck(!isCheck)}
+                  />
+                  <Label className="loginFormLabel" for="checkbox1">
+                    Mantenha-me conectado
                   </Label>
                 </div>
               </FormGroup>
               <Button
-                color="primary"
-                className="btn-block loginForm"
+                className="mainButton"
                 style={{ marginTop: "60px" }}
               >
-                Entrar
+                <div className="loginFormText">
+                 Entrar
+                </div>
               </Button>
               <div className="d-flex justify-content-center align-items-center forgotPassword">
                 <a
@@ -204,7 +211,7 @@ const Login = (props) => {
                   className="link"
                   href="#javascript"
                 >
-                  Esqueceu a senha?
+                  Esqueceu a sua senha?
                 </a>
               </div>
             </Form>

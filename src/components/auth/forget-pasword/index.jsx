@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {  Form, FormGroup, Button } from "reactstrap";
+import { Form, FormGroup, Button } from "reactstrap";
 import { translate, setLanguage } from "react-switch-lang";
 import { useHistory } from "react-router";
 import Cookies from "universal-cookie";
@@ -18,7 +18,7 @@ import Loader from "../../../layout/loader";
 
 import { IS_LOADING } from "../../../redux/actionTypes";
 
-import EmailComponent from "./steps/email";
+import CpfComponent from "./steps/cpf";
 import CodeComponent from "./steps/code";
 import PasswordComponent from "./steps/password";
 import SuccessComponent from "./steps/success";
@@ -36,9 +36,9 @@ const ForgetPassword = (props) => {
     "Sua nova senha deve ser diferente de uma senha anterior",
   ]);
   const [labelButton, setLabelButton] = useState([
-    "Enviar Código",
-    "Confirmar",
-    "Finalizar",
+    "Enviar link de recuperação",
+    "Ir para a página de entrada",
+    "Alterar a minha senha",
   ]);
   const [form, setForm] = useState({});
   const [step, setStep] = useState(0);
@@ -47,6 +47,10 @@ const ForgetPassword = (props) => {
 
   const loading = useSelector((content) => content.General?.loading);
 
+  const goBack = () => {
+    history.push("/");
+  };
+
   const handleForm = ({ currentTarget: { value, name } }) => {
     setForm({
       ...form,
@@ -54,7 +58,7 @@ const ForgetPassword = (props) => {
     });
   };
 
-  const handleEmail = async () => {
+  const handleCpf = async () => {
     try {
       dispatch({
         type: IS_LOADING,
@@ -64,11 +68,11 @@ const ForgetPassword = (props) => {
       });
       const data = {
         user: {
-          email: form.email,
+          cpf: form.cpf,
         },
       };
 
-      const result = await api.post("/v1/adm/auth/recover_password", data);
+      const result = await api.post("/v1/adm/auth/recover-password", data);
       const {
         data: { confirmate_code },
       } = result;
@@ -185,7 +189,7 @@ const ForgetPassword = (props) => {
     e.preventDefault();
     switch (step) {
       case 0:
-        handleEmail();
+        handleCpf();
         break;
       case 1:
         handleCode();
@@ -200,37 +204,52 @@ const ForgetPassword = (props) => {
     if (isAuthenticated()) {
       history.push("/dashboard/admin");
     }
-    
-  }, [ history]);
+  }, [history]);
 
   return (
     <>
       <Loader />
-        <div className="login-card">
-          <div>
-            <div className="login-main login-tab">
-              <a className="logo text-center" href="#javascript">
-                <img
+      <div className="login-card" style={{ padding: "75px" }}>
+        <div>
+          <div className="login-main login-tab">
+            <a className="logo text-center">
+              <img
                 className="img-fluid for-light"
                 src={require("../../../assets/images/logo/logoBanca.png")}
                 alt="looginpage"
-                />
-              </a>
-              <Form
-                className="theme-form"
-                onSubmit={loading ? () => {} : handleStep}
-              >
+              />
+            </a>
+            <Form
+              className="theme-form "
+              onSubmit={loading ? () => {} : handleStep}
+            >
+              <div style={{ display: "grid", justifyContent: "center" }}>
                 {step !== 3 && (
                   <>
-                    <h5 className="text-center mb-2 f-w-100">
-                      Passo {step + 1} de 3
-                    </h5>
-                    <h4>Esqueceu sua senha?</h4>
-                    <p>{titles[step]}</p>
+                    <div style={{ display: "-webkit-box" }}>
+                      <img
+                        src={require("../../../assets/images/svg/goBackArrow.svg")}
+                        style={{
+                          paddingRight: "25px",
+                          paddingTop: "10px",
+                          cursor: "pointer",
+                        }}
+                        onClick={goBack}
+                      />
+                      <div style={{ display: "grid" }}>
+                        <h4 className="forgotPasswordLabel">
+                          Esqueceu sua senha?
+                        </h4>
+                      </div>
+                    </div>
+                    <p style={{ width: "450px" }} className="subTitleMain">
+                      Digite abaixo o seu CPF para receber o link de recuperação
+                      de senha em seu e-mail cadastrado
+                    </p>
                   </>
                 )}
                 {step === 0 && (
-                  <EmailComponent form={form} handleForm={handleForm} />
+                  <CpfComponent form={form} handleForm={handleForm} />
                 )}
                 {step === 1 && (
                   <CodeComponent form={form} handleForm={handleForm} />
@@ -241,35 +260,39 @@ const ForgetPassword = (props) => {
                 {step === 3 && <SuccessComponent />}
                 {step !== 3 && (
                   <FormGroup className="mb-0 mt-4">
-                    <Button color="primary" className="btn-block">
-                      {labelButton[step]}
+                    <Button
+                      color="primary"
+                      className="btn-block mainButton"
+                      style={{ marginTop: "200px" }}
+                    >
+                      <div className="loginFormText">{labelButton[step]}</div>
                     </Button>
-                    {step === 0 && (
-                      <Button
-                        onClick={() => history.push("/")}
-                        color="primary"
-                        outline
-                        className="btn-block"
-                      >
-                        Voltar
-                      </Button>
-                    )}
+                    {/* {step === 0 && (
+                    <Button
+                      onClick={() => history.push("/")}
+                      color="primary"
+                      outline
+                      className="btn-block"
+                    >
+                      Voltar
+                    </Button>
+                  )} */}
                     {step !== 0 && (
                       <Button
                         onClick={() => setStep(0)}
-                        color="primary"
-                        outline
-                        className="btn-block"
+                        style={{ color: "#B2140C", backgroundColor: "#B2140C" }}
+                        // className="btn-block"
                       >
-                        Início
+                        <div className="loginFormText">Início</div>
                       </Button>
                     )}
                   </FormGroup>
                 )}
-              </Form>
-            </div>
+              </div>
+            </Form>
           </div>
         </div>
+      </div>
     </>
   );
 };

@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
 
-import { isAuthenticated } from "../helpers/localStorage";
+import { isAuthenticated } from "../helpers/sessionStorage ";
 
 const PrivateRoute = ({ component: Component, child: Child, ...rest }) => {
   return (

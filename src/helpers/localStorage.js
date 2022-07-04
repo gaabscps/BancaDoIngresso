@@ -10,18 +10,18 @@ export const addToLocalStorage = (key, value) => {
 };
 
 export const isAuthenticated = () =>
-  Boolean(getLocalStorage(process.env.REACT_APP_USER));
+  Boolean(getLocalStorage("user"));
 
 export const setAuthLocalStorage = ({ token, user }) => {
   if (token && user) {
-    addToLocalStorage(process.env.REACT_APP_AUTH, token);
-    addToLocalStorage(process.env.REACT_APP_USER, JSON.stringify(user));
+    addToLocalStorage( "token", token);
+    addToLocalStorage("user", JSON.stringify(user));
   }
 };
 
 export const removeAuthLocalStorage = () => {
-  localStorage.removeItem(process.env.REACT_APP_AUTH);
-  localStorage.removeItem(process.env.REACT_APP_USER);
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
 };
 
 export const removeLocalStorage = (key) => localStorage.removeItem(key);
