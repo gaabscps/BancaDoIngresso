@@ -224,30 +224,6 @@ const ForgetPassword = (props) => {
               onSubmit={loading ? () => {} : handleStep}
             >
               <div style={{ display: "grid", justifyContent: "center" }}>
-                {step !== 3 && (
-                  <>
-                    <div style={{ display: "-webkit-box" }}>
-                      <img
-                        src={require("../../../assets/images/svg/goBackArrow.svg")}
-                        style={{
-                          paddingRight: "25px",
-                          paddingTop: "10px",
-                          cursor: "pointer",
-                        }}
-                        onClick={goBack}
-                      />
-                      <div style={{ display: "grid" }}>
-                        <h4 className="forgotPasswordLabel">
-                          Esqueceu sua senha?
-                        </h4>
-                      </div>
-                    </div>
-                    <p style={{ width: "450px" }} className="subTitleMain">
-                      Digite abaixo o seu CPF para receber o link de recuperação
-                      de senha em seu e-mail cadastrado
-                    </p>
-                  </>
-                )}
                 {step === 0 && (
                   <CpfComponent form={form} handleForm={handleForm} />
                 )}
@@ -260,13 +236,7 @@ const ForgetPassword = (props) => {
                 {step === 3 && <SuccessComponent />}
                 {step !== 3 && (
                   <FormGroup className="mb-0 mt-4">
-                    <Button
-                      color="primary"
-                      className="btn-block mainButton"
-                      style={{ marginTop: "200px" }}
-                    >
-                      <div className="loginFormText">{labelButton[step]}</div>
-                    </Button>
+                   
                     {/* {step === 0 && (
                     <Button
                       onClick={() => history.push("/")}

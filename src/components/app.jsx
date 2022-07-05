@@ -41,7 +41,7 @@ const App = ({ children }) => {
         <Header />
         <div className="page-body-wrapper sidebar-icon">
           <Sidebar />
-          <div className="page-body">{children}</div>
+          <div className="page-body"  style={{minHeight: "100vh"}}>{children}</div>
           <Footer />
           {/* <ThemeCustomize /> */}
         </div>
