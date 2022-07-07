@@ -1,0 +1,127 @@
+import React, { Fragment, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Container, Col, Label } from 'reactstrap';
+import { Button, ButtonGroup } from 'react-bootstrap';
+import GroupInformation from './group/index';
+import ProductInformation from './product/index';
+import ComboInformation from './combo/index';
+import SectorInformation from './sector/index';
+import PosInformation from './pos/index';
+import step3 from '../../../../../assets/images/svg/stepByStep/step3.svg';
+import titleLine from '../../../../../assets/images/svg/titleLine.svg';
+
+const Sample = (): JSX.Element => {
+  const [step, setStep] = useState(0);
+  const [show, setShow] = useState(false);
+  const history = useNavigate();
+
+  const nextStep = (): void => {
+    history('/event/pdv');
+  };
+  const goBack = (): void => {
+    history(-1);
+  };
+
+  const ShowInformation = (): JSX.Element => {
+    let response: JSX.Element;
+    switch (step) {
+      case 0:
+        response = <GroupInformation />;
+        break;
+      case 1:
+        response = <ProductInformation />;
+        break;
+      case 2:
+        response = <ComboInformation />;
+        break;
+      case 3:
+        response = <SectorInformation />;
+        break;
+      case 4:
+        response = <PosInformation />;
+        break;
+      default:
+        response = <GroupInformation />;
+        break;
+    }
+    return response;
+  };
+
+  return (
+    <Fragment>
+      <Container className="mainContainer" fluid={true}>
+        <div className="d-flex justify-content-center stepContainer">
+          <img src={step3} alt="" />
+        </div>
+        <Col>
+          <div style={{ display: 'grid', paddingBottom: '50px' }}>
+            <div className="pageTitle">Setor e produto</div>
+            <img src={titleLine} style={{ paddingTop: '-20px' }} alt="" />
+          </div>
+          <div className="groupButton">
+            <Label className="fieldLabel">Este evento terá produtos?</Label>
+            <ButtonGroup style={{ width: '100px' }}>
+              <Button
+                variant="outline-dark"
+                style={{ height: '62px', width: '100px' }}
+                onClick={() => setShow(true)}
+              >
+                Sim
+              </Button>
+              <Button
+                variant="outline-dark"
+                style={{ height: '62px', width: '100px' }}
+                onClick={nextStep}
+              >
+                Não
+              </Button>
+            </ButtonGroup>
+          </div>
+          <hr className="dividerUp" />
+          {show ? (
+            <>
+              <div className="secondPageTitle">Adicionando setor e produto</div>
+              <div className="infoSubTitle">
+                Preencha as 5 (CINCO) etapas abaixo para adicionar um setor e produto
+              </div>
+              <div className="infoContainer">
+                <div className="d-flex justify-content-around">
+                  <Button variant="outline-light" onClick={() => setStep(0)}>
+                    <div className="buttonText">Cadastro de grupos</div>
+                  </Button>
+                  <Button variant="outline-light" onClick={() => setStep(1)}>
+                    <div className="buttonText">Cadastro de produtos</div>
+                  </Button>
+                  <Button variant="outline-light" onClick={() => setStep(2)}>
+                    <div className="buttonText">Cadastro de combos</div>
+                  </Button>
+                  <Button variant="outline-light" onClick={() => setStep(3)}>
+                    <div className="buttonText">Cadastro de setores</div>
+                  </Button>
+                  <Button variant="outline-light" onClick={() => setStep(4)}>
+                    <div className="buttonText">Canfigurações de POS</div>
+                  </Button>
+                </div>
+                <ShowInformation />
+              </div>
+              <hr className="dividerDown" />
+            </>
+          ) : null}
+
+          <div className="nextPageButton">
+            <div style={{ color: '#fff' }}>
+              <Button style={{ height: '50px' }} variant="outline-light" onClick={goBack}>
+                Voltar
+              </Button>
+            </div>
+            <Button variant="dark" onClick={nextStep}>
+              Avançar para PDV
+            </Button>
+          </div>
+        </Col>
+      </Container>
+    </Fragment>
+  );
+};
+
+export default Sample;

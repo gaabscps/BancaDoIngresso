@@ -13,13 +13,10 @@
   }
 }
 
-
-
-// primary Color
-$m-val:13;
 $or: $primary-color;
 
-@while $m-val>=1 {
+//@while $m-val<=13 {
+@for $m-val from 1 through 13 {
   .primary-color ul li {
     &:nth-child(#{$m-val}) {
       $or: lighten($or, 1.5%);
@@ -34,7 +31,9 @@ $or: $primary-color;
         text-align: center;
       }
 
-      $m-val: $m-val - 1;
+      //@debug "Valor: #{$m-val}";
+
+      //$m-val: $m-val + 1;
     }
 
     &:last-child {
@@ -46,10 +45,11 @@ $or: $primary-color;
 //primary Color
 
 // secondary Color
-$m-val:13;
+//$m-val:13;
 $or: $secondary-color;
 
-@while $m-val>=1 {
+//@while $m-val>=1 {
+@for $m-val from 1 through 13 {
   .secondary-color ul li {
     &:nth-child(#{$m-val}) {
       $or: lighten($or, 3%);
@@ -64,7 +64,7 @@ $or: $secondary-color;
         text-align: center;
       }
 
-      $m-val: $m-val - 1;
+      //$m-val: $m-val - 1;
     }
 
     &:last-child {
@@ -76,10 +76,10 @@ $or: $secondary-color;
 //secondary Color
 
 //Success Color
-$m-val:13;
+//$m-val:13;
 $or:$success-color;
 
-@while $m-val>=1 {
+@for $m-val from 1 through 13 {
   .success-color ul li {
     &:nth-child(#{$m-val}) {
       $or: lighten($or, .9%);
@@ -94,7 +94,7 @@ $or:$success-color;
         text-align: center;
       }
 
-      $m-val: $m-val - 1;
+      //$m-val: $m-val - 1;
     }
 
     &:last-child {
@@ -106,10 +106,11 @@ $or:$success-color;
 //Success Color
 
 // Info Color
-$m-val:13;
+//$m-val:13;
 $or: $info-color;
 
-@while $m-val>=1 {
+//@while $m-val>=1 {
+@for $m-val from 1 through 13 {
   .info-color ul li {
     &:nth-child(#{$m-val}) {
       $or: lighten($or, 2.5%);
@@ -124,7 +125,7 @@ $or: $info-color;
         text-align: center;
       }
 
-      $m-val: $m-val - 1;
+      //$m-val: $m-val - 1;
     }
 
     &:last-child {
@@ -136,10 +137,11 @@ $or: $info-color;
 //Info Color
 
 // warning Color
-$m-val:13;
+//$m-val:1;
 $or: $warning-color;
 
-@while $m-val>=1 {
+//@while $m-val<=13 {
+@for $m-val from 1 through 13 {
   .yellow-color ul li {
     &:nth-child(#{$m-val}) {
       $or: lighten($or, 3%);
@@ -154,7 +156,8 @@ $or: $warning-color;
         text-align: center;
       }
 
-      $m-val: $m-val - 1;
+      //@debug "Valor: #{$m-val}";
+      //$m-val: $m-val + 1;
     }
 
     &:last-child {
@@ -166,10 +169,11 @@ $or: $warning-color;
 //warning Color
 
 //Danger Color
-$m-val:13;
+//$m-val:13;
 $or:$danger-color;
 
-@while $m-val>=1 {
+//@while $m-val>=1 {
+@for $m-val from 1 through 13 {
   .red-color ul li {
     &:nth-child(#{$m-val}) {
       $or: lighten($or, 2%);
@@ -184,7 +188,7 @@ $or:$danger-color;
         text-align: center;
       }
 
-      $m-val: $m-val - 1;
+      //$m-val: $m-val - 1;
     }
 
     &:last-child {
@@ -196,10 +200,11 @@ $or:$danger-color;
 //Danger Color
 
 //Pink Color
-$m-val:13;
+//$m-val:13;
 $or:#e6155e;
 
-@while $m-val>=1 {
+//@while $m-val>=1 {
+@for $m-val from 1 through 13 {
   .pink-color ul li {
     &:nth-child(#{$m-val}) {
       $or: lighten($or, 3%);
@@ -214,7 +219,7 @@ $or:#e6155e;
         text-align: center;
       }
 
-      $m-val: $m-val - 1;
+      //$m-val: $m-val - 1;
     }
 
     &:last-child {
@@ -227,10 +232,11 @@ $or:#e6155e;
 
 
 // Gray Color
-$m-val:13;
+//$m-val:13;
 $or: $dark-gray;
 
-@while $m-val>=1 {
+//@while $m-val>=1 {
+@for $m-val from 1 through 13 {  
   .gray-color ul li {
     &:nth-child(#{$m-val}) {
       $or: lighten($or, 3%);
@@ -245,7 +251,7 @@ $or: $dark-gray;
         text-align: center;
       }
 
-      $m-val: $m-val - 1;
+      //$m-val: $m-val - 1;
     }
 
     &:last-child {

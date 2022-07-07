@@ -1,15 +1,15 @@
 @import "~bootstrap-scss/bootstrap.scss";
-@import "color";
-@import "vendors/chartist/chartist";
+@import "color.scss";
+@import "vendors/chartist/_chartist.scss";
 @import "vendors/themify.scss";
 @import "vendors/whether-icon.scss";
 @import "vendors/icofont.scss";
 @import "vendors/flag-icon.scss";
-@import "vendors/icoicon/icons";
+@import "vendors/icoicon/_icons.scss";
 @import "vendors/fontawesome.scss";
-@import "vendors/animate/animate";
-@import "vendors/sticky/sticky";
-@import "vendors/todo/todo";
+@import "vendors/animate/_animate.scss";
+@import "vendors/sticky/_sticky.scss";
+@import "vendors/todo/_todo.scss";
 
 
 .mainContainer{
@@ -391,8 +391,7 @@
   }
   .celulaCidade {
     width: 180px;
-    margin-top: 32px; 
-    // margin-bottom: 32px; 
+    margin-top: 32px;
     white-space: nowrap; 
     overflow: hidden;
     text-overflow: ellipsis;
@@ -456,9 +455,6 @@
 .descriptionEvent{
   margin-top: 103px !important;
   border-radius: 10px !important;
-  // border: solid !important;
-  // border-width: 1px !important;
-  // border-color: black !important;
   position: absolute !important;
   width: 334px !important;
   height: 120px !important;
