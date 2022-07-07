@@ -6,48 +6,45 @@ import DiscountTicket from '../../../../../modal/DiscountTicket';
 import TicketIcon from '../../../../../../assets/images/svg/Ticket';
 import SuperCollapse from '../../../../../sharedComponents/SuperCollapse';
 import titleLine from '../../../../../../assets/images/svg/titleLine.svg';
+import BackOnTop from '../../../../../sharedComponents/BackOnTop';
 
 const Sample = (): JSX.Element => {
   const [show, setShow] = useState(false);
 
-  const callShow = (b: boolean): void => {
-    setShow(b);
-  };
-
   return (
     <Fragment>
-      <DiscountTicket show={show} setShow={callShow} />
+      <DiscountTicket show={show} setShow={setShow} />
       <Container className="subContainer" fluid={true}>
         <hr className="divider" />
         <FormGroup style={{ marginTop: '50px' }}>
           <div className="fieldSpacing">
             <Label className="fieldLabel">Gateway Pagamento POS</Label>
             <div className="checkFieldSpacing">
-              <Input type="checkbox" />
+              <Input type="radio" />
               <Label check className="checkLabel">
                 Paypal
               </Label>
             </div>
             <div className="checkFieldSpacing">
-              <Input type="checkbox" />
+              <Input type="radio" />
               <Label check className="checkLabel">
                 Pagseguro
               </Label>
             </div>
             <div className="checkFieldSpacing">
-              <Input type="checkbox" />
+              <Input type="radio" />
               <Label check className="checkLabel">
                 Picpay
               </Label>
             </div>
             <div className="checkFieldSpacing">
-              <Input type="checkbox" />
+              <Input type="radio" />
               <Label check className="checkLabel">
                 Rico
               </Label>
             </div>
             <div className="checkFieldSpacing">
-              <Input type="checkbox" />
+              <Input type="radio" />
               <Label check className="checkLabel">
                 Ricopay
               </Label>
@@ -211,7 +208,7 @@ const Sample = (): JSX.Element => {
             </ButtonGroup>
           </div>
           <div className="secondPageTitle">Taxas de cartão</div>
-          <img src={titleLine} style={{ paddingTop: '-40px', marginBottom: '25px' }} alt="" />
+          <img src={titleLine} style={{ paddingTop: '-40px', marginBottom: '25px' }} />
           <div className="pageSubTitle">Venda física</div>
           <div className="groupButton">
             <Label className="fieldLabel">Permitir venda com cartão?</Label>
@@ -387,7 +384,7 @@ const Sample = (): JSX.Element => {
           </div>
           <div style={{ display: 'grid', paddingBottom: '40px' }}>
             <div className="pageTitle">Cupons e descontos</div>
-            <img src={titleLine} style={{ paddingTop: '-20px' }} alt="" />
+            <img src={titleLine} style={{ paddingTop: '-20px' }} />
           </div>
           <div className="groupButton">
             <Label className="fieldLabel">Permitir desconto?</Label>
@@ -426,6 +423,9 @@ const Sample = (): JSX.Element => {
             </div>
           </div>
           <div className="nextPageButton">
+            <div style={{ marginRight: '25px', paddingTop: '5px' }}>
+              <BackOnTop />
+            </div>
             <div style={{ color: '#fff' }}>
               <Button
                 style={{
@@ -435,7 +435,7 @@ const Sample = (): JSX.Element => {
                 }}
                 variant="outline-light"
               >
-                <div className="greyNormalText">Adicionar ingresso</div>
+                <div className="greyNormalText">Próxima etapa</div>
               </Button>
             </div>
           </div>

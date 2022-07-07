@@ -1,5 +1,6 @@
 import React, { ChangeEvent } from 'react';
-import { FormGroup, Label, Input } from 'reactstrap';
+import { FormGroup, Label, Input, Button } from 'reactstrap';
+import loginLock from '../../../../../assets/images/svg/loginLock.svg';
 
 interface ConfirmPassword {
   password: string;
@@ -17,30 +18,50 @@ type Props = StateProps & DispatchProps;
 
 const Password = (props: Props): JSX.Element => (
   <>
+    <div style={{ display: '-webkit-box' }}>
+      <div style={{ display: 'grid' }}>
+        <h4 className="forgotPasswordLabel">Defina a sua nova senha</h4>
+      </div>
+    </div>
+    <p style={{ width: '450px' }} className="subTitleMain">
+      Digite nos campos abaixo a sua nova senha
+    </p>
     <FormGroup>
-      <Label className="col-form-label">Senha</Label>
-      <Input
-        className="form-control"
-        type="password"
-        name="password"
-        required={true}
-        placeholder=""
-        onChange={props.handleForm}
-        value={props.form.password}
-      />
+      <div>
+        <Label className="col-form-label fieldLabel">
+          <img className="mr-2" src={loginLock} />
+          Sua nova senha
+        </Label>
+        <Input
+          name="username"
+          className="form-control loginForm"
+          required={true}
+          placeholder="Digite sua nova senha"
+          value={props.form?.password}
+          onChange={props.handleForm}
+        />
+        <div className="auxGrayText" style={{ marginTop: '15px' }}>
+          *A sua senha deve conter 6 dígitos numéricos*{' '}
+        </div>
+      </div>
+      <div style={{ marginTop: '30px' }}>
+        <Label className="col-form-label fieldLabel">
+          <img className="mr-2" src={loginLock} />
+          Confirme a sua nova senha
+        </Label>
+        <Input
+          name="username"
+          className="form-control loginForm"
+          required={true}
+          placeholder="Digite sua nova senha novamente"
+          value={props.form?.confirmPassword}
+          onChange={props.handleForm}
+        />
+      </div>
     </FormGroup>
-    <FormGroup>
-      <Label className="col-form-label">Confirme sua senha</Label>
-      <Input
-        className="form-control"
-        type="password"
-        name="confirmPassword"
-        required={true}
-        placeholder=""
-        onChange={props.handleForm}
-        value={props.form.confirmPassword}
-      />
-    </FormGroup>
+    <Button color="primary" className="btn-block mainButton" style={{ marginTop: '90px' }}>
+      <div className="loginFormText">Alterar a minha senha</div>
+    </Button>
   </>
 );
 

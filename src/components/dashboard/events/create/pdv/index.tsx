@@ -13,10 +13,14 @@ import PDVIcon from '../../../../../assets/images/svg/Pdv';
 import SuperCollapse from '../../../../sharedComponents/SuperCollapse';
 import step4 from '../../../../../assets/images/svg/stepByStep/step4.svg';
 import titleLine from '../../../../../assets/images/svg/titleLine.svg';
+import RegisterPdv from '../../../../modal/RegisterPdv';
+import SuperButton from '../../../../sharedComponents/SuperButton';
 
 const Sample = (): JSX.Element => {
   const [step, setStep] = useState(0);
   const [show, setShow] = useState(false);
+  const [showPdv, setShowPdv] = useState(false);
+
   const history = useNavigate();
 
   const nextStep = (): void => {
@@ -53,14 +57,16 @@ const Sample = (): JSX.Element => {
 
   return (
     <Fragment>
+      <RegisterPdv show={showPdv} setShowPdv={setShowPdv} />
+
       <Container className="mainContainer" fluid={true}>
         <div className="d-flex justify-content-center stepContainer">
-          <img src={step4} alt="" />
+          <img src={step4} />
         </div>
         <Col>
           <div style={{ display: 'grid', paddingBottom: '50px' }}>
             <div className="pageTitle">PDV</div>
-            <img src={titleLine} style={{ paddingTop: '-20px' }} alt="" />
+            <img src={titleLine} style={{ paddingTop: '-20px' }} />
           </div>
           <div className="groupButton">
             <Label className="fieldLabel">Permitir PDV?</Label>
@@ -96,7 +102,11 @@ const Sample = (): JSX.Element => {
                   PDV
                 </Label>
                 <SuperInput id="exampleNumber" placeholder="Digite ou selecione o PDV" />
-                <div className="auxSucessText" style={{ paddingTop: '20px' }}>
+                <div
+                  className="auxSucessText"
+                  style={{ paddingTop: '20px' }}
+                  onClick={() => setShowPdv(true)}
+                >
                   + cadastrar novo PDV
                 </div>
               </div>
@@ -186,21 +196,36 @@ const Sample = (): JSX.Element => {
               </div>
               <div className="infoContainer">
                 <div className="d-flex justify-content-around">
-                  <Button variant="outline-light" onClick={() => setStep(0)}>
+                  <button
+                    className={step === 0 ? 'tabButtonActive' : 'tabButtonDesactive'}
+                    onClick={() => setStep(0)}
+                  >
                     <div className="buttonText">Ingressos por PDV</div>
-                  </Button>
-                  <Button variant="outline-light" onClick={() => setStep(1)}>
+                  </button>
+                  <button
+                    className={step === 1 ? 'tabButtonActive' : 'tabButtonDesactive'}
+                    onClick={() => setStep(1)}
+                  >
                     <div className="buttonText">Inserir POS</div>
-                  </Button>
-                  <Button variant="outline-light" onClick={() => setStep(2)}>
+                  </button>
+                  <button
+                    className={step === 2 ? 'tabButtonActive' : 'tabButtonDesactive'}
+                    onClick={() => setStep(2)}
+                  >
                     <div className="buttonText">Inserir produtos</div>
-                  </Button>
-                  <Button variant="outline-light" onClick={() => setStep(3)}>
+                  </button>
+                  <button
+                    className={step === 3 ? 'tabButtonActive' : 'tabButtonDesactive'}
+                    onClick={() => setStep(3)}
+                  >
                     <div className="buttonText">Inserir usuários</div>
-                  </Button>
-                  <Button variant="outline-light" onClick={() => setStep(4)}>
+                  </button>
+                  <button
+                    className={step === 4 ? 'tabButtonActive' : 'tabButtonDesactive'}
+                    onClick={() => setStep(4)}
+                  >
                     <div className="buttonText">Cadastrar Sub PDV’s</div>
-                  </Button>
+                  </button>
                 </div>
                 <ShowInformation />
               </div>
@@ -214,9 +239,9 @@ const Sample = (): JSX.Element => {
                 Voltar
               </Button>
             </div>
-            <Button variant="dark" onClick={nextStep}>
+            <SuperButton style={{ width: '278px' }} onClick={nextStep}>
               Avançar para confirmação
-            </Button>
+            </SuperButton>
           </div>
         </Col>
       </Container>

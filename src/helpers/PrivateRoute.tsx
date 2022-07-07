@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navigate, RouteProps } from 'react-router-dom';
 
-import { isAuthenticated } from './localStorage';
+import { isAuthenticated } from './sessionStorage';
 
 interface Props extends RouteProps {
   component: (props: any) => JSX.Element;

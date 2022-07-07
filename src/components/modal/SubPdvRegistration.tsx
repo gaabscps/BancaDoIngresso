@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal, Button, ButtonGroup } from 'react-bootstrap';
 import { Card, Container, Label } from 'reactstrap';
+import CloseModal from '../../assets/images/svg/CloseModal';
 import SuperInput from '../sharedComponents/SuperInput';
 
 interface StateProps {
@@ -13,20 +14,29 @@ interface DispatchProps {
 type Props = StateProps & DispatchProps;
 
 const SubPdvRegistration = (props: Props): JSX.Element => {
+  const handleOpen = (): void => props.setShow(true);
   const handleClose = (): void => props.setShow(false);
   return (
     <>
       <Modal
         size={'xl'}
         show={props.show}
-        onHide={() => props.setShow(false)}
+        onHide={() => handleClose()}
         dialogClassName="modal-550px"
         aria-labelledby="example-custom-modal-styling-title"
       >
-        <Modal.Header closeButton>
+        <Modal.Header>
           <Modal.Title id="example-custom-modal-styling-title" className="pageTitle">
             Cadastrar novo Sub PDV
           </Modal.Title>
+          <div
+            onClick={() => {
+              handleClose();
+            }}
+            style={{ cursor: 'pointer' }}
+          >
+            <CloseModal />
+          </div>
         </Modal.Header>
         <Modal.Body>
           <Container>
@@ -43,7 +53,7 @@ const SubPdvRegistration = (props: Props): JSX.Element => {
                   <Button
                     variant="outline-dark"
                     style={{ height: '62px', width: '100px' }}
-                    onClick={() => props.setShow(true)}
+                    onClick={() => handleOpen()}
                   >
                     Sim
                   </Button>
@@ -58,7 +68,7 @@ const SubPdvRegistration = (props: Props): JSX.Element => {
                   <Button
                     variant="outline-dark"
                     style={{ height: '62px', width: '100px' }}
-                    onClick={() => props.setShow(true)}
+                    onClick={() => handleOpen()}
                   >
                     Sim
                   </Button>
@@ -73,7 +83,7 @@ const SubPdvRegistration = (props: Props): JSX.Element => {
                   <Button
                     variant="outline-dark"
                     style={{ height: '62px', width: '100px' }}
-                    onClick={() => props.setShow(true)}
+                    onClick={() => handleOpen()}
                   >
                     Sim
                   </Button>
@@ -88,7 +98,7 @@ const SubPdvRegistration = (props: Props): JSX.Element => {
                   <Button
                     variant="outline-dark"
                     style={{ height: '62px', width: '100px' }}
-                    onClick={() => props.setShow(true)}
+                    onClick={() => handleOpen()}
                   >
                     Sim
                   </Button>
@@ -103,7 +113,7 @@ const SubPdvRegistration = (props: Props): JSX.Element => {
                   <Button
                     variant="outline-dark"
                     style={{ height: '62px', width: '100px' }}
-                    onClick={() => props.setShow(true)}
+                    onClick={() => handleOpen()}
                   >
                     Sim
                   </Button>
@@ -118,7 +128,7 @@ const SubPdvRegistration = (props: Props): JSX.Element => {
                   <Button
                     variant="outline-dark"
                     style={{ height: '62px', width: '100px' }}
-                    onClick={() => props.setShow(true)}
+                    onClick={() => handleOpen()}
                   >
                     Sim
                   </Button>

@@ -18,8 +18,11 @@ const App = (props: Props): JSX.Element => (
       <Header />
       <div className="page-body-wrapper sidebar-icon">
         <Sidebar />
-        <div className="page-body">{props.children}</div>
+        <div className="page-body" style={{ minHeight: '100vh' }}>
+          {props.children}
+        </div>
         <Footer />
+        {/* <ThemeCustomize /> */}
       </div>
     </div>
     <ToastContainer />

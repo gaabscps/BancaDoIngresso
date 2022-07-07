@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { Card, Container, Label, Input } from 'reactstrap';
+import CloseModal from '../../assets/images/svg/CloseModal';
 import SuperInput from '../sharedComponents/SuperInput';
 import titleLine from '../../assets/images/svg/titleLine.svg';
 import thirdTitleLine from '../../assets/images/svg/thirdTitleLine.svg';
@@ -25,10 +26,18 @@ const RegisterUser = (props: Props): JSX.Element => {
       dialogClassName="modal-550px"
       aria-labelledby="example-custom-modal-styling-title"
     >
-      <Modal.Header closeButton>
+      <Modal.Header>
         <Modal.Title id="example-custom-modal-styling-title" className="pageTitle">
           Cadastrar grupo
         </Modal.Title>
+        <div
+          onClick={() => {
+            handleClose();
+          }}
+          style={{ cursor: 'pointer' }}
+        >
+          <CloseModal />
+        </div>
       </Modal.Header>
       <Modal.Body>
         <Container>

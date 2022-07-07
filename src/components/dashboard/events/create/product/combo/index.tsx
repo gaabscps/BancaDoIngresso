@@ -5,6 +5,7 @@ import ComboIcon from '../../../../../../assets/images/svg/Combo';
 import SuperCollapse from '../../../../../sharedComponents/SuperCollapse';
 import SuperInput from '../../../../../sharedComponents/SuperInput';
 import titleLine from '../../../../../../assets/images/svg/titleLine.svg';
+import RemoveX from '../../../../../../assets/images/svg/RemoveX';
 
 const Sample = (): JSX.Element => {
   const [inputFields, setInputFields] = useState([
@@ -31,6 +32,12 @@ const Sample = (): JSX.Element => {
     const newInputFields = inputFields;
     newInputFields.push({ productName: '', amount: '', groupName: '' });
     setInputFields(newInputFields);
+  };
+
+  const handleDeleteFields = (index: number): void => {
+    const values = [...inputFields];
+    values.splice(index, 1);
+    setInputFields(values);
   };
 
   return (
@@ -103,7 +110,7 @@ const Sample = (): JSX.Element => {
             </div>
             <div style={{ display: 'grid', paddingBottom: '50px' }}>
               <div className="pageTitle">Produtos do combo</div>
-              <img src={titleLine} style={{ paddingTop: '-20px' }} alt="" />
+              <img src={titleLine} style={{ paddingTop: '-20px' }} />
             </div>
             {inputFields.map((inputField, index) => (
               <div key={index} className="d-flex pt-2">
@@ -116,9 +123,7 @@ const Sample = (): JSX.Element => {
                     id="exampleNumber"
                     placeholder="Digite ou selecione o produto"
                     value={inputField.groupName}
-                    onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                      handleChangeInput(index, event)
-                    }
+                    onChange={event => handleChangeInput(index, event)}
                   />
                 </div>
                 <div className="fieldSpacing">
@@ -130,12 +135,21 @@ const Sample = (): JSX.Element => {
                     id="exampleNumber"
                     placeholder="Ex: 100"
                     value={inputField.groupName}
-                    onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                      handleChangeInput(index, event)
-                    }
+                    onChange={event => handleChangeInput(index, event)}
                   />
                 </div>
-                <div style={{ color: '#fff', marginTop: '55px' }}>
+                <div style={{ color: '#fff', marginTop: '55px' }} className="d-flex">
+                  <div
+                    style={{
+                      height: '50px',
+                      cursor: 'pointer',
+                      paddingTop: '15px',
+                      marginRight: '25px',
+                    }}
+                    onClick={() => handleDeleteFields(index)}
+                  >
+                    <RemoveX />
+                  </div>
                   <Button
                     style={{ height: '50px' }}
                     variant="outline-light"

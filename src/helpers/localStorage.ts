@@ -1,3 +1,5 @@
+import Auth from '../entities/Auth';
+
 export const getLocalStorage = (key: string): string | null => localStorage.getItem(key);
 
 export const addToLocalStorage = (key: string, value: any): void => {
@@ -12,21 +14,7 @@ export const addToLocalStorage = (key: string, value: any): void => {
 export const isAuthenticated = (): boolean =>
   Boolean(getLocalStorage(process.env.REACT_APP_USER as string));
 
-interface UserAuthResponse {
-  id: string;
-  name: string;
-  imageUrl: string;
-  profile: string;
-  roles: string[];
-}
-
-export interface AuthResponse {
-  user: UserAuthResponse;
-  token: string;
-  refresh_token: string;
-}
-
-export const setAuthLocalStorage = (auth: AuthResponse): void => {
+export const setAuthLocalStorage = (auth: Auth): void => {
   const { token, user } = auth;
   if (token && user) {
     addToLocalStorage(process.env.REACT_APP_AUTH as string, token);

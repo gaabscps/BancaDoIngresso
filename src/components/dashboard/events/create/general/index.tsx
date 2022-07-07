@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { Container, Col, Form, FormGroup, Label, FormText } from 'reactstrap';
@@ -7,9 +7,16 @@ import step1 from '../../../../../assets/images/svg/stepByStep/step1.svg';
 import titleLine from '../../../../../assets/images/svg/titleLine.svg';
 import auxSucess from '../../../../../assets/images/svg/auxSucess.svg';
 import secondTitleLine from '../../../../../assets/images/svg/secondTitleLine.svg';
+import NewCategory from '../../../../modal/NewCategory';
+import RegisterCompany from '../../../../modal/RegisterCompany';
+import ParentEvent from '../../../../modal/ParentEvent';
+import SuperButton from '../../../../sharedComponents/SuperButton';
 
 const Sample = (): JSX.Element => {
   const history = useNavigate();
+  const [showNewCategory, setShowNewCategory] = useState(false);
+  const [showCompany, setShowCompany] = useState(false);
+  const [showParentEvent, setShowParentEvent] = useState(false);
 
   const nextStep = (): void => {
     history('/event/ticket');
@@ -20,14 +27,17 @@ const Sample = (): JSX.Element => {
 
   return (
     <Fragment>
+      <NewCategory show={showNewCategory} setShowNewCategory={setShowNewCategory} />
+      <RegisterCompany show={showCompany} setShowCompany={setShowCompany} />
+      <ParentEvent show={showParentEvent} setShowParentEvent={setShowParentEvent} />
       <Container className="mainContainer" fluid={true}>
         <div className="d-flex justify-content-center stepContainer">
-          <img src={step1} alt="" />
+          <img src={step1} />
         </div>
         <Col>
           <div style={{ display: 'grid', paddingBottom: '50px' }}>
             <Label className="pageTitle">Informações gerais</Label>
-            <img src={titleLine} style={{ paddingTop: '-20px' }} alt="" />
+            <img src={titleLine} style={{ paddingTop: '-20px' }} />
           </div>
           <Form>
             <FormGroup className="fieldSpacing">
@@ -46,8 +56,12 @@ const Sample = (): JSX.Element => {
                 <option>4</option>
                 <option>5</option>
               </SuperInput>
-              <div className="auxSucessText" style={{ paddingTop: '20px' }}>
-                <img style={{ paddingRight: '6px' }} src={auxSucess} alt="" />
+              <div
+                className="auxSucessText"
+                style={{ paddingTop: '20px' }}
+                onClick={() => setShowParentEvent(true)}
+              >
+                <img style={{ paddingRight: '6px' }} src={auxSucess} />
                 vincular evento Pai
               </div>
             </FormGroup>
@@ -201,7 +215,11 @@ const Sample = (): JSX.Element => {
                 <option>4</option>
                 <option>5</option>
               </SuperInput>
-              <div className="auxSucessText" style={{ paddingTop: '20px' }}>
+              <div
+                className="auxSucessText"
+                style={{ paddingTop: '20px' }}
+                onClick={() => setShowNewCategory(true)}
+              >
                 + cadastrar nova categoria
               </div>
             </FormGroup>
@@ -213,7 +231,11 @@ const Sample = (): JSX.Element => {
                 placeholder="Digite ou selecione o cliente/contratante"
                 id="exampleSelect"
               />
-              <div className="auxSucessText" style={{ paddingTop: '20px' }}>
+              <div
+                className="auxSucessText"
+                style={{ paddingTop: '20px' }}
+                onClick={() => setShowCompany(true)}
+              >
                 + cadastrar nova empresa ou contratante
               </div>
             </FormGroup>
@@ -231,7 +253,7 @@ const Sample = (): JSX.Element => {
           </Form>
           <div style={{ display: 'grid', paddingBottom: '50px' }}>
             <Label className="pageTitle">Informações complementares</Label>
-            <img src={secondTitleLine} style={{ paddingTop: '-20px' }} alt="" />
+            <img src={secondTitleLine} style={{ paddingTop: '-20px' }} />
           </div>
           <Form>
             <FormGroup className="fieldSpacing">
@@ -351,9 +373,9 @@ const Sample = (): JSX.Element => {
                 Voltar{' '}
               </Button>
             </div>
-            <Button variant="dark" onClick={nextStep}>
+            <SuperButton style={{ width: '278px' }} onClick={nextStep}>
               Avançar para Setor e ingresso
-            </Button>
+            </SuperButton>
           </div>
         </Col>
       </Container>

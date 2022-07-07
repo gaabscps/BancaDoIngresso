@@ -1,6 +1,7 @@
 import React from 'react';
-import { Modal, Button, ButtonGroup } from 'react-bootstrap';
-import { Card, Container, Label } from 'reactstrap';
+import { Modal, Button } from 'react-bootstrap';
+import { ButtonGroup, Card, Container, Label } from 'reactstrap';
+import CloseModal from '../../assets/images/svg/CloseModal';
 import SuperInput from '../sharedComponents/SuperInput';
 import titleLine from '../../assets/images/svg/titleLine.svg';
 
@@ -23,10 +24,18 @@ const DiscountTicket = (props: Props): JSX.Element => {
         onHide={() => props.setShow(false)}
         aria-labelledby="example-custom-modal-styling-title"
       >
-        <Modal.Header closeButton>
+        <Modal.Header>
           <Modal.Title id="example-custom-modal-styling-title" className="pageTitle">
             Configurações do produto
           </Modal.Title>
+          <div
+            onClick={() => {
+              handleClose();
+            }}
+            style={{ cursor: 'pointer' }}
+          >
+            <CloseModal />
+          </div>
         </Modal.Header>
         <Modal.Body>
           <Container>

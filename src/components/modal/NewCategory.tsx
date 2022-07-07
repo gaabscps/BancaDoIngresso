@@ -8,24 +8,24 @@ interface StateProps {
   show: boolean;
 }
 interface DispatchProps {
-  setShowPos(value: boolean): void;
+  setShowNewCategory(value: boolean): void;
 }
 
 type Props = StateProps & DispatchProps;
 
-const RegisterPos = (props: Props): JSX.Element => {
-  const handleClose = (): void => props.setShowPos(false);
+const NewCategory = (props: Props): JSX.Element => {
+  const handleClose = (): void => props.setShowNewCategory(false);
   return (
     <Modal
       size={'xl'}
       show={props.show}
-      onHide={() => props.setShowPos(false)}
+      onHide={() => handleClose()}
       dialogClassName="modal-550px"
       aria-labelledby="example-custom-modal-styling-title"
     >
       <Modal.Header>
         <Modal.Title id="example-custom-modal-styling-title" className="pageTitle">
-          Cadastrar nova POS
+          Cadastrar nova categoria de evento
         </Modal.Title>
         <div
           onClick={() => {
@@ -42,32 +42,12 @@ const RegisterPos = (props: Props): JSX.Element => {
             <div className="d-flex">
               <div className="fieldSpacing">
                 <Label className="fieldLabel" for="exampleEmail">
-                  Nome da POS
-                </Label>
-                <SuperInput id="exampleEmail" name="email" placeholder="Digite o nome da POS" />
-              </div>
-            </div>
-            <div className="d-flex">
-              <div className="fieldSpacing">
-                <Label className="fieldLabel" for="exampleEmail">
-                  Nº de série da POS
+                  Nome da categoria
                 </Label>
                 <SuperInput
                   id="exampleEmail"
                   name="email"
-                  placeholder="Digite o nº de serie da POS"
-                />
-              </div>
-            </div>
-            <div className="d-flex">
-              <div className="fieldSpacing">
-                <Label className="fieldLabel" for="exampleEmail">
-                  Situação da POS
-                </Label>
-                <SuperInput
-                  id="exampleEmail"
-                  name="email"
-                  placeholder="Selecione ou digite a situação da POS"
+                  placeholder="Digite o nome da categoria"
                 />
               </div>
             </div>
@@ -83,11 +63,11 @@ const RegisterPos = (props: Props): JSX.Element => {
               Cancelar
             </Button>
           </div>
-          <Button variant="dark">Cadastrar nova POS</Button>
+          <Button variant="dark">Cadastrar nova categoria de evento</Button>
         </div>
       </Modal.Body>
     </Modal>
   );
 };
 
-export default RegisterPos;
+export default NewCategory;

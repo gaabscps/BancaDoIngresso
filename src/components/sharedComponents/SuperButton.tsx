@@ -1,10 +1,9 @@
 import React from 'react';
-import { Button, ButtonProps } from 'reactstrap';
+import { ButtonProps } from 'reactstrap';
 
 const SuperButton: React.FC<ButtonProps> = (props: ButtonProps) => (
-  <Button
+  <button
     {...props}
-    color="#222222"
     style={{
       height: '50px',
       borderRadius: '5px',

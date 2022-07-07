@@ -2,6 +2,7 @@ import React, { ChangeEvent, Fragment, MouseEvent, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { Container, FormGroup, Label } from 'reactstrap';
 import BottleIcon from '../../../../../../assets/images/svg/Bottle';
+import RemoveX from '../../../../../../assets/images/svg/RemoveX';
 import SuperCollapse from '../../../../../sharedComponents/SuperCollapse';
 
 import SuperInput from '../../../../../sharedComponents/SuperInput';
@@ -15,7 +16,6 @@ const Sample = (): JSX.Element => {
 
   const handleSubmit = (e: MouseEvent<HTMLDivElement>): void => {
     e.preventDefault();
-    console.log('input', inputFields);
   };
 
   const handleChangeInput = (index: number, event: ChangeEvent<HTMLInputElement>): void => {
@@ -32,6 +32,12 @@ const Sample = (): JSX.Element => {
 
   const handleAddFields = (): void => {
     setInputFields([...inputFields, { groupName: '' }]);
+  };
+
+  const handleDeleteFields = (index: number): void => {
+    const values = [...inputFields];
+    values.splice(index, 1);
+    setInputFields(values);
   };
 
   return (
@@ -76,13 +82,23 @@ const Sample = (): JSX.Element => {
                       id="exampleEmail"
                       placeholder="Bebidas doces"
                       value={inputField.groupName}
-                      onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                        handleChangeInput(index, event)
-                      }
+                      onChange={event => handleChangeInput(index, event)}
                     />
                   </div>
                 </div>
-                <div style={{ color: '#fff', marginTop: '55px' }}>
+
+                <div style={{ color: '#fff', marginTop: '55px' }} className="d-flex">
+                  <div
+                    style={{
+                      height: '50px',
+                      cursor: 'pointer',
+                      paddingTop: '15px',
+                      marginRight: '25px',
+                    }}
+                    onClick={() => handleDeleteFields(index)}
+                  >
+                    <RemoveX />
+                  </div>
                   <Button
                     style={{ height: '50px' }}
                     variant="outline-light"

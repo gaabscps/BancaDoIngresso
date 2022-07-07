@@ -4,6 +4,7 @@ import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import step5 from '../../../../../assets/images/svg/stepByStep/step5.svg';
 import titleLine from '../../../../../assets/images/svg/titleLine.svg';
+import SuperButton from '../../../../sharedComponents/SuperButton';
 
 const Sample = (): JSX.Element => {
   const history = useNavigate();
@@ -19,12 +20,12 @@ const Sample = (): JSX.Element => {
     <Fragment>
       <Container className="mainContainer" fluid={true}>
         <div className="d-flex justify-content-center stepContainer">
-          <img src={step5} alt="" />
+          <img src={step5} />
         </div>
         <Col>
           <div style={{ display: 'grid', paddingBottom: '50px' }}>
             <div className="pageTitle">Confirmação de dados</div>
-            <img src={titleLine} style={{ paddingTop: '-20px' }} alt="" />
+            <img src={titleLine} style={{ paddingTop: '-20px' }} />
           </div>
           <hr className="dividerDown" />
           <div className="nextPageButton">
@@ -33,9 +34,9 @@ const Sample = (): JSX.Element => {
                 Voltar
               </Button>
             </div>
-            <Button variant="dark" onClick={nextStep}>
+            <SuperButton style={{ width: '278px' }} onClick={nextStep}>
               Finalizar cadastro do evento
-            </Button>
+            </SuperButton>
           </div>
         </Col>
       </Container>

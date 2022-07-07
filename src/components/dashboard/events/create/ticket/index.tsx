@@ -10,6 +10,7 @@ import SuperCollapse from '../../../../sharedComponents/SuperCollapse';
 import TicketIcon from '../../../../../assets/images/svg/Ticket';
 import step2 from '../../../../../assets/images/svg/stepByStep/step2.svg';
 import titleLine from '../../../../../assets/images/svg/titleLine.svg';
+import SuperButton from '../../../../sharedComponents/SuperButton';
 
 const Sample = (): JSX.Element => {
   const [step, setStep] = useState(0);
@@ -46,12 +47,12 @@ const Sample = (): JSX.Element => {
     <Fragment>
       <Container className="mainContainer" fluid={true}>
         <div className="d-flex justify-content-center stepContainer">
-          <img src={step2} alt="" />
+          <img src={step2} />
         </div>
         <Col>
           <div style={{ display: 'grid', paddingBottom: '50px' }}>
             <div className="pageTitle">Setor e ingresso</div>
-            <img src={titleLine} style={{ paddingTop: '-20px' }} alt="" />
+            <img src={titleLine} style={{ paddingTop: '-20px' }} />
           </div>
           <div className="groupButton">
             <Label className="fieldLabel">Este evento terá ingressos?</Label>
@@ -85,16 +86,39 @@ const Sample = (): JSX.Element => {
                 Preencha as 3 (TRÊS) etapas abaixo para adicionar um setor e ingresso
               </div>
               <div className="infoContainer">
-                <div className="d-flex justify-content-around">
-                  <Button variant="outline-light" onClick={() => setStep(0)}>
-                    <div className="buttonText">Configurações principais</div>
-                  </Button>
-                  <Button variant="outline-light" onClick={() => setStep(1)}>
-                    <div className="buttonText">Configurações de pagamento</div>
-                  </Button>
-                  <Button variant="outline-light" onClick={() => setStep(2)}>
-                    <div className="buttonText">Configurações gerais</div>
-                  </Button>
+                <div className="d-flex justify-content-center">
+                  <div
+                    style={{
+                      marginRight: '50px',
+                    }}
+                  >
+                    <button
+                      className={step === 0 ? 'tabButtonActive' : 'tabButtonDesactive'}
+                      onClick={() => setStep(0)}
+                    >
+                      <div className="textButtonsTab">Configurações principais</div>
+                    </button>
+                  </div>
+                  <div
+                    style={{
+                      marginRight: '50px',
+                    }}
+                  >
+                    <button
+                      className={step === 1 ? 'tabButtonActive' : 'tabButtonDesactive'}
+                      onClick={() => setStep(1)}
+                    >
+                      <div className="textButtonsTab">Configurações de pagamento</div>
+                    </button>
+                  </div>
+                  <div>
+                    <button
+                      className={step === 2 ? 'tabButtonActive' : 'tabButtonDesactive'}
+                      onClick={() => setStep(2)}
+                    >
+                      <div className="textButtonsTab">Configurações gerais</div>
+                    </button>
+                  </div>
                 </div>
                 <ShowInformation />
               </div>
@@ -108,9 +132,9 @@ const Sample = (): JSX.Element => {
                 Voltar
               </Button>
             </div>
-            <Button variant="dark" onClick={nextStep}>
-              Avançar para Produtos
-            </Button>
+            <SuperButton style={{ width: '278px' }} onClick={nextStep}>
+              Avançar para Setor e Produtos
+            </SuperButton>
           </div>
         </Col>
       </Container>

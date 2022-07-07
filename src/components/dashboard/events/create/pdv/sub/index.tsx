@@ -8,13 +8,9 @@ import SubPdvRegistration from '../../../../../modal/SubPdvRegistration';
 const Sample = (): JSX.Element => {
   const [show, setShow] = useState(false);
 
-  const callShow = (b: boolean): void => {
-    setShow(b);
-  };
-
   return (
     <Fragment>
-      <SubPdvRegistration show={show} setShow={callShow} />
+      <SubPdvRegistration show={show} setShow={setShow} />
       <Container className="subContainer" fluid={true}>
         <hr className="dividerUp" />
         <div className="d-flex">
@@ -29,12 +25,10 @@ const Sample = (): JSX.Element => {
               </Button>
             </ButtonGroup>
           </div>
-          <div style={{ color: '#fff', marginTop: '50px', marginLeft: '20px' }}>
-            <Button style={{ height: '50px', width: '270px' }} variant="outline-light">
-              <div className="greyNormalText" onClick={() => setShow(true)}>
-                + cadastrar novo Sub PDV
-              </div>
-            </Button>
+          <div style={{ color: '#fff', marginTop: '65px', marginLeft: '50px' }}>
+            <div className="auxSucessText" onClick={() => setShow(true)}>
+              + cadastrar novo Sub PDV
+            </div>
           </div>
         </div>
         <div style={{ marginTop: '50px' }}>
