@@ -5,6 +5,7 @@ import { ChargeSetupState } from './ducks/charge-setup/types';
 import { ClientState } from './ducks/client/types';
 import { ComboState } from './ducks/combo/types';
 import { CompanyState } from './ducks/company/types';
+import { ContractorState } from './ducks/contractor/types';
 import { CustomizerState } from './ducks/customizer/types';
 import { EventCategoryState } from './ducks/event-category/types';
 import rootReducer from './ducks/rootReducer';
@@ -16,6 +17,7 @@ export interface ApplicationState {
   client: ClientState;
   combo: ComboState;
   company: CompanyState;
+  contractor: ContractorState;
   customizer: CustomizerState;
   eventCategory: EventCategoryState;
 }

@@ -1,0 +1,56 @@
+import Contractor from '../../../entities/Contractor';
+import CustomError from '../../../entities/CustomError';
+import Page from '../../../entities/Page';
+/**
+ * Action types
+ */
+
+// eslint-disable-next-line no-shadow
+export enum ContractorTypes {
+  ACTIVATE_CONTRACTOR_REQUEST = '@contractor/ACTIVATE_CONTRACTOR_REQUEST',
+  ACTIVATE_CONTRACTOR_SUCCCES = '@contractor/ACTIVATE_CONTRACTOR_SUCCCES',
+  ACTIVATE_CONTRACTOR_FAILURE = '@contractor/ACTIVATE_CONTRACTOR_FAILURE',
+  ADD_USER_CONTRACTOR_REQUEST = '@contractor/ADD_USER_CONTRACTOR_REQUEST',
+  ADD_USER_CONTRACTOR_SUCCCES = '@contractor/ADD_USER_CONTRACTOR_SUCCCES',
+  ADD_USER_CONTRACTOR_FAILURE = '@contractor/ADD_USER_CONTRACTOR_FAILURE',
+  CREATE_CONTRACTOR_REQUEST = '@contractor/CREATE_CONTRACTOR_REQUEST',
+  CREATE_CONTRACTOR_SUCCCES = '@contractor/CREATE_CONTRACTOR_SUCCCES',
+  CREATE_CONTRACTOR_FAILURE = '@contractor/CREATE_CONTRACTOR_FAILURE',
+  DELETE_CONTRACTOR_REQUEST = '@contractor/DELETE_CONTRACTOR_REQUEST',
+  DELETE_CONTRACTOR_SUCCCES = '@contractor/DELETE_CONTRACTOR_SUCCCES',
+  DELETE_CONTRACTOR_FAILURE = '@contractor/DELETE_CONTRACTOR_FAILURE',
+  GET_ALL_CONTRACTOR_REQUEST = '@contractor/GET_ALL_CONTRACTOR_REQUEST',
+  GET_ALL_CONTRACTOR_SUCCCES = '@contractor/GET_CONTRACTOR_SUCCCES',
+  GET_ALL_CONTRACTOR_FAILURE = '@contractor/GET_CONTRACTOR_FAILURE',
+  GET_CONTRACTOR_REQUEST = '@contractor/GET_CONTRACTOR_REQUEST',
+  GET_CONTRACTOR_SUCCCES = '@contractor/GET_CONTRACTOR_SUCCCES',
+  GET_CONTRACTOR_FAILURE = '@contractor/GET_CONTRACTOR_FAILURE',
+  INACTIVATE_CONTRACTOR_REQUEST = '@contractor/INACTIVATE_CONTRACTOR_REQUEST',
+  INACTIVATE_CONTRACTOR_SUCCCES = '@contractor/INACTIVATE_CONTRACTOR_SUCCCES',
+  INACTIVATE_CONTRACTOR_FAILURE = '@contractor/INACTIVATE_CONTRACTOR_FAILURE',
+  LIST_CONTRACTOR_REQUEST = '@contractor/LIST_CONTRACTOR_REQUEST',
+  LIST_CONTRACTOR_SUCCCES = '@contractor/LIST_CONTRACTOR_SUCCCES',
+  LIST_CONTRACTOR_FAILURE = '@contractor/LIST_CONTRACTOR_FAILURE',
+  UPDATE_CONTRACTOR_REQUEST = '@contractor/UPDATE_CONTRACTOR_REQUEST',
+  UPDATE_CONTRACTOR_SUCCCES = '@contractor/UPDATE_CONTRACTOR_SUCCCES',
+  UPDATE_CONTRACTOR_FAILURE = '@contractor/UPDATE_CONTRACTOR_FAILURE',
+}
+
+/**
+ * Data types
+ */
+
+export interface ContractorDataType {
+  page: Page<Contractor, Contractor>;
+  entity: Contractor;
+  list: Contractor[];
+}
+
+/**
+ * State type
+ */
+export interface ContractorState {
+  readonly data: ContractorDataType;
+  readonly loading: boolean;
+  readonly error: CustomError | undefined;
+}

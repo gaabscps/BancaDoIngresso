@@ -41,6 +41,18 @@ import {
 } from './company/sagas';
 import { CompanyTypes } from './company/types';
 import {
+  activateContractor,
+  addContractorUsers,
+  createContractor,
+  deleteContractor,
+  getAllContractors,
+  getContractor,
+  inactivateContractor,
+  listContractors,
+  updateContractor,
+} from './contractor/sagas';
+import { ContractorTypes } from './contractor/types';
+import {
   activateEventCategory,
   createEventCategory,
   deleteEventCategory,
@@ -90,6 +102,16 @@ export default function* rootSaga(): any {
     takeLatest(CompanyTypes.INACTIVATE_COMPANY_REQUEST, inactivateCompany),
     takeLatest(CompanyTypes.LIST_COMPANY_REQUEST, listCompanies),
     takeLatest(CompanyTypes.UPDATE_COMPANY_REQUEST, updateCompany),
+
+    takeLatest(ContractorTypes.ACTIVATE_CONTRACTOR_REQUEST, activateContractor),
+    takeLatest(ContractorTypes.ADD_USER_CONTRACTOR_REQUEST, addContractorUsers),
+    takeLatest(ContractorTypes.CREATE_CONTRACTOR_REQUEST, createContractor),
+    takeLatest(ContractorTypes.DELETE_CONTRACTOR_REQUEST, deleteContractor),
+    takeLatest(ContractorTypes.GET_ALL_CONTRACTOR_REQUEST, getAllContractors),
+    takeLatest(ContractorTypes.GET_CONTRACTOR_REQUEST, getContractor),
+    takeLatest(ContractorTypes.INACTIVATE_CONTRACTOR_REQUEST, inactivateContractor),
+    takeLatest(ContractorTypes.LIST_CONTRACTOR_REQUEST, listContractors),
+    takeLatest(ContractorTypes.UPDATE_CONTRACTOR_REQUEST, updateContractor),
 
     takeLatest(EventCategoryTypes.ACTIVATE_EVENT_CATEGORY_REQUEST, activateEventCategory),
     takeLatest(EventCategoryTypes.CREATE_EVENT_CATEGORY_REQUEST, createEventCategory),
