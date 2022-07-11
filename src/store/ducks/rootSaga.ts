@@ -19,6 +19,17 @@ import {
 } from './client/sagas';
 import { ClientTypes } from './client/types';
 import {
+  activateCombo,
+  createCombo,
+  deleteCombo,
+  getAllCombos,
+  getCombo,
+  inactivateCombo,
+  listCombos,
+  updateCombo,
+} from './combo/sagas';
+import { ComboTypes } from './combo/types';
+import {
   activateEventCategory,
   createEventCategory,
   deleteEventCategory,
@@ -50,6 +61,15 @@ export default function* rootSaga(): any {
     takeLatest(ClientTypes.INACTIVATE_CLIENT_REQUEST, inactivateClient),
     takeLatest(ClientTypes.LIST_CLIENT_REQUEST, listClients),
     takeLatest(ClientTypes.UPDATE_CLIENT_REQUEST, updateClient),
+
+    takeLatest(ComboTypes.ACTIVATE_COMBO_REQUEST, activateCombo),
+    takeLatest(ComboTypes.CREATE_COMBO_REQUEST, createCombo),
+    takeLatest(ComboTypes.DELETE_COMBO_REQUEST, deleteCombo),
+    takeLatest(ComboTypes.GET_ALL_COMBO_REQUEST, getAllCombos),
+    takeLatest(ComboTypes.GET_COMBO_REQUEST, getCombo),
+    takeLatest(ComboTypes.INACTIVATE_COMBO_REQUEST, inactivateCombo),
+    takeLatest(ComboTypes.LIST_COMBO_REQUEST, listCombos),
+    takeLatest(ComboTypes.UPDATE_COMBO_REQUEST, updateCombo),
 
     takeLatest(EventCategoryTypes.ACTIVATE_EVENT_CATEGORY_REQUEST, activateEventCategory),
     takeLatest(EventCategoryTypes.CREATE_EVENT_CATEGORY_REQUEST, createEventCategory),

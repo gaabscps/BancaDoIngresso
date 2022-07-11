@@ -3,6 +3,7 @@ import createSagaMiddleware from 'redux-saga';
 import { AuthState } from './ducks/auth/types';
 import { ChargeSetupState } from './ducks/charge-setup/types';
 import { ClientState } from './ducks/client/types';
+import { ComboState } from './ducks/combo/types';
 import { CustomizerState } from './ducks/customizer/types';
 import { EventCategoryState } from './ducks/event-category/types';
 import rootReducer from './ducks/rootReducer';
@@ -12,6 +13,7 @@ export interface ApplicationState {
   auth: AuthState;
   chargeSetup: ChargeSetupState;
   client: ClientState;
+  combo: ComboState;
   customizer: CustomizerState;
   eventCategory: EventCategoryState;
 }
