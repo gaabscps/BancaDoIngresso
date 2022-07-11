@@ -9,15 +9,7 @@ export const listRequest = (
 ): {
   type: EventCategoryTypes.LIST_EVENT_CATEGORY_REQUEST;
   payload: Page<EventCategory, EventCategory>;
-  meta: EventCategoryTypes.LIST_EVENT_CATEGORY_SUCCCES;
-  error: EventCategoryTypes.LIST_EVENT_CATEGORY_FAILURE;
-} =>
-  action(
-    EventCategoryTypes.LIST_EVENT_CATEGORY_REQUEST,
-    page,
-    EventCategoryTypes.LIST_EVENT_CATEGORY_SUCCCES,
-    EventCategoryTypes.LIST_EVENT_CATEGORY_FAILURE,
-  );
+} => action(EventCategoryTypes.LIST_EVENT_CATEGORY_REQUEST, page);
 
 export const listSuccess = (
   data: EventCategoryDataType,
@@ -32,10 +24,6 @@ export const listFailure = (
   type: EventCategoryTypes.LIST_EVENT_CATEGORY_FAILURE;
   payload: { error: CustomError | undefined };
 } => action(EventCategoryTypes.LIST_EVENT_CATEGORY_FAILURE, { error });
-
-export const clearRequest = (): {
-  type: EventCategoryTypes.LIST_EVENT_CATEGORY_CLEAR;
-} => action(EventCategoryTypes.LIST_EVENT_CATEGORY_CLEAR);
 
 export const getAllRequest = (): {
   type: EventCategoryTypes.GET_ALL_EVENT_CATEGORY_REQUEST;
@@ -60,15 +48,7 @@ export const getRequest = (
 ): {
   type: EventCategoryTypes.GET_EVENT_CATEGORY_REQUEST;
   payload: string;
-  meta: EventCategoryTypes.GET_EVENT_CATEGORY_SUCCCES;
-  error: EventCategoryTypes.GET_EVENT_CATEGORY_FAILURE;
-} =>
-  action(
-    EventCategoryTypes.GET_EVENT_CATEGORY_REQUEST,
-    id,
-    EventCategoryTypes.GET_EVENT_CATEGORY_SUCCCES,
-    EventCategoryTypes.GET_EVENT_CATEGORY_FAILURE,
-  );
+} => action(EventCategoryTypes.GET_EVENT_CATEGORY_REQUEST, id);
 
 export const getSuccess = (
   data: EventCategoryDataType,
@@ -83,10 +63,6 @@ export const getFailure = (
   type: EventCategoryTypes.GET_EVENT_CATEGORY_FAILURE;
   payload: { error: CustomError | undefined };
 } => action(EventCategoryTypes.GET_EVENT_CATEGORY_FAILURE, { error });
-
-export const clearEntityRequest = (): {
-  type: EventCategoryTypes.GET_EVENT_CATEGORY_CLEAR;
-} => action(EventCategoryTypes.GET_EVENT_CATEGORY_CLEAR);
 
 export const createRequest = (
   eventCategory: EventCategory,

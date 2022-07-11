@@ -59,6 +59,7 @@ export function* authRecoverPassword(data: any) {
     }));
     const authData = stateData.auth.data;
     authData.recoverPassword = true;
+    authData.changePassword = false;
     yield put(recoverPasswordSuccess(authData));
   } catch (err) {
     const error = err as AxiosError;
@@ -75,6 +76,7 @@ export function* authChangePassword(data: any) {
     }));
     const authData = stateData.auth.data;
     authData.changePassword = true;
+    authData.recoverPassword = false;
     yield put(changePasswordSuccess(authData));
   } catch (err) {
     const error = err as AxiosError;

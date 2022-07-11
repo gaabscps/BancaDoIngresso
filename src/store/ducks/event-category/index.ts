@@ -1,5 +1,4 @@
 import { Reducer } from 'redux';
-import EventCategory from '../../../entities/EventCategory';
 import { EventCategoryDataType, EventCategoryState, EventCategoryTypes } from './types';
 
 const INITIAL_STATE: EventCategoryState = {
@@ -25,13 +24,6 @@ const reducer: Reducer<EventCategoryState> = (state = INITIAL_STATE, action) => 
         data: {} as EventCategoryDataType,
         loading: false,
         error: action.payload.error,
-      };
-    case EventCategoryTypes.LIST_EVENT_CATEGORY_CLEAR:
-      return {
-        ...state,
-        data: {} as EventCategoryDataType,
-        loading: false,
-        error: undefined,
       };
     case EventCategoryTypes.GET_ALL_EVENT_CATEGORY_REQUEST:
       return { ...state, loading: true };
@@ -64,16 +56,6 @@ const reducer: Reducer<EventCategoryState> = (state = INITIAL_STATE, action) => 
         data: {} as EventCategoryDataType,
         loading: false,
         error: action.payload.error,
-      };
-    case EventCategoryTypes.GET_EVENT_CATEGORY_CLEAR:
-      // eslint-disable-next-line no-case-declarations
-      const { data } = state;
-      data.entity = {} as EventCategory;
-      return {
-        ...state,
-        data,
-        loading: false,
-        error: undefined,
       };
     case EventCategoryTypes.CREATE_EVENT_CATEGORY_REQUEST:
       return { ...state, loading: true };
