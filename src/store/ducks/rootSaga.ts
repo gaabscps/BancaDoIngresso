@@ -30,6 +30,17 @@ import {
 } from './combo/sagas';
 import { ComboTypes } from './combo/types';
 import {
+  activateCompany,
+  createCompany,
+  deleteCompany,
+  getAllCompanies,
+  getCompany,
+  inactivateCompany,
+  listCompanies,
+  updateCompany,
+} from './company/sagas';
+import { CompanyTypes } from './company/types';
+import {
   activateEventCategory,
   createEventCategory,
   deleteEventCategory,
@@ -70,6 +81,15 @@ export default function* rootSaga(): any {
     takeLatest(ComboTypes.INACTIVATE_COMBO_REQUEST, inactivateCombo),
     takeLatest(ComboTypes.LIST_COMBO_REQUEST, listCombos),
     takeLatest(ComboTypes.UPDATE_COMBO_REQUEST, updateCombo),
+
+    takeLatest(CompanyTypes.ACTIVATE_COMPANY_REQUEST, activateCompany),
+    takeLatest(CompanyTypes.CREATE_COMPANY_REQUEST, createCompany),
+    takeLatest(CompanyTypes.DELETE_COMPANY_REQUEST, deleteCompany),
+    takeLatest(CompanyTypes.GET_ALL_COMPANY_REQUEST, getAllCompanies),
+    takeLatest(CompanyTypes.GET_COMPANY_REQUEST, getCompany),
+    takeLatest(CompanyTypes.INACTIVATE_COMPANY_REQUEST, inactivateCompany),
+    takeLatest(CompanyTypes.LIST_COMPANY_REQUEST, listCompanies),
+    takeLatest(CompanyTypes.UPDATE_COMPANY_REQUEST, updateCompany),
 
     takeLatest(EventCategoryTypes.ACTIVATE_EVENT_CATEGORY_REQUEST, activateEventCategory),
     takeLatest(EventCategoryTypes.CREATE_EVENT_CATEGORY_REQUEST, createEventCategory),
