@@ -2,6 +2,7 @@ import { createStore, applyMiddleware, Store } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import { AuthState } from './ducks/auth/types';
 import { ChargeSetupState } from './ducks/charge-setup/types';
+import { ClientState } from './ducks/client/types';
 import { CustomizerState } from './ducks/customizer/types';
 import { EventCategoryState } from './ducks/event-category/types';
 import rootReducer from './ducks/rootReducer';
@@ -10,6 +11,7 @@ import rootSaga from './ducks/rootSaga';
 export interface ApplicationState {
   auth: AuthState;
   chargeSetup: ChargeSetupState;
+  client: ClientState;
   customizer: CustomizerState;
   eventCategory: EventCategoryState;
 }

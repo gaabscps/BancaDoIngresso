@@ -10,6 +10,15 @@ import {
 } from './charge-setup/sagas';
 import { ChargeSetupTypes } from './charge-setup/types';
 import {
+  activateClient,
+  deleteClient,
+  getClient,
+  inactivateClient,
+  listClients,
+  updateClient,
+} from './client/sagas';
+import { ClientTypes } from './client/types';
+import {
   activateEventCategory,
   createEventCategory,
   deleteEventCategory,
@@ -34,6 +43,13 @@ export default function* rootSaga(): any {
     takeLatest(ChargeSetupTypes.GET_CHARGE_SETUP_REQUEST, getChargeSetup),
     takeLatest(ChargeSetupTypes.LIST_CHARGE_SETUP_REQUEST, listChargeSetup),
     takeLatest(ChargeSetupTypes.UPDATE_CHARGE_SETUP_REQUEST, updateChargeSetup),
+
+    takeLatest(ClientTypes.ACTIVATE_CLIENT_REQUEST, activateClient),
+    takeLatest(ClientTypes.DELETE_CLIENT_REQUEST, deleteClient),
+    takeLatest(ClientTypes.GET_CLIENT_REQUEST, getClient),
+    takeLatest(ClientTypes.INACTIVATE_CLIENT_REQUEST, inactivateClient),
+    takeLatest(ClientTypes.LIST_CLIENT_REQUEST, listClients),
+    takeLatest(ClientTypes.UPDATE_CLIENT_REQUEST, updateClient),
 
     takeLatest(EventCategoryTypes.ACTIVATE_EVENT_CATEGORY_REQUEST, activateEventCategory),
     takeLatest(EventCategoryTypes.CREATE_EVENT_CATEGORY_REQUEST, createEventCategory),

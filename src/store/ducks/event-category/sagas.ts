@@ -32,7 +32,7 @@ export function* listEventCategory(page: any) {
   try {
     const response: AxiosResponse<Page<EventCategory, EventCategory>> = yield call(
       api.post,
-      '/company/page/v1',
+      '/event-category/page',
       page.payload,
     );
     const pageResponse: Page<EventCategory, EventCategory> = response.data;
@@ -56,7 +56,7 @@ export function* listEventCategory(page: any) {
 
 export function* getAllEventCategories() {
   try {
-    const response: AxiosResponse<EventCategory[]> = yield call(api.get, `/company/all/v1`);
+    const response: AxiosResponse<EventCategory[]> = yield call(api.get, `/event-category/find`);
     const list: EventCategory[] = response.data;
     const stateData: ApplicationState = yield select((state: ApplicationState) => ({
       eventCategory: state.eventCategory,
@@ -78,7 +78,7 @@ export function* getEventCategory(data: any) {
   try {
     const response: AxiosResponse<EventCategory> = yield call(
       api.get,
-      `/company/v1/${data.payload}`,
+      `/event-category/${data.payload}`,
     );
     const company: EventCategory = response.data;
     const stateData: ApplicationState = yield select((state: ApplicationState) => ({
@@ -101,7 +101,7 @@ export function* createEventCategory(data: any) {
   try {
     const response: AxiosResponse<EventCategory> = yield call(
       api.post,
-      '/company/v1',
+      '/event-category',
       data.payload,
     );
     const stateData: ApplicationState = yield select((state: ApplicationState) => ({
@@ -122,7 +122,11 @@ export function* createEventCategory(data: any) {
 
 export function* updateEventCategory(data: any) {
   try {
-    const response: AxiosResponse<EventCategory> = yield call(api.put, '/company/v1', data.payload);
+    const response: AxiosResponse<EventCategory> = yield call(
+      api.put,
+      '/event-category',
+      data.payload,
+    );
     const stateData: ApplicationState = yield select((state: ApplicationState) => ({
       eventCategory: state.eventCategory,
     }));
@@ -141,7 +145,7 @@ export function* updateEventCategory(data: any) {
 
 export function* activateEventCategory(data: any) {
   try {
-    yield call(api.patch, `/company/v1/${data.payload}`);
+    yield call(api.patch, `/event-category/activate/${data.payload}`);
     yield put(activateSuccess());
   } catch (err) {
     const error = err as AxiosError;
@@ -151,7 +155,7 @@ export function* activateEventCategory(data: any) {
 
 export function* inactivateEventCategory(data: any) {
   try {
-    yield call(api.delete, `/company/v1/${data.payload}`);
+    yield call(api.patch, `/event-category/inactivate/${data.payload}`);
     yield put(inactivateSuccess());
   } catch (err) {
     const error = err as AxiosError;
@@ -161,7 +165,7 @@ export function* inactivateEventCategory(data: any) {
 
 export function* deleteEventCategory(data: any) {
   try {
-    yield call(api.delete, `/company/v1/${data.payload}`);
+    yield call(api.delete, `/event-category/${data.payload}`);
     yield put(deleteSuccess());
   } catch (err) {
     const error = err as AxiosError;
