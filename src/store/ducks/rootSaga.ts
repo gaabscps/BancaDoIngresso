@@ -63,6 +63,17 @@ import {
   updateEventCategory,
 } from './event-category/sagas';
 import { EventCategoryTypes } from './event-category/types';
+import {
+  activateUser,
+  createUser,
+  deleteUser,
+  getAllUsers,
+  getUser,
+  inactivateUser,
+  listUsers,
+  updateUser,
+} from './user/sagas';
+import { UserTypes } from './user/types';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function* rootSaga(): any {
@@ -121,5 +132,14 @@ export default function* rootSaga(): any {
     takeLatest(EventCategoryTypes.INACTIVATE_EVENT_CATEGORY_REQUEST, inactivateEventCategory),
     takeLatest(EventCategoryTypes.LIST_EVENT_CATEGORY_REQUEST, listEventCategory),
     takeLatest(EventCategoryTypes.UPDATE_EVENT_CATEGORY_REQUEST, updateEventCategory),
+
+    takeLatest(UserTypes.ACTIVATE_USER_REQUEST, activateUser),
+    takeLatest(UserTypes.CREATE_USER_REQUEST, createUser),
+    takeLatest(UserTypes.DELETE_USER_REQUEST, deleteUser),
+    takeLatest(UserTypes.GET_ALL_USER_REQUEST, getAllUsers),
+    takeLatest(UserTypes.GET_USER_REQUEST, getUser),
+    takeLatest(UserTypes.INACTIVATE_USER_REQUEST, inactivateUser),
+    takeLatest(UserTypes.LIST_USER_REQUEST, listUsers),
+    takeLatest(UserTypes.UPDATE_USER_REQUEST, updateUser),
   ]);
 }

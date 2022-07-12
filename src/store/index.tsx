@@ -8,6 +8,7 @@ import { CompanyState } from './ducks/company/types';
 import { ContractorState } from './ducks/contractor/types';
 import { CustomizerState } from './ducks/customizer/types';
 import { EventCategoryState } from './ducks/event-category/types';
+import { UserState } from './ducks/user/types';
 import rootReducer from './ducks/rootReducer';
 import rootSaga from './ducks/rootSaga';
 
@@ -20,6 +21,7 @@ export interface ApplicationState {
   contractor: ContractorState;
   customizer: CustomizerState;
   eventCategory: EventCategoryState;
+  user: UserState;
 }
 const sagaMiddleware = createSagaMiddleware();
 

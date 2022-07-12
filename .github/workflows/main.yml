@@ -17,10 +17,6 @@ jobs:
       - name: Writing .env file
         run: 'echo "${{ secrets.ENVIRONMENT_VARIABLES_DEV }}" > .env'
       
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 14
-
       - name: Install dependencies
         run: yarn
 

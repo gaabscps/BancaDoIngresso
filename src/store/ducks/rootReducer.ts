@@ -7,6 +7,7 @@ import company from './company';
 import contractor from './contractor';
 import customizer from './customizer';
 import eventCategory from './event-category';
+import user from './user';
 
 export default combineReducers({
   auth,
@@ -17,4 +18,5 @@ export default combineReducers({
   contractor,
   customizer,
   eventCategory,
+  user,
 });
