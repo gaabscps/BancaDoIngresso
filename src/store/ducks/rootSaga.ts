@@ -64,6 +64,17 @@ import {
 } from './event-category/sagas';
 import { EventCategoryTypes } from './event-category/types';
 import {
+  activatePermission,
+  createPermission,
+  deletePermission,
+  getAllPermissions,
+  getPermission,
+  inactivatePermission,
+  listPermissions,
+  updatePermission,
+} from './permission/sagas';
+import { PermissionTypes } from './permission/types';
+import {
   activateProfile,
   addProfilePermissions,
   createProfile,
@@ -144,6 +155,15 @@ export default function* rootSaga(): any {
     takeLatest(EventCategoryTypes.INACTIVATE_EVENT_CATEGORY_REQUEST, inactivateEventCategory),
     takeLatest(EventCategoryTypes.LIST_EVENT_CATEGORY_REQUEST, listEventCategory),
     takeLatest(EventCategoryTypes.UPDATE_EVENT_CATEGORY_REQUEST, updateEventCategory),
+
+    takeLatest(PermissionTypes.ACTIVATE_PERMISSION_REQUEST, activatePermission),
+    takeLatest(PermissionTypes.CREATE_PERMISSION_REQUEST, createPermission),
+    takeLatest(PermissionTypes.DELETE_PERMISSION_REQUEST, deletePermission),
+    takeLatest(PermissionTypes.GET_ALL_PERMISSION_REQUEST, getAllPermissions),
+    takeLatest(PermissionTypes.GET_PERMISSION_REQUEST, getPermission),
+    takeLatest(PermissionTypes.INACTIVATE_PERMISSION_REQUEST, inactivatePermission),
+    takeLatest(PermissionTypes.LIST_PERMISSION_REQUEST, listPermissions),
+    takeLatest(PermissionTypes.UPDATE_PERMISSION_REQUEST, updatePermission),
 
     takeLatest(ProfileTypes.ACTIVATE_PROFILE_REQUEST, activateProfile),
     takeLatest(ProfileTypes.ADD_PERMISSION_PROFILE_REQUEST, addProfilePermissions),
