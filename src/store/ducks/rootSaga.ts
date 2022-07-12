@@ -9,6 +9,8 @@ import {
   updateChargeSetup,
 } from './charge-setup/sagas';
 import { ChargeSetupTypes } from './charge-setup/types';
+import { checkUser } from './check-user/sagas';
+import { CheckUserTypes } from './check-user/types';
 import {
   activateClient,
   deleteClient,
@@ -52,6 +54,8 @@ import {
   updateContractor,
 } from './contractor/sagas';
 import { ContractorTypes } from './contractor/types';
+import { generalInformationEvent, getAllEvents, getEvent, listEvents } from './event/sagas';
+import { EventTypes } from './event/types';
 import {
   activateEventCategory,
   createEventCategory,
@@ -123,6 +127,8 @@ export default function* rootSaga(): any {
     takeLatest(ChargeSetupTypes.LIST_CHARGE_SETUP_REQUEST, listChargeSetup),
     takeLatest(ChargeSetupTypes.UPDATE_CHARGE_SETUP_REQUEST, updateChargeSetup),
 
+    takeLatest(CheckUserTypes.CHECK_USER_LOGGED_REQUEST, checkUser),
+
     takeLatest(ClientTypes.ACTIVATE_CLIENT_REQUEST, activateClient),
     takeLatest(ClientTypes.DELETE_CLIENT_REQUEST, deleteClient),
     takeLatest(ClientTypes.GET_CLIENT_REQUEST, getClient),
@@ -157,6 +163,11 @@ export default function* rootSaga(): any {
     takeLatest(ContractorTypes.INACTIVATE_CONTRACTOR_REQUEST, inactivateContractor),
     takeLatest(ContractorTypes.LIST_CONTRACTOR_REQUEST, listContractors),
     takeLatest(ContractorTypes.UPDATE_CONTRACTOR_REQUEST, updateContractor),
+
+    takeLatest(EventTypes.LIST_EVENT_REQUEST, listEvents),
+    takeLatest(EventTypes.GET_EVENT_REQUEST, getEvent),
+    takeLatest(EventTypes.GET_ALL_EVENT_REQUEST, getAllEvents),
+    takeLatest(EventTypes.GENERAL_INFORMATION_EVENT_REQUEST, generalInformationEvent),
 
     takeLatest(EventCategoryTypes.ACTIVATE_EVENT_CATEGORY_REQUEST, activateEventCategory),
     takeLatest(EventCategoryTypes.CREATE_EVENT_CATEGORY_REQUEST, createEventCategory),

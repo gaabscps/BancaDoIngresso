@@ -1,6 +1,6 @@
 import Module from './Module';
 
-export default interface PermissionDTO {
+export default interface Permission {
   id: string;
   name: string;
   description: string;

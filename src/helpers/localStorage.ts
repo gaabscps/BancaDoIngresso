@@ -14,11 +14,14 @@ export const addToLocalStorage = (key: string, value: any): void => {
 export const isAuthenticated = (): boolean =>
   Boolean(getLocalStorage(process.env.REACT_APP_USER as string));
 
-export const setAuthLocalStorage = (auth: Auth): void => {
+export const setAuthLocalStorage = (auth: Auth, keepConnected: boolean): void => {
   const { token, user } = auth;
   if (token && user) {
     addToLocalStorage(process.env.REACT_APP_AUTH as string, token);
     addToLocalStorage(process.env.REACT_APP_USER as string, JSON.stringify(user));
+    if (keepConnected) {
+      addToLocalStorage(`${keepConnected}`, keepConnected);
+    }
   }
 };
 

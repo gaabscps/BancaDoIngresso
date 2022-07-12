@@ -1,6 +1,8 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Container, Row, Col, Label, Input, FormGroup } from 'reactstrap';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import Moment from 'moment';
 import SuperButton from '../../../sharedComponents/SuperButton';
 import DiscountVoucher from '../../../modal/DiscountVoucher';
 import blackAlert from '../../../../assets/images/svg/blackAlert.svg';
@@ -11,8 +13,47 @@ import blueStatus from '../../../../assets/images/svg/blueStatus.svg';
 import pen from '../../../../assets/images/svg/pen.svg';
 import lixeira from '../../../../assets/images/svg/lixeira.svg';
 import ticket from '../../../../assets/images/svg/ticket.svg';
+import { ApplicationState } from '../../../../store';
+import { listRequest } from '../../../../store/ducks/event/actions';
+import { EventState } from '../../../../store/ducks/event/types';
+import Page from '../../../../entities/Page';
+import EventFind from '../../../../entities/EventFind';
+import Event from '../../../../entities/Event';
+import { CheckUserState } from '../../../../store/ducks/check-user/types';
 
 const Sample = (): JSX.Element => {
+  const event = useSelector<ApplicationState, EventState>(store => store.event);
+  const checkUser = useSelector<ApplicationState, CheckUserState>(store => store.checkUser);
+  const dispatch = useDispatch();
+  const page: Page<EventFind, Event> = {
+    page: 1,
+    pageSize: 10,
+    sort: 'startDate',
+    order: 'DESC',
+  };
+  const [pagination, setPagination] = useState(page);
+
+  useEffect(() => {
+    if (!checkUser.call && checkUser.logged) {
+      if (!event.loading && event.data && !event.data.page) {
+        dispatch(listRequest(pagination));
+      } else if (!event.error && event.data && event.data.page && event.data.page.total) {
+        setPagination(event.data.page);
+      }
+    }
+  }, [event]);
+
+  /*
+  const handlePagination = (pageNumber: number): void => {
+    const newPage: Page<EventFind, Event> = {
+      ...pagination,
+      page: pageNumber,
+    };
+    setPagination(newPage);
+    dispatch(listRequest(pagination));
+  };
+  */
+
   const history = useNavigate();
   const [show, setShow] = useState(false);
 
@@ -22,6 +63,20 @@ const Sample = (): JSX.Element => {
 
   const callShow = (b: boolean): void => {
     setShow(b);
+  };
+
+  const getImageStyle = (imageUrl: string): React.CSSProperties => {
+    const style: React.CSSProperties = {
+      backgroundImage: `url(${imageUrl}`,
+    };
+    return style;
+  };
+
+  const convertDateToString = (date: Date): string => {
+    if (date) {
+      return Moment(date).format('DD/MM/YYYY [às] HH:mm');
+    }
+    return '';
   };
 
   return (
@@ -92,106 +147,38 @@ const Sample = (): JSX.Element => {
               <div className="linhaDaTabela headerData normalText">Fim evento</div>
               <div className="linhaDaTabela headerAção normalText">Ação</div>
             </div>
-            <div className="rows">
-              <div className="linhaDaTabela campoFoto"></div>
-              <div className="linhaDaTabela campoStatus"></div>
-              <div className="linhaDaTabela campoNome">
-                <div>
-                  <div className="celulaNome subText">Revoada do Tatu</div>
-                </div>
-              </div>
-              <div className="linhaDaTabela campoCidade">
-                <div className="celulaCidade subText">São Paulo/SP</div>
-              </div>
-              <div className="linhaDaTabela campoData">
-                <div className="celulaData subText">01/04/2022 às 15:30</div>
-              </div>
-              <div className="linhaDaTabela campoData">
-                <div className="celulaData subText">01/04/2022 às 15:30</div>
-              </div>
-              <div className="linhaDaTabela campoAção">
-                <div className="celulaAção">
-                  <img src={pen} style={{ paddingRight: '25px' }} alt="" />
-                  <img src={lixeira} style={{ paddingRight: '25px' }} alt="" />
-                  <img src={ticket} onClick={() => setShow(true)} alt="" />
-                </div>
-              </div>
-            </div>
-            <div className="rows">
-              <div className="linhaDaTabela campoFoto4"></div>
-              <div className="linhaDaTabela campoStatus"></div>
-              <div className="linhaDaTabela campoNome">
-                <div>
-                  <div className="celulaNome subText">
-                    Camarote Bacana - Fabiano Henrique e Thiago
+            {pagination.total &&
+              pagination.total > 0 &&
+              pagination.list?.map(data => (
+                <div key={data.id} className="rows">
+                  <div
+                    className="linhaDaTabela campoFoto"
+                    style={getImageStyle(data.imageBase64)}
+                  ></div>
+                  <div className="linhaDaTabela campoStatus"></div>
+                  <div className="linhaDaTabela campoNome">
+                    <div>
+                      <div className="celulaNome subText">{data.name}</div>
+                    </div>
+                  </div>
+                  <div className="linhaDaTabela campoCidade">
+                    <div className="celulaCidade subText">{`${data.address.city}/${data.address.state}`}</div>
+                  </div>
+                  <div className="linhaDaTabela campoData">
+                    <div className="celulaData subText">{convertDateToString(data.startDate)}</div>
+                  </div>
+                  <div className="linhaDaTabela campoData">
+                    <div className="celulaData subText">{convertDateToString(data.endDate)}</div>
+                  </div>
+                  <div className="linhaDaTabela campoAção">
+                    <div className="celulaAção">
+                      <img src={pen} style={{ paddingRight: '25px' }} alt="" />
+                      <img src={lixeira} style={{ paddingRight: '25px' }} alt="" />
+                      <img src={ticket} onClick={() => setShow(true)} alt="" />
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="linhaDaTabela campoCidade">
-                <div className="celulaCidade subText">Campinas/SP</div>
-              </div>
-              <div className="linhaDaTabela campoData">
-                <div className="celulaData subText">01/04/2022 às 15:30</div>
-              </div>
-              <div className="linhaDaTabela campoData">
-                <div className="celulaData subText">01/04/2022 às 15:30</div>
-              </div>
-              <div className="linhaDaTabela campoAção">
-                <div className="celulaAção">
-                  <img src={pen} style={{ paddingRight: '25px' }} alt="" />
-                  <img src={lixeira} style={{ paddingRight: '25px' }} alt="" />
-                  <img src={ticket} onClick={() => setShow(true)} alt="" />
-                </div>
-              </div>
-            </div>
-            <div className="rows">
-              <div className="linhaDaTabela campoFoto2"></div>
-              <div className="linhaDaTabela campoStatus"></div>
-              <div className="linhaDaTabela campoNome">
-                <div>
-                  <div className="celulaNome subText">Vans Warped Tour - Slow Bleeding</div>
-                </div>
-              </div>
-              <div className="linhaDaTabela campoCidade">
-                <div className="celulaCidade subText">São José do Rio Preto/SP</div>
-              </div>
-              <div className="linhaDaTabela campoData">
-                <div className="celulaData subText">01/04/2022 às 15:30</div>
-              </div>
-              <div className="linhaDaTabela campoData">
-                <div className="celulaData subText">01/04/2022 às 15:30</div>
-              </div>
-              <div className="linhaDaTabela campoAção">
-                <div className="celulaAção">
-                  <img src={pen} style={{ paddingRight: '25px' }} alt="" />
-                  <img src={lixeira} style={{ paddingRight: '25px' }} alt="" />
-                  <img src={ticket} onClick={() => setShow(true)} alt="" />
-                </div>
-              </div>
-            </div>
-            <div className="rows">
-              <div className="linhaDaTabela campoFoto3"></div>
-              <div className="linhaDaTabela campoStatus"></div>
-              <div className="linhaDaTabela campoNome">
-                <div className="celulaNome subText">João Rock 2022</div>
-              </div>
-              <div className="linhaDaTabela campoCidade">
-                <div className="celulaCidade subText">Araraquara/SP</div>
-              </div>
-              <div className="linhaDaTabela campoData">
-                <div className="celulaData subText">01/04/2022 às 15:30</div>
-              </div>
-              <div className="linhaDaTabela campoData">
-                <div className="celulaData subText">01/04/2022 às 15:30</div>
-              </div>
-              <div className="linhaDaTabela campoAção">
-                <div className="celulaAção">
-                  <img src={pen} style={{ paddingRight: '25px' }} alt="" />
-                  <img src={lixeira} style={{ paddingRight: '25px' }} alt="" />
-                  <img src={ticket} onClick={() => setShow(true)} alt="" />
-                </div>
-              </div>
-            </div>
+              ))}
           </Col>
         </Row>
       </Container>

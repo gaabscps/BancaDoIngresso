@@ -86,7 +86,7 @@ export function* authChangePassword(data: any) {
 
 export function* authRefreshToken() {
   try {
-    const response: AxiosResponse<Auth> = yield call(api.get, 'auth/refresh-token');
+    const response: AxiosResponse<Auth> = yield call(api.get, '/auth/refresh-token');
     const refreshToken = response.data;
     const stateData: ApplicationState = yield select((state: ApplicationState) => ({
       auth: state.auth,

@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import { Provider } from 'react-redux';
 import { Routes, BrowserRouter, Route } from 'react-router-dom';
+import CheckLogedUser from './helpers/CheckLogedUser';
 import PrivateRoute from './helpers/PrivateRoute';
 import { RoteContent, routes } from './route';
 import store from './store';
@@ -22,6 +23,7 @@ function App(): JSX.Element {
   return (
     <Fragment>
       <Provider store={store}>
+        <CheckLogedUser />
         <BrowserRouter>
           <Routes>
             {routes.map((route: RoteContent, index: number) => renderRoute(index, route))}

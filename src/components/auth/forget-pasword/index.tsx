@@ -40,7 +40,7 @@ const ForgetPassword = (): JSX.Element => {
     if (auth.data && (auth.data.changePassword || auth.data.recoverPassword)) {
       setStep(step + 1);
     } else if (auth.data.login) {
-      setAuthLocalStorage(auth.data.login);
+      setAuthLocalStorage(auth.data.login, false);
       window.location.href = '/';
     }
   }

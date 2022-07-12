@@ -23,9 +23,10 @@ interface Loginstate {
 
 const Login = (): JSX.Element => {
   const auth = useSelector<ApplicationState, AuthState>(store => store.auth);
+  const [isCheck, setIsCheck] = useState(false);
   if (!auth.loading && !auth.error) {
     if (auth.data && auth.data.login) {
-      setAuthLocalStorage(auth.data.login);
+      setAuthLocalStorage(auth.data.login, isCheck);
       window.location.href = '/';
     }
   }
@@ -38,10 +39,8 @@ const Login = (): JSX.Element => {
     username: false,
     password: false,
   });
-  const [isCheck, setIsCheck] = useState(false);
 
   const cookies = new Cookies();
-
   const HideShowPassword = (tPassword: boolean): void => {
     setTogglePassword(!tPassword);
   };
