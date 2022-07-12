@@ -26,20 +26,20 @@ export const activateFailure = (
 export const addUserRequest = (
   entity: ContractorUser,
 ): {
-  type: ContractorTypes.UPDATE_CONTRACTOR_REQUEST;
+  type: ContractorTypes.ADD_USER_CONTRACTOR_REQUEST;
   payload: ContractorUser;
-} => action(ContractorTypes.UPDATE_CONTRACTOR_REQUEST, entity);
+} => action(ContractorTypes.ADD_USER_CONTRACTOR_REQUEST, entity);
 
 export const addUserSuccess = (): {
-  type: ContractorTypes.UPDATE_CONTRACTOR_SUCCCES;
-} => action(ContractorTypes.UPDATE_CONTRACTOR_SUCCCES);
+  type: ContractorTypes.ADD_USER_CONTRACTOR_SUCCCES;
+} => action(ContractorTypes.ADD_USER_CONTRACTOR_SUCCCES);
 
 export const addUserFailure = (
   error: CustomError | undefined,
 ): {
-  type: ContractorTypes.UPDATE_CONTRACTOR_FAILURE;
+  type: ContractorTypes.ADD_USER_CONTRACTOR_FAILURE;
   payload: { error: CustomError | undefined };
-} => action(ContractorTypes.UPDATE_CONTRACTOR_FAILURE, { error });
+} => action(ContractorTypes.ADD_USER_CONTRACTOR_FAILURE, { error });
 
 export const createRequest = (
   entity: ContractorSave,

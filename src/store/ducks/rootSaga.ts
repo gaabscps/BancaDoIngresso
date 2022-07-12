@@ -64,6 +64,18 @@ import {
 } from './event-category/sagas';
 import { EventCategoryTypes } from './event-category/types';
 import {
+  activateProfile,
+  addProfilePermissions,
+  createProfile,
+  deleteProfile,
+  getAllProfiles,
+  getProfile,
+  inactivateProfile,
+  listProfiles,
+  updateProfile,
+} from './profile/sagas';
+import { ProfileTypes } from './profile/types';
+import {
   activateUser,
   createUser,
   deleteUser,
@@ -132,6 +144,16 @@ export default function* rootSaga(): any {
     takeLatest(EventCategoryTypes.INACTIVATE_EVENT_CATEGORY_REQUEST, inactivateEventCategory),
     takeLatest(EventCategoryTypes.LIST_EVENT_CATEGORY_REQUEST, listEventCategory),
     takeLatest(EventCategoryTypes.UPDATE_EVENT_CATEGORY_REQUEST, updateEventCategory),
+
+    takeLatest(ProfileTypes.ACTIVATE_PROFILE_REQUEST, activateProfile),
+    takeLatest(ProfileTypes.ADD_PERMISSION_PROFILE_REQUEST, addProfilePermissions),
+    takeLatest(ProfileTypes.CREATE_PROFILE_REQUEST, createProfile),
+    takeLatest(ProfileTypes.DELETE_PROFILE_REQUEST, deleteProfile),
+    takeLatest(ProfileTypes.GET_ALL_PROFILE_REQUEST, getAllProfiles),
+    takeLatest(ProfileTypes.GET_PROFILE_REQUEST, getProfile),
+    takeLatest(ProfileTypes.INACTIVATE_PROFILE_REQUEST, inactivateProfile),
+    takeLatest(ProfileTypes.LIST_PROFILE_REQUEST, listProfiles),
+    takeLatest(ProfileTypes.UPDATE_PROFILE_REQUEST, updateProfile),
 
     takeLatest(UserTypes.ACTIVATE_USER_REQUEST, activateUser),
     takeLatest(UserTypes.CREATE_USER_REQUEST, createUser),
