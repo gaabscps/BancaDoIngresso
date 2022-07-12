@@ -7,6 +7,7 @@ import company from './company';
 import contractor from './contractor';
 import customizer from './customizer';
 import eventCategory from './event-category';
+import module from './module';
 import permission from './permission';
 import profile from './profile';
 import user from './user';
@@ -20,6 +21,7 @@ export default combineReducers({
   contractor,
   customizer,
   eventCategory,
+  module,
   permission,
   profile,
   user,

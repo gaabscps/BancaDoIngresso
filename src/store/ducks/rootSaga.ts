@@ -64,6 +64,17 @@ import {
 } from './event-category/sagas';
 import { EventCategoryTypes } from './event-category/types';
 import {
+  activateModule,
+  createModule,
+  deleteModule,
+  getAllModules,
+  getModule,
+  inactivateModule,
+  listModules,
+  updateModule,
+} from './module/sagas';
+import { ModuleTypes } from './module/types';
+import {
   activatePermission,
   createPermission,
   deletePermission,
@@ -155,6 +166,15 @@ export default function* rootSaga(): any {
     takeLatest(EventCategoryTypes.INACTIVATE_EVENT_CATEGORY_REQUEST, inactivateEventCategory),
     takeLatest(EventCategoryTypes.LIST_EVENT_CATEGORY_REQUEST, listEventCategory),
     takeLatest(EventCategoryTypes.UPDATE_EVENT_CATEGORY_REQUEST, updateEventCategory),
+
+    takeLatest(ModuleTypes.ACTIVATE_MODULE_REQUEST, activateModule),
+    takeLatest(ModuleTypes.CREATE_MODULE_REQUEST, createModule),
+    takeLatest(ModuleTypes.DELETE_MODULE_REQUEST, deleteModule),
+    takeLatest(ModuleTypes.GET_ALL_MODULE_REQUEST, getAllModules),
+    takeLatest(ModuleTypes.GET_MODULE_REQUEST, getModule),
+    takeLatest(ModuleTypes.INACTIVATE_MODULE_REQUEST, inactivateModule),
+    takeLatest(ModuleTypes.LIST_MODULE_REQUEST, listModules),
+    takeLatest(ModuleTypes.UPDATE_MODULE_REQUEST, updateModule),
 
     takeLatest(PermissionTypes.ACTIVATE_PERMISSION_REQUEST, activatePermission),
     takeLatest(PermissionTypes.CREATE_PERMISSION_REQUEST, createPermission),

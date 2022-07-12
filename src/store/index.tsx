@@ -8,6 +8,7 @@ import { CompanyState } from './ducks/company/types';
 import { ContractorState } from './ducks/contractor/types';
 import { CustomizerState } from './ducks/customizer/types';
 import { EventCategoryState } from './ducks/event-category/types';
+import { ModuleState } from './ducks/module/types';
 import { PermissionState } from './ducks/permission/types';
 import { ProfileState } from './ducks/profile/types';
 import { UserState } from './ducks/user/types';
@@ -23,6 +24,7 @@ export interface ApplicationState {
   contractor: ContractorState;
   customizer: CustomizerState;
   eventCategory: EventCategoryState;
+  module: ModuleState;
   permission: PermissionState;
   profile: ProfileState;
   user: UserState;
