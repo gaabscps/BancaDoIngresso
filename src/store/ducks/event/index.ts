@@ -122,6 +122,70 @@ const reducer: Reducer<EventState> = (state = INITIAL_STATE, action) => {
         loading: false,
         error: action.payload.error,
       };
+    case EventTypes.SECTION_PRODUCT_PRODUCT_EVENT_REQUEST:
+      return { ...state, loading: true };
+    case EventTypes.SECTION_PRODUCT_PRODUCT_EVENT_SUCCCES:
+      return {
+        ...state,
+        data: action.payload.data,
+        loading: false,
+        error: undefined,
+      };
+    case EventTypes.SECTION_PRODUCT_PRODUCT_EVENT_FAILURE:
+      return {
+        ...state,
+        data: {} as EventDataType,
+        loading: false,
+        error: action.payload.error,
+      };
+    case EventTypes.SECTION_PRODUCT_COMBO_EVENT_REQUEST:
+      return { ...state, loading: true };
+    case EventTypes.SECTION_PRODUCT_COMBO_EVENT_SUCCCES:
+      return {
+        ...state,
+        data: action.payload.data,
+        loading: false,
+        error: undefined,
+      };
+    case EventTypes.SECTION_PRODUCT_COMBO_EVENT_FAILURE:
+      return {
+        ...state,
+        data: {} as EventDataType,
+        loading: false,
+        error: action.payload.error,
+      };
+    case EventTypes.SECTION_PRODUCT_COMBO_SECTION_EVENT_REQUEST:
+      return { ...state, loading: true };
+    case EventTypes.SECTION_PRODUCT_COMBO_SECTION_EVENT_SUCCCES:
+      return {
+        ...state,
+        data: action.payload.data,
+        loading: false,
+        error: undefined,
+      };
+    case EventTypes.SECTION_PRODUCT_COMBO_SECTION_EVENT_FAILURE:
+      return {
+        ...state,
+        data: {} as EventDataType,
+        loading: false,
+        error: action.payload.error,
+      };
+    case EventTypes.SECTION_PRODUCT_POS_EVENT_REQUEST:
+      return { ...state, loading: true };
+    case EventTypes.SECTION_PRODUCT_POS_EVENT_SUCCCES:
+      return {
+        ...state,
+        data: action.payload.data,
+        loading: false,
+        error: undefined,
+      };
+    case EventTypes.SECTION_PRODUCT_POS_EVENT_FAILURE:
+      return {
+        ...state,
+        data: {} as EventDataType,
+        loading: false,
+        error: action.payload.error,
+      };
     default:
       return state;
   }

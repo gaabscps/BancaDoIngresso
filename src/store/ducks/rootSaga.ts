@@ -62,6 +62,10 @@ import {
   ticketMainConfigurationEvent,
   ticketPaymentEvent,
   ticketGeneralSettingsEvent,
+  productEvent,
+  productComboEvent,
+  sectionProductComboEvent,
+  posEvent,
 } from './event/sagas';
 import { EventTypes } from './event/types';
 import {
@@ -109,6 +113,17 @@ import {
 } from './permission/sagas';
 import { PermissionTypes } from './permission/types';
 import {
+  activatePos,
+  createPos,
+  deletePos,
+  getAllPoss,
+  getPos,
+  inactivatePos,
+  listPoss,
+  updatePos,
+} from './pos/sagas';
+import { PosTypes } from './pos/types';
+import {
   activatePrinter,
   createPrinter,
   deletePrinter,
@@ -119,6 +134,39 @@ import {
   updatePrinter,
 } from './printer/sagas';
 import { PrinterTypes } from './printer/types';
+import {
+  activateProduct,
+  createProduct,
+  deleteProduct,
+  getAllProducts,
+  getProduct,
+  inactivateProduct,
+  listProducts,
+  updateProduct,
+} from './product/sagas';
+import { ProductTypes } from './product/types';
+import {
+  activateProductGroup,
+  createProductGroup,
+  deleteProductGroup,
+  getAllProductGroups,
+  getProductGroup,
+  inactivateProductGroup,
+  listProductGroups,
+  updateProductGroup,
+} from './product-group/sagas';
+import { ProductGroupTypes } from './product-group/types';
+import {
+  activateProductSubgroup,
+  createProductSubgroup,
+  deleteProductSubgroup,
+  getAllProductSubgroups,
+  getProductSubgroup,
+  inactivateProductSubgroup,
+  listProductSubgroups,
+  updateProductSubgroup,
+} from './product-subgroup/sagas';
+import { ProductSubgroupTypes } from './product-subgroup/types';
 import {
   activateProfile,
   addProfilePermissions,
@@ -212,6 +260,10 @@ export default function* rootSaga(): any {
     takeLatest(EventTypes.TICKET_MAIN_CONFIGURATION_EVENT_REQUEST, ticketMainConfigurationEvent),
     takeLatest(EventTypes.TICKET_PAYMENT_EVENT_REQUEST, ticketPaymentEvent),
     takeLatest(EventTypes.TICKET_GENERAL_SETTINGS_EVENT_REQUEST, ticketGeneralSettingsEvent),
+    takeLatest(EventTypes.SECTION_PRODUCT_PRODUCT_EVENT_REQUEST, productEvent),
+    takeLatest(EventTypes.SECTION_PRODUCT_COMBO_EVENT_REQUEST, productComboEvent),
+    takeLatest(EventTypes.SECTION_PRODUCT_COMBO_SECTION_EVENT_REQUEST, sectionProductComboEvent),
+    takeLatest(EventTypes.SECTION_PRODUCT_POS_EVENT_REQUEST, posEvent),
 
     takeLatest(EventCategoryTypes.ACTIVATE_EVENT_CATEGORY_REQUEST, activateEventCategory),
     takeLatest(EventCategoryTypes.CREATE_EVENT_CATEGORY_REQUEST, createEventCategory),
@@ -249,6 +301,15 @@ export default function* rootSaga(): any {
     takeLatest(PermissionTypes.LIST_PERMISSION_REQUEST, listPermissions),
     takeLatest(PermissionTypes.UPDATE_PERMISSION_REQUEST, updatePermission),
 
+    takeLatest(PosTypes.ACTIVATE_POS_REQUEST, activatePos),
+    takeLatest(PosTypes.CREATE_POS_REQUEST, createPos),
+    takeLatest(PosTypes.DELETE_POS_REQUEST, deletePos),
+    takeLatest(PosTypes.GET_ALL_POS_REQUEST, getAllPoss),
+    takeLatest(PosTypes.GET_POS_REQUEST, getPos),
+    takeLatest(PosTypes.INACTIVATE_POS_REQUEST, inactivatePos),
+    takeLatest(PosTypes.LIST_POS_REQUEST, listPoss),
+    takeLatest(PosTypes.UPDATE_POS_REQUEST, updatePos),
+
     takeLatest(PrinterTypes.ACTIVATE_PRINTER_REQUEST, activatePrinter),
     takeLatest(PrinterTypes.CREATE_PRINTER_REQUEST, createPrinter),
     takeLatest(PrinterTypes.DELETE_PRINTER_REQUEST, deletePrinter),
@@ -257,6 +318,33 @@ export default function* rootSaga(): any {
     takeLatest(PrinterTypes.INACTIVATE_PRINTER_REQUEST, inactivatePrinter),
     takeLatest(PrinterTypes.LIST_PRINTER_REQUEST, listPrinters),
     takeLatest(PrinterTypes.UPDATE_PRINTER_REQUEST, updatePrinter),
+
+    takeLatest(ProductTypes.ACTIVATE_PRODUCT_REQUEST, activateProduct),
+    takeLatest(ProductTypes.CREATE_PRODUCT_REQUEST, createProduct),
+    takeLatest(ProductTypes.DELETE_PRODUCT_REQUEST, deleteProduct),
+    takeLatest(ProductTypes.GET_ALL_PRODUCT_REQUEST, getAllProducts),
+    takeLatest(ProductTypes.GET_PRODUCT_REQUEST, getProduct),
+    takeLatest(ProductTypes.INACTIVATE_PRODUCT_REQUEST, inactivateProduct),
+    takeLatest(ProductTypes.LIST_PRODUCT_REQUEST, listProducts),
+    takeLatest(ProductTypes.UPDATE_PRODUCT_REQUEST, updateProduct),
+
+    takeLatest(ProductGroupTypes.ACTIVATE_PRODUCT_GROUP_REQUEST, activateProductGroup),
+    takeLatest(ProductGroupTypes.CREATE_PRODUCT_GROUP_REQUEST, createProductGroup),
+    takeLatest(ProductGroupTypes.DELETE_PRODUCT_GROUP_REQUEST, deleteProductGroup),
+    takeLatest(ProductGroupTypes.GET_ALL_PRODUCT_GROUP_REQUEST, getAllProductGroups),
+    takeLatest(ProductGroupTypes.GET_PRODUCT_GROUP_REQUEST, getProductGroup),
+    takeLatest(ProductGroupTypes.INACTIVATE_PRODUCT_GROUP_REQUEST, inactivateProductGroup),
+    takeLatest(ProductGroupTypes.LIST_PRODUCT_GROUP_REQUEST, listProductGroups),
+    takeLatest(ProductGroupTypes.UPDATE_PRODUCT_GROUP_REQUEST, updateProductGroup),
+
+    takeLatest(ProductSubgroupTypes.ACTIVATE_PRODUCT_SUBGROUP_REQUEST, activateProductSubgroup),
+    takeLatest(ProductSubgroupTypes.CREATE_PRODUCT_SUBGROUP_REQUEST, createProductSubgroup),
+    takeLatest(ProductSubgroupTypes.DELETE_PRODUCT_SUBGROUP_REQUEST, deleteProductSubgroup),
+    takeLatest(ProductSubgroupTypes.GET_ALL_PRODUCT_SUBGROUP_REQUEST, getAllProductSubgroups),
+    takeLatest(ProductSubgroupTypes.GET_PRODUCT_SUBGROUP_REQUEST, getProductSubgroup),
+    takeLatest(ProductSubgroupTypes.INACTIVATE_PRODUCT_SUBGROUP_REQUEST, inactivateProductSubgroup),
+    takeLatest(ProductSubgroupTypes.LIST_PRODUCT_SUBGROUP_REQUEST, listProductSubgroups),
+    takeLatest(ProductSubgroupTypes.UPDATE_PRODUCT_SUBGROUP_REQUEST, updateProductSubgroup),
 
     takeLatest(ProfileTypes.ACTIVATE_PROFILE_REQUEST, activateProfile),
     takeLatest(ProfileTypes.ADD_PERMISSION_PROFILE_REQUEST, addProfilePermissions),

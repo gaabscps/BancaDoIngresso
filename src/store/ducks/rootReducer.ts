@@ -12,7 +12,11 @@ import eventCategory from './event-category';
 import module from './module';
 import paymentGateway from './payment-gateway';
 import permission from './permission';
+import pos from './pos';
 import printer from './printer';
+import product from './product';
+import productGroup from './product-group';
+import productSubgroup from './product-subgroup';
 import profile from './profile';
 import section from './section';
 import user from './user';
@@ -31,7 +35,11 @@ export default combineReducers({
   module,
   paymentGateway,
   permission,
+  pos,
   printer,
+  product,
+  productGroup,
+  productSubgroup,
   profile,
   section,
   user,

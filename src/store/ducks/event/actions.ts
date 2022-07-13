@@ -8,6 +8,10 @@ import Page from '../../../entities/Page';
 import EventTicketMainConfiguration from '../../../entities/EventTicketMainConfiguration';
 import TicketPayment from '../../../entities/TicketPayment';
 import EventTicketGeneralSettings from '../../../entities/EventTicketGeneralSettings';
+import EventProduct from '../../../entities/EventProduct';
+import EventProductCombo from '../../../entities/EventProductCombo';
+import EventSection from '../../../entities/EventSection';
+import EventPos from '../../../entities/EventPos';
 
 export const listRequest = (
   page: Page<EventFind, Event>,
@@ -167,3 +171,107 @@ export const ticketGeneralSettingsFailure = (
   type: EventTypes.TICKET_GENERAL_SETTINGS_EVENT_FAILURE;
   payload: { error: CustomError | undefined };
 } => action(EventTypes.TICKET_GENERAL_SETTINGS_EVENT_FAILURE, { error });
+
+export const eventProductRequest = (
+  eventId: string,
+  eventProduct: EventProduct,
+): {
+  type: EventTypes.SECTION_PRODUCT_PRODUCT_EVENT_REQUEST;
+  payload: { eventId: string; eventProduct: EventProduct };
+} =>
+  action(EventTypes.SECTION_PRODUCT_PRODUCT_EVENT_REQUEST, {
+    eventId,
+    eventProduct,
+  });
+
+export const eventProductSuccess = (
+  data: EventDataType,
+): {
+  type: EventTypes.SECTION_PRODUCT_PRODUCT_EVENT_SUCCCES;
+  payload: { data: EventDataType };
+} => action(EventTypes.SECTION_PRODUCT_PRODUCT_EVENT_SUCCCES, { data });
+
+export const eventProductFailure = (
+  error: CustomError | undefined,
+): {
+  type: EventTypes.SECTION_PRODUCT_PRODUCT_EVENT_FAILURE;
+  payload: { error: CustomError | undefined };
+} => action(EventTypes.SECTION_PRODUCT_PRODUCT_EVENT_FAILURE, { error });
+
+export const eventProductComboRequest = (
+  eventId: string,
+  eventProductCombo: EventProductCombo,
+): {
+  type: EventTypes.SECTION_PRODUCT_COMBO_EVENT_REQUEST;
+  payload: { eventId: string; eventProductCombo: EventProductCombo };
+} =>
+  action(EventTypes.SECTION_PRODUCT_COMBO_EVENT_REQUEST, {
+    eventId,
+    eventProductCombo,
+  });
+
+export const eventProductComboSuccess = (
+  data: EventDataType,
+): {
+  type: EventTypes.SECTION_PRODUCT_COMBO_EVENT_SUCCCES;
+  payload: { data: EventDataType };
+} => action(EventTypes.SECTION_PRODUCT_COMBO_EVENT_SUCCCES, { data });
+
+export const eventProductComboFailure = (
+  error: CustomError | undefined,
+): {
+  type: EventTypes.SECTION_PRODUCT_COMBO_EVENT_FAILURE;
+  payload: { error: CustomError | undefined };
+} => action(EventTypes.SECTION_PRODUCT_COMBO_EVENT_FAILURE, { error });
+
+export const eventSectionProductComboRequest = (
+  eventId: string,
+  eventSection: EventSection,
+): {
+  type: EventTypes.SECTION_PRODUCT_COMBO_SECTION_EVENT_REQUEST;
+  payload: { eventId: string; eventSection: EventSection };
+} =>
+  action(EventTypes.SECTION_PRODUCT_COMBO_SECTION_EVENT_REQUEST, {
+    eventId,
+    eventSection,
+  });
+
+export const eventSectionProductComboSuccess = (
+  data: EventDataType,
+): {
+  type: EventTypes.SECTION_PRODUCT_COMBO_SECTION_EVENT_SUCCCES;
+  payload: { data: EventDataType };
+} => action(EventTypes.SECTION_PRODUCT_COMBO_SECTION_EVENT_SUCCCES, { data });
+
+export const eventSectionProductComboFailure = (
+  error: CustomError | undefined,
+): {
+  type: EventTypes.SECTION_PRODUCT_COMBO_SECTION_EVENT_FAILURE;
+  payload: { error: CustomError | undefined };
+} => action(EventTypes.SECTION_PRODUCT_COMBO_SECTION_EVENT_FAILURE, { error });
+
+export const eventSectionPosRequest = (
+  eventId: string,
+  eventPos: EventPos,
+): {
+  type: EventTypes.SECTION_PRODUCT_POS_EVENT_REQUEST;
+  payload: { eventId: string; eventPos: EventPos };
+} =>
+  action(EventTypes.SECTION_PRODUCT_POS_EVENT_REQUEST, {
+    eventId,
+    eventPos,
+  });
+
+export const eventSectionPosSuccess = (
+  data: EventDataType,
+): {
+  type: EventTypes.SECTION_PRODUCT_POS_EVENT_SUCCCES;
+  payload: { data: EventDataType };
+} => action(EventTypes.SECTION_PRODUCT_POS_EVENT_SUCCCES, { data });
+
+export const eventSectionPosFailure = (
+  error: CustomError | undefined,
+): {
+  type: EventTypes.SECTION_PRODUCT_POS_EVENT_FAILURE;
+  payload: { error: CustomError | undefined };
+} => action(EventTypes.SECTION_PRODUCT_POS_EVENT_FAILURE, { error });

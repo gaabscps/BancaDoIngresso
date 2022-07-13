@@ -1,0 +1,53 @@
+import CustomError from '../../../entities/CustomError';
+import Page from '../../../entities/Page';
+import ProductSubgroup from '../../../entities/ProductSubgroup';
+/**
+ * Action types
+ */
+
+// eslint-disable-next-line no-shadow
+export enum ProductSubgroupTypes {
+  ACTIVATE_PRODUCT_SUBGROUP_REQUEST = '@product-subgroup/ACTIVATE_PRODUCT_SUBGROUP_REQUEST',
+  ACTIVATE_PRODUCT_SUBGROUP_SUCCCES = '@product-subgroup/ACTIVATE_PRODUCT_SUBGROUP_SUCCCES',
+  ACTIVATE_PRODUCT_SUBGROUP_FAILURE = '@product-subgroup/ACTIVATE_PRODUCT_SUBGROUP_FAILURE',
+  CREATE_PRODUCT_SUBGROUP_REQUEST = '@product-subgroup/CREATE_PRODUCT_SUBGROUP_REQUEST',
+  CREATE_PRODUCT_SUBGROUP_SUCCCES = '@product-subgroup/CREATE_PRODUCT_SUBGROUP_SUCCCES',
+  CREATE_PRODUCT_SUBGROUP_FAILURE = '@product-subgroup/CREATE_PRODUCT_SUBGROUP_FAILURE',
+  DELETE_PRODUCT_SUBGROUP_REQUEST = '@product-subgroup/DELETE_PRODUCT_SUBGROUP_REQUEST',
+  DELETE_PRODUCT_SUBGROUP_SUCCCES = '@product-subgroup/DELETE_PRODUCT_SUBGROUP_SUCCCES',
+  DELETE_PRODUCT_SUBGROUP_FAILURE = '@product-subgroup/DELETE_PRODUCT_SUBGROUP_FAILURE',
+  GET_ALL_PRODUCT_SUBGROUP_REQUEST = '@product-subgroup/GET_ALL_PRODUCT_SUBGROUP_REQUEST',
+  GET_ALL_PRODUCT_SUBGROUP_SUCCCES = '@product-subgroup/GET_PRODUCT_SUBGROUP_SUCCCES',
+  GET_ALL_PRODUCT_SUBGROUP_FAILURE = '@product-subgroup/GET_PRODUCT_SUBGROUP_FAILURE',
+  GET_PRODUCT_SUBGROUP_REQUEST = '@product-subgroup/GET_PRODUCT_SUBGROUP_REQUEST',
+  GET_PRODUCT_SUBGROUP_SUCCCES = '@product-subgroup/GET_PRODUCT_SUBGROUP_SUCCCES',
+  GET_PRODUCT_SUBGROUP_FAILURE = '@product-subgroup/GET_PRODUCT_SUBGROUP_FAILURE',
+  INACTIVATE_PRODUCT_SUBGROUP_REQUEST = '@product-subgroup/INACTIVATE_PRODUCT_SUBGROUP_REQUEST',
+  INACTIVATE_PRODUCT_SUBGROUP_SUCCCES = '@product-subgroup/INACTIVATE_PRODUCT_SUBGROUP_SUCCCES',
+  INACTIVATE_PRODUCT_SUBGROUP_FAILURE = '@product-subgroup/INACTIVATE_PRODUCT_SUBGROUP_FAILURE',
+  LIST_PRODUCT_SUBGROUP_REQUEST = '@product-subgroup/LIST_PRODUCT_SUBGROUP_REQUEST',
+  LIST_PRODUCT_SUBGROUP_SUCCCES = '@product-subgroup/LIST_PRODUCT_SUBGROUP_SUCCCES',
+  LIST_PRODUCT_SUBGROUP_FAILURE = '@product-subgroup/LIST_PRODUCT_SUBGROUP_FAILURE',
+  UPDATE_PRODUCT_SUBGROUP_REQUEST = '@product-subgroup/UPDATE_PRODUCT_SUBGROUP_REQUEST',
+  UPDATE_PRODUCT_SUBGROUP_SUCCCES = '@product-subgroup/UPDATE_PRODUCT_SUBGROUP_SUCCCES',
+  UPDATE_PRODUCT_SUBGROUP_FAILURE = '@product-subgroup/UPDATE_PRODUCT_SUBGROUP_FAILURE',
+}
+
+/**
+ * Data types
+ */
+
+export interface ProductSubgroupDataType {
+  page: Page<ProductSubgroup, ProductSubgroup>;
+  entity: ProductSubgroup;
+  list: ProductSubgroup[];
+}
+
+/**
+ * State type
+ */
+export interface ProductSubgroupState {
+  readonly data: ProductSubgroupDataType;
+  readonly loading: boolean;
+  readonly error: CustomError | undefined;
+}

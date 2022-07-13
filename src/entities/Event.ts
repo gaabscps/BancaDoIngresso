@@ -3,6 +3,8 @@ import Contractor from './Contractor';
 import EventCategory from './EventCategory';
 import EventPdv from './EventPdv';
 import EventPos from './EventPos';
+import EventProduct from './EventProduct';
+import EventProductCombo from './EventProductCombo';
 import EventSectionGet from './EventSectionGet';
 import EventStatus from './EventStatus';
 import EventType from './EventType';
@@ -34,6 +36,8 @@ export default interface Event {
   eventStatus: EventStatus;
   vouchers?: Voucher[];
   tickets?: Ticket[];
+  products?: EventProduct[];
+  combos?: EventProductCombo[];
   sectionproductsAndCombos?: EventSectionGet[];
   poss?: EventPos[];
   pdvs?: EventPdv[];

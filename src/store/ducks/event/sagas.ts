@@ -17,8 +17,15 @@ import {
   ticketMainConfigurationSuccess,
   ticketPaymentFailure,
   ticketPaymentSuccess,
+  eventProductFailure,
+  eventProductSuccess,
+  eventProductComboFailure,
+  eventProductComboSuccess,
+  eventSectionProductComboFailure,
+  eventSectionProductComboSuccess,
+  eventSectionPosFailure,
+  eventSectionPosSuccess,
 } from './actions';
-
 import { checkUserCall } from '../check-user/actions';
 import { EventDataType } from './types';
 import { parse } from '../../../entities/CustomError';
@@ -36,6 +43,11 @@ import TicketPayment, { parseTicketPayments } from '../../../entities/TicketPaym
 import EventTicketGeneralSettings, {
   parseTicketGeneralSettings,
 } from '../../../entities/EventTicketGeneralSettings';
+import EventProduct from '../../../entities/EventProduct';
+import EventProductCombo from '../../../entities/EventProductCombo';
+import EventSection, { parseEventSectionGet } from '../../../entities/EventSection';
+import EventSectionGet from '../../../entities/EventSectionGet';
+import EventPos from '../../../entities/EventPos';
 
 export function* listEvents(page: any) {
   try {
@@ -54,6 +66,10 @@ export function* listEvents(page: any) {
       ticketMainConfigurations,
       ticketPayments,
       ticketGeneralSettings,
+      products,
+      combos,
+      sectionproductsAndCombos,
+      poss,
       list,
     } = stateData.event.data;
 
@@ -63,6 +79,10 @@ export function* listEvents(page: any) {
       ticketMainConfigurations,
       ticketPayments,
       ticketGeneralSettings,
+      products,
+      combos,
+      sectionproductsAndCombos,
+      poss,
       list,
     };
     yield put(listSuccess(dataType));
@@ -90,13 +110,20 @@ export function* getEvent(data: any) {
     const ticketGeneralSettings = parseTicketGeneralSettings(
       event.tickets,
     ) as EventTicketGeneralSettings[];
-    const { page, list } = stateData.event.data;
+    const sectionproductsAndCombos = parseEventSectionGet(
+      event.sectionproductsAndCombos,
+    ) as EventSectionGet[];
+    const { page, products, combos, poss, list } = stateData.event.data;
     const dataType: EventDataType = {
       page,
       eventGeneralInformation,
       ticketMainConfigurations,
       ticketPayments,
       ticketGeneralSettings,
+      products,
+      combos,
+      sectionproductsAndCombos,
+      poss,
       list,
     };
     yield put(getSuccess(dataType));
@@ -121,6 +148,10 @@ export function* getAllEvents() {
       ticketMainConfigurations,
       ticketPayments,
       ticketGeneralSettings,
+      products,
+      combos,
+      sectionproductsAndCombos,
+      poss,
       page,
     } = stateData.event.data;
     const dataType: EventDataType = {
@@ -129,6 +160,10 @@ export function* getAllEvents() {
       ticketMainConfigurations,
       ticketGeneralSettings,
       ticketPayments,
+      products,
+      combos,
+      sectionproductsAndCombos,
+      poss,
       list,
     };
     yield put(getAllSuccess(dataType));
@@ -151,14 +186,27 @@ export function* generalInformationEvent(data: any) {
     const stateData: ApplicationState = yield select((state: ApplicationState) => ({
       event: state.event,
     }));
-    const { page, ticketMainConfigurations, ticketPayments, ticketGeneralSettings, list } =
-      stateData.event.data;
+    const {
+      page,
+      ticketMainConfigurations,
+      ticketPayments,
+      ticketGeneralSettings,
+      products,
+      combos,
+      sectionproductsAndCombos,
+      poss,
+      list,
+    } = stateData.event.data;
     const dataType: EventDataType = {
       page,
       eventGeneralInformation: response.data,
       ticketMainConfigurations,
       ticketPayments,
       ticketGeneralSettings,
+      products,
+      combos,
+      sectionproductsAndCombos,
+      poss,
       list,
     };
     yield put(generalInformationSuccess(dataType));
@@ -188,6 +236,10 @@ export function* ticketMainConfigurationEvent(data: any) {
       ticketMainConfigurations,
       ticketPayments,
       ticketGeneralSettings,
+      products,
+      combos,
+      sectionproductsAndCombos,
+      poss,
       list,
     } = stateData.event.data;
     const tickets: EventTicketMainConfiguration[] = [];
@@ -203,6 +255,10 @@ export function* ticketMainConfigurationEvent(data: any) {
       ticketMainConfigurations: tickets,
       ticketPayments,
       ticketGeneralSettings,
+      products,
+      combos,
+      sectionproductsAndCombos,
+      poss,
       list,
     };
     yield put(ticketMainConfigurationSuccess(dataType));
@@ -232,6 +288,10 @@ export function* ticketPaymentEvent(data: any) {
       ticketMainConfigurations,
       ticketPayments,
       ticketGeneralSettings,
+      products,
+      combos,
+      sectionproductsAndCombos,
+      poss,
       list,
     } = stateData.event.data;
     const tickets: TicketPayment[] = [];
@@ -247,6 +307,10 @@ export function* ticketPaymentEvent(data: any) {
       ticketMainConfigurations,
       ticketPayments: tickets,
       ticketGeneralSettings,
+      products,
+      combos,
+      sectionproductsAndCombos,
+      poss,
       list,
     };
     yield put(ticketPaymentSuccess(dataType));
@@ -276,6 +340,10 @@ export function* ticketGeneralSettingsEvent(data: any) {
       ticketMainConfigurations,
       ticketPayments,
       ticketGeneralSettings,
+      products,
+      combos,
+      sectionproductsAndCombos,
+      poss,
       list,
     } = stateData.event.data;
     const tickets: EventTicketGeneralSettings[] = [];
@@ -291,6 +359,10 @@ export function* ticketGeneralSettingsEvent(data: any) {
       ticketMainConfigurations,
       ticketPayments,
       ticketGeneralSettings: tickets,
+      products,
+      combos,
+      sectionproductsAndCombos,
+      poss,
       list,
     };
     yield put(ticketPaymentSuccess(dataType));
@@ -300,5 +372,220 @@ export function* ticketGeneralSettingsEvent(data: any) {
       yield put(checkUserCall());
     }
     yield put(ticketPaymentFailure(parse(error)));
+  }
+}
+
+export function* productEvent(data: any) {
+  const { eventId, eventProduct } = data.payload;
+  try {
+    const response: AxiosResponse<EventProduct> = yield call(
+      api.post,
+      `/event/section-product/${eventId}/product`,
+      eventProduct,
+    );
+    const stateData: ApplicationState = yield select((state: ApplicationState) => ({
+      event: state.event,
+    }));
+    const {
+      page,
+      eventGeneralInformation,
+      ticketMainConfigurations,
+      ticketPayments,
+      ticketGeneralSettings,
+      products,
+      combos,
+      sectionproductsAndCombos,
+      poss,
+      list,
+    } = stateData.event.data;
+
+    const eventProducts: EventProduct[] = [];
+    if (products && products.length > 0) {
+      products.forEach(prod => {
+        eventProducts.push(prod);
+      });
+    }
+    eventProducts.push(response.data);
+    const dataType: EventDataType = {
+      page,
+      eventGeneralInformation,
+      ticketMainConfigurations,
+      ticketPayments,
+      ticketGeneralSettings,
+      products: eventProducts,
+      combos,
+      sectionproductsAndCombos,
+      poss,
+      list,
+    };
+    yield put(eventProductSuccess(dataType));
+  } catch (err) {
+    const error = err as AxiosError;
+    if (error.response?.status === 401) {
+      yield put(checkUserCall());
+    }
+    yield put(eventProductFailure(parse(error)));
+  }
+}
+
+export function* productComboEvent(data: any) {
+  const { eventId, eventProductCombo } = data.payload;
+  try {
+    const response: AxiosResponse<EventProductCombo> = yield call(
+      api.post,
+      `/event/section-product/${eventId}/combo`,
+      eventProductCombo,
+    );
+    const stateData: ApplicationState = yield select((state: ApplicationState) => ({
+      event: state.event,
+    }));
+    const {
+      page,
+      eventGeneralInformation,
+      ticketMainConfigurations,
+      ticketPayments,
+      ticketGeneralSettings,
+      products,
+      combos,
+      sectionproductsAndCombos,
+      poss,
+      list,
+    } = stateData.event.data;
+
+    const eventProductCombos: EventProductCombo[] = [];
+    if (combos && combos.length > 0) {
+      combos.forEach(combo => {
+        eventProductCombos.push(combo);
+      });
+    }
+    eventProductCombos.push(response.data);
+    const dataType: EventDataType = {
+      page,
+      eventGeneralInformation,
+      ticketMainConfigurations,
+      ticketPayments,
+      ticketGeneralSettings,
+      products,
+      combos: eventProductCombos,
+      sectionproductsAndCombos,
+      poss,
+      list,
+    };
+    yield put(eventProductComboSuccess(dataType));
+  } catch (err) {
+    const error = err as AxiosError;
+    if (error.response?.status === 401) {
+      yield put(checkUserCall());
+    }
+    yield put(eventProductComboFailure(parse(error)));
+  }
+}
+
+export function* sectionProductComboEvent(data: any) {
+  const { eventId, eventSection } = data.payload;
+  try {
+    const response: AxiosResponse<EventSection> = yield call(
+      api.post,
+      `/event/section-product/${eventId}/section`,
+      eventSection,
+    );
+    const stateData: ApplicationState = yield select((state: ApplicationState) => ({
+      event: state.event,
+    }));
+    const {
+      page,
+      eventGeneralInformation,
+      ticketMainConfigurations,
+      ticketPayments,
+      ticketGeneralSettings,
+      products,
+      combos,
+      sectionproductsAndCombos,
+      poss,
+      list,
+    } = stateData.event.data;
+
+    const sections: EventSection[] = [];
+    if (sectionproductsAndCombos && sectionproductsAndCombos.length > 0) {
+      sectionproductsAndCombos.forEach(s => {
+        if (s.section.id === response.data.section.id) {
+          sections.push(response.data);
+        } else {
+          sections.push(s);
+        }
+      });
+    }
+    const dataType: EventDataType = {
+      page,
+      eventGeneralInformation,
+      ticketMainConfigurations,
+      ticketPayments,
+      ticketGeneralSettings,
+      products,
+      combos,
+      sectionproductsAndCombos: sections,
+      poss,
+      list,
+    };
+    yield put(eventSectionProductComboSuccess(dataType));
+  } catch (err) {
+    const error = err as AxiosError;
+    if (error.response?.status === 401) {
+      yield put(checkUserCall());
+    }
+    yield put(eventSectionProductComboFailure(parse(error)));
+  }
+}
+
+export function* posEvent(data: any) {
+  const { eventId, eventPos } = data.payload;
+  try {
+    const response: AxiosResponse<EventPos> = yield call(
+      api.post,
+      `/event/section-product/${eventId}/pos`,
+      eventPos,
+    );
+    const stateData: ApplicationState = yield select((state: ApplicationState) => ({
+      event: state.event,
+    }));
+    const {
+      page,
+      eventGeneralInformation,
+      ticketMainConfigurations,
+      ticketPayments,
+      ticketGeneralSettings,
+      products,
+      combos,
+      sectionproductsAndCombos,
+      poss,
+      list,
+    } = stateData.event.data;
+
+    const eventPoss: EventPos[] = [];
+    if (poss && poss.length > 0) {
+      poss.forEach(pos => {
+        eventPoss.push(pos);
+      });
+    }
+    eventPoss.push(response.data);
+    const dataType: EventDataType = {
+      page,
+      eventGeneralInformation,
+      ticketMainConfigurations,
+      ticketPayments,
+      ticketGeneralSettings,
+      products,
+      combos,
+      sectionproductsAndCombos,
+      poss: eventPoss,
+      list,
+    };
+    yield put(eventSectionPosSuccess(dataType));
+  } catch (err) {
+    const error = err as AxiosError;
+    if (error.response?.status === 401) {
+      yield put(checkUserCall());
+    }
+    yield put(eventSectionPosFailure(parse(error)));
   }
 }

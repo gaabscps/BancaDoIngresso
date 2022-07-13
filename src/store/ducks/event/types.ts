@@ -6,6 +6,10 @@ import EventGeneralInformation from '../../../entities/EventGeneralInformation';
 import EventTicketMainConfiguration from '../../../entities/EventTicketMainConfiguration';
 import TicketPayment from '../../../entities/TicketPayment';
 import EventTicketGeneralSettings from '../../../entities/EventTicketGeneralSettings';
+import EventProduct from '../../../entities/EventProduct';
+import EventProductCombo from '../../../entities/EventProductCombo';
+import EventSection from '../../../entities/EventSection';
+import EventPos from '../../../entities/EventPos';
 
 /**
  * Action types
@@ -34,6 +38,18 @@ export enum EventTypes {
   TICKET_GENERAL_SETTINGS_EVENT_REQUEST = '@event/TICKET_GENERAL_SETTINGS_EVENT_REQUEST',
   TICKET_GENERAL_SETTINGS_EVENT_SUCCCES = '@event/TICKET_GENERAL_SETTINGS_EVENT_SUCCCES',
   TICKET_GENERAL_SETTINGS_EVENT_FAILURE = '@event/TICKET_GENERAL_SETTINGS_EVENT_FAILURE',
+  SECTION_PRODUCT_PRODUCT_EVENT_REQUEST = '@event/SECTION_PRODUCT_PRODUCT_EVENT_REQUEST',
+  SECTION_PRODUCT_PRODUCT_EVENT_SUCCCES = '@event/SECTION_PRODUCT_PRODUCT_EVENT_SUCCCES',
+  SECTION_PRODUCT_PRODUCT_EVENT_FAILURE = '@event/SECTION_PRODUCT_PRODUCT_EVENT_FAILURE',
+  SECTION_PRODUCT_COMBO_EVENT_REQUEST = '@event/SECTION_PRODUCT_COMBO_EVENT_REQUEST',
+  SECTION_PRODUCT_COMBO_EVENT_SUCCCES = '@event/SECTION_PRODUCT_COMBO_EVENT_SUCCCES',
+  SECTION_PRODUCT_COMBO_EVENT_FAILURE = '@event/SECTION_PRODUCT_COMBO_EVENT_FAILURE',
+  SECTION_PRODUCT_COMBO_SECTION_EVENT_REQUEST = '@event/SECTION_PRODUCT_COMBO_SECTION_EVENT_REQUEST',
+  SECTION_PRODUCT_COMBO_SECTION_EVENT_SUCCCES = '@event/SECTION_PRODUCT_COMBO_SECTION_EVENT_SUCCCES',
+  SECTION_PRODUCT_COMBO_SECTION_EVENT_FAILURE = '@event/SECTION_PRODUCT_COMBO_SECTION_EVENT_FAILURE',
+  SECTION_PRODUCT_POS_EVENT_REQUEST = '@event/SECTION_PRODUCT_POS_EVENT_REQUEST',
+  SECTION_PRODUCT_POS_EVENT_SUCCCES = '@event/SECTION_PRODUCT_POS_EVENT_SUCCCES',
+  SECTION_PRODUCT_POS_EVENT_FAILURE = '@event/SECTION_PRODUCT_POS_EVENT_FAILURE',
 }
 
 /**
@@ -46,6 +62,10 @@ export interface EventDataType {
   ticketMainConfigurations: EventTicketMainConfiguration[];
   ticketPayments: TicketPayment[];
   ticketGeneralSettings: EventTicketGeneralSettings[];
+  products: EventProduct[];
+  combos: EventProductCombo[];
+  sectionproductsAndCombos: EventSection[];
+  poss: EventPos[];
   list: Event[];
 }
 
