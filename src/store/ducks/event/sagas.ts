@@ -33,6 +33,9 @@ import EventTicketMainConfiguration, {
   parseTicketMainConfigurations,
 } from '../../../entities/EventTicketMainConfiguration';
 import TicketPayment, { parseTicketPayments } from '../../../entities/TicketPayment';
+import EventTicketGeneralSettings, {
+  parseTicketGeneralSettings,
+} from '../../../entities/EventTicketGeneralSettings';
 
 export function* listEvents(page: any) {
   try {
@@ -46,14 +49,20 @@ export function* listEvents(page: any) {
       event: state.event,
     }));
 
-    const { eventGeneralInformation, eventTicketMainConfigurations, ticketPayments, list } =
-      stateData.event.data;
+    const {
+      eventGeneralInformation,
+      ticketMainConfigurations,
+      ticketPayments,
+      ticketGeneralSettings,
+      list,
+    } = stateData.event.data;
 
     const dataType: EventDataType = {
       page: pageResponse,
       eventGeneralInformation,
-      eventTicketMainConfigurations,
+      ticketMainConfigurations,
       ticketPayments,
+      ticketGeneralSettings,
       list,
     };
     yield put(listSuccess(dataType));
@@ -74,16 +83,20 @@ export function* getEvent(data: any) {
       event: state.event,
     }));
     const eventGeneralInformation = parseGeneralInformation(event);
-    const eventTicketMainConfigurations = parseTicketMainConfigurations(
+    const ticketMainConfigurations = parseTicketMainConfigurations(
       event.tickets,
     ) as EventTicketMainConfiguration[];
     const ticketPayments = parseTicketPayments(event.tickets) as TicketPayment[];
+    const ticketGeneralSettings = parseTicketGeneralSettings(
+      event.tickets,
+    ) as EventTicketGeneralSettings[];
     const { page, list } = stateData.event.data;
     const dataType: EventDataType = {
       page,
       eventGeneralInformation,
-      eventTicketMainConfigurations,
+      ticketMainConfigurations,
       ticketPayments,
+      ticketGeneralSettings,
       list,
     };
     yield put(getSuccess(dataType));
@@ -103,12 +116,18 @@ export function* getAllEvents() {
     const stateData: ApplicationState = yield select((state: ApplicationState) => ({
       event: state.event,
     }));
-    const { eventGeneralInformation, eventTicketMainConfigurations, ticketPayments, page } =
-      stateData.event.data;
+    const {
+      eventGeneralInformation,
+      ticketMainConfigurations,
+      ticketPayments,
+      ticketGeneralSettings,
+      page,
+    } = stateData.event.data;
     const dataType: EventDataType = {
       page,
       eventGeneralInformation,
-      eventTicketMainConfigurations,
+      ticketMainConfigurations,
+      ticketGeneralSettings,
       ticketPayments,
       list,
     };
@@ -132,12 +151,14 @@ export function* generalInformationEvent(data: any) {
     const stateData: ApplicationState = yield select((state: ApplicationState) => ({
       event: state.event,
     }));
-    const { page, eventTicketMainConfigurations, ticketPayments, list } = stateData.event.data;
+    const { page, ticketMainConfigurations, ticketPayments, ticketGeneralSettings, list } =
+      stateData.event.data;
     const dataType: EventDataType = {
       page,
       eventGeneralInformation: response.data,
-      eventTicketMainConfigurations,
+      ticketMainConfigurations,
       ticketPayments,
+      ticketGeneralSettings,
       list,
     };
     yield put(generalInformationSuccess(dataType));
@@ -161,11 +182,17 @@ export function* ticketMainConfigurationEvent(data: any) {
     const stateData: ApplicationState = yield select((state: ApplicationState) => ({
       event: state.event,
     }));
-    const { page, eventGeneralInformation, eventTicketMainConfigurations, ticketPayments, list } =
-      stateData.event.data;
+    const {
+      page,
+      eventGeneralInformation,
+      ticketMainConfigurations,
+      ticketPayments,
+      ticketGeneralSettings,
+      list,
+    } = stateData.event.data;
     const tickets: EventTicketMainConfiguration[] = [];
-    if (eventTicketMainConfigurations && eventTicketMainConfigurations.length > 0) {
-      eventTicketMainConfigurations.forEach(ticket => {
+    if (ticketMainConfigurations && ticketMainConfigurations.length > 0) {
+      ticketMainConfigurations.forEach(ticket => {
         tickets.push(ticket);
       });
     }
@@ -173,8 +200,9 @@ export function* ticketMainConfigurationEvent(data: any) {
     const dataType: EventDataType = {
       page,
       eventGeneralInformation,
-      eventTicketMainConfigurations: tickets,
+      ticketMainConfigurations: tickets,
       ticketPayments,
+      ticketGeneralSettings,
       list,
     };
     yield put(ticketMainConfigurationSuccess(dataType));
@@ -198,8 +226,14 @@ export function* ticketPaymentEvent(data: any) {
     const stateData: ApplicationState = yield select((state: ApplicationState) => ({
       event: state.event,
     }));
-    const { page, eventGeneralInformation, eventTicketMainConfigurations, ticketPayments, list } =
-      stateData.event.data;
+    const {
+      page,
+      eventGeneralInformation,
+      ticketMainConfigurations,
+      ticketPayments,
+      ticketGeneralSettings,
+      list,
+    } = stateData.event.data;
     const tickets: TicketPayment[] = [];
     if (ticketPayments && ticketPayments.length > 0) {
       ticketPayments.forEach(ticket => {
@@ -210,8 +244,53 @@ export function* ticketPaymentEvent(data: any) {
     const dataType: EventDataType = {
       page,
       eventGeneralInformation,
-      eventTicketMainConfigurations,
+      ticketMainConfigurations,
       ticketPayments: tickets,
+      ticketGeneralSettings,
+      list,
+    };
+    yield put(ticketPaymentSuccess(dataType));
+  } catch (err) {
+    const error = err as AxiosError;
+    if (error.response?.status === 401) {
+      yield put(checkUserCall());
+    }
+    yield put(ticketPaymentFailure(parse(error)));
+  }
+}
+
+export function* ticketGeneralSettingsEvent(data: any) {
+  const { eventId, eventTicketGeneralSettings } = data.payload;
+  try {
+    const response: AxiosResponse<EventTicketGeneralSettings> = yield call(
+      api.post,
+      `/event/ticket/${eventId}/general-settings`,
+      eventTicketGeneralSettings,
+    );
+    const stateData: ApplicationState = yield select((state: ApplicationState) => ({
+      event: state.event,
+    }));
+    const {
+      page,
+      eventGeneralInformation,
+      ticketMainConfigurations,
+      ticketPayments,
+      ticketGeneralSettings,
+      list,
+    } = stateData.event.data;
+    const tickets: EventTicketGeneralSettings[] = [];
+    if (ticketGeneralSettings && ticketGeneralSettings.length > 0) {
+      ticketGeneralSettings.forEach(ticket => {
+        tickets.push(ticket);
+      });
+    }
+    tickets.push(response.data);
+    const dataType: EventDataType = {
+      page,
+      eventGeneralInformation,
+      ticketMainConfigurations,
+      ticketPayments,
+      ticketGeneralSettings: tickets,
       list,
     };
     yield put(ticketPaymentSuccess(dataType));

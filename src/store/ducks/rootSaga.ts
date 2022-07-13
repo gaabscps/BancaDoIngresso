@@ -61,6 +61,7 @@ import {
   listEvents,
   ticketMainConfigurationEvent,
   ticketPaymentEvent,
+  ticketGeneralSettingsEvent,
 } from './event/sagas';
 import { EventTypes } from './event/types';
 import {
@@ -210,6 +211,7 @@ export default function* rootSaga(): any {
     takeLatest(EventTypes.GENERAL_INFORMATION_EVENT_REQUEST, generalInformationEvent),
     takeLatest(EventTypes.TICKET_MAIN_CONFIGURATION_EVENT_REQUEST, ticketMainConfigurationEvent),
     takeLatest(EventTypes.TICKET_PAYMENT_EVENT_REQUEST, ticketPaymentEvent),
+    takeLatest(EventTypes.TICKET_GENERAL_SETTINGS_EVENT_REQUEST, ticketGeneralSettingsEvent),
 
     takeLatest(EventCategoryTypes.ACTIVATE_EVENT_CATEGORY_REQUEST, activateEventCategory),
     takeLatest(EventCategoryTypes.CREATE_EVENT_CATEGORY_REQUEST, createEventCategory),

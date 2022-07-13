@@ -7,6 +7,7 @@ import CustomError from '../../../entities/CustomError';
 import Page from '../../../entities/Page';
 import EventTicketMainConfiguration from '../../../entities/EventTicketMainConfiguration';
 import TicketPayment from '../../../entities/TicketPayment';
+import EventTicketGeneralSettings from '../../../entities/EventTicketGeneralSettings';
 
 export const listRequest = (
   page: Page<EventFind, Event>,
@@ -140,3 +141,29 @@ export const ticketPaymentFailure = (
   type: EventTypes.TICKET_PAYMENT_EVENT_FAILURE;
   payload: { error: CustomError | undefined };
 } => action(EventTypes.TICKET_PAYMENT_EVENT_FAILURE, { error });
+
+export const ticketGeneralSettingsRequest = (
+  eventId: string,
+  eventTicketGeneralSettings: EventTicketGeneralSettings,
+): {
+  type: EventTypes.TICKET_GENERAL_SETTINGS_EVENT_REQUEST;
+  payload: { eventId: string; eventTicketGeneralSettings: EventTicketGeneralSettings };
+} =>
+  action(EventTypes.TICKET_GENERAL_SETTINGS_EVENT_REQUEST, {
+    eventId,
+    eventTicketGeneralSettings,
+  });
+
+export const ticketGeneralSettingsSuccess = (
+  data: EventDataType,
+): {
+  type: EventTypes.TICKET_GENERAL_SETTINGS_EVENT_SUCCCES;
+  payload: { data: EventDataType };
+} => action(EventTypes.TICKET_GENERAL_SETTINGS_EVENT_SUCCCES, { data });
+
+export const ticketGeneralSettingsFailure = (
+  error: CustomError | undefined,
+): {
+  type: EventTypes.TICKET_GENERAL_SETTINGS_EVENT_FAILURE;
+  payload: { error: CustomError | undefined };
+} => action(EventTypes.TICKET_GENERAL_SETTINGS_EVENT_FAILURE, { error });
