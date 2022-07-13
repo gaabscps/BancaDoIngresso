@@ -5,6 +5,7 @@ import EventFind from '../../../entities/EventFind';
 import EventGeneralInformation from '../../../entities/EventGeneralInformation';
 import CustomError from '../../../entities/CustomError';
 import Page from '../../../entities/Page';
+import EventTicketMainConfiguration from '../../../entities/EventTicketMainConfiguration';
 
 export const listRequest = (
   page: Page<EventFind, Event>,
@@ -86,3 +87,29 @@ export const generalInformationFailure = (
   type: EventTypes.GENERAL_INFORMATION_EVENT_FAILURE;
   payload: { error: CustomError | undefined };
 } => action(EventTypes.GENERAL_INFORMATION_EVENT_FAILURE, { error });
+
+export const ticketMainConfigurationRequest = (
+  eventId: string,
+  eventTicketMainConfiguration: EventTicketMainConfiguration,
+): {
+  type: EventTypes.TICKET_MAIN_CONFIGURATION_EVENT_REQUEST;
+  payload: { eventId: string; eventTicketMainConfiguration: EventTicketMainConfiguration };
+} =>
+  action(EventTypes.TICKET_MAIN_CONFIGURATION_EVENT_REQUEST, {
+    eventId,
+    eventTicketMainConfiguration,
+  });
+
+export const ticketMainConfigurationSuccess = (
+  data: EventDataType,
+): {
+  type: EventTypes.TICKET_MAIN_CONFIGURATION_EVENT_SUCCCES;
+  payload: { data: EventDataType };
+} => action(EventTypes.TICKET_MAIN_CONFIGURATION_EVENT_SUCCCES, { data });
+
+export const ticketMainConfigurationFailure = (
+  error: CustomError | undefined,
+): {
+  type: EventTypes.TICKET_MAIN_CONFIGURATION_EVENT_FAILURE;
+  payload: { error: CustomError | undefined };
+} => action(EventTypes.TICKET_MAIN_CONFIGURATION_EVENT_FAILURE, { error });

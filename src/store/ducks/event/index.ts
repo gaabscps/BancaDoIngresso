@@ -74,6 +74,22 @@ const reducer: Reducer<EventState> = (state = INITIAL_STATE, action) => {
         loading: false,
         error: action.payload.error,
       };
+    case EventTypes.TICKET_MAIN_CONFIGURATION_EVENT_REQUEST:
+      return { ...state, loading: true };
+    case EventTypes.TICKET_MAIN_CONFIGURATION_EVENT_SUCCCES:
+      return {
+        ...state,
+        data: action.payload.data,
+        loading: false,
+        error: undefined,
+      };
+    case EventTypes.TICKET_MAIN_CONFIGURATION_EVENT_FAILURE:
+      return {
+        ...state,
+        data: {} as EventDataType,
+        loading: false,
+        error: action.payload.error,
+      };
     default:
       return state;
   }

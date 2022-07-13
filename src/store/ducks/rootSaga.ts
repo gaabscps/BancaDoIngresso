@@ -54,7 +54,13 @@ import {
   updateContractor,
 } from './contractor/sagas';
 import { ContractorTypes } from './contractor/types';
-import { generalInformationEvent, getAllEvents, getEvent, listEvents } from './event/sagas';
+import {
+  generalInformationEvent,
+  getAllEvents,
+  getEvent,
+  listEvents,
+  ticketMainConfigurationEvent,
+} from './event/sagas';
 import { EventTypes } from './event/types';
 import {
   activateEventCategory,
@@ -90,6 +96,17 @@ import {
 } from './permission/sagas';
 import { PermissionTypes } from './permission/types';
 import {
+  activatePrinter,
+  createPrinter,
+  deletePrinter,
+  getAllPrinters,
+  getPrinter,
+  inactivatePrinter,
+  listPrinters,
+  updatePrinter,
+} from './printer/sagas';
+import { PrinterTypes } from './printer/types';
+import {
   activateProfile,
   addProfilePermissions,
   createProfile,
@@ -101,6 +118,17 @@ import {
   updateProfile,
 } from './profile/sagas';
 import { ProfileTypes } from './profile/types';
+import {
+  activateSection,
+  createSection,
+  deleteSection,
+  getAllSections,
+  getSection,
+  inactivateSection,
+  listSections,
+  updateSection,
+} from './section/sagas';
+import { SectionTypes } from './section/types';
 import {
   activateUser,
   createUser,
@@ -168,6 +196,7 @@ export default function* rootSaga(): any {
     takeLatest(EventTypes.GET_EVENT_REQUEST, getEvent),
     takeLatest(EventTypes.GET_ALL_EVENT_REQUEST, getAllEvents),
     takeLatest(EventTypes.GENERAL_INFORMATION_EVENT_REQUEST, generalInformationEvent),
+    takeLatest(EventTypes.TICKET_MAIN_CONFIGURATION_EVENT_REQUEST, ticketMainConfigurationEvent),
 
     takeLatest(EventCategoryTypes.ACTIVATE_EVENT_CATEGORY_REQUEST, activateEventCategory),
     takeLatest(EventCategoryTypes.CREATE_EVENT_CATEGORY_REQUEST, createEventCategory),
@@ -196,6 +225,15 @@ export default function* rootSaga(): any {
     takeLatest(PermissionTypes.LIST_PERMISSION_REQUEST, listPermissions),
     takeLatest(PermissionTypes.UPDATE_PERMISSION_REQUEST, updatePermission),
 
+    takeLatest(PrinterTypes.ACTIVATE_PRINTER_REQUEST, activatePrinter),
+    takeLatest(PrinterTypes.CREATE_PRINTER_REQUEST, createPrinter),
+    takeLatest(PrinterTypes.DELETE_PRINTER_REQUEST, deletePrinter),
+    takeLatest(PrinterTypes.GET_ALL_PRINTER_REQUEST, getAllPrinters),
+    takeLatest(PrinterTypes.GET_PRINTER_REQUEST, getPrinter),
+    takeLatest(PrinterTypes.INACTIVATE_PRINTER_REQUEST, inactivatePrinter),
+    takeLatest(PrinterTypes.LIST_PRINTER_REQUEST, listPrinters),
+    takeLatest(PrinterTypes.UPDATE_PRINTER_REQUEST, updatePrinter),
+
     takeLatest(ProfileTypes.ACTIVATE_PROFILE_REQUEST, activateProfile),
     takeLatest(ProfileTypes.ADD_PERMISSION_PROFILE_REQUEST, addProfilePermissions),
     takeLatest(ProfileTypes.CREATE_PROFILE_REQUEST, createProfile),
@@ -205,6 +243,15 @@ export default function* rootSaga(): any {
     takeLatest(ProfileTypes.INACTIVATE_PROFILE_REQUEST, inactivateProfile),
     takeLatest(ProfileTypes.LIST_PROFILE_REQUEST, listProfiles),
     takeLatest(ProfileTypes.UPDATE_PROFILE_REQUEST, updateProfile),
+
+    takeLatest(SectionTypes.ACTIVATE_SECTION_REQUEST, activateSection),
+    takeLatest(SectionTypes.CREATE_SECTION_REQUEST, createSection),
+    takeLatest(SectionTypes.DELETE_SECTION_REQUEST, deleteSection),
+    takeLatest(SectionTypes.GET_ALL_SECTION_REQUEST, getAllSections),
+    takeLatest(SectionTypes.GET_SECTION_REQUEST, getSection),
+    takeLatest(SectionTypes.INACTIVATE_SECTION_REQUEST, inactivateSection),
+    takeLatest(SectionTypes.LIST_SECTION_REQUEST, listSections),
+    takeLatest(SectionTypes.UPDATE_SECTION_REQUEST, updateSection),
 
     takeLatest(UserTypes.ACTIVATE_USER_REQUEST, activateUser),
     takeLatest(UserTypes.CREATE_USER_REQUEST, createUser),

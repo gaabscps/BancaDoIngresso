@@ -12,7 +12,9 @@ import { EventCategoryState } from './ducks/event-category/types';
 import { EventState } from './ducks/event/types';
 import { ModuleState } from './ducks/module/types';
 import { PermissionState } from './ducks/permission/types';
+import { PrinterState } from './ducks/printer/types';
 import { ProfileState } from './ducks/profile/types';
+import { SectionState } from './ducks/section/types';
 import { UserState } from './ducks/user/types';
 import rootReducer from './ducks/rootReducer';
 import rootSaga from './ducks/rootSaga';
@@ -30,7 +32,9 @@ export interface ApplicationState {
   eventCategory: EventCategoryState;
   module: ModuleState;
   permission: PermissionState;
+  printer: PrinterState;
   profile: ProfileState;
+  section: SectionState;
   user: UserState;
 }
 const sagaMiddleware = createSagaMiddleware();

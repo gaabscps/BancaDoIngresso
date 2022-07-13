@@ -11,7 +11,9 @@ import event from './event';
 import eventCategory from './event-category';
 import module from './module';
 import permission from './permission';
+import printer from './printer';
 import profile from './profile';
+import section from './section';
 import user from './user';
 
 export default combineReducers({
@@ -27,6 +29,8 @@ export default combineReducers({
   eventCategory,
   module,
   permission,
+  printer,
   profile,
+  section,
   user,
 });

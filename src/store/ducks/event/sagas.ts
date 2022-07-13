@@ -13,6 +13,8 @@ import {
   getAllFailure,
   getSuccess,
   getFailure,
+  ticketMainConfigurationFailure,
+  ticketMainConfigurationSuccess,
 } from './actions';
 
 import { checkUserCall } from '../check-user/actions';
@@ -25,6 +27,9 @@ import EventGeneralInformation, {
 } from '../../../entities/EventGeneralInformation';
 import Page from '../../../entities/Page';
 import api from '../../../services/api';
+import EventTicketMainConfiguration, {
+  parseTicketMainConfigurations,
+} from '../../../entities/EventTicketMainConfiguration';
 
 export function* listEvents(page: any) {
   try {
@@ -38,11 +43,12 @@ export function* listEvents(page: any) {
       event: state.event,
     }));
 
-    const { eventGeneralInformation, list } = stateData.event.data;
+    const { eventGeneralInformation, eventTicketMainConfigurations, list } = stateData.event.data;
 
     const dataType: EventDataType = {
       page: pageResponse,
       eventGeneralInformation,
+      eventTicketMainConfigurations,
       list,
     };
     yield put(listSuccess(dataType));
@@ -63,10 +69,14 @@ export function* getEvent(data: any) {
       event: state.event,
     }));
     const eventGeneralInformation = parseGeneralInformation(event);
+    const eventTicketMainConfigurations = parseTicketMainConfigurations(
+      event,
+    ) as EventTicketMainConfiguration[];
     const { page, list } = stateData.event.data;
     const dataType: EventDataType = {
       page,
       eventGeneralInformation,
+      eventTicketMainConfigurations,
       list,
     };
     yield put(getSuccess(dataType));
@@ -86,10 +96,11 @@ export function* getAllEvents() {
     const stateData: ApplicationState = yield select((state: ApplicationState) => ({
       event: state.event,
     }));
-    const { eventGeneralInformation, page } = stateData.event.data;
+    const { eventGeneralInformation, eventTicketMainConfigurations, page } = stateData.event.data;
     const dataType: EventDataType = {
       page,
       eventGeneralInformation,
+      eventTicketMainConfigurations,
       list,
     };
     yield put(getAllSuccess(dataType));
@@ -112,10 +123,11 @@ export function* generalInformationEvent(data: any) {
     const stateData: ApplicationState = yield select((state: ApplicationState) => ({
       event: state.event,
     }));
-    const { page, list } = stateData.event.data;
+    const { page, eventTicketMainConfigurations, list } = stateData.event.data;
     const companyDataType: EventDataType = {
       page,
       eventGeneralInformation: response.data,
+      eventTicketMainConfigurations,
       list,
     };
     yield put(generalInformationSuccess(companyDataType));
@@ -125,5 +137,41 @@ export function* generalInformationEvent(data: any) {
       yield put(checkUserCall());
     }
     yield put(generalInformationFailure(parse(error)));
+  }
+}
+
+export function* ticketMainConfigurationEvent(data: any) {
+  const { eventId, eventTicketMainConfiguration } = data.payload;
+  try {
+    const response: AxiosResponse<EventTicketMainConfiguration> = yield call(
+      api.post,
+      `/event/ticket/${eventId}/main-settings`,
+      eventTicketMainConfiguration,
+    );
+    const stateData: ApplicationState = yield select((state: ApplicationState) => ({
+      event: state.event,
+    }));
+    const { page, eventGeneralInformation, eventTicketMainConfigurations, list } =
+      stateData.event.data;
+    const tickets: EventTicketMainConfiguration[] = [];
+    if (eventTicketMainConfigurations && eventTicketMainConfigurations.length > 0) {
+      eventTicketMainConfigurations.forEach(ticket => {
+        tickets.push(ticket);
+      });
+    }
+    tickets.push(response.data);
+    const companyDataType: EventDataType = {
+      page,
+      eventGeneralInformation,
+      eventTicketMainConfigurations: tickets,
+      list,
+    };
+    yield put(ticketMainConfigurationSuccess(companyDataType));
+  } catch (err) {
+    const error = err as AxiosError;
+    if (error.response?.status === 401) {
+      yield put(checkUserCall());
+    }
+    yield put(ticketMainConfigurationFailure(parse(error)));
   }
 }
