@@ -1,6 +1,6 @@
-import Event from './Event';
 import Printer from './Printer';
 import Section from './Section';
+import Ticket from './Ticket';
 import TicketBatch from './TicketBatch';
 
 export default interface EventTicketMainConfiguration {
@@ -24,11 +24,11 @@ export default interface EventTicketMainConfiguration {
 }
 
 export const parseTicketMainConfigurations = (
-  event: Event,
+  tickets: Ticket[] | undefined,
 ): EventTicketMainConfiguration[] | undefined => {
-  if (event.tickets) {
+  if (tickets && tickets.length > 0) {
     const list: EventTicketMainConfiguration[] = [];
-    event.tickets.forEach(data => {
+    tickets.forEach(data => {
       const entity: EventTicketMainConfiguration = {
         id: data.id,
         eventSection: data.eventSection,

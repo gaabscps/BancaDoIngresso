@@ -15,6 +15,8 @@ import {
   getFailure,
   ticketMainConfigurationFailure,
   ticketMainConfigurationSuccess,
+  ticketPaymentFailure,
+  ticketPaymentSuccess,
 } from './actions';
 
 import { checkUserCall } from '../check-user/actions';
@@ -30,6 +32,7 @@ import api from '../../../services/api';
 import EventTicketMainConfiguration, {
   parseTicketMainConfigurations,
 } from '../../../entities/EventTicketMainConfiguration';
+import TicketPayment, { parseTicketPayments } from '../../../entities/TicketPayment';
 
 export function* listEvents(page: any) {
   try {
@@ -43,12 +46,14 @@ export function* listEvents(page: any) {
       event: state.event,
     }));
 
-    const { eventGeneralInformation, eventTicketMainConfigurations, list } = stateData.event.data;
+    const { eventGeneralInformation, eventTicketMainConfigurations, ticketPayments, list } =
+      stateData.event.data;
 
     const dataType: EventDataType = {
       page: pageResponse,
       eventGeneralInformation,
       eventTicketMainConfigurations,
+      ticketPayments,
       list,
     };
     yield put(listSuccess(dataType));
@@ -70,13 +75,15 @@ export function* getEvent(data: any) {
     }));
     const eventGeneralInformation = parseGeneralInformation(event);
     const eventTicketMainConfigurations = parseTicketMainConfigurations(
-      event,
+      event.tickets,
     ) as EventTicketMainConfiguration[];
+    const ticketPayments = parseTicketPayments(event.tickets) as TicketPayment[];
     const { page, list } = stateData.event.data;
     const dataType: EventDataType = {
       page,
       eventGeneralInformation,
       eventTicketMainConfigurations,
+      ticketPayments,
       list,
     };
     yield put(getSuccess(dataType));
@@ -96,11 +103,13 @@ export function* getAllEvents() {
     const stateData: ApplicationState = yield select((state: ApplicationState) => ({
       event: state.event,
     }));
-    const { eventGeneralInformation, eventTicketMainConfigurations, page } = stateData.event.data;
+    const { eventGeneralInformation, eventTicketMainConfigurations, ticketPayments, page } =
+      stateData.event.data;
     const dataType: EventDataType = {
       page,
       eventGeneralInformation,
       eventTicketMainConfigurations,
+      ticketPayments,
       list,
     };
     yield put(getAllSuccess(dataType));
@@ -123,14 +132,15 @@ export function* generalInformationEvent(data: any) {
     const stateData: ApplicationState = yield select((state: ApplicationState) => ({
       event: state.event,
     }));
-    const { page, eventTicketMainConfigurations, list } = stateData.event.data;
-    const companyDataType: EventDataType = {
+    const { page, eventTicketMainConfigurations, ticketPayments, list } = stateData.event.data;
+    const dataType: EventDataType = {
       page,
       eventGeneralInformation: response.data,
       eventTicketMainConfigurations,
+      ticketPayments,
       list,
     };
-    yield put(generalInformationSuccess(companyDataType));
+    yield put(generalInformationSuccess(dataType));
   } catch (err) {
     const error = err as AxiosError;
     if (error.response?.status === 401) {
@@ -151,7 +161,7 @@ export function* ticketMainConfigurationEvent(data: any) {
     const stateData: ApplicationState = yield select((state: ApplicationState) => ({
       event: state.event,
     }));
-    const { page, eventGeneralInformation, eventTicketMainConfigurations, list } =
+    const { page, eventGeneralInformation, eventTicketMainConfigurations, ticketPayments, list } =
       stateData.event.data;
     const tickets: EventTicketMainConfiguration[] = [];
     if (eventTicketMainConfigurations && eventTicketMainConfigurations.length > 0) {
@@ -160,18 +170,56 @@ export function* ticketMainConfigurationEvent(data: any) {
       });
     }
     tickets.push(response.data);
-    const companyDataType: EventDataType = {
+    const dataType: EventDataType = {
       page,
       eventGeneralInformation,
       eventTicketMainConfigurations: tickets,
+      ticketPayments,
       list,
     };
-    yield put(ticketMainConfigurationSuccess(companyDataType));
+    yield put(ticketMainConfigurationSuccess(dataType));
   } catch (err) {
     const error = err as AxiosError;
     if (error.response?.status === 401) {
       yield put(checkUserCall());
     }
     yield put(ticketMainConfigurationFailure(parse(error)));
+  }
+}
+
+export function* ticketPaymentEvent(data: any) {
+  const { eventId, ticketPayment } = data.payload;
+  try {
+    const response: AxiosResponse<TicketPayment> = yield call(
+      api.post,
+      `/event/ticket/${eventId}/payment`,
+      ticketPayment,
+    );
+    const stateData: ApplicationState = yield select((state: ApplicationState) => ({
+      event: state.event,
+    }));
+    const { page, eventGeneralInformation, eventTicketMainConfigurations, ticketPayments, list } =
+      stateData.event.data;
+    const tickets: TicketPayment[] = [];
+    if (ticketPayments && ticketPayments.length > 0) {
+      ticketPayments.forEach(ticket => {
+        tickets.push(ticket);
+      });
+    }
+    tickets.push(response.data);
+    const dataType: EventDataType = {
+      page,
+      eventGeneralInformation,
+      eventTicketMainConfigurations,
+      ticketPayments: tickets,
+      list,
+    };
+    yield put(ticketPaymentSuccess(dataType));
+  } catch (err) {
+    const error = err as AxiosError;
+    if (error.response?.status === 401) {
+      yield put(checkUserCall());
+    }
+    yield put(ticketPaymentFailure(parse(error)));
   }
 }

@@ -10,6 +10,7 @@ import customizer from './customizer';
 import event from './event';
 import eventCategory from './event-category';
 import module from './module';
+import paymentGateway from './payment-gateway';
 import permission from './permission';
 import printer from './printer';
 import profile from './profile';
@@ -28,6 +29,7 @@ export default combineReducers({
   event,
   eventCategory,
   module,
+  paymentGateway,
   permission,
   printer,
   profile,

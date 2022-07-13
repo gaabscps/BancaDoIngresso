@@ -60,6 +60,7 @@ import {
   getEvent,
   listEvents,
   ticketMainConfigurationEvent,
+  ticketPaymentEvent,
 } from './event/sagas';
 import { EventTypes } from './event/types';
 import {
@@ -84,6 +85,17 @@ import {
   updateModule,
 } from './module/sagas';
 import { ModuleTypes } from './module/types';
+import {
+  activatePaymentGateway,
+  createPaymentGateway,
+  deletePaymentGateway,
+  getAllPaymentGateways,
+  getPaymentGateway,
+  inactivatePaymentGateway,
+  listPaymentGateways,
+  updatePaymentGateway,
+} from './payment-gateway/sagas';
+import { PaymentGatewayTypes } from './payment-gateway/types';
 import {
   activatePermission,
   createPermission,
@@ -197,6 +209,7 @@ export default function* rootSaga(): any {
     takeLatest(EventTypes.GET_ALL_EVENT_REQUEST, getAllEvents),
     takeLatest(EventTypes.GENERAL_INFORMATION_EVENT_REQUEST, generalInformationEvent),
     takeLatest(EventTypes.TICKET_MAIN_CONFIGURATION_EVENT_REQUEST, ticketMainConfigurationEvent),
+    takeLatest(EventTypes.TICKET_PAYMENT_EVENT_REQUEST, ticketPaymentEvent),
 
     takeLatest(EventCategoryTypes.ACTIVATE_EVENT_CATEGORY_REQUEST, activateEventCategory),
     takeLatest(EventCategoryTypes.CREATE_EVENT_CATEGORY_REQUEST, createEventCategory),
@@ -215,6 +228,15 @@ export default function* rootSaga(): any {
     takeLatest(ModuleTypes.INACTIVATE_MODULE_REQUEST, inactivateModule),
     takeLatest(ModuleTypes.LIST_MODULE_REQUEST, listModules),
     takeLatest(ModuleTypes.UPDATE_MODULE_REQUEST, updateModule),
+
+    takeLatest(PaymentGatewayTypes.ACTIVATE_PAYMENT_GATEWAY_REQUEST, activatePaymentGateway),
+    takeLatest(PaymentGatewayTypes.CREATE_PAYMENT_GATEWAY_REQUEST, createPaymentGateway),
+    takeLatest(PaymentGatewayTypes.DELETE_PAYMENT_GATEWAY_REQUEST, deletePaymentGateway),
+    takeLatest(PaymentGatewayTypes.GET_ALL_PAYMENT_GATEWAY_REQUEST, getAllPaymentGateways),
+    takeLatest(PaymentGatewayTypes.GET_PAYMENT_GATEWAY_REQUEST, getPaymentGateway),
+    takeLatest(PaymentGatewayTypes.INACTIVATE_PAYMENT_GATEWAY_REQUEST, inactivatePaymentGateway),
+    takeLatest(PaymentGatewayTypes.LIST_PAYMENT_GATEWAY_REQUEST, listPaymentGateways),
+    takeLatest(PaymentGatewayTypes.UPDATE_PAYMENT_GATEWAY_REQUEST, updatePaymentGateway),
 
     takeLatest(PermissionTypes.ACTIVATE_PERMISSION_REQUEST, activatePermission),
     takeLatest(PermissionTypes.CREATE_PERMISSION_REQUEST, createPermission),

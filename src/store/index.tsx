@@ -11,6 +11,7 @@ import { CustomizerState } from './ducks/customizer/types';
 import { EventCategoryState } from './ducks/event-category/types';
 import { EventState } from './ducks/event/types';
 import { ModuleState } from './ducks/module/types';
+import { PaymentGatewayState } from './ducks/payment-gateway/types';
 import { PermissionState } from './ducks/permission/types';
 import { PrinterState } from './ducks/printer/types';
 import { ProfileState } from './ducks/profile/types';
@@ -31,6 +32,7 @@ export interface ApplicationState {
   event: EventState;
   eventCategory: EventCategoryState;
   module: ModuleState;
+  paymentGateway: PaymentGatewayState;
   permission: PermissionState;
   printer: PrinterState;
   profile: ProfileState;

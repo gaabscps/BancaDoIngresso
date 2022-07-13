@@ -6,6 +6,7 @@ import EventGeneralInformation from '../../../entities/EventGeneralInformation';
 import CustomError from '../../../entities/CustomError';
 import Page from '../../../entities/Page';
 import EventTicketMainConfiguration from '../../../entities/EventTicketMainConfiguration';
+import TicketPayment from '../../../entities/TicketPayment';
 
 export const listRequest = (
   page: Page<EventFind, Event>,
@@ -113,3 +114,29 @@ export const ticketMainConfigurationFailure = (
   type: EventTypes.TICKET_MAIN_CONFIGURATION_EVENT_FAILURE;
   payload: { error: CustomError | undefined };
 } => action(EventTypes.TICKET_MAIN_CONFIGURATION_EVENT_FAILURE, { error });
+
+export const ticketPaymentRequest = (
+  eventId: string,
+  ticketPayment: TicketPayment,
+): {
+  type: EventTypes.TICKET_PAYMENT_EVENT_REQUEST;
+  payload: { eventId: string; ticketPayment: TicketPayment };
+} =>
+  action(EventTypes.TICKET_PAYMENT_EVENT_REQUEST, {
+    eventId,
+    ticketPayment,
+  });
+
+export const ticketPaymentSuccess = (
+  data: EventDataType,
+): {
+  type: EventTypes.TICKET_PAYMENT_EVENT_SUCCCES;
+  payload: { data: EventDataType };
+} => action(EventTypes.TICKET_PAYMENT_EVENT_SUCCCES, { data });
+
+export const ticketPaymentFailure = (
+  error: CustomError | undefined,
+): {
+  type: EventTypes.TICKET_PAYMENT_EVENT_FAILURE;
+  payload: { error: CustomError | undefined };
+} => action(EventTypes.TICKET_PAYMENT_EVENT_FAILURE, { error });

@@ -4,6 +4,7 @@ import Event from '../../../entities/Event';
 import EventFind from '../../../entities/EventFind';
 import EventGeneralInformation from '../../../entities/EventGeneralInformation';
 import EventTicketMainConfiguration from '../../../entities/EventTicketMainConfiguration';
+import TicketPayment from '../../../entities/TicketPayment';
 
 /**
  * Action types
@@ -26,6 +27,9 @@ export enum EventTypes {
   TICKET_MAIN_CONFIGURATION_EVENT_REQUEST = '@event/TICKET_MAIN_CONFIGURATION_EVENT_REQUEST',
   TICKET_MAIN_CONFIGURATION_EVENT_SUCCCES = '@event/TICKET_MAIN_CONFIGURATION_EVENT_SUCCCES',
   TICKET_MAIN_CONFIGURATION_EVENT_FAILURE = '@event/TICKET_MAIN_CONFIGURATION_EVENT_FAILURE',
+  TICKET_PAYMENT_EVENT_REQUEST = '@event/TICKET_PAYMENT_EVENT_REQUEST',
+  TICKET_PAYMENT_EVENT_SUCCCES = '@event/TICKET_PAYMENT_EVENT_SUCCCES',
+  TICKET_PAYMENT_EVENT_FAILURE = '@event/TICKET_PAYMENT_EVENT_FAILURE',
 }
 
 /**
@@ -36,6 +40,7 @@ export interface EventDataType {
   page: Page<EventFind, Event>;
   eventGeneralInformation: EventGeneralInformation;
   eventTicketMainConfigurations: EventTicketMainConfiguration[];
+  ticketPayments: TicketPayment[];
   list: Event[];
 }
 
