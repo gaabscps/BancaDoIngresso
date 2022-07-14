@@ -11,6 +11,7 @@ import event from './event';
 import eventCategory from './event-category';
 import module from './module';
 import paymentGateway from './payment-gateway';
+import pdv from './pdv';
 import permission from './permission';
 import pos from './pos';
 import printer from './printer';
@@ -19,6 +20,7 @@ import productGroup from './product-group';
 import productSubgroup from './product-subgroup';
 import profile from './profile';
 import section from './section';
+import subPdv from './sub-pdv';
 import user from './user';
 
 export default combineReducers({
@@ -34,6 +36,7 @@ export default combineReducers({
   eventCategory,
   module,
   paymentGateway,
+  pdv,
   permission,
   pos,
   printer,
@@ -42,5 +45,6 @@ export default combineReducers({
   productSubgroup,
   profile,
   section,
+  subPdv,
   user,
 });

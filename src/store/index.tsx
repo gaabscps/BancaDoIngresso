@@ -12,6 +12,7 @@ import { EventCategoryState } from './ducks/event-category/types';
 import { EventState } from './ducks/event/types';
 import { ModuleState } from './ducks/module/types';
 import { PaymentGatewayState } from './ducks/payment-gateway/types';
+import { PdvState } from './ducks/pdv/types';
 import { PermissionState } from './ducks/permission/types';
 import { PosState } from './ducks/pos/types';
 import { PrinterState } from './ducks/printer/types';
@@ -20,6 +21,7 @@ import { ProductGroupState } from './ducks/product-group/types';
 import { ProductSubgroupState } from './ducks/product-subgroup/types';
 import { ProfileState } from './ducks/profile/types';
 import { SectionState } from './ducks/section/types';
+import { SubPdvState } from './ducks/sub-pdv/types';
 import { UserState } from './ducks/user/types';
 import rootReducer from './ducks/rootReducer';
 import rootSaga from './ducks/rootSaga';
@@ -37,6 +39,7 @@ export interface ApplicationState {
   eventCategory: EventCategoryState;
   module: ModuleState;
   paymentGateway: PaymentGatewayState;
+  pdv: PdvState;
   permission: PermissionState;
   pos: PosState;
   printer: PrinterState;
@@ -45,6 +48,7 @@ export interface ApplicationState {
   productSubgroup: ProductSubgroupState;
   profile: ProfileState;
   section: SectionState;
+  subPdv: SubPdvState;
   user: UserState;
 }
 const sagaMiddleware = createSagaMiddleware();

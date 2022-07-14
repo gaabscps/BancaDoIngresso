@@ -12,6 +12,10 @@ import EventProduct from '../../../entities/EventProduct';
 import EventProductCombo from '../../../entities/EventProductCombo';
 import EventSection from '../../../entities/EventSection';
 import EventPos from '../../../entities/EventPos';
+import EventPdvMain from '../../../entities/EventPdvMain';
+import EventPdvTicket from '../../../entities/EventPdvTicket';
+import EventPdvProduct from '../../../entities/EventPdvProduct';
+import EventSubPdv from '../../../entities/EventSubPdv';
 
 export const listRequest = (
   page: Page<EventFind, Event>,
@@ -275,3 +279,107 @@ export const eventSectionPosFailure = (
   type: EventTypes.SECTION_PRODUCT_POS_EVENT_FAILURE;
   payload: { error: CustomError | undefined };
 } => action(EventTypes.SECTION_PRODUCT_POS_EVENT_FAILURE, { error });
+
+export const eventPdvMainRequest = (
+  eventId: string,
+  eventPdvMain: EventPdvMain,
+): {
+  type: EventTypes.PDV_MAIN_EVENT_REQUEST;
+  payload: { eventId: string; eventPdvMain: EventPdvMain };
+} =>
+  action(EventTypes.PDV_MAIN_EVENT_REQUEST, {
+    eventId,
+    eventPdvMain,
+  });
+
+export const eventPdvMainSuccess = (
+  data: EventDataType,
+): {
+  type: EventTypes.PDV_MAIN_EVENT_SUCCCES;
+  payload: { data: EventDataType };
+} => action(EventTypes.PDV_MAIN_EVENT_SUCCCES, { data });
+
+export const eventPdvMainFailure = (
+  error: CustomError | undefined,
+): {
+  type: EventTypes.PDV_MAIN_EVENT_FAILURE;
+  payload: { error: CustomError | undefined };
+} => action(EventTypes.PDV_MAIN_EVENT_FAILURE, { error });
+
+export const eventPdvTicketRequest = (
+  eventId: string,
+  eventPdvTicket: EventPdvTicket,
+): {
+  type: EventTypes.PDV_TICKET_EVENT_REQUEST;
+  payload: { eventId: string; eventPdvTicket: EventPdvTicket };
+} =>
+  action(EventTypes.PDV_TICKET_EVENT_REQUEST, {
+    eventId,
+    eventPdvTicket,
+  });
+
+export const eventPdvTicketSuccess = (
+  data: EventDataType,
+): {
+  type: EventTypes.PDV_TICKET_EVENT_SUCCCES;
+  payload: { data: EventDataType };
+} => action(EventTypes.PDV_TICKET_EVENT_SUCCCES, { data });
+
+export const eventPdvTicketFailure = (
+  error: CustomError | undefined,
+): {
+  type: EventTypes.PDV_TICKET_EVENT_FAILURE;
+  payload: { error: CustomError | undefined };
+} => action(EventTypes.PDV_TICKET_EVENT_FAILURE, { error });
+
+export const eventPdvProductRequest = (
+  eventId: string,
+  eventPdvProduct: EventPdvProduct,
+): {
+  type: EventTypes.PDV_PRODUCT_EVENT_REQUEST;
+  payload: { eventId: string; eventPdvProduct: EventPdvProduct };
+} =>
+  action(EventTypes.PDV_PRODUCT_EVENT_REQUEST, {
+    eventId,
+    eventPdvProduct,
+  });
+
+export const eventPdvProductSuccess = (
+  data: EventDataType,
+): {
+  type: EventTypes.PDV_PRODUCT_EVENT_SUCCCES;
+  payload: { data: EventDataType };
+} => action(EventTypes.PDV_PRODUCT_EVENT_SUCCCES, { data });
+
+export const eventPdvProductFailure = (
+  error: CustomError | undefined,
+): {
+  type: EventTypes.PDV_PRODUCT_EVENT_FAILURE;
+  payload: { error: CustomError | undefined };
+} => action(EventTypes.PDV_PRODUCT_EVENT_FAILURE, { error });
+
+export const eventSubPdvRequest = (
+  eventId: string,
+  eventSubPdv: EventSubPdv,
+): {
+  type: EventTypes.PDV_SUBPDV_EVENT_REQUEST;
+  payload: { eventId: string; eventSubPdv: EventSubPdv };
+} =>
+  action(EventTypes.PDV_SUBPDV_EVENT_REQUEST, {
+    eventId,
+    eventSubPdv,
+  });
+
+export const eventSubPdvSuccess = (
+  data: EventDataType,
+): {
+  type: EventTypes.PDV_SUBPDV_EVENT_SUCCCES;
+  payload: { data: EventDataType };
+} => action(EventTypes.PDV_SUBPDV_EVENT_SUCCCES, { data });
+
+export const eventSubPdvFailure = (
+  error: CustomError | undefined,
+): {
+  type: EventTypes.PDV_SUBPDV_EVENT_FAILURE;
+  payload: { error: CustomError | undefined };
+} => action(EventTypes.PDV_SUBPDV_EVENT_FAILURE, { error });

@@ -66,6 +66,10 @@ import {
   productComboEvent,
   sectionProductComboEvent,
   posEvent,
+  pdvMainEvent,
+  pdvTicketEvent,
+  pdvProductEvent,
+  pdvSubPdvEvent,
 } from './event/sagas';
 import { EventTypes } from './event/types';
 import {
@@ -101,6 +105,18 @@ import {
   updatePaymentGateway,
 } from './payment-gateway/sagas';
 import { PaymentGatewayTypes } from './payment-gateway/types';
+import {
+  activatePdv,
+  addPdvUsers,
+  createPdv,
+  deletePdv,
+  getAllPdvs,
+  getPdv,
+  inactivatePdv,
+  listPdvs,
+  updatePdv,
+} from './pdv/sagas';
+import { PdvTypes } from './pdv/types';
 import {
   activatePermission,
   createPermission,
@@ -191,6 +207,18 @@ import {
 } from './section/sagas';
 import { SectionTypes } from './section/types';
 import {
+  activateSubPdv,
+  addSubPdvUsers,
+  createSubPdv,
+  deleteSubPdv,
+  getAllSubPdvs,
+  getSubPdv,
+  inactivateSubPdv,
+  listSubPdvs,
+  updateSubPdv,
+} from './sub-pdv/sagas';
+import { SubPdvTypes } from './sub-pdv/types';
+import {
   activateUser,
   createUser,
   deleteUser,
@@ -265,6 +293,11 @@ export default function* rootSaga(): any {
     takeLatest(EventTypes.SECTION_PRODUCT_COMBO_SECTION_EVENT_REQUEST, sectionProductComboEvent),
     takeLatest(EventTypes.SECTION_PRODUCT_POS_EVENT_REQUEST, posEvent),
 
+    takeLatest(EventTypes.PDV_MAIN_EVENT_REQUEST, pdvMainEvent),
+    takeLatest(EventTypes.PDV_TICKET_EVENT_REQUEST, pdvTicketEvent),
+    takeLatest(EventTypes.PDV_PRODUCT_EVENT_REQUEST, pdvProductEvent),
+    takeLatest(EventTypes.PDV_SUBPDV_EVENT_REQUEST, pdvSubPdvEvent),
+
     takeLatest(EventCategoryTypes.ACTIVATE_EVENT_CATEGORY_REQUEST, activateEventCategory),
     takeLatest(EventCategoryTypes.CREATE_EVENT_CATEGORY_REQUEST, createEventCategory),
     takeLatest(EventCategoryTypes.DELETE_EVENT_CATEGORY_REQUEST, deleteEventCategory),
@@ -291,6 +324,16 @@ export default function* rootSaga(): any {
     takeLatest(PaymentGatewayTypes.INACTIVATE_PAYMENT_GATEWAY_REQUEST, inactivatePaymentGateway),
     takeLatest(PaymentGatewayTypes.LIST_PAYMENT_GATEWAY_REQUEST, listPaymentGateways),
     takeLatest(PaymentGatewayTypes.UPDATE_PAYMENT_GATEWAY_REQUEST, updatePaymentGateway),
+
+    takeLatest(PdvTypes.ACTIVATE_PDV_REQUEST, activatePdv),
+    takeLatest(PdvTypes.ADD_USER_PDV_REQUEST, addPdvUsers),
+    takeLatest(PdvTypes.CREATE_PDV_REQUEST, createPdv),
+    takeLatest(PdvTypes.DELETE_PDV_REQUEST, deletePdv),
+    takeLatest(PdvTypes.GET_ALL_PDV_REQUEST, getAllPdvs),
+    takeLatest(PdvTypes.GET_PDV_REQUEST, getPdv),
+    takeLatest(PdvTypes.INACTIVATE_PDV_REQUEST, inactivatePdv),
+    takeLatest(PdvTypes.LIST_PDV_REQUEST, listPdvs),
+    takeLatest(PdvTypes.UPDATE_PDV_REQUEST, updatePdv),
 
     takeLatest(PermissionTypes.ACTIVATE_PERMISSION_REQUEST, activatePermission),
     takeLatest(PermissionTypes.CREATE_PERMISSION_REQUEST, createPermission),
@@ -364,6 +407,16 @@ export default function* rootSaga(): any {
     takeLatest(SectionTypes.INACTIVATE_SECTION_REQUEST, inactivateSection),
     takeLatest(SectionTypes.LIST_SECTION_REQUEST, listSections),
     takeLatest(SectionTypes.UPDATE_SECTION_REQUEST, updateSection),
+
+    takeLatest(SubPdvTypes.ACTIVATE_SUB_PDV_REQUEST, activateSubPdv),
+    takeLatest(SubPdvTypes.ADD_USER_SUB_PDV_REQUEST, addSubPdvUsers),
+    takeLatest(SubPdvTypes.CREATE_SUB_PDV_REQUEST, createSubPdv),
+    takeLatest(SubPdvTypes.DELETE_SUB_PDV_REQUEST, deleteSubPdv),
+    takeLatest(SubPdvTypes.GET_ALL_SUB_PDV_REQUEST, getAllSubPdvs),
+    takeLatest(SubPdvTypes.GET_SUB_PDV_REQUEST, getSubPdv),
+    takeLatest(SubPdvTypes.INACTIVATE_SUB_PDV_REQUEST, inactivateSubPdv),
+    takeLatest(SubPdvTypes.LIST_SUB_PDV_REQUEST, listSubPdvs),
+    takeLatest(SubPdvTypes.UPDATE_SUB_PDV_REQUEST, updateSubPdv),
 
     takeLatest(UserTypes.ACTIVATE_USER_REQUEST, activateUser),
     takeLatest(UserTypes.CREATE_USER_REQUEST, createUser),

@@ -25,6 +25,14 @@ import {
   eventSectionProductComboSuccess,
   eventSectionPosFailure,
   eventSectionPosSuccess,
+  eventPdvMainFailure,
+  eventPdvMainSuccess,
+  eventPdvTicketFailure,
+  eventPdvTicketSuccess,
+  eventPdvProductFailure,
+  eventPdvProductSuccess,
+  eventSubPdvFailure,
+  eventSubPdvSuccess,
 } from './actions';
 import { checkUserCall } from '../check-user/actions';
 import { EventDataType } from './types';
@@ -48,6 +56,7 @@ import EventProductCombo from '../../../entities/EventProductCombo';
 import EventSection, { parseEventSectionGet } from '../../../entities/EventSection';
 import EventSectionGet from '../../../entities/EventSectionGet';
 import EventPos from '../../../entities/EventPos';
+import EventPdv from '../../../entities/EventPdv';
 
 export function* listEvents(page: any) {
   try {
@@ -70,6 +79,7 @@ export function* listEvents(page: any) {
       combos,
       sectionproductsAndCombos,
       poss,
+      pdvs,
       list,
     } = stateData.event.data;
 
@@ -83,6 +93,7 @@ export function* listEvents(page: any) {
       combos,
       sectionproductsAndCombos,
       poss,
+      pdvs,
       list,
     };
     yield put(listSuccess(dataType));
@@ -113,7 +124,7 @@ export function* getEvent(data: any) {
     const sectionproductsAndCombos = parseEventSectionGet(
       event.sectionproductsAndCombos,
     ) as EventSectionGet[];
-    const { page, products, combos, poss, list } = stateData.event.data;
+    const { page, products, combos, poss, pdvs, list } = stateData.event.data;
     const dataType: EventDataType = {
       page,
       eventGeneralInformation,
@@ -124,6 +135,7 @@ export function* getEvent(data: any) {
       combos,
       sectionproductsAndCombos,
       poss,
+      pdvs,
       list,
     };
     yield put(getSuccess(dataType));
@@ -152,6 +164,7 @@ export function* getAllEvents() {
       combos,
       sectionproductsAndCombos,
       poss,
+      pdvs,
       page,
     } = stateData.event.data;
     const dataType: EventDataType = {
@@ -164,6 +177,7 @@ export function* getAllEvents() {
       combos,
       sectionproductsAndCombos,
       poss,
+      pdvs,
       list,
     };
     yield put(getAllSuccess(dataType));
@@ -195,6 +209,7 @@ export function* generalInformationEvent(data: any) {
       combos,
       sectionproductsAndCombos,
       poss,
+      pdvs,
       list,
     } = stateData.event.data;
     const dataType: EventDataType = {
@@ -207,6 +222,7 @@ export function* generalInformationEvent(data: any) {
       combos,
       sectionproductsAndCombos,
       poss,
+      pdvs,
       list,
     };
     yield put(generalInformationSuccess(dataType));
@@ -240,6 +256,7 @@ export function* ticketMainConfigurationEvent(data: any) {
       combos,
       sectionproductsAndCombos,
       poss,
+      pdvs,
       list,
     } = stateData.event.data;
     const tickets: EventTicketMainConfiguration[] = [];
@@ -259,6 +276,7 @@ export function* ticketMainConfigurationEvent(data: any) {
       combos,
       sectionproductsAndCombos,
       poss,
+      pdvs,
       list,
     };
     yield put(ticketMainConfigurationSuccess(dataType));
@@ -292,6 +310,7 @@ export function* ticketPaymentEvent(data: any) {
       combos,
       sectionproductsAndCombos,
       poss,
+      pdvs,
       list,
     } = stateData.event.data;
     const tickets: TicketPayment[] = [];
@@ -311,6 +330,7 @@ export function* ticketPaymentEvent(data: any) {
       combos,
       sectionproductsAndCombos,
       poss,
+      pdvs,
       list,
     };
     yield put(ticketPaymentSuccess(dataType));
@@ -344,6 +364,7 @@ export function* ticketGeneralSettingsEvent(data: any) {
       combos,
       sectionproductsAndCombos,
       poss,
+      pdvs,
       list,
     } = stateData.event.data;
     const tickets: EventTicketGeneralSettings[] = [];
@@ -363,6 +384,7 @@ export function* ticketGeneralSettingsEvent(data: any) {
       combos,
       sectionproductsAndCombos,
       poss,
+      pdvs,
       list,
     };
     yield put(ticketPaymentSuccess(dataType));
@@ -396,6 +418,7 @@ export function* productEvent(data: any) {
       combos,
       sectionproductsAndCombos,
       poss,
+      pdvs,
       list,
     } = stateData.event.data;
 
@@ -416,6 +439,7 @@ export function* productEvent(data: any) {
       combos,
       sectionproductsAndCombos,
       poss,
+      pdvs,
       list,
     };
     yield put(eventProductSuccess(dataType));
@@ -449,6 +473,7 @@ export function* productComboEvent(data: any) {
       combos,
       sectionproductsAndCombos,
       poss,
+      pdvs,
       list,
     } = stateData.event.data;
 
@@ -469,6 +494,7 @@ export function* productComboEvent(data: any) {
       combos: eventProductCombos,
       sectionproductsAndCombos,
       poss,
+      pdvs,
       list,
     };
     yield put(eventProductComboSuccess(dataType));
@@ -502,6 +528,7 @@ export function* sectionProductComboEvent(data: any) {
       combos,
       sectionproductsAndCombos,
       poss,
+      pdvs,
       list,
     } = stateData.event.data;
 
@@ -525,6 +552,7 @@ export function* sectionProductComboEvent(data: any) {
       combos,
       sectionproductsAndCombos: sections,
       poss,
+      pdvs,
       list,
     };
     yield put(eventSectionProductComboSuccess(dataType));
@@ -558,6 +586,7 @@ export function* posEvent(data: any) {
       combos,
       sectionproductsAndCombos,
       poss,
+      pdvs,
       list,
     } = stateData.event.data;
 
@@ -578,6 +607,7 @@ export function* posEvent(data: any) {
       combos,
       sectionproductsAndCombos,
       poss: eventPoss,
+      pdvs,
       list,
     };
     yield put(eventSectionPosSuccess(dataType));
@@ -587,5 +617,257 @@ export function* posEvent(data: any) {
       yield put(checkUserCall());
     }
     yield put(eventSectionPosFailure(parse(error)));
+  }
+}
+
+export function* pdvMainEvent(data: any) {
+  const { eventId, eventPdvMain } = data.payload;
+  try {
+    const response: AxiosResponse<EventPdv> = yield call(
+      api.post,
+      `/event/pdv/${eventId}/main`,
+      eventPdvMain,
+    );
+    const stateData: ApplicationState = yield select((state: ApplicationState) => ({
+      event: state.event,
+    }));
+    const {
+      page,
+      eventGeneralInformation,
+      ticketMainConfigurations,
+      ticketPayments,
+      ticketGeneralSettings,
+      products,
+      combos,
+      sectionproductsAndCombos,
+      poss,
+      pdvs,
+      list,
+    } = stateData.event.data;
+
+    const eventPdvs: EventPdv[] = [];
+    let found = false;
+    if (pdvs && pdvs.length > 0) {
+      pdvs.forEach(pdv => {
+        if (pdv.pdv.id === response.data.pdv.id) {
+          eventPdvs.push(response.data);
+          found = true;
+        } else {
+          eventPdvs.push(pdv);
+        }
+      });
+    }
+    if (!found) {
+      eventPdvs.push(response.data);
+    }
+    const dataType: EventDataType = {
+      page,
+      eventGeneralInformation,
+      ticketMainConfigurations,
+      ticketPayments,
+      ticketGeneralSettings,
+      products,
+      combos,
+      sectionproductsAndCombos,
+      poss,
+      pdvs: eventPdvs,
+      list,
+    };
+    yield put(eventPdvMainSuccess(dataType));
+  } catch (err) {
+    const error = err as AxiosError;
+    if (error.response?.status === 401) {
+      yield put(checkUserCall());
+    }
+    yield put(eventPdvMainFailure(parse(error)));
+  }
+}
+
+export function* pdvTicketEvent(data: any) {
+  const { eventId, eventPdvTicket } = data.payload;
+  try {
+    const response: AxiosResponse<EventPdv> = yield call(
+      api.post,
+      `/event/pdv/${eventId}/ticket`,
+      eventPdvTicket,
+    );
+    const stateData: ApplicationState = yield select((state: ApplicationState) => ({
+      event: state.event,
+    }));
+    const {
+      page,
+      eventGeneralInformation,
+      ticketMainConfigurations,
+      ticketPayments,
+      ticketGeneralSettings,
+      products,
+      combos,
+      sectionproductsAndCombos,
+      poss,
+      pdvs,
+      list,
+    } = stateData.event.data;
+
+    const eventPdvs: EventPdv[] = [];
+    let found = false;
+    if (pdvs && pdvs.length > 0) {
+      pdvs.forEach(pdv => {
+        if (pdv.pdv.id === response.data.pdv.id) {
+          eventPdvs.push(response.data);
+          found = true;
+        } else {
+          eventPdvs.push(pdv);
+        }
+      });
+    }
+    if (!found) {
+      eventPdvs.push(response.data);
+    }
+    const dataType: EventDataType = {
+      page,
+      eventGeneralInformation,
+      ticketMainConfigurations,
+      ticketPayments,
+      ticketGeneralSettings,
+      products,
+      combos,
+      sectionproductsAndCombos,
+      poss,
+      pdvs: eventPdvs,
+      list,
+    };
+    yield put(eventPdvTicketSuccess(dataType));
+  } catch (err) {
+    const error = err as AxiosError;
+    if (error.response?.status === 401) {
+      yield put(checkUserCall());
+    }
+    yield put(eventPdvTicketFailure(parse(error)));
+  }
+}
+
+export function* pdvProductEvent(data: any) {
+  const { eventId, eventPdvProduct } = data.payload;
+  try {
+    const response: AxiosResponse<EventPdv> = yield call(
+      api.post,
+      `/event/pdv/${eventId}/product`,
+      eventPdvProduct,
+    );
+    const stateData: ApplicationState = yield select((state: ApplicationState) => ({
+      event: state.event,
+    }));
+    const {
+      page,
+      eventGeneralInformation,
+      ticketMainConfigurations,
+      ticketPayments,
+      ticketGeneralSettings,
+      products,
+      combos,
+      sectionproductsAndCombos,
+      poss,
+      pdvs,
+      list,
+    } = stateData.event.data;
+
+    const eventPdvs: EventPdv[] = [];
+    let found = false;
+    if (pdvs && pdvs.length > 0) {
+      pdvs.forEach(pdv => {
+        if (pdv.pdv.id === response.data.pdv.id) {
+          eventPdvs.push(response.data);
+          found = true;
+        } else {
+          eventPdvs.push(pdv);
+        }
+      });
+    }
+    if (!found) {
+      eventPdvs.push(response.data);
+    }
+    const dataType: EventDataType = {
+      page,
+      eventGeneralInformation,
+      ticketMainConfigurations,
+      ticketPayments,
+      ticketGeneralSettings,
+      products,
+      combos,
+      sectionproductsAndCombos,
+      poss,
+      pdvs: eventPdvs,
+      list,
+    };
+    yield put(eventPdvProductSuccess(dataType));
+  } catch (err) {
+    const error = err as AxiosError;
+    if (error.response?.status === 401) {
+      yield put(checkUserCall());
+    }
+    yield put(eventPdvProductFailure(parse(error)));
+  }
+}
+
+export function* pdvSubPdvEvent(data: any) {
+  const { eventId, eventSubPdv } = data.payload;
+  try {
+    const response: AxiosResponse<EventPdv> = yield call(
+      api.post,
+      `/event/pdv/${eventId}/sub-pdv`,
+      eventSubPdv,
+    );
+    const stateData: ApplicationState = yield select((state: ApplicationState) => ({
+      event: state.event,
+    }));
+    const {
+      page,
+      eventGeneralInformation,
+      ticketMainConfigurations,
+      ticketPayments,
+      ticketGeneralSettings,
+      products,
+      combos,
+      sectionproductsAndCombos,
+      poss,
+      pdvs,
+      list,
+    } = stateData.event.data;
+
+    const eventPdvs: EventPdv[] = [];
+    let found = false;
+    if (pdvs && pdvs.length > 0) {
+      pdvs.forEach(pdv => {
+        if (pdv.pdv.id === response.data.pdv.id) {
+          eventPdvs.push(response.data);
+          found = true;
+        } else {
+          eventPdvs.push(pdv);
+        }
+      });
+    }
+    if (!found) {
+      eventPdvs.push(response.data);
+    }
+    const dataType: EventDataType = {
+      page,
+      eventGeneralInformation,
+      ticketMainConfigurations,
+      ticketPayments,
+      ticketGeneralSettings,
+      products,
+      combos,
+      sectionproductsAndCombos,
+      poss,
+      pdvs: eventPdvs,
+      list,
+    };
+    yield put(eventSubPdvSuccess(dataType));
+  } catch (err) {
+    const error = err as AxiosError;
+    if (error.response?.status === 401) {
+      yield put(checkUserCall());
+    }
+    yield put(eventSubPdvFailure(parse(error)));
   }
 }

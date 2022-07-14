@@ -1,0 +1,56 @@
+import CustomError from '../../../entities/CustomError';
+import Page from '../../../entities/Page';
+import SubPdv from '../../../entities/SubPdv';
+/**
+ * Action types
+ */
+
+// eslint-disable-next-line no-shadow
+export enum SubPdvTypes {
+  ACTIVATE_SUB_PDV_REQUEST = '@pdv/ACTIVATE_SUB_PDV_REQUEST',
+  ACTIVATE_SUB_PDV_SUCCCES = '@pdv/ACTIVATE_SUB_PDV_SUCCCES',
+  ACTIVATE_SUB_PDV_FAILURE = '@pdv/ACTIVATE_SUB_PDV_FAILURE',
+  ADD_USER_SUB_PDV_REQUEST = '@pdv/ADD_USER_SUB_PDV_REQUEST',
+  ADD_USER_SUB_PDV_SUCCCES = '@pdv/ADD_USER_SUB_PDV_SUCCCES',
+  ADD_USER_SUB_PDV_FAILURE = '@pdv/ADD_USER_SUB_PDV_FAILURE',
+  CREATE_SUB_PDV_REQUEST = '@pdv/CREATE_SUB_PDV_REQUEST',
+  CREATE_SUB_PDV_SUCCCES = '@pdv/CREATE_SUB_PDV_SUCCCES',
+  CREATE_SUB_PDV_FAILURE = '@pdv/CREATE_SUB_PDV_FAILURE',
+  DELETE_SUB_PDV_REQUEST = '@pdv/DELETE_SUB_PDV_REQUEST',
+  DELETE_SUB_PDV_SUCCCES = '@pdv/DELETE_SUB_PDV_SUCCCES',
+  DELETE_SUB_PDV_FAILURE = '@pdv/DELETE_SUB_PDV_FAILURE',
+  GET_ALL_SUB_PDV_REQUEST = '@pdv/GET_ALL_SUB_PDV_REQUEST',
+  GET_ALL_SUB_PDV_SUCCCES = '@pdv/GET_SUB_PDV_SUCCCES',
+  GET_ALL_SUB_PDV_FAILURE = '@pdv/GET_SUB_PDV_FAILURE',
+  GET_SUB_PDV_REQUEST = '@pdv/GET_SUB_PDV_REQUEST',
+  GET_SUB_PDV_SUCCCES = '@pdv/GET_SUB_PDV_SUCCCES',
+  GET_SUB_PDV_FAILURE = '@pdv/GET_SUB_PDV_FAILURE',
+  INACTIVATE_SUB_PDV_REQUEST = '@pdv/INACTIVATE_SUB_PDV_REQUEST',
+  INACTIVATE_SUB_PDV_SUCCCES = '@pdv/INACTIVATE_SUB_PDV_SUCCCES',
+  INACTIVATE_SUB_PDV_FAILURE = '@pdv/INACTIVATE_SUB_PDV_FAILURE',
+  LIST_SUB_PDV_REQUEST = '@pdv/LIST_SUB_PDV_REQUEST',
+  LIST_SUB_PDV_SUCCCES = '@pdv/LIST_SUB_PDV_SUCCCES',
+  LIST_SUB_PDV_FAILURE = '@pdv/LIST_SUB_PDV_FAILURE',
+  UPDATE_SUB_PDV_REQUEST = '@pdv/UPDATE_SUB_PDV_REQUEST',
+  UPDATE_SUB_PDV_SUCCCES = '@pdv/UPDATE_SUB_PDV_SUCCCES',
+  UPDATE_SUB_PDV_FAILURE = '@pdv/UPDATE_SUB_PDV_FAILURE',
+}
+
+/**
+ * Data types
+ */
+
+export interface SubPdvDataType {
+  page: Page<SubPdv, SubPdv>;
+  entity: SubPdv;
+  list: SubPdv[];
+}
+
+/**
+ * State type
+ */
+export interface SubPdvState {
+  readonly data: SubPdvDataType;
+  readonly loading: boolean;
+  readonly error: CustomError | undefined;
+}

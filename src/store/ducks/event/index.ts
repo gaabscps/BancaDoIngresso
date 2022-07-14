@@ -186,6 +186,70 @@ const reducer: Reducer<EventState> = (state = INITIAL_STATE, action) => {
         loading: false,
         error: action.payload.error,
       };
+    case EventTypes.PDV_MAIN_EVENT_REQUEST:
+      return { ...state, loading: true };
+    case EventTypes.PDV_MAIN_EVENT_SUCCCES:
+      return {
+        ...state,
+        data: action.payload.data,
+        loading: false,
+        error: undefined,
+      };
+    case EventTypes.PDV_MAIN_EVENT_FAILURE:
+      return {
+        ...state,
+        data: {} as EventDataType,
+        loading: false,
+        error: action.payload.error,
+      };
+    case EventTypes.PDV_TICKET_EVENT_REQUEST:
+      return { ...state, loading: true };
+    case EventTypes.PDV_TICKET_EVENT_SUCCCES:
+      return {
+        ...state,
+        data: action.payload.data,
+        loading: false,
+        error: undefined,
+      };
+    case EventTypes.PDV_TICKET_EVENT_FAILURE:
+      return {
+        ...state,
+        data: {} as EventDataType,
+        loading: false,
+        error: action.payload.error,
+      };
+    case EventTypes.PDV_PRODUCT_EVENT_REQUEST:
+      return { ...state, loading: true };
+    case EventTypes.PDV_PRODUCT_EVENT_SUCCCES:
+      return {
+        ...state,
+        data: action.payload.data,
+        loading: false,
+        error: undefined,
+      };
+    case EventTypes.PDV_PRODUCT_EVENT_FAILURE:
+      return {
+        ...state,
+        data: {} as EventDataType,
+        loading: false,
+        error: action.payload.error,
+      };
+    case EventTypes.PDV_SUBPDV_EVENT_REQUEST:
+      return { ...state, loading: true };
+    case EventTypes.PDV_SUBPDV_EVENT_SUCCCES:
+      return {
+        ...state,
+        data: action.payload.data,
+        loading: false,
+        error: undefined,
+      };
+    case EventTypes.PDV_SUBPDV_EVENT_FAILURE:
+      return {
+        ...state,
+        data: {} as EventDataType,
+        loading: false,
+        error: action.payload.error,
+      };
     default:
       return state;
   }
