@@ -1,7 +1,8 @@
 import React, { useState, useEffect, FormEvent, ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Form, FormGroup, Button } from 'reactstrap';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+// import { URLSearchParams } from 'url';
 import { ApplicationState } from '../../../store';
 import logoBanca from '../../../assets/images/logo/logoBanca.png';
 import { setAuthLocalStorage, isAuthenticated } from '../../../helpers/localStorage';
@@ -28,7 +29,9 @@ interface RecoveryPassword {
 
 const ForgetPassword = (): JSX.Element => {
   const dispatch = useDispatch();
+  const location = useLocation();
   const history = useNavigate();
+
   const [form, setForm] = useState<RecoveryPassword>({} as RecoveryPassword);
   const [step, setStep] = useState<number>(0);
 
@@ -36,10 +39,30 @@ const ForgetPassword = (): JSX.Element => {
 
   const auth = useSelector<ApplicationState, AuthState>(store => store.auth);
 
+  const login = (cpf: string): void => {
+    dispatch(loginRequest(cpf, form.password));
+  };
+
   if (!auth.loading && !auth.error) {
-    if (auth.data && (auth.data.changePassword || auth.data.recoverPassword)) {
-      setStep(step + 1);
-    } else if (auth.data.login) {
+    if (auth.data) {
+      if (auth.data.recoverPassword && auth.data.recoverPassword.email && step === 0) {
+        const newForm = {
+          ...form,
+          email: auth.data.recoverPassword.email,
+        };
+        setForm(newForm);
+        setStep(1);
+      } else if (auth.data.changePassword && auth.data.changePassword.login && step === 2) {
+        const newForm = {
+          ...form,
+          cpf: auth.data.changePassword.login,
+        };
+        setForm(newForm);
+        setStep(0);
+        login(auth.data.changePassword.login);
+      }
+    }
+    if (auth.data.login) {
       setAuthLocalStorage(auth.data.login, false);
       window.location.href = '/';
     }
@@ -67,14 +90,6 @@ const ForgetPassword = (): JSX.Element => {
     dispatch(changePasswordRequest(chanagePassword));
   };
 
-  const handleLogin = (): void => {
-    dispatch(loginRequest('', form.password));
-  };
-
-  const handlePassword = (): void => {
-    handleLogin();
-  };
-
   const handleStep = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     if (auth.loading) {
@@ -85,10 +100,11 @@ const ForgetPassword = (): JSX.Element => {
         handleCpf();
         break;
       case 1:
-        handleCode();
+        history('/');
+        history(0);
         break;
       case 2:
-        handlePassword();
+        handleCode();
         break;
       default:
         break;
@@ -96,6 +112,16 @@ const ForgetPassword = (): JSX.Element => {
   };
 
   useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const code = queryParams.get('code');
+    if (code && step === 0) {
+      const newForm = {
+        ...form,
+        code,
+      };
+      setForm(newForm);
+      setStep(2);
+    }
     if (isAuthenticated()) {
       history('/dashboard/admin');
     }
@@ -113,7 +139,7 @@ const ForgetPassword = (): JSX.Element => {
             <Form className="theme-form " onSubmit={handleStep}>
               <div style={{ display: 'grid', justifyContent: 'center' }}>
                 {step === 0 && <CpfComponent form={form} handleForm={handleForm} />}
-                {step === 1 && <CodeComponent />}
+                {step === 1 && <CodeComponent form={form} />}
                 {step === 2 && <PasswordComponent form={form} handleForm={handleForm} />}
                 {step === 3 && <SuccessComponent />}
                 {step !== 3 && (

@@ -49,7 +49,7 @@ const Cpf = (props: Props): JSX.Element => {
           Seu CPF
         </Label>
         <Input
-          name="username"
+          name="cpf"
           className="form-control loginForm"
           required={true}
           placeholder="Digite seu CPF"

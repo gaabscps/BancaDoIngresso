@@ -1,5 +1,7 @@
 import CustomError from '../../../entities/CustomError';
 import Auth from '../../../entities/Auth';
+import RecoverEmail from '../../../entities/RecoverEmail';
+import RecoverLogin from '../../../entities/RecoverLogin';
 
 /**
  * Action types
@@ -27,8 +29,8 @@ export enum AuthTypes {
 
 export interface AuthDataType {
   login: Auth;
-  recoverPassword: boolean;
-  changePassword: boolean;
+  recoverPassword: RecoverEmail;
+  changePassword: RecoverLogin;
   refreshToken: Auth;
 }
 

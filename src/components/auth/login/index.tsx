@@ -138,7 +138,7 @@ const Login = (): JSX.Element => {
                 <div className="loginFormText">Entrar</div>
               </Button>
               <div className="d-flex justify-content-center align-items-center forgotPassword">
-                <a onClick={() => history('/forget-pwd')} className="link" href="#javascript">
+                <a onClick={() => history('/forget-pwd')} className="link">
                   Esqueceu a sua senha?
                 </a>
               </div>

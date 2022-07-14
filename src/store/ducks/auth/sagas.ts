@@ -18,6 +18,8 @@ import { parse } from '../../../entities/CustomError';
 import api from '../../../services/api';
 import { ApplicationState } from '../..';
 import Auth from '../../../entities/Auth';
+import RecoverEmail from '../../../entities/RecoverEmail';
+import RecoverLogin from '../../../entities/RecoverLogin';
 
 export function* authLogin(data: any) {
   try {
@@ -51,15 +53,15 @@ export function* authLogin(data: any) {
 
 export function* authRecoverPassword(data: any) {
   try {
-    yield call(api.post, '/auth/recover-password', {
+    const response: AxiosResponse<RecoverEmail> = yield call(api.post, '/auth/recover-password', {
       login: data.payload,
     });
     const stateData: ApplicationState = yield select((state: ApplicationState) => ({
       auth: state.auth,
     }));
     const authData = stateData.auth.data;
-    authData.recoverPassword = true;
-    authData.changePassword = false;
+    authData.changePassword = undefined as unknown as RecoverLogin;
+    authData.recoverPassword = response.data;
     yield put(recoverPasswordSuccess(authData));
   } catch (err) {
     const error = err as AxiosError;
@@ -69,14 +71,18 @@ export function* authRecoverPassword(data: any) {
 
 export function* authChangePassword(data: any) {
   try {
-    yield call(api.post, '/auth/change-password', data.payload);
+    const response: AxiosResponse<RecoverLogin> = yield call(
+      api.post,
+      '/auth/change-password',
+      data.payload,
+    );
 
     const stateData: ApplicationState = yield select((state: ApplicationState) => ({
       auth: state.auth,
     }));
     const authData = stateData.auth.data;
-    authData.changePassword = true;
-    authData.recoverPassword = false;
+    authData.changePassword = response.data;
+    authData.recoverPassword = undefined as unknown as RecoverEmail;
     yield put(changePasswordSuccess(authData));
   } catch (err) {
     const error = err as AxiosError;

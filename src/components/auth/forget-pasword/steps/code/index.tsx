@@ -4,10 +4,19 @@ import { Button } from 'reactstrap';
 import goBackArrow from '../../../../../assets/images/svg/goBackArrow.svg';
 import MailIcon from '../../../../../assets/images/svg/Mail';
 
-const Code = (): JSX.Element => {
+interface EmailObject {
+  email: string;
+}
+
+interface StateProps {
+  form: EmailObject;
+}
+
+const Code = (props: StateProps): JSX.Element => {
   const history = useNavigate();
   const goBack = (): void => {
     history('/');
+    history(0);
   };
   return (
     <>
@@ -23,7 +32,7 @@ const Code = (): JSX.Element => {
         />
         <div style={{ display: 'grid' }}>
           <p style={{ width: '450px' }} className="subTitleMain">
-            Enviamos o link de recuperação de senha para o seu e-mail <b>da***@gmail.com</b>
+            Enviamos o link de recuperação de senha para o seu e-mail <b>{props.form.email}</b>
           </p>
         </div>
       </div>

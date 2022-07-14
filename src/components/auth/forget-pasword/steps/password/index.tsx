@@ -33,12 +33,12 @@ const Password = (props: Props): JSX.Element => (
           Sua nova senha
         </Label>
         <Input
-          name="username"
+          name="password"
           className="form-control loginForm"
           required={true}
           placeholder="Digite sua nova senha"
           value={props.form?.password}
-          onChange={props.handleForm}
+          onChange={e => props.handleForm(e)}
         />
         <div className="auxGrayText" style={{ marginTop: '15px' }}>
           *A sua senha deve conter 6 dígitos numéricos*{' '}
@@ -50,7 +50,7 @@ const Password = (props: Props): JSX.Element => (
           Confirme a sua nova senha
         </Label>
         <Input
-          name="username"
+          name="confirmPassword"
           className="form-control loginForm"
           required={true}
           placeholder="Digite sua nova senha novamente"
