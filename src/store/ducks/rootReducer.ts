@@ -9,6 +9,7 @@ import contractor from './contractor';
 import customizer from './customizer';
 import event from './event';
 import eventCategory from './event-category';
+import home from './home';
 import module from './module';
 import paymentGateway from './payment-gateway';
 import pdv from './pdv';
@@ -34,6 +35,7 @@ export default combineReducers({
   customizer,
   event,
   eventCategory,
+  home,
   module,
   paymentGateway,
   pdv,

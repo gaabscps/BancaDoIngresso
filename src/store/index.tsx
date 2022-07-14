@@ -10,6 +10,7 @@ import { ContractorState } from './ducks/contractor/types';
 import { CustomizerState } from './ducks/customizer/types';
 import { EventCategoryState } from './ducks/event-category/types';
 import { EventState } from './ducks/event/types';
+import { HomeState } from './ducks/home/types';
 import { ModuleState } from './ducks/module/types';
 import { PaymentGatewayState } from './ducks/payment-gateway/types';
 import { PdvState } from './ducks/pdv/types';
@@ -37,6 +38,7 @@ export interface ApplicationState {
   customizer: CustomizerState;
   event: EventState;
   eventCategory: EventCategoryState;
+  home: HomeState;
   module: ModuleState;
   paymentGateway: PaymentGatewayState;
   pdv: PdvState;

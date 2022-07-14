@@ -83,6 +83,8 @@ import {
   updateEventCategory,
 } from './event-category/sagas';
 import { EventCategoryTypes } from './event-category/types';
+import { getHome } from './home/sagas';
+import { HomeTypes } from './home/types';
 import {
   activateModule,
   createModule,
@@ -306,6 +308,8 @@ export default function* rootSaga(): any {
     takeLatest(EventCategoryTypes.INACTIVATE_EVENT_CATEGORY_REQUEST, inactivateEventCategory),
     takeLatest(EventCategoryTypes.LIST_EVENT_CATEGORY_REQUEST, listEventCategory),
     takeLatest(EventCategoryTypes.UPDATE_EVENT_CATEGORY_REQUEST, updateEventCategory),
+
+    takeLatest(HomeTypes.GET_HOME_REQUEST, getHome),
 
     takeLatest(ModuleTypes.ACTIVATE_MODULE_REQUEST, activateModule),
     takeLatest(ModuleTypes.CREATE_MODULE_REQUEST, createModule),
