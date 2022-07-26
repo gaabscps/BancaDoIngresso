@@ -15,24 +15,23 @@ const Sample = (): JSX.Element => (
       <div className="whiteContainer">
         <FormGroup>
           <div className="fieldSpacing">
-            <Label className="fieldLabel" for="exampleEmail">
+            <Label className="fieldLabel" for="sectionName">
               Nome do setor
             </Label>
             <SuperInput
-              id="exampleEmail"
-              name="email"
+              id="sectionName"
+              name="sectionName"
               placeholder="Digite ou selecione o nome do setor"
-              type="email"
             />
           </div>
           <div className="fieldSpacing">
-            <Label className="fieldLabel" for="exampleFile">
+            <Label className="fieldLabel" for="imageBase64">
               Imagem do setor (opcional)
             </Label>
             <SuperInput
-              id="exampleFile"
+              id="imageBase64"
               placeholder="Nenhum arquivo selecionado"
-              name="file"
+              name="imageBase64"
               type="file"
             />
           </div>

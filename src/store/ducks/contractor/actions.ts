@@ -136,7 +136,7 @@ export const inactivateFailure = (
   payload: { error: CustomError | undefined };
 } => action(ContractorTypes.INACTIVATE_CONTRACTOR_FAILURE, { error });
 
-export const listRequest = (
+export const listRequestContractor = (
   page: Page<Contractor, Contractor>,
 ): {
   type: ContractorTypes.LIST_CONTRACTOR_REQUEST;

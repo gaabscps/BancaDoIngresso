@@ -33,22 +33,24 @@ const Sample = (): JSX.Element => {
             <div className="whiteContainer">
               <div className="d-flex ">
                 <FormGroup style={{ marginRight: '50px' }}>
-                  <Label className="fieldLabel" for="exampleSelect">
+                  <Label className="fieldLabel" for="eventSectionsSection">
                     Setor
                   </Label>
                   <SuperInput
                     style={{ width: '359px' }}
                     placeholder="Digite ou selecione o setor"
-                    id="exampleSelect"
+                    id="eventSectionsSection"
+                    name="eventSectionsSection"
                   />
                 </FormGroup>
                 <FormGroup>
-                  <Label className="fieldLabel" for="exampleNumber">
+                  <Label className="fieldLabel" for="eventSectionsProducts">
                     Produtos
                   </Label>
                   <SuperInput
                     style={{ width: '359px' }}
-                    id="exampleNumber"
+                    id="eventSectionsProducts"
+                    name="eventSectionsProducts"
                     placeholder="Digite ou selecione o produto"
                   />
                 </FormGroup>

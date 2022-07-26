@@ -9,10 +9,14 @@ const Sample = (): JSX.Element => (
       <hr className="dividerUp" />
       <div className="d-flex">
         <FormGroup className="fieldSpacing">
-          <Label className="fieldLabel" for="exampleSelect">
+          <Label className="fieldLabel" for="usersName">
             Usuário do PDV
           </Label>
-          <SuperInput placeholder="Digite ou selecione o usuário do PDV" id="exampleSelect" />
+          <SuperInput
+            placeholder="Digite ou selecione o usuário do PDV"
+            id="usersName"
+            name="usersName"
+          />
           <div className="auxSucessText" style={{ paddingTop: '20px' }}>
             + cadastrar novo usuário
           </div>

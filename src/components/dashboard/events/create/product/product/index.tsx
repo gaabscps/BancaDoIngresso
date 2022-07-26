@@ -15,84 +15,81 @@ const Sample = (): JSX.Element => (
       <div className="whiteContainer">
         <FormGroup>
           <div className="fieldSpacing">
-            <Label className="fieldLabel" for="exampleEmail">
+            <Label className="fieldLabel" for="groupName">
               Grupo do produto
             </Label>
             <SuperInput
-              id="exampleEmail"
-              name="email"
+              id="groupName"
+              name="groupName"
               placeholder="Digite ou selecione o grupo do produto"
-              type="email"
             />
           </div>
           <div className="fieldSpacing">
-            <Label className="fieldLabel" for="exampleEmail">
+            <Label className="fieldLabel" for="subgroupName">
               Subgrupo do produto
             </Label>
             <SuperInput
-              id="exampleEmail"
-              name="email"
+              id="subgroupName"
+              name="subgroupName"
               placeholder="Digite ou selecione o subgrupo do produto"
-              type="email"
             />
           </div>
           <div className="fieldSpacing">
-            <Label className="fieldLabel" for="exampleEmail">
+            <Label className="fieldLabel" for="productGroupName">
               Nome do produto
             </Label>
             <SuperInput
-              id="exampleEmail"
-              name="email"
+              id="productGroupName"
+              name="productGroupName"
               placeholder="Digite  o nome do grupo"
-              type="email"
             />
           </div>
           <div className="d-flex pt-2">
             <div className="fieldSpacing">
-              <Label className="fieldLabel" for="exampleNumber">
+              <Label className="fieldLabel" for="amount">
                 Quantidade
               </Label>
               <SuperInput
                 style={{ width: '243px' }}
-                id="exampleNumber"
-                name="number"
+                id="amount"
+                name="amount"
                 placeholder="Ex: 200"
                 type="number"
               />
             </div>
             <div className="fieldSpacing">
-              <Label className="fieldLabel" for="exampleNumber">
+              <Label className="fieldLabel" for="unitValue">
                 Valor unitário
               </Label>
               <SuperInput
                 style={{ width: '232px' }}
-                id="exampleNumber"
-                name="number"
+                id="unitValue"
+                name="unitValue"
                 placeholder="Ex: 20,00"
                 type="number"
               />
             </div>
           </div>
           <div className="fieldSpacing">
-            <Label className="fieldLabel" for="exampleNumber">
+            <Label className="fieldLabel" for="totalValue">
               Valor total
             </Label>
             <SuperInput
               style={{ width: '232px' }}
-              id="exampleNumber"
-              name="number"
+              id="totalValue"
+              name="totalValue"
               placeholder="R$ 200,00"
               type="number"
             />
           </div>
           <div className="fieldSpacing">
-            <Label className="fieldLabel" for="exampleFile">
+            <Label className="fieldLabel" for="imageBase64">
               Imagem do produto (opcional)
             </Label>
             <SuperInput
-              id="exampleFile"
+              id="imageBase64"
               placeholder="Nenhum arquivo selecionado"
-              name="file"
+              name="imageBase64"
               type="file"
             />
           </div>

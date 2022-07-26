@@ -4,7 +4,7 @@ import CustomError from '../../../entities/CustomError';
 import Page from '../../../entities/Page';
 import { EventCategoryDataType, EventCategoryTypes } from './types';
 
-export const listRequest = (
+export const listRequestCategory = (
   page: Page<EventCategory, EventCategory>,
 ): {
   type: EventCategoryTypes.LIST_EVENT_CATEGORY_REQUEST;

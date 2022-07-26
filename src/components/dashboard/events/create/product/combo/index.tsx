@@ -50,61 +50,59 @@ const Sample = (): JSX.Element => {
         <div className="whiteContainer">
           <FormGroup>
             <div className="fieldSpacing">
-              <Label className="fieldLabel" for="exampleEmail">
+              <Label className="fieldLabel" for="groupName">
                 Grupo do combo
               </Label>
               <SuperInput
-                id="exampleEmail"
-                name="email"
+                id="groupName"
+                name="groupName"
                 placeholder="Digite ou selecione o grupo do combo"
-                type="email"
               />
             </div>
             <div className="fieldSpacing">
-              <Label className="fieldLabel" for="exampleEmail">
+              <Label className="fieldLabel" for="subgroupName">
                 Subgrupo do combo (opcional)
               </Label>
               <SuperInput
-                id="exampleEmail"
-                name="email"
+                id="subgroupName"
+                name="subgroupName"
                 placeholder="Digite ou selecione o subgrupo do combo"
-                type="email"
               />
             </div>
             <div className="d-flex pt-2">
               <div className="fieldSpacing">
-                <Label className="fieldLabel" for="exampleNumber">
+                <Label className="fieldLabel" for="amount">
                   Quantidade
                 </Label>
                 <SuperInput
                   style={{ width: '243px' }}
-                  id="exampleNumber"
-                  name="number"
+                  id="amount"
+                  name="amount"
                   placeholder="Ex: 200"
                   type="number"
                 />
               </div>
               <div className="fieldSpacing">
-                <Label className="fieldLabel" for="exampleNumber">
+                <Label className="fieldLabel" for="totalValue">
                   Valor do combo
                 </Label>
                 <SuperInput
                   style={{ width: '243px' }}
-                  id="exampleNumber"
-                  name="number"
+                  id="totalValue"
+                  name="totalValue"
                   placeholder="Ex: 20,00"
                   type="number"
                 />
               </div>
             </div>
             <div className="fieldSpacing">
-              <Label className="fieldLabel" for="exampleFile">
+              <Label className="fieldLabel" for="imageBase64">
                 Imagem do produto (opcional)
               </Label>
               <SuperInput
-                id="exampleFile"
+                id="imageBase64"
                 placeholder="Nenhum arquivo selecionado"
-                name="file"
+                name="imageBase64"
                 type="file"
               />
             </div>
@@ -115,24 +113,24 @@ const Sample = (): JSX.Element => {
             {inputFields.map((inputField, index) => (
               <div key={index} className="d-flex pt-2">
                 <div className="fieldSpacing">
-                  <Label className="fieldLabel" for="exampleNumber">
+                  <Label className="fieldLabel" for="productsName">
                     Produto
                   </Label>
                   <SuperInput
                     style={{ width: '440px' }}
-                    id="exampleNumber"
+                    id="productsName"
                     placeholder="Digite ou selecione o produto"
                     value={inputField.groupName}
                     onChange={event => handleChangeInput(index, event)}
                   />
                 </div>
                 <div className="fieldSpacing">
-                  <Label className="fieldLabel" for="exampleNumber">
+                  <Label className="fieldLabel" for="productsAmount">
                     Quantidade
                   </Label>
                   <SuperInput
                     style={{ width: '134px' }}
-                    id="exampleNumber"
+                    id="productsAmount"
                     placeholder="Ex: 100"
                     value={inputField.groupName}
                     onChange={event => handleChangeInput(index, event)}

@@ -17,12 +17,16 @@ const Sample = (): JSX.Element => {
         <hr className="dividerUp" />
         <FormGroup>
           <div className="fieldSpacing">
-            <div className="fieldLabel">Nome do setor</div>
-            <SuperInput
-              style={{ width: '546px' }}
-              placeholder="Digite ou selecione o nome do setor"
-              name="email"
-            ></SuperInput>
+            <div className="fieldLabel">
+              <Label className="fieldLabel" for="exampleEmail">
+                Nome do setor
+              </Label>
+              <SuperInput
+                style={{ width: '546px' }}
+                placeholder="Digite ou selecione o nome do setor"
+                name="email"
+              />
+            </div>
             <div
               className="auxSucessText"
               style={{ paddingTop: '20px' }}

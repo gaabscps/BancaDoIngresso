@@ -5,6 +5,7 @@ export default interface Company {
   name: string;
   document: string;
   telephone: string;
+  type: string;
   email: string;
   imageUrl: string;
   facebookUrl: string;

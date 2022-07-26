@@ -32,24 +32,19 @@ const Sample = (): JSX.Element => {
             <hr className="dividerUp" />
             <div className="d-flex pt-2 whiteContainer">
               <FormGroup className="fieldSpacing">
-                <Label className="fieldLabel" for="exampleNumber">
+                <Label className="fieldLabel" for="posName">
                   POS
                 </Label>
-                <SuperInput id="exampleNumber" placeholder="Digite ou selecione a POS" />
+                <SuperInput id="posName" name="posName" placeholder="Digite ou selecione a POS" />
                 <div className="auxSucessText" style={{ paddingTop: '20px' }}>
                   + cadastrar nova POS
                 </div>
               </FormGroup>
               <FormGroup className="fieldSpacing">
-                <Label className="fieldLabel" for="exampleNumber">
+                <Label className="fieldLabel" for="waiter">
                   Porcentagem do Garçom (%)
                 </Label>
-                <SuperInput
-                  style={{ width: '135px' }}
-                  id="exampleNumber"
-                  name="number"
-                  placeholder="0%"
-                />
+                <SuperInput style={{ width: '135px' }} id="waiter" name="waiter" placeholder="0%" />
               </FormGroup>
             </div>
           </>

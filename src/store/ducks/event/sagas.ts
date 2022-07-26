@@ -197,6 +197,7 @@ export function* generalInformationEvent(data: any) {
       '/event/general-information',
       data.payload,
     );
+    console.log('Response', response);
     const stateData: ApplicationState = yield select((state: ApplicationState) => ({
       event: state.event,
     }));

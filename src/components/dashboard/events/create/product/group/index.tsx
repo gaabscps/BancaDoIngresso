@@ -50,22 +50,21 @@ const Sample = (): JSX.Element => {
         <div className="whiteContainer">
           <FormGroup>
             <div className="fieldSpacing">
-              <Label className="fieldLabel" for="exampleEmail">
+              <Label className="fieldLabel" for="groupName">
                 Nome do grupo
               </Label>
               <SuperInput
-                id="exampleEmail"
-                name="email"
+                id="grupo"
+                name="grupo"
                 placeholder="Digite o nome do grupo. Ex: Bebidas"
-                type="email"
               />
             </div>
             <div className="fieldSpacing">
-              <Label className="fieldLabel" for="exampleFile">
+              <Label className="fieldLabel" for="imageBase64">
                 Imagem do grupo (opcional)
               </Label>
               <SuperInput
-                id="exampleFile"
+                id="imageBase64"
                 placeholder="Nenhum arquivo selecionado"
                 name="file"
                 type="file"
@@ -74,12 +73,12 @@ const Sample = (): JSX.Element => {
             {inputFields.map((inputField, index) => (
               <div key={index} className="d-flex">
                 <div className="fieldSpacing">
-                  <Label className="fieldLabel" for="exampleEmail">
+                  <Label className="fieldLabel" for="subgroupName">
                     Nome do Subgrupo (opcional)
                   </Label>
                   <div className="fieldSpacing">
                     <SuperInput
-                      id="exampleEmail"
+                      id="subgroupName"
                       placeholder="Bebidas doces"
                       value={inputField.groupName}
                       onChange={event => handleChangeInput(index, event)}

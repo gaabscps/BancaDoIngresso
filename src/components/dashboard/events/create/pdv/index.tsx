@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { Fragment, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Col, Label } from 'reactstrap';
@@ -20,6 +21,13 @@ const Sample = (): JSX.Element => {
   const [step, setStep] = useState(0);
   const [show, setShow] = useState(false);
   const [showPdv, setShowPdv] = useState(false);
+  const [allowMoney, setAllowMoney] = useState(true);
+  const [allowAdvanceFee, setAllowAdvanceFee] = useState(true);
+  const [allowDebit, setAllowDebit] = useState(true);
+  const [allowCreditCard, setAllowCreditCard] = useState(true);
+  const [allowPix, setAllowPix] = useState(true);
+  const [allowSellingWebsite, setAllowSellingWebsite] = useState(true);
+  const [allowDiscount, setAllowDiscount] = useState(true);
 
   const history = useNavigate();
 
@@ -98,10 +106,10 @@ const Sample = (): JSX.Element => {
           {show ? (
             <>
               <div className="fieldSpacing">
-                <Label className="fieldLabel" for="exampleNumber">
+                <Label className="fieldLabel" for="pdvName">
                   PDV
                 </Label>
-                <SuperInput id="exampleNumber" placeholder="Digite ou selecione o PDV" />
+                <SuperInput id="pdvName" name="pdvName" placeholder="Digite ou selecione o PDV" />
                 <div
                   className="auxSucessText"
                   style={{ paddingTop: '20px' }}
@@ -113,10 +121,18 @@ const Sample = (): JSX.Element => {
               <div className="groupButton">
                 <Label className="fieldLabel">Permitir dinheiro?</Label>
                 <ButtonGroup style={{ width: '100px' }}>
-                  <Button variant="outline-dark" style={{ height: '62px', width: '100px' }}>
+                  <Button
+                    variant="outline-dark"
+                    style={{ height: '62px', width: '100px' }}
+                    onClick={() => setAllowMoney(true)}
+                  >
                     Sim
                   </Button>
-                  <Button variant="outline-dark" style={{ height: '62px', width: '100px' }}>
+                  <Button
+                    variant="outline-dark"
+                    style={{ height: '62px', width: '100px' }}
+                    onClick={() => setAllowMoney(false)}
+                  >
                     Não
                   </Button>
                 </ButtonGroup>
@@ -124,10 +140,18 @@ const Sample = (): JSX.Element => {
               <div className="groupButton">
                 <Label className="fieldLabel">Permitir taxa antecipada?</Label>
                 <ButtonGroup style={{ width: '100px' }}>
-                  <Button variant="outline-dark" style={{ height: '62px', width: '100px' }}>
+                  <Button
+                    variant="outline-dark"
+                    style={{ height: '62px', width: '100px' }}
+                    onClick={() => setAllowAdvanceFee(true)}
+                  >
                     Sim
                   </Button>
-                  <Button variant="outline-dark" style={{ height: '62px', width: '100px' }}>
+                  <Button
+                    variant="outline-dark"
+                    style={{ height: '62px', width: '100px' }}
+                    onClick={() => setAllowAdvanceFee(false)}
+                  >
                     Não
                   </Button>
                 </ButtonGroup>
@@ -135,10 +159,18 @@ const Sample = (): JSX.Element => {
               <div className="groupButton">
                 <Label className="fieldLabel">Permitir débito?</Label>
                 <ButtonGroup style={{ width: '100px' }}>
-                  <Button variant="outline-dark" style={{ height: '62px', width: '100px' }}>
+                  <Button
+                    variant="outline-dark"
+                    style={{ height: '62px', width: '100px' }}
+                    onClick={() => setAllowDebit(true)}
+                  >
                     Sim
                   </Button>
-                  <Button variant="outline-dark" style={{ height: '62px', width: '100px' }}>
+                  <Button
+                    variant="outline-dark"
+                    style={{ height: '62px', width: '100px' }}
+                    onClick={() => setAllowDebit(false)}
+                  >
                     Não
                   </Button>
                 </ButtonGroup>
@@ -146,10 +178,18 @@ const Sample = (): JSX.Element => {
               <div className="groupButton">
                 <Label className="fieldLabel">Permitir crédito?</Label>
                 <ButtonGroup style={{ width: '100px' }}>
-                  <Button variant="outline-dark" style={{ height: '62px', width: '100px' }}>
+                  <Button
+                    variant="outline-dark"
+                    style={{ height: '62px', width: '100px' }}
+                    onClick={() => setAllowCreditCard(true)}
+                  >
                     Sim
                   </Button>
-                  <Button variant="outline-dark" style={{ height: '62px', width: '100px' }}>
+                  <Button
+                    variant="outline-dark"
+                    style={{ height: '62px', width: '100px' }}
+                    onClick={() => setAllowCreditCard(false)}
+                  >
                     Não
                   </Button>
                 </ButtonGroup>
@@ -157,10 +197,18 @@ const Sample = (): JSX.Element => {
               <div className="groupButton">
                 <Label className="fieldLabel">Permitir PIX?</Label>
                 <ButtonGroup style={{ width: '100px' }}>
-                  <Button variant="outline-dark" style={{ height: '62px', width: '100px' }}>
+                  <Button
+                    variant="outline-dark"
+                    style={{ height: '62px', width: '100px' }}
+                    onClick={() => setAllowPix(true)}
+                  >
                     Sim
                   </Button>
-                  <Button variant="outline-dark" style={{ height: '62px', width: '100px' }}>
+                  <Button
+                    variant="outline-dark"
+                    style={{ height: '62px', width: '100px' }}
+                    onClick={() => setAllowPix(false)}
+                  >
                     Não
                   </Button>
                 </ButtonGroup>
@@ -169,10 +217,18 @@ const Sample = (): JSX.Element => {
                 <div className="groupButton" style={{ marginRight: '100px' }}>
                   <Label className="fieldLabel">Permitir venda online?</Label>
                   <ButtonGroup style={{ width: '100px' }}>
-                    <Button variant="outline-dark" style={{ height: '62px', width: '100px' }}>
+                    <Button
+                      variant="outline-dark"
+                      style={{ height: '62px', width: '100px' }}
+                      onClick={() => setAllowSellingWebsite(true)}
+                    >
                       Sim
                     </Button>
-                    <Button variant="outline-dark" style={{ height: '62px', width: '100px' }}>
+                    <Button
+                      variant="outline-dark"
+                      style={{ height: '62px', width: '100px' }}
+                      onClick={() => setAllowSellingWebsite(false)}
+                    >
                       Não
                     </Button>
                   </ButtonGroup>
@@ -180,10 +236,18 @@ const Sample = (): JSX.Element => {
                 <div className="groupButton">
                   <Label className="fieldLabel">Permitir desconto?</Label>
                   <ButtonGroup style={{ width: '100px' }}>
-                    <Button variant="outline-dark" style={{ height: '62px', width: '100px' }}>
+                    <Button
+                      variant="outline-dark"
+                      style={{ height: '62px', width: '100px' }}
+                      onClick={() => setAllowDiscount(true)}
+                    >
                       Sim
                     </Button>
-                    <Button variant="outline-dark" style={{ height: '62px', width: '100px' }}>
+                    <Button
+                      variant="outline-dark"
+                      style={{ height: '62px', width: '100px' }}
+                      onClick={() => setAllowDiscount(false)}
+                    >
                       Não
                     </Button>
                   </ButtonGroup>

@@ -1,7 +1,9 @@
-import React, { Fragment, useState } from 'react';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { Fragment, useEffect, useState } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { Container, Col, Form, FormGroup, Label, FormText } from 'reactstrap';
+import { Container, Col, Form, Label, FormText } from 'reactstrap';
+import { useDispatch, useSelector } from 'react-redux';
 import SuperInput from '../../../../sharedComponents/SuperInput';
 import step1 from '../../../../../assets/images/svg/stepByStep/step1.svg';
 import titleLine from '../../../../../assets/images/svg/titleLine.svg';
@@ -11,12 +13,59 @@ import NewCategory from '../../../../modal/NewCategory';
 import RegisterCompany from '../../../../modal/RegisterCompany';
 import ParentEvent from '../../../../modal/ParentEvent';
 import SuperButton from '../../../../sharedComponents/SuperButton';
+import { ApplicationState } from '../../../../../store';
+import { EventState } from '../../../../../store/ducks/event/types';
+import { generalInformationRequest } from '../../../../../store/ducks/event/actions';
+import EventGeneralInformation from '../../../../../entities/EventGeneralInformation';
+import { states } from '../../../../../constant/states';
+import { cities } from '../../../../../constant/cities';
+import { listRequestCategory } from '../../../../../store/ducks/event-category/actions';
+import { EventCategoryState } from '../../../../../store/ducks/event-category/types';
+import { ContractorState } from '../../../../../store/ducks/contractor/types';
+import { listRequestContractor } from '../../../../../store/ducks/contractor/actions';
+import Contractor from '../../../../../entities/Contractor';
+import EventCategory from '../../../../../entities/EventCategory';
+
+interface CreateEvent {
+  eventType: number;
+  name: string;
+  posName: string;
+  establishmentName: string;
+  addressId: any;
+  eventCategory: any;
+  contractor: any;
+  censure: number;
+  instagramUrl: string;
+  facebookUrl: string;
+  imageBase64: string;
+  imagePosBase64: string;
+  textSize: number;
+  ticketPhrase: string;
+  websiteDescription: string;
+  startDate: any;
+  endDate: any;
+  publishWebsite: boolean;
+}
 
 const Sample = (): JSX.Element => {
+  const event = useSelector<ApplicationState, EventState>(store => store.event);
+  const category = useSelector<ApplicationState, EventCategoryState>(store => store.eventCategory);
+  const contractor = useSelector<ApplicationState, ContractorState>(store => store.contractor);
+  const dispatch = useDispatch();
   const history = useNavigate();
   const [showNewCategory, setShowNewCategory] = useState(false);
   const [showCompany, setShowCompany] = useState(false);
   const [showParentEvent, setShowParentEvent] = useState(false);
+  const [textSize, setTextSize] = useState(1);
+  const [startDate, setStartDate] = useState(Date);
+  const [endDate, setEndDate] = useState('');
+  const [startHour, setStartHour] = useState(Date);
+  const [endHour, setEndHour] = useState('');
+  const [eventType, setEventType] = useState(0);
+  const [publishWebsite, setPublishWebsite] = useState(true);
+  const [form, setForm] = useState<CreateEvent | any>({} as CreateEvent);
+  const [selected, setSelected] = useState('first');
+  const [selectedText, setSelectedText] = useState('medium');
 
   const nextStep = (): void => {
     history('/event/ticket');
@@ -24,6 +73,80 @@ const Sample = (): JSX.Element => {
   const goBack = (): void => {
     history(-1);
   };
+
+  const onChangeForm = (level?: any) => (e: any) => {
+    console.log(level);
+    console.log(e);
+    if (!level) {
+      setForm({
+        ...form,
+        [e.target.name]: e.target.value,
+      });
+    } else {
+      setForm({
+        ...form,
+        [level]: {
+          ...form[level],
+          [e.target.name]: e.target.value,
+        },
+      });
+    }
+    // console.log('form', form);
+  };
+
+  const dateStart = `${startDate}T${startHour}:00.000Z` as unknown as Date;
+  const dateEnd = `${endDate}T${endHour}:00.000Z` as unknown as Date;
+
+  // const onChangeForm = (name: string, value: any): any => {
+  //   const newForm = {
+  //     ...form,
+  //     [name]: value,
+  //   };
+  //   setForm(newForm);
+  // };
+
+  const handleSubmit = async (): Promise<void> => {
+    console.log(form.category);
+    console.log(category);
+    console.log(form.contractor);
+    const newCategory =
+      category?.data?.page?.list?.find(c => c.id === form.category) || ({} as EventCategory);
+    const newContractor =
+      contractor?.data?.page?.list?.find(c => c.id === form.contractor) || ({} as Contractor);
+    const createGeneralInformation: EventGeneralInformation = {
+      eventType,
+      name: form.name,
+      posName: form.posName,
+      establishmentName: form.establishmentName,
+      address: { ...form.address, zipCode: '-', district: '-', number: '-' },
+      eventCategory: newCategory,
+      contractor: newContractor,
+      censure: form.censure,
+      instagramUrl: form.instagramUrl,
+      facebookUrl: form.facebookUrl,
+      imageBase64: form.imageBase64,
+      imagePosBase64: form.imagePosBase64,
+      textSize,
+      ticketPhrase: form.ticketPhrase,
+      websiteDescription: form.websiteDescription,
+      startDate: dateStart,
+      endDate: dateEnd,
+      publishWebsite,
+      id: '',
+    };
+    console.log('Form:', createGeneralInformation);
+    dispatch(generalInformationRequest(createGeneralInformation));
+    nextStep();
+  };
+
+  useEffect(() => {
+    dispatch(listRequestCategory({ page: 1, pageSize: 10 }));
+    dispatch(listRequestContractor({ page: 1, pageSize: 10 }));
+  }, []);
+
+  // useEffect(() => {
+  //   dispatch(generalInformationRequest(pagination));
+  // }, [event]);
 
   return (
     <Fragment>
@@ -40,21 +163,20 @@ const Sample = (): JSX.Element => {
             <img src={titleLine} style={{ paddingTop: '-20px' }} />
           </div>
           <Form>
-            <FormGroup className="fieldSpacing">
-              <Label className="fieldLabel" for="exampleSelect">
+            <div className="fieldSpacing" style={{ display: 'grid' }}>
+              <Label className="fieldLabel" for="eventType">
                 Tipo de evento
               </Label>
               <SuperInput
-                placeholder="Digite ou selecione o tipo do evento"
-                id="exampleSelect"
-                name="select"
+                onChange={onChangeForm()}
+                value={form.eventType}
+                placeholder="Selecione o tipo do evento"
+                id="eventType"
+                name="eventType"
                 type="select"
               >
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
+                <option value={0}>Único</option>
+                <option value={1}>Múltiplo</option>
               </SuperInput>
               <div
                 className="auxSucessText"
@@ -64,156 +186,168 @@ const Sample = (): JSX.Element => {
                 <img style={{ paddingRight: '6px' }} src={auxSucess} />
                 vincular evento Pai
               </div>
-            </FormGroup>
-            <FormGroup className="fieldSpacing">
-              <Label className="fieldLabel" for="exampleEmail">
+            </div>
+            <div className="fieldSpacing">
+              <Label className="fieldLabel" for="name">
                 Nome do Evento
               </Label>
               <SuperInput
-                id="exampleEmail"
-                name="email"
+                onChange={onChangeForm()}
+                value={form.name}
+                id="name"
+                name="name"
                 placeholder="Digite o nome do evento. Ex: Baile do Dennis DJ"
-                type="email"
               />
-            </FormGroup>
-            <FormGroup className="fieldSpacing">
-              <Label className="fieldLabel" for="exampleEmail">
+            </div>
+            <div className="fieldSpacing">
+              <Label className="fieldLabel" for="posName">
                 Nome do Evento (POS)
               </Label>
               <SuperInput
-                id="exampleEmail"
-                name="email"
+                onChange={onChangeForm()}
+                value={form.posName}
+                id="posName"
+                name="posName"
                 placeholder="Digite o nome do evento na POS. Ex: Baile do DN.DJ"
-                type="email"
               />
-            </FormGroup>
-            <FormGroup className="fieldSpacing">
-              <Label className="fieldLabel" for="exampleEmail">
+            </div>
+            <div className="fieldSpacing">
+              <Label className="fieldLabel" for="establishmentName">
                 Nome do estabelecimento
               </Label>
               <SuperInput
-                id="exampleEmail"
-                name="email"
+                onChange={onChangeForm()}
+                value={form.establishmentName}
+                id="establishmentName"
+                name="establishmentName"
                 placeholder="Digite o nome do estabelecimento evento. Ex: Folk Valley"
-                type="email"
               />
-            </FormGroup>
-            <FormGroup className="fieldSpacing">
-              <Label className="fieldLabel" for="exampleEmail">
+            </div>
+            <div className="fieldSpacing">
+              <Label className="fieldLabel" for="street">
                 Local do evento
               </Label>
               <SuperInput
-                id="exampleEmail"
-                name="email"
+                onChange={onChangeForm('address')}
+                id="street"
+                name="street"
                 placeholder="Digite o local do evento. Ex: Rua Perimetral Leste, 123"
-                type="email"
               />
-            </FormGroup>
+            </div>
             <div className="d-flex">
-              <FormGroup className="fieldSpacing">
-                <Label className="fieldLabel" for="exampleSelect">
+              <div className="fieldSpacing" style={{ display: 'grid' }}>
+                <Label className="fieldLabel" for="state">
                   Estado
                 </Label>
                 <SuperInput
+                  onChange={onChangeForm('address')}
                   style={{ width: '152px' }}
                   placeholder="SP"
-                  id="exampleSelect"
-                  name="select"
+                  id="state"
+                  name="state"
                   type="select"
                 >
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                  <option>5</option>
+                  {states.map((option: any) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
                 </SuperInput>
-              </FormGroup>
-              <FormGroup className="fieldSpacing">
-                <Label className="fieldLabel" for="exampleSelect">
+              </div>
+              <div className="fieldSpacing">
+                <Label className="fieldLabel" for="city" style={{ display: 'grid' }}>
                   Cidade
                 </Label>
                 <SuperInput
+                  onChange={onChangeForm('address')}
                   style={{ width: '364px' }}
                   placeholder="Selecione ou digite a cidade"
-                  id="exampleSelect"
-                  name="select"
+                  id="city"
+                  name="city"
                   type="select"
                 >
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                  <option>5</option>
+                  {cities[form.address?.state]?.map((option: any) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
                 </SuperInput>
-              </FormGroup>
+              </div>
             </div>
             <div className="d-flex">
-              <FormGroup className="fieldSpacing">
-                <Label className="fieldLabel" for="exampleDatetime">
+              <div className="fieldSpacing">
+                <Label className="fieldLabel" for="startDate">
                   Data Início do Evento
                 </Label>
                 <SuperInput
+                  onChange={e => setStartDate(e.target.value)}
                   style={{ width: '243px' }}
-                  id="exampleDate"
-                  name="date"
+                  id="startDate"
+                  name="startDate"
                   placeholder="DD/MM/AAAA"
                   type="date"
                 />
-              </FormGroup>
-              <FormGroup className="fieldSpacing">
-                <Label className="fieldLabel" for="exampleDatetime">
+              </div>
+              <div className="fieldSpacing">
+                <Label className="fieldLabel" for="endDate">
                   Data Fim do Evento
                 </Label>
                 <SuperInput
+                  onChange={e => setEndDate(e.target.value)}
                   style={{ width: '243px' }}
-                  id="exampleDate"
-                  name="date"
+                  id="endDate"
+                  name="endDate"
                   placeholder="DD/MM/AAAA"
                   type="date"
                 />
-              </FormGroup>
+              </div>
             </div>
             <div className="d-flex">
-              <FormGroup className="fieldSpacing">
+              <div className="fieldSpacing">
                 <Label className="fieldLabel" for="exampleDatetime">
                   Hora Início do Evento
                 </Label>
                 <SuperInput
+                  onChange={e => setStartHour(e.target.value)}
                   style={{ width: '243px' }}
                   id="exampleTime"
                   name="time"
                   placeholder="time placeholder"
                   type="time"
                 />
-              </FormGroup>
-              <FormGroup className="fieldSpacing">
+              </div>
+              <div className="fieldSpacing">
                 <Label className="fieldLabel" for="exampleDatetime">
                   Hora Fim do Evento
                 </Label>
                 <SuperInput
+                  onChange={e => setEndHour(e.target.value)}
                   style={{ width: '243px' }}
                   id="exampleTime"
                   name="time"
                   placeholder="time placeholder"
                   type="time"
                 />
-              </FormGroup>
+              </div>
             </div>
-            <FormGroup className="fieldSpacing">
-              <Label className="fieldLabel" for="exampleSelect">
+            <div className="fieldSpacing" style={{ display: 'grid' }}>
+              <Label className="fieldLabel" for="category">
                 Categoria do evento
               </Label>
               <SuperInput
-                placeholder="Digite ou selecione a categoria do evento"
-                id="exampleSelect"
-                name="select"
+                onChange={onChangeForm()}
+                placeholder="Digite a categoria do evento"
+                id="category"
+                name="category"
                 type="select"
+                value={form.category}
               >
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
+                <option value="">Selecione uma Categoria</option>
+                {category?.data?.page?.list?.map((option: any) => (
+                  <option value={option.id} key={option.id} id={option.id}>
+                    {option.name}
+                  </option>
+                ))}
               </SuperInput>
               <div
                 className="auxSucessText"
@@ -222,15 +356,26 @@ const Sample = (): JSX.Element => {
               >
                 + cadastrar nova categoria
               </div>
-            </FormGroup>
-            <FormGroup className="fieldSpacing">
-              <Label className="fieldLabel" for="exampleSelect">
+            </div>
+            <div className="fieldSpacing" style={{ display: 'grid' }}>
+              <Label className="fieldLabel" for="contractor">
                 Empresa ou contratante
               </Label>
               <SuperInput
-                placeholder="Digite ou selecione o cliente/contratante"
-                id="exampleSelect"
-              />
+                onChange={onChangeForm()}
+                placeholder="Digite o cliente/contratante"
+                name="contractor"
+                id="contractor"
+                type="select"
+                value={form.contractor}
+              >
+                <option value="">Selecione um contratante</option>
+                {contractor?.data?.page?.list?.map((option: any) => (
+                  <option value={option.id} key={option.id} id={option.id}>
+                    {option.name}
+                  </option>
+                ))}
+              </SuperInput>
               <div
                 className="auxSucessText"
                 style={{ paddingTop: '20px' }}
@@ -238,142 +383,235 @@ const Sample = (): JSX.Element => {
               >
                 + cadastrar nova empresa ou contratante
               </div>
-            </FormGroup>
-            <FormGroup className="fieldSpacing">
-              <Label className="fieldLabel" for="exampleEmail">
+            </div>
+            <div className="fieldSpacing">
+              <Label className="fieldLabel" for="censure">
                 Censura do evento
               </Label>
               <SuperInput
-                id="exampleEmail"
-                name="email"
+                onChange={onChangeForm()}
+                value={form.censure}
+                id="censure"
+                name="censure"
                 placeholder="Digite a idade de censura. Ex: 16"
-                type="email"
+                type="number"
               />
-            </FormGroup>
+            </div>
           </Form>
           <div style={{ display: 'grid', paddingBottom: '50px' }}>
             <Label className="pageTitle">Informações complementares</Label>
             <img src={secondTitleLine} style={{ paddingTop: '-20px' }} />
           </div>
           <Form>
-            <FormGroup className="fieldSpacing">
-              <Label className="fieldLabel" for="exampleEmail">
+            <div className="fieldSpacing">
+              <Label className="fieldLabel" for="facebookUrl">
                 Facebook do evento
               </Label>
               <SuperInput
-                id="exampleEmail"
-                name="email"
+                onChange={onChangeForm()}
+                value={form.facebookUrl}
+                id="facebookUrl"
+                name="facebookUrl"
                 placeholder="Copie e cole o link do Facebook do evento"
-                type="email"
               />
-            </FormGroup>
-            <FormGroup className="fieldSpacing">
-              <Label className="fieldLabel" for="exampleEmail">
+            </div>
+            <div className="fieldSpacing">
+              <Label className="fieldLabel" for="instagramUrl">
                 Instagram do evento
               </Label>
               <SuperInput
-                id="exampleEmail"
-                name="email"
+                onChange={onChangeForm()}
+                value={form.instagramUrl}
+                id="instagramUrl"
+                name="instagramUrl"
                 placeholder="Copie e cole o link do Instagram do evento"
-                type="email"
               />
-            </FormGroup>
-            <FormGroup className="fieldSpacing">
-              <Label className="fieldLabel" for="exampleEmail">
+            </div>
+            <div className="fieldSpacing">
+              <Label className="fieldLabel" for="establishmentName">
                 Nome do estabelecimento
               </Label>
               <SuperInput
-                id="exampleEmail"
-                name="email"
+                onChange={onChangeForm()}
+                value={form.establishmentName}
+                id="establishmentName"
+                name="establishmentName"
                 placeholder="Digite o nome do estabelecimento evento. Ex: Folk Valley"
-                type="email"
               />
-            </FormGroup>
+            </div>
             <div>
-              <FormGroup className="fieldSpacing">
-                <Label className="fieldLabel" for="exampleFile">
+              <div className="fieldSpacing">
+                <Label className="fieldLabel" for="imagePosBase64">
                   Imagem POS (jpg ou png)
                   <FormText className="greyNormalText">Resolução: 384x168</FormText>
                 </Label>
                 <SuperInput
-                  id="exampleFile"
+                  onChange={onChangeForm()}
+                  value={form.imagePosBase64}
+                  id="imagePosBase64"
                   placeholder="Nenhum arquivo selecionado"
-                  name="file"
+                  name="imagePosBase64"
                   type="file"
                 />
-              </FormGroup>
+              </div>
             </div>
             <div>
-              <FormGroup className="fieldSpacing">
-                <Label className="fieldLabel" for="exampleFile">
+              <div className="fieldSpacing">
+                <Label className="fieldLabel" for="imageBase64">
                   Imagem principal do evento (jpg ou png)
                   <FormText className="greyNormalText">Resolução: 500x500</FormText>
                 </Label>
                 <SuperInput
-                  id="exampleFile"
+                  onChange={onChangeForm()}
+                  value={form.imageBase64}
+                  id="imageBase64"
                   placeholder="Nenhum arquivo selecionado"
-                  name="file"
+                  name="imageBase64"
                   type="file"
                 />
-              </FormGroup>
+              </div>
             </div>
             <div className="groupButton">
               <Label className="fieldLabel">Publicar evento no site?</Label>
-              <ButtonGroup style={{ width: '100px' }}>
-                <Button variant="outline-dark" style={{ height: '62px', width: '100px' }}>
+              <div className="d-flex" style={{ width: '100px' }}>
+                <Button
+                  variant="outline-dark"
+                  onClick={() => {
+                    setPublishWebsite(true);
+                    setSelected('first');
+                  }}
+                  style={
+                    selected === 'first'
+                      ? {
+                          height: '62px',
+                          width: '100px',
+                          backgroundColor: '#171A21',
+                          color: 'white',
+                        }
+                      : { height: '62px', width: '100px' }
+                  }
+                >
                   Sim
                 </Button>
-                <Button variant="outline-dark" style={{ height: '62px', width: '100px' }}>
+                <Button
+                  variant="outline-dark"
+                  onClick={() => {
+                    setPublishWebsite(false);
+                    setSelected('second');
+                  }}
+                  style={
+                    selected === 'second'
+                      ? {
+                          height: '62px',
+                          width: '100px',
+                          backgroundColor: '#171A21',
+                          color: 'white',
+                        }
+                      : { height: '62px', width: '100px' }
+                  }
+                >
                   Não
                 </Button>
-              </ButtonGroup>
+              </div>
             </div>
             <div className="groupButton">
               <Label className="fieldLabel">Tamanho do texto</Label>
-              <ButtonGroup style={{ width: '100px' }}>
-                <Button variant="outline-dark" style={{ height: '62px', width: '121px' }}>
+              <div className="d-flex" style={{ width: '100px' }}>
+                <Button
+                  variant="outline-dark"
+                  onClick={() => {
+                    setTextSize(0);
+                    setSelectedText('small');
+                  }}
+                  style={
+                    selectedText === 'small'
+                      ? {
+                          height: '62px',
+                          width: '121px',
+                          backgroundColor: '#171A21',
+                          color: 'white',
+                        }
+                      : { height: '62px', width: '121px' }
+                  }
+                >
                   Pequeno
                 </Button>
-                <Button variant="outline-dark" style={{ height: '62px', width: '121px' }}>
+                <Button
+                  variant="outline-dark"
+                  onClick={() => {
+                    setTextSize(1);
+                    setSelectedText('medium');
+                  }}
+                  style={
+                    selectedText === 'medium'
+                      ? {
+                          height: '62px',
+                          width: '121px',
+                          backgroundColor: '#171A21',
+                          color: 'white',
+                        }
+                      : { height: '62px', width: '121px' }
+                  }
+                >
                   Médio
                 </Button>
-                <Button variant="outline-dark" style={{ height: '62px', width: '121px' }}>
+                <Button
+                  variant="outline-dark"
+                  onClick={() => {
+                    setTextSize(3);
+                    setSelectedText('big');
+                  }}
+                  style={
+                    selectedText === 'big'
+                      ? {
+                          height: '62px',
+                          width: '121px',
+                          backgroundColor: '#171A21',
+                          color: 'white',
+                        }
+                      : { height: '62px', width: '121px' }
+                  }
+                >
                   Grande
                 </Button>
-              </ButtonGroup>
+              </div>
             </div>
-            <FormGroup className="fieldSpacing">
-              <Label className="fieldLabel" for="exampleEmail">
+            <div className="fieldSpacing">
+              <Label className="fieldLabel" for="ticketPhrase">
                 Frase do ingresso
               </Label>
               <SuperInput
+                onChange={onChangeForm()}
+                value={form.ticketPhrase}
                 style={{ height: '188px' }}
-                id="exampleText"
+                id="ticketPhrase"
                 placeholder="Digite a frase que irá aparecer no ingresso"
-                name="text"
+                name="ticketPhrase"
                 type="textarea"
               />
-            </FormGroup>
-            <FormGroup className="fieldSpacing">
-              <Label className="fieldLabel" for="exampleText">
+            </div>
+            <div className="fieldSpacing">
+              <Label className="fieldLabel" for="websiteDescription">
                 Descrição para o site
               </Label>
               <SuperInput
+                onChange={onChangeForm()}
+                value={form.websiteDescription}
                 style={{ height: '343px' }}
-                id="exampleText"
+                id="websiteDescription"
                 placeholder="Digite aqui a descrição que irá aparecer no site"
-                name="text"
+                name="websiteDescription"
                 type="textarea"
               />
-            </FormGroup>
+            </div>
           </Form>
           <div className="nextPageButton">
             <div style={{ color: '#fff' }}>
               <Button style={{ height: '50px' }} variant="outline-light" onClick={goBack}>
-                Voltar{' '}
+                Voltar
               </Button>
             </div>
-            <SuperButton style={{ width: '278px' }} onClick={nextStep}>
+            <SuperButton style={{ width: '278px' }} onClick={handleSubmit}>
               Avançar para Setor e ingresso
             </SuperButton>
           </div>
