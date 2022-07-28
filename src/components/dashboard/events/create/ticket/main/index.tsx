@@ -52,6 +52,19 @@ const Sample = (): JSX.Element => {
   const [startHour, setStartHour] = useState(Date);
   const [endHour, setEndHour] = useState(Date);
 
+  const [batchs, setLotes] = useState([]);
+
+  // const addLote = () => {
+  //   const newLote = {
+  //     name:
+  //     date:
+  //     price: "1234",
+  //     date: "1 de janeiro de 2022",
+  //     title: "meu primeiro lote"
+  //   };
+  //   setLotes([...batchs, newLote]);
+  // };
+
   const onChangeForm = (level?: any) => (e: any) => {
     if (!level) {
       setForm({

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { Fragment, useEffect, useState } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
@@ -109,10 +110,8 @@ const Sample = (): JSX.Element => {
     console.log(form.category);
     console.log(category);
     console.log(form.contractor);
-    const newCategory =
-      category?.data?.page?.list?.find(c => c.id === form.category) || ({} as EventCategory);
-    const newContractor =
-      contractor?.data?.page?.list?.find(c => c.id === form.contractor) || ({} as Contractor);
+    const newCategory = category?.data?.page?.list?.find(c => c.id === form.category) || ({} as EventCategory);
+    const newContractor = contractor?.data?.page?.list?.find(c => c.id === form.contractor) || ({} as Contractor);
     const createGeneralInformation: EventGeneralInformation = {
       eventType,
       name: form.name,
