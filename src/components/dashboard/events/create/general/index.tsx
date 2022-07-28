@@ -49,7 +49,6 @@ interface CreateEvent {
 }
 
 const Sample = (): JSX.Element => {
-  const event = useSelector<ApplicationState, EventState>(store => store.event);
   const category = useSelector<ApplicationState, EventCategoryState>(store => store.eventCategory);
   const contractor = useSelector<ApplicationState, ContractorState>(store => store.contractor);
   const dispatch = useDispatch();
@@ -107,9 +106,6 @@ const Sample = (): JSX.Element => {
   // };
 
   const handleSubmit = async (): Promise<void> => {
-    console.log(form.category);
-    console.log(category);
-    console.log(form.contractor);
     const newCategory = category?.data?.page?.list?.find(c => c.id === form.category) || ({} as EventCategory);
     const newContractor = contractor?.data?.page?.list?.find(c => c.id === form.contractor) || ({} as Contractor);
     const createGeneralInformation: EventGeneralInformation = {
@@ -133,7 +129,6 @@ const Sample = (): JSX.Element => {
       publishWebsite,
       id: '',
     };
-    console.log('Form:', createGeneralInformation);
     dispatch(generalInformationRequest(createGeneralInformation));
     nextStep();
   };

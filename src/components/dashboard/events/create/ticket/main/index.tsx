@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { Fragment, useState } from 'react';
 import { Container, FormGroup, Label } from 'reactstrap';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import SuperInput from '../../../../../sharedComponents/SuperInput';
 import SuperCollapse from '../../../../../sharedComponents/SuperCollapse';
@@ -12,6 +12,8 @@ import { ticketMainConfigurationRequest } from '../../../../../../store/ducks/ev
 import TicketBatch from '../../../../../../entities/TicketBatch';
 import Printer from '../../../../../../entities/Printer';
 import Section from '../../../../../../entities/Section';
+import { EventState } from '../../../../../../store/ducks/event/types';
+import { ApplicationState } from '../../../../../../store';
 
 interface CreateTicket {
   id: string;
@@ -35,6 +37,7 @@ interface CreateTicket {
 }
 
 const Sample = (): JSX.Element => {
+  const event = useSelector<ApplicationState, EventState>(store => store.event);
   const dispatch = useDispatch();
   const [hasHalfPrice, setHasHalfPrice] = useState(true);
   const [hasCourtesy, setHasCourtesy] = useState(true);
@@ -93,9 +96,10 @@ const Sample = (): JSX.Element => {
   const dateStart = `${startDate}T${startHour}:00.000Z` as unknown as Date;
   const dateEnd = `${endDate}T${endHour}:00.000Z` as unknown as Date;
 
+  console.log('Event', event);
   const handleSubmit = async (): Promise<void> => {
     const createTicketMainConfiguration: EventTicketMainConfiguration = {
-      id: '',
+      id: event.data.eventGeneralInformation.id,
       eventSection: form.eventSection,
       name: form.name,
       hasHalfPrice,
@@ -113,7 +117,13 @@ const Sample = (): JSX.Element => {
       observation: form.observation,
       batchs: form.batchs,
     };
-    // dispatch(ticketMainConfigurationRequest(id, createTicketMainConfiguration));
+    console.log(form);
+    dispatch(
+      ticketMainConfigurationRequest(
+        event.data.eventGeneralInformation.id,
+        createTicketMainConfiguration,
+      ),
+    );
   };
 
   return (
@@ -648,6 +658,7 @@ const Sample = (): JSX.Element => {
                   borderColor: '#A5A5A5',
                 }}
                 variant="outline-light"
+                onClick={handleSubmit}
               >
                 <div className="greyNormalText">Adicionar ingresso</div>
               </Button>

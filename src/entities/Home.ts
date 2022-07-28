@@ -1,3 +1,5 @@
+import Event from './Event';
+
 export default interface Home {
   pendingReleaseEvents: number;
   canceledEvents: number;
