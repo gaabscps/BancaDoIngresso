@@ -11,7 +11,7 @@ export const parse = (error: AxiosError): CustomError | undefined => {
     const response = error.response as AxiosResponse;
     const customError: CustomError = {
       status: response.status,
-      message: response.data.message,
+      message: response.data?.message,
     };
     return customError;
   }
