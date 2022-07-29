@@ -9,6 +9,7 @@ const SuperInput: React.FC<InputProps> = (props: InputProps) => (
       height: '62px',
       borderRadius: '5px',
       backgroundColor: '#E6E6E6',
+      border: 'none',
       ...props.style,
     }}
   />

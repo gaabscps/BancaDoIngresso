@@ -3,7 +3,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { Container, Col, Form, Label, FormText } from 'reactstrap';
+import { Container, Col, Form, Label, FormText, Row } from 'reactstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import SuperInput from '../../../../sharedComponents/SuperInput';
 import step1 from '../../../../../assets/images/svg/stepByStep/step1.svg';
@@ -26,6 +26,8 @@ import { ContractorState } from '../../../../../store/ducks/contractor/types';
 import { listRequestContractor } from '../../../../../store/ducks/contractor/actions';
 import Contractor from '../../../../../entities/Contractor';
 import EventCategory from '../../../../../entities/EventCategory';
+import SelectAutoComplete from '../../../../sharedComponents/SelectAutoComplete';
+import InputFile from '../../../../sharedComponents/InputFile';
 
 interface CreateEvent {
   eventType: number;
@@ -67,6 +69,11 @@ const Sample = (): JSX.Element => {
   const [selected, setSelected] = useState('first');
   const [selectedText, setSelectedText] = useState('medium');
 
+  const typeEventOptions = [
+    { value: 0, label: 'Único' },
+    { value: 1, label: 'Mútiplo' },
+  ];
+
   const nextStep = (): void => {
     history('/event/ticket');
   };
@@ -94,6 +101,66 @@ const Sample = (): JSX.Element => {
     // console.log('form', form);
   };
 
+  useEffect(() => {
+    console.log('form', form);
+  }, [form]);
+
+  /**
+   * Transforma arquivo de imagem em base64
+   *
+   * @export
+   * @param {any} value
+   * @returns promise
+   */
+  function toBase64(file: File): Promise<string | ArrayBuffer | null> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    });
+  }
+
+  const onChangeSelect = (name: string) => (option: object) => {
+    if (name.includes('.')) {
+      const [level, field] = name.split('.');
+      setForm({
+        ...form,
+        [level]: {
+          ...form[level],
+          [field]: option.value,
+        },
+      });
+    } else {
+      setForm({
+        ...form,
+        [name]: option.value,
+      });
+    }
+  };
+
+  const onChangeFileImage = (name: string) => (e: any) => {
+    const fileUpload = e.target.files[0];
+    const img = new Image();
+    img.src = URL.createObjectURL(fileUpload);
+    img.onload = async () => {
+      const width = img.naturalWidth;
+      const height = img.naturalHeight;
+      const file = await toBase64(fileUpload);
+      const fileBase64 = await Promise.resolve(file);
+      URL.revokeObjectURL(img.src);
+      setForm({
+        ...form,
+        [name]: {
+          name: fileUpload.name,
+          base64: fileBase64,
+          width,
+          height,
+        },
+      });
+    };
+  };
+
   const dateStart = `${startDate}T${startHour}:00.000Z` as unknown as Date;
   const dateEnd = `${endDate}T${endHour}:00.000Z` as unknown as Date;
 
@@ -106,8 +173,10 @@ const Sample = (): JSX.Element => {
   // };
 
   const handleSubmit = async (): Promise<void> => {
-    const newCategory = category?.data?.page?.list?.find(c => c.id === form.category) || ({} as EventCategory);
-    const newContractor = contractor?.data?.page?.list?.find(c => c.id === form.contractor) || ({} as Contractor);
+    const newCategory =
+      category?.data?.page?.list?.find(c => c.id === form.category) || ({} as EventCategory);
+    const newContractor =
+      contractor?.data?.page?.list?.find(c => c.id === form.contractor) || ({} as Contractor);
     const createGeneralInformation: EventGeneralInformation = {
       eventType,
       name: form.name,
@@ -161,17 +230,14 @@ const Sample = (): JSX.Element => {
               <Label className="fieldLabel" for="eventType">
                 Tipo de evento
               </Label>
-              <SuperInput
-                onChange={onChangeForm()}
-                value={form.eventType}
-                placeholder="Selecione o tipo do evento"
-                id="eventType"
+              <SelectAutoComplete
+                label="Instituição"
+                options={typeEventOptions}
                 name="eventType"
-                type="select"
-              >
-                <option value={0}>Único</option>
-                <option value={1}>Múltiplo</option>
-              </SuperInput>
+                onChange={onChangeSelect('eventType')}
+                // value={form.eventType}
+                placeholder="Digite ou selecione o tipo do evento"
+              />
               <div
                 className="auxSucessText"
                 style={{ paddingTop: '20px' }}
@@ -233,39 +299,26 @@ const Sample = (): JSX.Element => {
                 <Label className="fieldLabel" for="state">
                   Estado
                 </Label>
-                <SuperInput
-                  onChange={onChangeForm('address')}
-                  style={{ width: '152px' }}
-                  placeholder="SP"
-                  id="state"
+                <SelectAutoComplete
+                  label="Instituição"
+                  options={states}
                   name="state"
-                  type="select"
-                >
-                  {states.map((option: any) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </SuperInput>
+                  onChange={onChangeSelect('address.state')}
+                  // value={form.eventType}
+                  placeholder="Ex: SP"
+                />
               </div>
               <div className="fieldSpacing">
                 <Label className="fieldLabel" for="city" style={{ display: 'grid' }}>
                   Cidade
                 </Label>
-                <SuperInput
-                  onChange={onChangeForm('address')}
-                  style={{ width: '364px' }}
-                  placeholder="Selecione ou digite a cidade"
-                  id="city"
+                <SelectAutoComplete
+                  options={cities[form.address?.state]}
                   name="city"
-                  type="select"
-                >
-                  {cities[form.address?.state]?.map((option: any) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </SuperInput>
+                  onChange={onChangeSelect('address.city')}
+                  // value={form.eventType}
+                  placeholder="Selecione ou digite a cidade"
+                />
               </div>
             </div>
             <div className="d-flex">
@@ -328,7 +381,7 @@ const Sample = (): JSX.Element => {
               <Label className="fieldLabel" for="category">
                 Categoria do evento
               </Label>
-              <SuperInput
+              {/* <SuperInput
                 onChange={onChangeForm()}
                 placeholder="Digite a categoria do evento"
                 id="category"
@@ -342,7 +395,14 @@ const Sample = (): JSX.Element => {
                     {option.name}
                   </option>
                 ))}
-              </SuperInput>
+              </SuperInput> */}
+              <SelectAutoComplete
+                options={category?.data?.page?.list}
+                name="category"
+                onChange={onChangeSelect('category')}
+                // value={form.eventType}
+                placeholder="Digite ou selecione a categoria do evento"
+              />
               <div
                 className="auxSucessText"
                 style={{ paddingTop: '20px' }}
@@ -355,21 +415,14 @@ const Sample = (): JSX.Element => {
               <Label className="fieldLabel" for="contractor">
                 Empresa ou contratante
               </Label>
-              <SuperInput
-                onChange={onChangeForm()}
-                placeholder="Digite o cliente/contratante"
+
+              <SelectAutoComplete
+                options={category?.data?.page?.list}
                 name="contractor"
-                id="contractor"
-                type="select"
-                value={form.contractor}
-              >
-                <option value="">Selecione um contratante</option>
-                {contractor?.data?.page?.list?.map((option: any) => (
-                  <option value={option.id} key={option.id} id={option.id}>
-                    {option.name}
-                  </option>
-                ))}
-              </SuperInput>
+                onChange={onChangeSelect('contractor')}
+                // value={form.eventType}
+                placeholder="Digite ou selecione a empresa/contratante"
+              />
               <div
                 className="auxSucessText"
                 style={{ paddingTop: '20px' }}
@@ -439,13 +492,11 @@ const Sample = (): JSX.Element => {
                   Imagem POS (jpg ou png)
                   <FormText className="greyNormalText">Resolução: 384x168</FormText>
                 </Label>
-                <SuperInput
-                  onChange={onChangeForm()}
-                  value={form.imagePosBase64}
-                  id="imagePosBase64"
-                  placeholder="Nenhum arquivo selecionado"
+
+                <InputFile
                   name="imagePosBase64"
-                  type="file"
+                  onChange={onChangeFileImage('imagePosBase64')}
+                  fileName={form.imagePosBase64?.name}
                 />
               </div>
             </div>
@@ -455,13 +506,10 @@ const Sample = (): JSX.Element => {
                   Imagem principal do evento (jpg ou png)
                   <FormText className="greyNormalText">Resolução: 500x500</FormText>
                 </Label>
-                <SuperInput
-                  onChange={onChangeForm()}
-                  value={form.imageBase64}
-                  id="imageBase64"
-                  placeholder="Nenhum arquivo selecionado"
+                <InputFile
                   name="imageBase64"
-                  type="file"
+                  onChange={onChangeFileImage('imageBase64')}
+                  fileName={form.imageBase64?.name}
                 />
               </div>
             </div>
