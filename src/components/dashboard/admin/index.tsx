@@ -3,6 +3,7 @@ import { Container, Row, Col, CardHeader, Label } from 'reactstrap';
 // import { useDispatch } from 'react-redux';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
+import { useNavigate } from 'react-router';
 import clock from '../../../assets/images/svg/clock.svg';
 import x from '../../../assets/images/svg/x.svg';
 import money from '../../../assets/images/svg/money.svg';
@@ -14,11 +15,16 @@ import { ApplicationState } from '../../../store';
 import { HomeState } from '../../../store/ducks/home/types';
 
 const Sample = (): JSX.Element => {
+  const history = useNavigate();
   const home = useSelector<ApplicationState, HomeState>(store => store.home);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getRequest());
   }, []);
+
+  const viewAll = (): void => {
+    history('/events');
+  };
 
   console.log(home);
   return (
@@ -75,7 +81,9 @@ const Sample = (): JSX.Element => {
           <div style={{ display: 'grid', paddingTop: '50px' }}>
             <div className="d-flex justify-content-between">
               <Label className="pageTitle">Eventos próximos</Label>
-              <Label className="normalText">Ver todos</Label>
+              <Label className="normalText" onClick={viewAll} style={{ cursor: 'pointer' }}>
+                Ver todos
+              </Label>
             </div>
             <Label className="fieldLabel">Últimos 7 dias</Label>
           </div>

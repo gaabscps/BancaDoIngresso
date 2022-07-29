@@ -75,8 +75,6 @@ const Sample = (): JSX.Element => {
   };
 
   const onChangeForm = (level?: any) => (e: any) => {
-    console.log(level);
-    console.log(e);
     if (!level) {
       setForm({
         ...form,

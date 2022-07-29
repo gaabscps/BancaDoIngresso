@@ -1,9 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
 import { Card, Container, Label } from 'reactstrap';
 import CloseModal from '../../assets/images/svg/CloseModal';
+import Section from '../../entities/Section';
+import { createRequest } from '../../store/ducks/section/actions';
 import SuperInput from '../sharedComponents/SuperInput';
 
+interface CreateSection {
+  id: string;
+  name: string;
+  description: string;
+  imageBase64?: boolean;
+}
 interface StateProps {
   show: boolean;
 }
@@ -15,6 +24,36 @@ type Props = StateProps & DispatchProps;
 
 const NewSector = (props: Props): JSX.Element => {
   const handleClose = (): void => props.setShowNewSector(false);
+  const [form, setForm] = useState<CreateSection | any>({} as CreateSection);
+  const dispatch = useDispatch();
+
+  const onChangeForm = (level?: any) => (e: any) => {
+    if (!level) {
+      setForm({
+        ...form,
+        [e.target.name]: e.target.value,
+      });
+    } else {
+      setForm({
+        ...form,
+        [level]: {
+          ...form[level],
+          [e.target.name]: e.target.value,
+        },
+      });
+    }
+    // console.log('form', form);
+  };
+
+  const handleSubmit = async (): Promise<void> => {
+    const createSection: Section = {
+      id: '',
+      name: form.name,
+      description: form.name,
+      imageBase64: '',
+    };
+    dispatch(createRequest(createSection));
+  };
   return (
     <Modal
       size={'xl'}
@@ -41,10 +80,15 @@ const NewSector = (props: Props): JSX.Element => {
           <Card className="mainContainer" style={{ backgroundColor: '#F1F1F1' }}>
             <div className="d-flex">
               <div className="fieldSpacing">
-                <Label className="fieldLabel" for="exampleEmail">
+                <Label className="fieldLabel" for="name">
                   Nome do setor
                 </Label>
-                <SuperInput id="exampleEmail" name="email" placeholder="Digite o nome do setor" />
+                <SuperInput
+                  id="name"
+                  name="name"
+                  onChange={onChangeForm()}
+                  placeholder="Digite o nome do setor"
+                />
               </div>
             </div>
           </Card>
@@ -59,7 +103,9 @@ const NewSector = (props: Props): JSX.Element => {
               Cancelar
             </Button>
           </div>
-          <Button variant="dark">Cadastrar novo setor</Button>
+          <Button variant="dark" onClick={handleSubmit}>
+            Cadastrar novo setor
+          </Button>
         </div>
       </Modal.Body>
     </Modal>

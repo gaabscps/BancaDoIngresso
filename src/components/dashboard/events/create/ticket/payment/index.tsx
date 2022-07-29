@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { Fragment, useEffect, useState } from 'react';
-import { Container, Input, FormGroup, Label, Button } from 'reactstrap';
-import { ButtonGroup } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
+import { Container, Input, FormGroup, Label } from 'reactstrap';
+import { Button, ButtonGroup } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
 import SuperInput from '../../../../../sharedComponents/SuperInput';
 import DiscountTicket from '../../../../../modal/DiscountTicket';
 import TicketIcon from '../../../../../../assets/images/svg/Ticket';
@@ -15,6 +15,8 @@ import DiscountCoupon from '../../../../../../entities/DiscountCoupon';
 import EventTicketSimple from '../../../../../../entities/EventTicketSimple';
 import PaymentGateway from '../../../../../../entities/PaymentGateway';
 import { getAllSuccess, ticketPaymentRequest } from '../../../../../../store/ducks/event/actions';
+import { ApplicationState } from '../../../../../../store';
+import { EventState } from '../../../../../../store/ducks/event/types';
 
 interface CreateTicket {
   id: string;
@@ -39,6 +41,7 @@ interface CreateTicket {
 }
 
 const Sample = (): JSX.Element => {
+  const event = useSelector<ApplicationState, EventState>(store => store.event);
   const dispatch = useDispatch();
   const [form, setForm] = useState<CreateTicket>({} as CreateTicket);
   const [show, setShow] = useState(false);
@@ -63,6 +66,10 @@ const Sample = (): JSX.Element => {
   const [selected6, setSelected6] = useState('first');
   const [selected7, setSelected7] = useState('first');
   const [selected8, setSelected8] = useState('first');
+  const [selected9, setSelected9] = useState('first');
+  const [selected10, setSelected10] = useState('first');
+  const [selected11, setSelected11] = useState('first');
+  const [selected12, setSelected12] = useState('first');
 
   // const handleRadioChange = (e: any) => {
   //   if (e.target.checked) {
@@ -86,7 +93,6 @@ const Sample = (): JSX.Element => {
         },
       });
     }
-    // console.log('form', form);
   };
 
   const handleSubmit = async (): Promise<void> => {
@@ -95,8 +101,8 @@ const Sample = (): JSX.Element => {
       eventTickets: form.eventTickets,
       posGateway: form.posGateway,
       websiteGateway: form.websiteGateway,
-      websiteInstallmentLimit: form.websiteInstallmentLimit,
-      posInstallmentLimit: form.posInstallmentLimit,
+      websiteInstallmentLimit: 0,
+      posInstallmentLimit: 0,
       allowFractionalPayment,
       allowVariableRate,
       allowVariableValue,
@@ -112,6 +118,7 @@ const Sample = (): JSX.Element => {
       discountCoupons: form.discountCoupons,
       allowPaymentBankSlip: false,
     };
+    console.log(createTicketPayment);
     // dispatch(ticketPaymentRequest(eventId, createTicketPayment));
   };
 
@@ -228,11 +235,11 @@ const Sample = (): JSX.Element => {
               type="select"
               onChange={onChangeForm()}
             >
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-              <option>5</option>
+              <option>x1</option>
+              <option>x2</option>
+              <option>x3</option>
+              <option>x4</option>
+              <option>x5</option>
             </SuperInput>
           </div>
           <div className="fieldSpacing" style={{ display: 'grid' }}>
@@ -247,17 +254,18 @@ const Sample = (): JSX.Element => {
               onChange={onChangeForm()}
               type="select"
             >
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-              <option>5</option>
+              <option>x1</option>
+              <option>x2</option>
+              <option>x3</option>
+              <option>x4</option>
+              <option>x5</option>
             </SuperInput>
           </div>
           <div className="groupButton">
             <Label className="fieldLabel">Permitir pagamento fracionado?</Label>
-            <div className="d-flex" style={{ width: '100px' }}>
+            <ButtonGroup style={{ width: '100px' }}>
               <Button
+                variant="outline-dark"
                 onClick={() => {
                   setAllowFractionalPayment(true);
                   setSelected('first');
@@ -276,6 +284,7 @@ const Sample = (): JSX.Element => {
                 Sim
               </Button>
               <Button
+                variant="outline-dark"
                 onClick={() => {
                   setAllowFractionalPayment(false);
                   setSelected('second');
@@ -293,12 +302,13 @@ const Sample = (): JSX.Element => {
               >
                 Não
               </Button>
-            </div>
+            </ButtonGroup>
           </div>
           <div className="groupButton">
             <Label className="fieldLabel">Permitir taxa variavel?</Label>
-            <div className="d-flex" style={{ width: '100px' }}>
+            <ButtonGroup style={{ width: '100px' }}>
               <Button
+                variant="outline-dark"
                 onClick={() => {
                   setAllowllowVariableRate(true);
                   setSelected2('first');
@@ -317,6 +327,7 @@ const Sample = (): JSX.Element => {
                 Sim
               </Button>
               <Button
+                variant="outline-dark"
                 onClick={() => {
                   setAllowllowVariableRate(false);
                   setSelected2('second');
@@ -334,12 +345,13 @@ const Sample = (): JSX.Element => {
               >
                 Não
               </Button>
-            </div>
+            </ButtonGroup>
           </div>
           <div className="groupButton">
             <Label className="fieldLabel">Permitir valor variavel?</Label>
-            <div className="d-flex" style={{ width: '100px' }}>
+            <ButtonGroup style={{ width: '100px' }}>
               <Button
+                variant="outline-dark"
                 onClick={() => {
                   setAllowVariableValue(true);
                   setSelected3('first');
@@ -358,6 +370,7 @@ const Sample = (): JSX.Element => {
                 Sim
               </Button>
               <Button
+                variant="outline-dark"
                 onClick={() => {
                   setAllowVariableValue(false);
                   setSelected3('second');
@@ -375,12 +388,13 @@ const Sample = (): JSX.Element => {
               >
                 Não
               </Button>
-            </div>
+            </ButtonGroup>
           </div>
           <div className="groupButton">
             <Label className="fieldLabel">Permitir pagamento com PIX?</Label>
-            <div className="d-flex" style={{ width: '100px' }}>
+            <ButtonGroup style={{ width: '100px' }}>
               <Button
+                variant="outline-dark"
                 onClick={() => {
                   setAllowPaymentPIX(true);
                   setSelected4('first');
@@ -399,6 +413,7 @@ const Sample = (): JSX.Element => {
                 Sim
               </Button>
               <Button
+                variant="outline-dark"
                 onClick={() => {
                   setAllowPaymentPIX(false);
                   setSelected4('second');
@@ -416,12 +431,13 @@ const Sample = (): JSX.Element => {
               >
                 Não
               </Button>
-            </div>
+            </ButtonGroup>
           </div>
           <div className="groupButton">
             <Label className="fieldLabel">Permitir pagamento por aproximação?</Label>
-            <div className="d-flex" style={{ width: '100px' }}>
+            <ButtonGroup style={{ width: '100px' }}>
               <Button
+                variant="outline-dark"
                 onClick={() => {
                   setAllowContactlessPayment(true);
                   setSelected5('first');
@@ -440,6 +456,7 @@ const Sample = (): JSX.Element => {
                 Sim
               </Button>
               <Button
+                variant="outline-dark"
                 onClick={() => {
                   setAllowContactlessPayment(false);
                   setSelected5('second');
@@ -457,12 +474,13 @@ const Sample = (): JSX.Element => {
               >
                 Não
               </Button>
-            </div>
+            </ButtonGroup>
           </div>
           <div className="groupButton">
             <Label className="fieldLabel">Permitir vender online?</Label>
-            <div className="d-flex" style={{ width: '100px' }}>
+            <ButtonGroup style={{ width: '100px' }}>
               <Button
+                variant="outline-dark"
                 onClick={() => {
                   setAllowSellingWebsite(true);
                   setSelected6('first');
@@ -481,6 +499,7 @@ const Sample = (): JSX.Element => {
                 Sim
               </Button>
               <Button
+                variant="outline-dark"
                 onClick={() => {
                   setAllowSellingWebsite(false);
                   setSelected6('second');
@@ -498,14 +517,15 @@ const Sample = (): JSX.Element => {
               >
                 Não
               </Button>
-            </div>
+            </ButtonGroup>
           </div>
           <div className="groupButton">
             <Label className="fieldLabel">Permitir vender na POS?</Label>
-            <div className="d-flex" style={{ width: '100px' }}>
+            <ButtonGroup style={{ width: '100px' }}>
               <Button
+                variant="outline-dark"
                 onClick={() => {
-                  setAllowSellingWebsite(true);
+                  setAllowSellingPos(true);
                   setSelected7('first');
                 }}
                 style={
@@ -522,8 +542,9 @@ const Sample = (): JSX.Element => {
                 Sim
               </Button>
               <Button
+                variant="outline-dark"
                 onClick={() => {
-                  setAllowSellingWebsite(false);
+                  setAllowSellingPos(false);
                   setSelected7('second');
                 }}
                 style={
@@ -539,14 +560,15 @@ const Sample = (): JSX.Element => {
               >
                 Não
               </Button>
-            </div>
+            </ButtonGroup>
           </div>
           <div className="groupButton">
             <Label className="fieldLabel">Imprimir recibo (POS)?</Label>
-            <div className="d-flex" style={{ width: '100px' }}>
+            <ButtonGroup style={{ width: '100px' }}>
               <Button
+                variant="outline-dark"
                 onClick={() => {
-                  setPrintReceipt(true);
+                  setAllowSellingWebsite(true);
                   setSelected8('first');
                 }}
                 style={
@@ -563,8 +585,9 @@ const Sample = (): JSX.Element => {
                 Sim
               </Button>
               <Button
+                variant="outline-dark"
                 onClick={() => {
-                  setPrintReceipt(false);
+                  setAllowSellingWebsite(false);
                   setSelected8('second');
                 }}
                 style={
@@ -580,9 +603,8 @@ const Sample = (): JSX.Element => {
               >
                 Não
               </Button>
-            </div>
+            </ButtonGroup>
           </div>
-
           <div className="secondPageTitle">Taxas de cartão</div>
           <img src={titleLine} style={{ paddingTop: '-40px', marginBottom: '25px' }} />
           <div className="pageSubTitle">Venda física</div>
@@ -591,15 +613,39 @@ const Sample = (): JSX.Element => {
             <ButtonGroup style={{ width: '100px' }}>
               <Button
                 variant="outline-dark"
-                style={{ height: '62px', width: '100px' }}
-                onClick={() => setPhysicalSaleAllowCreditCardPayment(true)}
+                onClick={() => {
+                  setPhysicalSaleAllowCreditCardPayment(true);
+                  setSelected9('first');
+                }}
+                style={
+                  selected9 === 'first'
+                    ? {
+                        height: '62px',
+                        width: '100px',
+                        backgroundColor: '#171A21',
+                        color: 'white',
+                      }
+                    : { height: '62px', width: '100px' }
+                }
               >
                 Sim
               </Button>
               <Button
                 variant="outline-dark"
-                style={{ height: '62px', width: '100px' }}
-                onClick={() => setPhysicalSaleAllowCreditCardPayment(false)}
+                onClick={() => {
+                  setPhysicalSaleAllowCreditCardPayment(false);
+                  setSelected9('second');
+                }}
+                style={
+                  selected9 === 'second'
+                    ? {
+                        height: '62px',
+                        width: '100px',
+                        backgroundColor: '#171A21',
+                        color: 'white',
+                      }
+                    : { height: '62px', width: '100px' }
+                }
               >
                 Não
               </Button>
@@ -685,15 +731,39 @@ const Sample = (): JSX.Element => {
             <ButtonGroup style={{ width: '100px' }}>
               <Button
                 variant="outline-dark"
-                style={{ height: '62px', width: '100px' }}
-                onClick={() => setWebsiteSaleAllowCreditCardPayment(true)}
+                onClick={() => {
+                  setWebsiteSaleAllowCreditCardPayment(true);
+                  setSelected10('first');
+                }}
+                style={
+                  selected10 === 'first'
+                    ? {
+                        height: '62px',
+                        width: '100px',
+                        backgroundColor: '#171A21',
+                        color: 'white',
+                      }
+                    : { height: '62px', width: '100px' }
+                }
               >
                 Sim
               </Button>
               <Button
                 variant="outline-dark"
-                style={{ height: '62px', width: '100px' }}
-                onClick={() => setWebsiteSaleAllowCreditCardPayment(false)}
+                onClick={() => {
+                  setWebsiteSaleAllowCreditCardPayment(false);
+                  setSelected10('second');
+                }}
+                style={
+                  selected10 === 'second'
+                    ? {
+                        height: '62px',
+                        width: '100px',
+                        backgroundColor: '#171A21',
+                        color: 'white',
+                      }
+                    : { height: '62px', width: '100px' }
+                }
               >
                 Não
               </Button>
@@ -782,15 +852,39 @@ const Sample = (): JSX.Element => {
             <ButtonGroup style={{ width: '100px' }}>
               <Button
                 variant="outline-dark"
-                style={{ height: '62px', width: '100px' }}
-                onClick={() => setAllowDiscount(true)}
+                onClick={() => {
+                  setAllowDiscount(true);
+                  setSelected11('first');
+                }}
+                style={
+                  selected11 === 'first'
+                    ? {
+                        height: '62px',
+                        width: '100px',
+                        backgroundColor: '#171A21',
+                        color: 'white',
+                      }
+                    : { height: '62px', width: '100px' }
+                }
               >
                 Sim
               </Button>
               <Button
                 variant="outline-dark"
-                style={{ height: '62px', width: '100px' }}
-                onClick={() => setAllowDiscount(false)}
+                onClick={() => {
+                  setAllowDiscount(false);
+                  setSelected11('second');
+                }}
+                style={
+                  selected11 === 'second'
+                    ? {
+                        height: '62px',
+                        width: '100px',
+                        backgroundColor: '#171A21',
+                        color: 'white',
+                      }
+                    : { height: '62px', width: '100px' }
+                }
               >
                 Não
               </Button>
@@ -801,33 +895,43 @@ const Sample = (): JSX.Element => {
             <ButtonGroup style={{ width: '100px' }}>
               <Button
                 variant="outline-dark"
-                style={{ height: '62px', width: '100px' }}
-                onClick={() => setAllowDiscountCoupon(true)}
+                onClick={() => {
+                  setAllowDiscountCoupon(true);
+                  setSelected12('first');
+                }}
+                style={
+                  selected12 === 'first'
+                    ? {
+                        height: '62px',
+                        width: '100px',
+                        backgroundColor: '#171A21',
+                        color: 'white',
+                      }
+                    : { height: '62px', width: '100px' }
+                }
               >
                 Sim
               </Button>
               <Button
                 variant="outline-dark"
-                style={{ height: '62px', width: '100px' }}
-                onClick={() => setAllowDiscountCoupon(false)}
+                onClick={() => {
+                  setAllowDiscountCoupon(false);
+                  setSelected12('second');
+                }}
+                style={
+                  selected12 === 'second'
+                    ? {
+                        height: '62px',
+                        width: '100px',
+                        backgroundColor: '#171A21',
+                        color: 'white',
+                      }
+                    : { height: '62px', width: '100px' }
+                }
               >
                 Não
               </Button>
             </ButtonGroup>
-            <div
-              className="auxSucessText"
-              style={{ paddingTop: '20px' }}
-              onClick={() => setShow(true)}
-            >
-              + adicionar cupom de desconto
-            </div>
-            <div style={{ marginTop: '50px' }}>
-              <SuperCollapse
-                title="Cupons de desconto adicionados"
-                content="Nenhum cupom de desconto foi adicionado. Aqui será exibida uma lista dos seus cupons adicionados"
-                leftIcon={TicketIcon}
-              />
-            </div>
           </div>
           <div className="nextPageButton">
             <div style={{ marginRight: '25px', paddingTop: '5px' }}>
@@ -841,6 +945,7 @@ const Sample = (): JSX.Element => {
                   borderColor: '#A5A5A5',
                 }}
                 variant="outline-light"
+                onClick={handleSubmit}
               >
                 <div className="greyNormalText">Próxima etapa</div>
               </Button>

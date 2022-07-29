@@ -14,6 +14,10 @@ import Printer from '../../../../../../entities/Printer';
 import Section from '../../../../../../entities/Section';
 import { EventState } from '../../../../../../store/ducks/event/types';
 import { ApplicationState } from '../../../../../../store';
+import NewSector from '../../../../../modal/NewSector';
+import { PrinterState } from '../../../../../../store/ducks/printer/types';
+import LoteCollapse from '../../../../../sharedComponents/collapse/LoteCollapse';
+import BackOnTop from '../../../../../sharedComponents/BackOnTop';
 
 interface CreateTicket {
   id: string;
@@ -27,7 +31,7 @@ interface CreateTicket {
   numberTickets: boolean;
   printLayoutBase64: string;
   printImageBase64: string;
-  printer: Printer;
+  printer: any;
   copies: number;
   reprint: boolean;
   printBatchNumber: boolean;
@@ -38,8 +42,10 @@ interface CreateTicket {
 
 const Sample = (): JSX.Element => {
   const event = useSelector<ApplicationState, EventState>(store => store.event);
+  const printer = useSelector<ApplicationState, PrinterState>(store => store.printer);
   const dispatch = useDispatch();
   const [hasHalfPrice, setHasHalfPrice] = useState(true);
+  const [showNewSector, setShowNewSector] = useState(false);
   const [hasCourtesy, setHasCourtesy] = useState(true);
   const [numberTickets, setNumberTickets] = useState(true);
   const [reprint, setReprint] = useState(true);
@@ -54,19 +60,7 @@ const Sample = (): JSX.Element => {
   const [endDate, setEndDate] = useState(Date);
   const [startHour, setStartHour] = useState(Date);
   const [endHour, setEndHour] = useState(Date);
-
-  const [batchs, setLotes] = useState([]);
-
-  // const addLote = () => {
-  //   const newLote = {
-  //     name:
-  //     date:
-  //     price: "1234",
-  //     date: "1 de janeiro de 2022",
-  //     title: "meu primeiro lote"
-  //   };
-  //   setLotes([...batchs, newLote]);
-  // };
+  const [batchs, setBatchs] = useState([]);
 
   const onChangeForm = (level?: any) => (e: any) => {
     if (!level) {
@@ -82,24 +76,15 @@ const Sample = (): JSX.Element => {
         },
       });
     }
-    // console.log('form', form);
   };
-
-  // const onChangeForm = (name: string, value: any): any => {
-  //   const newForm = {
-  //     ...form,
-  //     [name]: value,
-  //   };
-  //   setForm(newForm);
-  // };
 
   const dateStart = `${startDate}T${startHour}:00.000Z` as unknown as Date;
   const dateEnd = `${endDate}T${endHour}:00.000Z` as unknown as Date;
 
-  console.log('Event', event);
   const handleSubmit = async (): Promise<void> => {
+    // const newPrinter = printer?.data?.page?.list?.find(c => c.id === form.id) || ({} as Printer);
     const createTicketMainConfiguration: EventTicketMainConfiguration = {
-      id: event.data.eventGeneralInformation.id,
+      id: '',
       eventSection: form.eventSection,
       name: form.name,
       hasHalfPrice,
@@ -110,24 +95,35 @@ const Sample = (): JSX.Element => {
       numberTickets,
       printLayoutBase64: form.printLayoutBase64,
       printImageBase64: form.printImageBase64,
-      printer: form.printer,
+      printer: { ...form.printer, id: '-', name: '-', description: '-' },
       copies: form.copies,
       reprint,
       printBatchNumber,
       observation: form.observation,
       batchs: form.batchs,
     };
-    console.log(form);
-    dispatch(
-      ticketMainConfigurationRequest(
-        event.data.eventGeneralInformation.id,
-        createTicketMainConfiguration,
-      ),
-    );
+    console.log(createTicketMainConfiguration);
+    // dispatch(
+    //   ticketMainConfigurationRequest(
+    //     event.data.eventGeneralInformation.id,
+    //     createTicketMainConfiguration,
+    //   ),
+    // );
   };
+
+  // const addBatchs = (): void => {
+  //   const newBatchs = {
+  //     batchs: form.batchs,
+  //   };
+  //   setForm({
+  //     ...form,
+  //     batchs: [...form?.batchs, newBatchs],
+  //   });
+  // };
 
   return (
     <Fragment>
+      <NewSector show={showNewSector} setShowNewSector={setShowNewSector} />
       <Container className="subContainer" fluid={true}>
         <hr className="dividerUp" />
         <FormGroup>
@@ -144,7 +140,11 @@ const Sample = (): JSX.Element => {
               name="name"
               id="name"
             ></SuperInput>
-            <div className="auxSucessText" style={{ paddingTop: '20px' }}>
+            <div
+              className="auxSucessText"
+              style={{ paddingTop: '20px' }}
+              onClick={() => setShowNewSector(true)}
+            >
               + cadastrar novo setor
             </div>
           </div>
@@ -282,6 +282,7 @@ const Sample = (): JSX.Element => {
               id="amountCourtesy"
               name="amountCourtesy"
               placeholder="Ex: 20000"
+              type="number"
               onChange={onChangeForm()}
             />
           </div>
@@ -356,21 +357,24 @@ const Sample = (): JSX.Element => {
               />
             </div>
           </div>
-          <div className="fieldSpacing">
+          <div className="fieldSpacing" style={{ display: 'grid' }}>
             <Label className="fieldLabel" for="printer">
               Impressora
             </Label>
             <SuperInput
+              onChange={onChangeForm()}
               placeholder="Selecione a impressora para impressão"
               id="printer"
               name="printer"
               type="select"
+              value={form.printer}
             >
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-              <option>5</option>
+              <option value="">Selecione uma Impressora</option>
+              {printer?.data?.page?.list?.map((option: any) => (
+                <option value={option.id} key={option.id} id={option.id}>
+                  {option.name}
+                </option>
+              ))}
             </SuperInput>
           </div>
           <div className="fieldSpacing">
@@ -643,13 +647,16 @@ const Sample = (): JSX.Element => {
             </div>
           </div>
           <div style={{ marginTop: '50px' }}>
-            <SuperCollapse
+            <LoteCollapse
               title="Lotes cadastrados"
               content="Nenhum lote foi cadastrado. Aqui será exibida uma lista dos seus lotes cadastrados"
               leftIcon={DoubleTicketIcon}
             />
           </div>
           <div className="nextPageButton" style={{ marginTop: '50px' }}>
+            <div style={{ marginRight: '25px', paddingTop: '5px' }}>
+              <BackOnTop />
+            </div>
             <div style={{ color: '#fff' }}>
               <Button
                 style={{
@@ -660,7 +667,7 @@ const Sample = (): JSX.Element => {
                 variant="outline-light"
                 onClick={handleSubmit}
               >
-                <div className="greyNormalText">Adicionar ingresso</div>
+                <div className="greyNormalText">Próxima etapa</div>
               </Button>
             </div>
           </div>
