@@ -278,7 +278,6 @@ const Sample = (): JSX.Element => {
               Quantidade de ingressos cortesia
             </Label>
             <SuperInput
-              
               id="amountCourtesy"
               name="amountCourtesy"
               placeholder="Ex: 20000"
@@ -510,7 +509,6 @@ const Sample = (): JSX.Element => {
                   Data Início da Venda
                 </Label>
                 <SuperInput
-                  
                   id="startDate"
                   name="startDate"
                   placeholder="DD/MM/AAAA"
@@ -526,7 +524,6 @@ const Sample = (): JSX.Element => {
                   Data Fim da Venda
                 </Label>
                 <SuperInput
-                  
                   id="endDate"
                   name="endDate"
                   placeholder="DD/MM/AAAA"
@@ -544,7 +541,6 @@ const Sample = (): JSX.Element => {
                   Hora Início do Evento
                 </Label>
                 <SuperInput
-                  
                   id="exampleTime"
                   name="time"
                   placeholder="time placeholder"
@@ -560,7 +556,6 @@ const Sample = (): JSX.Element => {
                   Hora Fim do Evento
                 </Label>
                 <SuperInput
-                  
                   id="exampleTime"
                   name="time"
                   placeholder="time placeholder"
@@ -618,7 +613,6 @@ const Sample = (): JSX.Element => {
                 Valor total estimado
               </Label>
               <SuperInput
-                
                 id="totalValue"
                 name="totalValue"
                 placeholder="Ex: 200,00"
