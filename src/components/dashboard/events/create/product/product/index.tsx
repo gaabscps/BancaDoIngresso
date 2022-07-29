@@ -50,7 +50,7 @@ const Sample = (): JSX.Element => (
                 Quantidade
               </Label>
               <SuperInput
-                //style={{ width: '243px' }}
+                
                 id="amount"
                 name="amount"
                 placeholder="Ex: 200"
