@@ -3,7 +3,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { Container, Col, Form, Label, FormText } from 'reactstrap';
+import { Container, Col, Form, Label, FormText, Row } from 'reactstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import SuperInput from '../../../../sharedComponents/SuperInput';
 import step1 from '../../../../../assets/images/svg/stepByStep/step1.svg';
@@ -26,6 +26,8 @@ import { ContractorState } from '../../../../../store/ducks/contractor/types';
 import { listRequestContractor } from '../../../../../store/ducks/contractor/actions';
 import Contractor from '../../../../../entities/Contractor';
 import EventCategory from '../../../../../entities/EventCategory';
+import SelectAutoComplete from '../../../../sharedComponents/SelectAutoComplete';
+import InputFile from '../../../../sharedComponents/InputFile';
 
 interface CreateEvent {
   eventType: number;
@@ -67,6 +69,11 @@ const Sample = (): JSX.Element => {
   const [selected, setSelected] = useState('first');
   const [selectedText, setSelectedText] = useState('medium');
 
+  const typeEventOptions = [
+    { value: 0, label: 'Único' },
+    { value: 1, label: 'Mútiplo' },
+  ];
+
   const nextStep = (): void => {
     history('/event/ticket');
   };
@@ -92,6 +99,66 @@ const Sample = (): JSX.Element => {
     // console.log('form', form);
   };
 
+  useEffect(() => {
+    console.log('form', form);
+  }, [form]);
+
+  /**
+   * Transforma arquivo de imagem em base64
+   *
+   * @export
+   * @param {any} value
+   * @returns promise
+   */
+  function toBase64(file: File): Promise<string | ArrayBuffer | null> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    });
+  }
+
+  const onChangeSelect = (name: string) => (option: any) => {
+    if (name.includes('.')) {
+      const [level, field] = name.split('.');
+      setForm({
+        ...form,
+        [level]: {
+          ...form[level],
+          [field]: option.value,
+        },
+      });
+    } else {
+      setForm({
+        ...form,
+        [name]: option.value,
+      });
+    }
+  };
+
+  const onChangeFileImage = (name: string) => (e: any) => {
+    const fileUpload = e.target.files[0];
+    const img = new Image();
+    img.src = URL.createObjectURL(fileUpload);
+    img.onload = async () => {
+      const width = img.naturalWidth;
+      const height = img.naturalHeight;
+      const file = await toBase64(fileUpload);
+      const fileBase64 = await Promise.resolve(file);
+      URL.revokeObjectURL(img.src);
+      setForm({
+        ...form,
+        [name]: {
+          name: fileUpload.name,
+          base64: fileBase64,
+          width,
+          height,
+        },
+      });
+    };
+  };
+
   const dateStart = `${startDate}T${startHour}:00.000Z` as unknown as Date;
   const dateEnd = `${endDate}T${endHour}:00.000Z` as unknown as Date;
 
@@ -104,8 +171,10 @@ const Sample = (): JSX.Element => {
   // };
 
   const handleSubmit = async (): Promise<void> => {
-    const newCategory = category?.data?.page?.list?.find(c => c.id === form.category) || ({} as EventCategory);
-    const newContractor = contractor?.data?.page?.list?.find(c => c.id === form.contractor) || ({} as Contractor);
+    const newCategory =
+      category?.data?.page?.list?.find(c => c.id === form.category) || ({} as EventCategory);
+    const newContractor =
+      contractor?.data?.page?.list?.find(c => c.id === form.contractor) || ({} as Contractor);
     const createGeneralInformation: EventGeneralInformation = {
       eventType,
       name: form.name,
@@ -127,13 +196,13 @@ const Sample = (): JSX.Element => {
       publishWebsite,
       id: '',
     };
-    dispatch(generalInformationRequest(createGeneralInformation));
+    // dispatch(generalInformationRequest(createGeneralInformation));
     nextStep();
   };
 
   useEffect(() => {
-    dispatch(listRequestCategory({ page: 1, pageSize: 10 }));
-    dispatch(listRequestContractor({ page: 1, pageSize: 10 }));
+    // dispatch(listRequestCategory({ page: 1, pageSize: 10 }));
+    // dispatch(listRequestContractor({ page: 1, pageSize: 10 }));
   }, []);
 
   // useEffect(() => {
@@ -147,467 +216,444 @@ const Sample = (): JSX.Element => {
       <ParentEvent show={showParentEvent} setShowParentEvent={setShowParentEvent} />
       <Container className="mainContainer" fluid={true}>
         <div className="d-flex justify-content-center stepContainer">
-          <img src={step1} />
+          <img src={step1} className="stepImage" />
         </div>
-        <Col>
-          <div style={{ display: 'grid', paddingBottom: '50px' }}>
-            <Label className="pageTitle">Informações gerais</Label>
-            <img src={titleLine} style={{ paddingTop: '-20px' }} />
-          </div>
-          <Form>
-            <div className="fieldSpacing" style={{ display: 'grid' }}>
-              <Label className="fieldLabel" for="eventType">
-                Tipo de evento
-              </Label>
-              <SuperInput
-                onChange={onChangeForm()}
-                value={form.eventType}
-                placeholder="Selecione o tipo do evento"
-                id="eventType"
-                name="eventType"
-                type="select"
-              >
-                <option value={0}>Único</option>
-                <option value={1}>Múltiplo</option>
-              </SuperInput>
-              <div
-                className="auxSucessText"
-                style={{ paddingTop: '20px' }}
-                onClick={() => setShowParentEvent(true)}
-              >
-                <img style={{ paddingRight: '6px' }} src={auxSucess} />
-                vincular evento Pai
-              </div>
+        <Row lg="2" md="1">
+          <Col>
+            <div style={{ display: 'grid', paddingBottom: '50px' }}>
+              <Label className="pageTitle">Informações gerais</Label>
+              {/* <img src={titleLine} style={{ paddingTop: '-20px' }} /> */}
             </div>
-            <div className="fieldSpacing">
-              <Label className="fieldLabel" for="name">
-                Nome do Evento
-              </Label>
-              <SuperInput
-                onChange={onChangeForm()}
-                value={form.name}
-                id="name"
-                name="name"
-                placeholder="Digite o nome do evento. Ex: Baile do Dennis DJ"
-              />
-            </div>
-            <div className="fieldSpacing">
-              <Label className="fieldLabel" for="posName">
-                Nome do Evento (POS)
-              </Label>
-              <SuperInput
-                onChange={onChangeForm()}
-                value={form.posName}
-                id="posName"
-                name="posName"
-                placeholder="Digite o nome do evento na POS. Ex: Baile do DN.DJ"
-              />
-            </div>
-            <div className="fieldSpacing">
-              <Label className="fieldLabel" for="establishmentName">
-                Nome do estabelecimento
-              </Label>
-              <SuperInput
-                onChange={onChangeForm()}
-                value={form.establishmentName}
-                id="establishmentName"
-                name="establishmentName"
-                placeholder="Digite o nome do estabelecimento evento. Ex: Folk Valley"
-              />
-            </div>
-            <div className="fieldSpacing">
-              <Label className="fieldLabel" for="street">
-                Local do evento
-              </Label>
-              <SuperInput
-                onChange={onChangeForm('address')}
-                id="street"
-                name="street"
-                placeholder="Digite o local do evento. Ex: Rua Perimetral Leste, 123"
-              />
-            </div>
-            <div className="d-flex">
+            <Form>
               <div className="fieldSpacing" style={{ display: 'grid' }}>
-                <Label className="fieldLabel" for="state">
-                  Estado
+                <Label className="fieldLabel" for="eventType">
+                  Tipo de evento
                 </Label>
-                <SuperInput
-                  onChange={onChangeForm('address')}
-                  style={{ width: '152px' }}
-                  placeholder="SP"
-                  id="state"
-                  name="state"
-                  type="select"
+                <SelectAutoComplete
+                  options={typeEventOptions}
+                  name="eventType"
+                  onChange={onChangeSelect('eventType')}
+                  // value={form.eventType}
+                  placeholder="Digite ou selecione o tipo do evento"
+                />
+                <div
+                  className="auxSucessText"
+                  style={{ paddingTop: '20px' }}
+                  onClick={() => setShowParentEvent(true)}
                 >
-                  {states.map((option: any) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </SuperInput>
+                  <img style={{ paddingRight: '6px' }} src={auxSucess} />
+                  vincular evento Pai
+                </div>
               </div>
               <div className="fieldSpacing">
-                <Label className="fieldLabel" for="city" style={{ display: 'grid' }}>
-                  Cidade
-                </Label>
-                <SuperInput
-                  onChange={onChangeForm('address')}
-                  style={{ width: '364px' }}
-                  placeholder="Selecione ou digite a cidade"
-                  id="city"
-                  name="city"
-                  type="select"
-                >
-                  {cities[form.address?.state]?.map((option: any) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </SuperInput>
-              </div>
-            </div>
-            <div className="d-flex">
-              <div className="fieldSpacing">
-                <Label className="fieldLabel" for="startDate">
-                  Data Início do Evento
-                </Label>
-                <SuperInput
-                  onChange={e => setStartDate(e.target.value)}
-                  style={{ width: '243px' }}
-                  id="startDate"
-                  name="startDate"
-                  placeholder="DD/MM/AAAA"
-                  type="date"
-                />
-              </div>
-              <div className="fieldSpacing">
-                <Label className="fieldLabel" for="endDate">
-                  Data Fim do Evento
-                </Label>
-                <SuperInput
-                  onChange={e => setEndDate(e.target.value)}
-                  style={{ width: '243px' }}
-                  id="endDate"
-                  name="endDate"
-                  placeholder="DD/MM/AAAA"
-                  type="date"
-                />
-              </div>
-            </div>
-            <div className="d-flex">
-              <div className="fieldSpacing">
-                <Label className="fieldLabel" for="exampleDatetime">
-                  Hora Início do Evento
-                </Label>
-                <SuperInput
-                  onChange={e => setStartHour(e.target.value)}
-                  style={{ width: '243px' }}
-                  id="exampleTime"
-                  name="time"
-                  placeholder="time placeholder"
-                  type="time"
-                />
-              </div>
-              <div className="fieldSpacing">
-                <Label className="fieldLabel" for="exampleDatetime">
-                  Hora Fim do Evento
-                </Label>
-                <SuperInput
-                  onChange={e => setEndHour(e.target.value)}
-                  style={{ width: '243px' }}
-                  id="exampleTime"
-                  name="time"
-                  placeholder="time placeholder"
-                  type="time"
-                />
-              </div>
-            </div>
-            <div className="fieldSpacing" style={{ display: 'grid' }}>
-              <Label className="fieldLabel" for="category">
-                Categoria do evento
-              </Label>
-              <SuperInput
-                onChange={onChangeForm()}
-                placeholder="Digite a categoria do evento"
-                id="category"
-                name="category"
-                type="select"
-                value={form.category}
-              >
-                <option value="">Selecione uma Categoria</option>
-                {category?.data?.page?.list?.map((option: any) => (
-                  <option value={option.id} key={option.id} id={option.id}>
-                    {option.name}
-                  </option>
-                ))}
-              </SuperInput>
-              <div
-                className="auxSucessText"
-                style={{ paddingTop: '20px' }}
-                onClick={() => setShowNewCategory(true)}
-              >
-                + cadastrar nova categoria
-              </div>
-            </div>
-            <div className="fieldSpacing" style={{ display: 'grid' }}>
-              <Label className="fieldLabel" for="contractor">
-                Empresa ou contratante
-              </Label>
-              <SuperInput
-                onChange={onChangeForm()}
-                placeholder="Digite o cliente/contratante"
-                name="contractor"
-                id="contractor"
-                type="select"
-                value={form.contractor}
-              >
-                <option value="">Selecione um contratante</option>
-                {contractor?.data?.page?.list?.map((option: any) => (
-                  <option value={option.id} key={option.id} id={option.id}>
-                    {option.name}
-                  </option>
-                ))}
-              </SuperInput>
-              <div
-                className="auxSucessText"
-                style={{ paddingTop: '20px' }}
-                onClick={() => setShowCompany(true)}
-              >
-                + cadastrar nova empresa ou contratante
-              </div>
-            </div>
-            <div className="fieldSpacing">
-              <Label className="fieldLabel" for="censure">
-                Censura do evento
-              </Label>
-              <SuperInput
-                onChange={onChangeForm()}
-                value={form.censure}
-                id="censure"
-                name="censure"
-                placeholder="Digite a idade de censura. Ex: 16"
-                type="number"
-              />
-            </div>
-          </Form>
-          <div style={{ display: 'grid', paddingBottom: '50px' }}>
-            <Label className="pageTitle">Informações complementares</Label>
-            <img src={secondTitleLine} style={{ paddingTop: '-20px' }} />
-          </div>
-          <Form>
-            <div className="fieldSpacing">
-              <Label className="fieldLabel" for="facebookUrl">
-                Facebook do evento
-              </Label>
-              <SuperInput
-                onChange={onChangeForm()}
-                value={form.facebookUrl}
-                id="facebookUrl"
-                name="facebookUrl"
-                placeholder="Copie e cole o link do Facebook do evento"
-              />
-            </div>
-            <div className="fieldSpacing">
-              <Label className="fieldLabel" for="instagramUrl">
-                Instagram do evento
-              </Label>
-              <SuperInput
-                onChange={onChangeForm()}
-                value={form.instagramUrl}
-                id="instagramUrl"
-                name="instagramUrl"
-                placeholder="Copie e cole o link do Instagram do evento"
-              />
-            </div>
-            <div className="fieldSpacing">
-              <Label className="fieldLabel" for="establishmentName">
-                Nome do estabelecimento
-              </Label>
-              <SuperInput
-                onChange={onChangeForm()}
-                value={form.establishmentName}
-                id="establishmentName"
-                name="establishmentName"
-                placeholder="Digite o nome do estabelecimento evento. Ex: Folk Valley"
-              />
-            </div>
-            <div>
-              <div className="fieldSpacing">
-                <Label className="fieldLabel" for="imagePosBase64">
-                  Imagem POS (jpg ou png)
-                  <FormText className="greyNormalText">Resolução: 384x168</FormText>
+                <Label className="fieldLabel" for="name">
+                  Nome do Evento
                 </Label>
                 <SuperInput
                   onChange={onChangeForm()}
-                  value={form.imagePosBase64}
-                  id="imagePosBase64"
-                  placeholder="Nenhum arquivo selecionado"
-                  name="imagePosBase64"
-                  type="file"
+                  value={form.name}
+                  id="name"
+                  name="name"
+                  placeholder="Digite o nome do evento. Ex: Baile do Dennis DJ"
                 />
               </div>
-            </div>
-            <div>
               <div className="fieldSpacing">
-                <Label className="fieldLabel" for="imageBase64">
-                  Imagem principal do evento (jpg ou png)
-                  <FormText className="greyNormalText">Resolução: 500x500</FormText>
+                <Label className="fieldLabel" for="posName">
+                  Nome do Evento (POS)
                 </Label>
                 <SuperInput
                   onChange={onChangeForm()}
-                  value={form.imageBase64}
-                  id="imageBase64"
-                  placeholder="Nenhum arquivo selecionado"
-                  name="imageBase64"
-                  type="file"
+                  value={form.posName}
+                  id="posName"
+                  name="posName"
+                  placeholder="Digite o nome do evento na POS. Ex: Baile do DN.DJ"
                 />
               </div>
+              <div className="fieldSpacing">
+                <Label className="fieldLabel" for="establishmentName">
+                  Nome do estabelecimento
+                </Label>
+                <SuperInput
+                  onChange={onChangeForm()}
+                  value={form.establishmentName}
+                  id="establishmentName"
+                  name="establishmentName"
+                  placeholder="Digite o nome do estabelecimento evento. Ex: Folk Valley"
+                />
+              </div>
+              <div className="fieldSpacing">
+                <Label className="fieldLabel" for="street">
+                  Local do evento
+                </Label>
+                <SuperInput
+                  onChange={onChangeForm('address')}
+                  id="street"
+                  name="street"
+                  placeholder="Digite o local do evento. Ex: Rua Perimetral Leste, 123"
+                />
+              </div>
+              <Row>
+                <Col md="4">
+                  <div className="fieldSpacing" style={{ display: 'grid' }}>
+                    <Label className="fieldLabel" for="state">
+                      Estado
+                    </Label>
+                    <SelectAutoComplete
+                      options={states}
+                      name="state"
+                      onChange={onChangeSelect('address.state')}
+                      // value={form.eventType}
+                      placeholder="Ex: SP"
+                    />
+                  </div>
+                </Col>
+                <Col>
+                  <div className="fieldSpacing">
+                    <Label className="fieldLabel" for="city" style={{ display: 'grid' }}>
+                      Cidade
+                    </Label>
+                    <SelectAutoComplete
+                      options={cities[form.address?.state]}
+                      name="city"
+                      onChange={onChangeSelect('address.city')}
+                      // value={form.eventType}
+                      placeholder="Selecione ou digite a cidade"
+                    />
+                  </div>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <div className="fieldSpacing">
+                    <Label className="fieldLabel" for="startDate">
+                      Data Início do Evento
+                    </Label>
+                    <SuperInput
+                      onChange={e => setStartDate(e.target.value)}
+                      // style={{ width: '243px' }}
+                      id="startDate"
+                      name="startDate"
+                      placeholder="DD/MM/AAAA"
+                      type="date"
+                    />
+                  </div>
+                </Col>
+                <Col>
+                  <div className="fieldSpacing">
+                    <Label className="fieldLabel" for="endDate">
+                      Data Fim do Evento
+                    </Label>
+                    <SuperInput
+                      onChange={e => setEndDate(e.target.value)}
+                      // style={{ width: '243px' }}
+                      id="endDate"
+                      name="endDate"
+                      placeholder="DD/MM/AAAA"
+                      type="date"
+                    />
+                  </div>
+                </Col>
+              </Row>
+
+              <Row xs="1" sm="2" md="2">
+                <Col>
+                  <div className="fieldSpacing">
+                    <Label className="fieldLabel" for="exampleDatetime">
+                      Hora Início do Evento
+                    </Label>
+                    <SuperInput
+                      onChange={e => setStartHour(e.target.value)}
+                      // style={{ width: '243px' }}
+                      id="exampleTime"
+                      name="time"
+                      placeholder="time placeholder"
+                      type="time"
+                    />
+                  </div>
+                </Col>
+                <Col>
+                  <div className="fieldSpacing">
+                    <Label className="fieldLabel" for="exampleDatetime">
+                      Hora Fim do Evento
+                    </Label>
+                    <SuperInput
+                      onChange={e => setEndHour(e.target.value)}
+                      // style={{ width: '243px' }}
+                      id="exampleTime"
+                      name="time"
+                      placeholder="time placeholder"
+                      type="time"
+                    />
+                  </div>
+                </Col>
+              </Row>
+              <div className="fieldSpacing" style={{ display: 'grid' }}>
+                <Label className="fieldLabel" for="category">
+                  Categoria do evento
+                </Label>
+                <SelectAutoComplete
+                  options={category?.data?.page?.list}
+                  name="category"
+                  onChange={onChangeSelect('category')}
+                  // value={form.eventType}
+                  placeholder="Digite ou selecione a categoria do evento"
+                />
+                <div
+                  className="auxSucessText"
+                  style={{ paddingTop: '20px' }}
+                  onClick={() => setShowNewCategory(true)}
+                >
+                  + cadastrar nova categoria
+                </div>
+              </div>
+              <div className="fieldSpacing" style={{ display: 'grid' }}>
+                <Label className="fieldLabel" for="contractor">
+                  Empresa ou contratante
+                </Label>
+
+                <SelectAutoComplete
+                  options={category?.data?.page?.list}
+                  name="contractor"
+                  onChange={onChangeSelect('contractor')}
+                  // value={form.eventType}
+                  placeholder="Digite ou selecione a empresa/contratante"
+                />
+                <div
+                  className="auxSucessText"
+                  style={{ paddingTop: '20px' }}
+                  onClick={() => setShowCompany(true)}
+                >
+                  + cadastrar nova empresa ou contratante
+                </div>
+              </div>
+              <div className="fieldSpacing">
+                <Label className="fieldLabel" for="censure">
+                  Censura do evento
+                </Label>
+                <SuperInput
+                  onChange={onChangeForm()}
+                  value={form.censure}
+                  id="censure"
+                  name="censure"
+                  placeholder="Digite a idade de censura. Ex: 16"
+                  type="number"
+                />
+              </div>
+            </Form>
+            <div style={{ display: 'grid', paddingBottom: '50px' }}>
+              <Label className="pageTitle">Informações complementares</Label>
+              {/* <img src={secondTitleLine} style={{ paddingTop: '-20px' }} /> */}
             </div>
-            <div className="groupButton">
-              <Label className="fieldLabel">Publicar evento no site?</Label>
-              <div className="d-flex" style={{ width: '100px' }}>
-                <Button
-                  variant="outline-dark"
-                  onClick={() => {
-                    setPublishWebsite(true);
-                    setSelected('first');
-                  }}
-                  style={
-                    selected === 'first'
-                      ? {
-                          height: '62px',
-                          width: '100px',
-                          backgroundColor: '#171A21',
-                          color: 'white',
-                        }
-                      : { height: '62px', width: '100px' }
-                  }
-                >
-                  Sim
-                </Button>
-                <Button
-                  variant="outline-dark"
-                  onClick={() => {
-                    setPublishWebsite(false);
-                    setSelected('second');
-                  }}
-                  style={
-                    selected === 'second'
-                      ? {
-                          height: '62px',
-                          width: '100px',
-                          backgroundColor: '#171A21',
-                          color: 'white',
-                        }
-                      : { height: '62px', width: '100px' }
-                  }
-                >
-                  Não
+            <Form>
+              <div className="fieldSpacing">
+                <Label className="fieldLabel" for="facebookUrl">
+                  Facebook do evento
+                </Label>
+                <SuperInput
+                  onChange={onChangeForm()}
+                  value={form.facebookUrl}
+                  id="facebookUrl"
+                  name="facebookUrl"
+                  placeholder="Copie e cole o link do Facebook do evento"
+                />
+              </div>
+              <div className="fieldSpacing">
+                <Label className="fieldLabel" for="instagramUrl">
+                  Instagram do evento
+                </Label>
+                <SuperInput
+                  onChange={onChangeForm()}
+                  value={form.instagramUrl}
+                  id="instagramUrl"
+                  name="instagramUrl"
+                  placeholder="Copie e cole o link do Instagram do evento"
+                />
+              </div>
+              <div className="fieldSpacing">
+                <Label className="fieldLabel" for="establishmentName">
+                  Nome do estabelecimento
+                </Label>
+                <SuperInput
+                  onChange={onChangeForm()}
+                  value={form.establishmentName}
+                  id="establishmentName"
+                  name="establishmentName"
+                  placeholder="Digite o nome do estabelecimento evento. Ex: Folk Valley"
+                />
+              </div>
+              <div>
+                <div className="fieldSpacing">
+                  <Label className="fieldLabel" for="imagePosBase64">
+                    Imagem POS (jpg ou png)
+                    <FormText className="greyNormalText">Resolução: 384x168</FormText>
+                  </Label>
+
+                  <InputFile
+                    name="imagePosBase64"
+                    onChange={onChangeFileImage('imagePosBase64')}
+                    fileName={form.imagePosBase64?.name}
+                  />
+                </div>
+              </div>
+              <div>
+                <div className="fieldSpacing">
+                  <Label className="fieldLabel" for="imageBase64">
+                    Imagem principal do evento (jpg ou png)
+                    <FormText className="greyNormalText">Resolução: 500x500</FormText>
+                  </Label>
+                  <InputFile
+                    name="imageBase64"
+                    onChange={onChangeFileImage('imageBase64')}
+                    fileName={form.imageBase64?.name}
+                  />
+                </div>
+              </div>
+              <div className="groupButton">
+                <Label className="fieldLabel">Publicar evento no site?</Label>
+                <div className="d-flex" style={{ width: '100px' }}>
+                  <Button
+                    variant="outline-dark"
+                    onClick={() => {
+                      setPublishWebsite(true);
+                      setSelected('first');
+                    }}
+                    style={
+                      selected === 'first'
+                        ? {
+                            height: '62px',
+                            width: '100px',
+                            backgroundColor: '#171A21',
+                            color: 'white',
+                          }
+                        : { height: '62px', width: '100px' }
+                    }
+                  >
+                    Sim
+                  </Button>
+                  <Button
+                    variant="outline-dark"
+                    onClick={() => {
+                      setPublishWebsite(false);
+                      setSelected('second');
+                    }}
+                    style={
+                      selected === 'second'
+                        ? {
+                            height: '62px',
+                            width: '100px',
+                            backgroundColor: '#171A21',
+                            color: 'white',
+                          }
+                        : { height: '62px', width: '100px' }
+                    }
+                  >
+                    Não
+                  </Button>
+                </div>
+              </div>
+              <div className="groupButton">
+                <Label className="fieldLabel">Tamanho do texto</Label>
+                <div className="d-flex" style={{ width: '100px' }}>
+                  <Button
+                    variant="outline-dark"
+                    onClick={() => {
+                      setTextSize(0);
+                      setSelectedText('small');
+                    }}
+                    style={
+                      selectedText === 'small'
+                        ? {
+                            height: '62px',
+                            width: '121px',
+                            backgroundColor: '#171A21',
+                            color: 'white',
+                          }
+                        : { height: '62px', width: '121px' }
+                    }
+                  >
+                    Pequeno
+                  </Button>
+                  <Button
+                    variant="outline-dark"
+                    onClick={() => {
+                      setTextSize(1);
+                      setSelectedText('medium');
+                    }}
+                    style={
+                      selectedText === 'medium'
+                        ? {
+                            height: '62px',
+                            width: '121px',
+                            backgroundColor: '#171A21',
+                            color: 'white',
+                          }
+                        : { height: '62px', width: '121px' }
+                    }
+                  >
+                    Médio
+                  </Button>
+                  <Button
+                    variant="outline-dark"
+                    onClick={() => {
+                      setTextSize(3);
+                      setSelectedText('big');
+                    }}
+                    style={
+                      selectedText === 'big'
+                        ? {
+                            height: '62px',
+                            width: '121px',
+                            backgroundColor: '#171A21',
+                            color: 'white',
+                          }
+                        : { height: '62px', width: '121px' }
+                    }
+                  >
+                    Grande
+                  </Button>
+                </div>
+              </div>
+              <div className="fieldSpacing">
+                <Label className="fieldLabel" for="ticketPhrase">
+                  Frase do ingresso
+                </Label>
+                <SuperInput
+                  onChange={onChangeForm()}
+                  value={form.ticketPhrase}
+                  style={{ height: '188px' }}
+                  id="ticketPhrase"
+                  placeholder="Digite a frase que irá aparecer no ingresso"
+                  name="ticketPhrase"
+                  type="textarea"
+                />
+              </div>
+              <div className="fieldSpacing">
+                <Label className="fieldLabel" for="websiteDescription">
+                  Descrição para o site
+                </Label>
+                <SuperInput
+                  onChange={onChangeForm()}
+                  value={form.websiteDescription}
+                  style={{ height: '343px' }}
+                  id="websiteDescription"
+                  placeholder="Digite aqui a descrição que irá aparecer no site"
+                  name="websiteDescription"
+                  type="textarea"
+                />
+              </div>
+            </Form>
+            <div className="nextPageButton">
+              <div style={{ color: '#fff' }}>
+                <Button style={{ height: '50px' }} variant="outline-light" onClick={goBack}>
+                  Voltar
                 </Button>
               </div>
+              <SuperButton style={{ width: '278px' }} onClick={handleSubmit}>
+                Avançar para Setor e ingresso
+              </SuperButton>
             </div>
-            <div className="groupButton">
-              <Label className="fieldLabel">Tamanho do texto</Label>
-              <div className="d-flex" style={{ width: '100px' }}>
-                <Button
-                  variant="outline-dark"
-                  onClick={() => {
-                    setTextSize(0);
-                    setSelectedText('small');
-                  }}
-                  style={
-                    selectedText === 'small'
-                      ? {
-                          height: '62px',
-                          width: '121px',
-                          backgroundColor: '#171A21',
-                          color: 'white',
-                        }
-                      : { height: '62px', width: '121px' }
-                  }
-                >
-                  Pequeno
-                </Button>
-                <Button
-                  variant="outline-dark"
-                  onClick={() => {
-                    setTextSize(1);
-                    setSelectedText('medium');
-                  }}
-                  style={
-                    selectedText === 'medium'
-                      ? {
-                          height: '62px',
-                          width: '121px',
-                          backgroundColor: '#171A21',
-                          color: 'white',
-                        }
-                      : { height: '62px', width: '121px' }
-                  }
-                >
-                  Médio
-                </Button>
-                <Button
-                  variant="outline-dark"
-                  onClick={() => {
-                    setTextSize(3);
-                    setSelectedText('big');
-                  }}
-                  style={
-                    selectedText === 'big'
-                      ? {
-                          height: '62px',
-                          width: '121px',
-                          backgroundColor: '#171A21',
-                          color: 'white',
-                        }
-                      : { height: '62px', width: '121px' }
-                  }
-                >
-                  Grande
-                </Button>
-              </div>
-            </div>
-            <div className="fieldSpacing">
-              <Label className="fieldLabel" for="ticketPhrase">
-                Frase do ingresso
-              </Label>
-              <SuperInput
-                onChange={onChangeForm()}
-                value={form.ticketPhrase}
-                style={{ height: '188px' }}
-                id="ticketPhrase"
-                placeholder="Digite a frase que irá aparecer no ingresso"
-                name="ticketPhrase"
-                type="textarea"
-              />
-            </div>
-            <div className="fieldSpacing">
-              <Label className="fieldLabel" for="websiteDescription">
-                Descrição para o site
-              </Label>
-              <SuperInput
-                onChange={onChangeForm()}
-                value={form.websiteDescription}
-                style={{ height: '343px' }}
-                id="websiteDescription"
-                placeholder="Digite aqui a descrição que irá aparecer no site"
-                name="websiteDescription"
-                type="textarea"
-              />
-            </div>
-          </Form>
-          <div className="nextPageButton">
-            <div style={{ color: '#fff' }}>
-              <Button style={{ height: '50px' }} variant="outline-light" onClick={goBack}>
-                Voltar
-              </Button>
-            </div>
-            <SuperButton style={{ width: '278px' }} onClick={handleSubmit}>
-              Avançar para Setor e ingresso
-            </SuperButton>
-          </div>
-        </Col>
+          </Col>
+        </Row>
       </Container>
     </Fragment>
   );

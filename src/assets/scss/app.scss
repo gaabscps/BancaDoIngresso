@@ -184,7 +184,7 @@
 
 .fieldSpacing {
     padding-bottom: 50px !important;
-    padding-right: 30px !important;
+    // padding-right: 30px !important;
 }
 
 .mainButton {
@@ -253,8 +253,12 @@
 }
 
 .stepContainer {
-  height: 59px !important;
+  height: 66px !important;
   margin-bottom: 59px;
+  .stepImage {
+    max-width: 100%;
+    height: auto;
+  }
 }
 
 .collapseTable {

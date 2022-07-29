@@ -74,20 +74,13 @@ const Sample = (): JSX.Element => {
                 <Label className="fieldLabel" for="amount">
                   Quantidade
                 </Label>
-                <SuperInput
-                  style={{ width: '243px' }}
-                  id="amount"
-                  name="amount"
-                  placeholder="Ex: 200"
-                  type="number"
-                />
+                <SuperInput id="amount" name="amount" placeholder="Ex: 200" type="number" />
               </div>
               <div className="fieldSpacing">
                 <Label className="fieldLabel" for="totalValue">
                   Valor do combo
                 </Label>
                 <SuperInput
-                  style={{ width: '243px' }}
                   id="totalValue"
                   name="totalValue"
                   placeholder="Ex: 20,00"

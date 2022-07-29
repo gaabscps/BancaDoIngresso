@@ -19,7 +19,7 @@ const Sample = (): JSX.Element => {
                 Nome do setor
               </Label>
               <SuperInput
-                style={{ width: '546px' }}
+                // style={{ width: '546px' }}
                 placeholder="Digite ou selecione o nome do setor"
                 name="email"
               />
@@ -95,12 +95,7 @@ const Sample = (): JSX.Element => {
             <Label className="fieldLabel" for="exampleEmail">
               Quantidade de ingressos cortesia
             </Label>
-            <SuperInput
-              style={{ width: '243px' }}
-              id="exampleEmail"
-              name="email"
-              placeholder="Ex: 20000"
-            />
+            <SuperInput id="exampleEmail" name="email" placeholder="Ex: 20000" />
           </div>
           <div className="groupButton">
             <Label className="fieldLabel">Numerar ingressos?</Label>
@@ -200,6 +195,129 @@ const Sample = (): JSX.Element => {
               placeholder="Digite aqui observações que irão aparecer no ingresso"
               name="text"
               type="textarea"
+            />
+          </div>
+          <div className="pageTitle">Lotes</div>
+          <img src={thirdTitleLine} style={{ paddingTop: '-20px', marginBottom: '25px' }} />
+          <div className="secondPageTitle">Cadastrar lote</div>
+          <div className="whiteContainer">
+            <div className="fieldSpacing">
+              <Label className="fieldLabel" for="exampleEmail">
+                Nome do lote
+              </Label>
+              <SuperInput
+                id="exampleEmail"
+                name="email"
+                placeholder="Digite o nome do lote"
+                type="email"
+              />
+            </div>
+            <div className="d-flex">
+              <div className="fieldSpacing">
+                <Label className="fieldLabel" for="exampleDatetime">
+                  Data Início da Venda
+                </Label>
+                <SuperInput id="exampleDate" name="date" placeholder="DD/MM/AAAA" type="date" />
+              </div>
+              <div className="fieldSpacing">
+                <Label className="fieldLabel" for="exampleDatetime">
+                  Data Fim da Venda
+                </Label>
+                <SuperInput id="exampleDate" name="date" placeholder="DD/MM/AAAA" type="date" />
+              </div>
+            </div>
+            <div className="d-flex">
+              <div className="fieldSpacing">
+                <Label className="fieldLabel" for="exampleDatetime">
+                  Hora Início do Evento
+                </Label>
+                <SuperInput
+                  id="exampleTime"
+                  name="time"
+                  placeholder="time placeholder"
+                  type="time"
+                />
+              </div>
+              <div className="fieldSpacing">
+                <Label className="fieldLabel" for="exampleDatetime">
+                  Hora Fim do Evento
+                </Label>
+                <SuperInput
+                  id="exampleTime"
+                  name="time"
+                  placeholder="time placeholder"
+                  type="time"
+                />
+              </div>
+            </div>
+            <div className="fieldSpacing">
+              <Label className="fieldLabel" for="exampleNumber">
+                Porcentagem de Comissão (%)
+              </Label>
+              <SuperInput
+                style={{ width: '135px' }}
+                id="exampleNumber"
+                name="number"
+                placeholder="0%"
+                type="number"
+              />
+            </div>
+            <div className="d-flex pt-2">
+              <div className="fieldSpacing">
+                <Label className="fieldLabel" for="exampleNumber">
+                  Quantidade de ingressos
+                </Label>
+                <SuperInput
+                  style={{ width: '232px' }}
+                  id="exampleNumber"
+                  name="number"
+                  placeholder="Ex: 20000"
+                  type="number"
+                />
+              </div>
+              <div className="fieldSpacing">
+                <Label className="fieldLabel" for="exampleNumber">
+                  Valor unitário
+                </Label>
+                <SuperInput
+                  style={{ width: '232px' }}
+                  id="exampleNumber"
+                  name="number"
+                  placeholder="Ex: 20,00"
+                  type="number"
+                />
+              </div>
+            </div>
+            <div className="fieldSpacing">
+              <Label className="fieldLabel" for="exampleNumber">
+                Valor total estimado
+              </Label>
+              <SuperInput id="exampleNumber" name="number" placeholder="Ex: 200,00" type="number" />
+            </div>
+            <div>
+              <div className="fieldSpacing">
+                <Label className="fieldLabel" for="exampleFile">
+                  Imagem do lote (opcional)
+                </Label>
+                <SuperInput
+                  id="exampleFile"
+                  placeholder="Nenhum arquivo selecionado"
+                  name="file"
+                  type="file"
+                />
+              </div>
+              <div className="nextPageButton">
+                <div className="auxSucessText" style={{ paddingTop: '20px' }}>
+                  + cadastrar lote
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style={{ marginTop: '50px' }}>
+            <SuperCollapse
+              title="Lotes cadastrados"
+              content="Nenhum lote foi cadastrado. Aqui será exibida uma lista dos seus lotes cadastrados"
+              leftIcon={DoubleTicketIcon}
             />
           </div>
           <div className="nextPageButton" style={{ marginTop: '50px' }}>

@@ -135,7 +135,7 @@ const Sample = (): JSX.Element => {
             </div>
             <SuperInput
               onChange={onChangeForm('eventSection')}
-              style={{ width: '546px' }}
+              // style={{ width: '546px' }}
               placeholder="Digite ou selecione o nome do setor"
               name="name"
               id="name"
@@ -278,7 +278,7 @@ const Sample = (): JSX.Element => {
               Quantidade de ingressos cortesia
             </Label>
             <SuperInput
-              style={{ width: '243px' }}
+              
               id="amountCourtesy"
               name="amountCourtesy"
               placeholder="Ex: 20000"
@@ -510,7 +510,7 @@ const Sample = (): JSX.Element => {
                   Data Início da Venda
                 </Label>
                 <SuperInput
-                  style={{ width: '243px' }}
+                  
                   id="startDate"
                   name="startDate"
                   placeholder="DD/MM/AAAA"
@@ -526,7 +526,7 @@ const Sample = (): JSX.Element => {
                   Data Fim da Venda
                 </Label>
                 <SuperInput
-                  style={{ width: '243px' }}
+                  
                   id="endDate"
                   name="endDate"
                   placeholder="DD/MM/AAAA"
@@ -544,7 +544,7 @@ const Sample = (): JSX.Element => {
                   Hora Início do Evento
                 </Label>
                 <SuperInput
-                  style={{ width: '243px' }}
+                  
                   id="exampleTime"
                   name="time"
                   placeholder="time placeholder"
@@ -560,7 +560,7 @@ const Sample = (): JSX.Element => {
                   Hora Fim do Evento
                 </Label>
                 <SuperInput
-                  style={{ width: '243px' }}
+                  
                   id="exampleTime"
                   name="time"
                   placeholder="time placeholder"
@@ -618,7 +618,7 @@ const Sample = (): JSX.Element => {
                 Valor total estimado
               </Label>
               <SuperInput
-                style={{ width: '243px' }}
+                
                 id="totalValue"
                 name="totalValue"
                 placeholder="Ex: 200,00"
