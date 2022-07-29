@@ -232,7 +232,6 @@ const Sample = (): JSX.Element => {
                   Tipo de evento
                 </Label>
                 <SelectAutoComplete
-                  label="Instituição"
                   options={typeEventOptions}
                   name="eventType"
                   onChange={onChangeSelect('eventType')}
@@ -302,7 +301,6 @@ const Sample = (): JSX.Element => {
                       Estado
                     </Label>
                     <SelectAutoComplete
-                      label="Instituição"
                       options={states}
                       name="state"
                       onChange={onChangeSelect('address.state')}

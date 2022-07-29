@@ -49,13 +49,7 @@ const Sample = (): JSX.Element => (
               <Label className="fieldLabel" for="amount">
                 Quantidade
               </Label>
-              <SuperInput
-                
-                id="amount"
-                name="amount"
-                placeholder="Ex: 200"
-                type="number"
-              />
+              <SuperInput id="amount" name="amount" placeholder="Ex: 200" type="number" />
             </div>
             <div className="fieldSpacing">
               <Label className="fieldLabel" for="unitValue">

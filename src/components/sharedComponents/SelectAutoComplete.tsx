@@ -3,18 +3,19 @@
 import React, { useState } from 'react';
 
 // react-select with props typescript types
-import Select from 'react-select';
+import Select, { SingleValue, ActionMeta } from 'react-select';
 
 interface OptionProps {
-  value: string;
+  value: string | number;
   label: string;
 }
 
 interface SelectAutoCompleteProps {
   name: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  options: OptionProps[];
+  onChange: (newValue: SingleValue<OptionProps>, actionMeta: ActionMeta<OptionProps>) => void;
+  options: OptionProps[] | any;
   placeholder?: string;
+  style?: React.CSSProperties;
 }
 
 interface StyleProps {
@@ -36,7 +37,7 @@ const SelectAutoComplete = (props: SelectAutoCompleteProps) => {
       borderRadius: '5px',
       backgroundColor: '#E6E6E6',
       border: 'none',
-      ...(props.style as StyleProps),
+      ...(props.style as SelectAutoCompleteProps),
     }),
 
     valueContainer: (provided: any) => ({
