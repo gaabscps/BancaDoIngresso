@@ -75,7 +75,7 @@ const Sample = (): JSX.Element => {
                   Quantidade
                 </Label>
                 <SuperInput
-                  style={{ width: '243px' }}
+                  //style={{ width: '243px' }}
                   id="amount"
                   name="amount"
                   placeholder="Ex: 200"
@@ -87,7 +87,7 @@ const Sample = (): JSX.Element => {
                   Valor do combo
                 </Label>
                 <SuperInput
-                  style={{ width: '243px' }}
+                  //style={{ width: '243px' }}
                   id="totalValue"
                   name="totalValue"
                   placeholder="Ex: 20,00"

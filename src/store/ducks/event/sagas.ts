@@ -7,7 +7,7 @@ import { ApplicationState } from '../..';
 import {
   listSuccess,
   listFailure,
-  generalInformationFailure,
+  // generalInformationFailure,
   generalInformationSuccess,
   getAllSuccess,
   getAllFailure,
@@ -232,7 +232,7 @@ export function* generalInformationEvent(data: any) {
     if (error.response?.status === 401) {
       yield put(checkUserCall());
     }
-    yield put(generalInformationFailure(parse(error)));
+    // yield put(generalInformationFailure(parse(error)));
   }
 }
 

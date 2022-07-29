@@ -31,7 +31,7 @@ const SelectAutoComplete = (props: SelectAutoCompleteProps) => {
   const customStyles = {
     control: (provided: any) => ({
       ...provided,
-      width: '546px',
+      // width: '546px',
       height: '62px',
       borderRadius: '5px',
       backgroundColor: '#E6E6E6',

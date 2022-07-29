@@ -60,7 +60,7 @@ const DiscountVoucher = (props: Props): JSX.Element => {
                   Valor do voucher
                 </Label>
                 <SuperInput
-                  style={{ width: '243px' }}
+                  //style={{ width: '243px' }}
                   id="exampleTime"
                   name="time"
                   placeholder="Ex:R$ 200,00"
@@ -72,7 +72,7 @@ const DiscountVoucher = (props: Props): JSX.Element => {
                   Código do voucher (gerar automatico, só número e 6 dig)
                 </Label>
                 <SuperInput
-                  style={{ width: '243px' }}
+                  //style={{ width: '243px' }}
                   id="exampleTime"
                   name="time"
                   placeholder="EX: JOA200"
