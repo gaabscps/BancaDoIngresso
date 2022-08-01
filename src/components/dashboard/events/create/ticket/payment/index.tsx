@@ -133,31 +133,31 @@ const Sample = (): JSX.Element => {
               Gateway Pagamento POS
             </Label>
             <div className="checkFieldSpacing">
-              <Input name={'posGateway'} id="posGateway" onChange={onChangeForm()} type="radio" />
+              <Input name={'posGateway'} id="Paypal" onChange={onChangeForm()} type="radio" />
               <Label check className="checkLabel">
                 Paypal
               </Label>
             </div>
             <div className="checkFieldSpacing">
-              <Input name={'posGateway'} id="posGateway" onChange={onChangeForm()} type="radio" />
+              <Input name={'posGateway'} id="Pagseguro" onChange={onChangeForm()} type="radio" />
               <Label check className="checkLabel">
                 Pagseguro
               </Label>
             </div>
             <div className="checkFieldSpacing">
-              <Input name={'posGateway'} id="posGateway" onChange={onChangeForm()} type="radio" />
+              <Input name={'posGateway'} id="Picpay" onChange={onChangeForm()} type="radio" />
               <Label check className="checkLabel">
                 Picpay
               </Label>
             </div>
             <div className="checkFieldSpacing">
-              <Input name={'posGateway'} id="posGateway" onChange={onChangeForm()} type="radio" />
+              <Input name={'posGateway'} id="Rico" onChange={onChangeForm()} type="radio" />
               <Label check className="checkLabel">
                 Rico
               </Label>
             </div>
             <div className="checkFieldSpacing">
-              <Input name={'posGateway'} id="posGateway" onChange={onChangeForm()} type="radio" />
+              <Input name={'posGateway'} id="Ricopay" onChange={onChangeForm()} type="radio" />
               <Label check className="checkLabel">
                 Ricopay
               </Label>
@@ -568,7 +568,7 @@ const Sample = (): JSX.Element => {
               <Button
                 variant="outline-dark"
                 onClick={() => {
-                  setAllowSellingWebsite(true);
+                  setPrintReceipt(true);
                   setSelected8('first');
                 }}
                 style={
@@ -587,7 +587,7 @@ const Sample = (): JSX.Element => {
               <Button
                 variant="outline-dark"
                 onClick={() => {
-                  setAllowSellingWebsite(false);
+                  setPrintReceipt(false);
                   setSelected8('second');
                 }}
                 style={
