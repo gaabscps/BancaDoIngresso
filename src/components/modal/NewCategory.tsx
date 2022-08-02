@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import { Card, Container, Label } from 'reactstrap';
+import { Card, Container, Label, Row, Col } from 'reactstrap';
 import CloseModal from '../../assets/images/svg/CloseModal';
 import EventCategory from '../../entities/EventCategory';
 import { createRequest } from '../../store/ducks/event-category/actions';
@@ -79,19 +79,21 @@ const NewCategory = (props: Props): JSX.Element => {
       <Modal.Body>
         <Container>
           <Card className="mainContainer" style={{ backgroundColor: '#F1F1F1' }}>
-            <div className="d-flex">
-              <div className="fieldSpacing">
-                <Label className="fieldLabel" for="name">
-                  Nome da categoria
-                </Label>
-                <SuperInput
-                  onChange={onChangeForm()}
-                  placeholder="Digite o nome da categoria"
-                  id="name"
-                  name="name"
-                />
-              </div>
-            </div>
+            <Row lg="2" md="1">
+              <Col>
+                <div className="fieldSpacing">
+                  <Label className="fieldLabel" for="name">
+                    Nome da categoria
+                  </Label>
+                  <SuperInput
+                    onChange={onChangeForm()}
+                    placeholder="Digite o nome da categoria"
+                    id="name"
+                    name="name"
+                  />
+                </div>
+              </Col>
+            </Row>
           </Card>
         </Container>
         <div className="nextPageButton">
