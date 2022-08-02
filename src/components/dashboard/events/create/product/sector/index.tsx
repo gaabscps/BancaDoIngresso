@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { Container, FormGroup, Label } from 'reactstrap';
+import { Container, FormGroup, Label, Row, Col } from 'reactstrap';
 import SectorIcon from '../../../../../../assets/images/svg/Sector';
 import SuperCollapse from '../../../../../sharedComponents/SuperCollapse';
 
@@ -14,27 +14,31 @@ const Sample = (): JSX.Element => (
       </div>
       <div className="whiteContainer">
         <FormGroup>
-          <div className="fieldSpacing">
-            <Label className="fieldLabel" for="sectionName">
-              Nome do setor
-            </Label>
-            <SuperInput
-              id="sectionName"
-              name="sectionName"
-              placeholder="Digite ou selecione o nome do setor"
-            />
-          </div>
-          <div className="fieldSpacing">
-            <Label className="fieldLabel" for="imageBase64">
-              Imagem do setor (opcional)
-            </Label>
-            <SuperInput
-              id="imageBase64"
-              placeholder="Nenhum arquivo selecionado"
-              name="imageBase64"
-              type="file"
-            />
-          </div>
+          <Row lg="2" md="1">
+            <Col>
+              <div className="fieldSpacing">
+                <Label className="fieldLabel" for="sectionName">
+                  Nome do setor
+                </Label>
+                <SuperInput
+                  id="sectionName"
+                  name="sectionName"
+                  placeholder="Digite ou selecione o nome do setor"
+                />
+              </div>
+              <div className="fieldSpacing">
+                <Label className="fieldLabel" for="imageBase64">
+                  Imagem do setor (opcional)
+                </Label>
+                <SuperInput
+                  id="imageBase64"
+                  placeholder="Nenhum arquivo selecionado"
+                  name="imageBase64"
+                  type="file"
+                />
+              </div>
+            </Col>
+          </Row>
         </FormGroup>
         <div className="nextPageButton">
           <div className="auxSucessText" style={{ paddingTop: '20px' }}>
