@@ -13,7 +13,7 @@ import PdvSub from './sub/index';
 import PDVIcon from '../../../../../assets/images/svg/Pdv';
 import SuperCollapse from '../../../../sharedComponents/SuperCollapse';
 import step4 from '../../../../../assets/images/svg/stepByStep/step4.svg';
-import titleLine from '../../../../../assets/images/svg/titleLine.svg';
+// import titleLine from '../../../../../assets/images/svg/titleLine.svg';
 import RegisterPdv from '../../../../modal/RegisterPdv';
 import SuperButton from '../../../../sharedComponents/SuperButton';
 
