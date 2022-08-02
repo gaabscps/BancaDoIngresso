@@ -7,7 +7,7 @@ import { Container, Col, Form, Label, FormText, Row } from 'reactstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import SuperInput from '../../../../sharedComponents/SuperInput';
 import step1 from '../../../../../assets/images/svg/stepByStep/step1.svg';
-import titleLine from '../../../../../assets/images/svg/titleLine.svg';
+// import titleLine from '../../../../../assets/images/svg/titleLine.svg';
 import auxSucess from '../../../../../assets/images/svg/auxSucess.svg';
 import secondTitleLine from '../../../../../assets/images/svg/secondTitleLine.svg';
 import NewCategory from '../../../../modal/NewCategory';

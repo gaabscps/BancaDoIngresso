@@ -3,7 +3,7 @@ import { Modal, Button, Collapse } from 'react-bootstrap';
 import { Card, Container, Label, Input } from 'reactstrap';
 import CloseModal from '../../assets/images/svg/CloseModal';
 import SuperInput from '../sharedComponents/SuperInput';
-import titleLine from '../../assets/images/svg/titleLine.svg';
+// import titleLine from '../../assets/images/svg/titleLine.svg';
 import fourTitleLine from '../../assets/images/svg/fourTitleLine.svg';
 
 interface StateProps {
