@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Container, Label, Col } from 'reactstrap';
+import { Container, Label } from 'reactstrap';
 import { Button, ButtonGroup } from 'react-bootstrap';
 
 import MainInformation from './main/index';
@@ -9,7 +9,7 @@ import GeneralInformation from './general/index';
 import SuperCollapse from '../../../../sharedComponents/SuperCollapse';
 import TicketIcon from '../../../../../assets/images/svg/Ticket';
 import step2 from '../../../../../assets/images/svg/stepByStep/step2.svg';
-import titleLine from '../../../../../assets/images/svg/titleLine.svg';
+// import titleLine from '../../../../../assets/images/svg/titleLine.svg';
 import SuperButton from '../../../../sharedComponents/SuperButton';
 
 const Sample = (): JSX.Element => {
@@ -49,94 +49,98 @@ const Sample = (): JSX.Element => {
         <div className="d-flex justify-content-center stepContainer">
           <img src={step2} />
         </div>
-        <Col>
-          <div style={{ display: 'grid', paddingBottom: '50px' }}>
-            <div className="pageTitle">Setor e ingresso</div>
-            <img src={titleLine} style={{ paddingTop: '-20px' }} />
-          </div>
-          <div className="groupButton">
-            <Label className="fieldLabel">Este evento terá ingressos?</Label>
-            <ButtonGroup style={{ width: '100px' }}>
-              <Button
-                variant="outline-dark"
-                style={{ height: '62px', width: '100px' }}
-                onClick={() => setShow(true)}
-              >
-                Sim
-              </Button>
-              <Button
-                variant="outline-dark"
-                style={{ height: '62px', width: '100px' }}
-                onClick={nextStep}
-              >
-                Não
-              </Button>
-            </ButtonGroup>
-          </div>
-          <hr className="dividerUp" />
-          {show ? (
-            <>
-              <SuperCollapse
-                title="Setores e ingressos adicionados"
-                content="Nenhum setor e ingresso foi adicionado. Aqui será exibida uma lista dos seus setores e ingressos adicionados"
-                leftIcon={TicketIcon}
-              />
-              <div className="secondPageTitle">Adicionando setor e ingresso</div>
-              <div className="infoSubTitle">
-                Preencha as 3 (TRÊS) etapas abaixo para adicionar um setor e ingresso
-              </div>
-              <div className="infoContainer">
-                <div className="d-flex justify-content-center">
-                  <div
-                    style={{
-                      marginRight: '50px',
-                    }}
-                  >
-                    <button
-                      className={step === 0 ? 'tabButtonActive' : 'tabButtonDesactive'}
-                      onClick={() => setStep(0)}
-                    >
-                      <div className="textButtonsTab">Configurações principais</div>
-                    </button>
-                  </div>
-                  <div
-                    style={{
-                      marginRight: '50px',
-                    }}
-                  >
-                    <button
-                      className={step === 1 ? 'tabButtonActive' : 'tabButtonDesactive'}
-                      onClick={() => setStep(1)}
-                    >
-                      <div className="textButtonsTab">Configurações de pagamento</div>
-                    </button>
-                  </div>
-                  <div>
-                    <button
-                      className={step === 2 ? 'tabButtonActive' : 'tabButtonDesactive'}
-                      onClick={() => setStep(2)}
-                    >
-                      <div className="textButtonsTab">Configurações gerais</div>
-                    </button>
-                  </div>
-                </div>
-                <ShowInformation />
-              </div>
-              <hr className="dividerDown" />
-            </>
-          ) : null}
 
-          <div className="nextPageButton">
-            <div style={{ color: '#fff' }}>
-              <Button style={{ height: '50px' }} variant="outline-light" onClick={goBack}>
-                Voltar
-              </Button>
+        <div className="titleStep">
+          <div className="pageTitle">Setor e ingresso</div>
+          <hr className="lineText" />
+          {/* <img src={titleLine} style={{ paddingTop: '-20px' }} /> */}
+        </div>
+        <div className="groupButton">
+          <Label className="fieldLabel">Este evento terá ingressos?</Label>
+          <ButtonGroup style={{ width: '100px' }}>
+            <Button
+              variant="outline-dark"
+              style={{ height: '62px', width: '100px' }}
+              onClick={() => setShow(true)}
+            >
+              Sim
+            </Button>
+            <Button
+              variant="outline-dark"
+              style={{ height: '62px', width: '100px' }}
+              onClick={nextStep}
+            >
+              Não
+            </Button>
+          </ButtonGroup>
+        </div>
+        <hr className="dividerUp" />
+        {show ? (
+          <>
+            <SuperCollapse
+              title="Setores e ingressos adicionados"
+              content="Nenhum setor e ingresso foi adicionado. Aqui será exibida uma lista dos seus setores e ingressos adicionados"
+              leftIcon={TicketIcon}
+            />
+            <div className="secondPageTitle">Adicionando setor e ingresso</div>
+            <div className="infoSubTitle">
+              Preencha as 3 (TRÊS) etapas abaixo para adicionar um setor e ingresso
             </div>
-            <SuperButton style={{ width: '278px' }} onClick={nextStep}>
-              Avançar para Setor e Produtos
-            </SuperButton>
+            <div className="infoContainer">
+              <div className="d-flex justify-content-center flex-wrap">
+                <div
+                  style={
+                    {
+                      // marginRight: '50px',
+                    }
+                  }
+                >
+                  <button
+                    className={step === 0 ? 'tabButtonActive' : 'tabButtonDesactive'}
+                    onClick={() => setStep(0)}
+                  >
+                    <div className="textButtonsTab">Configurações principais</div>
+                  </button>
+                </div>
+                <div
+                  style={
+                    {
+                      // marginRight: '50px',
+                    }
+                  }
+                >
+                  <button
+                    className={step === 1 ? 'tabButtonActive' : 'tabButtonDesactive'}
+                    onClick={() => setStep(1)}
+                  >
+                    <div className="textButtonsTab">Configurações de pagamento</div>
+                  </button>
+                </div>
+                <div>
+                  <button
+                    className={step === 2 ? 'tabButtonActive' : 'tabButtonDesactive'}
+                    onClick={() => setStep(2)}
+                  >
+                    <div className="textButtonsTab">Configurações gerais</div>
+                  </button>
+                </div>
+              </div>
+              <ShowInformation />
+            </div>
+            <hr className="dividerDown" />
+          </>
+        ) : null}
+
+        <div className="nextPageButton">
+          <div style={{ color: '#fff' }}>
+            <Button style={{ height: '50px' }} variant="outline-light" onClick={goBack}>
+              Voltar
+            </Button>
           </div>
-        </Col>
+          <SuperButton style={{ width: '278px' }} onClick={nextStep}>
+            Avançar para Setor e Produtos
+          </SuperButton>
+        </div>
       </Container>
     </Fragment>
   );

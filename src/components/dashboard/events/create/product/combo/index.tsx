@@ -105,7 +105,7 @@ const Sample = (): JSX.Element => {
                     type="file"
                   />
                 </div>
-                <div style={{ display: 'grid', paddingBottom: '50px' }}>
+                <div className="titleStep">
                   <div className="pageTitle">Produtos do combo</div>
                   <img src={titleLine} style={{ paddingTop: '-20px' }} />
                 </div>

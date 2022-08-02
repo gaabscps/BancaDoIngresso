@@ -8,7 +8,7 @@ import ComboInformation from './combo/index';
 import SectorInformation from './sector/index';
 import PosInformation from './pos/index';
 import step3 from '../../../../../assets/images/svg/stepByStep/step3.svg';
-import titleLine from '../../../../../assets/images/svg/titleLine.svg';
+// import titleLine from '../../../../../assets/images/svg/titleLine.svg';
 import SuperButton from '../../../../sharedComponents/SuperButton';
 
 const Sample = (): JSX.Element => {
@@ -55,9 +55,10 @@ const Sample = (): JSX.Element => {
           <img src={step3} alt="" />
         </div>
         <Col>
-          <div style={{ display: 'grid', paddingBottom: '50px' }}>
+          <div className="titleStep">
             <div className="pageTitle">Setor e produto</div>
-            <img src={titleLine} style={{ paddingTop: '-20px' }} alt="" />
+            <hr className="lineText" />
+            {/* <hr className="lineText" /> */}
           </div>
           <div className="groupButton">
             <Label className="fieldLabel">Este evento terá produtos?</Label>
@@ -86,7 +87,7 @@ const Sample = (): JSX.Element => {
                 Preencha as 5 (CINCO) etapas abaixo para adicionar um setor e produto
               </div>
               <div className="infoContainer">
-                <div className="d-flex justify-content-around">
+                <div className="d-flex justify-content-center flex-wrap">
                   <button
                     className={step === 0 ? 'tabButtonActive' : 'tabButtonDesactive'}
                     onClick={() => setStep(0)}

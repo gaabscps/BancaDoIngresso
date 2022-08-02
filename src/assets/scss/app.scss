@@ -1,50 +1,77 @@
-@import "~bootstrap-scss/bootstrap.scss";
-@import "color.scss";
-@import "vendors/chartist/_chartist.scss";
-@import "vendors/themify.scss";
-@import "vendors/whether-icon.scss";
-@import "vendors/icofont.scss";
-@import "vendors/flag-icon.scss";
-@import "vendors/icoicon/_icons.scss";
-@import "vendors/fontawesome.scss";
-@import "vendors/animate/_animate.scss";
-@import "vendors/sticky/_sticky.scss";
-@import "vendors/todo/_todo.scss";
+@import '~bootstrap-scss/bootstrap.scss';
+@import 'color.scss';
+@import 'vendors/chartist/_chartist.scss';
+@import 'vendors/themify.scss';
+@import 'vendors/whether-icon.scss';
+@import 'vendors/icofont.scss';
+@import 'vendors/flag-icon.scss';
+@import 'vendors/icoicon/_icons.scss';
+@import 'vendors/fontawesome.scss';
+@import 'vendors/animate/_animate.scss';
+@import 'vendors/sticky/_sticky.scss';
+@import 'vendors/todo/_todo.scss';
 
-
-.mainContainer{
-    padding: 50px !important;
-}
-.subContainer{
-    padding: 30px !important;
+.mainContainer {
+  padding: 50px !important;
 }
 
-.infoContainer{
+
+.subContainer {
+  padding: 10px !important;
+}
+
+
+.infoContainer {
   padding: 50px !important;
   background-color: #f1f1f1 !important;
   border-radius: 5px !important;
 }
 
-.whiteContainer{
+
+.whiteContainer {
   padding: 50px !important;
   background-color: #ffffff !important;
   border-radius: 5px !important;
 }
+// media query for mobile container
+@media (max-width: $media-query-sm) {
+  .mainContainer {
+    padding: 20px !important;
+  }
+}
+
+@media (max-width: $media-query-sm) {
+  .subContainer {
+    padding: 10px !important;
+  }
+}
+
+@media (max-width: $media-query-sm) {
+  .infoContainer {
+    padding: 10px !important;
+  }
+}
+
+@media (max-width: $media-query-sm) {
+  .whiteContainer {
+    padding: 30px 20px !important
+  }
+}
 
 .pageTitle {
-    font-family: 'Poppins', sans-serif;
-    font-style: normal;
-    font-weight: 700;
-    font-size: 28px;
-    line-height: 42px;
+  font-family: 'Poppins', sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 42px;
 }
 
 .subTitleMain {
-    font-family: 'Poppins', sans-serif;
-    font-weight: 400 !important;
-    font-size: 16px !important;
-    line-height: 24px !important;
-    color: #828282 !important;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400 !important;
+  font-size: 16px !important;
+  line-height: 24px !important;
+  color: #828282 !important;
 }
 
 .secondPageTitle {
@@ -66,85 +93,85 @@
 }
 
 .normalText {
-    font-family: 'Poppins', sans-serif;
-    font-weight: 400 !important;
-    font-size: 16px !important;
-    line-height: 24px !important;
-    color: #222222 !important;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400 !important;
+  font-size: 16px !important;
+  line-height: 24px !important;
+  color: #222222 !important;
 }
 
 .subText {
-    font-family: 'Poppins', sans-serif;
-    font-weight: 300 !important;
-    font-size: 12px !important;
-    line-height: 18px !important;
-    color: #222222 !important;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300 !important;
+  font-size: 12px !important;
+  line-height: 18px !important;
+  color: #222222 !important;
 }
 
 .buttonText {
-    font-family: 'Poppins', sans-serif;
-    font-style: normal;
-    font-weight: 700 !important;
-    font-size: 16px !important;
-    line-height: 24px !important;
-    color: #222222 !important;
+  font-family: 'Poppins', sans-serif;
+  font-style: normal;
+  font-weight: 700 !important;
+  font-size: 16px !important;
+  line-height: 24px !important;
+  color: #222222 !important;
 }
 .textButtonsTab {
-    font-family: 'Poppins', sans-serif;
-    font-style: normal;
-    font-weight: 500 !important;
-    font-size: 16px !important;
-    line-height: 24px !important;
-    color: #050100 !important;
+  font-family: 'Poppins', sans-serif;
+  font-style: normal;
+  font-weight: 500 !important;
+  font-size: 16px !important;
+  line-height: 24px !important;
+  color: #050100 !important;
 }
 
 .greyNormalText {
-    font-family: 'Poppins', sans-serif;
-    font-weight: 400 !important;
-    font-size: 16px !important;
-    line-height: 24px !important;
-    color: #A5A5A5 !important;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400 !important;
+  font-size: 16px !important;
+  line-height: 24px !important;
+  color: #a5a5a5 !important;
 }
 
 .auxSucessText {
-    color: #7AD81B !important;
-    font-weight: 400 !important;
-    font-size: 16px !important;
-    line-height: 24px !important;
-    cursor: pointer !important;
+  color: #7ad81b !important;
+  font-weight: 400 !important;
+  font-size: 16px !important;
+  line-height: 24px !important;
+  cursor: pointer !important;
 }
 
 .auxGrayText {
-    color: #C4C4C4 !important;
-    font-weight: 500px !important;
-    font-size: 16px !important;
-    line-height: 24px !important;
+  color: #c4c4c4 !important;
+  font-weight: 500px !important;
+  font-size: 16px !important;
+  line-height: 24px !important;
 }
 
 .secondPageTitle {
-    font-family: 'Poppins', sans-serif;
-    font-style: normal !important;
-    font-size: 28px !important;
-    line-height: 42px !important;
-    padding-bottom: 20px !important;
-    text-decoration: underline;
+  font-family: 'Poppins', sans-serif;
+  font-style: normal !important;
+  font-size: 28px !important;
+  line-height: 42px !important;
+  padding-bottom: 20px !important;
+  text-decoration: underline;
 }
 
 .pageSubTitle {
-    font-style: normal !important;
-    font-size: 21px !important;
-    line-height: 31.5px !important;
-    padding-bottom: 10px !important;
+  font-style: normal !important;
+  font-size: 21px !important;
+  line-height: 31.5px !important;
+  padding-bottom: 10px !important;
 }
 
 .infoSubTitle {
-    font-family: 'Poppins', sans-serif;
-    font-weight: 400 !important; 
-    font-style: normal !important;
-    font-size: 21px !important;
-    line-height: 32px !important;
-    padding-bottom: 30px !important;
-    color: #828282;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400 !important;
+  font-style: normal !important;
+  font-size: 21px !important;
+  line-height: 32px !important;
+  padding-bottom: 30px !important;
+  color: #828282;
 }
 
 .fieldLabel {
@@ -165,7 +192,7 @@
   margin-bottom: 15px !important;
 }
 
-.loginFormText{
+.loginFormText {
   font-family: 'Poppins' !important;
   font-style: normal !important;
   font-weight: 500 !important;
@@ -183,8 +210,16 @@
 }
 
 .fieldSpacing {
-    padding-bottom: 50px !important;
+  padding-bottom: 50px !important;
+  // padding-right: 30px !important;
+}
+
+// media query for mobile
+@media (max-width: $media-query-sm) {
+  .fieldSpacing {
+    padding-bottom: 40px !important;
     // padding-right: 30px !important;
+  }
 }
 
 .mainButton {
@@ -224,24 +259,24 @@
 }
 
 .checkFieldSpacing {
-    padding-bottom: 20px !important;
-    padding-right: 30px !important;
-    color: #828282 !important;
+  padding-bottom: 20px !important;
+  padding-right: 30px !important;
+  color: #828282 !important;
 }
 
-.eventStatus{
-    padding-right: 25px  !important;
-    padding-bottom: 50px !important;
+.eventStatus {
+  padding-right: 25px !important;
+  padding-bottom: 50px !important;
 }
 
-.groupButton{
-    display: grid !important;
-    padding-bottom: 50px !important;
+.groupButton {
+  display: grid !important;
+  padding-bottom: 50px !important;
 }
 
 .nextPageButton {
-    display: flex !important;
-    justify-content: end !important;
+  display: flex !important;
+  justify-content: end !important;
 }
 
 .dividerUp {
@@ -262,7 +297,7 @@
 }
 
 .collapseTable {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   width: 100%;
   height: 74px;
   border-radius: 5px;
@@ -289,229 +324,227 @@
 }
 //----- Contador de Eventos -----//
 
-
-
 .cardHeader {
-    height: 165px !important;
-    background: #ffffff !important;
-    border-radius: 10px !important;
-  }
-  
-  .firstDiv {
-    height: 165px !important;
-    border-right-width: 1px !important;
-    border-right-style: solid !important;
-    display: inline-block !important;
-    border-right-color: #F1F1F1 !important;
-  }
-  
-  .lastDiv {
-    height: 165px !important;
-    width: 264px !important;
-    display: inline-block !important;
-  }
-  
-  .firstContent {
-    margin-top: 30px !important;
-    margin-left: 25px !important;
-  }
-  
-  .textContent{
-    text-align: initial !important;
-    font-style: normal !important;
-    font-weight: 500 !important;
-    font-size: 16px !important;
-    line-height: 24px !important;
-  }
-  .count{
-    color: #828282 !important;
-  }
+  height: 165px !important;
+  background: #ffffff !important;
+  border-radius: 10px !important;
+}
 
-  .partyCard{
-    width: 334px;
-    height: 223px;
-    border-radius: 10px;
-    display: inline-block;
-    margin-right: 60px;
-    margin-bottom: 30px;
-  }
+.firstDiv {
+  height: 165px !important;
+  border-right-width: 1px !important;
+  border-right-style: solid !important;
+  display: inline-block !important;
+  border-right-color: #f1f1f1 !important;
+}
 
-  .actionCard {
-    margin-left: 293px !important;
-    margin-top: 13px !important;
-    justify-content: end !important;
-    margin-right: 17px !important;
-    position: absolute !important;
-  }
+.lastDiv {
+  height: 165px !important;
+  width: 264px !important;
+  display: inline-block !important;
+}
 
-  .partyImage1 {
-    background-image: url(../images/party/evento1.jpg);
-    width: 334px;
-    height: 223px;
-    border-radius: 10px;
-  }
+.firstContent {
+  margin-top: 30px !important;
+  margin-left: 25px !important;
+}
 
-  .partyImage2 {
-    background-image: url(../images/party/evento2.jpeg);
-    width: 334px;
-    height: 223px;
-    border-radius: 10px;
-  }
+.textContent {
+  text-align: initial !important;
+  font-style: normal !important;
+  font-weight: 500 !important;
+  font-size: 16px !important;
+  line-height: 24px !important;
+}
+.count {
+  color: #828282 !important;
+}
 
-  .partyImage3 {
-    background-image: url(../images/party/evento3.jpg);
-    width: 334px;
-    height: 223px;
-    border-radius: 10px;
-  }
+.partyCard {
+  width: 334px;
+  height: 223px;
+  border-radius: 10px;
+  display: inline-block;
+  margin-right: 60px;
+  margin-bottom: 30px;
+}
 
-  .partyBlur {
-      z-index: 1;
-    position: absolute;
-    width: 334px;
-    height: 120px;
-    
-    background: rgba(34, 34, 34, 0.3);
-  }
+.actionCard {
+  margin-left: 293px !important;
+  margin-top: 13px !important;
+  justify-content: end !important;
+  margin-right: 17px !important;
+  position: absolute !important;
+}
+
+.partyImage1 {
+  background-image: url(../images/party/evento1.jpg);
+  width: 334px;
+  height: 223px;
+  border-radius: 10px;
+}
+
+.partyImage2 {
+  background-image: url(../images/party/evento2.jpeg);
+  width: 334px;
+  height: 223px;
+  border-radius: 10px;
+}
+
+.partyImage3 {
+  background-image: url(../images/party/evento3.jpg);
+  width: 334px;
+  height: 223px;
+  border-radius: 10px;
+}
+
+.partyBlur {
+  z-index: 1;
+  position: absolute;
+  width: 334px;
+  height: 120px;
+
+  background: rgba(34, 34, 34, 0.3);
+}
 
 //----- Tabela de Eventos -----//
 
 .rows {
-    display: flex;
-    width: 100%;
-    height: 83px;
-    border-radius: 10px;
-    margin-bottom: 30px;
-    background-color: #ffffff !important;
-  }
-  
-  .linhaDaTabela {
-    display: inline-block;
-  }
-  
-  .campoFoto {
-    min-width: 99px;
-    height: 83px;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-  }
-  
-  .campoStatus {
-    min-width: 4px;
-    max-width: 4px;
-    height: 83px;
-    background-color: #7AD81B;
-  }
-  .campoNome {
-    min-width: 400px;
-    max-width: 400px;
-    height: 83px;
-    align-items: center;
-  }
-  .campoCidade {
-    min-width: 180px;
-    max-width: 180px;
-    height: 83px;
-  }
-  
-  .campoData {
-    min-width: 182px;
-    max-width: 182px;
-    height: 83px;
-  }
-  .campoAção {
-    min-width: 144px;
-    max-width: 144px;
-    height: 83px;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-  }
+  display: flex;
+  width: 100%;
+  height: 83px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  background-color: #ffffff !important;
+}
 
-  .celulaNome {
-    min-width: 236px;
-    max-width: 236px;
-    margin-top: 32px; 
-    margin-bottom: 32px; 
-    margin-left: 22px; 
-    position: absolute;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap; 
-  }
-  .celulaCidade {
-    min-width: 180px;
-    max-width: 180px;
-    margin-top: 32px; 
-    // margin-bottom: 32px; 
-    white-space: nowrap; 
-    overflow: hidden;
-    text-overflow: ellipsis;
-    position: absolute;
-  }
-  .celulaData {
-    margin-top: 32px; 
-    margin-bottom: 32px; 
-    position: absolute;
-  }
-  
-  .celulaAção {
-    min-width: 110px;
-    max-width: 110px;
-    margin-top: 32px; 
-    margin-bottom: 32px; 
-    position: absolute;
-  }
+.linhaDaTabela {
+  display: inline-block;
+}
 
-  .header {
-    display: flex;
-    width: 1062px;
-    border-radius: 10px;
-    margin-bottom: 30px;
-  }
+.campoFoto {
+  min-width: 99px;
+  height: 83px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
 
-  .headerFoto {
-    margin-bottom: 18px;
-    width: 99px;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-  }
-  
-  .headerStatus {
-    width: 4px;
-  }
-  .headerNome {
-    margin-bottom: 18px;
-    width: 400px;
-  }
-  .headerCidade {
-    margin-bottom: 18px;
-    width: 180px;
-  }
-  
-  .headerData {
-    margin-bottom: 18px;
-    width: 182px;
-  }
-  .headerAção {
-    margin-bottom: 18px;
-    width: 144px;
-  }
+.campoStatus {
+  min-width: 4px;
+  max-width: 4px;
+  height: 83px;
+  background-color: #7ad81b;
+}
+.campoNome {
+  min-width: 400px;
+  max-width: 400px;
+  height: 83px;
+  align-items: center;
+}
+.campoCidade {
+  min-width: 180px;
+  max-width: 180px;
+  height: 83px;
+}
 
-  .modal-backdrop {
-      width: 100% !important;
-      height: 100% !important;
-  }
+.campoData {
+  min-width: 182px;
+  max-width: 182px;
+  height: 83px;
+}
+.campoAção {
+  min-width: 144px;
+  max-width: 144px;
+  height: 83px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.celulaNome {
+  min-width: 236px;
+  max-width: 236px;
+  margin-top: 32px;
+  margin-bottom: 32px;
+  margin-left: 22px;
+  position: absolute;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.celulaCidade {
+  min-width: 180px;
+  max-width: 180px;
+  margin-top: 32px;
+  // margin-bottom: 32px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: absolute;
+}
+.celulaData {
+  margin-top: 32px;
+  margin-bottom: 32px;
+  position: absolute;
+}
+
+.celulaAção {
+  min-width: 110px;
+  max-width: 110px;
+  margin-top: 32px;
+  margin-bottom: 32px;
+  position: absolute;
+}
+
+.header {
+  display: flex;
+  width: 1062px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+}
+
+.headerFoto {
+  margin-bottom: 18px;
+  width: 99px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.headerStatus {
+  width: 4px;
+}
+.headerNome {
+  margin-bottom: 18px;
+  width: 400px;
+}
+.headerCidade {
+  margin-bottom: 18px;
+  width: 180px;
+}
+
+.headerData {
+  margin-bottom: 18px;
+  width: 182px;
+}
+.headerAção {
+  margin-bottom: 18px;
+  width: 144px;
+}
+
+.modal-backdrop {
+  width: 100% !important;
+  height: 100% !important;
+}
 
 //----- Card de Eventos -----//
 
-.descriptionEvent{
+.descriptionEvent {
   margin-top: 103px !important;
   border-radius: 10px !important;
   position: absolute !important;
   width: 334px !important;
   height: 120px !important;
   background-color: transparent !important;
-  backdrop-filter: blur(5px)  !important;
+  backdrop-filter: blur(5px) !important;
   -webkit-backdrop-filter: blur(5px) !important;
 }
 
@@ -601,6 +634,25 @@
 .reportCard {
   width: 182px;
   height: 177px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border-radius: 10px;
+}
+
+.titleStep {
+  padding-bottom: 50px;
+  display: flex;
+  flex-direction: column;
+}
+
+hr.lineText {
+    height: 4px;
+    max-width: 20rem;
+    position: relative;
+    top: 20px;
+    border: none;
+    height: 2px;
+    background: black;
+    margin-bottom: 50px;
+    margin: auto 0;
+    margin-top: -15px;
 }

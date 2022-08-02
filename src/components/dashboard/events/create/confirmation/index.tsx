@@ -23,7 +23,7 @@ const Sample = (): JSX.Element => {
           <img src={step5} />
         </div>
         <Col>
-          <div style={{ display: 'grid', paddingBottom: '50px' }}>
+          <div className="titleStep">
             <div className="pageTitle">Confirmação de dados</div>
             <img src={titleLine} style={{ paddingTop: '-20px' }} />
           </div>

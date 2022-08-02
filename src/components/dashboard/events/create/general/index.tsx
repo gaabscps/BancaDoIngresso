@@ -220,8 +220,9 @@ const Sample = (): JSX.Element => {
         </div>
         <Row lg="2" md="1">
           <Col>
-            <div style={{ display: 'grid', paddingBottom: '50px' }}>
+            <div className="titleStep">
               <Label className="pageTitle">Informações gerais</Label>
+              <hr className="lineText" />
               {/* <img src={titleLine} style={{ paddingTop: '-20px' }} /> */}
             </div>
             <Form>
@@ -440,8 +441,9 @@ const Sample = (): JSX.Element => {
                 />
               </div>
             </Form>
-            <div style={{ display: 'grid', paddingBottom: '50px' }}>
+            <div className="titleStep">
               <Label className="pageTitle">Informações complementares</Label>
+              <hr className="lineText" />
               {/* <img src={secondTitleLine} style={{ paddingTop: '-20px' }} /> */}
             </div>
             <Form>

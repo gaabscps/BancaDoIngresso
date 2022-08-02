@@ -42,9 +42,9 @@ const RegisterUser = (props: Props): JSX.Element => {
       <Modal.Body>
         <Container>
           <Card className="mainContainer" style={{ backgroundColor: '#F1F1F1' }}>
-            <div style={{ display: 'grid', paddingBottom: '50px' }}>
+            <div className="titleStep">
               <Label className="pageTitle">Informações básicas</Label>
-              <img src={titleLine} style={{ paddingTop: '-20px' }} alt="" />
+              <hr className="lineText" />
             </div>
             <div className="d-flex">
               <div className="fieldSpacing">
@@ -141,7 +141,7 @@ const RegisterUser = (props: Props): JSX.Element => {
                 placeholder="Ex: 123123"
               />
             </div>
-            <div style={{ display: 'grid', paddingBottom: '50px' }}>
+            <div className="titleStep">
               <Label className="pageTitle">Tipo do usuário </Label>
               <Label className="subTitleMain">Papel do usuário dentro do sistema</Label>
               <img src={thirdTitleLine} style={{ paddingTop: '-20px' }} alt="" />

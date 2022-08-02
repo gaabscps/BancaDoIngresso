@@ -71,9 +71,10 @@ const Sample = (): JSX.Element => {
         <div className="d-flex justify-content-center stepContainer">
           <img src={step4} />
         </div>
-        <div style={{ display: 'grid', paddingBottom: '50px' }}>
+        <div className="titleStep">
           <div className="pageTitle">PDV</div>
-          <img src={titleLine} style={{ paddingTop: '-20px' }} />
+          <hr className="lineText" />
+          {/* <img src={titleLine} style={{ paddingTop: '-20px' }} /> */}
         </div>
         <div className="groupButton">
           <Label className="fieldLabel">Permitir PDV?</Label>
@@ -263,7 +264,7 @@ const Sample = (): JSX.Element => {
               Preencha as 5 (CINCO) etapas abaixo para adicionar um PDV
             </div>
             <div className="infoContainer">
-              <div className="d-flex justify-content-around">
+              <div className="d-flex justify-content-center flex-wrap">
                 <button
                   className={step === 0 ? 'tabButtonActive' : 'tabButtonDesactive'}
                   onClick={() => setStep(0)}

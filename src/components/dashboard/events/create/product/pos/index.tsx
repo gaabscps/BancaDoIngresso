@@ -63,7 +63,7 @@ const Sample = (): JSX.Element => {
                 </Row>
                 <div className="d-flex pt-2"></div>
                 <div className="d-flex pt-2">
-                  <div className="fieldSpacing" style={{ marginRight: '50px' }}>
+                  <div className="fieldSpacing">
                     <Label className="fieldLabel" for="commission">
                       Porcentagem de comissão(%)
                     </Label>

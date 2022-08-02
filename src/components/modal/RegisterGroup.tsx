@@ -43,9 +43,9 @@ const RegisterGroup = (props: Props): JSX.Element => {
       <Modal.Body>
         <Container>
           <Card className="mainContainer" style={{ backgroundColor: '#F1F1F1' }}>
-            <div style={{ display: 'grid', paddingBottom: '50px' }}>
+            <div className="titleStep">
               <Label className="pageTitle">Informações básicas</Label>
-              <img src={titleLine} style={{ paddingTop: '-20px' }} alt="" />
+              <hr className="lineText" />
             </div>
             <div className="d-flex">
               <div className="fieldSpacing">
@@ -73,7 +73,7 @@ const RegisterGroup = (props: Props): JSX.Element => {
                 type="textarea"
               />
             </div>
-            <div style={{ display: 'grid', paddingBottom: '50px' }}>
+            <div className="titleStep">
               <Label className="pageTitle">Permissões do grupo</Label>
               <Label className="subTitleMain">
                 Seções e ações que este grupo poderá acessar e realizar
