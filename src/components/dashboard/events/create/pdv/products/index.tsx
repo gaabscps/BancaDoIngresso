@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react';
-import { Container, FormGroup, Label } from 'reactstrap';
+import { Container, FormGroup, Label, Row, Col } from 'reactstrap';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import SuperInput from '../../../../../sharedComponents/SuperInput';
 import SuperCollapse from '../../../../../sharedComponents/SuperCollapse';
@@ -30,31 +30,36 @@ const Sample = (): JSX.Element => {
         {show ? (
           <>
             <hr className="dividerUp" />
+
             <div className="whiteContainer">
-              <div className="d-flex ">
-                <FormGroup style={{ marginRight: '50px' }}>
-                  <Label className="fieldLabel" for="eventSectionsSection">
-                    Setor
-                  </Label>
-                  <SuperInput
-                    style={{ width: '359px' }}
-                    placeholder="Digite ou selecione o setor"
-                    id="eventSectionsSection"
-                    name="eventSectionsSection"
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label className="fieldLabel" for="eventSectionsProducts">
-                    Produtos
-                  </Label>
-                  <SuperInput
-                    style={{ width: '359px' }}
-                    id="eventSectionsProducts"
-                    name="eventSectionsProducts"
-                    placeholder="Digite ou selecione o produto"
-                  />
-                </FormGroup>
-              </div>
+              <Row lg="2" md="1">
+                <Col>
+                  <FormGroup>
+                    <Label className="fieldLabel" for="eventSectionsSection">
+                      Setor
+                    </Label>
+                    <SuperInput
+                      // style={{ width: '359px' }}
+                      placeholder="Digite ou selecione o setor"
+                      id="eventSectionsSection"
+                      name="eventSectionsSection"
+                    />
+                  </FormGroup>
+                </Col>
+                <Col>
+                  <FormGroup>
+                    <Label className="fieldLabel" for="eventSectionsProducts">
+                      Produtos
+                    </Label>
+                    <SuperInput
+                      // style={{ width: '359px' }}
+                      id="eventSectionsProducts"
+                      name="eventSectionsProducts"
+                      placeholder="Digite ou selecione o produto"
+                    />
+                  </FormGroup>
+                </Col>
+              </Row>
               <div className="auxGrayText pb-2">Inserir TODOS produtos desse setor</div>
             </div>
           </>

@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { Container, FormGroup, Label } from 'reactstrap';
+import { Container, FormGroup, Label, Row, Col } from 'reactstrap';
 import { Button } from 'react-bootstrap';
 import SuperInput from '../../../../../sharedComponents/SuperInput';
 
@@ -7,25 +7,29 @@ const Sample = (): JSX.Element => (
   <Fragment>
     <Container className="subContainer" fluid={true}>
       <hr className="dividerUp" />
-      <div className="d-flex">
-        <FormGroup className="fieldSpacing">
-          <Label className="fieldLabel" for="usersName">
-            Usuário do PDV
-          </Label>
-          <SuperInput
-            placeholder="Digite ou selecione o usuário do PDV"
-            id="usersName"
-            name="usersName"
-          />
-          <div className="auxSucessText" style={{ paddingTop: '20px' }}>
-            + cadastrar novo usuário
+      <Row>
+        <Col>
+          <FormGroup className="fieldSpacing">
+            <Label className="fieldLabel" for="usersName">
+              Usuário do PDV
+            </Label>
+            <SuperInput
+              placeholder="Digite ou selecione o usuário do PDV"
+              id="usersName"
+              name="usersName"
+            />
+          </FormGroup>
+        </Col>
+        <Col>
+          <div style={{ color: '#fff', marginTop: '50px' }}>
+            <Button style={{ height: '50px', width: '200px' }} variant="outline-light">
+              <div className="greyNormalText">Inserir usuário</div>
+            </Button>
           </div>
-        </FormGroup>
-        <div style={{ color: '#fff', marginTop: '50px' }}>
-          <Button style={{ height: '50px', width: '200px' }} variant="outline-light">
-            <div className="greyNormalText">Inserir usuário</div>
-          </Button>
-        </div>
+        </Col>
+      </Row>
+      <div className="auxSucessText" style={{ paddingTop: '20px' }}>
+        + cadastrar novo usuário
       </div>
       <div className="nextPageButton">
         <div style={{ color: '#fff' }}>

@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react';
-import { Container, FormGroup, Label } from 'reactstrap';
+import { Container, FormGroup, Label, Row, Col } from 'reactstrap';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import SuperInput from '../../../../../sharedComponents/SuperInput';
 import POSIcon from '../../../../../../assets/images/svg/Pos';
@@ -30,22 +30,37 @@ const Sample = (): JSX.Element => {
         {show ? (
           <>
             <hr className="dividerUp" />
-            <div className="d-flex pt-2 whiteContainer">
-              <FormGroup className="fieldSpacing">
-                <Label className="fieldLabel" for="posName">
-                  POS
-                </Label>
-                <SuperInput id="posName" name="posName" placeholder="Digite ou selecione a POS" />
-                <div className="auxSucessText" style={{ paddingTop: '20px' }}>
-                  + cadastrar nova POS
-                </div>
-              </FormGroup>
-              <FormGroup className="fieldSpacing">
-                <Label className="fieldLabel" for="waiter">
-                  Porcentagem do Garçom (%)
-                </Label>
-                <SuperInput style={{ width: '135px' }} id="waiter" name="waiter" placeholder="0%" />
-              </FormGroup>
+            <div className=" whiteContainer">
+              <Row lg="2" md="1">
+                <Col>
+                  <FormGroup className="fieldSpacing">
+                    <Label className="fieldLabel" for="posName">
+                      POS
+                    </Label>
+                    <SuperInput
+                      id="posName"
+                      name="posName"
+                      placeholder="Digite ou selecione a POS"
+                    />
+                    <div className="auxSucessText" style={{ paddingTop: '20px' }}>
+                      + cadastrar nova POS
+                    </div>
+                  </FormGroup>
+                </Col>
+                <Col>
+                  <FormGroup className="fieldSpacing">
+                    <Label className="fieldLabel" for="waiter">
+                      Porcentagem do Garçom (%)
+                    </Label>
+                    <SuperInput
+                      // style={{ width: '135px' }}
+                      id="waiter"
+                      name="waiter"
+                      placeholder="0%"
+                    />
+                  </FormGroup>
+                </Col>
+              </Row>
             </div>
           </>
         ) : null}
