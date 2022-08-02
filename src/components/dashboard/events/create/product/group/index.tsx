@@ -1,6 +1,6 @@
 import React, { ChangeEvent, Fragment, MouseEvent, useState } from 'react';
 import { Button } from 'react-bootstrap';
-import { Container, FormGroup, Label } from 'reactstrap';
+import { Container, FormGroup, Label, Row, Col } from 'reactstrap';
 import BottleIcon from '../../../../../../assets/images/svg/Bottle';
 import RemoveX from '../../../../../../assets/images/svg/RemoveX';
 import SuperCollapse from '../../../../../sharedComponents/SuperCollapse';
@@ -49,65 +49,76 @@ const Sample = (): JSX.Element => {
         </div>
         <div className="whiteContainer">
           <FormGroup>
-            <div className="fieldSpacing">
-              <Label className="fieldLabel" for="groupName">
-                Nome do grupo
-              </Label>
-              <SuperInput
-                id="grupo"
-                name="grupo"
-                placeholder="Digite o nome do grupo. Ex: Bebidas"
-              />
-            </div>
-            <div className="fieldSpacing">
-              <Label className="fieldLabel" for="imageBase64">
-                Imagem do grupo (opcional)
-              </Label>
-              <SuperInput
-                id="imageBase64"
-                placeholder="Nenhum arquivo selecionado"
-                name="file"
-                type="file"
-              />
-            </div>
-            {inputFields.map((inputField, index) => (
-              <div key={index} className="d-flex">
+            <Row lg="2" md="1">
+              <Col>
                 <div className="fieldSpacing">
-                  <Label className="fieldLabel" for="subgroupName">
-                    Nome do Subgrupo (opcional)
+                  <Label className="fieldLabel" for="groupName">
+                    Nome do grupo
                   </Label>
-                  <div className="fieldSpacing">
-                    <SuperInput
-                      id="subgroupName"
-                      placeholder="Bebidas doces"
-                      value={inputField.groupName}
-                      onChange={event => handleChangeInput(index, event)}
-                    />
-                  </div>
+                  <SuperInput
+                    id="grupo"
+                    name="grupo"
+                    placeholder="Digite o nome do grupo. Ex: Bebidas"
+                  />
                 </div>
-
-                <div style={{ color: '#fff', marginTop: '55px' }} className="d-flex">
-                  <div
-                    style={{
-                      height: '50px',
-                      cursor: 'pointer',
-                      paddingTop: '15px',
-                      marginRight: '25px',
-                    }}
-                    onClick={() => handleDeleteFields(index)}
-                  >
-                    <RemoveX />
-                  </div>
-                  <Button
-                    style={{ height: '50px' }}
-                    variant="outline-light"
-                    onClick={() => handleAddFields()}
-                  >
-                    adicionar novo Subgrupo
-                  </Button>
+                <div className="fieldSpacing">
+                  <Label className="fieldLabel" for="imageBase64">
+                    Imagem do grupo (opcional)
+                  </Label>
+                  <SuperInput
+                    id="imageBase64"
+                    placeholder="Nenhum arquivo selecionado"
+                    name="file"
+                    type="file"
+                  />
                 </div>
-              </div>
-            ))}
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                {inputFields.map((inputField, index) => (
+                  <Row key={index}>
+                    <Col>
+                      <div className="fieldSpacing">
+                        <Label className="fieldLabel" for="subgroupName">
+                          Nome do Subgrupo (opcional)
+                        </Label>
+                        <div className="fieldSpacing">
+                          <SuperInput
+                            id="subgroupName"
+                            placeholder="Bebidas doces"
+                            value={inputField.groupName}
+                            onChange={event => handleChangeInput(index, event)}
+                          />
+                        </div>
+                      </div>
+                    </Col>
+                    <Col>
+                      <div style={{ color: '#fff', marginTop: '55px' }} className="d-flex">
+                        <div
+                          style={{
+                            height: '50px',
+                            cursor: 'pointer',
+                            paddingTop: '15px',
+                            marginRight: '25px',
+                          }}
+                          onClick={() => handleDeleteFields(index)}
+                        >
+                          <RemoveX />
+                        </div>
+                        <Button
+                          style={{ height: '50px' }}
+                          variant="outline-light"
+                          onClick={() => handleAddFields()}
+                        >
+                          adicionar novo Subgrupo
+                        </Button>
+                      </div>
+                    </Col>
+                  </Row>
+                ))}
+              </Col>
+            </Row>
           </FormGroup>
           <div className="nextPageButton">
             <div className="auxSucessText" style={{ paddingTop: '20px' }} onClick={handleSubmit}>

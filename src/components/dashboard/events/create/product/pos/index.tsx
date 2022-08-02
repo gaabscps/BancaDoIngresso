@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { Fragment, useState } from 'react';
-import { Container, FormGroup, Label } from 'reactstrap';
+import { Container, FormGroup, Label, Row, Col } from 'reactstrap';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import SuperInput from '../../../../../sharedComponents/SuperInput';
 import SuperCollapse from '../../../../../sharedComponents/SuperCollapse';
@@ -29,64 +29,73 @@ const Sample = (): JSX.Element => {
         </div>
         <div className="whiteContainer">
           <FormGroup>
-            <div className="d-flex pt-2">
-              <div className="fieldSpacing">
-                <Label className="fieldLabel" for="posName">
-                  POS
-                </Label>
-                <SuperInput
-                  id="posName"
-                  name="posName"
-                  placeholder="Digite ou selecione o produto"
-                />
-                <div className="auxSucessText" style={{ paddingTop: '20px' }}>
-                  + cadastrar nova POS
+            <Row lg="2" md="1">
+              <Col>
+                <Row>
+                  <Col>
+                    <div className="fieldSpacing">
+                      <Label className="fieldLabel" for="posName">
+                        POS
+                      </Label>
+                      <SuperInput
+                        id="posName"
+                        name="posName"
+                        placeholder="Digite ou selecione o produto"
+                      />
+                      <div className="auxSucessText" style={{ paddingTop: '20px' }}>
+                        + cadastrar nova POS
+                      </div>
+                    </div>
+                  </Col>
+                  <Col>
+                    <div className="fieldSpacing">
+                      <Label className="fieldLabel" for="waiter">
+                        Porcentagem do garçom (%)
+                      </Label>
+                      <SuperInput
+                        style={{ width: '135px' }}
+                        id="waiter"
+                        name="waiter"
+                        placeholder="Ex: 100"
+                      />
+                    </div>
+                  </Col>
+                </Row>
+                <div className="d-flex pt-2"></div>
+                <div className="d-flex pt-2">
+                  <div className="fieldSpacing" style={{ marginRight: '50px' }}>
+                    <Label className="fieldLabel" for="commission">
+                      Porcentagem de comissão(%)
+                    </Label>
+                    <SuperInput
+                      style={{ width: '135px' }}
+                      id="commission"
+                      name="commission"
+                      placeholder="0%"
+                    />
+                  </div>
+                  <div className="groupButton">
+                    <Label className="fieldLabel">Aceita desconto?</Label>
+                    <ButtonGroup style={{ width: '100px' }}>
+                      <Button
+                        variant="outline-dark"
+                        style={{ height: '62px', width: '100px' }}
+                        onClick={() => setAllowDiscount(true)}
+                      >
+                        Sim
+                      </Button>
+                      <Button
+                        variant="outline-dark"
+                        style={{ height: '62px', width: '100px' }}
+                        onClick={() => setAllowDiscount(false)}
+                      >
+                        Não
+                      </Button>
+                    </ButtonGroup>
+                  </div>
                 </div>
-              </div>
-              <div className="fieldSpacing">
-                <Label className="fieldLabel" for="waiter">
-                  Porcentagem do garçom (%)
-                </Label>
-                <SuperInput
-                  style={{ width: '135px' }}
-                  id="waiter"
-                  name="waiter"
-                  placeholder="Ex: 100"
-                />
-              </div>
-            </div>
-            <div className="d-flex pt-2">
-              <div className="fieldSpacing" style={{ marginRight: '50px' }}>
-                <Label className="fieldLabel" for="commission">
-                  Porcentagem de comissão(%)
-                </Label>
-                <SuperInput
-                  style={{ width: '135px' }}
-                  id="commission"
-                  name="commission"
-                  placeholder="0%"
-                />
-              </div>
-              <div className="groupButton">
-                <Label className="fieldLabel">Aceita desconto?</Label>
-                <ButtonGroup style={{ width: '100px' }}>
-                  <Button
-                    variant="outline-dark"
-                    style={{ height: '62px', width: '100px' }}
-                    onClick={() => setAllowDiscount(true)}
-                  >
-                    Sim
-                  </Button>
-                  <Button
-                    variant="outline-dark"
-                    style={{ height: '62px', width: '100px' }}
-                    onClick={() => setAllowDiscount(false)}
-                  >
-                    Não
-                  </Button>
-                </ButtonGroup>
-              </div>
-            </div>
+              </Col>
+            </Row>
           </FormGroup>
           <div className="nextPageButton">
             <div className="auxSucessText" style={{ paddingTop: '20px' }}>
