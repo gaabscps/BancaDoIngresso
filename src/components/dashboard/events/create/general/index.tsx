@@ -216,7 +216,7 @@ const Sample = (): JSX.Element => {
       <ParentEvent show={showParentEvent} setShowParentEvent={setShowParentEvent} />
       <Container className="mainContainer" fluid={true}>
         <div className="d-flex justify-content-center stepContainer">
-          <img src={step1} className="stepImage" />
+          <img src={step1} />
         </div>
         <Row lg="2" md="1">
           <Col>
