@@ -642,18 +642,19 @@ const Sample = (): JSX.Element => {
                 />
               </div>
             </Form>
-            <div className="nextPageButton">
-              <div style={{ color: '#fff' }}>
-                <Button style={{ height: '50px' }} variant="outline-light" onClick={goBack}>
-                  Voltar
-                </Button>
-              </div>
-              <SuperButton style={{ width: '278px' }} onClick={handleSubmit}>
-                Avançar para Setor e ingresso
-              </SuperButton>
-            </div>
           </Col>
         </Row>
+        <hr className="dividerUp"/>
+        <div className="nextPageButton">
+          <div style={{ color: '#fff' }}>
+            <Button style={{ height: '50px' }} variant="outline-light" onClick={goBack}>
+              Voltar
+            </Button>
+          </div>
+          <SuperButton style={{ width: '278px' }} onClick={handleSubmit}>
+            Avançar para Setor e ingresso
+          </SuperButton>
+        </div>
       </Container>
     </Fragment>
   );
