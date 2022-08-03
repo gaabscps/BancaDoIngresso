@@ -196,18 +196,18 @@ const Sample = (): JSX.Element => {
       publishWebsite,
       id: '',
     };
-    // dispatch(generalInformationRequest(createGeneralInformation));
+    dispatch(generalInformationRequest(createGeneralInformation));
     nextStep();
   };
 
   useEffect(() => {
-    // dispatch(listRequestCategory({ page: 1, pageSize: 10 }));
-    // dispatch(listRequestContractor({ page: 1, pageSize: 10 }));
+    dispatch(listRequestCategory({ page: 1, pageSize: 10 }));
+    dispatch(listRequestContractor({ page: 1, pageSize: 10 }));
   }, []);
 
-  // useEffect(() => {
-  //   dispatch(generalInformationRequest(pagination));
-  // }, [event]);
+  useEffect(() => {
+    console.log('contractor', contractor);
+  }, [contractor]);
 
   return (
     <Fragment>
@@ -393,7 +393,7 @@ const Sample = (): JSX.Element => {
                   Categoria do evento
                 </Label>
                 <SelectAutoComplete
-                  options={category?.data?.page?.list}
+                  options={category?.data?.page?.list?.map(value => ({value: value.id, label: value.name}))}
                   name="category"
                   onChange={onChangeSelect('category')}
                   // value={form.eventType}
@@ -413,7 +413,7 @@ const Sample = (): JSX.Element => {
                 </Label>
 
                 <SelectAutoComplete
-                  options={category?.data?.page?.list}
+                  options={contractor?.data?.page?.list?.map(value => ({value: value.id, label: value.name}))}
                   name="contractor"
                   onChange={onChangeSelect('contractor')}
                   // value={form.eventType}
