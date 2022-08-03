@@ -21,7 +21,6 @@ const reducer: Reducer<EventState> = (state = INITIAL_STATE, action) => {
     case EventTypes.LIST_EVENT_FAILURE:
       return {
         ...state,
-        data: {} as EventDataType,
         loading: false,
         error: action.payload.error,
       };
@@ -37,7 +36,6 @@ const reducer: Reducer<EventState> = (state = INITIAL_STATE, action) => {
     case EventTypes.GET_EVENT_FAILURE:
       return {
         ...state,
-        data: {} as EventDataType,
         loading: false,
         error: action.payload.error,
       };
@@ -53,7 +51,6 @@ const reducer: Reducer<EventState> = (state = INITIAL_STATE, action) => {
     case EventTypes.GET_ALL_EVENT_FAILURE:
       return {
         ...state,
-        data: {} as EventDataType,
         loading: false,
         error: action.payload.error,
       };
@@ -70,7 +67,6 @@ const reducer: Reducer<EventState> = (state = INITIAL_STATE, action) => {
     case EventTypes.GENERAL_INFORMATION_EVENT_FAILURE:
       return {
         ...state,
-        data: {} as EventDataType,
         loading: false,
         error: action.payload.error,
       };
@@ -86,7 +82,6 @@ const reducer: Reducer<EventState> = (state = INITIAL_STATE, action) => {
     case EventTypes.TICKET_MAIN_CONFIGURATION_EVENT_FAILURE:
       return {
         ...state,
-        data: {} as EventDataType,
         loading: false,
         error: action.payload.error,
       };
@@ -102,7 +97,6 @@ const reducer: Reducer<EventState> = (state = INITIAL_STATE, action) => {
     case EventTypes.TICKET_PAYMENT_EVENT_FAILURE:
       return {
         ...state,
-        data: {} as EventDataType,
         loading: false,
         error: action.payload.error,
       };
@@ -118,7 +112,6 @@ const reducer: Reducer<EventState> = (state = INITIAL_STATE, action) => {
     case EventTypes.TICKET_GENERAL_SETTINGS_EVENT_FAILURE:
       return {
         ...state,
-        data: {} as EventDataType,
         loading: false,
         error: action.payload.error,
       };
@@ -134,7 +127,6 @@ const reducer: Reducer<EventState> = (state = INITIAL_STATE, action) => {
     case EventTypes.SECTION_PRODUCT_PRODUCT_EVENT_FAILURE:
       return {
         ...state,
-        data: {} as EventDataType,
         loading: false,
         error: action.payload.error,
       };
@@ -150,7 +142,6 @@ const reducer: Reducer<EventState> = (state = INITIAL_STATE, action) => {
     case EventTypes.SECTION_PRODUCT_COMBO_EVENT_FAILURE:
       return {
         ...state,
-        data: {} as EventDataType,
         loading: false,
         error: action.payload.error,
       };
@@ -166,7 +157,6 @@ const reducer: Reducer<EventState> = (state = INITIAL_STATE, action) => {
     case EventTypes.SECTION_PRODUCT_COMBO_SECTION_EVENT_FAILURE:
       return {
         ...state,
-        data: {} as EventDataType,
         loading: false,
         error: action.payload.error,
       };
@@ -182,7 +172,6 @@ const reducer: Reducer<EventState> = (state = INITIAL_STATE, action) => {
     case EventTypes.SECTION_PRODUCT_POS_EVENT_FAILURE:
       return {
         ...state,
-        data: {} as EventDataType,
         loading: false,
         error: action.payload.error,
       };
@@ -198,7 +187,6 @@ const reducer: Reducer<EventState> = (state = INITIAL_STATE, action) => {
     case EventTypes.PDV_MAIN_EVENT_FAILURE:
       return {
         ...state,
-        data: {} as EventDataType,
         loading: false,
         error: action.payload.error,
       };
@@ -214,7 +202,6 @@ const reducer: Reducer<EventState> = (state = INITIAL_STATE, action) => {
     case EventTypes.PDV_TICKET_EVENT_FAILURE:
       return {
         ...state,
-        data: {} as EventDataType,
         loading: false,
         error: action.payload.error,
       };
@@ -230,7 +217,6 @@ const reducer: Reducer<EventState> = (state = INITIAL_STATE, action) => {
     case EventTypes.PDV_PRODUCT_EVENT_FAILURE:
       return {
         ...state,
-        data: {} as EventDataType,
         loading: false,
         error: action.payload.error,
       };
@@ -246,7 +232,6 @@ const reducer: Reducer<EventState> = (state = INITIAL_STATE, action) => {
     case EventTypes.PDV_SUBPDV_EVENT_FAILURE:
       return {
         ...state,
-        data: {} as EventDataType,
         loading: false,
         error: action.payload.error,
       };
