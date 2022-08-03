@@ -15,18 +15,15 @@
   padding: 50px !important;
 }
 
-
 .subContainer {
   padding: 10px !important;
 }
-
 
 .infoContainer {
   padding: 50px !important;
   background-color: #f1f1f1 !important;
   border-radius: 5px !important;
 }
-
 
 .whiteContainer {
   padding: 50px !important;
@@ -54,7 +51,7 @@
 
 @media (max-width: $media-query-sm) {
   .whiteContainer {
-    padding: 30px 20px !important
+    padding: 30px 20px !important;
   }
 }
 
@@ -328,6 +325,33 @@
   height: 165px !important;
   background: #ffffff !important;
   border-radius: 10px !important;
+  border: none;
+}
+
+// .cardHome {
+//   border: none;
+//   background: #ffffff !important;
+//   border-radius: 1px !important;
+//   div {
+//     display: flex !important;
+//     justify-content: center;
+//     align-items: center !important;
+//     flex-direction: column;
+//   }
+//   div + div {
+//     border-left: #F1F1F1 ;
+//     border-left-style: solid !important;
+//   }
+// }
+
+.cardHome {
+  padding: 0;
+  border: none;
+  background: #ffffff !important;
+  border-radius: 10px !important;
+  .row .col:not(:first-child) {
+    border-left: 1px solid #f1f1f1;
+  }
 }
 
 .firstDiv {
@@ -355,9 +379,14 @@
   font-weight: 500 !important;
   font-size: 16px !important;
   line-height: 24px !important;
+  // height: 5rem;
+  img {
+    margin-right: 10px;
+  }
 }
 .count {
   color: #828282 !important;
+  margin-left: 25px;
 }
 
 .partyCard {
@@ -645,14 +674,14 @@
 }
 
 hr.lineText {
-    height: 4px;
-    max-width: 20rem;
-    position: relative;
-    top: 20px;
-    border: none;
-    height: 2px;
-    background: black;
-    margin-bottom: 50px;
-    margin: auto 0;
-    margin-top: -15px;
+  height: 4px;
+  max-width: 20rem;
+  position: relative;
+  top: 20px;
+  border: none;
+  height: 2px;
+  background: black;
+  margin-bottom: 50px;
+  margin: auto 0;
+  margin-top: -15px;
 }

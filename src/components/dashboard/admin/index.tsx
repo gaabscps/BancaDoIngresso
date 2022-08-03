@@ -36,41 +36,50 @@ const Sample = (): JSX.Element => {
         </div>
         <Row>
           <Col sm="12">
-            <CardHeader className="cardHeader row">
-              <div className="firstDiv col">
-                <div className="firstContent textContent d-flex align-items-start">
-                  <img src={clock} style={{ paddingRight: '8px', marginTop: '5px' }} />
-                  <div className="d-flex flex-column">
-                    Eventos pendentes de liberação
-                    <div className="count">{home?.data?.pendingReleaseEvents}</div>
+            <CardHeader className="cardHome">
+              <div className="row">
+                <div className="col">
+                  <div className="d-flex justify-content-center">
+                    <div className="p-40">
+                      <div className="textContent flex-row">
+                        <img src={clock} />
+                        Eventos pendentes de liberação
+                      </div>
+                      <div className="count">{home?.data?.pendingReleaseEvents}</div>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="firstDiv col">
-                <div className="firstContent textContent d-flex align-items-start">
-                  <img src={x} style={{ paddingRight: '8px', marginTop: '5px' }} />
-                  <div className="d-flex flex-column">
-                    Eventos cancelados
-                    <div className="count">{home.data.canceledEvents}</div>
+                <div className="col">
+                  <div className="d-flex justify-content-center">
+                    <div className="p-40">
+                      <div className="textContent flex-row">
+                        <img src={x} />
+                        Eventos cancelados
+                      </div>
+                      <div className="count">{home.data.canceledEvents}</div>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="firstDiv col">
-                <div className="firstContent textContent d-flex align-items-start">
-                  <img src={money} style={{ paddingRight: '8px', marginTop: '5px' }} />
-                  <div className="d-flex flex-column">
-                    PDV’s cadastrados
-                    <div className="count">{home.data.registeredPdvs}</div>
+                <div className="col">
+                  <div className="d-flex justify-content-center">
+                    <div className="p-40">
+                      <div className="textContent flex-row">
+                        <img src={money} />
+                        PDV’s cadastrados
+                      </div>
+                      <div className="count">{home.data.registeredPdvs}</div>
+                    </div>
                   </div>
                 </div>
-              </div>
-
-              <div className="lastDiv col">
-                <div className="firstContent textContent d-flex align-items-start">
-                  <img src={reMoney} style={{ paddingRight: '8px', marginTop: '5px' }} />
-                  <div className="d-flex flex-column">
-                    Chargeback
-                    <div className="count">{home.data.chargeback}</div>
+                <div className="col">
+                  <div className="d-flex justify-content-center">
+                    <div className="p-40">
+                      <div className="textContent flex-row">
+                        <img src={reMoney} />
+                        Chargeback
+                      </div>
+                      <div className="count">{home.data.chargeback}</div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -89,11 +98,11 @@ const Sample = (): JSX.Element => {
           </div>
           <div style={{ width: '1062px', display: 'contents' }}>
             <div
-              className="d-inline-block justify-content-between"
+              className="parent"
               style={{
                 paddingBottom: '30px',
-                borderStyle: 'solid',
-                borderColor: '#0ff',
+                // borderStyle: 'solid',
+                // borderColor: '#0ff',
                 borderWidth: '1px',
                 minWidth: 'auto',
               }}
