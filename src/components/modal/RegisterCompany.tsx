@@ -3,13 +3,14 @@ import { Modal, Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { Card, Container, Label } from 'reactstrap';
 import CloseModal from '../../assets/images/svg/CloseModal';
+import { imageTeste } from '../../constant/imageTest';
 import Address from '../../entities/Address';
-import Company from '../../entities/Company';
-import { createRequest } from '../../store/ducks/company/actions';
+import Contractor from '../../entities/Contractor';
+import { createRequest } from '../../store/ducks/contractor/actions';
 import SuperInput from '../sharedComponents/SuperInput';
 
 interface CreateCompany {
-  id: string;
+  id: any;
   name: string;
   type: string;
   telephone: string;
@@ -27,6 +28,7 @@ interface DispatchProps {
 type Props = StateProps & DispatchProps;
 
 const RegisterCompany = (props: Props): JSX.Element => {
+  const image = imageTeste;
   const dispatch = useDispatch();
   const [form, setForm] = useState<CreateCompany | any>({} as CreateCompany);
   const handleClose = (): void => props.setShowCompany(false);
@@ -50,14 +52,13 @@ const RegisterCompany = (props: Props): JSX.Element => {
   };
 
   const handleSubmit = async (): Promise<void> => {
-    const createCompany: Company = {
-      id: '',
+    const createCompany: Contractor = {
+      id: undefined,
       name: form.name,
       document: form.document,
       telephone: form.telephone,
-      type: form.type,
       address: {
-        id: '-',
+        id: undefined,
         zipCode: '-',
         state: '-',
         city: '-',
@@ -69,14 +70,8 @@ const RegisterCompany = (props: Props): JSX.Element => {
         longitude: 0,
       },
       email: '-',
-      imageUrl: '-',
-      facebookUrl: '-',
-      instagramUrl: '-',
-      twitterUrl: '-',
-      linkedinUrl: '-',
-      urlApi: '-',
-      urlAdmin: '-',
-      urlSite: '-',
+      imageBase64: image,
+      users: [],
     };
     dispatch(createRequest(createCompany));
   };

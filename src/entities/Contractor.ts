@@ -2,7 +2,7 @@ import Address from './Address';
 import User from './User';
 
 export default interface Contractor {
-  id: string;
+  id: any;
   name: string;
   document: string;
   telephone: string;

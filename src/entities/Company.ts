@@ -1,7 +1,7 @@
 import Address from './Address';
 
 export default interface Company {
-  id: string;
+  id: any;
   name: string;
   document: string;
   telephone: string;

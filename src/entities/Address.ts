@@ -1,5 +1,5 @@
 export default interface Address {
-  id: string;
+  id: any;
   zipCode: string;
   state: string;
   city: string;
