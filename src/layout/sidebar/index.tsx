@@ -7,7 +7,6 @@ import configDB from '../../data/customizer/config';
 import { removeAuthLocalStorage } from '../../helpers/localStorage';
 import { ApplicationState } from '../../store';
 import logoBanca from '../../assets/images/logo/logoBanca.png';
-import logo_dark from '../../assets/images/logo/logo_dark.png';
 import logoIcon from '../../assets/images/logo/logo-icon.png';
 
 interface Menu {
@@ -155,7 +154,6 @@ const Sidebar = (): JSX.Element => {
         <div className="logo-wrapper d-flex justify-content-center align-items-center">
           <Link to={`${process.env.PUBLIC_URL}/dashboard`}>
             <img className="img-fluid for-light" src={logoBanca} alt="" />
-            <img className="img-fluid for-dark" src={logo_dark} alt="" />
           </Link>
           <div className="back-btn" onClick={() => responsiveSidebar()}>
             <i className="fa fa-angle-left"></i>

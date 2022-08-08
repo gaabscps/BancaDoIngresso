@@ -3,7 +3,6 @@ import React, { Fragment, useState, useLayoutEffect, useEffect } from 'react';
 import { Sliders } from 'react-feather';
 import { Link } from 'react-router-dom';
 import logo from '../../assets/images/logo/logo.png';
-import logo_dark from '../../assets/images/logo/logo_dark.png';
 
 const Leftbar = (): JSX.Element => {
   const [bonusui, setBonusUI] = useState(false);
@@ -81,7 +80,6 @@ const Leftbar = (): JSX.Element => {
         <div className="logo-wrapper">
           <Link to={`${process.env.PUBLIC_URL}/dashboard/default`}>
             <img className="img-fluid for-light" src={logo} alt="" />
-            <img className="img-fluid for-dark" src={logo_dark} alt="" />
           </Link>
         </div>
         <div
