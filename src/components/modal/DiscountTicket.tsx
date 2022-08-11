@@ -1,5 +1,14 @@
 import React from 'react';
-import { Card, Container, Label, Modal, Button } from 'reactstrap';
+import {
+  Card,
+  Container,
+  Label,
+  Modal,
+  Button,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+} from 'reactstrap';
 import CloseModal from '../../assets/images/svg/CloseModal';
 import SuperInput from '../sharedComponents/SuperInput';
 
@@ -18,15 +27,13 @@ const DiscountTicket = (props: Props): JSX.Element => {
     <>
       <Modal
         size={'xl'}
-        show={props.show}
-        onHide={() => props.setShow(false)}
+        isOpen={props.show}
+        toggle={() => props.setShow(false)}
         dialogClassName="modal-550px"
         aria-labelledby="example-custom-modal-styling-title"
       >
-        <Modal.Header>
-          <Modal.Title id="example-custom-modal-styling-title" className="pageTitle">
-            Adicionar cupom de desconto
-          </Modal.Title>
+        <ModalHeader>
+          <div>Adicionar cupom de desconto</div>
           <div
             onClick={() => {
               handleClose();
@@ -35,8 +42,8 @@ const DiscountTicket = (props: Props): JSX.Element => {
           >
             <CloseModal />
           </div>
-        </Modal.Header>
-        <Modal.Body>
+        </ModalHeader>
+        <ModalBody>
           <Container>
             <Card className="mainContainer" style={{ backgroundColor: '#F1F1F1' }}>
               <div className="d-flex">
@@ -80,12 +87,12 @@ const DiscountTicket = (props: Props): JSX.Element => {
               <div className="auxSucessText">+ inserir novo cupom de desconto</div>
             </div>
           </Container>
-        </Modal.Body>
-        <Modal.Footer>
+        </ModalBody>
+        <ModalFooter>
           <Button style={{ height: '56px' }} variant="dark" onClick={() => handleClose()}>
             Gerar voucher
           </Button>
-        </Modal.Footer>
+        </ModalFooter>
       </Modal>
     </>
   );

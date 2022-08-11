@@ -1,5 +1,15 @@
 import React from 'react';
-import { ButtonGroup, Card, Container, Label, Modal, Button } from 'reactstrap';
+import {
+  ButtonGroup,
+  Card,
+  Container,
+  Label,
+  Modal,
+  Button,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+} from 'reactstrap';
 import CloseModal from '../../assets/images/svg/CloseModal';
 import SuperInput from '../sharedComponents/SuperInput';
 import titleLine from '../../assets/images/svg/titleLine.svg';
@@ -19,14 +29,12 @@ const DiscountTicket = (props: Props): JSX.Element => {
     <>
       <Modal
         size={'xl'}
-        show={props.show}
-        onHide={() => props.setShow(false)}
+        isOpen={props.show}
+        toggle={() => props.setShow(false)}
         aria-labelledby="example-custom-modal-styling-title"
       >
-        <Modal.Header>
-          <Modal.Title id="example-custom-modal-styling-title" className="pageTitle">
-            Configurações do produto
-          </Modal.Title>
+        <ModalHeader>
+          <div>Configurações do produto</div>
           <div
             onClick={() => {
               handleClose();
@@ -35,8 +43,8 @@ const DiscountTicket = (props: Props): JSX.Element => {
           >
             <CloseModal />
           </div>
-        </Modal.Header>
-        <Modal.Body>
+        </ModalHeader>
+        <ModalBody>
           <Container>
             <Card className="mainContainer" style={{ backgroundColor: '#F1F1F1' }}>
               <div className="secondPageTitle">Taxas de cartão</div>
@@ -219,8 +227,8 @@ const DiscountTicket = (props: Props): JSX.Element => {
               <div className="auxSucessText">+ inserir novo cupom de desconto</div>
             </div>
           </Container>
-        </Modal.Body>
-        <Modal.Footer>
+        </ModalBody>
+        <ModalFooter>
           <div className="nextPageButton">
             <div style={{ color: '#fff' }}>
               <Button
@@ -233,7 +241,7 @@ const DiscountTicket = (props: Props): JSX.Element => {
             </div>
             <Button variant="dark">Salvar</Button>
           </div>
-        </Modal.Footer>
+        </ModalFooter>
       </Modal>
     </>
   );
