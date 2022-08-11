@@ -1,6 +1,5 @@
 import React from 'react';
-import { Modal, Button } from 'react-bootstrap';
-import { Card, Container, Label, Row, Col } from 'reactstrap';
+import { Card, Container, Label, Row, Col, Modal, Button } from 'reactstrap';
 import CloseModal from '../../assets/images/svg/CloseModal';
 import SuperInput from '../sharedComponents/SuperInput';
 

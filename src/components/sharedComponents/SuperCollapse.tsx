@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Collapse from 'react-bootstrap/Collapse';
+import { Collapse } from 'reactstrap';
 
 interface StateProps {
   title: string;

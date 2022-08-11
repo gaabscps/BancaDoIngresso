@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { Fragment, useEffect, useState } from 'react';
-import { Container, Input, FormGroup, Label, Row, Col } from 'reactstrap';
-import { Button, ButtonGroup } from 'react-bootstrap';
+import { Container, Input, FormGroup, Label, Row, Col, Button, ButtonGroup } from 'reactstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import SuperInput from '../../../../../sharedComponents/SuperInput';
 import DiscountTicket from '../../../../../modal/DiscountTicket';

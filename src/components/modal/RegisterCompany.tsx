@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { Modal, Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import { Card, Container, Label } from 'reactstrap';
+import { Card, Container, Label, Modal, Button } from 'reactstrap';
 import CloseModal from '../../assets/images/svg/CloseModal';
 import { imageTeste } from '../../constant/imageTest';
 import Address from '../../entities/Address';

@@ -1,9 +1,8 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { Fragment, useEffect, useState } from 'react';
-import { Button, ButtonGroup } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { Container, Col, Form, Label, FormText, Row } from 'reactstrap';
+import { Container, Col, Form, Label, FormText, Row, Button, ButtonGroup } from 'reactstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import SuperInput from '../../../../sharedComponents/SuperInput';
 import step1 from '../../../../../assets/images/svg/stepByStep/step1.svg';

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { Modal, Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import { Card, Container, Label, Row, Col } from 'reactstrap';
+import { Card, Container, Label, Row, Col, Modal, Button } from 'reactstrap';
 import CloseModal from '../../assets/images/svg/CloseModal';
 import EventCategory from '../../entities/EventCategory';
 import { createRequest } from '../../store/ducks/event-category/actions';

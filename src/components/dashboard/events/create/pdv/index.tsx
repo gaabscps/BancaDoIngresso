@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { Fragment, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Container, Label, Row, Col } from 'reactstrap';
-import { Button, ButtonGroup } from 'react-bootstrap';
+import { Container, Label, Row, Col, Button, ButtonGroup } from 'reactstrap';
 import SuperInput from '../../../../sharedComponents/SuperInput';
 
 import PdvTicket from './tickets/index';

@@ -1,6 +1,5 @@
 import React, { Fragment, useState } from 'react';
-import { Container, Label } from 'reactstrap';
-import { Button, ButtonGroup } from 'react-bootstrap';
+import { Container, Label, Button, ButtonGroup } from 'reactstrap';
 import SubPdvIcon from '../../../../../../assets/images/svg/SubPdv';
 import SuperCollapse from '../../../../../sharedComponents/SuperCollapse';
 import SubPdvRegistration from '../../../../../modal/SubPdvRegistration';

@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
-import { Container, Col } from 'reactstrap';
-import { Button } from 'react-bootstrap';
+import { Container, Col, Button } from 'reactstrap';
 import { useNavigate } from 'react-router-dom';
 import step5 from '../../../../../assets/images/svg/stepByStep/step5.svg';
 import titleLine from '../../../../../assets/images/svg/titleLine.svg';

@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
-import { Container, FormGroup, Label, Row, Col } from 'reactstrap';
-import { Button } from 'react-bootstrap';
+import { Container, FormGroup, Label, Row, Col, Button } from 'reactstrap';
 import SuperInput from '../../../../../sharedComponents/SuperInput';
 
 const Sample = (): JSX.Element => (

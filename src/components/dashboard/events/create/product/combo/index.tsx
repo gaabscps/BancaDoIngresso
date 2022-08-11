@@ -1,6 +1,5 @@
 import React, { ChangeEvent, Fragment, useState } from 'react';
-import { Button } from 'react-bootstrap';
-import { Container, FormGroup, Label, Row, Col } from 'reactstrap';
+import { Container, FormGroup, Label, Row, Col, Button } from 'reactstrap';
 import ComboIcon from '../../../../../../assets/images/svg/Combo';
 import SuperCollapse from '../../../../../sharedComponents/SuperCollapse';
 import SuperInput from '../../../../../sharedComponents/SuperInput';
