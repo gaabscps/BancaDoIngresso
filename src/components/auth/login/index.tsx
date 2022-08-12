@@ -1,18 +1,17 @@
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Col, Form, FormGroup, Input, Label, Button } from 'reactstrap';
+import { useDispatch } from 'react-redux';
+import { Col, Form, Input, Label, Button } from 'reactstrap';
 import Cookies from 'universal-cookie';
 import { useNavigate } from 'react-router-dom';
-import { setAuthLocalStorage, getLocalStorage } from '../../../helpers/localStorage';
+import { getLocalStorage } from '../../../helpers/localStorage';
 import Loader from '../../../layout/loader';
 import { cpfMask } from '../../../utils/input-mask';
 import logoBanca from '../../../assets/images/logo/logoBanca.png';
 import idCard from '../../../assets/images/svg/idCard.svg';
 import loginLock from '../../../assets/images/svg/loginLock.svg';
 import eye from '../../../assets/images/login/eye.png';
-import { ApplicationState } from '../../../store';
+import closeEye from '../../../assets/images/login/closeEye.png';
 import { loginRequest } from '../../../store/ducks/auth/actions';
-import { AuthState } from '../../../store/ducks/auth/types';
 import { setAuthSessionStorage } from '../../../helpers/sessionStorage';
 import Auth from '../../../entities/Auth';
 
@@ -22,18 +21,9 @@ interface Loginstate {
 }
 
 const Login = (): JSX.Element => {
-  const auth = useSelector<ApplicationState, AuthState>(store => store.auth);
-  const [isCheck, setIsCheck] = useState(false);
-  if (!auth.loading && !auth.error) {
-    if (auth.data && auth.data.login) {
-      setAuthLocalStorage(auth.data.login, isCheck);
-      window.location.href = '/';
-    }
-  }
   const history = useNavigate();
   const dispatch = useDispatch();
   const [togglePassword, setTogglePassword] = useState(false);
-  // const [values, setValues] = useState({ cpf: "" });
   const [form, setForm] = useState({} as Loginstate);
   const [errors] = useState({
     username: false,
@@ -116,29 +106,36 @@ const Login = (): JSX.Element => {
                     value={form?.password || ''}
                     onChange={handleChange}
                   />
-                  <div className="show-hide" onClick={() => HideShowPassword(togglePassword)}>
-                    <img
-                      className="d-flex justify-content-center align-items-center passwordIcon"
-                      src={eye}
-                    />
+                  <div
+                    className="show-hide"
+                    onClick={() => HideShowPassword(togglePassword)}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    {togglePassword ? (
+                      <img
+                        className="d-flex justify-content-center align-items-center passwordIcon"
+                        src={eye}
+                      />
+                    ) : (
+                      <img
+                        className="d-flex justify-content-center align-items-center passwordIcon"
+                        src={closeEye}
+                      />
+                    )}
                   </div>
                   <span>{errors.username && 'O campo senha é obrigatório!'}</span>
                   <div className="valid-feedback">{'Looks good!'}</div>
                 </Col>
               </div>
-              <FormGroup className="d-flex justify-content-between align-items-center mb-2">
-                <div className="checkbox ml-3" style={{ marginTop: '25px' }}>
-                  <Input id="checkbox1" type="checkbox" onChange={() => setIsCheck(!isCheck)} />
-                  <Label className="loginFormLabel" for="checkbox1">
-                    Mantenha-me conectado
-                  </Label>
-                </div>
-              </FormGroup>
               <Button className="mainButton" style={{ marginTop: '60px' }}>
                 <div className="loginFormText">Entrar</div>
               </Button>
               <div className="d-flex justify-content-center align-items-center forgotPassword">
-                <a onClick={() => history('/forget-pwd')} className="link">
+                <a
+                  onClick={() => history('/forget-pwd')}
+                  className="link"
+                  style={{ cursor: 'pointer' }}
+                >
                   Esqueceu a sua senha?
                 </a>
               </div>
