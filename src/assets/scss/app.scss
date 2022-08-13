@@ -747,6 +747,9 @@ input[type='radio']:checked + .label-radio-custom {
   background-color: #f1f1f1 !important;
   color: #a5a5a5 !important;
   border-color: #f1f1f1 !important;
+  &.input-error {
+    border-color: #e64f49 !important;
+  }
 }
  // ------ Radio Button ------//
 .radio {
