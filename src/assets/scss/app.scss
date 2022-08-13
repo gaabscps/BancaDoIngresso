@@ -210,7 +210,7 @@
 }
 
 .mainButton {
-  width: 592px !important;
+  // width: 592px !important;
   height: 64px !important;
   border-radius: 5px !important;
 }
@@ -616,7 +616,7 @@
 //----- Login -----//
 
 .loginForm {
-  width: 592px !important;
+  // width: 592px !important;
   height: 64px !important;
   border-radius: 5px !important;
   background-color: #f1f1f1 !important;
@@ -630,7 +630,7 @@
 }
 
 .passwordIcon {
-  margin-top: 25px !important;
+  margin-top: 42px !important;
 }
 
 .loginField {
@@ -674,4 +674,135 @@ hr.lineText {
   margin-bottom: 50px;
   margin: auto 0;
   margin-top: -15px;
+}
+
+.alert-error {
+  position: absolute;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #e64f49;
+}
+
+// ----- Input Geral -----//
+
+.input-label {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px !important;
+  // line-height: 1;
+  color: #828282;
+  margin-bottom: 25px;
+}
+
+input {
+  color: black !important;
+  &:focus {
+    border-color: #050100 !important;
+    background-color: #e6e6e6 !important;
+    outline: 0 !important;
+  }
+  &:hover {
+    background-color: #e6e6e6 !important;
+  }
+}
+
+.input-error {
+  border-color: #e64f49 !important;
+}
+
+input[type='radio']:checked + .label-radio-custom {
+  background-color: #222222 !important;
+  color: #ffffff !important;
+}
+
+//----- Button Group -----//
+.radio-button-gruop {
+  display: none;
+}
+
+.button-group {
+  border-color: #a5a5a5;
+  color: #a5a5a5;
+  background-color: transparent;
+  padding: 20px 25px;
+}
+
+.btn-group {
+  :nth-child(2) {
+    border-top-left-radius: 5px !important;
+    border-bottom-left-radius: 5px !important;
+  }
+  :last-child {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+}
+
+.input-default {
+  // width: 592px !important;
+  height: 64px !important;
+  border-radius: 5px !important;
+  background-color: #f1f1f1 !important;
+  color: #a5a5a5 !important;
+  border-color: #f1f1f1 !important;
+}
+ // ------ Radio Button ------//
+.radio {
+  margin: 0.5rem 0;
+  input[type='radio'] {
+    position: absolute;
+    opacity: 0;
+    + .radio-label {
+      &:before {
+        content: '';
+        background: transparent;
+        border-radius: 100%;
+        border: 2px solid darken(#f8f8f8, 25%);
+        display: inline-block;
+        width: 1.7em;
+        height: 1.7em;
+        position: relative;
+        top: -0.2em;
+        margin-right: 1em;
+        vertical-align: top;
+        cursor: pointer;
+        text-align: center;
+        transition: all 250ms ease;
+      }
+    }
+    &:checked {
+      + .radio-label {
+        &:before {
+          background-color: #d8413a;
+          box-shadow: inset 0 0 0 4px #f8f8f8;
+        }
+      }
+    }
+    &:focus {
+      + .radio-label {
+        &:before {
+          outline: none;
+          border-color: #d8413a;
+        }
+      }
+    }
+    &:disabled {
+      + .radio-label {
+        &:before {
+          box-shadow: inset 0 0 0 4px #f8f8f8;
+          border-color: darken(#f8f8f8, 25%);
+          background: darken(#f8f8f8, 25%);
+        }
+      }
+    }
+    + .radio-label {
+      &:empty {
+        &:before {
+          margin-right: 0;
+        }
+      }
+    }
+  }
 }
