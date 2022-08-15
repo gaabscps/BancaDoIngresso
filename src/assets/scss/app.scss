@@ -698,6 +698,7 @@ hr.lineText {
 
 input {
   color: black !important;
+  box-shadow: none !important;
   &:focus {
     border-color: #050100 !important;
     background-color: #e6e6e6 !important;
@@ -741,17 +742,15 @@ input[type='radio']:checked + .label-radio-custom {
 }
 
 .input-default {
-  // width: 592px !important;
   height: 64px !important;
   border-radius: 5px !important;
   background-color: #f1f1f1 !important;
-  color: #a5a5a5 !important;
   border-color: #f1f1f1 !important;
   &.input-error {
     border-color: #e64f49 !important;
   }
 }
- // ------ Radio Button ------//
+// ------ Radio Button ------//
 .radio {
   margin: 0.5rem 0;
   input[type='radio'] {
