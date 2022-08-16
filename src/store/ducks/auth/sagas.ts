@@ -4,6 +4,7 @@
 import { call, put, select } from 'redux-saga/effects';
 import { AxiosResponse, AxiosError } from 'axios';
 import { Buffer } from 'buffer';
+import { toast } from 'react-toastify';
 import {
   loginSuccess,
   loginFailure,
@@ -48,6 +49,7 @@ export function* authLogin(data: any) {
   } catch (err) {
     const error = err as AxiosError;
     yield put(loginFailure(parse(error)));
+    toast.error('Credenciais Inválidas');
   }
 }
 
