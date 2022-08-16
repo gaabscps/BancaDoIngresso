@@ -14,7 +14,7 @@ import logoBanca from '../../../assets/images/logo/logoBanca.png';
 import idCard from '../../../assets/images/svg/idCard.svg';
 import loginLock from '../../../assets/images/svg/loginLock.svg';
 import eye from '../../../assets/images/login/eye.png';
-// import closeEye from '../../../assets/images/login/closeEye.png';
+import closeEye from '../../../assets/images/login/closeEye.png';
 // import { ApplicationState } from '../../../store';
 import { loginRequest } from '../../../store/ducks/auth/actions';
 // import { AuthState } from '../../../store/ducks/auth/types';
@@ -84,9 +84,9 @@ const Login = (): JSX.Element => {
   return (
     <>
       <Loader />
-      <Container className="login-card">
-        <Row lg="2" md="1">
-          <Col xs="auto" className="login-card">
+      <div className="body-login">
+        <Container>
+          <Col className="login-card">
             <div className="login-main login-tab">
               <a className="logo text-center" href="#javascript">
                 <img className="img-fluid for-light" src={logoBanca} alt="looginpage" />
@@ -96,21 +96,21 @@ const Login = (): JSX.Element => {
                   <Col md="12">
                     <div style={{ marginBottom: '50px', display: 'contents' }}>
                       <div className="pageTitle">Seja bem-vindo(a)! Entre com a sua conta</div>
-                      <div className="subTitleMain">
+                      <div className="subTitleMain mb-2">
                         Digite abaixo o seu CPF e sua senha para entrar
                       </div>
                     </div>
                   </Col>
                 </Row>
-                <div className="form-row ">
+                <div className="flex-column form-row ">
                   <Row>
                     <Col className="loginField">
                       <Input
                         label={
-                          <p>
+                          <div>
                             <img className="mr-2" src={idCard} />
                             {'Seu CPF'}
-                          </p>
+                          </div>
                         }
                         type="text"
                         placeholder="Digite o seu CPF"
@@ -126,10 +126,10 @@ const Login = (): JSX.Element => {
                     <Col>
                       <Input
                         label={
-                          <p>
+                          <div>
                             <img className="mr-2" src={loginLock} />
                             {'Senha'}
-                          </p>
+                          </div>
                         }
                         type={togglePassword ? 'text' : 'password'}
                         placeholder="Digite o seu CPF"
@@ -138,6 +138,25 @@ const Login = (): JSX.Element => {
                         name="password"
                         onChange={handleChange}
                         error={errors?.password?.message}
+                        icon={
+                          <div
+                            className="show-hide"
+                            onClick={() => HideShowPassword(togglePassword)}
+                            style={{ cursor: 'pointer' }}
+                          >
+                            {togglePassword ? (
+                              <img
+                                className="d-flex justify-content-center align-items-center passwordIcon"
+                                src={eye}
+                              />
+                            ) : (
+                              <img
+                                className="d-flex justify-content-center align-items-center passwordIcon"
+                                src={closeEye}
+                              />
+                            )}
+                          </div>
+                        }
                       />
                       <div className="show-hide" onClick={() => HideShowPassword(togglePassword)}>
                         <img
@@ -163,8 +182,8 @@ const Login = (): JSX.Element => {
               </Form>
             </div>
           </Col>
-        </Row>
-      </Container>
+        </Container>
+      </div>
     </>
   );
 };
