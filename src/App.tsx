@@ -1,10 +1,12 @@
 import React, { Fragment } from 'react';
 import { Provider } from 'react-redux';
 import { Routes, BrowserRouter, Route } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 import CheckLogedUser from './helpers/CheckLogedUser';
 import PrivateRoute from './helpers/PrivateRoute';
 import { RoteContent, routes } from './route';
 import store from './store';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 function App(): JSX.Element {
   const renderRoute = (index: number, routeContent: RoteContent): JSX.Element => {
@@ -30,6 +32,7 @@ function App(): JSX.Element {
           </Routes>
         </BrowserRouter>
       </Provider>
+      <ToastContainer />
     </Fragment>
   );
 }
