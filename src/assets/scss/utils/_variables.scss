@@ -11,7 +11,7 @@ $primary-light-color: #D8413A;
 $primary-dark-color: #B2140C;
 
 // Secondary colors
-$secundary-color: $primary-color;
+$secondary-color: $primary-color;
 
 // dark colors
 $dark-color: #0C0201;
@@ -62,6 +62,7 @@ $linkedin: #0077B5;
 $light-body-bg-color:#fafdff;
 
 //fonts
+$font-poppins: 'Poppins';
 $font-rubik: Rubik;
 $font-roboto: Roboto;
 $font-serif: sans-serif;
@@ -87,7 +88,7 @@ $dark-datatable-sorting-even: #22262f;
 $dark-even-hover-sorting: #191e27;
 
 //General tag settings
-$body-font-size: 14px;
+$body-font-size: 16px;
 $body-font-color: $theme-body-font-color;
 $ul-padding-left: 0px;
 $ul-padding-right: 0px;
