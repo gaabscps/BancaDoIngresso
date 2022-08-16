@@ -113,7 +113,7 @@ const Login = (): JSX.Element => {
                           </div>
                         }
                         type="text"
-                        placeholder="Digite o seu CPF"
+                        placeholder="123.456.789-1"
                         register={register}
                         value={form?.username ? cpfMask(form?.username) : ''}
                         name="username"
@@ -132,7 +132,7 @@ const Login = (): JSX.Element => {
                           </div>
                         }
                         type={togglePassword ? 'text' : 'password'}
-                        placeholder="Digite o seu CPF"
+                        placeholder="21212121313141"
                         register={register}
                         value={form?.password}
                         name="password"
@@ -174,7 +174,7 @@ const Login = (): JSX.Element => {
                   <a
                     onClick={() => history('/forget-pwd')}
                     className="link"
-                    style={{ cursor: 'pointer' }}
+                    style={{ cursor: 'pointer', color: '#B2140C' }}
                   >
                     Esqueceu a sua senha?
                   </a>
