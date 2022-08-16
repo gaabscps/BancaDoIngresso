@@ -5,13 +5,27 @@ $theme-body-sub-title-color: rgba($theme-body-font-color, 0.7);
 $body-color: #f8f8f8;
 
 // Theme colors variables
-$primary-color: #D8413A;
-$secondary-color: #D8231B;
+//Primary colors
+$primary-color: #D8231B;
+$primary-light-color: #D8413A;
+$primary-dark-color: #B2140C;
+
+// Secondary colors
+$secundary-color: $primary-color;
+
+// dark colors
+$dark-color: #0C0201;
+$dark-light-color: #222222;
+$dark-dark-color: #050100;
+
+// Auxiliary colors 
 $success-color: #7AD81B;
 $info-color : #3CAFC8;
 $warning-color: #FFE249;
 $danger-color: #D8231B;
-$light-color : #f4f4f4;
+$light-color : #FEFEFE;
+
+// light colors
 $light-gray : #ecf3fa;
 $light-semi-gray :#efefef;
 $dark-light :$theme-font-color;

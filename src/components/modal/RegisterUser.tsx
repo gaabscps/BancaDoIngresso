@@ -1,6 +1,5 @@
 import React from 'react';
-import { Modal, Button } from 'react-bootstrap';
-import { Card, Container, Label, Input } from 'reactstrap';
+import { Card, Container, Label, Input, Modal, Button, ModalHeader, ModalBody } from 'reactstrap';
 import CloseModal from '../../assets/images/svg/CloseModal';
 import SuperInput from '../sharedComponents/SuperInput';
 // import titleLine from '../../assets/images/svg/titleLine.svg';
@@ -21,15 +20,13 @@ const RegisterUser = (props: Props): JSX.Element => {
   return (
     <Modal
       size={'xl'}
-      show={props.show}
-      onHide={() => props.setShowUser(false)}
+      isOpen={props.show}
+      toggle={() => props.setShowUser(false)}
       dialogClassName="modal-550px"
       aria-labelledby="example-custom-modal-styling-title"
     >
-      <Modal.Header>
-        <Modal.Title id="example-custom-modal-styling-title" className="pageTitle">
-          Cadastrar grupo
-        </Modal.Title>
+      <ModalHeader>
+        <div>Cadastrar grupo</div>
         <div
           onClick={() => {
             handleClose();
@@ -38,8 +35,8 @@ const RegisterUser = (props: Props): JSX.Element => {
         >
           <CloseModal />
         </div>
-      </Modal.Header>
-      <Modal.Body>
+      </ModalHeader>
+      <ModalBody>
         <Container>
           <Card className="mainContainer" style={{ backgroundColor: '#F1F1F1' }}>
             <div className="titleStep">
@@ -247,7 +244,7 @@ const RegisterUser = (props: Props): JSX.Element => {
           </div>
           <Button variant="dark">Cadastrar usuário</Button>
         </div>
-      </Modal.Body>
+      </ModalBody>
     </Modal>
   );
 };

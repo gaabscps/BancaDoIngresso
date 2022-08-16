@@ -1,6 +1,5 @@
 import React from 'react';
-import { Modal, Button } from 'react-bootstrap';
-import { Card, Container, Label } from 'reactstrap';
+import { Card, Container, Label, Modal, Button, ModalHeader, ModalBody } from 'reactstrap';
 import CloseModal from '../../assets/images/svg/CloseModal';
 import SuperInput from '../sharedComponents/SuperInput';
 
@@ -18,16 +17,14 @@ const DiscountVoucher = (props: Props): JSX.Element => {
   return (
     <Modal
       size={'xl'}
-      //   onHide={() => setShow(false)}
-      show={props.show}
-      onHide={() => props.setShow(false)}
+      //   toggle={() => setShow(false)}
+      isOpen={props.show}
+      toggle={() => props.setShow(false)}
       dialogClassName="modal-550px"
       aria-labelledby="example-custom-modal-styling-title"
     >
-      <Modal.Header>
-        <Modal.Title id="example-custom-modal-styling-title" className="pageTitle">
-          Cadastrar voucher de desconto
-        </Modal.Title>
+      <ModalHeader>
+        <div>Cadastrar voucher de desconto</div>
         <div
           onClick={() => {
             handleClose();
@@ -36,8 +33,8 @@ const DiscountVoucher = (props: Props): JSX.Element => {
         >
           <CloseModal />
         </div>
-      </Modal.Header>
-      <Modal.Body>
+      </ModalHeader>
+      <ModalBody>
         <Container>
           <Card className="mainContainer" style={{ backgroundColor: '#F1F1F1' }}>
             <div className="d-flex">
@@ -75,7 +72,7 @@ const DiscountVoucher = (props: Props): JSX.Element => {
             Gerar voucher
           </Button>
         </div>
-      </Modal.Body>
+      </ModalBody>
     </Modal>
   );
 };

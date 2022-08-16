@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { Fragment, useState } from 'react';
-import { Container, FormGroup, Label, Row, Col } from 'reactstrap';
-import { Button, ButtonGroup } from 'react-bootstrap';
+import { Container, FormGroup, Label, Row, Col, Button, ButtonGroup } from 'reactstrap';
 import SuperInput from '../../../../../sharedComponents/SuperInput';
 import SuperCollapse from '../../../../../sharedComponents/SuperCollapse';
 import POSIcon from '../../../../../../assets/images/svg/Pos';

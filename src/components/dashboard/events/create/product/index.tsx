@@ -1,7 +1,6 @@
 import React, { Fragment, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Container, Col, Label } from 'reactstrap';
-import { Button, ButtonGroup } from 'react-bootstrap';
+import { Container, Col, Label, Button, ButtonGroup } from 'reactstrap';
 import GroupInformation from './group/index';
 import ProductInformation from './product/index';
 import ComboInformation from './combo/index';

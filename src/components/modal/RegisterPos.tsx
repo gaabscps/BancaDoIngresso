@@ -1,6 +1,5 @@
 import React from 'react';
-import { Modal, Button } from 'react-bootstrap';
-import { Card, Container, Label } from 'reactstrap';
+import { Card, Container, Label, Modal, Button, ModalHeader, ModalBody } from 'reactstrap';
 import CloseModal from '../../assets/images/svg/CloseModal';
 import SuperInput from '../sharedComponents/SuperInput';
 
@@ -18,15 +17,13 @@ const RegisterPos = (props: Props): JSX.Element => {
   return (
     <Modal
       size={'xl'}
-      show={props.show}
-      onHide={() => props.setShowPos(false)}
+      isOpen={props.show}
+      toggle={() => props.setShowPos(false)}
       dialogClassName="modal-550px"
       aria-labelledby="example-custom-modal-styling-title"
     >
-      <Modal.Header>
-        <Modal.Title id="example-custom-modal-styling-title" className="pageTitle">
-          Cadastrar nova POS
-        </Modal.Title>
+      <ModalHeader>
+        <div>Cadastrar nova POS</div>
         <div
           onClick={() => {
             handleClose();
@@ -35,8 +32,8 @@ const RegisterPos = (props: Props): JSX.Element => {
         >
           <CloseModal />
         </div>
-      </Modal.Header>
-      <Modal.Body>
+      </ModalHeader>
+      <ModalBody>
         <Container>
           <Card className="mainContainer" style={{ backgroundColor: '#F1F1F1' }}>
             <div className="d-flex">
@@ -85,7 +82,7 @@ const RegisterPos = (props: Props): JSX.Element => {
           </div>
           <Button variant="dark">Cadastrar nova POS</Button>
         </div>
-      </Modal.Body>
+      </ModalBody>
     </Modal>
   );
 };

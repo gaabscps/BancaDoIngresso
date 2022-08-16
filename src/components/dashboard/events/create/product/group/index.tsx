@@ -1,6 +1,5 @@
 import React, { ChangeEvent, Fragment, MouseEvent, useState } from 'react';
-import { Button } from 'react-bootstrap';
-import { Container, FormGroup, Label, Row, Col } from 'reactstrap';
+import { Container, FormGroup, Label, Row, Col, Button } from 'reactstrap';
 import BottleIcon from '../../../../../../assets/images/svg/Bottle';
 import RemoveX from '../../../../../../assets/images/svg/RemoveX';
 import SuperCollapse from '../../../../../sharedComponents/SuperCollapse';

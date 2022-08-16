@@ -1,6 +1,15 @@
 import React from 'react';
-import { Modal, Button } from 'react-bootstrap';
-import { Card, Container, Label, Row, Col } from 'reactstrap';
+import {
+  Card,
+  Container,
+  Label,
+  Row,
+  Col,
+  Modal,
+  Button,
+  ModalHeader,
+  ModalBody,
+} from 'reactstrap';
 import CloseModal from '../../assets/images/svg/CloseModal';
 import SuperInput from '../sharedComponents/SuperInput';
 
@@ -17,15 +26,13 @@ const ParentEvent = (props: Props): JSX.Element => {
   return (
     <Modal
       size={'xl'}
-      show={props.show}
-      onHide={() => handleClose()}
+      isOpen={props.show}
+      toggle={() => handleClose()}
       dialogClassName="modal-550px"
       aria-labelledby="example-custom-modal-styling-title"
     >
-      <Modal.Header>
-        <Modal.Title id="example-custom-modal-styling-title" className="pageTitle">
-          Cadastrar evento pai
-        </Modal.Title>
+      <ModalHeader>
+        <div>Cadastrar evento pai</div>
         <div
           onClick={() => {
             handleClose();
@@ -34,8 +41,8 @@ const ParentEvent = (props: Props): JSX.Element => {
         >
           <CloseModal />
         </div>
-      </Modal.Header>
-      <Modal.Body>
+      </ModalHeader>
+      <ModalBody>
         <Container>
           <Card className="mainContainer" style={{ backgroundColor: '#F1F1F1' }}>
             <Row lg="2" md="1">
@@ -66,7 +73,7 @@ const ParentEvent = (props: Props): JSX.Element => {
           </div>
           <Button variant="dark">Vincular evento pai</Button>
         </div>
-      </Modal.Body>
+      </ModalBody>
     </Modal>
   );
 };

@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { Fragment, useState } from 'react';
-import { Container, FormGroup, Label, Row, Col } from 'reactstrap';
+import { Container, FormGroup, Label, Row, Col, Button, ButtonGroup } from 'reactstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, ButtonGroup } from 'react-bootstrap';
 import SuperInput from '../../../../../sharedComponents/SuperInput';
 import SuperCollapse from '../../../../../sharedComponents/SuperCollapse';
 import DoubleTicketIcon from '../../../../../../assets/images/svg/DoubleTicket';

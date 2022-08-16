@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
-import { Container, Input, FormGroup, Label, Row, Col } from 'reactstrap';
-import { Button } from 'react-bootstrap';
+import { Container, Input, FormGroup, Label, Row, Col, Button } from 'reactstrap';
 
 const Sample = (): JSX.Element => (
   <Fragment>
