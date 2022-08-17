@@ -29,7 +29,7 @@ const Button: React.FC<ButtonCustomProps> = (props: ButtonCustomProps) => {
         fontWeight: '500',
         lineHeight: '24px',
         borderRadius: '5px',
-        padding: '13px 15px',
+        padding: '20px 15px',
         ...props.style,
       }}
     />
