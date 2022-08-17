@@ -95,7 +95,7 @@ const Login = (): JSX.Element => {
                 <Row>
                   <Col md="12">
                     <div style={{ marginBottom: '50px', display: 'contents' }}>
-                      <div className="pageTitle">Seja bem-vindo(a)! Entre com a sua conta</div>
+                      <div className="pageTitleLogin">Seja bem-vindo(a)! Entre com a sua conta</div>
                       <div className="subTitleMain mb-2">
                         Digite abaixo o seu CPF e sua senha para entrar
                       </div>
@@ -104,7 +104,7 @@ const Login = (): JSX.Element => {
                 </Row>
                 <div className="flex-column form-row ">
                   <Row>
-                    <Col className="loginField">
+                    <Col className="loginField" style={{ marginTop: '20px' }}>
                       <Input
                         label={
                           <div>
