@@ -132,7 +132,7 @@ const Login = (): JSX.Element => {
                           </div>
                         }
                         type={togglePassword ? 'text' : 'password'}
-                        placeholder="21212121313141"
+                        placeholder="minhasenha123"
                         register={register}
                         value={form?.password}
                         name="password"
