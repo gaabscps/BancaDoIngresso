@@ -272,6 +272,60 @@
     border-color: #555 transparent transparent transparent;
   }
 }
+
+.btn-none-border {
+  background: transparent;
+  border: none;
+}
+
+.btn-outline-dark {
+  border: 2px solid #222222;
+  color: '#222222';
+  background: transparent;
+  &:hover {
+    background: #0C0201;
+  }
+  &:active {
+    background: #050100;
+  }
+}
+
+.btn-dark {
+  background: #222222;
+  color: #FFFFFF;
+  &:hover {
+    background: #0C0201;
+  }
+  &:active {
+    background: #050100;
+  }
+  &:disabled {
+    background: #C4C4C4;
+    color: #F8F8F8;
+    &:hover {
+      background: #A5A5A5;
+      color: #FFFFFF;
+    }
+  }
+}
+
+.btn-red {
+  background: #B3140C;
+  color: #FFFFFF;
+  &:hover {
+    background: #D8231B;
+    color: #FFFFFF;
+  }
+  &:active {
+    background: #B3140C;
+    color: #FFFFFF;
+  }
+  &:disabled {
+    background: #F1F1F1;
+    color: #A5A5A5;
+  }
+}
+
 /**=====================
      06. Button CSS end
 ==========================**/
