@@ -25,7 +25,6 @@ import { ContractorState } from '../../../../../store/ducks/contractor/types';
 import { listRequestContractor } from '../../../../../store/ducks/contractor/actions';
 import Contractor from '../../../../../entities/Contractor';
 import EventCategory from '../../../../../entities/EventCategory';
-import SelectAutoComplete from '../../../../sharedComponents/SelectAutoComplete';
 import InputFile from '../../../../sharedComponents/InputFile';
 
 interface CreateEvent {
@@ -229,13 +228,13 @@ const Sample = (): JSX.Element => {
                 <Label className="fieldLabel" for="eventType">
                   Tipo de evento
                 </Label>
-                <SelectAutoComplete
+                {/* <SelectAutoComplete
                   options={typeEventOptions}
                   name="eventType"
                   onChange={onChangeSelect('eventType')}
                   // value={form.eventType}
                   placeholder="Digite ou selecione o tipo do evento"
-                />
+                /> */}
                 <div
                   className="auxSucessText"
                   style={{ paddingTop: '20px' }}
@@ -298,13 +297,13 @@ const Sample = (): JSX.Element => {
                     <Label className="fieldLabel" for="state">
                       Estado
                     </Label>
-                    <SelectAutoComplete
+                    {/* <SelectAutoComplete
                       options={states}
                       name="state"
                       onChange={onChangeSelect('address.state')}
                       // value={form.eventType}
                       placeholder="Ex: SP"
-                    />
+                    /> */}
                   </div>
                 </Col>
                 <Col>
@@ -312,13 +311,13 @@ const Sample = (): JSX.Element => {
                     <Label className="fieldLabel" for="city" style={{ display: 'grid' }}>
                       Cidade
                     </Label>
-                    <SelectAutoComplete
+                    {/* <SelectAutoComplete
                       options={cities[form.address?.state]}
                       name="city"
                       onChange={onChangeSelect('address.city')}
                       // value={form.eventType}
                       placeholder="Selecione ou digite a cidade"
-                    />
+                    /> */}
                   </div>
                 </Col>
               </Row>
@@ -391,13 +390,13 @@ const Sample = (): JSX.Element => {
                 <Label className="fieldLabel" for="category">
                   Categoria do evento
                 </Label>
-                <SelectAutoComplete
+                {/* <SelectAutoComplete
                   options={category?.data?.page?.list?.map(value => ({value: value.id, label: value.name}))}
                   name="category"
                   onChange={onChangeSelect('category')}
                   // value={form.eventType}
                   placeholder="Digite ou selecione a categoria do evento"
-                />
+                /> */}
                 <div
                   className="auxSucessText"
                   style={{ paddingTop: '20px' }}
@@ -411,13 +410,13 @@ const Sample = (): JSX.Element => {
                   Empresa ou contratante
                 </Label>
 
-                <SelectAutoComplete
+                {/* <SelectAutoComplete
                   options={contractor?.data?.page?.list?.map(value => ({value: value.id, label: value.name}))}
                   name="contractor"
                   onChange={onChangeSelect('contractor')}
                   // value={form.eventType}
                   placeholder="Digite ou selecione a empresa/contratante"
-                />
+                /> */}
                 <div
                   className="auxSucessText"
                   style={{ paddingTop: '20px' }}

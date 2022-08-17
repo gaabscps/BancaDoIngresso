@@ -210,7 +210,7 @@
 }
 
 .mainButton {
-  // width: 592px !important;
+  width: 100% !important;
   height: 64px !important;
   border-radius: 5px !important;
 }
@@ -622,6 +622,10 @@
   background-color: #f1f1f1 !important;
   color: #a5a5a5 !important;
   border-color: #f1f1f1 !important;
+}
+
+.body-login {
+  background: #F8F8F8 !important;
 }
 
 .loginCard {
