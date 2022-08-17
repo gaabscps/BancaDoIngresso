@@ -63,7 +63,7 @@ const ForgetPassword = (): JSX.Element => {
       }
     }
     if (auth.data.login) {
-      setAuthLocalStorage(auth.data.login, false);
+      setAuthLocalStorage(auth.data.login);
       window.location.href = '/';
     }
   }

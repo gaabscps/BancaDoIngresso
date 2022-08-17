@@ -1,5 +1,5 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Col, Form, Button, Container, Row } from 'reactstrap';
 import Cookies from 'universal-cookie';
 import * as yup from 'yup';
@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate } from 'react-router-dom';
 import Input from '../../Utils/Input';
-import { getLocalStorage } from '../../../helpers/localStorage';
+import { getLocalStorage, setAuthLocalStorage } from '../../../helpers/localStorage';
 import Loader from '../../../layout/loader';
 import { cpfMask } from '../../../utils/input-mask';
 import logoBanca from '../../../assets/images/logo/logoBanca.png';
@@ -15,9 +15,9 @@ import idCard from '../../../assets/images/svg/idCard.svg';
 import loginLock from '../../../assets/images/svg/loginLock.svg';
 import eye from '../../../assets/images/login/eye.png';
 import closeEye from '../../../assets/images/login/closeEye.png';
-// import { ApplicationState } from '../../../store';
+import { ApplicationState } from '../../../store';
 import { loginRequest } from '../../../store/ducks/auth/actions';
-// import { AuthState } from '../../../store/ducks/auth/types';
+import { AuthState } from '../../../store/ducks/auth/types';
 import { setAuthSessionStorage } from '../../../helpers/sessionStorage';
 import Auth from '../../../entities/Auth';
 
@@ -32,14 +32,13 @@ const schema = yup.object().shape({
 });
 
 const Login = (): JSX.Element => {
-  // const auth = useSelector<ApplicationState, AuthState>(store => store.auth);
-  // const [isCheck, setIsCheck] = useState(false);
-  // if (!auth.loading && !auth.error) {
-  //   if (auth.data && auth.data.login) {
-  //     setAuthLocalStorage(auth.data.login, isCheck);
-  //     window.location.href = '/';
-  //   }
-  // }
+  const auth = useSelector<ApplicationState, AuthState>(store => store.auth);
+  if (!auth.loading && !auth.error) {
+    if (auth.data && auth.data.login) {
+      setAuthLocalStorage(auth.data.login);
+      window.location.href = '/';
+    }
+  }
   const history = useNavigate();
   const dispatch = useDispatch();
   const [togglePassword, setTogglePassword] = useState(false);

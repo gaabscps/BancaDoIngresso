@@ -21,7 +21,7 @@ export function* checkUser() {
     const authData = stateData.auth.data;
     authData.refreshToken = refreshToken;
     yield put(refreshTokenSuccess(authData));
-    setAuthLocalStorage(stateData.auth.data.refreshToken, true);
+    setAuthLocalStorage(stateData.auth.data.refreshToken);
     yield put(checkUserSuccess());
   } catch (err) {
     const error = err as AxiosError;
