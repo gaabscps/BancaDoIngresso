@@ -1,12 +1,13 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Col, Form, Button, Container, Row } from 'reactstrap';
+import { Col, Form, Container, Row } from 'reactstrap';
 import Cookies from 'universal-cookie';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate } from 'react-router-dom';
 import Input from '../../Utils/Input';
+import Button from '../../Utils/Button';
 import { getLocalStorage, setAuthLocalStorage } from '../../../helpers/localStorage';
 import Loader from '../../../layout/loader';
 import { cpfMask } from '../../../utils/input-mask';
@@ -28,7 +29,7 @@ interface Loginstate {
 
 const schema = yup.object().shape({
   username: yup.string().min(14, 'CPF Inválido').required('O CPF é obrigatório'),
-  password: yup.string().required('A senha é obrigatória'),
+  password: yup.string().min(8, 'Senha Inválida').required('A senha é obrigatória'),
 });
 
 const Login = (): JSX.Element => {
@@ -102,72 +103,81 @@ const Login = (): JSX.Element => {
                   </Col>
                 </Row>
                 <div className="flex-column form-row ">
-                  <Row>
-                    <Col className="loginField" style={{ marginTop: '20px' }}>
-                      <Input
-                        label={
-                          <div>
-                            <img className="mr-2" src={idCard} />
-                            {'Seu CPF'}
-                          </div>
-                        }
-                        type="text"
-                        placeholder="123.456.789-1"
-                        register={register}
-                        value={form?.username ? cpfMask(form?.username) : ''}
-                        name="username"
-                        onChange={handleChange}
-                        error={errors?.username?.message}
-                      />
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col>
-                      <Input
-                        label={
-                          <div>
-                            <img className="mr-2" src={loginLock} />
-                            {'Senha'}
-                          </div>
-                        }
-                        type={togglePassword ? 'text' : 'password'}
-                        placeholder="minhasenha123"
-                        register={register}
-                        value={form?.password}
-                        name="password"
-                        onChange={handleChange}
-                        error={errors?.password?.message}
-                        icon={
-                          <div
-                            className="show-hide"
-                            onClick={() => HideShowPassword(togglePassword)}
-                            style={{ cursor: 'pointer' }}
-                          >
-                            {togglePassword ? (
-                              <img
-                                className="d-flex justify-content-center align-items-center passwordIcon"
-                                src={eye}
-                              />
-                            ) : (
-                              <img
-                                className="d-flex justify-content-center align-items-center passwordIcon"
-                                src={closeEye}
-                              />
-                            )}
-                          </div>
-                        }
-                      />
-                      <div className="show-hide" onClick={() => HideShowPassword(togglePassword)}>
-                        <img
-                          className="d-flex justify-content-center align-items-center passwordIcon"
-                          src={eye}
+                  <div style={{ marginBottom: '-10px' }}>
+                    <Row>
+                      <Col className="loginField" style={{ marginTop: '20px' }}>
+                        <Input
+                          label={
+                            <div>
+                              <img className="mr-2" src={idCard} />
+                              {'Seu CPF'}
+                            </div>
+                          }
+                          type="text"
+                          placeholder="123.456.789-1"
+                          register={register}
+                          value={form?.username ? cpfMask(form?.username) : ''}
+                          name="username"
+                          onChange={handleChange}
+                          error={errors?.username?.message}
                         />
-                      </div>
-                    </Col>
-                  </Row>
+                      </Col>
+                    </Row>
+                  </div>
+                  <div style={{ marginBottom: '100px' }}>
+                    <Row>
+                      <Col>
+                        <Input
+                          label={
+                            <div>
+                              <img className="mr-2" src={loginLock} />
+                              {'Senha'}
+                            </div>
+                          }
+                          type={togglePassword ? 'text' : 'password'}
+                          placeholder="minhasenha123"
+                          register={register}
+                          value={form?.password}
+                          name="password"
+                          onChange={handleChange}
+                          error={errors?.password?.message}
+                          icon={
+                            <div
+                              className="show-hide"
+                              onClick={() => HideShowPassword(togglePassword)}
+                              style={{ cursor: 'pointer' }}
+                            >
+                              {togglePassword ? (
+                                <img
+                                  className="d-flex justify-content-center align-items-center passwordIcon"
+                                  src={eye}
+                                />
+                              ) : (
+                                <img
+                                  className="d-flex justify-content-center align-items-center passwordIcon"
+                                  src={closeEye}
+                                />
+                              )}
+                            </div>
+                          }
+                        />
+                        <div className="show-hide" onClick={() => HideShowPassword(togglePassword)}>
+                          <img
+                            className="d-flex justify-content-center align-items-center passwordIcon"
+                            src={eye}
+                          />
+                        </div>
+                      </Col>
+                    </Row>
+                  </div>
                 </div>
-                <Button className="mainButton" style={{ marginTop: '60px' }}>
-                  <div className="loginFormText">Entrar</div>
+                <Button
+                  className="mainButton"
+                  theme="red"
+                  style={{ width: '100%' }}
+                  disabled={!(form.username && form.password)}
+                >
+                  Entrar
                 </Button>
                 <div className="d-flex justify-content-center align-items-center forgotPassword">
                   <a
