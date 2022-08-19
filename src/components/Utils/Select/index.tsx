@@ -47,7 +47,7 @@ const SelectAutoComplete = (props: SelectAutoCompleteProps) => {
               placeholder={props.placeholder}
               onChange={onChange}
               onBlur={onBlur}
-              styles={customStyles(props.error)}
+              styles={customStyles()}
               noOptionsMessage={() => 'Nenhum resultado encontrado'}
               // defaultValue={}
             />
