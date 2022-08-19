@@ -114,7 +114,7 @@ const Login = (): JSX.Element => {
                             </div>
                           }
                           type="text"
-                          placeholder="123.456.789-1"
+                          placeholder="123.456.789-00"
                           register={register}
                           value={form?.username ? cpfMask(form?.username) : ''}
                           name="username"
