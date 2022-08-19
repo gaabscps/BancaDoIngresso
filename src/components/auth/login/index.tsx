@@ -174,6 +174,7 @@ const Login = (): JSX.Element => {
                 <Button
                   className="mainButton"
                   theme="red"
+                  size="lg"
                   style={{ width: '100%' }}
                   disabled={!(form.username && form.password)}
                 >
