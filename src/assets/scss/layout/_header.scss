@@ -60,7 +60,7 @@
 
   &:hover {
     .onhover-show-div {
-      @extend %for-animated-hover-box;
+      @extend %for-animated-hover-box !optional;
     }
   }
 }
