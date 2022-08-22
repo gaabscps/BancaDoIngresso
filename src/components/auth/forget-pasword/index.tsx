@@ -129,7 +129,7 @@ const ForgetPassword = (): JSX.Element => {
 
   return (
     <>
-      <Loader />
+      <Loader isVisible={auth.loading} />
       <div className="login-card" style={{ padding: '75px' }}>
         <div>
           <div className="login-main login-tab">

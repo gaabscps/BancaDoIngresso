@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { ToastContainer } from 'react-toastify';
-import Loader from '../layout/loader';
+// import Loader from '../layout/loader';
 import Header from '../layout/header';
 import Sidebar from '../layout/sidebar';
 import Footer from '../layout/footer';
@@ -13,7 +13,7 @@ type Props = StateProps;
 
 const App = (props: Props): JSX.Element => (
   <Fragment>
-    <Loader />
+    {/* <Loader /> */}
     <div className="page-wrapper compact-wrapper" id="pageWrapper">
       <Header />
       <div className="page-body-wrapper sidebar-icon">

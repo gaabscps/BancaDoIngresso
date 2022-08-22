@@ -83,7 +83,7 @@ const Login = (): JSX.Element => {
 
   return (
     <>
-      <Loader />
+      <Loader isVisible={auth.loading} />
       <div className="body-login">
         <Container>
           <Col className="login-card">
