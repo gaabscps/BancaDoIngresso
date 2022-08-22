@@ -5,9 +5,8 @@
   padding: 50px !important;
 }
 
-.page-body{
+.page-body {
   margin-left: 280px;
-  margin-top: 80px;
 }
 
 .subContainer {
@@ -50,6 +49,29 @@
   }
 }
 
+@media (max-width: $media-query-sm) {
+  .page-body {
+    margin-left: 0px;
+  }
+}
+
+@media (max-width: 769px) {
+  .profile-media {
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+  }
+  .profile-name {
+    width: 100%;
+    span {
+      display: none;
+    }
+    p {
+      text-align: center;
+      margin-right: 2px;
+    }
+  }
+}
 .pageTitle {
   font-family: 'Poppins', sans-serif;
   font-style: normal;
@@ -638,7 +660,7 @@
 }
 
 .body-login {
-  background: #F8F8F8 !important;
+  background: #f8f8f8 !important;
 }
 
 .loginCard {

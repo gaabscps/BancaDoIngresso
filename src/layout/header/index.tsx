@@ -112,7 +112,7 @@ const Header = (): JSX.Element => {
   return (
     <Fragment>
       <div className="page-header">
-        <Row className="header-wrapper m-0 justify-content-end align-items-end">
+        {/* <Row className="header-wrapper m-0 justify-content-end align-items-end">
           <Form className="form-inline search-full" action="#" method="get">
             <div className="form-group w-100">
               <div className="Typeahead Typeahead--twitterUsers">
@@ -166,10 +166,10 @@ const Header = (): JSX.Element => {
                 </div>
               </div>
             </div>
-          </Form>
+          </Form> */}
           <LeftHeader />
           <RightHeader />
-        </Row>
+        {/* </Row> */}
       </div>
     </Fragment>
   );

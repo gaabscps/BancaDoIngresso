@@ -16,22 +16,22 @@ const Rightbar = (): JSX.Element => {
     user = {} as AuthUser;
   }
 
-  const seachResposive = (): void => {
-    if (searchresponsive) {
-      setSearchresponsive(!searchresponsive);
-      (document.querySelector('.search-full') as Element).classList.add('open');
-      (document.querySelector('.more_lang') as Element).classList.remove('active');
-    } else {
-      setSearchresponsive(!searchresponsive);
-      (document.querySelector('.search-full') as Element).classList.remove('open');
-    }
-  };
+  // const seachResposive = (): void => {
+  //   if (searchresponsive) {
+  //     setSearchresponsive(!searchresponsive);
+  //     (document.querySelector('.search-full') as Element).classList.add('open');
+  //     (document.querySelector('.more_lang') as Element).classList.remove('active');
+  //   } else {
+  //     setSearchresponsive(!searchresponsive);
+  //     (document.querySelector('.search-full') as Element).classList.remove('open');
+  //   }
+  // };
 
   return (
     <Fragment>
       <div className="nav-right col-8 pull-right right-header p-0">
         <ul className="nav-menus">
-          <li>
+          {/* <li>
             <span className="header-search">
               <Search onClick={() => seachResposive()} />
             </span>
@@ -81,14 +81,14 @@ const Rightbar = (): JSX.Element => {
                 <button className="btn btn-primary">Verifique todas as notificações</button>
               </li>
             </ul>
-          </li>
-          <li className="profile-nav onhover-dropdown p-0">
-            <div className="media profile-media">
-              <img className="b-r-10" src={user.imageUrl ? user.imageUrl : avatar} alt="" />
-              <div className="media-body">
+          </li> */}
+          <li className="">
+            <div className="media profile-media" title={user.name}>
+              <img className="user-img" src={user.imageUrl ? user.imageUrl : avatar} alt="" />
+              <div className="media-body profile-name">
                 <span>{user.name}</span>
-                <p className="mb-0 font-roboto">
-                  {user.profile} <i className="middle fa fa-angle-down"></i>
+                <p className="profile-user">
+                  {user.profile} <i className=""></i>
                 </p>
               </div>
             </div>

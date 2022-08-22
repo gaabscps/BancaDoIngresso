@@ -262,13 +262,12 @@ margin-left: 18px;
   }
 }
 
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 769px) {
   .sandwich-menu {
     display: none;
   }
-}
-@media screen and (max-width: 800px) {
   .sidebar-container .mobile {
     display: none;
-  }
 }
+}
+

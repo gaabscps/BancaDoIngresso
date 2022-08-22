@@ -15,7 +15,7 @@ const App = (props: Props): JSX.Element => (
   <Fragment>
     <Loader />
     <div className="page-wrapper compact-wrapper" id="pageWrapper">
-      {/* <Header /> */}
+      <Header />
       <div className="page-body-wrapper sidebar-icon">
         <Sidebar />
         <div className="page-body" style={{ minHeight: '100vh' }}>
