@@ -80,9 +80,12 @@
     justify-content: space-between;
     .path-container {
       margin-left: 1rem;
-      font-size: 12px !important;
     }
   }
+  .path-container .path-flex-container .path-main {
+    font-weight: 600;
+    font-size: 12px;
+  } 
 }
 .pageTitle {
   font-family: 'Poppins', sans-serif;
