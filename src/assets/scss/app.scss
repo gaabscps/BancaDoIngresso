@@ -58,21 +58,30 @@
 @media (max-width: 769px) {
   .profile-media {
     display: flex;
-    align-items: flex-end;
-    flex-direction: column;
+    margin-right: 20px;
+    transition: 0.4s;
   }
   .profile-name {
-    width: 100%;
-    span {
-      display: none;
-    }
+    width: 99px;
+    transition: 0.4s;
+    // span {
+    //   display: none;
+    //   transition: 0.4s;
+    // }
     p {
       text-align: center;
       margin-right: 2px;
+      transition: 0.4s;
     }
   }
   .page-header {
-  margin: 0 0;
+    margin: 0 0;
+    transition: 0.4s;
+    justify-content: space-between;
+    .path-container {
+      margin-left: 1rem;
+      font-size: 12px !important;
+    }
   }
 }
 .pageTitle {

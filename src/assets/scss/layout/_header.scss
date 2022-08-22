@@ -19,7 +19,8 @@
   display: flex;
   align-items: center;
   font-family: $font-poppins;
-justify-content: space-between;
+  justify-content: space-between;
+  transition: 0.3s;
 }
 .right-header {
   max-width: 100%;
@@ -29,9 +30,12 @@ justify-content: space-between;
   height: 100%;
   align-items: center;
   flex: 0 0 0;
+  transition: 0.4s;
 }
 .profile-media {
   margin-top: 18px;
+  margin-right: 48px;
+  transition: 0.4s;
 }
 .profile-user {
   display: block;
@@ -55,6 +59,10 @@ justify-content: space-between;
     color: #222222 !important;
     font-weight: 600 !important;
     font-size: 16px !important;
+    transition: 0.2s;
+  }
+  p {
+    transition: 0.4s;
   }
 }
 .path-container {
@@ -62,7 +70,6 @@ justify-content: space-between;
   .path-flex-container {
     display: flex;
     flex-direction: column;
-    margin-right: 180px;
     margin-left: 48px;
     .path-path {
       color: #828282;
@@ -70,7 +77,7 @@ justify-content: space-between;
       font-size: 12px;
     }
     .path-main {
-      font-weight: 500;
+      font-weight: 600;
       font-size: 21px;
       color: #222222;
     }

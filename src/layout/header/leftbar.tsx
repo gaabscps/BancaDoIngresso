@@ -122,7 +122,7 @@ const Leftbar = (): JSX.Element => {
         {/* {menuItem.path === window.location.pathname ? ( */}
         <div className="path-flex-container">
           <span className="path-path">{window.location.pathname.replace('/', '')}</span>
-          <span className="path-main">{}</span>
+          <span className="path-main">{window.location.pathname.replace('/', '')}</span>
         </div>
       </div>
     </>
