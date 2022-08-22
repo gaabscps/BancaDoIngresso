@@ -17,6 +17,7 @@ interface Menu {
   children: MenuItem[];
   badge?: string;
   badgetxt?: string;
+  index?: string;
 }
 
 interface MenuItem {
@@ -24,6 +25,7 @@ interface MenuItem {
   title: string;
   type: string;
   active?: boolean;
+  index?: string;
 }
 
 const Sidebar = () => {

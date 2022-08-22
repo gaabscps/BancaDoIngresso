@@ -14,22 +14,24 @@
   }
 }
 .page-header {
-  margin: 0px 48px 0px 280px;
+  margin-left: 280px;
   height: 81px;
   display: flex;
-  justify-content: end;
   align-items: center;
   font-family: $font-poppins;
+justify-content: space-between;
 }
 .right-header {
   max-width: 100%;
   display: flex;
   justify-content: flex-end;
+  justify-self: end;
   height: 100%;
   align-items: center;
+  flex: 0 0 0;
 }
 .profile-media {
-  margin-top:18px;
+  margin-top: 18px;
 }
 .profile-user {
   display: block;
@@ -54,6 +56,30 @@
     font-weight: 600 !important;
     font-size: 16px !important;
   }
+}
+.path-container {
+  justify-self: start;
+  .path-flex-container {
+    display: flex;
+    flex-direction: column;
+    margin-right: 180px;
+    margin-left: 48px;
+    .path-path {
+      color: #828282;
+      font-weight: 400;
+      font-size: 12px;
+    }
+    .path-main {
+      font-weight: 500;
+      font-size: 21px;
+      color: #222222;
+    }
+  }
+}
+.none {
+  display: none;
+  width: 0px;
+  height: 0px;
 }
 
 // .toggle-sidebar {

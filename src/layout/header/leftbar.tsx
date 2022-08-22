@@ -3,6 +3,8 @@ import React, { Fragment, useState, useLayoutEffect, useEffect } from 'react';
 import { Sliders } from 'react-feather';
 import { Link } from 'react-router-dom';
 import logo from '../../assets/images/logo/logo.png';
+import { Location } from '../../constant/index';
+import { MENUITEMS } from '../sidebar/menu';
 
 const Leftbar = (): JSX.Element => {
   //   const [bonusui, setBonusUI] = useState(false);
@@ -88,11 +90,43 @@ const Leftbar = (): JSX.Element => {
   //     </Fragment>
   //   );
 
-return (
-  <div>
-    
-  </div>
-)
+  interface Menu {
+    title: string;
+    type: string;
+    active: boolean;
+    path?: string;
+    children: MenuItem[];
+    badge?: string;
+    badgetxt?: string;
+    index?: string;
+  }
+
+  interface MenuItem {
+    path: string;
+    title: string;
+    type: string;
+    active?: boolean;
+    index?: string;
+  }
+
+  const menus: Menu[] = [];
+  MENUITEMS.Items.forEach(menu => {
+    menus.push(menu as Menu);
+  });
+
+  const [mainmenu] = useState(menus);
+  return (
+    <>
+      {/* {mainmenu.map((menuItem, i) => ( */}
+      <div className="path-container">
+        {/* {menuItem.path === window.location.pathname ? ( */}
+        <div className="path-flex-container">
+          <span className="path-path">{window.location.pathname.replace('/', '')}</span>
+          <span className="path-main">{}</span>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default Leftbar;
