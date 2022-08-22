@@ -124,12 +124,12 @@ const Sidebar = () => {
                     {active === true ? (
                       <ChevronDown
                         className="icon-chevron"
-                        style={{ transition: 'all linear 0.2s' }}
+                        style={{ transition: 'all linear 0.2s', transform: rotacao }}
                       />
                     ) : (
                       <ChevronDown
                         className="icon-chevron"
-                        style={{ transition: 'all linear 0.2s', transform: rotacao }}
+                        style={{ transition: 'all linear 0.2s' }}
                       />
                     )}
                   </a>
