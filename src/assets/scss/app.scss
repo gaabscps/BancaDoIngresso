@@ -388,12 +388,20 @@
 }
 
 .partyCard {
-  width: 334px;
-  height: 223px;
   border-radius: 10px;
   display: inline-block;
-  margin-right: 60px;
-  margin-bottom: 30px;
+  > img {
+    min-width: 100%;
+    height: auto;
+    border-radius: 10px;
+  }
+}
+
+@media (max-width:1550px) {
+  .partyCard > img{
+  height: auto;
+  max-width: 100%;
+  }
 }
 
 .actionCard {
@@ -404,25 +412,12 @@
   position: absolute !important;
 }
 
-.partyImage1 {
-  background-image: url(../images/party/evento1.jpg);
-  width: 334px;
-  height: 223px;
-  border-radius: 10px;
-}
-
-.partyImage2 {
-  background-image: url(../images/party/evento2.jpeg);
-  width: 334px;
-  height: 223px;
-  border-radius: 10px;
-}
-
-.partyImage3 {
-  background-image: url(../images/party/evento3.jpg);
-  width: 334px;
-  height: 223px;
-  border-radius: 10px;
+.partyImage {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  object-position: bottom;
+  position: relative;
 }
 
 .partyBlur {
@@ -565,11 +560,11 @@
 //----- Card de Eventos -----//
 
 .descriptionEvent {
-  margin-top: 103px !important;
+  margin-top: 82px !important;
   border-radius: 10px !important;
   position: absolute !important;
-  width: 334px !important;
-  height: 120px !important;
+  width: 100%;
+  padding: 10px 26px;
   background-color: transparent !important;
   backdrop-filter: blur(5px) !important;
   -webkit-backdrop-filter: blur(5px) !important;
@@ -583,9 +578,9 @@
   font-size: 16px !important;
   line-height: 24px !important;
 
-  padding-top: 11px !important;
+  // padding-top: 11px !important;
   margin-bottom: 11px !important;
-  padding-left: 25px !important;
+  // padding-left: 25px !important;
   text-align: start !important;
   width: 240px !important;
   height: 44px !important;
@@ -600,8 +595,8 @@
   line-height: 18px !important;
 
   margin-bottom: 11px !important;
-  padding-top: 10px !important;
-  padding-left: 25px !important;
+  // padding-top: 10px !important;
+  // padding-left: 25px !important;
   text-align: start !important;
   height: 18px !important;
 }
@@ -613,10 +608,6 @@
   font-weight: 400;
   font-size: 12px;
   line-height: 18px;
-
-  padding-top: 8px;
-  padding-bottom: 11px;
-  padding-left: 25px;
   text-align: start;
   height: 18px;
 }
@@ -633,7 +624,7 @@
 }
 
 .body-login {
-  background: #F8F8F8 !important;
+  background: #f8f8f8 !important;
 }
 
 .loginCard {
@@ -712,7 +703,6 @@ hr.lineText {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-
 }
 
 .form-control {
@@ -833,3 +823,92 @@ input[type='radio']:checked + .label-radio-custom {
     }
   }
 }
+
+// ----------- Home Responsive ------------
+.grid-card-home {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 30px 30px;
+  grid-template-areas:
+    '. . .'
+    '. . .';
+  justify-items: stretch;
+}
+
+.container-home {
+  margin-right: auto;
+  margin-left: auto;
+  padding-left: 25px;
+  padding-right: 25px;
+}
+
+@media (min-width: 960px) {
+  .container-home {
+    width: 690px;
+  }
+}
+
+@media (min-width: 1300px) {
+  .container-home {
+    width: 1000px;
+  }
+}
+
+@media (min-width: 1550px) {
+  .container-home {
+    width: 1150px;
+  }
+
+}
+
+@media (min-width: 1790px) {
+  .container-home {
+    width: 1450px;
+  }
+}
+
+@media (max-width:1550px) {
+  .grid-card-home {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 20px 20px;
+    grid-template-areas:
+      '. .'
+      '. .'
+      '. .';
+    justify-items: stretch;
+  }
+}
+
+@media (max-width:960px) {
+  .grid-card-home {
+    display: grid; 
+    grid-template-columns: 1fr; 
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr; 
+    gap: 15px 15px; 
+    grid-template-areas: 
+      "."
+      "."
+      "."
+      "."
+      "."
+      "."; 
+    justify-items: stretch; 
+  }
+}
+
+figure.partyCard {
+  display: inline-block;  
+  position: relative;
+}
+
+.partyCard figcaption {
+  //  background-color: wheat;
+   position: absolute;
+   bottom: 4px;
+   left: 0; 
+   right:0
+}
+// ----------- Home Responsive ------------
