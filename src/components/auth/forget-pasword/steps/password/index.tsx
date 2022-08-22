@@ -1,6 +1,9 @@
-import React, { ChangeEvent } from 'react';
-import { FormGroup, Label, Input, Button } from 'reactstrap';
+import React, { ChangeEvent, useState } from 'react';
+import { FormGroup, Label, Input, Container, Col, Row } from 'reactstrap';
 import loginLock from '../../../../../assets/images/svg/loginLock.svg';
+import Button from '../../../../Utils/Button';
+import eye from '../../../../../assets/images/login/eye.png';
+import closeEye from '../../../../../assets/images/login/closeEye.png';
 
 interface ConfirmPassword {
   password: string;
@@ -16,53 +19,119 @@ interface DispatchProps {
 
 type Props = StateProps & DispatchProps;
 
-const Password = (props: Props): JSX.Element => (
-  <>
-    <div style={{ display: '-webkit-box' }}>
-      <div style={{ display: 'grid' }}>
-        <h4 className="forgotPasswordLabel">Defina a sua nova senha</h4>
-      </div>
-    </div>
-    <p style={{ width: '450px' }} className="subTitleMain">
-      Digite nos campos abaixo a sua nova senha
-    </p>
-    <FormGroup>
-      <div>
-        <Label className="col-form-label fieldLabel">
-          <img className="mr-2" src={loginLock} />
-          Sua nova senha
-        </Label>
-        <Input
-          name="password"
-          className="form-control loginForm"
-          required={true}
-          placeholder="Digite sua nova senha"
-          value={props.form?.password}
-          onChange={e => props.handleForm(e)}
-        />
-        <div className="auxGrayText" style={{ marginTop: '15px' }}>
-          *A sua senha deve conter 6 dígitos numéricos*{' '}
-        </div>
-      </div>
-      <div style={{ marginTop: '30px' }}>
-        <Label className="col-form-label fieldLabel">
-          <img className="mr-2" src={loginLock} />
-          Confirme a sua nova senha
-        </Label>
-        <Input
-          name="confirmPassword"
-          className="form-control loginForm"
-          required={true}
-          placeholder="Digite sua nova senha novamente"
-          value={props.form?.confirmPassword}
-          onChange={props.handleForm}
-        />
-      </div>
-    </FormGroup>
-    <Button color="primary" className="btn-block mainButton" style={{ marginTop: '90px' }}>
-      <div className="loginFormText">Alterar a minha senha</div>
-    </Button>
-  </>
-);
+const Password = (props: Props): JSX.Element => {
+  const [togglePassword, setTogglePassword] = useState(false);
+
+  const HideShowPassword = (tPassword: boolean): void => {
+    setTogglePassword(!tPassword);
+  };
+
+  const [toggleConfirmPassword, setToggleConfirmPassword] = useState(false);
+
+  const HideShowConfirmPassword = (tConfirmPassword: boolean): void => {
+    setToggleConfirmPassword(!tConfirmPassword);
+  };
+  return (
+    <>
+      <Container>
+        <Col>
+          <Row>
+            <Col md="12">
+              <div style={{ display: '-webkit-box' }}>
+                <div style={{ display: 'grid' }}>
+                  <h4 className="forgotPasswordLabel">Defina a sua nova senha</h4>
+                </div>
+              </div>
+              <p style={{ width: '450px' }} className="subTitleMain">
+                Digite nos campos abaixo a sua nova senha
+              </p>
+            </Col>
+          </Row>
+          <FormGroup>
+            <div>
+              <Label className="col-form-label fieldLabel">
+                <img className="mr-2" src={loginLock} />
+                Sua nova senha
+              </Label>
+              <Input
+                key={1}
+                name="password"
+                className="form-control loginForm"
+                required={true}
+                placeholder="12345"
+                value={props.form?.password}
+                onChange={e => props.handleForm(e)}
+                type={togglePassword ? 'text' : 'password'}
+              />
+              <div key={1} className="show-hide" style={{ marginTop: '95px', cursor: 'pointer' }}>
+                {togglePassword ? (
+                  <img
+                    onClick={() => HideShowPassword(togglePassword)}
+                    className="d-flex justify-content-center align-items-center passwordIcon"
+                    src={eye}
+                  />
+                ) : (
+                  <img
+                    onClick={() => HideShowPassword(togglePassword)}
+                    className="d-flex justify-content-center align-items-center passwordIcon"
+                    src={closeEye}
+                  />
+                )}
+              </div>
+              <div className="auxGrayText" style={{ marginTop: '15px' }}>
+                Sua senha deve conter:{' '}
+              </div>
+              <div className="auxGrayText" style={{ marginTop: '15px' }}>
+                • No mínimo 8 caracteres;
+                <br /> • Pelo menos um número;
+                <br /> • pelo menos um caractere maiúsculo.{' '}
+              </div>
+            </div>
+            <div style={{ marginTop: '30px' }}>
+              <Label className="col-form-label fieldLabel">
+                <img className="mr-2" src={loginLock} />
+                Confirme a sua nova senha
+              </Label>
+              <Input
+                key={2}
+                name="confirmPassword"
+                className="form-control loginForm"
+                required={true}
+                placeholder="12345"
+                value={props.form?.confirmPassword}
+                onChange={props.handleForm}
+                type={toggleConfirmPassword ? 'text' : 'password'}
+              />
+              <div key={2} className="show-hide" style={{ cursor: 'pointer', marginTop: '360px' }}>
+                {toggleConfirmPassword ? (
+                  <img
+                    onClick={() => HideShowConfirmPassword(toggleConfirmPassword)}
+                    className="d-flex justify-content-center align-items-center passwordIcon"
+                    src={eye}
+                  />
+                ) : (
+                  <img
+                    onClick={() => HideShowConfirmPassword(toggleConfirmPassword)}
+                    className="d-flex justify-content-center align-items-center passwordIcon"
+                    src={closeEye}
+                  />
+                )}
+              </div>
+            </div>
+          </FormGroup>
+          <Button
+            className="mainButton"
+            theme="red"
+            size="lg"
+            style={{ width: '100%', marginTop: '90px' }}
+            disabled={!(props.form?.password && props.form?.confirmPassword)}
+          >
+            Alterar a minha senha
+          </Button>
+        </Col>
+      </Container>
+    </>
+  );
+};
 
 export default Password;

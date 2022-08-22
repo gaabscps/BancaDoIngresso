@@ -1,9 +1,10 @@
 import React, { ChangeEvent } from 'react';
-import { FormGroup, Label, Input, Button } from 'reactstrap';
+import { Label, Input, FormGroup, Row, Col } from 'reactstrap';
 import { useNavigate } from 'react-router-dom';
 import { cpfMask } from '../../../../../utils/input-mask';
 import goBackArrow from '../../../../../assets/images/svg/goBackArrow.svg';
 import idCard from '../../../../../assets/images/svg/idCard.svg';
+import Button from '../../../../Utils/Button';
 
 interface CPFObject {
   cpf: string;
@@ -40,9 +41,19 @@ const Cpf = (props: Props): JSX.Element => {
           <h4 className="forgotPasswordLabel">Esqueceu sua senha?</h4>
         </div>
       </div>
-      <p style={{ width: '450px' }} className="subTitleMain">
+      <Row>
+        <Col md="12">
+          <div style={{ marginBottom: '50px', display: 'contents' }}>
+            <div style={{ maxWidth: '450px' }} className="subTitleMain mb-2">
+              Digite abaixo o seu CPF para receber o link de recuperação de senha em seu e-mail
+              cadastrado
+            </div>
+          </div>
+        </Col>
+      </Row>
+      {/* <p style={{ width: '450px' }} className="subTitleMain">
         Digite abaixo o seu CPF para receber o link de recuperação de senha em seu e-mail cadastrado
-      </p>
+      </p> */}
       <FormGroup>
         <Label className="col-form-label fieldLabel">
           <img className="mr-2" src={idCard} />
@@ -52,15 +63,24 @@ const Cpf = (props: Props): JSX.Element => {
           name="cpf"
           className="form-control loginForm"
           required={true}
-          placeholder="Digite seu CPF"
+          placeholder="123.456.789-00"
           value={props.form?.cpf ? cpfMask(props.form?.cpf) : ''}
           onChange={props.handleForm}
           maxLength={14}
         />
+        <Button
+          className="mainButton"
+          theme="red"
+          size="lg"
+          style={{ width: '100%', marginTop: '200px' }}
+          disabled={!props.form?.cpf}
+        >
+          Enviar link de recuperação
+        </Button>
+        {/* <Button color="primary" className="btn-block mainButton" style={{ marginTop: '200px' }}>
+          <div className="loginFormText">Enviar link de recuperação</div>
+        </Button> */}
       </FormGroup>
-      <Button color="primary" className="btn-block mainButton" style={{ marginTop: '200px' }}>
-        <div className="loginFormText">Enviar link de recuperação</div>
-      </Button>
     </>
   );
 };

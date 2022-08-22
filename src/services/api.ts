@@ -32,7 +32,7 @@ api.interceptors.response.use(
     const originalRequest = config;
     if (response.status !== 401 && data?.message) {
       const { message } = data;
-      toast.warn(`Opss... ${message}`, {});
+      toast.error(`Opss... ${message}`, {});
     }
 
     if (response.status === 401 && originalRequest.url.includes('/v1/adm/auth/refresh_token')) {

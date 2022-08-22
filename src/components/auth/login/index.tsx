@@ -93,7 +93,7 @@ const Login = (): JSX.Element => {
               </a>
               <Form className="loginCard" noValidate={true} onSubmit={handleSubmit(onSubmit)}>
                 <Row>
-                  <Col md="12">
+                  <Col style={{ marginLeft: '-5px' }}>
                     <div style={{ marginBottom: '50px', display: 'contents' }}>
                       <div className="pageTitleLogin">Seja bem-vindo(a)! Entre com a sua conta</div>
                       <div className="subTitleMain mb-2">
