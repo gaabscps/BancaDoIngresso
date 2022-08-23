@@ -1,8 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from 'reactstrap';
+import { Col, Row } from 'reactstrap';
 import goBackArrow from '../../../../../assets/images/svg/goBackArrow.svg';
 import MailIcon from '../../../../../assets/images/svg/Mail';
+import Button from '../../../../Utils/Button';
 
 interface EmailObject {
   email: string;
@@ -10,6 +11,7 @@ interface EmailObject {
 
 interface StateProps {
   form: EmailObject;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
 const Code = (props: StateProps): JSX.Element => {
@@ -20,28 +22,48 @@ const Code = (props: StateProps): JSX.Element => {
   };
   return (
     <>
-      <div style={{ display: '-webkit-box' }}>
-        <img
-          src={goBackArrow}
-          style={{
-            paddingRight: '25px',
-            paddingTop: '10px',
-            cursor: 'pointer',
-          }}
-          onClick={goBack}
-        />
-        <div style={{ display: 'grid' }}>
-          <p style={{ width: '450px' }} className="subTitleMain">
-            Enviamos o link de recuperação de senha para o seu e-mail <b>{props.form.email}</b>
-          </p>
-        </div>
-      </div>
+      <Row>
+        <Col md="12">
+          <div style={{ display: '-webkit-box' }}>
+            <img
+              src={goBackArrow}
+              style={{
+                paddingRight: '25px',
+                paddingTop: '10px',
+                cursor: 'pointer',
+              }}
+              onClick={goBack}
+            />
+            <div style={{ display: 'grid' }}>
+              <p style={{ width: '450px' }} className="normalText">
+                Enviamos o link de recuperação de senha para o seu e-mail <b>{props.form.email}</b>
+              </p>
+            </div>
+          </div>
+        </Col>
+      </Row>
+
       <div className="d-flex justify-content-center" style={{ marginTop: '22px' }}>
         <MailIcon />
       </div>
-      <Button color="primary" className="btn-block mainButton" style={{ marginTop: '140px' }}>
-        <div className="loginFormText">Ir para a página de entrada</div>
+      <Button
+        className="mainButton"
+        theme="red"
+        size="lg"
+        style={{ width: '100%', marginTop: '140px' }}
+      >
+        Ir para a página de entrada
       </Button>
+      <div className="d-flex justify-content-center subTitleMain">
+        <div style={{ marginTop: '40px' }}>Não recebeu o link de recuperação?&nbsp;</div>
+        <a
+          className="d-flex forgotPassword"
+          style={{ cursor: 'pointer', color: '#B2140C', position: 'relative' }}
+          // onClick={props.onClick}
+        >
+          Reenviar
+        </a>
+      </div>
     </>
   );
 };
