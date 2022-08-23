@@ -1,6 +1,6 @@
 import React, { useState, useEffect, FormEvent, ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Form, FormGroup, Button } from 'reactstrap';
+import { Form, FormGroup, Container, Col } from 'reactstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 // import { URLSearchParams } from 'url';
 import { ApplicationState } from '../../../store';
@@ -129,17 +129,17 @@ const ForgetPassword = (): JSX.Element => {
 
   return (
     <>
-      <Loader />
-      <div className="login-card" style={{ padding: '75px' }}>
-        <div>
+      <Loader isVisible={false} />
+      <Container>
+        <Col className="login-card">
           <div className="login-main login-tab">
             <a className="logo text-center">
               <img className="img-fluid for-light" src={logoBanca} alt="looginpage" />
             </a>
             <Form className="theme-form " onSubmit={handleStep}>
-              <div style={{ display: 'grid', justifyContent: 'center' }}>
+              <div style={{ display: 'grid', padding: '20px' }}>
                 {step === 0 && <CpfComponent form={form} handleForm={handleForm} />}
-                {step === 1 && <CodeComponent form={form} />}
+                {step === 1 && <CodeComponent form={form} onClick={handleCode} />}
                 {step === 2 && <PasswordComponent form={form} handleForm={handleForm} />}
                 {step === 3 && <SuccessComponent />}
                 {step !== 3 && (
@@ -154,22 +154,13 @@ const ForgetPassword = (): JSX.Element => {
                       Voltar
                     </Button>
                   )} */}
-                    {step !== 0 && (
-                      <Button
-                        onClick={() => setStep(0)}
-                        style={{ color: '#B2140C', backgroundColor: '#B2140C' }}
-                        // className="btn-block"
-                      >
-                        <div className="loginFormText">Início</div>
-                      </Button>
-                    )}
                   </FormGroup>
                 )}
               </div>
             </Form>
           </div>
-        </div>
-      </div>
+        </Col>
+      </Container>
     </>
   );
 };

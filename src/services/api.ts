@@ -30,9 +30,13 @@ api.interceptors.response.use(
     const { response, config } = error;
     const { data } = response;
     const originalRequest = config;
-    if (response.status !== 401 && data?.message) {
+    if ((response.status === 401 || response.status === 403) && data?.message) {
       const { message } = data;
-      toast.warn(`Opss... ${message}`, {});
+      toast.error(`Opss... ${message}`, {});
+    }
+
+    if (response.status >= 500 && response.status < 600) {
+      toast.error('Opss... Erro interno, tente novamente mais tarde!');
     }
 
     if (response.status === 401 && originalRequest.url.includes('/v1/adm/auth/refresh_token')) {
