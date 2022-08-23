@@ -1,12 +1,12 @@
-import React, { Fragment, useState } from 'react';
-import { Bell, Search } from 'react-feather';
+import React, { Fragment } from 'react';
+// import { Bell, Search } from 'react-feather';
 import avatar from '../../assets/images/avtar/avatar.png';
 import AuthUser from '../../entities/AuthUser';
 import { getLocalStorage } from '../../helpers/localStorage';
 
 const Rightbar = (): JSX.Element => {
-  const [searchresponsive, setSearchresponsive] = useState(false);
-  const [notificationDropDown, setNotificationDropDown] = useState(false);
+  // constit [searchresponsive, setSearchresponsive] = useState(false);
+  // const [notificaonDropDown, setNotificationDropDown] = useState(false);
 
   const userString = getLocalStorage(process.env.REACT_APP_USER as string) as string;
   let user: AuthUser;

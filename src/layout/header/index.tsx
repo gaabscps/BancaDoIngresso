@@ -1,13 +1,13 @@
-import React, { Fragment, useState, useEffect, useCallback } from 'react';
-import { Form, Row } from 'reactstrap';
-import { Icon, X } from 'react-feather';
-import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import React, { Fragment } from 'react';
+// import { Form, Row } from 'reactstrap';
+import { Icon } from 'react-feather';
+// import { Link } from 'react-router-dom';
+// import { useSelector } from 'react-redux';
 import { MENUITEMS } from '../sidebar/menu';
 import LeftHeader from './leftbar';
 import RightHeader from './rightbar';
-import { Loading } from '../../constant';
-import { ApplicationState } from '../../store';
+// import { Loading } from '../../constant';
+// import { ApplicationState } from '../../store';
 
 interface Menu {
   title: string;
@@ -32,82 +32,82 @@ const Header = (): JSX.Element => {
   MENUITEMS.Items.forEach(menu => {
     menus.push(menu as Menu);
   });
-  const [mainmenu] = useState(menus);
-  const [searchValue, setSearchValue] = useState('');
-  const [searchValues, setSearchValues] = useState([] as Menu[]);
+  // const [mainmenu] = useState(menus);
+  // const [searchValue, setSearchValue] = useState('');
+  // const [searchValues, setSearchValues] = useState([] as Menu[]);
   // eslint-disable-next-line
-  const [searchResult, setSearchResult] = useState(false);
-  // eslint-disable-next-line
-  const [searchResultEmpty, setSearchResultEmpty] = useState(false);
-  const layout_type = useSelector<ApplicationState>(content => content.customizer.data.layout);
-  const layout_version = useSelector<ApplicationState>(
-    content => content.customizer.data.mix_background_layout,
-  );
+  // const [searchResult, setSearchResult] = useState(false);
+  // // eslint-disable-next-line
+  // const [searchResultEmpty, setSearchResultEmpty] = useState(false);
+  // const layout_type = useSelector<ApplicationState>(content => content.customizer.data.layout);
+  // const layout_version = useSelector<ApplicationState>(
+  //   content => content.customizer.data.mix_background_layout,
+  // );
 
-  const escFunction = useCallback((event: KeyboardEvent) => {
-    if (event.keyCode === 27) {
-      setSearchValue('');
-    }
-  }, []);
+  // const escFunction = useCallback((event: KeyboardEvent) => {
+  //   if (event.keyCode === 27) {
+  //     setSearchValue('');
+  //   }
+  // }, []);
 
-  useEffect(() => {
-    document.addEventListener('keydown', escFunction, false);
-    return () => {
-      document.removeEventListener('keydown', escFunction, false);
-    };
-  }, [escFunction]);
+  // useEffect(() => {
+  //   document.addEventListener('keydown', escFunction, false);
+  //   return () => {
+  //     document.removeEventListener('keydown', escFunction, false);
+  //   };
+  // }, [escFunction]);
 
-  const checkSearchResultEmpty = (items: Menu[]): void => {
-    if (!items.length) {
-      setSearchResultEmpty(true);
-      (document.querySelector('.empty-menu') as Element).classList.add('is-open');
-    } else {
-      setSearchResultEmpty(false);
-      (document.querySelector('.empty-menu') as Element).classList.remove('is-open');
-    }
-  };
+  // const checkSearchResultEmpty = (items: Menu[]): void => {
+  //   if (!items.length) {
+  //     setSearchResultEmpty(true);
+  //     (document.querySelector('.empty-menu') as Element).classList.add('is-open');
+  //   } else {
+  //     setSearchResultEmpty(false);
+  //     (document.querySelector('.empty-menu') as Element).classList.remove('is-open');
+  //   }
+  // };
 
-  const addFix = (): void => {
-    setSearchResult(true);
-    (document.querySelector('.Typeahead-menu') as Element).classList.add('is-open');
-    document.body.className = `${layout_version} ${layout_type} offcanvas`;
-  };
+  // const addFix = (): void => {
+  //   setSearchResult(true);
+  //   (document.querySelector('.Typeahead-menu') as Element).classList.add('is-open');
+  //   document.body.className = `${layout_version} ${layout_type} offcanvas`;
+  // };
 
-  const removeFix = (): void => {
-    setSearchResult(false);
-    setSearchValue('');
-    (document.querySelector('.Typeahead-menu') as Element).classList.remove('is-open');
-    document.body.className = `${layout_version} ${layout_type}`;
-  };
+  // const removeFix = (): void => {
+  //   setSearchResult(false);
+  //   setSearchValue('');
+  //   (document.querySelector('.Typeahead-menu') as Element).classList.remove('is-open');
+  //   document.body.className = `${layout_version} ${layout_type}`;
+  // };
 
-  const handleSearchKeyword = (keyword: string): void => {
-    if (keyword) {
-      addFix();
-    } else {
-      removeFix();
-    }
-    const items: Menu[] = [];
-    setSearchValue(keyword);
-    mainmenu.filter(mItems => {
-      let add = false;
-      if (mItems.title.toLowerCase().includes(keyword) && mItems.type === 'link') {
-        items.push(mItems);
-        add = true;
-      }
-      if (!mItems.children) return false;
-      if (!add) {
-        const childres = mItems.children.filter(
-          subItems => subItems.title.toLowerCase().includes(keyword) && subItems.type === 'link',
-        );
-        if (childres.length > 0) {
-          items.push(mItems);
-        }
-      }
-      checkSearchResultEmpty(items);
-      setSearchValues(items);
-      return mItems;
-    });
-  };
+  // const handleSearchKeyword = (keyword: string): void => {
+  //   if (keyword) {
+  //     addFix();
+  //   } else {
+  //     removeFix();
+  //   }
+  //   const items: Menu[] = [];
+  //   setSearchValue(keyword);
+  //   mainmenu.filter(mItems => {
+  //     let add = false;
+  //     if (mItems.title.toLowerCase().includes(keyword) && mItems.type === 'link') {
+  //       items.push(mItems);
+  //       add = true;
+  //     }
+  //     if (!mItems.children) return false;
+  //     if (!add) {
+  //       const childres = mItems.children.filter(
+  //         subItems => subItems.title.toLowerCase().includes(keyword) && subItems.type === 'link',
+  //       );
+  //       if (childres.length > 0) {
+  //         items.push(mItems);
+  //       }
+  //     }
+  //     checkSearchResultEmpty(items);
+  //     setSearchValues(items);
+  //     return mItems;
+  //   });
+  // };
 
   return (
     <Fragment>
@@ -167,8 +167,8 @@ const Header = (): JSX.Element => {
               </div>
             </div>
           </Form> */}
-          <LeftHeader />
-          <RightHeader />
+        <LeftHeader />
+        <RightHeader />
         {/* </Row> */}
       </div>
     </Fragment>
