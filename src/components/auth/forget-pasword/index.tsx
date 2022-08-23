@@ -127,6 +127,10 @@ const ForgetPassword = (): JSX.Element => {
     }
   }, [history]);
 
+  useEffect(() => {
+    console.log('Form', form);
+  }, [form]);
+
   return (
     <>
       <Loader />
@@ -139,7 +143,7 @@ const ForgetPassword = (): JSX.Element => {
             <Form className="theme-form " onSubmit={handleStep}>
               <div style={{ display: 'grid', padding: '20px' }}>
                 {step === 0 && <CpfComponent form={form} handleForm={handleForm} />}
-                {step === 1 && <CodeComponent form={form} />}
+                {step === 1 && <CodeComponent form={form} onClick={handleCode} />}
                 {step === 2 && <PasswordComponent form={form} handleForm={handleForm} />}
                 {step === 3 && <SuccessComponent />}
                 {step !== 3 && (

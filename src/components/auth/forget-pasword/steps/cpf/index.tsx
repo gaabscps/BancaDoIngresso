@@ -51,9 +51,6 @@ const Cpf = (props: Props): JSX.Element => {
           </div>
         </Col>
       </Row>
-      {/* <p style={{ width: '450px' }} className="subTitleMain">
-        Digite abaixo o seu CPF para receber o link de recuperação de senha em seu e-mail cadastrado
-      </p> */}
       <FormGroup>
         <Label className="col-form-label fieldLabel">
           <img className="mr-2" src={idCard} />
@@ -77,9 +74,6 @@ const Cpf = (props: Props): JSX.Element => {
         >
           Enviar link de recuperação
         </Button>
-        {/* <Button color="primary" className="btn-block mainButton" style={{ marginTop: '200px' }}>
-          <div className="loginFormText">Enviar link de recuperação</div>
-        </Button> */}
       </FormGroup>
     </>
   );

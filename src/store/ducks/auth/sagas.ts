@@ -4,6 +4,7 @@
 import { call, put, select } from 'redux-saga/effects';
 import { AxiosResponse, AxiosError } from 'axios';
 import { Buffer } from 'buffer';
+import { toast } from 'react-toastify';
 import {
   loginSuccess,
   loginFailure,
@@ -47,7 +48,11 @@ export function* authLogin(data: any) {
     yield put(loginSuccess(authData));
   } catch (err) {
     const error = err as AxiosError;
-    yield put(loginFailure(parse(error)));
+    if (error?.response?.statusText === 'Bad Request') {
+      toast.error('Ops... Credênciais Inválidas');
+    } else {
+      yield put(loginFailure(parse(error)));
+    }
   }
 }
 
@@ -65,7 +70,11 @@ export function* authRecoverPassword(data: any) {
     yield put(recoverPasswordSuccess(authData));
   } catch (err) {
     const error = err as AxiosError;
-    yield put(recoverPasswordFailure(parse(error)));
+    if (error?.response?.statusText === 'Not Found') {
+      toast.error('Ops... Esse CPF não foi encontrado');
+    } else {
+      yield put(recoverPasswordFailure(parse(error)));
+    }
   }
 }
 

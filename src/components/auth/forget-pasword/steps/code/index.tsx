@@ -11,6 +11,7 @@ interface EmailObject {
 
 interface StateProps {
   form: EmailObject;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
 const Code = (props: StateProps): JSX.Element => {
@@ -58,6 +59,7 @@ const Code = (props: StateProps): JSX.Element => {
         <a
           className="d-flex forgotPassword"
           style={{ cursor: 'pointer', color: '#B2140C', position: 'relative' }}
+          // onClick={props.onClick}
         >
           Reenviar
         </a>
