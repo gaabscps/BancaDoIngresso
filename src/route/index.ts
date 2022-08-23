@@ -34,6 +34,9 @@ import Confirmation from '../components/dashboard/events/create/confirmation';
 // Errors
 import Page404 from '../components/errors/error404';
 
+// Exemples Helper to developement
+import ExampleForms from '../helpers/ExampleForms';
+
 export interface RoteContent {
   path: string;
   component: (props: any) => JSX.Element;
@@ -165,6 +168,12 @@ export const routes: RoteContent[] = [
     path: `/event/confirmation`,
     component: App,
     child: Confirmation,
+    privateRoute: true,
+  },
+  {
+    path: `/example/form`,
+    component: App,
+    child: ExampleForms,
     privateRoute: true,
   },
 

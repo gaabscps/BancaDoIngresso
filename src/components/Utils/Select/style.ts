@@ -1,4 +1,5 @@
-export const customStyles = (props: any) => ({
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+export const customStyles = () => ({
   control: (provided: any, state: any) => ({
     ...provided,
     // width: '546px',
