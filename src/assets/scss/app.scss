@@ -22,7 +22,6 @@
   flex-direction: column;
   margin-top: 51px;
   span {
-    height: 48px;
     width: fit-content;
   }
 }
@@ -927,7 +926,7 @@ input[type='radio']:checked + .label-radio-custom {
     margin: 51px 0 0 15%;
   }
 }
-@media (max-width: 1024px) {
+@media (max-width: 1100px) {
   // .container-home {
   //   width: 690px;
   // }
