@@ -48,11 +48,11 @@ export function* authLogin(data: any) {
     yield put(loginSuccess(authData));
   } catch (err) {
     const error = err as AxiosError;
+    console.log(error);
     if (error?.response?.statusText === 'Bad Request') {
       toast.error('Ops... Credênciais Inválidas');
-    } else {
-      yield put(loginFailure(parse(error)));
     }
+    yield put(loginFailure(parse(error)));
   }
 }
 
