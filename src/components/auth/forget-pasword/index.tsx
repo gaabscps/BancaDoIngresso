@@ -94,6 +94,10 @@ const ForgetPassword = (): JSX.Element => {
     dispatch(changePasswordRequest(data));
   };
 
+  const handleReSend = (): void => {
+    dispatch(recoverPasswordRequest(form.cpf));
+  };
+
   const handleStep = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     if (auth.loading) {
@@ -147,7 +151,7 @@ const ForgetPassword = (): JSX.Element => {
                   {step === 0 && <CpfComponent form={form} handleForm={handleForm} />}
                   {/* {step === 0 && <PasswordComponent form={form} handleForm={handleForm} />} */}
                   {/* {step === 0 && <PasswordComponent form={form} handleForm={handleForm} />} */}
-                  {step === 1 && <CodeComponent form={form} />}
+                  {step === 1 && <CodeComponent form={form} handleReSend={handleReSend} />}
                   {step === 2 && <PasswordComponent form={form} handleForm={handleForm} />}
                   {step !== 3 && (
                     <FormGroup className="mb-0 mt-4">

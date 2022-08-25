@@ -1,11 +1,8 @@
 import React from 'react';
-// import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Col, Row } from 'reactstrap';
 import goBackArrow from '../../../../../assets/images/svg/goBackArrow.svg';
 import MailIcon from '../../../../../assets/images/svg/Mail';
-// import ChangePassword from '../../../../../entities/ChangePassword';
-// import { changePasswordRequest } from '../../../../../store/ducks/auth/actions';
 import Button from '../../../../Utils/Button';
 
 interface EmailObject {
@@ -16,17 +13,19 @@ interface StateProps {
   form: EmailObject;
 }
 
-const Code = (props: StateProps): JSX.Element => {
+interface DispatchProps {
+  handleReSend(): void;
+}
+
+type Props = StateProps & DispatchProps;
+
+const Code = (props: Props): JSX.Element => {
   // const dispatch = useDispatch();
   const history = useNavigate();
   const goBack = (): void => {
     history('/');
     history(0);
   };
-
-  // const handleCode = async (data: ChangePassword): Promise<void> => {
-  //   dispatch(changePasswordRequest(data));
-  // };
 
   return (
     <>
@@ -67,7 +66,7 @@ const Code = (props: StateProps): JSX.Element => {
         <a
           className="d-flex forgotPassword"
           style={{ cursor: 'pointer', color: '#B2140C', position: 'relative' }}
-          // onClick={handleCode}
+          onClick={props.handleReSend}
         >
           Reenviar
         </a>
