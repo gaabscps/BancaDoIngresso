@@ -72,9 +72,8 @@ export function* authRecoverPassword(data: any) {
     const error = err as AxiosError;
     if (error?.response?.statusText === 'Not Found') {
       toast.error('Ops... Esse CPF não foi encontrado');
-    } else {
-      yield put(recoverPasswordFailure(parse(error)));
     }
+    yield put(recoverPasswordFailure(parse(error)));
   }
 }
 
@@ -85,6 +84,7 @@ export function* authChangePassword(data: any) {
       '/auth/change-password',
       data.payload,
     );
+    console.log(response);
 
     const stateData: ApplicationState = yield select((state: ApplicationState) => ({
       auth: state.auth,
@@ -95,6 +95,19 @@ export function* authChangePassword(data: any) {
     yield put(changePasswordSuccess(authData));
   } catch (err) {
     const error = err as AxiosError;
+    console.log('Error', error);
+    // if (error?.details === 'Ter tamanho mínimo 6 e no máximo 15 caracteres.') {
+    //   toast.error('Ops... Essa senha é muito curta!!');
+    // }
+    // if (error?.response?.statusText === 'Deve ter no mínimo uma letra maiúscula e minúscula.') {
+    //   toast.error('Ops... Essa senha precisa ter uma letra maiúscula!!');
+    // }
+    // if (error?.response?.statusText === 'Deve ter no mínimo um numero.') {
+    //   toast.error('Ops... Essa senha precisa ter um número.');
+    // }
+    if (error?.message === 'Erro de Validação') {
+      toast.warn('Ops... A nova senha precisa seguir os parâmetros solicitados!!');
+    }
     yield put(changePasswordFailure(parse(error)));
   }
 }
