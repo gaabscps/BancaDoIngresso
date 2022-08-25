@@ -106,7 +106,7 @@ export function* authChangePassword(data: any) {
     //   toast.error('Ops... Essa senha precisa ter um número.');
     // }
     if (error?.message === 'Erro de Validação') {
-      toast.warn('Ops... A nova senha precisa seguir os parâmetros solicitados!!');
+      toast.error('Ops... A nova senha precisa seguir os parâmetros solicitados!!');
     }
     yield put(changePasswordFailure(parse(error)));
   }

@@ -34,6 +34,7 @@ const ForgetPassword = (): JSX.Element => {
 
   const [form, setForm] = useState<RecoveryPassword>({} as RecoveryPassword);
   const [step, setStep] = useState<number>(0);
+  const [showSucessPasswordModal, setShowSucessPasswordModal] = useState(false);
 
   // const cookies = new Cookies();
 
@@ -83,8 +84,14 @@ const ForgetPassword = (): JSX.Element => {
     });
   };
 
+  const openModal = (): void => {
+    setShowSucessPasswordModal(true);
+    // dispatch(recoverPasswordRequest(form.cpf));
+  };
+
   const handleCpf = (): void => {
     dispatch(recoverPasswordRequest(form.cpf));
+    openModal();
   };
 
   const handleCode = async (data: ChangePassword): Promise<void> => {
@@ -106,6 +113,9 @@ const ForgetPassword = (): JSX.Element => {
         break;
       case 2:
         handleCode(chanagePassword);
+        break;
+      case 3:
+        openModal();
         break;
       default:
         break;
@@ -141,9 +151,15 @@ const ForgetPassword = (): JSX.Element => {
               <Form className="theme-form loginCard" onSubmit={handleStep}>
                 <div style={{ display: 'grid' }}>
                   {step === 0 && <CpfComponent form={form} handleForm={handleForm} />}
+                  {/* {step === 0 && <PasswordComponent form={form} handleForm={handleForm} />} */}
                   {step === 1 && <CodeComponent form={form} />}
                   {step === 2 && <PasswordComponent form={form} handleForm={handleForm} />}
-                  {step === 3 && <SuccessComponent />}
+                  {step === 3 ? (
+                    <SuccessComponent
+                      show={showSucessPasswordModal}
+                      setShowSucessPasswordModal={setShowSucessPasswordModal}
+                    />
+                  ) : null}
                   {step !== 3 && (
                     <FormGroup className="mb-0 mt-4">
                       {/* {step === 0 && (
