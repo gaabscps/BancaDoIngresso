@@ -39,6 +39,12 @@ const ForgetPassword = (): JSX.Element => {
 
   const auth = useSelector<ApplicationState, AuthState>(store => store.auth);
 
+  const chanagePassword: ChangePassword = {
+    token: form.code,
+    password: form.password,
+    confirmPassword: form.confirmPassword,
+  };
+
   const login = (cpf: string): void => {
     dispatch(loginRequest(cpf, form.password));
   };
@@ -81,13 +87,8 @@ const ForgetPassword = (): JSX.Element => {
     dispatch(recoverPasswordRequest(form.cpf));
   };
 
-  const handleCode = async (): Promise<void> => {
-    const chanagePassword: ChangePassword = {
-      token: form.code,
-      password: form.password,
-      confirmPassword: form.confirmPassword,
-    };
-    dispatch(changePasswordRequest(chanagePassword));
+  const handleCode = async (data: ChangePassword): Promise<void> => {
+    dispatch(changePasswordRequest(data));
   };
 
   const handleStep = (e: FormEvent<HTMLFormElement>): void => {
@@ -104,7 +105,7 @@ const ForgetPassword = (): JSX.Element => {
         history(0);
         break;
       case 2:
-        handleCode();
+        handleCode(chanagePassword);
         break;
       default:
         break;
@@ -122,7 +123,7 @@ const ForgetPassword = (): JSX.Element => {
       setForm(newForm);
       setStep(2);
     }
-    if (isAuthenticated()) {
+    if (isAuthenticated() && step === 3) {
       history('/dashboard/admin');
     }
   }, [history]);
@@ -140,7 +141,7 @@ const ForgetPassword = (): JSX.Element => {
               <Form className="theme-form loginCard" onSubmit={handleStep}>
                 <div style={{ display: 'grid' }}>
                   {step === 0 && <CpfComponent form={form} handleForm={handleForm} />}
-                  {step === 1 && <CodeComponent form={form} onClick={handleCode} />}
+                  {step === 1 && <CodeComponent form={form} />}
                   {step === 2 && <PasswordComponent form={form} handleForm={handleForm} />}
                   {step === 3 && <SuccessComponent />}
                   {step !== 3 && (
