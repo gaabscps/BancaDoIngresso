@@ -4,7 +4,7 @@ import loginLock from '../../../../../assets/images/svg/loginLock.svg';
 import Button from '../../../../Utils/Button';
 import eye from '../../../../../assets/images/login/eye.png';
 import closeEye from '../../../../../assets/images/login/closeEye.png';
-// import SuccessComponent from '../success';
+import SuccessComponent from '../success';
 
 interface ConfirmPassword {
   password: string;
@@ -22,7 +22,7 @@ type Props = StateProps & DispatchProps;
 
 const Password = (props: Props): JSX.Element => {
   const [togglePassword, setTogglePassword] = useState(false);
-  // const [showSucessPasswordModal, setShowSucessPasswordModal] = useState(false);
+  const [showSucessPasswordModal, setShowSucessPasswordModal] = useState(false);
 
   const HideShowPassword = (tPassword: boolean): void => {
     setTogglePassword(!tPassword);
@@ -35,10 +35,10 @@ const Password = (props: Props): JSX.Element => {
   };
   return (
     <>
-      {/* <SuccessComponent
+      <SuccessComponent
         show={showSucessPasswordModal}
         setShowSucessPasswordModal={setShowSucessPasswordModal}
-      /> */}
+      />
       <Container>
         <Col>
           <Row>

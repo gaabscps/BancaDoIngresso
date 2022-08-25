@@ -65,7 +65,7 @@ const ForgetPassword = (): JSX.Element => {
           cpf: auth.data.changePassword.login,
         };
         setForm(newForm);
-        setStep(0);
+        setStep(3);
         login(auth.data.changePassword.login);
       }
     }
@@ -91,7 +91,7 @@ const ForgetPassword = (): JSX.Element => {
 
   const handleCpf = (): void => {
     dispatch(recoverPasswordRequest(form.cpf));
-    openModal();
+    // openModal();
   };
 
   const handleCode = async (data: ChangePassword): Promise<void> => {
@@ -140,6 +140,10 @@ const ForgetPassword = (): JSX.Element => {
 
   return (
     <>
+      <SuccessComponent
+        show={showSucessPasswordModal}
+        setShowSucessPasswordModal={setShowSucessPasswordModal}
+      />
       <Loader isVisible={auth.loading} />
       <div className="body-login">
         <Container>
@@ -151,6 +155,7 @@ const ForgetPassword = (): JSX.Element => {
               <Form className="theme-form loginCard" onSubmit={handleStep}>
                 <div style={{ display: 'grid' }}>
                   {step === 0 && <CpfComponent form={form} handleForm={handleForm} />}
+                  {/* {step === 0 && <PasswordComponent form={form} handleForm={handleForm} />} */}
                   {/* {step === 0 && <PasswordComponent form={form} handleForm={handleForm} />} */}
                   {step === 1 && <CodeComponent form={form} />}
                   {step === 2 && <PasswordComponent form={form} handleForm={handleForm} />}
