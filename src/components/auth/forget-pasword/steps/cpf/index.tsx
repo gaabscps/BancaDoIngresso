@@ -52,7 +52,10 @@ const Cpf = (props: Props): JSX.Element => {
         </Col>
       </Row>
       <FormGroup>
-        <Label className="col-form-label fieldLabel">
+        <Label
+          className="col-form-label fieldLabel"
+          style={{ marginBottom: '10px', marginTop: '10px' }}
+        >
           <img className="mr-2" src={idCard} />
           Seu CPF
         </Label>

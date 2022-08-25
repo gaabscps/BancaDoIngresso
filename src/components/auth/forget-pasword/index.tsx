@@ -129,38 +129,40 @@ const ForgetPassword = (): JSX.Element => {
 
   return (
     <>
-      <Loader isVisible={false} />
-      <Container>
-        <Col className="login-card">
-          <div className="login-main login-tab">
-            <a className="logo text-center">
-              <img className="img-fluid for-light" src={logoBanca} alt="looginpage" />
-            </a>
-            <Form className="theme-form " onSubmit={handleStep}>
-              <div style={{ display: 'grid', padding: '20px' }}>
-                {step === 0 && <CpfComponent form={form} handleForm={handleForm} />}
-                {step === 1 && <CodeComponent form={form} onClick={handleCode} />}
-                {step === 2 && <PasswordComponent form={form} handleForm={handleForm} />}
-                {step === 3 && <SuccessComponent />}
-                {step !== 3 && (
-                  <FormGroup className="mb-0 mt-4">
-                    {/* {step === 0 && (
-                    <Button
-                      onClick={() => history.push("/")}
-                      color="primary"
-                      outline
-                      className="btn-block"
-                    >
-                      Voltar
-                    </Button>
-                  )} */}
-                  </FormGroup>
-                )}
-              </div>
-            </Form>
-          </div>
-        </Col>
-      </Container>
+      <Loader isVisible={auth.loading} />
+      <div className="body-login">
+        <Container>
+          <Col className="login-card">
+            <div className="login-main login-tab">
+              <a className="logo text-center" href="#javascript">
+                <img className="img-fluid for-light" src={logoBanca} alt="looginpage" />
+              </a>
+              <Form className="theme-form loginCard" onSubmit={handleStep}>
+                <div style={{ display: 'grid' }}>
+                  {step === 0 && <CpfComponent form={form} handleForm={handleForm} />}
+                  {step === 1 && <CodeComponent form={form} onClick={handleCode} />}
+                  {step === 2 && <PasswordComponent form={form} handleForm={handleForm} />}
+                  {step === 3 && <SuccessComponent />}
+                  {step !== 3 && (
+                    <FormGroup className="mb-0 mt-4">
+                      {/* {step === 0 && (
+                <Button
+                  onClick={() => history.push("/")}
+                  color="primary"
+                  outline
+                  className="btn-block"
+                >
+                  Voltar
+                </Button>
+              )} */}
+                    </FormGroup>
+                  )}
+                </div>
+              </Form>
+            </div>
+          </Col>
+        </Container>
+      </div>
     </>
   );
 };
