@@ -1,5 +1,9 @@
 import React /* , { useEffect } */ from 'react';
+import { useSelector } from 'react-redux';
 import { Container, Modal, ModalBody } from 'reactstrap';
+import { setAuthLocalStorage } from '../../../../../helpers/localStorage';
+import { ApplicationState } from '../../../../../store';
+import { AuthState } from '../../../../../store/ducks/auth/types';
 import Button from '../../../../Utils/Button';
 
 // import { useHistory } from "react-router-dom";
@@ -18,12 +22,19 @@ interface DispatchProps {
 type Props = StateProps & DispatchProps;
 
 const Success = (props: Props): JSX.Element => {
-  const handleClose = (): void => props.setShowSucessPasswordModal(false);
+  const auth = useSelector<ApplicationState, AuthState>(store => store.auth);
+  // const handleClose = (): void => props.setShowSucessPasswordModal(false);
+
+  const handleClose = (): void => {
+    if (auth.data.login) {
+      setAuthLocalStorage(auth.data.login);
+      window.location.href = '/';
+    }
+  };
   return (
     <>
       <Modal
         size="lg"
-        // style={{ width: '770px', height: '534px' }}
         isOpen={props.show}
         toggle={() => handleClose()}
         aria-labelledby="example-custom-modal-styling-title"
@@ -71,7 +82,7 @@ const Success = (props: Props): JSX.Element => {
                 handleClose();
               }}
             >
-              Ir para a página de entrada
+              Ir para a página home
             </Button>
           </div>
         </ModalBody>

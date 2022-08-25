@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 // import { URLSearchParams } from 'url';
 import { ApplicationState } from '../../../store';
 import logoBanca from '../../../assets/images/logo/logoBanca.png';
-import { setAuthLocalStorage, isAuthenticated } from '../../../helpers/localStorage';
+// import { setAuthLocalStorage } from '../../../helpers/localStorage';
 import Loader from '../../../layout/loader';
 import CpfComponent from './steps/cpf';
 import CodeComponent from './steps/code';
@@ -65,14 +65,16 @@ const ForgetPassword = (): JSX.Element => {
           cpf: auth.data.changePassword.login,
         };
         setForm(newForm);
-        setStep(3);
+        // setStep(2);
+        setShowSucessPasswordModal(true);
+
         login(auth.data.changePassword.login);
       }
     }
-    if (auth.data.login) {
-      setAuthLocalStorage(auth.data.login);
-      window.location.href = '/';
-    }
+    // if (auth.data.login) {
+    //   setAuthLocalStorage(auth.data.login);
+    //   window.location.href = '/';
+    // }
   }
 
   const handleForm = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -84,14 +86,8 @@ const ForgetPassword = (): JSX.Element => {
     });
   };
 
-  const openModal = (): void => {
-    setShowSucessPasswordModal(true);
-    // dispatch(recoverPasswordRequest(form.cpf));
-  };
-
   const handleCpf = (): void => {
     dispatch(recoverPasswordRequest(form.cpf));
-    // openModal();
   };
 
   const handleCode = async (data: ChangePassword): Promise<void> => {
@@ -114,9 +110,6 @@ const ForgetPassword = (): JSX.Element => {
       case 2:
         handleCode(chanagePassword);
         break;
-      case 3:
-        openModal();
-        break;
       default:
         break;
     }
@@ -132,9 +125,6 @@ const ForgetPassword = (): JSX.Element => {
       };
       setForm(newForm);
       setStep(2);
-    }
-    if (isAuthenticated() && step === 3) {
-      history('/dashboard/admin');
     }
   }, [history]);
 
@@ -159,12 +149,6 @@ const ForgetPassword = (): JSX.Element => {
                   {/* {step === 0 && <PasswordComponent form={form} handleForm={handleForm} />} */}
                   {step === 1 && <CodeComponent form={form} />}
                   {step === 2 && <PasswordComponent form={form} handleForm={handleForm} />}
-                  {step === 3 ? (
-                    <SuccessComponent
-                      show={showSucessPasswordModal}
-                      setShowSucessPasswordModal={setShowSucessPasswordModal}
-                    />
-                  ) : null}
                   {step !== 3 && (
                     <FormGroup className="mb-0 mt-4">
                       {/* {step === 0 && (
