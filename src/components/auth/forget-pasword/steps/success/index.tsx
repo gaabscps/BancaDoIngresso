@@ -82,7 +82,7 @@ const Success = (props: Props): JSX.Element => {
                 handleClose();
               }}
             >
-              Ir para a página home
+              Entrar e ir para Início
             </Button>
           </div>
         </ModalBody>
