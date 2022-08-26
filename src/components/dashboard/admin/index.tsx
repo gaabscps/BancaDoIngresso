@@ -96,7 +96,7 @@ const Sample = (): JSX.Element => {
         <div style={{ display: 'grid', paddingTop: '50px' }}>
           <div className="d-flex justify-content-between">
             <Label className="pageTitle">Próximos eventos</Label>
-            <Label className="normalText" onClick={viewAll} style={{ cursor: 'pointer' }}>
+            <Label className="normalText verTodos" onClick={viewAll} style={{ cursor: 'pointer' }}>
               Ver todos
             </Label>
           </div>
