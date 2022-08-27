@@ -968,6 +968,9 @@ input[type='radio']:checked + .label-radio-custom {
   }
   .count {
     margin-left: 0px;
+    span{
+      font-size: 12px;
+    }
   }
 }
 @media (max-width: 319px) {

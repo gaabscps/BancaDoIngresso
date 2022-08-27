@@ -87,7 +87,14 @@ const Sample = (): JSX.Element => {
                   <span>Chargeback</span>
                 </div>
                 <div className="count">
-                  <span>{home.data.chargeback}</span>
+                  <span>
+                    {home.data.chargeback === 0
+                      ? home.data.chargeback.toLocaleString('pt-BR', {
+                          style: 'currency',
+                          currency: 'BRL',
+                        })
+                      : home.data.chargeback}
+                  </span>
                 </div>
               </div>
             </div>
