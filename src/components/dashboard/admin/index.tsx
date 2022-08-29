@@ -88,12 +88,18 @@ const Sample = (): JSX.Element => {
                 </div>
                 <div className="count">
                   <span>
-                    {home.data.chargeback === 0
+                    {/* {home.data.chargeback === undefined
                       ? home.data.chargeback.toLocaleString('pt-BR', {
                           style: 'currency',
                           currency: 'BRL',
                         })
-                      : home.data.chargeback}
+                      : home.data.chargeback} */}
+                    {home.data.chargeback === undefined
+                      ? '0'
+                      : home.data.chargeback.toLocaleString('pt-BR', {
+                          style: 'currency',
+                          currency: 'BRL',
+                        })}
                   </span>
                 </div>
               </div>
