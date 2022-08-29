@@ -87,7 +87,14 @@ const Sample = (): JSX.Element => {
                   <span>Chargeback</span>
                 </div>
                 <div className="count">
-                  <span>{home.data.chargeback}</span>
+                  <span>
+                    {home.data.chargeback === 0
+                      ? home.data.chargeback.toLocaleString('pt-BR', {
+                          style: 'currency',
+                          currency: 'BRL',
+                        })
+                      : home.data.chargeback}
+                  </span>
                 </div>
               </div>
             </div>
@@ -96,7 +103,7 @@ const Sample = (): JSX.Element => {
         <div style={{ display: 'grid', paddingTop: '50px' }}>
           <div className="d-flex justify-content-between">
             <Label className="pageTitle">Próximos eventos</Label>
-            <Label className="normalText" onClick={viewAll} style={{ cursor: 'pointer' }}>
+            <Label className="normalText verTodos" onClick={viewAll} style={{ cursor: 'pointer' }}>
               Ver todos
             </Label>
           </div>
