@@ -105,7 +105,7 @@ export function* authChangePassword(data: any) {
     // if (error?.response?.statusText === 'Deve ter no mínimo um numero.') {
     //   toast.error('Ops... Essa senha precisa ter um número.');
     // }
-    if (error?.response?.statusText === 'Bad Request') {
+    if (error?.response?.statusText === 'Bad Request' || error?.response?.status === 400) {
       toast.warn('Ops... A nova senha precisa seguir os parâmetros solicitados!!');
     }
     yield put(changePasswordFailure(parse(error)));

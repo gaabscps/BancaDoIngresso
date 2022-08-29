@@ -1,9 +1,16 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { FormGroup, Label, Input, Container, Col, Row } from 'reactstrap';
+import { useNavigate } from 'react-router';
+// import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 import loginLock from '../../../../../assets/images/svg/loginLock.svg';
 import Button from '../../../../Utils/Button';
 import eye from '../../../../../assets/images/login/eye.png';
 import closeEye from '../../../../../assets/images/login/closeEye.png';
+import SuccessComponent from '../success';
+import { isAuthenticated } from '../../../../../helpers/localStorage';
+// import { ApplicationState } from '../../../../../store';
+// import { AuthState } from '../../../../../store/ducks/auth/types';
 
 interface ConfirmPassword {
   password: string;
@@ -21,6 +28,15 @@ type Props = StateProps & DispatchProps;
 
 const Password = (props: Props): JSX.Element => {
   const [togglePassword, setTogglePassword] = useState(false);
+  const [showSucessPasswordModal, setShowSucessPasswordModal] = useState(false);
+  const history = useNavigate();
+  // const auth = useSelector<ApplicationState, AuthState>(store => store.auth);
+
+  const handleNext = (): void => {
+    if (isAuthenticated()) {
+      history('/dashboard/admin');
+    }
+  };
 
   const HideShowPassword = (tPassword: boolean): void => {
     setTogglePassword(!tPassword);
@@ -31,8 +47,29 @@ const Password = (props: Props): JSX.Element => {
   const HideShowConfirmPassword = (tConfirmPassword: boolean): void => {
     setToggleConfirmPassword(!tConfirmPassword);
   };
+
+  // const handleOpenModal= (): void => {
+  //   if (isAuthenticated()) {
+  //     setShowSucessPasswordModal(true);
+  //   }
+  // };
+
+  useEffect(() => {
+    if (isAuthenticated()) {
+      setShowSucessPasswordModal(true);
+    }
+    // if (auth.data.login) {
+    //   setAuthLocalStorage(auth.data.login);
+    //   window.location.href = '/';
+    // }
+  }, [showSucessPasswordModal]);
+
   return (
     <>
+      <SuccessComponent
+        show={showSucessPasswordModal}
+        setShowSucessPasswordModal={setShowSucessPasswordModal}
+      />
       <Container>
         <Col>
           <Row>
@@ -125,6 +162,7 @@ const Password = (props: Props): JSX.Element => {
             size="lg"
             style={{ width: '100%', marginTop: '90px' }}
             disabled={!(props.form?.password && props.form?.confirmPassword)}
+            onClick={() => handleNext()}
           >
             Alterar a minha senha
           </Button>

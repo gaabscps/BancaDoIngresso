@@ -11,15 +11,22 @@ interface EmailObject {
 
 interface StateProps {
   form: EmailObject;
-  onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
-const Code = (props: StateProps): JSX.Element => {
+interface DispatchProps {
+  handleReSend(): void;
+}
+
+type Props = StateProps & DispatchProps;
+
+const Code = (props: Props): JSX.Element => {
+  // const dispatch = useDispatch();
   const history = useNavigate();
   const goBack = (): void => {
     history('/');
     history(0);
   };
+
   return (
     <>
       <Row>
@@ -59,7 +66,7 @@ const Code = (props: StateProps): JSX.Element => {
         <a
           className="d-flex forgotPassword"
           style={{ cursor: 'pointer', color: '#B2140C', position: 'relative' }}
-          // onClick={props.onClick}
+          onClick={props.handleReSend}
         >
           Reenviar
         </a>

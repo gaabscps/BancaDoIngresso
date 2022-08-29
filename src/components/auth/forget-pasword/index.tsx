@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 // import { URLSearchParams } from 'url';
 import { ApplicationState } from '../../../store';
 import logoBanca from '../../../assets/images/logo/logoBanca.png';
-import { setAuthLocalStorage, isAuthenticated } from '../../../helpers/localStorage';
+// import { setAuthLocalStorage } from '../../../helpers/localStorage';
 import Loader from '../../../layout/loader';
 import CpfComponent from './steps/cpf';
 import CodeComponent from './steps/code';
@@ -34,10 +34,17 @@ const ForgetPassword = (): JSX.Element => {
 
   const [form, setForm] = useState<RecoveryPassword>({} as RecoveryPassword);
   const [step, setStep] = useState<number>(0);
+  const [showSucessPasswordModal, setShowSucessPasswordModal] = useState(false);
 
   // const cookies = new Cookies();
 
   const auth = useSelector<ApplicationState, AuthState>(store => store.auth);
+
+  const chanagePassword: ChangePassword = {
+    token: form.code,
+    password: form.password,
+    confirmPassword: form.confirmPassword,
+  };
 
   const login = (cpf: string): void => {
     dispatch(loginRequest(cpf, form.password));
@@ -58,14 +65,16 @@ const ForgetPassword = (): JSX.Element => {
           cpf: auth.data.changePassword.login,
         };
         setForm(newForm);
-        setStep(0);
+        // setStep(2);
+        setShowSucessPasswordModal(true);
+
         login(auth.data.changePassword.login);
       }
     }
-    if (auth.data.login) {
-      setAuthLocalStorage(auth.data.login);
-      window.location.href = '/';
-    }
+    // if (auth.data.login) {
+    //   setAuthLocalStorage(auth.data.login);
+    //   window.location.href = '/';
+    // }
   }
 
   const handleForm = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -81,13 +90,12 @@ const ForgetPassword = (): JSX.Element => {
     dispatch(recoverPasswordRequest(form.cpf));
   };
 
-  const handleCode = async (): Promise<void> => {
-    const chanagePassword: ChangePassword = {
-      token: form.code,
-      password: form.password,
-      confirmPassword: form.confirmPassword,
-    };
-    dispatch(changePasswordRequest(chanagePassword));
+  const handleCode = async (data: ChangePassword): Promise<void> => {
+    dispatch(changePasswordRequest(data));
+  };
+
+  const handleReSend = (): void => {
+    dispatch(recoverPasswordRequest(form.cpf));
   };
 
   const handleStep = (e: FormEvent<HTMLFormElement>): void => {
@@ -104,7 +112,7 @@ const ForgetPassword = (): JSX.Element => {
         history(0);
         break;
       case 2:
-        handleCode();
+        handleCode(chanagePassword);
         break;
       default:
         break;
@@ -122,13 +130,14 @@ const ForgetPassword = (): JSX.Element => {
       setForm(newForm);
       setStep(2);
     }
-    if (isAuthenticated()) {
-      history('/dashboard/admin');
-    }
   }, [history]);
 
   return (
     <>
+      <SuccessComponent
+        show={showSucessPasswordModal}
+        setShowSucessPasswordModal={setShowSucessPasswordModal}
+      />
       <Loader isVisible={auth.loading} />
       <div className="body-login">
         <Container>
@@ -140,9 +149,10 @@ const ForgetPassword = (): JSX.Element => {
               <Form className="theme-form loginCard" onSubmit={handleStep}>
                 <div style={{ display: 'grid' }}>
                   {step === 0 && <CpfComponent form={form} handleForm={handleForm} />}
-                  {step === 1 && <CodeComponent form={form} onClick={handleCode} />}
+                  {/* {step === 0 && <PasswordComponent form={form} handleForm={handleForm} />} */}
+                  {/* {step === 0 && <PasswordComponent form={form} handleForm={handleForm} />} */}
+                  {step === 1 && <CodeComponent form={form} handleReSend={handleReSend} />}
                   {step === 2 && <PasswordComponent form={form} handleForm={handleForm} />}
-                  {step === 3 && <SuccessComponent />}
                   {step !== 3 && (
                     <FormGroup className="mb-0 mt-4">
                       {/* {step === 0 && (
