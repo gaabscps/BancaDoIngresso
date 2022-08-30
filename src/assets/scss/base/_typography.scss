@@ -202,7 +202,8 @@ pre {
 .modal {
   .modal-body {
     .card {
-      box-shadow: none !important;
+      box-shadow: none;
+      border: none;
     }
   }
   .close {

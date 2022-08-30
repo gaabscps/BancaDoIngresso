@@ -5,15 +5,21 @@ import RegisterPdv from '../../modal/RegisterPdv';
 import pen from '../../../assets/images/svg/pen.svg';
 import lixeira from '../../../assets/images/svg/lixeira.svg';
 import subPDV from '../../../assets/images/svg/subPDV.svg';
+import SubPdvList from '../../modal/SubPdvs';
 
 const Sample = (): JSX.Element => {
   const [showPdv, setShowPdv] = useState(false);
+  const [showSubPdvList, setShowSubPdvList] = useState(false);
 
   const callShow = (b: boolean): void => {
     setShowPdv(b);
   };
+  const callShowSub = (b: never): void => {
+    setShowSubPdvList(b);
+  };
   return (
     <Fragment>
+      <SubPdvList show={showSubPdvList} setShowSubPdvList={callShowSub} />
       <RegisterPdv show={showPdv} setShowPdv={callShow} />
       <Container className="mainContainer" fluid={true}>
         <div className="d-flex justify-content-between" style={{ paddingBottom: '30px' }}>
@@ -57,7 +63,7 @@ const Sample = (): JSX.Element => {
                 <div className="celulaAção">
                   <img src={pen} style={{ paddingRight: '25px' }} alt="" />
                   <img src={lixeira} style={{ paddingRight: '25px' }} alt="" />
-                  <img src={subPDV} onClick={() => setShowPdv(true)} alt="" />
+                  <img src={subPDV} onClick={() => setShowSubPdvList(true)} alt="" />
                 </div>
               </div>
             </div>
@@ -81,7 +87,7 @@ const Sample = (): JSX.Element => {
                 <div className="celulaAção">
                   <img src={pen} style={{ paddingRight: '25px' }} alt="" />
                   <img src={lixeira} style={{ paddingRight: '25px' }} alt="" />
-                  <img src={subPDV} onClick={() => setShowPdv(true)} alt="" />
+                  <img src={subPDV} onClick={() => setShowSubPdvList(true)} alt="" />
                 </div>
               </div>
             </div>
@@ -105,7 +111,7 @@ const Sample = (): JSX.Element => {
                 <div className="celulaAção">
                   <img src={pen} style={{ paddingRight: '25px' }} alt="" />
                   <img src={lixeira} style={{ paddingRight: '25px' }} alt="" />
-                  <img src={subPDV} onClick={() => setShowPdv(true)} alt="" />
+                  <img src={subPDV} onClick={() => setShowSubPdvList(true)} alt="" />
                 </div>
               </div>
             </div>
@@ -127,7 +133,7 @@ const Sample = (): JSX.Element => {
                 <div className="celulaAção">
                   <img src={pen} style={{ paddingRight: '25px' }} alt="" />
                   <img src={lixeira} style={{ paddingRight: '25px' }} alt="" />
-                  <img src={subPDV} onClick={() => setShowPdv(true)} alt="" />
+                  <img src={subPDV} onClick={() => setShowSubPdvList(true)} alt="" />
                 </div>
               </div>
             </div>
@@ -149,7 +155,7 @@ const Sample = (): JSX.Element => {
                 <div className="celulaAção">
                   <img src={pen} style={{ paddingRight: '25px' }} alt="" />
                   <img src={lixeira} style={{ paddingRight: '25px' }} alt="" />
-                  <img src={subPDV} onClick={() => setShowPdv(true)} alt="" />
+                  <img src={subPDV} onClick={() => setShowSubPdvList(true)} alt="" />
                 </div>
               </div>
             </div>
@@ -171,7 +177,7 @@ const Sample = (): JSX.Element => {
                 <div className="celulaAção">
                   <img src={pen} style={{ paddingRight: '25px' }} alt="" />
                   <img src={lixeira} style={{ paddingRight: '25px' }} alt="" />
-                  <img src={subPDV} onClick={() => setShowPdv(true)} alt="" />
+                  <img src={subPDV} onClick={() => setShowSubPdvList(true)} alt="" />
                 </div>
               </div>
             </div>

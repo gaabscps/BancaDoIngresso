@@ -38,7 +38,8 @@
 }
 // media query for mobile container
 @media (max-width: $media-query-sm) {
-  .mainContainer {
+  .mainContainer,
+  .subpdv-main-container {
     padding: 20px !important;
   }
 }
@@ -669,6 +670,24 @@
     color: #222222;
     margin-top: 10px;
   }
+}
+.subpdv-main-container {
+  box-shadow: rgb(0 0 0 / 5%) 0px 0px 4px !important
+}
+.subpdv-name {
+  font-weight: 700;
+  font-size: 28px;
+}
+.subpdv-register-buttom {
+  color: #7ad81b;
+  font-weight: 500;
+  font-size: 16px;
+  margin-left: 92px;
+  display: flex;
+  align-items: center;
+}
+.subpdv-modal-header-container {
+  display: flex;
 }
 
 .botao-cadastro {
