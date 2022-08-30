@@ -1,9 +1,6 @@
 
 ### Checklist
 
-- [ ] Adicionou testes?
-- [ ] Rodou `yarn lint`?
-- [ ] Rodou `yarn test -o -u`?
 - [ ] Testou em telas menores? `NA`
 - [ ] Colocou `assignee` no PR?
 - [ ] Colocou `label` no PR?
