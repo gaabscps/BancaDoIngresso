@@ -59,7 +59,7 @@ const SubPdvList = (props: Props): JSX.Element => {
             </Button>
           </div>
           <Button className="botao-cadastro" variant="dark">
-            Cadastrar novo PDV
+            Cadastrar novo SubPDV
           </Button>
         </div>
       </ModalBody>
