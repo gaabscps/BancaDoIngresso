@@ -1,83 +1,30 @@
 import React from 'react';
 import { Container } from 'reactstrap';
-import DataTable from 'react-data-table-component';
 
+// TABLE
+import { TableColumn } from 'react-data-table-component';
+import CustomTable from '../components/Utils/Table';
+
+// ICON
 import { ReactComponent as SvgExample } from '../assets/images/svg/SvgExample.svg';
 
-const customStyles = {
-  rows: {
-    style: {
-      minHeight: '5.188rem !important',
-      border: 'none !important',
-      borderRadius: '10px',
-      backgroundColor: '#FFF',
-      marginBottom: '30px',
-      fontSize: '0.75rem',
-      fontWidth: '300',
-    },
-  },
-  headCells: {
-    style: {
-      paddingLeft: '8px',
-      paddingRight: '8px',
-    },
-  },
-  cells: {
-    style: {
-      paddingLeft: '8px',
-      paddingRight: '8px',
-    },
-  },
-  table: {
-    style: {
-      backgroundColor: 'transparent',
-    },
-  },
-  headRow: {
-    style: {
-      border: 'none !important',
-      backgroundColor: 'transparent',
-      fontSize: '1rem',
-      fontWidth: '400',
-    },
-  },
-};
+// MOCK
+import { mockData } from '../components/Utils/Table/mock';
 
-const mockData = [
-  {
-    id: 1,
-    pdvName: 'Example 1',
-    image: 'https://picsum.photos/200/300',
-    address: 'Rua exemplo 1',
-    city: 'São Paulo',
-    state: 'SP',
-    actions: [],
-  },
-  {
-    id: 2,
-    pdvName: 'Example 2',
-    image: 'https://picsum.photos/200/400',
-    address: 'Rua exemplo 2',
-    city: 'Uberlândia',
-    state: 'MG',
-    actions: [],
-  },
-  {
-    id: 3,
-    pdvName: 'Example 3',
-    image: 'https://picsum.photos/200/500',
-    address: 'Rua exemplo 3',
-    city: 'Distrito Federal',
-    state: 'DF',
-    actions: [],
-  },
-];
+interface DataRow {
+  image: string;
+  pdvName: string;
+  address: string;
+  city: string;
+  state: string;
+  actions: string;
+}
 
 const ExampleTables = (): JSX.Element => {
-  const columns = [
+  const columnsPrimary: TableColumn<DataRow>[] = [
     {
       name: 'Imagem',
-      selector: (row: any) => row.image,
+      selector: row => row.image,
       style: {
         paddingLeft: '0px',
         with: '10vw',
@@ -85,27 +32,27 @@ const ExampleTables = (): JSX.Element => {
     },
     {
       name: 'Nome do PDV',
-      selector: (row: any) => row.pdvName,
+      selector: row => row.pdvName,
     },
     {
       name: 'Endereço',
-      selector: (row: any) => row.address,
+      selector: row => row.address,
     },
     {
       name: 'Cidade',
-      selector: (row: any) => row.city,
+      selector: row => row.city,
     },
     {
       name: 'Estado',
-      selector: (row: any) => row.state,
+      selector: row => row.state,
     },
     {
       name: 'Ações',
-      selector: (row: any) => row.actions,
+      selector: row => row.actions,
     },
   ];
 
-  const data = mockData.map(item => ({
+  const dataPrimary = mockData.map(item => ({
     id: item.id,
     image: (
       <div style={{ maxHeight: '5.188rem', padding: 0 }}>
@@ -127,20 +74,49 @@ const ExampleTables = (): JSX.Element => {
     actions: <SvgExample className="mr-2 svg-icon" />,
   }));
 
+  const columnsSecundary: TableColumn<DataRow>[] = [
+    {
+      name: 'Nome do PDV',
+      selector: row => row.pdvName,
+    },
+    {
+      name: 'Endereço',
+      selector: row => row.address,
+    },
+    {
+      name: 'Estado',
+      selector: row => row.state,
+    },
+    {
+      name: 'Ações',
+      selector: row => row.actions,
+    },
+  ];
+
+  const dataSecundary = mockData.map(item => ({
+    id: item.id,
+    pdvName: item.pdvName,
+    address: item.address,
+    state: item.state,
+    actions: <SvgExample className="mr-2 svg-icon" />,
+  }));
+
   return (
     <Container>
       <div className="pt-5">
         <h3>Tables</h3>
         <br />
         <br />
-        <label htmlFor="ExemploIcon">Exemplo 1</label>
         {/* Table 1 */}
-        <DataTable
-          columns={columns}
-          data={data}
+        <label>Table Primary</label>
+        <CustomTable columns={columnsPrimary} data={dataPrimary} theme="primary" />
+        {/* Table 2 */}
+        <label>Table Secundary</label>
+        <CustomTable
+          columns={columnsSecundary}
+          data={dataSecundary}
           dense={true}
-          customStyles={customStyles}
-          style={{ backgroundColor: '#E5E5E5' }}
+          theme="secundary"
         />
       </div>
     </Container>
