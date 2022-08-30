@@ -23,8 +23,9 @@ const RegisterPdv = (props: Props): JSX.Element => {
       aria-labelledby="example-custom-modal-styling-title"
     >
       <ModalHeader>
-        <div>Cadastrar novo PDV</div>
+        <div className="header-title-text">Cadastrar novo PDV</div>
         <div
+          className="modal-close-container"
           onClick={() => {
             handleClose();
           }}
@@ -116,7 +117,9 @@ const RegisterPdv = (props: Props): JSX.Element => {
               Cancelar
             </Button>
           </div>
-          <Button variant="dark">Cadastrar novo PDV</Button>
+          <Button className="botao-cadastro" variant="dark">
+            Cadastrar novo PDV
+          </Button>
         </div>
       </ModalBody>
     </Modal>

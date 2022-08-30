@@ -331,6 +331,8 @@
 .nextPageButton {
   display: flex !important;
   justify-content: end !important;
+  padding-top: 30px;
+  border-top: solid 1px #d9d9d9;
 }
 
 .dividerUp {
@@ -501,6 +503,12 @@
 
 //----- Tabela de Eventos -----//
 
+.col-sm-12 {
+  padding: 0 0;
+}
+.container {
+  padding: 0 0;
+}
 .rows {
   display: flex;
   width: 100%;
@@ -510,8 +518,8 @@
   background-color: #ffffff !important;
 }
 .row {
-  width: 100%;
   margin-left: 0px;
+  margin-right: 0px;
   flex-wrap: nowrap;
 }
 
@@ -631,7 +639,37 @@
   width: 100% !important;
   height: 100% !important;
 }
+.modal-body {
+  padding: 25px 50px 30px 50px !important;
+  .card {
+    margin-bottom: 30px;
+  }
+}
+.modal-header {
+  border: none;
+  padding: 30px 50px 0 50px !important;
+}
+.modal-title {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  .modal-close-container {
+    top: 15px;
+    position: absolute;
+    right: 50px;
+  }
+  .header-title-text {
+    display: flex;
+    align-items: flex-end;
+    font-weight: 700;
+    color: #222222;
+    margin-top: 30px
+  }
+}
 
+.botao-cadastro {
+  margin-left: 40px;
+}
 //----- Card de Eventos -----//
 
 .descriptionEvent {
@@ -937,7 +975,7 @@ input[type='radio']:checked + .label-radio-custom {
   // .container-home {
   //   width: 690px;
   // }
-  .grid-card-home{
+  .grid-card-home {
     justify-content: center;
   }
   .home-column {
@@ -968,7 +1006,7 @@ input[type='radio']:checked + .label-radio-custom {
   }
   .count {
     margin-left: 0px;
-    span{
+    span {
       font-size: 12px;
     }
   }
@@ -1009,8 +1047,8 @@ input[type='radio']:checked + .label-radio-custom {
   .verTodos {
     font-size: 14px !important;
     line-height: 1em !important;
-      white-space: nowrap;
-      margin-left: 5px;
+    white-space: nowrap;
+    margin-left: 5px;
   }
   .textContent {
     span {
