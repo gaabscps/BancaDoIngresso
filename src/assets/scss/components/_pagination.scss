@@ -1,0 +1,29 @@
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+div .pagination-container > li > a,
+div .pagination-container > li > span {
+  border: 1px solid #c4c4c4;
+  padding: 5px 10px;
+  color: #c4c4c4;
+  &:hover {
+    color: #000;
+  }
+}
+
+div .pagination-container > li > a.previous-pagination {
+  border-radius: 4px 0 0 4px;
+  color: #000;
+}
+div .pagination-container > li > a.next-pagination {
+  border-radius: 0px 4px 4px 0;
+  color: #000;
+}
+
+.pagination-container > li.active > a {
+  //   background: purple;
+  color: #d8231b;
+}

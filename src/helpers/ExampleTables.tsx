@@ -1,8 +1,12 @@
-import React from 'react';
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+import React, { useState } from 'react';
 import { Container } from 'reactstrap';
 
+// PAGINATION
+import NewPagination from '../components/Utils/Pagination';
+
 // TABLE
-import { CustomTable, TableColumn, CollumnStatus, CollumnImage } from '../components/Utils/Table';
+import { CustomTable, CollumnStatus, CollumnImage, TableColumn } from '../components/Utils/Table';
 
 // ICON
 import { ReactComponent as SvgExample } from '../assets/images/svg/SvgExample.svg';
@@ -25,12 +29,12 @@ interface DataRow {
 }
 
 const ExampleTables = (): JSX.Element => {
+  const [page, setPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const totalPages = 50;
+
   // Table with status color
   const columnsPrimaryStatusColor: TableColumn<DataRow>[] = [
-    {
-      name: 'Nome do PDV',
-      selector: row => row.status,
-    },
     {
       name: 'Nome do PDV',
       selector: row => row.pdvName,
@@ -54,8 +58,7 @@ const ExampleTables = (): JSX.Element => {
   ];
   const dataPrimaryStatusColor = mockData.map(item => ({
     id: item.id,
-    status: <CollumnStatus statusColor={item.status}>{item.pdvName}</CollumnStatus>,
-    pdvName: item.pdvName,
+    pdvName: <CollumnStatus statusColor={item.status}>{item.pdvName}</CollumnStatus>,
     address: item.address,
     city: item.city,
     state: item.state,
@@ -180,6 +183,26 @@ const ExampleTables = (): JSX.Element => {
   }));
   // Table Secudary Style
 
+  async function handleFetch() {
+    // setLoading(true);
+    // const response = await getExercise(search, page);
+    // setExercise(response.rows);
+    setTotalCount(50);
+    // setLoading(false);
+  }
+
+  async function handlePaginationChange(pageNumber: number) {
+    // setLoading(true);
+    setPage(pageNumber);
+    // const response = await getExercise(search, pageNumber);
+    // setLoading(false);
+    // setExercise(response.rows);
+  }
+
+  React.useEffect(() => {
+    handleFetch();
+  }, []);
+
   return (
     <Container>
       <div className="pt-5 pb-5">
@@ -191,6 +214,12 @@ const ExampleTables = (): JSX.Element => {
           columns={columnsPrimaryStatusColor}
           data={dataPrimaryStatusColor}
           theme="primary"
+        />
+        <NewPagination
+          currentPage={5}
+          totalCount={20}
+          pageSize={6}
+          onPageChange={() => handlePaginationChange(6)}
         />
         {/* Table with status color */}
         <hr />
