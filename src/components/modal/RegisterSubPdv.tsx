@@ -1,6 +1,9 @@
 import React from 'react';
-import { Card, Container, Modal, Button, ModalHeader, ModalBody } from 'reactstrap';
+import { Card, Container, Modal, ModalHeader, ModalBody } from 'reactstrap';
 import CloseModal from '../../assets/images/svg/CloseModal';
+import LargeInput from '../dashboard/mainPdv/pdvInputs/textInput';
+import SelectInput from '../dashboard/mainPdv/pdvInputs/selectInput';
+import Button from '../Utils/Button';
 
 interface StateProps {
   show: boolean;
@@ -52,80 +55,46 @@ const registerSubPdv = (props: Proops): JSX.Element => {
               <form>
                 <div className="form-container">
                   <div className="form-content">
-                    <div className="input-container">
-                      <label htmlFor="name" className="label-style">
-                        Nome do Sub PDV
-                      </label>
-                      <input
-                        placeholder="Digite o nome do Sub PDV"
-                        className="input-style"
-                        id="name"
-                        name="name"
-                      ></input>
-                    </div>
+                    <LargeInput
+                      name="Nome da POS"
+                      placeholder="Digite o nome da POS"
+                      id="name"
+                      size="large"
+                    />
                   </div>
                   <div className="form-content">
-                    <div className="input-container">
-                      <label htmlFor="address" className="label-style">
-                        Endereço do PDV
-                      </label>
-                      <input
-                        placeholder="Digite o endereço do PDV. Ex: Rua 123 da Silva"
-                        className="input-style"
-                        id="address"
-                        name="address"
-                      ></input>
-                    </div>
+                    <LargeInput
+                      name="Endereço do PDV"
+                      placeholder="Digite o endereço do PDV. Ex: Rua 123 da Silva"
+                      id="address"
+                      size="large"
+                    />
                   </div>
                   <div className="form-content two-fields-container">
-                    <div className="input-container small-select-input-container">
-                      <label htmlFor="state" className="label-style">
-                        Estado
-                      </label>
-                      <select className="input-style small-select-input" id="state" name="state">
-                        <option value="" selected className="select-placeholder">
-                          SP
-                        </option>
-                        <option value="">RJ</option>
-                      </select>
-                    </div>
-                    <div className="input-container medium-select-input-container">
-                      <label htmlFor="city" className="label-style">
-                        Cidade
-                      </label>
-                      <select className="input-style" id="city" name="city">
-                        <option value="" selected className="select-placeholder">
-                          Campinas
-                        </option>
-                        <option value="">São José dos Campos</option>
-                      </select>
-                    </div>
+                    <SelectInput name="Estado" id="estado" option1="SP" option2="RJ" size="small" />
+                    <SelectInput
+                      name="Cidade"
+                      id="cidade"
+                      option1="Campinas"
+                      option2="São josé dos Campos"
+                      size="medium"
+                    />
                   </div>
                   <div className="form-content two-fields-container">
-                    <div className="input-container medium-select-input-container">
-                      <label htmlFor="cpf" className="label-style">
-                        CPF/CNPJ
-                      </label>
-                      <input
-                        placeholder="Digite o CPF ou CNPJ do PDV"
-                        className="input-style"
-                        id="cpf"
-                        name="cpf"
-                      ></input>
-                    </div>
+                    <LargeInput
+                      name="CPF/CNPJ"
+                      placeholder="Digite o CPF ou CNPJ do PDV"
+                      id="cpf"
+                      size="medium"
+                    />
                   </div>
                   <div className="form-content two-fields-container">
-                    <div className="input-container medium-select-input-container">
-                      <label htmlFor="phone" className="label-style">
-                        Telefone celular
-                      </label>
-                      <input
-                        placeholder="(00) 0 000-0000"
-                        className="input-style"
-                        id="phone"
-                        name="phone"
-                      ></input>
-                    </div>
+                    <LargeInput
+                      name="Telefone Celular"
+                      placeholder="(00) 0 000-0000"
+                      id="phone"
+                      size="medium"
+                    />
                   </div>
                 </div>
               </form>
@@ -134,16 +103,14 @@ const registerSubPdv = (props: Proops): JSX.Element => {
           <div className="nextPageButton">
             <div style={{ color: '#fff' }}>
               <Button
-                style={{ height: '50px' }}
-                variant="outline-light"
+                theme="noneBorder"
+                style={{ height: '50px', marginRight: '20px' }}
                 onClick={() => handleClose()}
               >
                 Cancelar
               </Button>
             </div>
-            <Button className="botao-cadastro" variant="dark">
-              Cadastrar novo SubPDV
-            </Button>
+            <Button className="botao-cadastro">Cadastrar novo SubPDV</Button>
           </div>
         </ModalBody>
       </Modal>
