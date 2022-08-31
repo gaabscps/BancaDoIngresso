@@ -36,6 +36,7 @@ import Page404 from '../components/errors/error404';
 
 // Exemples Helper to developement
 import ExampleForms from '../helpers/ExampleForms';
+import ExampleTables from '../helpers/ExampleTables';
 
 export interface RoteContent {
   path: string;
@@ -174,6 +175,12 @@ export const routes: RoteContent[] = [
     path: `/example/form`,
     component: App,
     child: ExampleForms,
+    privateRoute: true,
+  },
+  {
+    path: `/example/table`,
+    component: App,
+    child: ExampleTables,
     privateRoute: true,
   },
 
