@@ -49,7 +49,7 @@ export function* authLogin(data: any) {
   } catch (err) {
     const error = err as AxiosError;
     console.log(error);
-    if (error?.response?.statusText === 'Bad Request') {
+    if (error?.response?.statusText === 'Unauthorized') {
       toast.error('Ops... Credênciais Inválidas');
     }
     yield put(loginFailure(parse(error)));
@@ -70,6 +70,7 @@ export function* authRecoverPassword(data: any) {
     yield put(recoverPasswordSuccess(authData));
   } catch (err) {
     const error = err as AxiosError;
+    console.log('Error', error);
     if (error?.response?.statusText === 'Not Found') {
       toast.error('Ops... Esse CPF não foi encontrado');
     }
@@ -84,7 +85,6 @@ export function* authChangePassword(data: any) {
       '/auth/change-password',
       data.payload,
     );
-    console.log(response);
 
     const stateData: ApplicationState = yield select((state: ApplicationState) => ({
       auth: state.auth,
@@ -96,15 +96,6 @@ export function* authChangePassword(data: any) {
   } catch (err) {
     const error = err as AxiosError;
     console.log('Error', error);
-    // if (error?.details === 'Ter tamanho mínimo 6 e no máximo 15 caracteres.') {
-    //   toast.error('Ops... Essa senha é muito curta!!');
-    // }
-    // if (error?.response?.statusText === 'Deve ter no mínimo uma letra maiúscula e minúscula.') {
-    //   toast.error('Ops... Essa senha precisa ter uma letra maiúscula!!');
-    // }
-    // if (error?.response?.statusText === 'Deve ter no mínimo um numero.') {
-    //   toast.error('Ops... Essa senha precisa ter um número.');
-    // }
     if (error?.response?.statusText === 'Bad Request') {
       toast.error('Ops... A nova senha precisa seguir os parâmetros solicitados!!');
     }
