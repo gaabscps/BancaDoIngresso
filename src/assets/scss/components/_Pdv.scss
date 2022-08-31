@@ -8,11 +8,15 @@
   }
   svg {
     path {
-      fill: #828282;
-      color: #828282;
+      fill: #222222;
+      color: #222222;
       &:hover {
-        fill: #222222;
-        color: #222222;
+        fill: #0C0201;
+        color: #0C0201;
+      }
+      &:active{
+        fill: #050100;
+        color: #050100;
       }
     }
   }
