@@ -2,7 +2,6 @@ import React from 'react';
 import { Card, Container, Modal, ModalHeader, ModalBody } from 'reactstrap';
 import CloseModal from '../../assets/images/svg/CloseModal';
 import LargeInput from '../dashboard/mainPdv/pdvInputs/textInput';
-import SelectInput from '../dashboard/mainPdv/pdvInputs/selectInput';
 import Button from '../Utils/Button';
 
 interface StateProps {
@@ -28,7 +27,7 @@ const registerSubPdv = (props: Proops): JSX.Element => {
       >
         <ModalHeader style={{ backgroundColor: '#F8F8F8' }}>
           <div className="subpdv-modal-header-container">
-            <div className="header-title-text subpdv-name">Nome do SubPdv</div>
+            <div className="header-title-text subpdv-name">Cadastrar novo Sub PDV</div>
             <div
               className="modal-close-container"
               onClick={() => {
@@ -46,7 +45,7 @@ const registerSubPdv = (props: Proops): JSX.Element => {
               className="subpdv-main-container"
               style={{
                 padding: '25px 30px',
-                backgroundColor: '#FFF',
+                backgroundColor: '#F1F1F1',
                 border: 'none',
                 borderRadius: '5px',
               }}
@@ -54,48 +53,15 @@ const registerSubPdv = (props: Proops): JSX.Element => {
               {' '}
               <form>
                 <div className="form-container">
-                  <div className="form-content">
+                  <div className="form-content first-content">
                     <LargeInput
-                      name="Nome da POS"
-                      placeholder="Digite o nome da POS"
+                      name="Nome do Sub PDV"
+                      placeholder="Digite o nome do Sub PDV"
                       id="name"
                       size="large"
                     />
                   </div>
-                  <div className="form-content">
-                    <LargeInput
-                      name="Endereço do PDV"
-                      placeholder="Digite o endereço do PDV. Ex: Rua 123 da Silva"
-                      id="address"
-                      size="large"
-                    />
-                  </div>
-                  <div className="form-content two-fields-container">
-                    <SelectInput name="Estado" id="estado" option1="SP" option2="RJ" size="small" />
-                    <SelectInput
-                      name="Cidade"
-                      id="cidade"
-                      option1="Campinas"
-                      option2="São josé dos Campos"
-                      size="medium"
-                    />
-                  </div>
-                  <div className="form-content two-fields-container">
-                    <LargeInput
-                      name="CPF/CNPJ"
-                      placeholder="Digite o CPF ou CNPJ do PDV"
-                      id="cpf"
-                      size="medium"
-                    />
-                  </div>
-                  <div className="form-content two-fields-container">
-                    <LargeInput
-                      name="Telefone Celular"
-                      placeholder="(00) 0 000-0000"
-                      id="phone"
-                      size="medium"
-                    />
-                  </div>
+                  <div className="form-content"></div>
                 </div>
               </form>
             </Card>

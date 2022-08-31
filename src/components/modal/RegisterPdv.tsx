@@ -1,7 +1,9 @@
 import React from 'react';
-import { Card, Container, Label, Modal, Button, ModalHeader, ModalBody } from 'reactstrap';
+import { Card, Container, Modal, Button, ModalHeader, ModalBody } from 'reactstrap';
 import CloseModal from '../../assets/images/svg/CloseModal';
-import SuperInput from '../sharedComponents/SuperInput';
+import SelectInput from '../dashboard/mainPdv/pdvInputs/selectInput';
+
+import LargeInput from '../dashboard/mainPdv/pdvInputs/textInput';
 
 interface StateProps {
   show: boolean;
@@ -22,104 +24,92 @@ const RegisterPdv = (props: Props): JSX.Element => {
       dialogClassName="modal-550px"
       aria-labelledby="example-custom-modal-styling-title"
     >
-      <ModalHeader>
-        <div className="header-title-text">Cadastrar novo PDV</div>
-        <div
-          className="modal-close-container"
-          onClick={() => {
-            handleClose();
-          }}
-          style={{ cursor: 'pointer' }}
-        >
-          <CloseModal />
+      <ModalHeader style={{ backgroundColor: '#F8F8F8' }}>
+        <div className="subpdv-modal-header-container">
+          <div className="header-title-text subpdv-name">Cadastrar novo PDV</div>
+
+          <div
+            className="modal-close-container"
+            onClick={() => {
+              handleClose();
+            }}
+            style={{ cursor: 'pointer' }}
+          >
+            <CloseModal />
+          </div>
         </div>
       </ModalHeader>
-      <ModalBody>
+      <ModalBody style={{ backgroundColor: '#F8F8F8' }}>
         <Container>
-          <Card className="mainContainer" style={{ backgroundColor: '#F1F1F1' }}>
-            <div className="d-flex">
-              <div className="fieldSpacing">
-                <Label className="fieldLabel" for="exampleEmail">
-                  Nome do PDV
-                </Label>
-                <SuperInput id="exampleEmail" name="email" placeholder="Digite o nome do Sub PDV" />
+          <Card
+            className="subpdv-main-container"
+            style={{
+              padding: '25px 30px',
+              backgroundColor: '#F1F1F1',
+              border: 'none',
+              borderRadius: '5px',
+            }}
+          >
+            {' '}
+            <form>
+              <div className="form-container">
+                <div className="form-content first-content">
+                  <LargeInput
+                    name="Nome do PDV"
+                    placeholder="Digite o nome do PDV"
+                    id="name"
+                    size="large"
+                  />
+                </div>
+                <div className="form-content">
+                  <LargeInput
+                    name="Endereço do PDV"
+                    placeholder="Digite o endereço do PDV. Ex: Rua 123 da Silva"
+                    id="address"
+                    size="large"
+                  />
+                </div>
+                <div className="form-content two-fields-container">
+                  <SelectInput name="Estado" id="estado" option1="SP" option2="RJ" size="small" />
+                  <SelectInput
+                    name="Cidade"
+                    id="cidade"
+                    option1="Campinas"
+                    option2="São josé dos Campos"
+                    size="medium"
+                  />
+                </div>
+                <div className="form-content two-fields-container">
+                  <LargeInput
+                    name="CPF/CNPJ"
+                    placeholder="Digite o CPF ou CNPJ do PDV"
+                    id="cpf"
+                    size="medium"
+                  />
+                </div>
+                <div className="form-content two-fields-container">
+                  <LargeInput
+                    name="Telefone Celular"
+                    placeholder="(00) 0 000-0000"
+                    id="phone"
+                    size="medium"
+                  />
+                </div>
               </div>
-            </div>
-            <div className="d-flex">
-              <div className="fieldSpacing">
-                <Label className="fieldLabel" for="exampleEmail">
-                  Endereço do PDV
-                </Label>
-                <SuperInput
-                  id="exampleEmail"
-                  name="email"
-                  placeholder="Digite o endereço do PDV. Ex: Rua 123 da Silva"
-                />
-              </div>
-            </div>
-            <div className="d-flex">
-              <div className="fieldSpacing">
-                <Label className="fieldLabel" for="exampleEmail">
-                  Estado
-                </Label>
-                <SuperInput
-                  style={{ width: '152px' }}
-                  id="exampleEmail"
-                  name="email"
-                  placeholder="Ex:  Administradores"
-                  type="select"
-                />
-              </div>
-              <div className="fieldSpacing">
-                <Label className="fieldLabel" for="exampleEmail">
-                  Cidade
-                </Label>
-                <SuperInput
-                  style={{ width: '364px' }}
-                  id="exampleEmail"
-                  name="email"
-                  placeholder="Selecione ou digite a cidade"
-                  type="email"
-                />
-              </div>
-            </div>
-            <div className="fieldSpacing">
-              <Label className="fieldLabel" for="exampleEmail">
-                CPF/CNPJ
-              </Label>
-              <SuperInput
-                style={{ width: '370px' }}
-                id="exampleEmail"
-                name="email"
-                placeholder="Digite o CPF ou CNPJ do PDV"
-              />
-            </div>
-            <div className="fieldSpacing">
-              <Label className="fieldLabel" for="exampleEmail">
-                Número de celular
-              </Label>
-              <SuperInput
-                style={{ width: '431px' }}
-                id="exampleEmail"
-                name="email"
-                placeholder="(00) 0 0000-0000"
-              />
-            </div>
+            </form>
           </Card>
         </Container>
         <div className="nextPageButton">
           <div style={{ color: '#fff' }}>
             <Button
-              style={{ height: '50px' }}
-              variant="outline-light"
+              theme="noneBorder"
+              style={{ height: '50px', marginRight: '20px' }}
               onClick={() => handleClose()}
             >
               Cancelar
             </Button>
           </div>
-          <Button className="botao-cadastro" variant="dark">
-            Cadastrar novo PDV
-          </Button>
+          <Button className="botao-cadastro">Cadastrar novo SubPDV</Button>
         </div>
       </ModalBody>
     </Modal>
