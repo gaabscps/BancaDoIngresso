@@ -30,7 +30,8 @@ api.interceptors.response.use(
     const { response, config } = error;
     const { data } = response;
     const originalRequest = config;
-    if ((response.status === 401 || response.status === 403) && data?.message) {
+    // if ((response.status === 401 || response.status === 403) && data?.message) {
+    if (response.status === 403 && data?.message) {
       const { message } = data;
       toast.error(`Opss... ${message}`, {});
     }

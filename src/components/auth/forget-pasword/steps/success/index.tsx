@@ -39,6 +39,16 @@ const Success = (props: Props): JSX.Element => {
         toggle={() => handleClose()}
         aria-labelledby="example-custom-modal-styling-title"
       >
+        {/* <ModalHeader>
+          <div
+            onClick={() => {
+              handleClose();
+            }}
+            style={{ cursor: 'pointer', display: 'flex', justifyContent: 'end' }}
+          >
+            <CloseModal />
+          </div>
+        </ModalHeader> */}
         <ModalBody>
           <Container>
             <div style={{ display: 'flex', justifyContent: 'center', padding: '50px' }}>
