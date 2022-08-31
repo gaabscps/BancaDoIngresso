@@ -6,6 +6,7 @@ import lixeira from '../../../assets/images/svg/lixeira.svg';
 import subPDV from '../../../assets/images/svg/subPDV.svg';
 import SubPdvList from '../../modal/SubPdvs';
 import Button from '../../Utils/Button';
+import FilterVector from '../../../assets/images/svg/FilterVector';
 
 const Sample = (): JSX.Element => {
   const [showPdv, setShowPdv] = useState(false);
@@ -30,6 +31,9 @@ const Sample = (): JSX.Element => {
             <Button color="primary" onClick={() => setShowPdv(true)}>
               + Cadastrar novo PDV
             </Button>
+            <div className="filter-container">
+              <FilterVector />
+            </div>
           </Row>
         </div>
         <Row>
