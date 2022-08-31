@@ -4,23 +4,6 @@ import CustomError from '../../../entities/CustomError';
 import Page from '../../../entities/Page';
 import Pos from '../../../entities/Pos';
 
-export const activateRequest = (
-  id: string,
-): {
-  type: PosTypes.ACTIVATE_POS_REQUEST;
-  payload: string;
-} => action(PosTypes.ACTIVATE_POS_REQUEST, id);
-
-export const activateSuccess = (): { type: PosTypes.ACTIVATE_POS_SUCCCES } =>
-  action(PosTypes.ACTIVATE_POS_SUCCCES);
-
-export const activateFailure = (
-  error: CustomError | undefined,
-): {
-  type: PosTypes.ACTIVATE_POS_FAILURE;
-  payload: { error: CustomError | undefined };
-} => action(PosTypes.ACTIVATE_POS_FAILURE, { error });
-
 export const createRequest = (
   entity: Pos,
 ): {
@@ -97,24 +80,6 @@ export const getFailure = (
   type: PosTypes.GET_POS_FAILURE;
   payload: { error: CustomError | undefined };
 } => action(PosTypes.GET_POS_FAILURE, { error });
-
-export const inactivateRequest = (
-  id: string,
-): {
-  type: PosTypes.INACTIVATE_POS_REQUEST;
-  payload: string;
-} => action(PosTypes.INACTIVATE_POS_REQUEST, id);
-
-export const inactivateSuccess = (): {
-  type: PosTypes.INACTIVATE_POS_SUCCCES;
-} => action(PosTypes.INACTIVATE_POS_SUCCCES);
-
-export const inactivateFailure = (
-  error: CustomError | undefined,
-): {
-  type: PosTypes.INACTIVATE_POS_FAILURE;
-  payload: { error: CustomError | undefined };
-} => action(PosTypes.INACTIVATE_POS_FAILURE, { error });
 
 export const listRequest = (
   page: Page<Pos, Pos>,

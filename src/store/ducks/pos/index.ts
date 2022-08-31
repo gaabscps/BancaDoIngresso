@@ -9,21 +9,6 @@ const INITIAL_STATE: PosState = {
 
 const reducer: Reducer<PosState> = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case PosTypes.ACTIVATE_POS_REQUEST:
-      return { ...state, loading: true };
-    case PosTypes.ACTIVATE_POS_SUCCCES:
-      return {
-        ...state,
-        loading: false,
-        error: undefined,
-      };
-    case PosTypes.ACTIVATE_POS_FAILURE:
-      return {
-        ...state,
-        data: {} as PosDataType,
-        loading: false,
-        error: action.payload.error,
-      };
     case PosTypes.CREATE_POS_REQUEST:
       return { ...state, loading: true };
     case PosTypes.CREATE_POS_SUCCCES:
@@ -81,21 +66,6 @@ const reducer: Reducer<PosState> = (state = INITIAL_STATE, action) => {
         error: undefined,
       };
     case PosTypes.GET_POS_FAILURE:
-      return {
-        ...state,
-        data: {} as PosDataType,
-        loading: false,
-        error: action.payload.error,
-      };
-    case PosTypes.INACTIVATE_POS_REQUEST:
-      return { ...state, loading: true };
-    case PosTypes.INACTIVATE_POS_SUCCCES:
-      return {
-        ...state,
-        loading: false,
-        error: undefined,
-      };
-    case PosTypes.INACTIVATE_POS_FAILURE:
       return {
         ...state,
         data: {} as PosDataType,

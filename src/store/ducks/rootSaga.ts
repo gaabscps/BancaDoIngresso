@@ -130,16 +130,7 @@ import {
   updatePermission,
 } from './permission/sagas';
 import { PermissionTypes } from './permission/types';
-import {
-  activatePos,
-  createPos,
-  deletePos,
-  getAllPoss,
-  getPos,
-  inactivatePos,
-  listPoss,
-  updatePos,
-} from './pos/sagas';
+import { createPos, deletePos, getAllPoss, getPos, listPoss, updatePos } from './pos/sagas';
 import { PosTypes } from './pos/types';
 import {
   activatePrinter,
@@ -348,12 +339,10 @@ export default function* rootSaga(): any {
     takeLatest(PermissionTypes.LIST_PERMISSION_REQUEST, listPermissions),
     takeLatest(PermissionTypes.UPDATE_PERMISSION_REQUEST, updatePermission),
 
-    takeLatest(PosTypes.ACTIVATE_POS_REQUEST, activatePos),
     takeLatest(PosTypes.CREATE_POS_REQUEST, createPos),
     takeLatest(PosTypes.DELETE_POS_REQUEST, deletePos),
     takeLatest(PosTypes.GET_ALL_POS_REQUEST, getAllPoss),
     takeLatest(PosTypes.GET_POS_REQUEST, getPos),
-    takeLatest(PosTypes.INACTIVATE_POS_REQUEST, inactivatePos),
     takeLatest(PosTypes.LIST_POS_REQUEST, listPoss),
     takeLatest(PosTypes.UPDATE_POS_REQUEST, updatePos),
 
