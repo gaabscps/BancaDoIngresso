@@ -7,10 +7,12 @@ import subPDV from '../../../assets/images/svg/subPDV.svg';
 import SubPdvList from '../../modal/SubPdvs';
 import Button from '../../Utils/Button';
 import FilterVector from '../../../assets/images/svg/FilterVector';
+import Filter from '../../modal/Filter';
 
 const Sample = (): JSX.Element => {
   const [showPdv, setShowPdv] = useState(false);
   const [showSubPdvList, setShowSubPdvList] = useState(false);
+  const [showFilter, setShowFilter] = useState(false);
 
   const callShow = (b: boolean): void => {
     setShowPdv(b);
@@ -18,8 +20,12 @@ const Sample = (): JSX.Element => {
   const callShowSub = (b: never): void => {
     setShowSubPdvList(b);
   };
+  const callShowFilter = (b: never): void => {
+    setShowFilter(b);
+  };
   return (
     <Fragment>
+      <Filter show={showFilter} setShowFilter={callShowFilter} />
       <SubPdvList show={showSubPdvList} setShowSubPdvList={callShowSub} />
       <RegisterPdv show={showPdv} setShowPdv={callShow} />
       <Container className="mainContainer" fluid={true}>
@@ -31,8 +37,10 @@ const Sample = (): JSX.Element => {
             <Button color="primary" onClick={() => setShowPdv(true)}>
               + Cadastrar novo PDV
             </Button>
-            <div className="filter-container">
-              <FilterVector />
+            <div onClick={() => setShowFilter(true)} className="filter-container">
+              <div className="filter-content">
+                <FilterVector />
+              </div>
             </div>
           </Row>
         </div>

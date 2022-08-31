@@ -1,6 +1,33 @@
 @import '~bootstrap-scss/bootstrap.scss';
 @import 'color.scss';
 
+.flex-modal-right {
+  display: flex !important;
+  justify-content: flex-end;
+  backdrop-filter: blur(7px);
+  background: rgba(34, 34, 34, 0.7);
+}
+.filter-modal {
+  width: 415px !important;
+  height: 100% !important;
+  margin: 0px 0px !important;
+  transition: 0.3s;
+  transform-origin: right;
+  transform:scaleX(0);
+  .filter-modal-content {
+    height: 100%;
+    border-radius: 0;
+  }
+}
+.filter-name {
+  font-weight: 400 !important;
+  font-size: 21px !important;
+  margin-top: 45px !important;
+}
+.filter-button {
+  border: none !important;
+}
+
 .mainContainer {
   padding: 50px !important;
 }

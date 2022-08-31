@@ -1,7 +1,21 @@
 .filter-container {
-display: flex;
-align-items: center;
-margin-left: 15px
+  display: flex;
+  align-items: center;
+  margin-left: 15px;
+  .filter-content {
+    width: fit-content;
+    cursor: pointer;
+  }
+  svg {
+    path {
+      fill: #828282;
+      color: #828282;
+      &:hover {
+        fill: #222222;
+        color: #222222;
+      }
+    }
+  }
 }
 .subpdv-main-container {
   box-shadow: rgb(0 0 0 / 5%) 0px 0px 4px !important;
