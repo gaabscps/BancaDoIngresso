@@ -32,7 +32,9 @@ const SubPdvList = (props: Props): JSX.Element => {
           <div className="subpdv-modal-header-container">
             <div className="header-title-text subpdv-name">Nome do SubPdv</div>
             <div className="subpdv-register-buttom">
-              <a onClick={() => setShowRegisterSubPdv(true)}>+ cadastrar novo Sub PDV</a>
+              <a style={{ cursor: 'pointer' }} onClick={() => setShowRegisterSubPdv(true)}>
+                + cadastrar novo Sub PDV
+              </a>
             </div>
             <div
               className="modal-close-container"

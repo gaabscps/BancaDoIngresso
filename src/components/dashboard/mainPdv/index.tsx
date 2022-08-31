@@ -1,11 +1,11 @@
 import React, { Fragment, useState } from 'react';
 import { Container, Row, Col, Label } from 'reactstrap';
-import SuperButton from '../../sharedComponents/SuperButton';
 import RegisterPdv from '../../modal/RegisterPdv';
 import pen from '../../../assets/images/svg/pen.svg';
 import lixeira from '../../../assets/images/svg/lixeira.svg';
 import subPDV from '../../../assets/images/svg/subPDV.svg';
 import SubPdvList from '../../modal/SubPdvs';
+import Button from '../../Utils/Button';
 
 const Sample = (): JSX.Element => {
   const [showPdv, setShowPdv] = useState(false);
@@ -27,9 +27,9 @@ const Sample = (): JSX.Element => {
             <Label className="pageTitle">PDV</Label>
           </div>
           <Row className="justify-content-between">
-            <SuperButton color="primary" onClick={() => setShowPdv(true)}>
+            <Button color="primary" onClick={() => setShowPdv(true)}>
               + Cadastrar novo PDV
-            </SuperButton>
+            </Button>
           </Row>
         </div>
         <Row>
