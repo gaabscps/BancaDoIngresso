@@ -1,6 +1,7 @@
-import React from 'react';
-import { Card, Container, Modal, Button, ModalHeader, ModalBody } from 'reactstrap';
+import React, { useState } from 'react';
+import { Card, Container, Modal, ModalHeader, ModalBody } from 'reactstrap';
 import CloseModal from '../../assets/images/svg/CloseModal';
+import RegisterSubPdv from './RegisterSubPdv';
 
 interface StateProps {
   show: boolean;
@@ -13,57 +14,52 @@ type Props = StateProps & DispatchProps;
 
 const SubPdvList = (props: Props): JSX.Element => {
   const handleClose = (): void => props.setShowSubPdvList(false);
+  const [showRegisterSubPdv, setShowRegisterSubPdv] = useState(false);
+  const callShowRegisterSub = (b: boolean): void => {
+    setShowRegisterSubPdv(b);
+  };
   return (
-    <Modal
-      size={'xl'}
-      isOpen={props.show}
-      toggle={() => props.setShowSubPdvList(false)}
-      dialogClassName="modal-550px"
-      aria-labelledby="example-custom-modal-styling-title"
-    >
-      <ModalHeader style={{ backgroundColor: '#F8F8F8' }}>
-        <div className="subpdv-modal-header-container">
-          <div className="header-title-text subpdv-name">Nome do SubPdv</div>
-          <div className="subpdv-register-buttom">+ cadastrar novo Sub PDV</div>
-          <div
-            className="modal-close-container"
-            onClick={() => {
-              handleClose();
-            }}
-            style={{ cursor: 'pointer' }}
-          >
-            <CloseModal />
-          </div>
-        </div>
-      </ModalHeader>
-      <ModalBody style={{ backgroundColor: '#F8F8F8' }}>
-        <Container>
-          <Card
-            className="subpdv-main-container"
-            style={{
-              padding: '25px 30px',
-              backgroundColor: '#FFF',
-              border: 'none',
-              borderRadius: '5px',
-            }}
-          ></Card>
-        </Container>
-        <div className="nextPageButton">
-          <div style={{ color: '#fff' }}>
-            <Button
-              style={{ height: '50px' }}
-              variant="outline-light"
-              onClick={() => handleClose()}
+    <>
+      <RegisterSubPdv show={showRegisterSubPdv} setShowRegisterSubPdv={callShowRegisterSub} />
+      <Modal
+        size={'xl'}
+        isOpen={props.show}
+        toggle={() => props.setShowSubPdvList(false)}
+        dialogClassName="modal-550px"
+        aria-labelledby="example-custom-modal-styling-title"
+      >
+        <ModalHeader style={{ backgroundColor: '#F8F8F8' }}>
+          <div className="subpdv-modal-header-container">
+            <div className="header-title-text subpdv-name">Nome do SubPdv</div>
+            <div className="subpdv-register-buttom">
+              <a onClick={() => setShowRegisterSubPdv(true)}>+ cadastrar novo Sub PDV</a>
+            </div>
+            <div
+              className="modal-close-container"
+              onClick={() => {
+                handleClose();
+              }}
+              style={{ cursor: 'pointer' }}
             >
-              Cancelar
-            </Button>
+              <CloseModal />
+            </div>
           </div>
-          <Button className="botao-cadastro" variant="dark">
-            Cadastrar novo SubPDV
-          </Button>
-        </div>
-      </ModalBody>
-    </Modal>
+        </ModalHeader>
+        <ModalBody style={{ backgroundColor: '#F8F8F8' }}>
+          <Container>
+            <Card
+              className="subpdv-main-container"
+              style={{
+                padding: '25px 30px',
+                backgroundColor: '#FFF',
+                border: 'none',
+                borderRadius: '5px',
+              }}
+            ></Card>
+          </Container>
+        </ModalBody>
+      </Modal>
+    </>
   );
 };
 
