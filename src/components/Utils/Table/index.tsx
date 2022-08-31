@@ -1,5 +1,6 @@
 import React from 'react';
-import DataTable, { TableProps } from 'react-data-table-component';
+import DataTable, { TableProps, TableColumn } from 'react-data-table-component';
+import { CollumnStatus, CollumnImage } from './Components';
 
 import { primaryTheme, secundaryTheme } from './style';
 
@@ -14,7 +15,7 @@ const schemeTheme = {
   secundary: secundaryTheme,
 };
 
-const CustomTable: React.FC<TableCustomProps> = (props: TableCustomProps) => (
+export const CustomTable: React.FC<TableCustomProps> = (props: TableCustomProps) => (
   <DataTable
     {...props}
     columns={props.columns}
@@ -23,4 +24,5 @@ const CustomTable: React.FC<TableCustomProps> = (props: TableCustomProps) => (
   />
 );
 
-export default CustomTable;
+export type { TableColumn };
+export { CollumnStatus, CollumnImage };

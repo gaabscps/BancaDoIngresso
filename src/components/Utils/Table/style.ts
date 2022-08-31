@@ -21,6 +21,7 @@ export const primaryTheme = {
       marginBottom: '30px',
       fontSize: '0.75rem',
       fontWidth: '300',
+      overflow: 'hidden',
     },
   },
   headCells: {
@@ -52,6 +53,7 @@ export const secundaryTheme = {
       border: 'none !important',
       fontSize: '0.75rem',
       fontWidth: '400',
+      overflow: 'hidden',
     },
   },
 };

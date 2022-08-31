@@ -2,14 +2,17 @@ import React from 'react';
 import { Container } from 'reactstrap';
 
 // TABLE
-import { TableColumn } from 'react-data-table-component';
-import CustomTable from '../components/Utils/Table';
+import { CustomTable, TableColumn, CollumnStatus, CollumnImage } from '../components/Utils/Table';
 
 // ICON
 import { ReactComponent as SvgExample } from '../assets/images/svg/SvgExample.svg';
+import { ReactComponent as Pen } from '../assets/images/svg/pen.svg';
+import { ReactComponent as Trash } from '../assets/images/svg/lixeira.svg';
+import { ReactComponent as Ticket } from '../assets/images/svg/ticket.svg';
 
 // MOCK
 import { mockData } from '../components/Utils/Table/mock';
+// import PaginationCustom from '../components/Utils/Pagination';
 
 interface DataRow {
   image: string;
@@ -18,17 +21,15 @@ interface DataRow {
   city: string;
   state: string;
   actions: string;
+  status: string;
 }
 
 const ExampleTables = (): JSX.Element => {
-  const columnsPrimary: TableColumn<DataRow>[] = [
+  // Table with status color
+  const columnsPrimaryStatusColor: TableColumn<DataRow>[] = [
     {
-      name: 'Imagem',
-      selector: row => row.image,
-      style: {
-        paddingLeft: '0px',
-        with: '10vw',
-      },
+      name: 'Nome do PDV',
+      selector: row => row.status,
     },
     {
       name: 'Nome do PDV',
@@ -51,21 +52,58 @@ const ExampleTables = (): JSX.Element => {
       selector: row => row.actions,
     },
   ];
-
-  const dataPrimary = mockData.map(item => ({
+  const dataPrimaryStatusColor = mockData.map(item => ({
     id: item.id,
-    image: (
-      <div style={{ maxHeight: '5.188rem', padding: 0 }}>
-        <img
-          style={{
-            height: '5.188rem',
-            borderTopLeftRadius: '10px',
-            borderBottomLeftRadius: '10px',
-            width: '11vw',
-          }}
-          src={item.image}
-        />
+    status: <CollumnStatus statusColor={item.status}>{item.pdvName}</CollumnStatus>,
+    pdvName: item.pdvName,
+    address: item.address,
+    city: item.city,
+    state: item.state,
+    actions: (
+      <div>
+        <Pen className="mr-4 svg-icon" />
+        <Trash className="mr-4 svg-icon" />
+        <Ticket className="mr-4 svg-icon" />
       </div>
+    ),
+  }));
+  // Table with status color
+
+  // Table with status color AND image
+  const columnsPrimaryImageStatus: TableColumn<DataRow>[] = [
+    {
+      name: 'Imagem',
+      selector: row => row.image,
+      width: '100px',
+    },
+    {
+      name: 'Nome do PDV',
+      selector: row => row.pdvName,
+    },
+    {
+      name: 'Endereço',
+      selector: row => row.address,
+    },
+    {
+      name: 'Cidade',
+      selector: row => row.city,
+    },
+    {
+      name: 'Estado',
+      selector: row => row.state,
+    },
+    {
+      name: 'Ações',
+      selector: row => row.actions,
+    },
+  ];
+  const dataPrimaryImageStatus = mockData.map(item => ({
+    id: item.id,
+    // image: <CollumnImage srcImage={item.image} />,
+    image: (
+      <CollumnStatus statusColor={item.status} justify="right">
+        <CollumnImage srcImage={item.image} />
+      </CollumnStatus>
     ),
     pdvName: item.pdvName,
     address: item.address,
@@ -73,7 +111,48 @@ const ExampleTables = (): JSX.Element => {
     state: item.state,
     actions: <SvgExample className="mr-2 svg-icon" />,
   }));
+  // Table with status color AND image
 
+  // Table with image
+  const columnsPrimaryImage: TableColumn<DataRow>[] = [
+    {
+      name: 'Imagem',
+      selector: row => row.image,
+      width: '100px',
+    },
+    {
+      name: 'Nome do PDV',
+      selector: row => row.pdvName,
+    },
+    {
+      name: 'Endereço',
+      selector: row => row.address,
+    },
+    {
+      name: 'Cidade',
+      selector: row => row.city,
+    },
+    {
+      name: 'Estado',
+      selector: row => row.state,
+    },
+    {
+      name: 'Ações',
+      selector: row => row.actions,
+    },
+  ];
+  const dataPrimaryImage = mockData.map(item => ({
+    id: item.id,
+    image: <CollumnImage srcImage={item.image} />,
+    pdvName: item.pdvName,
+    address: item.address,
+    city: item.city,
+    state: item.state,
+    actions: <SvgExample className="mr-2 svg-icon" />,
+  }));
+  // Table with image
+
+  // Table Secudary Style
   const columnsSecundary: TableColumn<DataRow>[] = [
     {
       name: 'Nome do PDV',
@@ -92,7 +171,6 @@ const ExampleTables = (): JSX.Element => {
       selector: row => row.actions,
     },
   ];
-
   const dataSecundary = mockData.map(item => ({
     id: item.id,
     pdvName: item.pdvName,
@@ -100,24 +178,45 @@ const ExampleTables = (): JSX.Element => {
     state: item.state,
     actions: <SvgExample className="mr-2 svg-icon" />,
   }));
+  // Table Secudary Style
 
   return (
     <Container>
-      <div className="pt-5">
+      <div className="pt-5 pb-5">
         <h3>Tables</h3>
         <br />
-        <br />
-        {/* Table 1 */}
-        <label>Table Primary</label>
-        <CustomTable columns={columnsPrimary} data={dataPrimary} theme="primary" />
-        {/* Table 2 */}
-        <label>Table Secundary</label>
+        {/* Table with status color */}
+        <h5>Tabele principal - Cor status</h5>
+        <CustomTable
+          columns={columnsPrimaryStatusColor}
+          data={dataPrimaryStatusColor}
+          theme="primary"
+        />
+        {/* Table with status color */}
+        <hr />
+        {/* Table with status color AND image */}
+        <h5>Tabele principal - Cor status e imagem</h5>
+        <CustomTable
+          columns={columnsPrimaryImageStatus}
+          data={dataPrimaryImageStatus}
+          theme="primary"
+        />
+        {/* Table with status color AND image */}
+        <hr />
+        {/* Table with image */}
+        <h5>Tabele principal - Imagem</h5>
+        <CustomTable columns={columnsPrimaryImage} data={dataPrimaryImage} theme="primary" />
+        {/* Table with image */}
+        <hr />
+        {/* Table Secudary Style */}
+        <h5>Table Secundaria</h5>
         <CustomTable
           columns={columnsSecundary}
           data={dataSecundary}
           dense={true}
           theme="secundary"
         />
+        {/* Table Secudary Style */}
       </div>
     </Container>
   );

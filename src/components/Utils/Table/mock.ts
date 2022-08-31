@@ -1,8 +1,9 @@
 export const mockData = [
   {
     id: 1,
+    status: '#7AD81B',
     pdvName: 'Example 1',
-    image: 'https://picsum.photos/200/300',
+    image: 'https://picsum.photos/100/82',
     address: 'Rua exemplo 1',
     city: 'São Paulo',
     state: 'SP',
@@ -10,8 +11,9 @@ export const mockData = [
   },
   {
     id: 2,
+    status: '#FFE249',
     pdvName: 'Example 2',
-    image: 'https://picsum.photos/200/400',
+    image: 'https://picsum.photos/100/83',
     address: 'Rua exemplo 2',
     city: 'Uberlândia',
     state: 'MG',
@@ -19,11 +21,22 @@ export const mockData = [
   },
   {
     id: 3,
+    status: '#E64F49',
     pdvName: 'Example 3',
-    image: 'https://picsum.photos/200/500',
+    image: 'https://picsum.photos/100/84',
     address: 'Rua exemplo 3',
     city: 'Distrito Federal',
     state: 'DF',
+    actions: [],
+  },
+  {
+    id: 4,
+    status: '#3CAFC8',
+    pdvName: 'Example 4',
+    image: 'https://picsum.photos/100/85',
+    address: 'Rua exemplo 4',
+    city: 'Amazonas',
+    state: 'AM',
     actions: [],
   },
 ];
