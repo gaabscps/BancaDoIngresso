@@ -4,72 +4,75 @@ import { usePagination, DOTS } from './usePagination';
 
 interface PaginationProps {
   total?: number;
-  pageSize?: number;
+  pageSize: number;
   siblingCount?: number;
-  currentPage?: number;
+  currentPage: number;
   onPageChange: (page: number) => void;
-  totalCount?: number;
+  totalCount: number;
 }
 
 const NewPagination: React.FC<PaginationProps> = (props: PaginationProps) => {
-  const { onPageChange, totalCount = 0, siblingCount = 0, currentPage = 0, pageSize = 0 } = props;
+  const {
+    onPageChange,
+    totalCount = 1,
+    siblingCount = 1,
+    currentPage = 1,
+    pageSize = 1,
+  }: PaginationProps = props;
   const paginationRange = usePagination({
     currentPage,
     totalCount,
     siblingCount,
     pageSize,
   });
+  const lastPage = paginationRange && paginationRange[paginationRange.length - 1];
+
   if (currentPage === 0 || (paginationRange && paginationRange.length < 2)) {
     return null;
   }
   const onNext = () => {
-    onPageChange(currentPage + 1);
+    if (currentPage !== lastPage) onPageChange(currentPage + 1);
   };
   const onPrevious = () => {
-    onPageChange(currentPage - 1);
+    if (currentPage !== 1) onPageChange(currentPage - 1);
   };
-  const lastPage = paginationRange?.[paginationRange.length - 1];
   return (
-    <div>
-      <nav>
-        <ul className="pagination-container">
-          <li>
-            <a
-              href="#"
-              aria-label="Previous"
-              className={`previous-pagination ${currentPage === 1 ? 'disabled' : ''}`}
-              onClick={onPrevious}
-            >
-              <span aria-hidden="true">«</span>
-            </a>
+    <ul className="pagination-container">
+      <li className={currentPage === 1 ? 'disabled' : ''}>
+        <span
+          aria-label="Previous"
+          className={`previous-pagination ${currentPage === 1 ? 'disabled' : ''}`}
+          onClick={onPrevious}
+        >
+          «
+        </span>
+      </li>
+      {paginationRange?.map(pageNumber => {
+        if (pageNumber === DOTS) {
+          return (
+            <li>
+              <span className="disabled" aria-disabled>
+                &#8230;
+              </span>
+            </li>
+          );
+        }
+        return (
+          <li key={pageNumber} className={`${pageNumber === currentPage ? 'active' : ''}`}>
+            <span onClick={() => onPageChange(+pageNumber)}>{pageNumber}</span>
           </li>
-          {paginationRange?.map(pageNumber => {
-            if (pageNumber === DOTS) {
-              return (
-                <li>
-                  <a href="#">&#8230;</a>
-                </li>
-              );
-            }
-            return (
-              <li key={pageNumber} className={`${pageNumber === currentPage ? 'active' : ''}`}>
-                <a href="#">{pageNumber}</a>
-              </li>
-            );
-          })}
-          <li>
-            <a
-              href="#"
-              aria-label="Next"
-              className={`next-pagination ${currentPage === lastPage ? 'disabled' : ''}`}
-              onClick={onNext}
-            >
-              <span aria-hidden="true">»</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
-    </div>
+        );
+      })}
+      <li className={currentPage === lastPage ? 'disabled' : ''}>
+        <span
+          aria-label="Next"
+          className={`next-pagination ${currentPage === lastPage ? 'disabled' : ''}`}
+          onClick={onNext}
+        >
+          »
+        </span>
+      </li>
+    </ul>
   );
 };
 export default NewPagination;

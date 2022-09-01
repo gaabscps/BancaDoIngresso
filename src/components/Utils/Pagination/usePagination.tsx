@@ -1,6 +1,6 @@
 /* eslint-disable consistent-return */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 
 interface PaginationProps {
   currentPage: number;

@@ -1,9 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import React, { useState } from 'react';
+import React from 'react';
 import { Container } from 'reactstrap';
-
-// PAGINATION
-import NewPagination from '../components/Utils/Pagination';
 
 // TABLE
 import { CustomTable, CollumnStatus, CollumnImage, TableColumn } from '../components/Utils/Table';
@@ -29,10 +26,6 @@ interface DataRow {
 }
 
 const ExampleTables = (): JSX.Element => {
-  const [page, setPage] = useState(1);
-  const [totalCount, setTotalCount] = useState(0);
-  const totalPages = 50;
-
   // Table with status color
   const columnsPrimaryStatusColor: TableColumn<DataRow>[] = [
     {
@@ -54,6 +47,7 @@ const ExampleTables = (): JSX.Element => {
     {
       name: 'Ações',
       selector: row => row.actions,
+      width: '200px',
     },
   ];
   const dataPrimaryStatusColor = mockData.map(item => ({
@@ -183,26 +177,6 @@ const ExampleTables = (): JSX.Element => {
   }));
   // Table Secudary Style
 
-  async function handleFetch() {
-    // setLoading(true);
-    // const response = await getExercise(search, page);
-    // setExercise(response.rows);
-    setTotalCount(50);
-    // setLoading(false);
-  }
-
-  async function handlePaginationChange(pageNumber: number) {
-    // setLoading(true);
-    setPage(pageNumber);
-    // const response = await getExercise(search, pageNumber);
-    // setLoading(false);
-    // setExercise(response.rows);
-  }
-
-  React.useEffect(() => {
-    handleFetch();
-  }, []);
-
   return (
     <Container>
       <div className="pt-5 pb-5">
@@ -214,12 +188,6 @@ const ExampleTables = (): JSX.Element => {
           columns={columnsPrimaryStatusColor}
           data={dataPrimaryStatusColor}
           theme="primary"
-        />
-        <NewPagination
-          currentPage={5}
-          totalCount={20}
-          pageSize={6}
-          onPageChange={() => handlePaginationChange(6)}
         />
         {/* Table with status color */}
         <hr />
