@@ -28,6 +28,7 @@ const ExamplePagination = (): JSX.Element => {
   const [page, setPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
   const totalPages = 5;
+  const numberRowsPerPage = 10;
 
   const [pending, setPending] = React.useState(true);
   const [rows, setRows] = React.useState([{}]);
@@ -37,7 +38,7 @@ const ExamplePagination = (): JSX.Element => {
     // GET instantwebtools to mock pagination
     // **** IMPORTANTE: A LOGÍCA E REQUISIÇÃO DEVEM SER SEPARADAS DO UI **********
     const response = await fetch(
-      `https://api.instantwebtools.net/v1/passenger?page=${pageNumber}&size=4`,
+      `https://api.instantwebtools.net/v1/passenger?page=${pageNumber}&size=${numberRowsPerPage}`,
     );
     const data = await response.json();
     // **** IMPORTANTE: A LOGÍCA E CHAMADAS API DEVEM SER SEPARADAS DO UI **********
@@ -100,6 +101,8 @@ const ExamplePagination = (): JSX.Element => {
               columns={columnsPrimaryPagination}
               data={rows}
               progressPending={pending}
+              // progressPending={true}
+              numberRowsPerPage={numberRowsPerPage}
               theme="primary"
             />
             <br />
