@@ -73,9 +73,19 @@ const Sample = (): JSX.Element => {
       state: item.state,
       // eslint-disable-next-line react/jsx-key
       actions: [
-        <Pen className="mr-2 svg-icon" />,
+        <Pen
+          onClick={() => {
+            setShowPdv(!showPdv);
+          }}
+          className="mr-2 svg-icon"
+        />,
         <Trash className="mr-2 svg-icon" />,
-        <SubPdvIcon className="mr-2 svg-icon" />,
+        <SubPdvIcon
+          onClick={() => {
+            setShowSubPdvList(!showSubPdvList);
+          }}
+          className="mr-2 svg-icon"
+        />,
       ],
     }),
   );
