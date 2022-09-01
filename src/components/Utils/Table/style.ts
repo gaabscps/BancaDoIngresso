@@ -14,6 +14,7 @@ export const primaryTheme = {
   },
   rows: {
     style: {
+      minWidth: '830px !important',
       minHeight: '5.188rem !important',
       border: 'none !important',
       borderRadius: '10px',
@@ -26,7 +27,7 @@ export const primaryTheme = {
   },
   headCells: {
     style: {
-      paddingLeft: '8px',
+      paddingLeft: '7px',
       paddingRight: '8px',
     },
   },

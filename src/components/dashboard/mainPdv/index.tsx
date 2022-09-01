@@ -1,18 +1,31 @@
+/* eslint-disable react/jsx-key */
 import React, { Fragment, useState } from 'react';
 import { Container, Row, Col, Label } from 'reactstrap';
 import RegisterPdv from '../../modal/RegisterPdv';
-import pen from '../../../assets/images/svg/pen.svg';
-import lixeira from '../../../assets/images/svg/lixeira.svg';
-import subPDV from '../../../assets/images/svg/subPDV.svg';
 import SubPdvList from '../../modal/SubPdvs';
 import Button from '../../Utils/Button';
 import FilterVector from '../../../assets/images/svg/FilterVector';
 import Filter from '../../modal/Filter';
+import { CollumnImage, CustomTable, TableColumn } from '../../Utils/Table';
+import { mockData } from '../../Utils/Table/mock';
+import { ReactComponent as Pen } from '../../../assets/images/svg/pen.svg';
+import { ReactComponent as Trash } from '../../../assets/images/svg/lixeira.svg';
+import { ReactComponent as SubPdvIcon } from '../../../assets/images/svg/subPDV.svg';
 
 const Sample = (): JSX.Element => {
   const [showPdv, setShowPdv] = useState(false);
   const [showSubPdvList, setShowSubPdvList] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
+
+  interface DataRow {
+    image: string;
+    pdvName: string;
+    address: string;
+    city: string;
+    state: string;
+    actions: string;
+    status: string;
+  }
 
   const callShow = (b: boolean): void => {
     setShowPdv(b);
@@ -23,6 +36,49 @@ const Sample = (): JSX.Element => {
   const callShowFilter = (b: never): void => {
     setShowFilter(b);
   };
+  const columnsPrimaryImage: TableColumn<DataRow>[] = [
+    {
+      name: 'Imagem',
+      selector: row => row.image,
+      width: '100px',
+    },
+    {
+      name: 'Nome do PDV',
+      selector: row => row.pdvName,
+    },
+    {
+      name: 'Endereço',
+      selector: row => row.address,
+    },
+    {
+      name: 'Cidade',
+      selector: row => row.city,
+    },
+    {
+      name: 'Estado',
+      selector: row => row.state,
+    },
+    {
+      name: 'Ações',
+      selector: row => row.actions,
+    },
+  ];
+  const dataPrimaryImage = mockData.map(
+    (item: { id: any; image: any; pdvName: any; address: any; city: any; state: any }) => ({
+      id: item.id,
+      image: <CollumnImage srcImage={item.image} />,
+      pdvName: item.pdvName,
+      address: item.address,
+      city: item.city,
+      state: item.state,
+      // eslint-disable-next-line react/jsx-key
+      actions: [
+        <Pen className="mr-2 svg-icon" />,
+        <Trash className="mr-2 svg-icon" />,
+        <SubPdvIcon className="mr-2 svg-icon" />,
+      ],
+    }),
+  );
   return (
     <Fragment>
       <Filter show={showFilter} setShowFilter={callShowFilter} />
@@ -46,153 +102,7 @@ const Sample = (): JSX.Element => {
         </div>
         <Row>
           <Col sm="12">
-            <div className="cabeçalho">
-              <div className="linhaDaTabela headerFoto normalText">Imagem</div>
-              <div className="linhaDaTabela headerStatus"></div>
-              <div className="linhaDaTabela headerNome normalText">Nome do PDV</div>
-              <div className="linhaDaTabela headerCidade normalText">Endereço</div>
-              <div className="linhaDaTabela headerCidade normalText">Cidade</div>
-              <div className="linhaDaTabela headerCidade normalText">Estado</div>
-              <div className="linhaDaTabela headerAção normalText">Ação</div>
-            </div>
-            <div className="rows">
-              <div className="linhaDaTabela campoFoto"></div>
-              <div className="linhaDaTabela campoNome">
-                <div>
-                  <div className="celulaNome subText">Lojinha do Seu Zé</div>
-                </div>
-              </div>
-              <div className="linhaDaTabela campoCidade">
-                <div className="celulaCidade subText">Rua dos Imigrantes Al...</div>
-              </div>
-              <div className="linhaDaTabela campoData">
-                <div className="celulaData subText">Campinas</div>
-              </div>
-              <div className="linhaDaTabela campoData">
-                <div className="celulaData subText">SP</div>
-              </div>
-              <div className="linhaDaTabela campoAção">
-                <div className="celulaAção">
-                  <img src={pen} style={{ paddingRight: '25px' }} alt="" />
-                  <img src={lixeira} style={{ paddingRight: '25px' }} alt="" />
-                  <img src={subPDV} onClick={() => setShowSubPdvList(true)} alt="" />
-                </div>
-              </div>
-            </div>
-            <div className="rows">
-              <div className="linhaDaTabela campoFoto4"></div>
-              <div className="linhaDaTabela campoNome">
-                <div>
-                  <div className="celulaNome subText">Lojinha da Dona Maria</div>
-                </div>
-              </div>
-              <div className="linhaDaTabela campoCidade">
-                <div className="celulaCidade subText">Avenida Barão de Ja...</div>
-              </div>
-              <div className="linhaDaTabela campoData">
-                <div className="celulaData subText">Uberlândia</div>
-              </div>
-              <div className="linhaDaTabela campoData">
-                <div className="celulaData subText">MG</div>
-              </div>
-              <div className="linhaDaTabela campoAção">
-                <div className="celulaAção">
-                  <img src={pen} style={{ paddingRight: '25px' }} alt="" />
-                  <img src={lixeira} style={{ paddingRight: '25px' }} alt="" />
-                  <img src={subPDV} onClick={() => setShowSubPdvList(true)} alt="" />
-                </div>
-              </div>
-            </div>
-            <div className="rows">
-              <div className="linhaDaTabela campoFoto2"></div>
-              <div className="linhaDaTabela campoNome">
-                <div>
-                  <div className="celulaNome subText">Escola Oficina do Estudante</div>
-                </div>
-              </div>
-              <div className="linhaDaTabela campoCidade">
-                <div className="celulaCidade subText">Avenida Barão de Ja...</div>
-              </div>
-              <div className="linhaDaTabela campoData">
-                <div className="celulaData subText">Cuiabá</div>
-              </div>
-              <div className="linhaDaTabela campoData">
-                <div className="celulaData subText">MT</div>
-              </div>
-              <div className="linhaDaTabela campoAção">
-                <div className="celulaAção">
-                  <img src={pen} style={{ paddingRight: '25px' }} alt="" />
-                  <img src={lixeira} style={{ paddingRight: '25px' }} alt="" />
-                  <img src={subPDV} onClick={() => setShowSubPdvList(true)} alt="" />
-                </div>
-              </div>
-            </div>
-            <div className="rows">
-              <div className="linhaDaTabela campoFoto3"></div>
-              <div className="linhaDaTabela campoNome">
-                <div className="celulaNome subText">Empório Top</div>
-              </div>
-              <div className="linhaDaTabela campoCidade">
-                <div className="celulaCidade subText">Avenida Barão de Ja...</div>
-              </div>
-              <div className="linhaDaTabela campoData">
-                <div className="celulaData subText">Salvador</div>
-              </div>
-              <div className="linhaDaTabela campoData">
-                <div className="celulaData subText">BA</div>
-              </div>
-              <div className="linhaDaTabela campoAção">
-                <div className="celulaAção">
-                  <img src={pen} style={{ paddingRight: '25px' }} alt="" />
-                  <img src={lixeira} style={{ paddingRight: '25px' }} alt="" />
-                  <img src={subPDV} onClick={() => setShowSubPdvList(true)} alt="" />
-                </div>
-              </div>
-            </div>
-            <div className="rows">
-              <div className="linhaDaTabela campoFoto3"></div>
-              <div className="linhaDaTabela campoNome">
-                <div className="celulaNome subText">Mercadinho da Esquina</div>
-              </div>
-              <div className="linhaDaTabela campoCidade">
-                <div className="celulaCidade subText">Avenida Barão de Ja...</div>
-              </div>
-              <div className="linhaDaTabela campoData">
-                <div className="celulaData subText">Rio de Janeiro</div>
-              </div>
-              <div className="linhaDaTabela campoData">
-                <div className="celulaData subText">RJ</div>
-              </div>
-              <div className="linhaDaTabela campoAção">
-                <div className="celulaAção">
-                  <img src={pen} style={{ paddingRight: '25px' }} alt="" />
-                  <img src={lixeira} style={{ paddingRight: '25px' }} alt="" />
-                  <img src={subPDV} onClick={() => setShowSubPdvList(true)} alt="" />
-                </div>
-              </div>
-            </div>
-            <div className="rows">
-              <div className="linhaDaTabela campoFoto3"></div>
-              <div className="linhaDaTabela campoNome">
-                <div className="celulaNome subText">Shopping Iguatemi de São Lou...</div>
-              </div>
-              <div className="linhaDaTabela campoCidade">
-                <div className="celulaCidade subText">Campinas/SP</div>
-              </div>
-              <div className="linhaDaTabela campoData">
-                <div className="celulaData subText">Santa Fé do Sul</div>
-              </div>
-              <div className="linhaDaTabela campoData">
-                <div className="celulaData subText">SP</div>
-              </div>
-              <div className="linhaDaTabela campoAção">
-                <div className="celulaAção">
-                  <img src={pen} style={{ paddingRight: '25px' }} alt="" />
-                  <img src={lixeira} style={{ paddingRight: '25px' }} alt="" />
-                  <img src={subPDV} onClick={() => setShowSubPdvList(true)} alt="" />
-                </div>
-              </div>
-            </div>
+            <CustomTable columns={columnsPrimaryImage} data={dataPrimaryImage} theme="primary" />
           </Col>
         </Row>
       </Container>
