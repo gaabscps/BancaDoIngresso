@@ -53,7 +53,7 @@ const ExamplePagination = (): JSX.Element => {
 
     // Seta os dados da tabela
     setRows(dataCollumn);
-    setTotalCount(data.totalPassengers);
+    setTotalCount(data.totalPages);
     setPending(false);
   }
 
