@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import React from 'react';
 import { Container } from 'reactstrap';
 
 // TABLE
-import { CustomTable, TableColumn, CollumnStatus, CollumnImage } from '../components/Utils/Table';
+import { CustomTable, CollumnStatus, CollumnImage, TableColumn } from '../components/Utils/Table';
 
 // ICON
 import { ReactComponent as SvgExample } from '../assets/images/svg/SvgExample.svg';
@@ -29,10 +30,6 @@ const ExampleTables = (): JSX.Element => {
   const columnsPrimaryStatusColor: TableColumn<DataRow>[] = [
     {
       name: 'Nome do PDV',
-      selector: row => row.status,
-    },
-    {
-      name: 'Nome do PDV',
       selector: row => row.pdvName,
     },
     {
@@ -50,12 +47,12 @@ const ExampleTables = (): JSX.Element => {
     {
       name: 'Ações',
       selector: row => row.actions,
+      width: '200px',
     },
   ];
   const dataPrimaryStatusColor = mockData.map(item => ({
     id: item.id,
-    status: <CollumnStatus statusColor={item.status}>{item.pdvName}</CollumnStatus>,
-    pdvName: item.pdvName,
+    pdvName: <CollumnStatus statusColor={item.status}>{item.pdvName}</CollumnStatus>,
     address: item.address,
     city: item.city,
     state: item.state,

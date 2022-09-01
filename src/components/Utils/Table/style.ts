@@ -27,14 +27,14 @@ export const primaryTheme = {
   },
   headCells: {
     style: {
-      paddingLeft: '7px',
-      paddingRight: '8px',
+      paddingLeft: '36px',
+      paddingRight: '10px',
     },
   },
   cells: {
     style: {
-      paddingLeft: '8px',
-      paddingRight: '8px',
+      paddingLeft: '36px',
+      paddingRight: '10px',
     },
   },
 };
