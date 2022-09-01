@@ -11,7 +11,7 @@ interface PaginationProps {
   totalCount: number;
 }
 
-const NewPagination: React.FC<PaginationProps> = (props: PaginationProps) => {
+const Pagination: React.FC<PaginationProps> = (props: PaginationProps) => {
   const {
     onPageChange,
     totalCount = 1,
@@ -75,4 +75,4 @@ const NewPagination: React.FC<PaginationProps> = (props: PaginationProps) => {
     </ul>
   );
 };
-export default NewPagination;
+export default Pagination;
