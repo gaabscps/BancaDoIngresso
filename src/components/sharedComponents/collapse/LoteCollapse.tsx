@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Collapse } from 'reactstrap';
+import { Card, Collapse } from 'reactstrap';
+import { CustomTable, TableColumn } from '../../Utils/Table';
+import { mockSubPdv } from '../../Utils/Table/mock';
 
 interface StateProps {
   title: string;
@@ -11,6 +13,28 @@ interface DispatchProps {
 }
 
 type Props = StateProps & DispatchProps;
+
+interface DataRow {
+  image: string;
+  pdvName: string;
+  address: string;
+  city: string;
+  state: string;
+  actions: string;
+  status: string;
+  dataSecundary: void;
+}
+
+const columnsSubPdvList: TableColumn<DataRow>[] = [
+  {
+    name: 'Usuário',
+    selector: (row: { pdvName: any }) => row.pdvName,
+  },
+];
+
+const dataSecundary = mockSubPdv.map((item: { id: number; user: string }) => ({
+  id: item.id,
+}));
 
 function LoteCollapse(props: Props): JSX.Element {
   const [open, setOpen] = useState(false);
@@ -40,10 +64,11 @@ function LoteCollapse(props: Props): JSX.Element {
           </div>
         </div>
 
-        <Collapse in={open}>
-          <div className="collapseTable">
-            <div className="subTitleMain collapseTableText">{props.content}</div>
-          </div>
+        <Collapse isOpen={open}>
+          <Card className="subpdv-main-container">
+            <p className="subpdv-title">Sub PDV’s #1 • Promoter Ronaldo</p>
+            <CustomTable theme={'secundary'} columns={columnsSubPdvList} data={dataSecundary} />
+          </Card>
         </Collapse>
       </div>
     </>

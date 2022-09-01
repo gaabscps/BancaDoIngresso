@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Card, Container, Modal, ModalHeader, ModalBody } from 'reactstrap';
 import CloseModal from '../../assets/images/svg/CloseModal';
+import LoteCollapse from '../sharedComponents/collapse/LoteCollapse';
 import RegisterSubPdv from './RegisterSubPdv';
 
 interface StateProps {
@@ -18,18 +19,18 @@ const SubPdvList = (props: Props): JSX.Element => {
   const callShowRegisterSub = (b: boolean): void => {
     setShowRegisterSubPdv(b);
   };
+
   return (
     <>
       <RegisterSubPdv show={showRegisterSubPdv} setShowRegisterSubPdv={callShowRegisterSub} />
       <Modal
-        style={{ backgroundColor: '#F8F8F8' }}
         size={'xl'}
         isOpen={props.show}
         toggle={() => props.setShowSubPdvList(false)}
         dialogClassName="modal-550px"
         aria-labelledby="example-custom-modal-styling-title"
       >
-        <ModalHeader>
+        <ModalHeader style={{ backgroundColor: '#F8F8F8' }}>
           <div className="subpdv-modal-header-container">
             <div className="header-title-text subpdv-name">Nome do SubPdv</div>
             <div className="subpdv-register-buttom">
@@ -48,7 +49,7 @@ const SubPdvList = (props: Props): JSX.Element => {
             </div>
           </div>
         </ModalHeader>
-        <ModalBody>
+        <ModalBody style={{ backgroundColor: '#F8F8F8' }}>
           <Container>
             <Card
               className="subpdv-main-container"
@@ -58,7 +59,15 @@ const SubPdvList = (props: Props): JSX.Element => {
                 border: 'none',
                 borderRadius: '5px',
               }}
-            ></Card>
+            >
+              <Card>
+                <LoteCollapse
+                  title={'Sub PDV’s cadastrados (2)'}
+                  content={''}
+                  leftIcon={() => <CloseModal />}
+                />
+              </Card>
+            </Card>
           </Container>
         </ModalBody>
       </Modal>
