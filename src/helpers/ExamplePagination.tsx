@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Container } from 'reactstrap';
 
 // PAGINATION
-import NewPagination from '../components/Utils/Pagination';
+import Pagination from '../components/Utils/Pagination';
 
 // TABLE
 import { CustomTable, TableColumn } from '../components/Utils/Table';
@@ -27,10 +27,13 @@ interface DataRowMock {
 const ExamplePagination = (): JSX.Element => {
   const [page, setPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
-  const [dataMock, setDataMock] = useState([]);
   const totalPages = 5;
 
+  const [pending, setPending] = React.useState(true);
+  const [rows, setRows] = React.useState([{}]);
+
   async function handleFetch(pageNumber: number) {
+    setPending(true);
     // GET instantwebtools to mock pagination
     // **** IMPORTANTE: A LOGÍCA E REQUISIÇÃO DEVEM SER SEPARADAS DO UI **********
     const response = await fetch(
@@ -38,9 +41,9 @@ const ExamplePagination = (): JSX.Element => {
     );
     const data = await response.json();
     // **** IMPORTANTE: A LOGÍCA E CHAMADAS API DEVEM SER SEPARADAS DO UI **********
-    setTotalCount(data.totalPassengers);
+
     const dataCollumn = data.data.map((item: DataRowMock) => ({
-      id: item.id,
+      id: item.airline[0].id,
       country: item.airline[0].country,
       established: item.airline[0].established,
       slogan: item.airline[0].slogan,
@@ -48,8 +51,9 @@ const ExamplePagination = (): JSX.Element => {
     }));
 
     // Seta os dados da tabela
-    setDataMock(dataCollumn);
-    setTotalCount(50);
+    setRows(dataCollumn);
+    setTotalCount(data.totalPassengers);
+    setPending(false);
   }
 
   React.useEffect(() => {
@@ -90,15 +94,23 @@ const ExamplePagination = (): JSX.Element => {
         <br />
         {/* Table with status color */}
         <h5>Tabele com Paginação</h5>
-        {dataMock && (
-          <CustomTable columns={columnsPrimaryPagination} data={dataMock} theme="primary" />
+        {rows && (
+          <>
+            <CustomTable
+              columns={columnsPrimaryPagination}
+              data={rows}
+              progressPending={pending}
+              theme="primary"
+            />
+            <br />
+            <Pagination
+              currentPage={page}
+              totalCount={totalCount}
+              pageSize={totalPages}
+              onPageChange={pagee => handlePaginationChange(pagee)}
+            />
+          </>
         )}
-        <NewPagination
-          currentPage={page}
-          totalCount={totalCount}
-          pageSize={totalPages}
-          onPageChange={pagee => handlePaginationChange(pagee)}
-        />
       </div>
     </Container>
   );
