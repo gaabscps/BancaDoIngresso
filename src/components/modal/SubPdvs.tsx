@@ -22,13 +22,14 @@ const SubPdvList = (props: Props): JSX.Element => {
     <>
       <RegisterSubPdv show={showRegisterSubPdv} setShowRegisterSubPdv={callShowRegisterSub} />
       <Modal
+        style={{ backgroundColor: '#F8F8F8' }}
         size={'xl'}
         isOpen={props.show}
         toggle={() => props.setShowSubPdvList(false)}
         dialogClassName="modal-550px"
         aria-labelledby="example-custom-modal-styling-title"
       >
-        <ModalHeader style={{ backgroundColor: '#F8F8F8' }}>
+        <ModalHeader>
           <div className="subpdv-modal-header-container">
             <div className="header-title-text subpdv-name">Nome do SubPdv</div>
             <div className="subpdv-register-buttom">
@@ -47,7 +48,7 @@ const SubPdvList = (props: Props): JSX.Element => {
             </div>
           </div>
         </ModalHeader>
-        <ModalBody style={{ backgroundColor: '#F8F8F8' }}>
+        <ModalBody>
           <Container>
             <Card
               className="subpdv-main-container"
