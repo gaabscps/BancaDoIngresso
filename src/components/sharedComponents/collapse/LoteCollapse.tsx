@@ -93,7 +93,7 @@ function LoteCollapse(props: Props): JSX.Element {
               <p className="subpdv-title subpvd-title-name">• Promoter Arnold Schwarzenegger</p>
             </div>
             <div className="subpdv-icon-container">
-              <Pen className="mr-2 svg-icon" />
+              <Pen onClick={() => props.setShowRegisterSubpdv(true)} className="mr-2 svg-icon" />
               <Trash onClick={() => props.setShowExclude(true)} className="mr-2 svg-icon" />
             </div>
           </div>
@@ -106,7 +106,7 @@ function LoteCollapse(props: Props): JSX.Element {
               <p className="subpdv-title subpvd-title-name">• Promoter Maria Aparecida</p>
             </div>
             <div className="subpdv-icon-container">
-              <Pen className="mr-2 svg-icon" />
+              <Pen onClick={() => props.setShowRegisterSubpdv(true)} className="mr-2 svg-icon" />
               <Trash onClick={() => props.setShowExclude(true)} className="mr-2 svg-icon" />
             </div>
           </div>
