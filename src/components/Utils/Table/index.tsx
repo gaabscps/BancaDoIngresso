@@ -8,6 +8,7 @@ type themeProps = 'primary' | 'secundary';
 
 interface TableCustomProps extends TableProps<any> {
   theme: themeProps;
+  numberRowsPerPage?: number;
 }
 
 const schemeTheme = {
@@ -22,7 +23,7 @@ export const CustomTable: React.FC<TableCustomProps> = (props: TableCustomProps)
     data={props.data}
     noDataComponent="Nenhum dado encontrado"
     progressPending={props.progressPending}
-    progressComponent={<CustomLoader />}
+    progressComponent={<CustomLoader numberRowsPerPage={props.numberRowsPerPage} />}
     customStyles={schemeTheme[props.theme as themeProps] ?? schemeTheme.primary}
   />
 );
