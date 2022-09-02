@@ -35,7 +35,9 @@ const ExampleTables = (): JSX.Element => {
           show={showModalCustom}
           setShow={setShowModalCustom}
           onBtnAction={handleActionModal} // Caso não seja passado, o botão de ação não será renderizado
-          isCard={true} // Para deixar o modal com o estilo de card
+          btnLabel="Ação"
+          isCard
+          // Para deixar o modal com o estilo de card
         >
           {/* Conteúdo da modal */}
           <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
@@ -51,13 +53,13 @@ const ExampleTables = (): JSX.Element => {
 
         {/* Button to open modal */}
         <Button theme="dark" onClick={handleOpenModalCustom}>
-          Open Modal Confitmation
+          Open Modal Custom
         </Button>
         <br />
         <br />
         {/* Button to open modal confirmation */}
         <Button theme="dark" onClick={handleOpenModalConfirmation}>
-          Open Modal Custom
+          Open Modal Confitmation
         </Button>
       </div>
     </Container>

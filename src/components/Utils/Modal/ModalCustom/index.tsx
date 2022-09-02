@@ -21,7 +21,7 @@ export const ModalCustom: React.FC<ModalProps> = ({
   setShow,
   onBtnAction,
   btnLabel = 'Confirmar',
-  isCard = true,
+  isCard = false,
 }: ModalProps) => {
   const handleClose = (): void => setShow(false);
   return (
