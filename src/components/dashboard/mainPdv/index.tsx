@@ -11,6 +11,7 @@ import { mockData } from '../../Utils/Table/mock';
 import { ReactComponent as Pen } from '../../../assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '../../../assets/images/svg/lixeira.svg';
 import { ReactComponent as SubPdvIcon } from '../../../assets/images/svg/subPDV.svg';
+import Pagination from '../../Utils/Pagination';
 
 const Sample = (): JSX.Element => {
   const [showPdv, setShowPdv] = useState(false);
@@ -89,6 +90,35 @@ const Sample = (): JSX.Element => {
       ],
     }),
   );
+
+  // Logica para Paginação mockada
+  const [page, setPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const totalPages = 5;
+  const numberRowsPerPage = 10;
+
+  const [pending, setPending] = React.useState(true);
+
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  async function handleFetch(pageNumber: number) {
+    setPending(true);
+    const response = await fetch(
+      `https://api.instantwebtools.net/v1/passenger?page=${pageNumber}&size=${numberRowsPerPage}`,
+    );
+    const data = await response.json();
+    setTotalCount(data.totalPages);
+    setPending(false);
+  }
+  React.useEffect(() => {
+    handleFetch(page);
+  }, []);
+
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  async function handlePaginationChange(pageNumber: number) {
+    setPage(pageNumber);
+    await handleFetch(pageNumber);
+  }
+
   return (
     <Fragment>
       <Filter show={showFilter} setShowFilter={callShowFilter} />
@@ -112,7 +142,20 @@ const Sample = (): JSX.Element => {
         </div>
         <Row>
           <Col sm="12">
-            <CustomTable columns={columnsPrimaryImage} data={dataPrimaryImage} theme="primary" />
+            <CustomTable
+              progressPending={pending}
+              // progressPending={true}
+              numberRowsPerPage={numberRowsPerPage}
+              columns={columnsPrimaryImage}
+              data={dataPrimaryImage}
+              theme="primary"
+            />
+            <Pagination
+              currentPage={page}
+              totalCount={totalCount}
+              pageSize={totalPages}
+              onPageChange={pagee => handlePaginationChange(pagee)}
+            />
           </Col>
         </Row>
       </Container>
