@@ -37,10 +37,12 @@ const ExampleTables = (): JSX.Element => {
           onBtnAction={handleActionModal} // Caso não seja passado, o botão de ação não será renderizado
           isCard={true} // Para deixar o modal com o estilo de card
         >
+          {/* Conteúdo da modal */}
           <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
         </ModalCustom>
 
         {/* Modal component confirmation */}
+        {/* OBS:Modal não tem children */}
         <ModalConfirmation
           show={showConfirmation}
           setShow={setShowModalConfirmation}
