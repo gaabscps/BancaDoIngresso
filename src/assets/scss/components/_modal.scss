@@ -1,0 +1,36 @@
+.modal {
+  &__main-container {
+    padding: 25px 30px;
+    background-color: #f1f1f1;
+    border: none;
+    border-radius: 5px;
+
+    box-shadow: rgb(0 0 0 / 5%) 0px 0px 4px !important;
+    max-height: 600px;
+    overflow: auto;
+    margin-bottom: 30px;
+  }
+  &__header-container {
+    display: flex;
+  }
+  &__title {
+    font-weight: 700;
+    font-size: 28px;
+  }
+  &__confirmation-title {
+    color: #222222;
+    margin-top: 10px;
+  
+    font-weight: 700;
+    font-size: 21px;
+    line-height: 32px;
+  }
+}
+
+// media query for mobile container
+@media (max-width: $media-query-sm) {
+  .mainContainer,
+  .subpdv-main-container {
+    padding: 20px !important;
+  }
+}

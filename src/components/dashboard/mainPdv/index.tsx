@@ -181,7 +181,7 @@ const Sample = (): JSX.Element => {
         setShowSubPdvList={callShowSub}
         setShowExclude={callShowExclude}
       />
-      <RegisterPdv show={showPdv} setShowPdv={callShow} />
+      <RegisterPdv show={showPdv} setShow={callShow} />
       <Container className="mainContainer" fluid={true}>
         <div className="d-flex justify-content-between" style={{ paddingBottom: '30px' }}>
           <div style={{ display: 'grid' }}>
