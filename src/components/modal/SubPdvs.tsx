@@ -54,7 +54,6 @@ const SubPdvList = (props: Props): JSX.Element => {
             <Card
               className="subpdv-main-container"
               style={{
-                paddingTop: '25px',
                 backgroundColor: '#FFF',
                 border: 'none',
                 borderRadius: '5px',

@@ -105,6 +105,7 @@
 }
 .subpdv-title-container {
   display: flex;
+  width: 80%;
   .subpdv-title {
     color: #d8413a;
     font-size: 16px;
@@ -118,6 +119,8 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    max-width: 70%;
+
   }
 }
 .supdv-title-flex {

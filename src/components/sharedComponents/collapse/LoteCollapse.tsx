@@ -109,5 +109,5 @@ function LoteCollapse(props: Props): JSX.Element {
     </>
   );
 }
-
+// Para voltar collapse vazio basta retirar a tag <card> inteira
 export default LoteCollapse;
