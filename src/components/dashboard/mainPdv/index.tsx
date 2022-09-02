@@ -39,7 +39,7 @@ const Sample = (): JSX.Element => {
   const callShowFilter = (b: never): void => {
     setShowFilter(b);
   };
-  const callShowExclude = (b: never): any => {
+  const callShowExclude = (b: never): void => {
     setShowExclude(b);
   };
   const columnsPrimaryImage: TableColumn<DataRow>[] = [
@@ -69,37 +69,34 @@ const Sample = (): JSX.Element => {
       selector: row => row.actions,
     },
   ];
-  const dataPrimaryImage = mockData.map(
-    (item: { id: any; image: any; pdvName: any; address: any; city: any; state: any }) => ({
-      id: item.id,
-      image: <CollumnImage srcImage={item.image} />,
-      pdvName: item.pdvName,
-      address: item.address,
-      city: item.city,
-      state: item.state,
-      // eslint-disable-next-line react/jsx-key
-      actions: [
-        <Pen
-          onClick={() => {
-            setShowPdv(!showPdv);
-          }}
-          className="mr-2 svg-icon"
-        />,
-        <Trash
-          onClick={() => {
-            setShowExclude(!showExclude);
-          }}
-          className="mr-2 svg-icon"
-        />,
-        <SubPdvIcon
-          onClick={() => {
-            setShowSubPdvList(!showSubPdvList);
-          }}
-          className="mr-2 svg-icon"
-        />,
-      ],
-    }),
-  );
+  const dataPrimaryImage = mockData.map(item => ({
+    id: item.id,
+    image: <CollumnImage srcImage={item.image} />,
+    pdvName: item.pdvName,
+    address: item.address,
+    city: item.city,
+    state: item.state,
+    actions: [
+      <Pen
+        onClick={() => {
+          setShowPdv(!showPdv);
+        }}
+        className="mr-2 svg-icon"
+      />,
+      <Trash
+        onClick={() => {
+          setShowExclude(!showExclude);
+        }}
+        className="mr-2 svg-icon"
+      />,
+      <SubPdvIcon
+        onClick={() => {
+          setShowSubPdvList(!showSubPdvList);
+        }}
+        className="mr-2 svg-icon last-child-icon"
+      />,
+    ],
+  }));
 
   // Logica para Paginação mockada
   const [page, setPage] = useState(1);
@@ -109,8 +106,7 @@ const Sample = (): JSX.Element => {
 
   const [pending, setPending] = React.useState(true);
 
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  async function handleFetch(pageNumber: number) {
+  async function handleFetch(pageNumber: number): Promise<void> {
     setPending(true);
     const response = await fetch(
       `https://api.instantwebtools.net/v1/passenger?page=${pageNumber}&size=${numberRowsPerPage}`,
@@ -123,8 +119,7 @@ const Sample = (): JSX.Element => {
     handleFetch(page);
   }, []);
 
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  async function handlePaginationChange(pageNumber: number) {
+  async function handlePaginationChange(pageNumber: number): Promise<void> {
     setPage(pageNumber);
     await handleFetch(pageNumber);
   }
