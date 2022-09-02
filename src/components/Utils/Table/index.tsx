@@ -20,7 +20,7 @@ export const CustomTable: React.FC<TableCustomProps> = (props: TableCustomProps)
   <DataTable
     {...props}
     columns={props.columns}
-    data={props.data}
+    data={props.data ?? []}
     noDataComponent="Nenhum dado encontrado"
     progressPending={props.progressPending}
     progressComponent={<CustomLoader numberRowsPerPage={props.numberRowsPerPage} />}

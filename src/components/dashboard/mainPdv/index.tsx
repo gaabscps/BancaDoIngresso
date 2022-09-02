@@ -8,11 +8,10 @@ import Button from '../../Utils/Button';
 import FilterVector from '../../../assets/images/svg/FilterVector';
 import Filter from '../../modal/Filter';
 import { CollumnImage, CustomTable, TableColumn } from '../../Utils/Table';
-import { mockData } from '../../Utils/Table/mock';
 import { ReactComponent as Pen } from '../../../assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '../../../assets/images/svg/lixeira.svg';
 import { ReactComponent as SubPdvIcon } from '../../../assets/images/svg/subPDV.svg';
-import Pagination from '../../Utils/Pagination';
+// import Pagination from '../../Utils/Pagination';
 import ConfirmExclude from '../../modal/ConfirmExclude';
 import Page from '../../../entities/Page';
 import Pdv from '../../../entities/Pdv';
@@ -26,6 +25,18 @@ const Sample = (): JSX.Element => {
   const [showFilter, setShowFilter] = useState(false);
   const [showExclude, setShowExclude] = useState(false);
 
+  const initialTablePdv = [
+    {
+      id: '',
+      imageBase64: '',
+      name: '',
+      street: '',
+      city: '',
+      state: '',
+      actions: '',
+    },
+  ];
+
   interface DataRow {
     id: string;
     imageBase64: string;
@@ -38,6 +49,7 @@ const Sample = (): JSX.Element => {
   }
 
   const callShow = (b: boolean): void => {
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     setShowPdv(b);
   };
   const callShowSub = (b: never): void => {
@@ -87,15 +99,6 @@ const Sample = (): JSX.Element => {
   };
   const [showPdv, setShowPdv] = useState(false);
   const [pagination, setPagination] = useState(page);
-  const [tablePdv, setTablePdv] = useState({
-    id: '',
-    imageBase64: '',
-    name: '',
-    street: '',
-    city: '',
-    state: '',
-    actions: '',
-  });
   // const [form, setForm] = useState<CreatePDV | any>({} as CreatePDV);
 
   useEffect(() => {
@@ -103,47 +106,46 @@ const Sample = (): JSX.Element => {
       if (!pdv.loading && pdv.data && !pdv.data.page) {
         dispatch(listRequest(pagination));
       } else if (!pdv.error && pdv.data && pdv.data.page && pdv.data.page.total) {
-        const dataTablePdv = pdv.data?.list?.map(item => ({
-          id: item.id,
-          imageBase64: item.imageBase64,
-          name: item.name,
-          street: item.address.street,
-          city: item.address.city,
-          state: item.address.state,
-          actions: (
-            <>
-              <Pen
-                onClick={() => {
-                  setShowPdv(!showPdv);
-                }}
-                className="mr-2 svg-icon"
-              />
-              ,
-              <Trash
-                onClick={() => {
-                  setShowExclude(!showExclude);
-                }}
-                className="mr-2 svg-icon"
-              />
-              ,
-              <SubPdvIcon
-                onClick={() => {
-                  setShowSubPdvList(!showSubPdvList);
-                }}
-                className="mr-2 svg-icon last-child-icon"
-              />
-              ,
-            </>
-          ),
-        }));
-        setTablePdv(dataTablePdv);
         setPagination(pdv.data.page);
       }
     }
   }, [pdv]);
-  useEffect(() => {
-    console.log(tablePdv);
-  }, [tablePdv]);
+
+  const dataTablePdv = pagination.list
+    ? pagination.list?.map(item => ({
+        id: item.id,
+        imageBase64: <CollumnImage srcImage={item.imageBase64} />,
+        name: item.name,
+        street: item.address.street,
+        city: item.address.city,
+        state: item.address.state,
+        actions: (
+          <>
+            <Pen
+              onClick={() => {
+                setShowPdv(!showPdv);
+              }}
+              className="mr-2 svg-icon"
+            />
+            ,
+            <Trash
+              onClick={() => {
+                setShowExclude(!showExclude);
+              }}
+              className="mr-2 svg-icon"
+            />
+            ,
+            <SubPdvIcon
+              onClick={() => {
+                setShowSubPdvList(!showSubPdvList);
+              }}
+              className="mr-2 svg-icon last-child-icon"
+            />
+            ,
+          </>
+        ),
+      }))
+    : initialTablePdv;
 
   // Logica para Paginação mockada
   // const [totalCount, setTotalCount] = useState(0);
@@ -203,7 +205,7 @@ const Sample = (): JSX.Element => {
               // // progressPending={true}
               // numberRowsPerPage={numberRowsPerPage}
               columns={columnsPrimaryImage}
-              data={tablePdv}
+              data={dataTablePdv}
               theme="primary"
             />
             {/* <Pagination
