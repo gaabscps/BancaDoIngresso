@@ -120,7 +120,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 70%;
-
   }
 }
 .supdv-title-flex {
@@ -131,4 +130,10 @@
 .subpdv-icon-container {
   display: flex;
   margin-left: 5px;
+}
+
+@media screen and (max-width: 990px) {
+  .supdv-title-flex {
+    max-width: 100%;
+  }
 }

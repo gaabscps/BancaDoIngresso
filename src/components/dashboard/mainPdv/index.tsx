@@ -1,5 +1,6 @@
 /* eslint-disable react/jsx-key */
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Container, Row, Col, Label } from 'reactstrap';
 import RegisterPdv from '../../modal/RegisterPdv';
 import SubPdvList from '../../modal/SubPdvs';
@@ -13,17 +14,23 @@ import { ReactComponent as Trash } from '../../../assets/images/svg/lixeira.svg'
 import { ReactComponent as SubPdvIcon } from '../../../assets/images/svg/subPDV.svg';
 import Pagination from '../../Utils/Pagination';
 import ConfirmExclude from '../../modal/ConfirmExclude';
+import Page from '../../../entities/Page';
+import Pdv from '../../../entities/Pdv';
+import { ApplicationState } from '../../../store';
+import { listRequest } from '../../../store/ducks/pdv/actions';
+import { CheckUserState } from '../../../store/ducks/check-user/types';
+import { PdvState } from '../../../store/ducks/pdv/types';
 
 const Sample = (): JSX.Element => {
-  const [showPdv, setShowPdv] = useState(false);
   const [showSubPdvList, setShowSubPdvList] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
   const [showExclude, setShowExclude] = useState(false);
 
   interface DataRow {
-    image: string;
-    pdvName: string;
-    address: string;
+    id: string;
+    imageBase64: string;
+    name: string;
+    street: string;
     city: string;
     state: string;
     actions: string;
@@ -45,16 +52,16 @@ const Sample = (): JSX.Element => {
   const columnsPrimaryImage: TableColumn<DataRow>[] = [
     {
       name: 'Imagem',
-      selector: row => row.image,
+      selector: row => row.imageBase64,
       width: '100px',
     },
     {
       name: 'Nome do PDV',
-      selector: row => row.pdvName,
+      selector: row => row.name,
     },
     {
       name: 'Endereço',
-      selector: row => row.address,
+      selector: row => row.street,
     },
     {
       name: 'Cidade',
@@ -69,60 +76,99 @@ const Sample = (): JSX.Element => {
       selector: row => row.actions,
     },
   ];
-  const dataPrimaryImage = mockData.map(item => ({
-    id: item.id,
-    image: <CollumnImage srcImage={item.image} />,
-    pdvName: item.pdvName,
-    address: item.address,
-    city: item.city,
-    state: item.state,
-    actions: [
-      <Pen
-        onClick={() => {
-          setShowPdv(!showPdv);
-        }}
-        className="mr-2 svg-icon"
-      />,
-      <Trash
-        onClick={() => {
-          setShowExclude(!showExclude);
-        }}
-        className="mr-2 svg-icon"
-      />,
-      <SubPdvIcon
-        onClick={() => {
-          setShowSubPdvList(!showSubPdvList);
-        }}
-        className="mr-2 svg-icon last-child-icon"
-      />,
-    ],
-  }));
+  const pdv = useSelector<ApplicationState, PdvState>(store => store.pdv);
+  const checkUser = useSelector<ApplicationState, CheckUserState>(store => store.checkUser);
+  const dispatch = useDispatch();
+  const page: Page<Pdv, Pdv> = {
+    page: 1,
+    pageSize: 10,
+    sort: 'name', // Adicionar cidade!!!
+    order: 'DESC',
+  };
+  const [showPdv, setShowPdv] = useState(false);
+  const [pagination, setPagination] = useState(page);
+  const [tablePdv, setTablePdv] = useState({
+    id: '',
+    imageBase64: '',
+    name: '',
+    street: '',
+    city: '',
+    state: '',
+    actions: '',
+  });
+  // const [form, setForm] = useState<CreatePDV | any>({} as CreatePDV);
+
+  useEffect(() => {
+    if (!checkUser.call && checkUser.logged) {
+      if (!pdv.loading && pdv.data && !pdv.data.page) {
+        dispatch(listRequest(pagination));
+      } else if (!pdv.error && pdv.data && pdv.data.page && pdv.data.page.total) {
+        const dataTablePdv = pdv.data?.list?.map(item => ({
+          id: item.id,
+          imageBase64: item.imageBase64,
+          name: item.name,
+          street: item.address.street,
+          city: item.address.city,
+          state: item.address.state,
+          actions: (
+            <>
+              <Pen
+                onClick={() => {
+                  setShowPdv(!showPdv);
+                }}
+                className="mr-2 svg-icon"
+              />
+              ,
+              <Trash
+                onClick={() => {
+                  setShowExclude(!showExclude);
+                }}
+                className="mr-2 svg-icon"
+              />
+              ,
+              <SubPdvIcon
+                onClick={() => {
+                  setShowSubPdvList(!showSubPdvList);
+                }}
+                className="mr-2 svg-icon last-child-icon"
+              />
+              ,
+            </>
+          ),
+        }));
+        setTablePdv(dataTablePdv);
+        setPagination(pdv.data.page);
+      }
+    }
+  }, [pdv]);
+  useEffect(() => {
+    console.log(tablePdv);
+  }, [tablePdv]);
 
   // Logica para Paginação mockada
-  const [page, setPage] = useState(1);
-  const [totalCount, setTotalCount] = useState(0);
-  const totalPages = 5;
-  const numberRowsPerPage = 10;
+  // const [totalCount, setTotalCount] = useState(0);
+  // const totalPages = 5;
+  // const numberRowsPerPage = 10;
 
-  const [pending, setPending] = React.useState(true);
+  // const [pending, setPending] = React.useState(true);
 
-  async function handleFetch(pageNumber: number): Promise<void> {
-    setPending(true);
-    const response = await fetch(
-      `https://api.instantwebtools.net/v1/passenger?page=${pageNumber}&size=${numberRowsPerPage}`,
-    );
-    const data = await response.json();
-    setTotalCount(data.totalPages);
-    setPending(false);
-  }
-  React.useEffect(() => {
-    handleFetch(page);
-  }, []);
+  // async function handleFetch(pageNumber: number): Promise<void> {
+  //   setPending(true);
+  //   const response = await fetch(
+  //     `https://api.instantwebtools.net/v1/passenger?page=${pageNumber}&size=${numberRowsPerPage}`,
+  //   );
+  //   const data = await response.json();
+  //   setTotalCount(data.totalPages);
+  //   setPending(false);
+  // }
+  // React.useEffect(() => {
+  //   handleFetch(page);
+  // }, []);
 
-  async function handlePaginationChange(pageNumber: number): Promise<void> {
-    setPage(pageNumber);
-    await handleFetch(pageNumber);
-  }
+  // async function handlePaginationChange(pagePagination: number): Promise<void> {
+  //   setPagination(pagePagination.page);
+  //   await handleFetch(pageNumber);
+  // }
 
   return (
     <Fragment>
@@ -153,19 +199,19 @@ const Sample = (): JSX.Element => {
         <Row>
           <Col sm="12">
             <CustomTable
-              progressPending={pending}
-              // progressPending={true}
-              numberRowsPerPage={numberRowsPerPage}
+              // progressPending={pending}
+              // // progressPending={true}
+              // numberRowsPerPage={numberRowsPerPage}
               columns={columnsPrimaryImage}
-              data={dataPrimaryImage}
+              data={tablePdv}
               theme="primary"
             />
-            <Pagination
-              currentPage={page}
-              totalCount={totalCount}
-              pageSize={totalPages}
+            {/* <Pagination
+              currentPage={page.page}
+              totalCount={page.page}
+              pageSize={page.pageSize}
               onPageChange={pagee => handlePaginationChange(pagee)}
-            />
+            /> */}
           </Col>
         </Row>
       </Container>
