@@ -29,9 +29,8 @@ const ConfirmExclude = (props: Proops): JSX.Element => {
         <ModalHeader style={{ backgroundColor: '#FFF' }}>
           <div className="subpdv-modal-header-container exclude-modal-header">
             <Warning className="warning-icon" />
-            <div className="header-title-text subpdv-name">
-              <h5 className="exclude-modal-title">Você tem certeza que quer excluir este item?</h5>
-            </div>
+            <h5>Você tem certeza que quer excluir este item?</h5>
+
             <div
               className="modal-close-container"
               onClick={() => {

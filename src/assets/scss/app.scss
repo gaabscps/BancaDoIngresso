@@ -12,17 +12,14 @@
     justify-content: center;
     width: 100%;
     padding-top: 44px;
-    .warning-icon {
-      color: #e64f49;
-    }
   }
 }
 .exclude-modal-title {
   text-align: center;
 }
 .exclude-text {
-  text-align: center;
   color: #828282;
+  text-align: center;
 }
 .exclude-button {
   display: flex;
@@ -713,13 +710,7 @@
     top: 15px;
     position: absolute;
     right: 50px;
-  }
-  .header-title-text {
-    display: flex;
-    align-items: flex-end;
-    font-weight: 700;
-    color: #222222;
-    margin-top: 10px;
+    z-index: 1;
   }
 }
 
