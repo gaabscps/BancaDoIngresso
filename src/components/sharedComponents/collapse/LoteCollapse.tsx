@@ -4,6 +4,7 @@ import { CustomTable, TableColumn } from '../../Utils/Table';
 import { mockSubPdv } from '../../Utils/Table/mock';
 import { ReactComponent as Pen } from '../../../assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '../../../assets/images/svg/lixeira.svg';
+import { ReactComponent as SubPdvIcon } from '../../../assets/images/svg/subPDV.svg';
 
 interface StateProps {
   title: string;
@@ -48,7 +49,9 @@ function LoteCollapse(props: Props): JSX.Element {
         onClick={() => setOpen(!open)}
       >
         <div className="d-flex">
-          <div className="iconTable">{props.leftIcon()}</div>
+          <div className="iconTable">
+            <SubPdvIcon />
+          </div>
           <div className="normalText ">{props.title}</div>
         </div>
         <div>
