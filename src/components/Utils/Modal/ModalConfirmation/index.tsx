@@ -68,13 +68,14 @@ export const ModalConfirmation: React.FC<ModalProps> = ({
           <div style={{ color: '#fff' }}>
             <Button
               theme="noneBorder"
+              size="sm"
               style={{ height: '50px', marginRight: '20px' }}
               onClick={() => handleClose()}
             >
               Não, quero manter
             </Button>
           </div>
-          <Button theme="dark" onClick={onBtnAction}>
+          <Button theme="dark" size="sm" onClick={onBtnAction}>
             {btnLabel}
           </Button>
         </div>

@@ -54,13 +54,14 @@ export const ModalCustom: React.FC<ModalProps> = ({
             <div style={{ color: '#fff' }}>
               <Button
                 theme="noneBorder"
+                size="sm"
                 style={{ marginRight: '20px' }}
                 onClick={() => handleClose()}
               >
                 Cancelar
               </Button>
             </div>
-            <Button theme="dark" onClick={onBtnAction}>
+            <Button theme="dark" size="sm" onClick={onBtnAction}>
               {btnLabel}
             </Button>
           </div>
