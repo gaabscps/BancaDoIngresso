@@ -54,7 +54,7 @@ const SubPdvList = (props: Props): JSX.Element => {
             <Card
               className="subpdv-main-container"
               style={{
-                padding: '25px 30px',
+                paddingTop: '25px',
                 backgroundColor: '#FFF',
                 border: 'none',
                 borderRadius: '5px',
@@ -62,7 +62,7 @@ const SubPdvList = (props: Props): JSX.Element => {
             >
               <Card>
                 <LoteCollapse
-                  title={'Sub PDV’s cadastrados (2)'}
+                  title={'Sub PDV’s cadastrados (3)'}
                   content={''}
                   leftIcon={() => <CloseModal />}
                 />

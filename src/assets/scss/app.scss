@@ -394,7 +394,7 @@
 }
 
 .rotateSvg {
-  transform: rotate(180deg);
+  transform: rotate(-180deg);
   transition: all ease-in-out 0.2s;
 }
 
@@ -674,9 +674,6 @@
 }
 .modal-body {
   padding: 25px 50px 30px 50px !important;
-  .card {
-    margin-bottom: 30px;
-  }
 }
 .modal-header {
   border: none;

@@ -3,14 +3,6 @@ export const mockSubPdv = [
     id: 1,
     user: 'joao',
   },
-  {
-    id: 2,
-    user: 'maria',
-  },
-  {
-    id: 3,
-    user: 'antonio',
-  },
 ];
 export const mockData = [
   {

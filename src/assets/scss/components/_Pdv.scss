@@ -25,6 +25,7 @@
   box-shadow: rgb(0 0 0 / 5%) 0px 0px 4px !important;
   max-height: 600px;
   overflow: auto;
+  margin-bottom: 30px;
 }
 .subpdv-name {
   font-weight: 700;
@@ -96,4 +97,35 @@
   display: flex;
   width: 72%;
   justify-content: space-between;
+}
+.card-container {
+  margin-bottom: 0 !important;
+  padding: 30px;
+  height: fit-content;
+}
+.subpdv-title-container {
+  display: flex;
+  .subpdv-title {
+    color: #d8413a;
+    font-size: 16px;
+    margin-right: 3px;
+  }
+  .subpdv-title-index {
+    font-weight: 300;
+  }
+  .subpvd-title-name {
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+.supdv-title-flex {
+  display: flex;
+  max-width: 50%;
+  justify-content: space-between;
+}
+.subpdv-icon-container {
+  display: flex;
+  margin-left: 5px;
 }
