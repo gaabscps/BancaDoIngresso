@@ -1,12 +1,13 @@
 svg.svg-icon {
-    color: #828282;
-    fill: #828282;
-    &:hover {
-        color: #222222;
-        fill: #222222;
-    }
-    &--active {
-        color: #D8231B;
-        fill: #D8231B;
-    }
+  color: #828282;
+  fill: #828282;
+  margin-right: 1.5rem !important;
+  &:hover {
+    color: #222222;
+    fill: #222222;
+  }
+  &--active {
+    color: #d8231b;
+    fill: #d8231b;
+  }
 }

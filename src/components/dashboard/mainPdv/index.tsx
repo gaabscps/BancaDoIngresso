@@ -1,19 +1,143 @@
+/* eslint-disable react/jsx-key */
 import React, { Fragment, useState } from 'react';
 import { Container, Row, Col, Label } from 'reactstrap';
-import SuperButton from '../../sharedComponents/SuperButton';
 import RegisterPdv from '../../modal/RegisterPdv';
-import pen from '../../../assets/images/svg/pen.svg';
-import lixeira from '../../../assets/images/svg/lixeira.svg';
-import subPDV from '../../../assets/images/svg/subPDV.svg';
+import SubPdvList from '../../modal/SubPdvs';
+import Button from '../../Utils/Button';
+import FilterVector from '../../../assets/images/svg/FilterVector';
+import Filter from '../../modal/Filter';
+import { CollumnImage, CustomTable, TableColumn } from '../../Utils/Table';
+import { mockData } from '../../Utils/Table/mock';
+import { ReactComponent as Pen } from '../../../assets/images/svg/pen.svg';
+import { ReactComponent as Trash } from '../../../assets/images/svg/lixeira.svg';
+import { ReactComponent as SubPdvIcon } from '../../../assets/images/svg/subPDV.svg';
+import Pagination from '../../Utils/Pagination';
+import ConfirmExclude from '../../modal/ConfirmExclude';
 
 const Sample = (): JSX.Element => {
   const [showPdv, setShowPdv] = useState(false);
+  const [showSubPdvList, setShowSubPdvList] = useState(false);
+  const [showFilter, setShowFilter] = useState(false);
+  const [showExclude, setShowExclude] = useState(false);
+
+  interface DataRow {
+    image: string;
+    pdvName: string;
+    address: string;
+    city: string;
+    state: string;
+    actions: string;
+    status: string;
+  }
 
   const callShow = (b: boolean): void => {
     setShowPdv(b);
   };
+  const callShowSub = (b: never): void => {
+    setShowSubPdvList(b);
+  };
+  const callShowFilter = (b: never): void => {
+    setShowFilter(b);
+  };
+  const callShowExclude = (b: never): any => {
+    setShowExclude(b);
+  };
+  const columnsPrimaryImage: TableColumn<DataRow>[] = [
+    {
+      name: 'Imagem',
+      selector: row => row.image,
+      width: '100px',
+    },
+    {
+      name: 'Nome do PDV',
+      selector: row => row.pdvName,
+    },
+    {
+      name: 'Endereço',
+      selector: row => row.address,
+    },
+    {
+      name: 'Cidade',
+      selector: row => row.city,
+    },
+    {
+      name: 'Estado',
+      selector: row => row.state,
+    },
+    {
+      name: 'Ações',
+      selector: row => row.actions,
+    },
+  ];
+  const dataPrimaryImage = mockData.map(
+    (item: { id: any; image: any; pdvName: any; address: any; city: any; state: any }) => ({
+      id: item.id,
+      image: <CollumnImage srcImage={item.image} />,
+      pdvName: item.pdvName,
+      address: item.address,
+      city: item.city,
+      state: item.state,
+      // eslint-disable-next-line react/jsx-key
+      actions: [
+        <Pen
+          onClick={() => {
+            setShowPdv(!showPdv);
+          }}
+          className="mr-2 svg-icon"
+        />,
+        <Trash
+          onClick={() => {
+            setShowExclude(!showExclude);
+          }}
+          className="mr-2 svg-icon"
+        />,
+        <SubPdvIcon
+          onClick={() => {
+            setShowSubPdvList(!showSubPdvList);
+          }}
+          className="mr-2 svg-icon"
+        />,
+      ],
+    }),
+  );
+
+  // Logica para Paginação mockada
+  const [page, setPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const totalPages = 5;
+  const numberRowsPerPage = 10;
+
+  const [pending, setPending] = React.useState(true);
+
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  async function handleFetch(pageNumber: number) {
+    setPending(true);
+    const response = await fetch(
+      `https://api.instantwebtools.net/v1/passenger?page=${pageNumber}&size=${numberRowsPerPage}`,
+    );
+    const data = await response.json();
+    setTotalCount(data.totalPages);
+    setPending(false);
+  }
+  React.useEffect(() => {
+    handleFetch(page);
+  }, []);
+
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  async function handlePaginationChange(pageNumber: number) {
+    setPage(pageNumber);
+    await handleFetch(pageNumber);
+  }
+
   return (
     <Fragment>
+      <ConfirmExclude show={showExclude} setShowExclude={callShowExclude} />
+      <Filter show={showFilter} setShowFilter={callShowFilter} />
+      <SubPdvList
+        show={showSubPdvList}
+        setShowSubPdvList={callShowSub}
+        setShowExclude={callShowExclude}
+      />
       <RegisterPdv show={showPdv} setShowPdv={callShow} />
       <Container className="mainContainer" fluid={true}>
         <div className="d-flex justify-content-between" style={{ paddingBottom: '30px' }}>
@@ -21,160 +145,32 @@ const Sample = (): JSX.Element => {
             <Label className="pageTitle">PDV</Label>
           </div>
           <Row className="justify-content-between">
-            <SuperButton color="primary" onClick={() => setShowPdv(true)}>
+            <Button color="primary" onClick={() => setShowPdv(true)}>
               + Cadastrar novo PDV
-            </SuperButton>
+            </Button>
+            <div onClick={() => setShowFilter(true)} className="filter-container">
+              <div className="filter-content">
+                <FilterVector />
+              </div>
+            </div>
           </Row>
         </div>
         <Row>
           <Col sm="12">
-            <div className="cabeçalho">
-              <div className="linhaDaTabela headerFoto normalText">Imagem</div>
-              <div className="linhaDaTabela headerStatus"></div>
-              <div className="linhaDaTabela headerNome normalText">Nome do PDV</div>
-              <div className="linhaDaTabela headerCidade normalText">Endereço</div>
-              <div className="linhaDaTabela headerCidade normalText">Cidade</div>
-              <div className="linhaDaTabela headerCidade normalText">Estado</div>
-              <div className="linhaDaTabela headerAção normalText">Ação</div>
-            </div>
-            <div className="rows">
-              <div className="linhaDaTabela campoFoto"></div>
-              <div className="linhaDaTabela campoNome">
-                <div>
-                  <div className="celulaNome subText">Lojinha do Seu Zé</div>
-                </div>
-              </div>
-              <div className="linhaDaTabela campoCidade">
-                <div className="celulaCidade subText">Rua dos Imigrantes Al...</div>
-              </div>
-              <div className="linhaDaTabela campoData">
-                <div className="celulaData subText">Campinas</div>
-              </div>
-              <div className="linhaDaTabela campoData">
-                <div className="celulaData subText">SP</div>
-              </div>
-              <div className="linhaDaTabela campoAção">
-                <div className="celulaAção">
-                  <img src={pen} style={{ paddingRight: '25px' }} alt="" />
-                  <img src={lixeira} style={{ paddingRight: '25px' }} alt="" />
-                  <img src={subPDV} onClick={() => setShowPdv(true)} alt="" />
-                </div>
-              </div>
-            </div>
-            <div className="rows">
-              <div className="linhaDaTabela campoFoto4"></div>
-              <div className="linhaDaTabela campoNome">
-                <div>
-                  <div className="celulaNome subText">Lojinha da Dona Maria</div>
-                </div>
-              </div>
-              <div className="linhaDaTabela campoCidade">
-                <div className="celulaCidade subText">Avenida Barão de Ja...</div>
-              </div>
-              <div className="linhaDaTabela campoData">
-                <div className="celulaData subText">Uberlândia</div>
-              </div>
-              <div className="linhaDaTabela campoData">
-                <div className="celulaData subText">MG</div>
-              </div>
-              <div className="linhaDaTabela campoAção">
-                <div className="celulaAção">
-                  <img src={pen} style={{ paddingRight: '25px' }} alt="" />
-                  <img src={lixeira} style={{ paddingRight: '25px' }} alt="" />
-                  <img src={subPDV} onClick={() => setShowPdv(true)} alt="" />
-                </div>
-              </div>
-            </div>
-            <div className="rows">
-              <div className="linhaDaTabela campoFoto2"></div>
-              <div className="linhaDaTabela campoNome">
-                <div>
-                  <div className="celulaNome subText">Escola Oficina do Estudante</div>
-                </div>
-              </div>
-              <div className="linhaDaTabela campoCidade">
-                <div className="celulaCidade subText">Avenida Barão de Ja...</div>
-              </div>
-              <div className="linhaDaTabela campoData">
-                <div className="celulaData subText">Cuiabá</div>
-              </div>
-              <div className="linhaDaTabela campoData">
-                <div className="celulaData subText">MT</div>
-              </div>
-              <div className="linhaDaTabela campoAção">
-                <div className="celulaAção">
-                  <img src={pen} style={{ paddingRight: '25px' }} alt="" />
-                  <img src={lixeira} style={{ paddingRight: '25px' }} alt="" />
-                  <img src={subPDV} onClick={() => setShowPdv(true)} alt="" />
-                </div>
-              </div>
-            </div>
-            <div className="rows">
-              <div className="linhaDaTabela campoFoto3"></div>
-              <div className="linhaDaTabela campoNome">
-                <div className="celulaNome subText">Empório Top</div>
-              </div>
-              <div className="linhaDaTabela campoCidade">
-                <div className="celulaCidade subText">Avenida Barão de Ja...</div>
-              </div>
-              <div className="linhaDaTabela campoData">
-                <div className="celulaData subText">Salvador</div>
-              </div>
-              <div className="linhaDaTabela campoData">
-                <div className="celulaData subText">BA</div>
-              </div>
-              <div className="linhaDaTabela campoAção">
-                <div className="celulaAção">
-                  <img src={pen} style={{ paddingRight: '25px' }} alt="" />
-                  <img src={lixeira} style={{ paddingRight: '25px' }} alt="" />
-                  <img src={subPDV} onClick={() => setShowPdv(true)} alt="" />
-                </div>
-              </div>
-            </div>
-            <div className="rows">
-              <div className="linhaDaTabela campoFoto3"></div>
-              <div className="linhaDaTabela campoNome">
-                <div className="celulaNome subText">Mercadinho da Esquina</div>
-              </div>
-              <div className="linhaDaTabela campoCidade">
-                <div className="celulaCidade subText">Avenida Barão de Ja...</div>
-              </div>
-              <div className="linhaDaTabela campoData">
-                <div className="celulaData subText">Rio de Janeiro</div>
-              </div>
-              <div className="linhaDaTabela campoData">
-                <div className="celulaData subText">RJ</div>
-              </div>
-              <div className="linhaDaTabela campoAção">
-                <div className="celulaAção">
-                  <img src={pen} style={{ paddingRight: '25px' }} alt="" />
-                  <img src={lixeira} style={{ paddingRight: '25px' }} alt="" />
-                  <img src={subPDV} onClick={() => setShowPdv(true)} alt="" />
-                </div>
-              </div>
-            </div>
-            <div className="rows">
-              <div className="linhaDaTabela campoFoto3"></div>
-              <div className="linhaDaTabela campoNome">
-                <div className="celulaNome subText">Shopping Iguatemi de São Lou...</div>
-              </div>
-              <div className="linhaDaTabela campoCidade">
-                <div className="celulaCidade subText">Campinas/SP</div>
-              </div>
-              <div className="linhaDaTabela campoData">
-                <div className="celulaData subText">Santa Fé do Sul</div>
-              </div>
-              <div className="linhaDaTabela campoData">
-                <div className="celulaData subText">SP</div>
-              </div>
-              <div className="linhaDaTabela campoAção">
-                <div className="celulaAção">
-                  <img src={pen} style={{ paddingRight: '25px' }} alt="" />
-                  <img src={lixeira} style={{ paddingRight: '25px' }} alt="" />
-                  <img src={subPDV} onClick={() => setShowPdv(true)} alt="" />
-                </div>
-              </div>
-            </div>
+            <CustomTable
+              progressPending={pending}
+              // progressPending={true}
+              numberRowsPerPage={numberRowsPerPage}
+              columns={columnsPrimaryImage}
+              data={dataPrimaryImage}
+              theme="primary"
+            />
+            <Pagination
+              currentPage={page}
+              totalCount={totalCount}
+              pageSize={totalPages}
+              onPageChange={pagee => handlePaginationChange(pagee)}
+            />
           </Col>
         </Row>
       </Container>

@@ -1,0 +1,134 @@
+.filter-container {
+  display: flex;
+  align-items: center;
+  margin-left: 15px;
+  .filter-content {
+    width: fit-content;
+    cursor: pointer;
+  }
+  svg {
+    path {
+      fill: #222222;
+      color: #222222;
+      &:hover {
+        fill: #0c0201;
+        color: #0c0201;
+      }
+      &:active {
+        fill: #050100;
+        color: #050100;
+      }
+    }
+  }
+}
+.subpdv-main-container {
+  box-shadow: rgb(0 0 0 / 5%) 0px 0px 4px !important;
+  max-height: 600px;
+  overflow: auto;
+  margin-bottom: 30px;
+}
+.subpdv-name {
+  font-weight: 700;
+  font-size: 28px;
+}
+.subpdv-register-buttom {
+  color: #7ad81b;
+  font-weight: 500;
+  font-size: 16px;
+  margin-left: 92px;
+  display: flex;
+  margin-top: 10px;
+  align-items: center;
+}
+.subpdv-modal-header-container {
+  display: flex;
+}
+.form-content {
+  padding-top: 50px;
+  max-height: 600px;
+  overflow: auto;
+  .input-container {
+    display: flex;
+    flex-direction: column;
+    width: 72%;
+    .input-style {
+      width: 100%;
+      min-width: 300px;
+      height: 62px;
+      background: #e6e6e6;
+      border-radius: 5px;
+      border: none;
+      padding: 0 20px;
+      color: #222222;
+      &::placeholder {
+        font-weight: 400;
+        font-size: 16px;
+        color: #a5a5a5;
+      }
+      &:active,
+      &:focus {
+        border: 1px solid #222222;
+        border-radius: 5px;
+      }
+    }
+    .label-style {
+      color: #828282;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 24px;
+    }
+  }
+}
+.first-content {
+  padding-top: 25px;
+}
+.small-select-input-container {
+  width: 30% !important;
+  .small-select-input {
+    width: 100%;
+    color: #222222;
+    min-width: 50px !important;
+  }
+}
+.medium-select-input-container {
+  width: 65% !important;
+}
+.two-fields-container {
+  display: flex;
+  width: 72%;
+  justify-content: space-between;
+}
+.card-container {
+  margin-bottom: 0 !important;
+  padding: 30px;
+  height: fit-content;
+}
+.subpdv-title-container {
+  display: flex;
+  width: 80%;
+  .subpdv-title {
+    color: #d8413a;
+    font-size: 16px;
+    margin-right: 3px;
+  }
+  .subpdv-title-index {
+    font-weight: 300;
+  }
+  .subpvd-title-name {
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 70%;
+
+  }
+}
+.supdv-title-flex {
+  display: flex;
+  max-width: 50%;
+  justify-content: space-between;
+}
+.subpdv-icon-container {
+  display: flex;
+  margin-left: 5px;
+}

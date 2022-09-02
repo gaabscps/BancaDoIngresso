@@ -23,8 +23,9 @@ const RegisterPos = (props: Props): JSX.Element => {
       aria-labelledby="example-custom-modal-styling-title"
     >
       <ModalHeader>
-        <div>Cadastrar nova POS</div>
+        <div className="header-title-text">Cadastrar nova POS</div>
         <div
+          className="modal-close-container"
           onClick={() => {
             handleClose();
           }}
@@ -80,7 +81,9 @@ const RegisterPos = (props: Props): JSX.Element => {
               Cancelar
             </Button>
           </div>
-          <Button variant="dark">Cadastrar nova POS</Button>
+          <Button className="botao-cadastro" variant="dark">
+            Cadastrar nova POS
+          </Button>
         </div>
       </ModalBody>
     </Modal>

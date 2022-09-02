@@ -14,6 +14,7 @@ export const primaryTheme = {
   },
   rows: {
     style: {
+      minWidth: '830px !important',
       minHeight: '5.188rem !important',
       border: 'none !important',
       borderRadius: '10px',

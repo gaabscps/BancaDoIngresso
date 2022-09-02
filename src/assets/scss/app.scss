@@ -1,6 +1,60 @@
 @import '~bootstrap-scss/bootstrap.scss';
 @import 'color.scss';
 
+.exclude-modal {
+  margin: 10% auto;
+  width: 800px;
+  height: 600px;
+  .exclude-modal-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding-top: 44px;
+    .warning-icon {
+      color: #e64f49;
+    }
+  }
+}
+.exclude-modal-title {
+  text-align: center;
+}
+.exclude-text {
+  text-align: center;
+  color: #828282;
+}
+.exclude-button {
+  display: flex;
+  justify-content: center;
+}
+.flex-modal-right {
+  display: flex !important;
+  justify-content: flex-end;
+  backdrop-filter: blur(7px);
+  background: rgba(34, 34, 34, 0.7);
+}
+.filter-modal {
+  width: 415px !important;
+  height: 100% !important;
+  margin: 0px 0px !important;
+  transition: linear 0.2s;
+  transform-origin: right;
+  transform: scaleX(0);
+  .filter-modal-content {
+    height: 100%;
+    border-radius: 0;
+  }
+}
+.filter-name {
+  font-weight: 400 !important;
+  font-size: 21px !important;
+  margin-top: 45px !important;
+}
+.filter-button {
+  border: none !important;
+}
+
 .mainContainer {
   padding: 50px !important;
 }
@@ -38,7 +92,8 @@
 }
 // media query for mobile container
 @media (max-width: $media-query-sm) {
-  .mainContainer {
+  .mainContainer,
+  .subpdv-main-container {
     padding: 20px !important;
   }
 }
@@ -331,6 +386,9 @@
 .nextPageButton {
   display: flex !important;
   justify-content: end !important;
+  padding-top: 30px;
+  border-top: solid 1px #d9d9d9;
+  align-items: flex-end;
 }
 
 .dividerUp {
@@ -363,13 +421,12 @@
 }
 
 .rotateSvg {
-  transform: rotate(180deg);
+  transform: rotate(-180deg);
   transition: all ease-in-out 0.2s;
 }
 
 .iconTable {
   margin-right: 10px;
-  margin-top: 5px;
 }
 
 .svgPosition {
@@ -501,6 +558,12 @@
 
 //----- Tabela de Eventos -----//
 
+.col-sm-12 {
+  padding: 0 0;
+}
+.container {
+  padding: 0 0;
+}
 .rows {
   display: flex;
   width: 100%;
@@ -510,8 +573,8 @@
   background-color: #ffffff !important;
 }
 .row {
-  width: 100%;
   margin-left: 0px;
+  margin-right: 0px;
   flex-wrap: nowrap;
 }
 
@@ -626,12 +689,43 @@
   margin-bottom: 18px;
   width: 144px;
 }
-
+.fade {
+  backdrop-filter: blur(7px);
+  background: rgba(34, 34, 34, 0.7);
+  transition: 0.5s;
+}
 .modal-backdrop {
   width: 100% !important;
   height: 100% !important;
 }
+.modal-body {
+  padding: 25px 50px 30px 50px !important;
+}
+.modal-header {
+  border: none;
+  padding: 30px 50px 0 50px !important;
+}
+.modal-title {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  .modal-close-container {
+    top: 15px;
+    position: absolute;
+    right: 50px;
+  }
+  .header-title-text {
+    display: flex;
+    align-items: flex-end;
+    font-weight: 700;
+    color: #222222;
+    margin-top: 10px;
+  }
+}
 
+.botao-cadastro {
+  margin-left: 40px;
+}
 //----- Card de Eventos -----//
 
 .descriptionEvent {
@@ -937,7 +1031,7 @@ input[type='radio']:checked + .label-radio-custom {
   // .container-home {
   //   width: 690px;
   // }
-  .grid-card-home{
+  .grid-card-home {
     justify-content: center;
   }
   .home-column {
@@ -968,7 +1062,7 @@ input[type='radio']:checked + .label-radio-custom {
   }
   .count {
     margin-left: 0px;
-    span{
+    span {
       font-size: 12px;
     }
   }
@@ -1009,8 +1103,8 @@ input[type='radio']:checked + .label-radio-custom {
   .verTodos {
     font-size: 14px !important;
     line-height: 1em !important;
-      white-space: nowrap;
-      margin-left: 5px;
+    white-space: nowrap;
+    margin-left: 5px;
   }
   .textContent {
     span {
@@ -1059,19 +1153,15 @@ input[type='radio']:checked + .label-radio-custom {
   // }
 }
 
-// @media (max-width: 1550px) {
-//   .grid-card-home {
-//     display: grid;
-//     grid-template-columns: 1fr 1fr;
-//     grid-template-rows: 1fr 1fr 1fr;
-//     gap: 20px 20px;
-//     grid-template-areas:
-//       '. .'
-//       '. .'
-//       '. .';
-//     justify-items: stretch;
-//   }
-// }
+@media (max-width: 760px) {
+  .exclude-modal {
+    width: 330px;
+    height: 500px;
+  }
+  .modal-content {
+    height: 100%;
+  }
+}
 
 // @media (max-width: 960px) {
 //   .grid-card-home {
@@ -1096,8 +1186,8 @@ figure.partyCard {
 }
 
 .partyCard figcaption {
-  //  background-color: wheat;
   width: 100%;
   height: 0%;
 }
+
 // ----------- Home Responsive ------------
