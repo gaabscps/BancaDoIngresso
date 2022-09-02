@@ -5,6 +5,7 @@ import { mockSubPdv } from '../../Utils/Table/mock';
 import { ReactComponent as Pen } from '../../../assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '../../../assets/images/svg/lixeira.svg';
 import { ReactComponent as SubPdvIcon } from '../../../assets/images/svg/subPDV.svg';
+import ConfirmExclude from '../../modal/ConfirmExclude';
 
 interface StateProps {
   title: string;
@@ -13,6 +14,8 @@ interface StateProps {
 
 interface DispatchProps {
   leftIcon(): JSX.Element;
+  setShowExclude(value: boolean): void;
+  setShowRegisterSubpdv(value: boolean): void;
 }
 
 type Props = StateProps & DispatchProps;
@@ -44,6 +47,7 @@ function LoteCollapse(props: Props): JSX.Element {
 
   return (
     <>
+      <ConfirmExclude show={false} setShowExclude={props.setShowExclude} />
       <div
         className="collapseTable d-flex justify-content-between collapseTableText"
         onClick={() => setOpen(!open)}
@@ -76,8 +80,8 @@ function LoteCollapse(props: Props): JSX.Element {
               <p className="subpdv-title subpvd-title-name">• Promoter Ronaldo</p>
             </div>
             <div className="subpdv-icon-container">
-              <Pen className="mr-2 svg-icon" />
-              <Trash className="mr-2 svg-icon" />
+              <Pen onClick={() => props.setShowRegisterSubpdv(true)} className="mr-2 svg-icon" />
+              <Trash onClick={() => props.setShowExclude(true)} className="mr-2 svg-icon" />
             </div>
           </div>
           <CustomTable theme={'secundary'} columns={columnsSubPdvList} data={dataSecundary} />
@@ -90,7 +94,7 @@ function LoteCollapse(props: Props): JSX.Element {
             </div>
             <div className="subpdv-icon-container">
               <Pen className="mr-2 svg-icon" />
-              <Trash className="mr-2 svg-icon" />
+              <Trash onClick={() => props.setShowExclude(true)} className="mr-2 svg-icon" />
             </div>
           </div>
           <CustomTable theme={'secundary'} columns={columnsSubPdvList} data={dataSecundary} />
@@ -103,7 +107,7 @@ function LoteCollapse(props: Props): JSX.Element {
             </div>
             <div className="subpdv-icon-container">
               <Pen className="mr-2 svg-icon" />
-              <Trash className="mr-2 svg-icon" />
+              <Trash onClick={() => props.setShowExclude(true)} className="mr-2 svg-icon" />
             </div>
           </div>
           <CustomTable theme={'secundary'} columns={columnsSubPdvList} data={dataSecundary} />

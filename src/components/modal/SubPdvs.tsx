@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Card, Container, Modal, ModalHeader, ModalBody } from 'reactstrap';
 import CloseModal from '../../assets/images/svg/CloseModal';
 import LoteCollapse from '../sharedComponents/collapse/LoteCollapse';
+import ConfirmExclude from './ConfirmExclude';
 import RegisterSubPdv from './RegisterSubPdv';
 
 interface StateProps {
@@ -9,6 +10,7 @@ interface StateProps {
 }
 interface DispatchProps {
   setShowSubPdvList(value: boolean): void;
+  setShowExclude(value: boolean): void;
 }
 
 type Props = StateProps & DispatchProps;
@@ -22,6 +24,7 @@ const SubPdvList = (props: Props): JSX.Element => {
 
   return (
     <>
+      <ConfirmExclude show={false} setShowExclude={props.setShowExclude} />
       <RegisterSubPdv show={showRegisterSubPdv} setShowRegisterSubPdv={callShowRegisterSub} />
       <Modal
         size={'xl'}
@@ -64,6 +67,8 @@ const SubPdvList = (props: Props): JSX.Element => {
                   title={'Sub PDV’s cadastrados (3)'}
                   content={''}
                   leftIcon={() => <CloseModal />}
+                  setShowExclude={props.setShowExclude}
+                  setShowRegisterSubpdv={callShowRegisterSub}
                 />
               </Card>
             </Card>

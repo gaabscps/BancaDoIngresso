@@ -12,11 +12,13 @@ import { ReactComponent as Pen } from '../../../assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '../../../assets/images/svg/lixeira.svg';
 import { ReactComponent as SubPdvIcon } from '../../../assets/images/svg/subPDV.svg';
 import Pagination from '../../Utils/Pagination';
+import ConfirmExclude from '../../modal/ConfirmExclude';
 
 const Sample = (): JSX.Element => {
   const [showPdv, setShowPdv] = useState(false);
   const [showSubPdvList, setShowSubPdvList] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
+  const [showExclude, setShowExclude] = useState(false);
 
   interface DataRow {
     image: string;
@@ -36,6 +38,9 @@ const Sample = (): JSX.Element => {
   };
   const callShowFilter = (b: never): void => {
     setShowFilter(b);
+  };
+  const callShowExclude = (b: never): any => {
+    setShowExclude(b);
   };
   const columnsPrimaryImage: TableColumn<DataRow>[] = [
     {
@@ -80,7 +85,12 @@ const Sample = (): JSX.Element => {
           }}
           className="mr-2 svg-icon"
         />,
-        <Trash className="mr-2 svg-icon" />,
+        <Trash
+          onClick={() => {
+            setShowExclude(!showExclude);
+          }}
+          className="mr-2 svg-icon"
+        />,
         <SubPdvIcon
           onClick={() => {
             setShowSubPdvList(!showSubPdvList);
@@ -121,8 +131,13 @@ const Sample = (): JSX.Element => {
 
   return (
     <Fragment>
+      <ConfirmExclude show={showExclude} setShowExclude={callShowExclude} />
       <Filter show={showFilter} setShowFilter={callShowFilter} />
-      <SubPdvList show={showSubPdvList} setShowSubPdvList={callShowSub} />
+      <SubPdvList
+        show={showSubPdvList}
+        setShowSubPdvList={callShowSub}
+        setShowExclude={callShowExclude}
+      />
       <RegisterPdv show={showPdv} setShowPdv={callShow} />
       <Container className="mainContainer" fluid={true}>
         <div className="d-flex justify-content-between" style={{ paddingBottom: '30px' }}>

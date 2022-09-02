@@ -679,11 +679,14 @@ const Sample = (): JSX.Element => {
             </Row>
           </div>
           <div style={{ marginTop: '50px' }}>
-            <LoteCollapse
+            {/* <LoteCollapse
               title="Lotes cadastrados"
               content="Nenhum lote foi cadastrado. Aqui será exibida uma lista dos seus lotes cadastrados"
               leftIcon={DoubleTicketIcon}
-            />
+              setShowExclude={function (value: boolean) {
+                throw new Error('Function not implemented.');
+              }}
+            /> */}
           </div>
           <div className="nextPageButton" style={{ marginTop: '50px' }}>
             <div style={{ marginRight: '25px', paddingTop: '5px' }}>

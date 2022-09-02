@@ -1,6 +1,33 @@
 @import '~bootstrap-scss/bootstrap.scss';
 @import 'color.scss';
 
+.exclude-modal {
+  margin: 10% auto;
+  width: 800px;
+  height: 600px;
+  .exclude-modal-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding-top: 44px;
+    .warning-icon {
+      color: #e64f49;
+    }
+  }
+}
+.exclude-modal-title {
+  text-align: center;
+}
+.exclude-text {
+  text-align: center;
+  color: #828282;
+}
+.exclude-button {
+  display: flex;
+  justify-content: center;
+}
 .flex-modal-right {
   display: flex !important;
   justify-content: flex-end;
@@ -1126,19 +1153,15 @@ input[type='radio']:checked + .label-radio-custom {
   // }
 }
 
-// @media (max-width: 1550px) {
-//   .grid-card-home {
-//     display: grid;
-//     grid-template-columns: 1fr 1fr;
-//     grid-template-rows: 1fr 1fr 1fr;
-//     gap: 20px 20px;
-//     grid-template-areas:
-//       '. .'
-//       '. .'
-//       '. .';
-//     justify-items: stretch;
-//   }
-// }
+@media (max-width: 760px) {
+  .exclude-modal {
+    width: 330px;
+    height: 500px;
+  }
+  .modal-content {
+    height: 100%;
+  }
+}
 
 // @media (max-width: 960px) {
 //   .grid-card-home {
@@ -1163,8 +1186,8 @@ figure.partyCard {
 }
 
 .partyCard figcaption {
-  //  background-color: wheat;
   width: 100%;
   height: 0%;
 }
+
 // ----------- Home Responsive ------------

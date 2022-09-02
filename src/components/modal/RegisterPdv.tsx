@@ -2,7 +2,6 @@ import React from 'react';
 import { Card, Container, Modal, ModalHeader, ModalBody } from 'reactstrap';
 import CloseModal from '../../assets/images/svg/CloseModal';
 import SelectInput from '../dashboard/mainPdv/pdvInputs/selectInput';
-
 import LargeInput from '../dashboard/mainPdv/pdvInputs/textInput';
 import Button from '../Utils/Button';
 
