@@ -38,6 +38,7 @@ import Page404 from '../components/errors/error404';
 import ExampleForms from '../helpers/ExampleForms';
 import ExampleTables from '../helpers/ExampleTables';
 import ExamplePagination from '../helpers/ExamplePagination';
+import ExampleModal from '../helpers/ExampleModal';
 
 export interface RoteContent {
   path: string;
@@ -188,6 +189,12 @@ export const routes: RoteContent[] = [
     path: `/example/pagination`,
     component: App,
     child: ExamplePagination,
+    privateRoute: true,
+  },
+  {
+    path: `/example/modal`,
+    component: App,
+    child: ExampleModal,
     privateRoute: true,
   },
 
