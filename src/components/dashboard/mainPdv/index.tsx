@@ -181,8 +181,8 @@ const Sample = (): JSX.Element => {
       <RegisterPdv show={showPdv} setShow={callShow} />
       <Container className="mainContainer" fluid={true}>
         <div className="d-flex justify-content-between" style={{ paddingBottom: '30px' }}>
-          <div style={{ display: 'grid' }}>
-            <Label className="pageTitle">PDV</Label>
+          <div className="pageTitle" style={{ display: 'grid' }}>
+            <Label>PDV</Label>
           </div>
           <Row className="justify-content-between">
             <Button color="primary" onClick={() => setShowPdv(true)}>
