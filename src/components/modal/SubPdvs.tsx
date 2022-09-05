@@ -74,7 +74,22 @@ const SubPdvList = (props: Props): JSX.Element => {
           </Container>
         </ModalBody>
       </Modal> */}
-      <ModalCustom title={'Lojinha do Seu Zé'} show={props.show} setShow={handleCloseSubPdvList}>
+      <ModalCustom
+        title={
+          <>
+            <div className="subpdv-modal-header-container">
+              Lojinha do Seu Zé
+              <div className="subpdv-register-buttom">
+                <a style={{ cursor: 'pointer' }} onClick={() => setShowRegisterSubPdv(true)}>
+                  + cadastrar novo Sub PDV
+                </a>
+              </div>
+            </div>
+          </>
+        }
+        show={props.show}
+        setShow={handleCloseSubPdvList}
+      >
         <div className="card">
           <LoteCollapse
             title={'Sub PDV’s cadastrados (3)'}
