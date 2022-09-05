@@ -37,7 +37,7 @@ const Filter = (props: Props): JSX.Element => {
         </div>
       </ModalHeader>
       <ModalBody>
-        <div className="nextPageButton filter-button">
+        <div className="filter-button exclude-button">
           <Button
             theme="noneBorder"
             style={{ height: '50px', marginRight: '20px' }}
