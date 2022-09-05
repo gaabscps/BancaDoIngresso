@@ -127,21 +127,18 @@ const Sample = (): JSX.Element => {
               }}
               className="mr-2 svg-icon"
             />
-            ,
             <Trash
               onClick={() => {
                 setShowExclude(!showExclude);
               }}
               className="mr-2 svg-icon"
             />
-            ,
             <SubPdvIcon
               onClick={() => {
                 setShowSubPdvList(!showSubPdvList);
               }}
               className="mr-2 svg-icon last-child-icon"
             />
-            ,
           </>
         ),
       }))

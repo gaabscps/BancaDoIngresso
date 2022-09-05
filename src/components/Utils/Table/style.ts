@@ -27,13 +27,13 @@ export const primaryTheme = {
   },
   headCells: {
     style: {
-      paddingLeft: '36px',
+      paddingLeft: '20px',
       paddingRight: '10px',
     },
   },
   cells: {
     style: {
-      paddingLeft: '36px',
+      paddingLeft: '20px',
       paddingRight: '10px',
     },
   },
