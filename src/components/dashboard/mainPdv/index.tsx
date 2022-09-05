@@ -12,13 +12,13 @@ import { ReactComponent as Pen } from '../../../assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '../../../assets/images/svg/lixeira.svg';
 import { ReactComponent as SubPdvIcon } from '../../../assets/images/svg/subPDV.svg';
 // import Pagination from '../../Utils/Pagination';
-import ConfirmExclude from '../../modal/ConfirmExclude';
 import Page from '../../../entities/Page';
 import Pdv from '../../../entities/Pdv';
 import { ApplicationState } from '../../../store';
 import { listRequest } from '../../../store/ducks/pdv/actions';
 import { CheckUserState } from '../../../store/ducks/check-user/types';
 import { PdvState } from '../../../store/ducks/pdv/types';
+import { ModalConfirmation } from '../../Utils/Modal/ModalConfirmation';
 
 const Sample = (): JSX.Element => {
   const [showSubPdvList, setShowSubPdvList] = useState(false);
@@ -171,9 +171,10 @@ const Sample = (): JSX.Element => {
 
   return (
     <Fragment>
-      <ConfirmExclude show={showExclude} setShowExclude={callShowExclude} />
+      <ModalConfirmation show={showExclude} setShow={setShowExclude} />
       <Filter show={showFilter} setShowFilter={callShowFilter} />
       <SubPdvList
+        showConfirm={showExclude}
         show={showSubPdvList}
         setShowSubPdvList={callShowSub}
         setShowExclude={callShowExclude}

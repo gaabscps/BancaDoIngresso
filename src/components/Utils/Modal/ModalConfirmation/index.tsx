@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Modal, ModalHeader, ModalBody, Card } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 
 import CloseModal from '../../../../assets/images/svg/CloseModal';
 import Button from '../../Button';
@@ -41,29 +41,19 @@ export const ModalConfirmation: React.FC<ModalProps> = ({
         </div>
       </ModalHeader>
       <ModalBody>
-        <Container>
-          <Card
-            className="exclude-container"
-            style={{
-              padding: '25px 30px',
-              backgroundColor: '#FFF',
-              border: 'none',
-              borderRadius: '5px',
-            }}
-          >
-            <p className="exclude-text">
-              <Warning color="#E64F49" />
-              <div className="header-title-text modal__title">
-                <h5 className="modal__confirmation-title">
-                  Você tem certeza que quer excluir este item?
-                </h5>
-              </div>
-              <br />
-              Ao excluir este item o mesmo será excluído <b>permanentemente</b> do sistema, não
-              podendo ser recuperado ou acessado novamente.
-            </p>
-          </Card>
-        </Container>
+        <div className="exclude-container">
+          <p className="exclude-text">
+            <Warning color="#E64F49" />
+            <div className="header-title-text modal__title">
+              <h5 className="modal__confirmation-title">
+                Você tem certeza que quer excluir este item?
+              </h5>
+            </div>
+            <br />
+            Ao excluir este item o mesmo será excluído <b>permanentemente</b> do sistema, não
+            podendo ser recuperado ou acessado novamente.
+          </p>
+        </div>
         <div className="exclude-button">
           <div style={{ color: '#fff' }}>
             <Button

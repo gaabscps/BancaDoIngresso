@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { Card, Container, Modal, ModalHeader, ModalBody } from 'reactstrap';
 import CloseModal from '../../assets/images/svg/CloseModal';
 import LoteCollapse from '../sharedComponents/collapse/LoteCollapse';
-import ConfirmExclude from './ConfirmExclude';
+import { ModalCustom } from '../Utils/Modal';
 import RegisterSubPdv from './RegisterSubPdv';
 
 interface StateProps {
   show: boolean;
+  showConfirm: boolean;
 }
 interface DispatchProps {
   setShowSubPdvList(value: boolean): void;
@@ -16,7 +16,7 @@ interface DispatchProps {
 type Props = StateProps & DispatchProps;
 
 const SubPdvList = (props: Props): JSX.Element => {
-  const handleClose = (): void => props.setShowSubPdvList(false);
+  const handleCloseSubPdvList = (): void => props.setShowSubPdvList(false);
   const [showRegisterSubPdv, setShowRegisterSubPdv] = useState(false);
   const callShowRegisterSub = (b: boolean): void => {
     setShowRegisterSubPdv(b);
@@ -24,9 +24,8 @@ const SubPdvList = (props: Props): JSX.Element => {
 
   return (
     <>
-      <ConfirmExclude show={false} setShowExclude={props.setShowExclude} />
       <RegisterSubPdv show={showRegisterSubPdv} setShowRegisterSubPdv={callShowRegisterSub} />
-      <Modal
+      {/* <Modal
         size={'xl'}
         isOpen={props.show}
         toggle={() => props.setShowSubPdvList(false)}
@@ -74,7 +73,18 @@ const SubPdvList = (props: Props): JSX.Element => {
             </Card>
           </Container>
         </ModalBody>
-      </Modal>
+      </Modal> */}
+      <ModalCustom title={'Lojinha do Seu Zé'} show={props.show} setShow={handleCloseSubPdvList}>
+        <div className="card">
+          <LoteCollapse
+            title={'Sub PDV’s cadastrados (3)'}
+            content={''}
+            leftIcon={() => <CloseModal />}
+            setShowExclude={props.setShowExclude}
+            setShowRegisterSubpdv={callShowRegisterSub}
+          />
+        </div>
+      </ModalCustom>
     </>
   );
 };
