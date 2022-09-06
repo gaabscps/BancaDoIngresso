@@ -1,5 +1,4 @@
 import React from 'react';
-import LargeInput from '../dashboard/mainPdv/pdvInputs/textInput';
 import { ModalCustom } from '../Utils/Modal/ModalCustom';
 
 interface StateProps {
@@ -79,16 +78,17 @@ const registerSubPdv = (props: Proops): JSX.Element => {
     //     </ModalBody>
     //   </Modal>
     // </>
-    <ModalCustom title={'Nome do Subpdv'} show={props.show} setShow={handleClose} isCard={true}>
+    <ModalCustom
+      title={'Nome do Subpdv'}
+      show={props.show}
+      setShow={handleClose}
+      isCard={true}
+      onBtnAction={() => {}}
+    >
       <form>
         <div className="form-container">
           <div className="form-content first-content">
-            <LargeInput
-              name="Nome do Sub PDV"
-              placeholder="Digite o nome do Sub PDV"
-              id="name"
-              size="large"
-            />
+            <input name="Nome do Sub PDV" placeholder="Digite o nome do Sub PDV"></input>
           </div>
           <div className="form-content"></div>
         </div>
