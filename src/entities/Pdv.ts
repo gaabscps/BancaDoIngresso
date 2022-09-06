@@ -13,5 +13,5 @@ export default interface Pdv {
   twitterUrl: string;
   linkedinUrl: string;
   address: Address;
-  users: User[];
+  users: string[];
 }

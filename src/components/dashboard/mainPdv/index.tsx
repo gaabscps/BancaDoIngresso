@@ -98,6 +98,7 @@ const Sample = (): JSX.Element => {
     order: 'DESC',
   };
   const [showPdv, setShowPdv] = useState(false);
+  const [idPdv, setIdPdv] = useState<string | undefined>('');
   const [pagination, setPagination] = useState(page);
   // const [form, setForm] = useState<CreatePDV | any>({} as CreatePDV);
 
@@ -111,6 +112,11 @@ const Sample = (): JSX.Element => {
     }
   }, [pdv]);
 
+  const onClickEditPdv = (id: string): void => {
+    setShowPdv(!showPdv);
+    setIdPdv(id);
+  };
+
   const dataTablePdv = pagination.list
     ? pagination.list?.map(item => ({
         id: item.id,
@@ -123,7 +129,7 @@ const Sample = (): JSX.Element => {
           <>
             <Pen
               onClick={() => {
-                setShowPdv(!showPdv);
+                onClickEditPdv(item.id);
               }}
               className="mr-2 svg-icon"
             />
@@ -179,7 +185,7 @@ const Sample = (): JSX.Element => {
         setShowSubPdvList={callShowSub}
         setShowExclude={callShowExclude}
       />
-      <RegisterPdv show={showPdv} setShow={callShow} />
+      <RegisterPdv show={showPdv} setShow={callShow} _id={idPdv} />
       <Container className="mainContainer" fluid={true}>
         <div className="d-flex justify-content-between" style={{ paddingBottom: '30px' }}>
           <div className="pageTitle" style={{ display: 'grid' }}>
