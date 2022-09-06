@@ -12,13 +12,13 @@ import { ReactComponent as Pen } from '../../../assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '../../../assets/images/svg/lixeira.svg';
 import { ReactComponent as SubPdvIcon } from '../../../assets/images/svg/subPDV.svg';
 // import Pagination from '../../Utils/Pagination';
-import ConfirmExclude from '../../modal/ConfirmExclude';
 import Page from '../../../entities/Page';
 import Pdv from '../../../entities/Pdv';
 import { ApplicationState } from '../../../store';
 import { listRequest } from '../../../store/ducks/pdv/actions';
 import { CheckUserState } from '../../../store/ducks/check-user/types';
 import { PdvState } from '../../../store/ducks/pdv/types';
+import { ModalConfirmation } from '../../Utils/Modal/ModalConfirmation';
 
 const Sample = (): JSX.Element => {
   const [showSubPdvList, setShowSubPdvList] = useState(false);
@@ -127,21 +127,18 @@ const Sample = (): JSX.Element => {
               }}
               className="mr-2 svg-icon"
             />
-            ,
             <Trash
               onClick={() => {
                 setShowExclude(!showExclude);
               }}
               className="mr-2 svg-icon"
             />
-            ,
             <SubPdvIcon
               onClick={() => {
                 setShowSubPdvList(!showSubPdvList);
               }}
               className="mr-2 svg-icon last-child-icon"
             />
-            ,
           </>
         ),
       }))
@@ -174,9 +171,10 @@ const Sample = (): JSX.Element => {
 
   return (
     <Fragment>
-      <ConfirmExclude show={showExclude} setShowExclude={callShowExclude} />
+      <ModalConfirmation show={showExclude} setShow={setShowExclude} />
       <Filter show={showFilter} setShowFilter={callShowFilter} />
       <SubPdvList
+        showConfirm={showExclude}
         show={showSubPdvList}
         setShowSubPdvList={callShowSub}
         setShowExclude={callShowExclude}
@@ -184,8 +182,8 @@ const Sample = (): JSX.Element => {
       <RegisterPdv show={showPdv} setShow={callShow} />
       <Container className="mainContainer" fluid={true}>
         <div className="d-flex justify-content-between" style={{ paddingBottom: '30px' }}>
-          <div style={{ display: 'grid' }}>
-            <Label className="pageTitle">PDV</Label>
+          <div className="pageTitle" style={{ display: 'grid' }}>
+            <Label>PDV</Label>
           </div>
           <Row className="justify-content-between">
             <Button color="primary" onClick={() => setShowPdv(true)}>

@@ -116,20 +116,17 @@
   }
   .subpvd-title-name {
     font-weight: 500;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     max-width: 70%;
   }
 }
 .supdv-title-flex {
   display: flex;
-  max-width: 50%;
+  max-width: 61%;
   justify-content: space-between;
 }
 .subpdv-icon-container {
   display: flex;
-  margin-left: 5px;
+  margin-left: 10px;
 }
 
 @media screen and (max-width: 990px) {

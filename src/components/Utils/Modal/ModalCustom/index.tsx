@@ -5,7 +5,7 @@ import CloseModal from '../../../../assets/images/svg/CloseModal';
 import Button from '../../Button';
 
 interface ModalProps {
-  title: string;
+  title: React.ReactNode;
   children: React.ReactNode;
   onBtnAction?: () => void;
   btnLabel?: string;

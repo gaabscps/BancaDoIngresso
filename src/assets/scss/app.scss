@@ -13,6 +13,9 @@
     width: 100%;
     padding-top: 44px;
   }
+  .warning-icon {
+    color: #e54f49;
+  }
 }
 .exclude-modal-title {
   text-align: center;
@@ -50,6 +53,8 @@
 }
 .filter-button {
   border: none !important;
+  padding-top: 30px;
+  align-items: flex-end;
 }
 
 .mainContainer {
@@ -118,7 +123,7 @@
     margin-left: 0px;
   }
 }
-@media (max-width: 810px) {
+@media (max-width: 768px) {
   .container-home {
     padding-right: 20px !important;
     padding-left: 20px !important;
@@ -161,7 +166,8 @@
   font-weight: 700;
   font-size: 28px;
   line-height: 42px;
-  margin-bottom: 20px;
+  margin: 0 10px 20px 0;
+  align-items: flex-end;
 }
 
 .pageTitleLogin {

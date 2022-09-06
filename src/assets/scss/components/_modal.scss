@@ -20,13 +20,21 @@
   &__confirmation-title {
     color: #222222;
     margin-top: 10px;
-  
+
     font-weight: 700;
     font-size: 21px;
     line-height: 32px;
   }
 }
-
+.modal-content {
+  background-color: #f8f8f8;
+}
+.exclude-container {
+  background-color: #f8f8f8;
+  padding: '25px 30px';
+  border: 'none';
+  border-radius: '5px';
+}
 // media query for mobile container
 @media (max-width: $media-query-sm) {
   .mainContainer,

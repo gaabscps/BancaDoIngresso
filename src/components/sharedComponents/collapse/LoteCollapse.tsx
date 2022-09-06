@@ -5,7 +5,7 @@ import { mockSubPdv } from '../../Utils/Table/mock';
 import { ReactComponent as Pen } from '../../../assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '../../../assets/images/svg/lixeira.svg';
 import { ReactComponent as SubPdvIcon } from '../../../assets/images/svg/subPDV.svg';
-import ConfirmExclude from '../../modal/ConfirmExclude';
+import { ModalConfirmation } from '../../Utils/Modal/ModalConfirmation';
 
 interface StateProps {
   title: string;
@@ -47,7 +47,7 @@ function LoteCollapse(props: Props): JSX.Element {
 
   return (
     <>
-      <ConfirmExclude show={false} setShowExclude={props.setShowExclude} />
+      <ModalConfirmation show={false} setShow={props.setShowExclude} />
       <div
         className="collapseTable d-flex justify-content-between collapseTableText"
         onClick={() => setOpen(!open)}
