@@ -11,7 +11,7 @@ import { ReactComponent as Trash } from '../../../assets/images/svg/lixeira.svg'
 import Button from '../../Utils/Button';
 import Page from '../../../entities/Page';
 import { ApplicationState } from '../../../store';
-import { listRequest } from '../../../store/ducks/pos/actions';
+import { listRequest, deleteRequest } from '../../../store/ducks/pos/actions';
 import { CheckUserState } from '../../../store/ducks/check-user/types';
 import { PosState } from '../../../store/ducks/pos/types';
 import Pos from '../../../entities/Pos';
@@ -59,10 +59,16 @@ const Sample = (): JSX.Element => {
     setShowPos(show);
   };
   const callShowExclude = (show: boolean): void => {
+    setIdPos('');
     setShowExclude(show);
   };
   const callShowFilter = (show: boolean): void => {
     setShowFilter(show);
+  };
+
+  const deletePos = (): void => {
+    dispatch(deleteRequest(idPos));
+    callShowExclude(false);
   };
 
   useEffect(() => {
@@ -133,6 +139,7 @@ const Sample = (): JSX.Element => {
             <Trash
               onClick={() => {
                 setShowExclude(!showExclude);
+                setIdPos(item.id);
               }}
               className="mr-2 svg-icon"
             />
@@ -144,7 +151,11 @@ const Sample = (): JSX.Element => {
   return (
     <>
       <Filter show={showFilter} setShowFilter={callShowFilter} />
-      <ModalConfirmation show={showExclude} setShow={callShowExclude} />
+      <ModalConfirmation
+        show={showExclude}
+        setShow={callShowExclude}
+        onBtnAction={() => deletePos()}
+      />
       <RegisterPos show={showPos} setShow={callShowPos} idPos={idPos} />
       <Container className="mainContainer" fluid={true}>
         <div className="d-flex justify-content-between" style={{ paddingBottom: '30px' }}>
