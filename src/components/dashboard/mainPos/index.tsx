@@ -15,7 +15,7 @@ import { listRequest, deleteRequest } from '../../../store/ducks/pos/actions';
 import { CheckUserState } from '../../../store/ducks/check-user/types';
 import { PosState } from '../../../store/ducks/pos/types';
 import Pos from '../../../entities/Pos';
-import Filter from '../../modal/Filter';
+import Filter from '../../modal/FilterPos';
 import FilterVector from '../../../assets/images/svg/FilterVector';
 import RegisterPos from '../../modal/RegisterPos';
 import PosStatus from '../../../entities/PosStatus';
