@@ -1,29 +1,10 @@
 @import '~bootstrap-scss/bootstrap.scss';
 @import 'color.scss';
 
-.exclude-modal {
-  margin: 10% auto;
-  width: 800px;
-  height: 600px;
-  .exclude-modal-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    padding-top: 44px;
-  }
-  .warning-icon {
-    color: #e54f49;
-  }
+.warning-icon {
+  color: #e54f49;
 }
-.exclude-modal-title {
-  text-align: center;
-}
-.exclude-text {
-  color: #828282;
-  text-align: center;
-}
+
 .exclude-button {
   display: flex;
   justify-content: center;
@@ -1138,23 +1119,7 @@ input[type='radio']:checked + .label-radio-custom {
   }
 }
 
-@media (min-width: 1550px) {
-  // .container-home {
-  //   width: 1150px;
-  // }
-}
-
-@media (min-width: 1790px) {
-  // .container-home {
-  //   width: 1450px;
-  // }
-}
-
 @media (max-width: 760px) {
-  .exclude-modal {
-    width: 330px;
-    height: 500px;
-  }
   .modal-content {
     height: 100%;
   }
