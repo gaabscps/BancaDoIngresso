@@ -1,0 +1,144 @@
+import React from 'react';
+import { Modal, ModalHeader, ModalBody } from 'reactstrap';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import { useDispatch, useSelector } from 'react-redux';
+import CloseModal from '../../assets/images/svg/CloseModal';
+import Button from '../Utils/Button';
+import Select from '../Utils/Select';
+import RadioCustom from '../Utils/Radio';
+import { ApplicationState } from '../../store';
+import { PosState } from '../../store/ducks/pos/types';
+import { listRequest } from '../../store/ducks/pos/actions';
+import Page from '../../entities/Page';
+
+interface FilterCustomProps {
+  show: boolean;
+  setShowFilter(value: boolean): void;
+}
+
+const schema = yup.object().shape({});
+
+const Filter = (props: FilterCustomProps): JSX.Element => {
+  const handleClose = (): void => props.setShowFilter(false);
+
+  const dispatch = useDispatch();
+
+  const posStorage = useSelector<ApplicationState, PosState>(store => store.pos);
+  console.log('posStorage', posStorage);
+
+  const optionName =
+    posStorage.data?.page?.list?.map(item => ({
+      label: item.name,
+      value: item.name,
+    })) ?? [];
+
+  const optionserialNumber =
+    posStorage.data?.page?.list?.map(item => ({
+      label: item.serialNumber,
+      value: item.serialNumber,
+    })) ?? [];
+
+  const {
+    register,
+    handleSubmit,
+    // formState: {},
+    control,
+    watch,
+    // reset,
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  const onSubmit = async (data: any): Promise<void> => {
+    const { filterSearch, SelectSearch } = data;
+
+    try {
+      const datafetch = {
+        page: 0,
+        pageSize: 0,
+        entity: {
+          [filterSearch]: SelectSearch,
+        },
+      };
+      dispatch(listRequest(datafetch as Page<any, any>));
+      props.setShowFilter(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  return (
+    <Modal
+      fade={false}
+      modalClassName="flex-modal-right"
+      className="filter-modal"
+      isOpen={props.show}
+      toggle={() => props.setShowFilter(false)}
+      aria-labelledby="example-custom-modal-styling-title"
+      contentClassName="filter-modal-content"
+    >
+      <ModalHeader>
+        <div className="subpdv-modal-header-container">
+          <div
+            className="modal-close-container"
+            onClick={() => {
+              handleClose();
+            }}
+            style={{ cursor: 'pointer' }}
+          >
+            <CloseModal />
+          </div>
+        </div>
+      </ModalHeader>
+      <ModalBody>
+        <div className="filter-button exclude-button">
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <RadioCustom
+              options={[
+                { label: 'Nome', value: 'name' },
+                { label: 'Nº de Série', value: 'serialNumber' },
+              ]}
+              label={'Filtrar por:'}
+              register={register}
+              name="filterSearch"
+              //   error={errors?.abcd?.message}
+            />
+            {watch('filterSearch') && (
+              <Select
+                label="Select Exemplo"
+                options={watch('filterSearch') === 'name' ? optionName : optionserialNumber}
+                name="SelectSearch"
+                placeholder="Selecione ou digite o evento"
+                control={control}
+                //   error={errors?.address?.state?.value?.message}
+              />
+            )}
+            <Button
+              theme="noneBorder"
+              style={{ height: '50px', marginRight: '20px' }}
+              onClick={() => handleClose()}
+            >
+              Cancelar
+            </Button>
+            <Button
+              style={{
+                width: '152px',
+                height: '40px',
+                display: 'flex',
+                // ajustes para o botão se possível
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+              className="botao-cadastro"
+            >
+              Aplicar
+            </Button>
+          </form>
+        </div>
+      </ModalBody>
+    </Modal>
+  );
+};
+
+export default Filter;
