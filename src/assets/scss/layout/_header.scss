@@ -20,7 +20,7 @@
   align-items: center;
   font-family: $font-poppins;
   justify-content: space-between;
-  transition: linear 0.4s;
+  transition: linear 0.3s;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.05);
 }
 .right-header {
@@ -31,12 +31,12 @@
   height: 100%;
   align-items: center;
   flex: 0 0 0;
-  transition: linear 0.4s;
+  transition: linear 0.3s;
 }
 .profile-media {
   margin-top: 18px;
   margin-right: 48px;
-  transition: linear 0.4s;
+  transition: linear 0.3s;
 }
 .profile-user {
   display: block;
@@ -60,10 +60,10 @@
     color: #222222 !important;
     font-weight: 600 !important;
     font-size: 16px !important;
-    transition: linear 0.4s;
+    transition: linear 0.3s;
   }
   p {
-    transition: linear 0.4s;
+    transition: linear 0.3s;
   }
 }
 .path-container {

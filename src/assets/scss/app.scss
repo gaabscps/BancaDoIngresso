@@ -3,7 +3,7 @@
 
 .user-img {
   transform: scale(1);
-  transition: linear 0.4s;;
+  transition: linear 0.3s;
 }
 .warning-icon {
   color: #e54f49;
@@ -23,7 +23,7 @@
   width: 415px !important;
   height: 100% !important;
   margin: 0px 0px !important;
-  transition: linear 0.4s;;
+  transition: linear 0.3s;
   transform-origin: right;
   transform: scaleX(0);
   .filter-modal-content {
@@ -44,12 +44,12 @@
 
 .mainContainer {
   padding: 50px !important;
-  transition: linear 0.4s;
+  transition: linear 0.3s;
 }
 
 .page-body {
   margin-left: 280px;
-  transition: linear 0.4s;
+  transition: linear 0.3s;
 }
 
 .subContainer {
@@ -88,7 +88,7 @@
   line-height: 42px;
   margin: 0 10px 20px 0;
   align-items: flex-end;
-  transition: linear 0.4s;
+  transition: linear 0.3s;
 }
 
 .pageTitleLogin {
@@ -299,10 +299,13 @@
 .status-container {
   padding-bottom: 50px !important;
   justify-content: flex-start;
+  transition: linear 0.3s;
   .eventStatus {
     padding-right: 25px;
+    transition: linear 0.3s;
     svg {
       margin-right: 10px;
+      transition: linear 0.3s;
     }
   }
 }
@@ -1001,7 +1004,7 @@ input[type='radio']:checked + .label-radio-custom {
   }
   .user-img {
     transform: scale(0);
-    transition: linear 0.4s;
+    transition: linear 0.3s;
   }
   .path-flex-container {
     span {
@@ -1057,18 +1060,20 @@ figure.partyCard {
 @media (max-width: $media-query-sm) {
   .status-container {
     justify-content: space-around;
+    transition: linear 0.3s;
     .eventStatus {
       padding-right: 0px;
+      transition: linear 0.3s;
     }
   }
   .mainContainer,
   .subpdv-main-container {
     padding: 20px !important;
-    transition: linear 0.4s;;
+    transition: linear 0.3s;
   }
   .page-body {
     margin-left: 0px;
-    transition: linear 0.4s;
+    transition: linear 0.3s;
   }
   .whiteContainer {
     padding: 30px 20px !important;
@@ -1086,21 +1091,21 @@ figure.partyCard {
   .profile-media {
     display: flex;
     margin-right: 5px;
-    transition: linear 0.4s;
+    transition: linear 0.3s;
     max-width: 140px;
   }
   .profile-name {
     width: 99px;
-    transition:linear 0.4s;
+    transition: linear 0.3s;
     p {
       text-align: center;
       margin-right: 2px;
-      transition: linear 0.4s;
+      transition: linear 0.3s;
     }
   }
   .page-header {
     margin: 0 0;
-    transition: linear 0.4s;
+    transition: linear 0.3s;
     justify-content: space-between;
     .path-container {
       margin-left: 1rem;
@@ -1118,17 +1123,19 @@ figure.partyCard {
       width: 20%;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
       text-align: center;
+      transition: linear 0.3s;
       svg {
         margin-right: 0px;
+        margin-bottom: 10px;
+        transition: linear 0.3s;
       }
     }
   }
   .btn {
     &.btn-md {
       font-size: 12px;
-      transition: linear 0.4s;
+      transition: linear 0.3s;
       padding: 0 5px;
     }
   }
@@ -1141,7 +1148,7 @@ figure.partyCard {
   .pageTitle {
     font-size: 20px;
     line-height: 1em;
-    transition: linear 0.4s;
+    transition: linear 0.3s;
   }
   .verTodos {
     font-size: 14px !important;
