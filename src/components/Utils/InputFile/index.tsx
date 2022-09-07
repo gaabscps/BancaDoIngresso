@@ -37,7 +37,7 @@ const InputFile: React.FC<InputFileProps> = ({
         display: 'flex',
         alignItems: 'center',
         padding: '10px',
-        background: '#f1f1f1',
+        background: '#E6E6E6',
         borderRadius: '5px',
         height: '62px',
       }}
