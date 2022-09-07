@@ -9,7 +9,7 @@ import Pos from '../../entities/Pos';
 
 import Input from '../Utils/Input';
 import Select from '../Utils/Select';
-import { createRequest, getRequest } from '../../store/ducks/pos/actions';
+import { createRequest, updateRequest, getRequest } from '../../store/ducks/pos/actions';
 import { getAllRequest } from '../../store/ducks/pdv/actions';
 import { ApplicationState } from '../../store';
 import { PdvState } from '../../store/ducks/pdv/types';
@@ -70,35 +70,60 @@ const RegisterPos = ({ show, setShow, idPos }: ModalPosProps): JSX.Element => {
     resolver: yupResolver(schema),
   });
 
+  const getPosById = (id: string): void => {
+    dispatch(getRequest(id));
+  };
+
   useEffect(() => {
     if (idPos) {
       setTextModal({
         title: 'Editar nova POS',
         btnLabel: 'Editar nova POS',
       });
-      dispatch(getRequest(idPos));
+      getPosById(idPos);
     } else {
+      reset();
       setTextModal({
         title: 'Cadastrar nova POS',
         btnLabel: 'Cadastrar nova POS',
       });
     }
-  }, [idPos]);
+  }, [idPos, show]);
+
+  useEffect(() => {
+    if (idPos) {
+      setTextModal({
+        title: 'Editar nova POS',
+        btnLabel: 'Editar nova POS',
+      });
+      getPosById(idPos);
+    } else {
+      reset();
+      setTextModal({
+        title: 'Cadastrar nova POS',
+        btnLabel: 'Cadastrar nova POS',
+      });
+    }
+  }, [show]);
 
   useEffect(() => {
     if (show) {
       if (!idPos) {
         console.log('reset');
-        reset();
-      } else {
-        console.log('reset with data');
+        reset({});
+      } else if (!posStorage.loading) {
+        reset({});
         reset(posStorage.data.entity);
       }
     }
-  }, [show, idPos]);
+  }, [show]);
 
   const createPos = async (data: any): Promise<void> => {
     await dispatch(createRequest(data));
+  };
+
+  const updatePos = async (data: any): Promise<void> => {
+    await dispatch(updateRequest(data));
   };
 
   const getPdv = async (): Promise<void> => {
@@ -107,12 +132,9 @@ const RegisterPos = ({ show, setShow, idPos }: ModalPosProps): JSX.Element => {
 
   const onSubmit = async (data: Pos): Promise<void> => {
     try {
-      const dataFetch = { ...data };
-      // if (_id) updatePdv(dataFetch);
-      // else createPdv(dataFetch);
-      console.log('dataFetch', dataFetch);
-
-      await createPos(dataFetch);
+      if (idPos) updatePos({ ...data, id: idPos });
+      else await createPos(data);
+      setShow(false);
     } catch (error) {
       console.log(error);
     }
