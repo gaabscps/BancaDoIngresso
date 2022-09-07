@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-key */
 import React, { Fragment, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Container, Row, Col, Label } from 'reactstrap';
+import { Container, Row, Label } from 'reactstrap';
 import RegisterPdv from '../../modal/RegisterPdv';
 import SubPdvList from '../../modal/SubPdvs';
 import Button from '../../Utils/Button';
@@ -186,7 +186,7 @@ const Sample = (): JSX.Element => {
           <div className="pageTitle" style={{ display: 'grid' }}>
             <Label>PDV</Label>
           </div>
-          <Row className="justify-content-between">
+          <div className="button-filter-container">
             <Button color="primary" onClick={() => setShowPdv(true)}>
               + Cadastrar novo PDV
             </Button>
@@ -195,7 +195,7 @@ const Sample = (): JSX.Element => {
                 <FilterVector />
               </div>
             </div>
-          </Row>
+          </div>
         </div>
         <CustomTable
           // progressPending={pending}

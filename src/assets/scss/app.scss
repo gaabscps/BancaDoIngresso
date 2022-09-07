@@ -1,6 +1,10 @@
 @import '~bootstrap-scss/bootstrap.scss';
 @import 'color.scss';
 
+.user-img {
+  transform: scale(1);
+  transition: linear 0.4s;;
+}
 .warning-icon {
   color: #e54f49;
 }
@@ -19,7 +23,7 @@
   width: 415px !important;
   height: 100% !important;
   margin: 0px 0px !important;
-  transition: linear 0.2s;
+  transition: linear 0.4s;;
   transform-origin: right;
   transform: scaleX(0);
   .filter-modal-content {
@@ -40,10 +44,12 @@
 
 .mainContainer {
   padding: 50px !important;
+  transition: linear 0.4s;
 }
 
 .page-body {
   margin-left: 280px;
+  transition: linear 0.4s;
 }
 
 .subContainer {
@@ -82,6 +88,7 @@
   line-height: 42px;
   margin: 0 10px 20px 0;
   align-items: flex-end;
+  transition: linear 0.4s;
 }
 
 .pageTitleLogin {
@@ -294,6 +301,9 @@
   justify-content: flex-start;
   .eventStatus {
     padding-right: 25px;
+    svg {
+      margin-right: 10px;
+    }
   }
 }
 
@@ -841,7 +851,9 @@ input[type='radio']:checked + .label-radio-custom {
   background-color: transparent;
   padding: 20px 25px;
 }
-
+.button-filter-container {
+  display: flex;
+}
 .btn-group {
   :nth-child(2) {
     border-top-left-radius: 5px !important;
@@ -981,49 +993,6 @@ input[type='radio']:checked + .label-radio-custom {
   }
 }
 @media (max-width: 425px) {
-  .profile-media {
-    margin-right: 0;
-  }
-  .grid-card-home {
-    justify-content: center;
-  }
-  .pageTitle {
-    font-size: 20px;
-    line-height: 1em;
-  }
-  .verTodos {
-    font-size: 14px !important;
-    line-height: 1em !important;
-    white-space: nowrap;
-    margin-left: 5px;
-  }
-  .textContent {
-    span {
-      font-size: 9px;
-    }
-  }
-  .home-text-container {
-    margin: 25px 0 0 0;
-    justify-content: start;
-  }
-  .partyCard {
-    width: 80%;
-    height: 180px;
-    min-width: 260px;
-    margin: 1rem 0 0 8px;
-  }
-  .dateEvent {
-    margin-bottom: 6px;
-  }
-  .container-home {
-    padding: 25px 20px 0 20px !important;
-  }
-  .home-column {
-    padding: 0 !important;
-  }
-  .count {
-    margin-top: 18px;
-  }
 }
 
 @media (max-width: 320px) {
@@ -1031,7 +1000,8 @@ input[type='radio']:checked + .label-radio-custom {
     margin: 25px 0 0 5%;
   }
   .user-img {
-    display: none;
+    transform: scale(0);
+    transition: linear 0.4s;
   }
   .path-flex-container {
     span {
@@ -1094,9 +1064,11 @@ figure.partyCard {
   .mainContainer,
   .subpdv-main-container {
     padding: 20px !important;
+    transition: linear 0.4s;;
   }
   .page-body {
     margin-left: 0px;
+    transition: linear 0.4s;
   }
   .whiteContainer {
     padding: 30px 20px !important;
@@ -1107,13 +1079,6 @@ figure.partyCard {
   .subContainer {
     padding: 10px !important;
   }
-  .btn {
-    &.btn-md {
-      font-size: 12px;
-    }
-  }
-}
-@media (max-width: 768px) {
   .container-home {
     padding-right: 20px !important;
     padding-left: 20px !important;
@@ -1121,25 +1086,21 @@ figure.partyCard {
   .profile-media {
     display: flex;
     margin-right: 5px;
-    transition: 0.4s;
+    transition: linear 0.4s;
     max-width: 140px;
   }
   .profile-name {
     width: 99px;
-    transition: 0.4s;
-    // span {
-    //   display: none;
-    //   transition: 0.4s;
-    // }
+    transition:linear 0.4s;
     p {
       text-align: center;
       margin-right: 2px;
-      transition: 0.4s;
+      transition: linear 0.4s;
     }
   }
   .page-header {
     margin: 0 0;
-    transition: 0.4s;
+    transition: linear 0.4s;
     justify-content: space-between;
     .path-container {
       margin-left: 1rem;
@@ -1159,6 +1120,60 @@ figure.partyCard {
       align-items: center;
       justify-content: center;
       text-align: center;
+      svg {
+        margin-right: 0px;
+      }
     }
+  }
+  .btn {
+    &.btn-md {
+      font-size: 12px;
+      transition: linear 0.4s;
+      padding: 0 5px;
+    }
+  }
+  .profile-media {
+    margin-right: 0;
+  }
+  .grid-card-home {
+    justify-content: center;
+  }
+  .pageTitle {
+    font-size: 20px;
+    line-height: 1em;
+    transition: linear 0.4s;
+  }
+  .verTodos {
+    font-size: 14px !important;
+    line-height: 1em !important;
+    white-space: nowrap;
+    margin-left: 5px;
+  }
+  .textContent {
+    span {
+      font-size: 9px;
+    }
+  }
+  .home-text-container {
+    margin: 25px 0 0 0;
+    justify-content: start;
+  }
+  .partyCard {
+    width: 80%;
+    height: 180px;
+    min-width: 260px;
+    margin: 1rem 0 0 8px;
+  }
+  .dateEvent {
+    margin-bottom: 6px;
+  }
+  .container-home {
+    padding: 25px 20px 0 20px !important;
+  }
+  .home-column {
+    padding: 0 !important;
+  }
+  .count {
+    margin-top: 18px;
   }
 }

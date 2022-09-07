@@ -139,17 +139,16 @@ const Sample = (): JSX.Element => {
       <Container className="mainContainer" fluid={true}>
         <div className="d-flex justify-content-between" style={{ paddingBottom: '30px' }}>
           <div style={{ display: 'grid' }}>
-            <div className="pageTitle">
-              <label>POS</label>
-            </div>
+            <div className="pageTitle">POS</div>
           </div>
-
-          <Button color="primary" onClick={() => setShowPos(true)}>
-            + Cadastrar nova POS
-          </Button>
-          <div onClick={() => setShowFilter(true)} className="filter-container">
-            <div className="filter-content">
-              <FilterVector />
+          <div className="button-filter-container">
+            <Button color="primary" onClick={() => setShowPos(true)}>
+              + Cadastrar nova POS
+            </Button>
+            <div onClick={() => setShowFilter(true)} className="filter-container">
+              <div className="filter-content">
+                <FilterVector />
+              </div>
             </div>
           </div>
         </div>
