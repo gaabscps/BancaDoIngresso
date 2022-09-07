@@ -22,6 +22,7 @@ export const ModalConfirmation: React.FC<ModalProps> = ({
   const handleClose = (): void => setShow(false);
   return (
     <Modal
+      className="confirmation-modal"
       size={'lg'}
       isOpen={show}
       toggle={() => setShow(false)}
@@ -42,17 +43,16 @@ export const ModalConfirmation: React.FC<ModalProps> = ({
       </ModalHeader>
       <ModalBody>
         <div className="exclude-container">
-          <p className="exclude-text">
-            <Warning color="#E64F49" />
-            <div className="header-title-text modal__title">
-              <h5 className="modal__confirmation-title">
-                Você tem certeza que quer excluir este item?
-              </h5>
-            </div>
-            <br />
-            Ao excluir este item o mesmo será excluído <b>permanentemente</b> do sistema, não
-            podendo ser recuperado ou acessado novamente.
-          </p>
+          <Warning color="#E64F49" />
+          <div className="header-title-text modal__title">
+            <h5 className="modal__confirmation-title">
+              Você tem certeza que quer excluir este item?
+            </h5>
+          </div>
+          <div className="modal__confirmation-text">
+            Ao excluir este item o mesmo será excluído <strong>permanentemente</strong> do sistema,
+            não podendo ser recuperado ou acessado novamente.
+          </div>
         </div>
         <div className="exclude-button">
           <div style={{ color: '#fff' }}>
