@@ -73,6 +73,7 @@ const Sample = (): JSX.Element => {
     {
       name: 'Ações',
       selector: row => row.actions,
+      width: '120px',
     },
   ];
   const dataTablePos = pagination.list ? (
@@ -142,45 +143,36 @@ const Sample = (): JSX.Element => {
               <label>POS</label>
             </div>
           </div>
-          <Row className="justify-content-between">
-            <Button color="primary" onClick={() => setShowPos(true)}>
-              + Cadastrar nova POS
-            </Button>
-            <div onClick={() => setShowFilter(true)} className="filter-container">
-              <div className="filter-content">
-                <FilterVector />
-              </div>
-            </div>
-          </Row>
-        </div>
-        <Row>
-          <Col>
-            <div className="d-flex pb-2">
-              <div className="eventStatus subText">
-                <Status style={{ color: '#7AD81B' }} />
-                POS em uso
-              </div>
-              <div className="eventStatus subText">
-                <Status style={{ color: '#FFE249' }} />
-                POS reservada
-              </div>
 
-              <div className="eventStatus subText">
-                <Status style={{ color: '#3CAFC8' }} />
-                POS em estoque
-              </div>
-              <div className="eventStatus subText">
-                <Status style={{ color: '#E64F49' }} />
-                POS inativa
-              </div>
+          <Button color="primary" onClick={() => setShowPos(true)}>
+            + Cadastrar nova POS
+          </Button>
+          <div onClick={() => setShowFilter(true)} className="filter-container">
+            <div className="filter-content">
+              <FilterVector />
             </div>
-            <CustomTable
-              theme={'primary'}
-              columns={columnsPrimaryStatusColor}
-              data={dataTablePos}
-            />
-          </Col>
-        </Row>
+          </div>
+        </div>
+        <div className="d-flex pb-2 status-container">
+          <div className="eventStatus subText">
+            <Status style={{ color: '#7AD81B' }} />
+            POS em uso
+          </div>
+          <div className="eventStatus subText">
+            <Status style={{ color: '#FFE249' }} />
+            POS reservada
+          </div>
+
+          <div className="eventStatus subText">
+            <Status style={{ color: '#3CAFC8' }} />
+            POS em estoque
+          </div>
+          <div className="eventStatus subText">
+            <Status style={{ color: '#E64F49' }} />
+            POS inativa
+          </div>
+        </div>
+        <CustomTable theme={'primary'} columns={columnsPrimaryStatusColor} data={dataTablePos} />
       </Container>
     </>
   );

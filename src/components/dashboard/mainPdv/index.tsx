@@ -86,6 +86,7 @@ const Sample = (): JSX.Element => {
     {
       name: 'Ações',
       selector: row => row.actions,
+      width: '160px',
     },
   ];
   const pdv = useSelector<ApplicationState, PdvState>(store => store.pdv);
@@ -137,7 +138,7 @@ const Sample = (): JSX.Element => {
               onClick={() => {
                 setShowSubPdvList(!showSubPdvList);
               }}
-              className="mr-2 svg-icon last-child-icon"
+              className="mr-2 svg-icon"
             />
           </>
         ),
@@ -196,24 +197,20 @@ const Sample = (): JSX.Element => {
             </div>
           </Row>
         </div>
-        <Row>
-          <Col sm="12">
-            <CustomTable
-              // progressPending={pending}
-              // // progressPending={true}
-              // numberRowsPerPage={numberRowsPerPage}
-              columns={columnsPrimaryImage}
-              data={dataTablePdv}
-              theme="primary"
-            />
-            {/* <Pagination
+        <CustomTable
+          // progressPending={pending}
+          // // progressPending={true}
+          // numberRowsPerPage={numberRowsPerPage}
+          columns={columnsPrimaryImage}
+          data={dataTablePdv}
+          theme="primary"
+        />
+        {/* <Pagination
               currentPage={page.page}
               totalCount={page.page}
               pageSize={page.pageSize}
               onPageChange={pagee => handlePaginationChange(pagee)}
             /> */}
-          </Col>
-        </Row>
       </Container>
     </Fragment>
   );
