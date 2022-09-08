@@ -8,7 +8,7 @@ interface PaginationProps {
   siblingCount?: number;
   currentPage: number;
   onPageChange: (page: number) => void;
-  totalCount: number;
+  totalCount?: number;
 }
 
 const Pagination: React.FC<PaginationProps> = (props: PaginationProps) => {

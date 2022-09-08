@@ -6,7 +6,7 @@ import RegisterPdv from '../../modal/RegisterPdv';
 import SubPdvList from '../../modal/SubPdvs';
 import Button from '../../Utils/Button';
 import FilterVector from '../../../assets/images/svg/FilterVector';
-import Filter from '../../modal/Filter';
+import Filter from '../../modal/FilterPdv';
 import { CollumnImage, CustomTable, TableColumn } from '../../Utils/Table';
 import { ReactComponent as Pen } from '../../../assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '../../../assets/images/svg/lixeira.svg';
@@ -19,6 +19,7 @@ import { listRequest } from '../../../store/ducks/pdv/actions';
 import { CheckUserState } from '../../../store/ducks/check-user/types';
 import { PdvState } from '../../../store/ducks/pdv/types';
 import { ModalConfirmation } from '../../Utils/Modal/ModalConfirmation';
+import Pagination from '../../Utils/Pagination';
 
 const Sample = (): JSX.Element => {
   const [showSubPdvList, setShowSubPdvList] = useState(false);
@@ -175,7 +176,18 @@ const Sample = (): JSX.Element => {
   //   setPagination(pagePagination.page);
   //   await handleFetch(pageNumber);
   // }
-
+  async function handlePaginationChange(pageNumber: number): Promise<void> {
+    setPagination({
+      ...pagination,
+      page: pageNumber,
+    });
+    dispatch(
+      listRequest({
+        ...pagination,
+        page: pageNumber,
+      }),
+    );
+  }
   return (
     <Fragment>
       <ModalConfirmation show={showExclude} setShow={setShowExclude} />
@@ -211,12 +223,12 @@ const Sample = (): JSX.Element => {
           data={dataTablePdv}
           theme="primary"
         />
-        {/* <Pagination
-              currentPage={page.page}
-              totalCount={page.page}
-              pageSize={page.pageSize}
-              onPageChange={pagee => handlePaginationChange(pagee)}
-            /> */}
+        <Pagination
+          currentPage={pagination.page}
+          totalCount={pagination.total}
+          pageSize={page.pageSize}
+          onPageChange={pagee => handlePaginationChange(pagee)}
+        />
       </Container>
     </Fragment>
   );
