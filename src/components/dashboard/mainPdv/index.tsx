@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-key */
 import React, { Fragment, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Container, Row, Label } from 'reactstrap';
+import { Container, Label } from 'reactstrap';
 import RegisterPdv from '../../modal/RegisterPdv';
 import SubPdvList from '../../modal/SubPdvs';
 import Button from '../../Utils/Button';
@@ -132,19 +132,19 @@ const Sample = (): JSX.Element => {
               onClick={() => {
                 onClickEditPdv(item.id);
               }}
-              className="mr-2 svg-icon"
+              className="mr-2 svg-icon action-icon"
             />
             <Trash
               onClick={() => {
                 setShowExclude(!showExclude);
               }}
-              className="mr-2 svg-icon"
+              className="mr-2 svg-icon action-icon"
             />
             <SubPdvIcon
               onClick={() => {
                 setShowSubPdvList(!showSubPdvList);
               }}
-              className="mr-2 svg-icon"
+              className="mr-2 svg-icon action-icon"
             />
           </>
         ),

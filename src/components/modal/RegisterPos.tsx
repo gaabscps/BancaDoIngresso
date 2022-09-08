@@ -77,8 +77,8 @@ const RegisterPos = ({ show, setShow, idPos }: ModalPosProps): JSX.Element => {
   useEffect(() => {
     if (idPos) {
       setTextModal({
-        title: 'Editar nova POS',
-        btnLabel: 'Editar nova POS',
+        title: 'Editar POS',
+        btnLabel: 'Editar POS',
       });
       getPosById(idPos);
     } else {
@@ -93,8 +93,8 @@ const RegisterPos = ({ show, setShow, idPos }: ModalPosProps): JSX.Element => {
   useEffect(() => {
     if (idPos) {
       setTextModal({
-        title: 'Editar nova POS',
-        btnLabel: 'Editar nova POS',
+        title: 'Editar POS',
+        btnLabel: 'Editar POS',
       });
       getPosById(idPos);
     } else {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Row, Col } from 'reactstrap';
+import { Container } from 'reactstrap';
 import { useSelector } from 'react-redux/es/hooks/useSelector';
 import { useDispatch } from 'react-redux/es/hooks/useDispatch';
 import moment from 'moment';
@@ -135,14 +135,14 @@ const Sample = (): JSX.Element => {
                 setShowPos(!showPos);
                 setIdPos(item.id);
               }}
-              className="mr-2 svg-icon"
+              className="mr-2 svg-icon action-icon"
             />
             <Trash
               onClick={() => {
                 setShowExclude(!showExclude);
                 setIdPos(item.id);
               }}
-              className="mr-2 svg-icon"
+              className="mr-2 svg-icon action-icon"
             />
           </>
         ),

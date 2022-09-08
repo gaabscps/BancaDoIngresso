@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, ModalHeader, ModalBody } from 'reactstrap';
+import { Modal, ModalBody } from 'reactstrap';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -76,30 +76,25 @@ const Filter = (props: FilterCustomProps): JSX.Element => {
       isOpen={props.show}
       toggle={() => props.setShowFilter(false)}
       aria-labelledby="example-custom-modal-styling-title"
-      contentClassName="filter-modal-content"
     >
-      <ModalHeader>
-        <div className="subpdv-modal-header-container">
-          <div
-            className="modal-close-container"
-            onClick={() => {
-              handleClose();
-            }}
-            style={{ cursor: 'pointer' }}
-          >
-            <CloseModal />
-          </div>
-        </div>
-      </ModalHeader>
-      <ModalBody>
-        <div className="filter-button exclude-button">
+      <div
+        className="filter-close-buttom"
+        onClick={() => {
+          handleClose();
+        }}
+      >
+        <CloseModal />
+      </div>
+      <ModalBody className="filter-modal-body">
+        <div className="filter-modal-content ">
           <form onSubmit={handleSubmit(onSubmit)}>
+            <span className="filter-name">Filtrar por:</span>
             <RadioCustom
               options={[
                 { label: 'Nome', value: 'name' },
                 { label: 'Nº de Série', value: 'serialNumber' },
               ]}
-              label={'Filtrar por:'}
+              style={{ fontSize: '21px' }}
               register={register}
               name="filterSearch"
               //   error={errors?.abcd?.message}
@@ -114,26 +109,30 @@ const Filter = (props: FilterCustomProps): JSX.Element => {
                 //   error={errors?.address?.state?.value?.message}
               />
             )}
-            <Button
-              theme="noneBorder"
-              style={{ height: '50px', marginRight: '20px' }}
-              onClick={() => handleClose()}
-            >
-              Cancelar
-            </Button>
-            <Button
-              style={{
-                width: '152px',
-                height: '40px',
-                display: 'flex',
-                // ajustes para o botão se possível
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-              className="botao-cadastro"
-            >
-              Aplicar
-            </Button>
+            <div className="filter-button exclude-button">
+              <Button
+                size="md"
+                theme="noneBorder"
+                style={{ height: '50px', marginRight: '20px' }}
+                onClick={() => handleClose()}
+              >
+                Cancelar
+              </Button>
+              <Button
+                size="md"
+                style={{
+                  width: '152px',
+                  height: '40px',
+                  display: 'flex',
+                  // ajustes para o botão se possível
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+                className="botao-cadastro"
+              >
+                Aplicar
+              </Button>
+            </div>
           </form>
         </div>
       </ModalBody>

@@ -19,29 +19,6 @@
   backdrop-filter: blur(7px);
   background: rgba(34, 34, 34, 0.7);
 }
-.filter-modal {
-  width: 415px !important;
-  height: 100% !important;
-  margin: 0px 0px !important;
-  transition: linear 0.3s;
-  transform-origin: right;
-  transform: scaleX(0);
-  .filter-modal-content {
-    height: 100%;
-    border-radius: 0;
-  }
-}
-.filter-name {
-  font-weight: 400 !important;
-  font-size: 21px !important;
-  margin-top: 45px !important;
-}
-.filter-button {
-  border: none !important;
-  padding-top: 30px;
-  align-items: flex-end;
-}
-
 .mainContainer {
   padding: 50px !important;
   transition: linear 0.3s;
@@ -633,6 +610,39 @@
 .modal-body {
   padding: 25px 50px 30px 50px !important;
 }
+.filter-modal-body {
+  padding: 30px 20px 30px 20px !important;
+}
+.filter-modal {
+  width: 415px !important;
+  height: 100% !important;
+  margin: 0px 0px !important;
+  transition: linear 0.3s;
+  transform-origin: right;
+  transform: scaleX(0);
+  .filter-modal-content {
+    height: 100%;
+    border-radius: 0;
+  }
+}
+.filter-name {
+  font-weight: 400 !important;
+  font-size: 21px !important;
+  margin-top: 45px !important;
+}
+.filter-button {
+  border: none !important;
+  padding-top: 30px;
+  align-items: flex-end;
+}
+.filter-close-buttom {
+  display: flex;
+  justify-content: end;
+  margin: 30px 20px 0 0;
+  svg {
+    cursor: pointer;
+  }
+}
 .modal-header {
   border: none;
   padding: 30px 50px 0 50px !important;
@@ -648,7 +658,9 @@
     z-index: 1;
   }
 }
-
+.action-icon {
+  cursor: pointer;
+}
 .botao-cadastro {
   margin-left: 40px;
 }
@@ -830,7 +842,7 @@ input {
     outline: 0 !important;
   }
   &:hover {
-    background-color: #D9D9D9 !important;
+    background-color: #d9d9d9 !important;
   }
 }
 
@@ -871,8 +883,8 @@ input[type='radio']:checked + .label-radio-custom {
 .input-default {
   height: 64px !important;
   border-radius: 5px !important;
-  background-color: #E6E6E6 !important;
-  border-color: #E6E6E6 !important;
+  background-color: #e6e6e6 !important;
+  border-color: #e6e6e6 !important;
   &.input-error {
     border-color: #e64f49 !important;
   }
