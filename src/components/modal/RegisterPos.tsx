@@ -4,22 +4,31 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
+import { AxiosError, AxiosResponse } from 'axios';
 import { ModalCustom } from '../Utils/Modal';
 import Pos from '../../entities/Pos';
 
 import Input from '../Utils/Input';
 import Select from '../Utils/Select';
-import { createRequest, updateRequest, getRequest } from '../../store/ducks/pos/actions';
+// import { createRequest, updateRequest, getRequest } from '../../store/ducks/pos/actions';
 import { getAllRequest } from '../../store/ducks/pdv/actions';
 import { ApplicationState } from '../../store';
 import { PdvState } from '../../store/ducks/pdv/types';
-import { PosState } from '../../store/ducks/pos/types';
+import api from '../../services/api';
+// import { PosState } from '../../store/ducks/pos/types';
 
 interface ModalPosProps {
   show: boolean;
   setShow: (b: boolean) => void;
   idPos?: string;
+  reload: () => Promise<void>;
 }
+
+interface DispatchProps {
+  saveRequest: (data: Pos) => void;
+}
+
+type Props = ModalPosProps & DispatchProps;
 
 const schema = yup.object().shape({
   // name: yup.string().required('Nome do POS é obrigatório'),
@@ -50,10 +59,10 @@ const statusOptions = [
   { value: 3, label: 'POS inativa' },
 ];
 
-const RegisterPos = ({ show, setShow, idPos }: ModalPosProps): JSX.Element => {
+const RegisterPos = (props: Props): JSX.Element => {
   const dispatch = useDispatch();
   const pdvStorage = useSelector<ApplicationState, PdvState>(store => store.pdv);
-  const posStorage = useSelector<ApplicationState, PosState>(store => store.pos);
+  // const posStorage = useSelector<ApplicationState, PosState>(store => store.pos);
   const [textModal, setTextModal] = useState({
     title: '',
     btnLabel: '',
@@ -70,61 +79,33 @@ const RegisterPos = ({ show, setShow, idPos }: ModalPosProps): JSX.Element => {
     resolver: yupResolver(schema),
   });
 
-  const getPosById = (id: string): void => {
-    dispatch(getRequest(id));
+  // TO DO: Separar requisição da parte de UI
+  const getPos = async (data: any) => {
+    try {
+      const response: AxiosResponse<Pos> = await api.get(`/pos/${data}`);
+      const entity = response.data;
+      console.log('entity AQUI', entity);
+      reset(entity);
+    } catch (err) {
+      const error = err as AxiosError;
+      console.log(error);
+    }
   };
 
   useEffect(() => {
-    if (idPos) {
+    if (props.idPos) {
+      getPos(props.idPos);
       setTextModal({
         title: 'Editar POS',
         btnLabel: 'Editar POS',
       });
-      getPosById(idPos);
     } else {
-      reset();
       setTextModal({
         title: 'Cadastrar nova POS',
         btnLabel: 'Cadastrar nova POS',
       });
     }
-  }, [idPos, show]);
-
-  useEffect(() => {
-    if (idPos) {
-      setTextModal({
-        title: 'Editar POS',
-        btnLabel: 'Editar POS',
-      });
-      getPosById(idPos);
-    } else {
-      reset();
-      setTextModal({
-        title: 'Cadastrar nova POS',
-        btnLabel: 'Cadastrar nova POS',
-      });
-    }
-  }, [show]);
-
-  useEffect(() => {
-    if (show) {
-      if (!idPos) {
-        console.log('reset');
-        reset({});
-      } else if (!posStorage.loading) {
-        reset({});
-        reset(posStorage.data.entity);
-      }
-    }
-  }, [show]);
-
-  const createPos = async (data: any): Promise<void> => {
-    await dispatch(createRequest(data));
-  };
-
-  const updatePos = async (data: any): Promise<void> => {
-    await dispatch(updateRequest(data));
-  };
+  }, [props.show]);
 
   const getPdv = async (): Promise<void> => {
     await dispatch(getAllRequest());
@@ -132,25 +113,27 @@ const RegisterPos = ({ show, setShow, idPos }: ModalPosProps): JSX.Element => {
 
   const onSubmit = async (data: Pos): Promise<void> => {
     try {
-      if (idPos) updatePos({ ...data, id: idPos });
-      else await createPos(data);
-      setShow(false);
+      // if (idPos) props.saveRequest({ ...data, id: idPos });
+      // else await props.saveRequest(data);
+      props.saveRequest(data);
+      props.reload();
+      props.setShow(false);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    if (show) {
+    if (props.show) {
       getPdv();
     }
-  }, [show]);
+  }, [props.show]);
 
   return (
     <ModalCustom
       title={textModal.title}
-      show={show}
-      setShow={setShow}
+      show={props.show}
+      setShow={props.setShow}
       isCard={true}
       onBtnAction={handleSubmit(onSubmit)}
       btnLabel={textModal.btnLabel}
