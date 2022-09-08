@@ -46,7 +46,7 @@ const Sample = (): JSX.Element => {
   // const [paginationPage, setPaginationPage] = useState(1);
   const page: Page<Pos, Pos> = {
     page: 1,
-    pageSize: 5,
+    pageSize: 10,
     sort: 'name', // Adicionar cidade!!!
     order: 'DESC',
   };
@@ -214,7 +214,7 @@ const Sample = (): JSX.Element => {
         <CustomTable theme={'primary'} columns={columnsPrimaryStatusColor} data={dataTablePos} />
         <Pagination
           currentPage={pagination.page}
-          totalCount={10}
+          totalCount={pagination.total}
           pageSize={page.pageSize}
           onPageChange={pagee => handlePaginationChange(pagee)}
           total={page.total}
