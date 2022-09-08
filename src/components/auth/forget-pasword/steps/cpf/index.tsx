@@ -1,10 +1,9 @@
 import React, { ChangeEvent } from 'react';
 import { Label, Input, FormGroup, Row, Col } from 'reactstrap';
-import { useNavigate } from 'react-router-dom';
-import { cpfMask } from '../../../../../utils/input-mask';
+import { useHistory } from 'react-router-dom';
+import { Button } from '@/components';
 import goBackArrow from '../../../../../assets/images/svg/goBackArrow.svg';
 import idCard from '../../../../../assets/images/svg/idCard.svg';
-import Button from '../../../../Utils/Button';
 
 interface CPFObject {
   cpf: string;
@@ -21,9 +20,9 @@ interface DispatchProps {
 type Props = StateProps & DispatchProps;
 
 const Cpf = (props: Props): JSX.Element => {
-  const history = useNavigate();
+  const history = useHistory();
   const goBack = (): void => {
-    history('/');
+    history.push('/');
   };
   return (
     <>
@@ -64,7 +63,7 @@ const Cpf = (props: Props): JSX.Element => {
           className="form-control loginForm"
           required={true}
           placeholder="123.456.789-00"
-          value={props.form?.cpf ? cpfMask(props.form?.cpf) : ''}
+          value={props.form?.cpf ?? ''}
           onChange={props.handleForm}
           maxLength={14}
         />
@@ -74,9 +73,9 @@ const Cpf = (props: Props): JSX.Element => {
           size="lg"
           style={{ width: '100%', marginTop: '200px' }}
           disabled={!props.form?.cpf}
-        >
-          Enviar link de recuperação
-        </Button>
+          title="Enviar link de recuperação"
+          onClick={(): void => undefined}
+        />
       </FormGroup>
     </>
   );

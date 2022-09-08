@@ -1,7 +1,7 @@
 import { action } from 'typesafe-actions';
-import CustomError from '../../../entities/CustomError';
+import CustomError from '../../../model/CustomError';
 import { AuthDataType, AuthTypes } from './types';
-import ChangePassword from '../../../entities/ChangePassword';
+import ChangePassword from '../../../model/ChangePassword';
 
 interface LoginRequest {
   userName: string;

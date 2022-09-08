@@ -1,21 +1,21 @@
 import { action } from 'typesafe-actions';
 import { EventDataType, EventTypes } from './types';
-import Event from '../../../entities/Event';
-import EventFind from '../../../entities/EventFind';
-import EventGeneralInformation from '../../../entities/EventGeneralInformation';
-import CustomError from '../../../entities/CustomError';
-import Page from '../../../entities/Page';
-import EventTicketMainConfiguration from '../../../entities/EventTicketMainConfiguration';
-import TicketPayment from '../../../entities/TicketPayment';
-import EventTicketGeneralSettings from '../../../entities/EventTicketGeneralSettings';
-import EventProduct from '../../../entities/EventProduct';
-import EventProductCombo from '../../../entities/EventProductCombo';
-import EventSection from '../../../entities/EventSection';
-import EventPos from '../../../entities/EventPos';
-import EventPdvMain from '../../../entities/EventPdvMain';
-import EventPdvTicket from '../../../entities/EventPdvTicket';
-import EventPdvProduct from '../../../entities/EventPdvProduct';
-import EventSubPdv from '../../../entities/EventSubPdv';
+import Event from '../../../model/Event';
+import EventFind from '../../../model/EventFind';
+import EventGeneralInformation from '../../../model/EventGeneralInformation';
+import CustomError from '../../../model/CustomError';
+import Page from '../../../model/Page';
+import EventTicketMainConfiguration from '../../../model/EventTicketMainConfiguration';
+import TicketPayment from '../../../model/TicketPayment';
+import EventTicketGeneralSettings from '../../../model/EventTicketGeneralSettings';
+import EventProduct from '../../../model/EventProduct';
+import EventProductCombo from '../../../model/EventProductCombo';
+import EventSection from '../../../model/EventSection';
+import EventPos from '../../../model/EventPos';
+import EventPdvMain from '../../../model/EventPdvMain';
+import EventPdvTicket from '../../../model/EventPdvTicket';
+import EventPdvProduct from '../../../model/EventPdvProduct';
+import EventSubPdv from '../../../model/EventSubPdv';
 
 export const listRequest = (
   page: Page<EventFind, Event>,

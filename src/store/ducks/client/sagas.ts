@@ -18,10 +18,10 @@ import {
   updateFailure,
 } from './actions';
 import { ClientDataType } from './types';
-import { parse } from '../../../entities/CustomError';
+import { parse } from '../../../model/CustomError';
 import api from '../../../services/api';
-import Page from '../../../entities/Page';
-import Client from '../../../entities/Client';
+import Page from '../../../model/Page';
+import Client from '../../../model/Client';
 import { ApplicationState } from '../..';
 
 export function* listClients(page: any) {

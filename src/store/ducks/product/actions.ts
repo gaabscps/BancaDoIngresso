@@ -1,8 +1,8 @@
 import { action } from 'typesafe-actions';
 import { ProductDataType, ProductTypes } from './types';
-import CustomError from '../../../entities/CustomError';
-import Page from '../../../entities/Page';
-import Product from '../../../entities/Product';
+import CustomError from '../../../model/CustomError';
+import Page from '../../../model/Page';
+import Product from '../../../model/Product';
 
 export const activateRequest = (
   id: string,

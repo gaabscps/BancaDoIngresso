@@ -1,10 +1,10 @@
 import { action } from 'typesafe-actions';
 import { SubPdvDataType, SubPdvTypes } from './types';
-import CustomError from '../../../entities/CustomError';
-import Page from '../../../entities/Page';
-import SubPdv from '../../../entities/SubPdv';
-import SubPdvSave from '../../../entities/SubPdvSave';
-import SubPdvUser from '../../../entities/SubPdvUser';
+import CustomError from '../../../model/CustomError';
+import Page from '../../../model/Page';
+import SubPdv from '../../../model/SubPdv';
+import SubPdvSave from '../../../model/SubPdvSave';
+import SubPdvUser from '../../../model/SubPdvUser';
 
 export const activateRequest = (
   id: string,

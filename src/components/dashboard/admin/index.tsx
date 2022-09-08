@@ -2,12 +2,12 @@ import React, { Fragment, useEffect } from 'react';
 import { CardHeader, Label } from 'reactstrap';
 // import { useDispatch } from 'react-redux';
 import { useDispatch, useSelector } from 'react-redux';
-import moment from 'moment';
-import { useNavigate } from 'react-router';
+import dayjs from 'dayjs';
+import { useHistory } from 'react-router-dom';
 import clock from '../../../assets/images/svg/clock.svg';
 import x from '../../../assets/images/svg/x.svg';
 import money from '../../../assets/images/svg/money.svg';
-import eventos from '../../../eventos.json';
+import eventos from '../../../utils/eventos.json';
 import reMoney from '../../../assets/images/svg/reMoney.svg';
 import calendar from '../../../assets/images/svg/calendar.svg';
 import locationPin from '../../../assets/images/svg/locationPin.svg';
@@ -29,7 +29,7 @@ eventos.eventos.forEach(eventi => {
 });
 
 const Sample = (): JSX.Element => {
-  const history = useNavigate();
+  const history = useHistory();
   const home = useSelector<ApplicationState, HomeState>(store => store.home);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -37,7 +37,7 @@ const Sample = (): JSX.Element => {
   }, []);
 
   const viewAll = (): void => {
-    history('/events');
+    history.push('/events');
   };
 
   return (
@@ -133,7 +133,7 @@ const Sample = (): JSX.Element => {
                     <div className="info-container">
                       <div className="dateEvent">
                         <img src={calendar} style={{ paddingRight: '10px', width: '25px' }} />
-                        {moment(events.date).format('DD/MM/YYYY')}
+                        {dayjs(events.date).format('DD/MM/YYYY')}
                       </div>
                       <div className="locationEvent">
                         <img src={locationPin} style={{ paddingRight: '10px', width: '23px' }} />

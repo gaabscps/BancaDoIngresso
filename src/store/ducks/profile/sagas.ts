@@ -25,10 +25,10 @@ import {
 } from './actions';
 import { ProfileDataType } from './types';
 import { ApplicationState } from '../..';
-import { parse } from '../../../entities/CustomError';
+import { parse } from '../../../model/CustomError';
 import api from '../../../services/api';
-import Page from '../../../entities/Page';
-import Profile from '../../../entities/Profile';
+import Page from '../../../model/Page';
+import Profile from '../../../model/Profile';
 
 export function* activateProfile(data: any) {
   try {

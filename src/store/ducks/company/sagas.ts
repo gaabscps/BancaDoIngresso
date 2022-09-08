@@ -23,10 +23,10 @@ import {
 } from './actions';
 import { CompanyDataType } from './types';
 import { ApplicationState } from '../..';
-import { parse } from '../../../entities/CustomError';
+import { parse } from '../../../model/CustomError';
 import api from '../../../services/api';
-import Company from '../../../entities/Company';
-import Page from '../../../entities/Page';
+import Company from '../../../model/Company';
+import Page from '../../../model/Page';
 
 export function* listCompanies(page: any) {
   try {

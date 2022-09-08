@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Container, Button, Media, Col } from 'reactstrap';
 import sad from '../../assets/images/other-images/sad.png';
 
-const Error404 = (): JSX.Element => (
+export const Error404 = (): JSX.Element => (
   <Fragment>
     <div className="page-wrapper">
       <div className="error-wrapper">
@@ -25,5 +25,3 @@ const Error404 = (): JSX.Element => (
     </div>
   </Fragment>
 );
-
-export default Error404;

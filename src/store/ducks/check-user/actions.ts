@@ -1,5 +1,5 @@
 import { action } from 'typesafe-actions';
-import CustomError from '../../../entities/CustomError';
+import CustomError from '../../../model/CustomError';
 import { CheckUserTypes } from './types';
 
 export const checkUserCall = (): {

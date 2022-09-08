@@ -1,8 +1,8 @@
 import { action } from 'typesafe-actions';
-import CustomError from '../../../entities/CustomError';
-import Page from '../../../entities/Page';
-import Profile from '../../../entities/Profile';
-import ProfilePermission from '../../../entities/ProfilePermission';
+import CustomError from '../../../model/CustomError';
+import Page from '../../../model/Page';
+import Profile from '../../../model/Profile';
+import ProfilePermission from '../../../model/ProfilePermission';
 import { ProfileDataType, ProfileTypes } from './types';
 
 export const activateRequest = (

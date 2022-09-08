@@ -1,14 +1,14 @@
 import React, { Fragment, useState } from 'react';
 import { Container, Row, Col, Label } from 'reactstrap';
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import DiscountVoucher from '../../modal/DiscountVoucher';
 
 const Sample = (): JSX.Element => {
-  const history = useNavigate();
+  const history = useHistory();
   const [show, setShow] = useState(false);
 
   const viewReport = (): void => {
-    history('/report-detail');
+    history.push('/report-detail');
   };
 
   const callShow = (b: boolean): void => {

@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { Fragment, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Container, Col, Form, Label, FormText, Row, Button, ButtonGroup } from 'reactstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import SuperInput from '../../../../sharedComponents/SuperInput';
@@ -16,15 +16,15 @@ import SuperButton from '../../../../sharedComponents/SuperButton';
 import { ApplicationState } from '../../../../../store';
 import { EventState } from '../../../../../store/ducks/event/types';
 import { generalInformationRequest } from '../../../../../store/ducks/event/actions';
-import EventGeneralInformation from '../../../../../entities/EventGeneralInformation';
+import EventGeneralInformation from '../../../../../model/EventGeneralInformation';
 import { states } from '../../../../../constant/states';
 import { cities } from '../../../../../constant/cities';
 import { listRequestCategory } from '../../../../../store/ducks/event-category/actions';
 import { EventCategoryState } from '../../../../../store/ducks/event-category/types';
 import { ContractorState } from '../../../../../store/ducks/contractor/types';
 import { listRequestContractor } from '../../../../../store/ducks/contractor/actions';
-import Contractor from '../../../../../entities/Contractor';
-import EventCategory from '../../../../../entities/EventCategory';
+import Contractor from '../../../../../model/Contractor';
+import EventCategory from '../../../../../model/EventCategory';
 import InputFile from '../../../../sharedComponents/InputFile';
 
 interface CreateEvent {
@@ -52,7 +52,7 @@ const Sample = (): JSX.Element => {
   const category = useSelector<ApplicationState, EventCategoryState>(store => store.eventCategory);
   const contractor = useSelector<ApplicationState, ContractorState>(store => store.contractor);
   const dispatch = useDispatch();
-  const history = useNavigate();
+  const history = useHistory();
   const [showNewCategory, setShowNewCategory] = useState(false);
   const [showCompany, setShowCompany] = useState(false);
   const [showParentEvent, setShowParentEvent] = useState(false);
@@ -73,10 +73,10 @@ const Sample = (): JSX.Element => {
   ];
 
   const nextStep = (): void => {
-    history('/event/ticket');
+    history.push('/event/ticket');
   };
   const goBack = (): void => {
-    history(-1);
+    history.goBack();
   };
 
   const onChangeForm = (level?: any) => (e: any) => {
@@ -644,7 +644,7 @@ const Sample = (): JSX.Element => {
             </Form>
           </Col>
         </Row>
-        <hr className="dividerUp"/>
+        <hr className="dividerUp" />
         <div className="nextPageButton">
           <div style={{ color: '#fff' }}>
             <Button style={{ height: '50px' }} variant="outline-light" onClick={goBack}>

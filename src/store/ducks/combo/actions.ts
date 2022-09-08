@@ -1,7 +1,7 @@
 import { action } from 'typesafe-actions';
-import Combo from '../../../entities/Combo';
-import CustomError from '../../../entities/CustomError';
-import Page from '../../../entities/Page';
+import Combo from '../../../model/Combo';
+import CustomError from '../../../model/CustomError';
+import Page from '../../../model/Page';
 import { ComboDataType, ComboTypes } from './types';
 
 export const listRequest = (

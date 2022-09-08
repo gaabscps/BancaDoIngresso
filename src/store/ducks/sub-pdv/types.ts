@@ -1,6 +1,6 @@
-import CustomError from '../../../entities/CustomError';
-import Page from '../../../entities/Page';
-import SubPdv from '../../../entities/SubPdv';
+import CustomError from '../../../model/CustomError';
+import Page from '../../../model/Page';
+import SubPdv from '../../../model/SubPdv';
 /**
  * Action types
  */

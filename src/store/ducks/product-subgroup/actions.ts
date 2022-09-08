@@ -1,8 +1,8 @@
 import { action } from 'typesafe-actions';
 import { ProductSubgroupDataType, ProductSubgroupTypes } from './types';
-import CustomError from '../../../entities/CustomError';
-import Page from '../../../entities/Page';
-import ProductSubgroup from '../../../entities/ProductSubgroup';
+import CustomError from '../../../model/CustomError';
+import Page from '../../../model/Page';
+import ProductSubgroup from '../../../model/ProductSubgroup';
 
 export const activateRequest = (
   id: string,

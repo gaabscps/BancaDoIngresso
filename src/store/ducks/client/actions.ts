@@ -1,8 +1,8 @@
 import { action } from 'typesafe-actions';
-import Client from '../../../entities/Client';
-import ClientUpdate from '../../../entities/ClientUpdate';
-import CustomError from '../../../entities/CustomError';
-import Page from '../../../entities/Page';
+import Client from '../../../model/Client';
+import ClientUpdate from '../../../model/ClientUpdate';
+import CustomError from '../../../model/CustomError';
+import Page from '../../../model/Page';
 import { ClientDataType, ClientTypes } from './types';
 
 export const listRequest = (

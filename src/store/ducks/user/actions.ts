@@ -1,7 +1,7 @@
 import { action } from 'typesafe-actions';
-import CustomError from '../../../entities/CustomError';
-import Page from '../../../entities/Page';
-import User from '../../../entities/User';
+import CustomError from '../../../model/CustomError';
+import Page from '../../../model/Page';
+import User from '../../../model/User';
 import { UserDataType, UserTypes } from './types';
 
 export const activateRequest = (

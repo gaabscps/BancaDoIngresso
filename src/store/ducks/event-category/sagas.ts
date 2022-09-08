@@ -22,10 +22,10 @@ import {
   deleteFailure,
 } from './actions';
 import { EventCategoryDataType } from './types';
-import { parse } from '../../../entities/CustomError';
+import { parse } from '../../../model/CustomError';
 import api from '../../../services/api';
-import Page from '../../../entities/Page';
-import EventCategory from '../../../entities/EventCategory';
+import Page from '../../../model/Page';
+import EventCategory from '../../../model/EventCategory';
 import { ApplicationState } from '../..';
 
 export function* listEventCategory(page: any) {

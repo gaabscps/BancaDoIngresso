@@ -1,8 +1,8 @@
 import { action } from 'typesafe-actions';
 import { PosDataType, PosTypes } from './types';
-import CustomError from '../../../entities/CustomError';
-import Page from '../../../entities/Page';
-import Pos from '../../../entities/Pos';
+import CustomError from '../../../model/CustomError';
+import Page from '../../../model/Page';
+import Pos from '../../../model/Pos';
 
 export const activateRequest = (
   id: string,

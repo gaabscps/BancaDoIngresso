@@ -24,9 +24,9 @@ import {
 import { ProductSubgroupDataType } from './types';
 import { checkUserCall } from '../check-user/actions';
 import { ApplicationState } from '../..';
-import { parse } from '../../../entities/CustomError';
-import Page from '../../../entities/Page';
-import ProductSubgroup from '../../../entities/ProductSubgroup';
+import { parse } from '../../../model/CustomError';
+import Page from '../../../model/Page';
+import ProductSubgroup from '../../../model/ProductSubgroup';
 import api from '../../../services/api';
 
 export function* activateProductSubgroup(data: any) {

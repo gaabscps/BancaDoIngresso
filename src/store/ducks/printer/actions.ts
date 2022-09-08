@@ -1,7 +1,7 @@
 import { action } from 'typesafe-actions';
-import CustomError from '../../../entities/CustomError';
-import Page from '../../../entities/Page';
-import Printer from '../../../entities/Printer';
+import CustomError from '../../../model/CustomError';
+import Page from '../../../model/Page';
+import Printer from '../../../model/Printer';
 import { PrinterDataType, PrinterTypes } from './types';
 
 export const activateRequest = (

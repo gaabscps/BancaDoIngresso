@@ -23,10 +23,10 @@ import {
 } from './actions';
 import { UserDataType } from './types';
 import { ApplicationState } from '../..';
-import { parse } from '../../../entities/CustomError';
+import { parse } from '../../../model/CustomError';
 import api from '../../../services/api';
-import Page from '../../../entities/Page';
-import User from '../../../entities/User';
+import Page from '../../../model/Page';
+import User from '../../../model/User';
 
 export function* activateUser(data: any) {
   try {

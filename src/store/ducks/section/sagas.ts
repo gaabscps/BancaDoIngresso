@@ -24,10 +24,10 @@ import {
 import { SectionDataType } from './types';
 import { ApplicationState } from '../..';
 import { checkUserCall } from '../check-user/actions';
-import { parse } from '../../../entities/CustomError';
+import { parse } from '../../../model/CustomError';
 import api from '../../../services/api';
-import Page from '../../../entities/Page';
-import Section from '../../../entities/Section';
+import Page from '../../../model/Page';
+import Section from '../../../model/Section';
 
 export function* activateSection(data: any) {
   try {

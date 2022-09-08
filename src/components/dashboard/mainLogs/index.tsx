@@ -1,16 +1,16 @@
 import React, { Fragment, useState } from 'react';
 import { Container, Row, Col, Label } from 'reactstrap';
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import SuperButton from '../../sharedComponents/SuperButton';
 import DiscountVoucher from '../../modal/DiscountVoucher';
 import detail from '../../../assets/images/svg/detail.svg';
 
 const Sample = (): JSX.Element => {
-  const history = useNavigate();
+  const history = useHistory();
   const [show, setShow] = useState(false);
 
   const createEvent = (): void => {
-    history('/general');
+    history.push('/general');
   };
 
   const callShow = (b: boolean): void => {

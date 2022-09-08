@@ -1,6 +1,6 @@
-import CustomError from '../../../entities/CustomError';
-import Module from '../../../entities/Module';
-import Page from '../../../entities/Page';
+import CustomError from '../../../model/CustomError';
+import Module from '../../../model/Module';
+import Page from '../../../model/Page';
 
 /**
  * Action types

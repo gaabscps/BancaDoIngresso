@@ -1,6 +1,6 @@
-import EventCategory from '../../../entities/EventCategory';
-import CustomError from '../../../entities/CustomError';
-import Page from '../../../entities/Page';
+import EventCategory from '../../../model/EventCategory';
+import CustomError from '../../../model/CustomError';
+import Page from '../../../model/Page';
 /**
  * Action types
  */

@@ -23,10 +23,10 @@ import {
 } from './actions';
 import { ComboDataType } from './types';
 import { ApplicationState } from '../..';
-import { parse } from '../../../entities/CustomError';
+import { parse } from '../../../model/CustomError';
 import api from '../../../services/api';
-import Combo from '../../../entities/Combo';
-import Page from '../../../entities/Page';
+import Combo from '../../../model/Combo';
+import Page from '../../../model/Page';
 
 export function* listCombos(page: any) {
   try {

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Card, Container, Label, Modal, Button, ModalHeader, ModalBody } from 'reactstrap';
 import CloseModal from '../../assets/images/svg/CloseModal';
-import Section from '../../entities/Section';
+import Section from '../../model/Section';
 import { createRequest } from '../../store/ducks/section/actions';
 import SuperInput from '../sharedComponents/SuperInput';
 

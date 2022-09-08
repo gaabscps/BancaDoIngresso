@@ -1,9 +1,9 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Col, Row } from 'reactstrap';
+import { Button } from '@/components';
 import goBackArrow from '../../../../../assets/images/svg/goBackArrow.svg';
 import MailIcon from '../../../../../assets/images/svg/Mail';
-import Button from '../../../../Utils/Button';
 
 interface EmailObject {
   email: string;
@@ -21,10 +21,9 @@ type Props = StateProps & DispatchProps;
 
 const Code = (props: Props): JSX.Element => {
   // const dispatch = useDispatch();
-  const history = useNavigate();
+  const history = useHistory();
   const goBack = (): void => {
-    history('/');
-    history(0);
+    history.push('/');
   };
 
   return (
@@ -58,9 +57,9 @@ const Code = (props: Props): JSX.Element => {
         theme="red"
         size="lg"
         style={{ width: '100%', marginTop: '140px' }}
-      >
-        Ir para a página de entrada
-      </Button>
+        title="Ir para a página de entrada"
+        onClick={(): void => undefined}
+      />
       <div className="d-flex justify-content-center subTitleMain">
         <div style={{ marginTop: '40px' }}>Não recebeu o link de recuperação?&nbsp;</div>
         <a

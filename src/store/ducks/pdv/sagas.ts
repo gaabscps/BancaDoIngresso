@@ -25,9 +25,9 @@ import {
 } from './actions';
 import { PdvDataType } from './types';
 import { ApplicationState } from '../..';
-import { parse } from '../../../entities/CustomError';
-import Page from '../../../entities/Page';
-import Pdv from '../../../entities/Pdv';
+import { parse } from '../../../model/CustomError';
+import Page from '../../../model/Page';
+import Pdv from '../../../model/Pdv';
 import api from '../../../services/api';
 
 export function* activatePdv(data: any) {

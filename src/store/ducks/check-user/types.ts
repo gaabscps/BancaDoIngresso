@@ -1,4 +1,4 @@
-import CustomError from '../../../entities/CustomError';
+import CustomError from '../../../model/CustomError';
 
 /**
  * Action types

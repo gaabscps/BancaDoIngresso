@@ -1,10 +1,11 @@
 import React /* , { useEffect } */ from 'react';
 import { useSelector } from 'react-redux';
 import { Container, Modal, ModalBody } from 'reactstrap';
-import { setAuthLocalStorage } from '../../../../../helpers/localStorage';
-import { ApplicationState } from '../../../../../store';
-import { AuthState } from '../../../../../store/ducks/auth/types';
-import Button from '../../../../Utils/Button';
+import { Button } from '@/components/Button';
+import { REACT_APP_AUTH } from '@/utils/config';
+import { setItem } from '@/helpers/common/localStorage';
+import { ApplicationState } from '@/store';
+import { AuthState } from '@/store/ducks/auth/types';
 
 // import { useHistory } from "react-router-dom";
 
@@ -23,11 +24,10 @@ type Props = StateProps & DispatchProps;
 
 const Success = (props: Props): JSX.Element => {
   const auth = useSelector<ApplicationState, AuthState>(store => store.auth);
-  // const handleClose = (): void => props.setShowSucessPasswordModal(false);
 
   const handleClose = (): void => {
     if (auth.data.login) {
-      setAuthLocalStorage(auth.data.login);
+      setItem(String(REACT_APP_AUTH), auth.data.login);
       window.location.href = '/';
     }
   };
@@ -81,9 +81,8 @@ const Success = (props: Props): JSX.Element => {
               onClick={() => {
                 handleClose();
               }}
-            >
-              Entrar e ir para Início
-            </Button>
+              title="Entrar e ir para Início"
+            />
           </div>
         </ModalBody>
       </Modal>

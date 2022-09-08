@@ -24,9 +24,9 @@ import {
 import { PrinterDataType } from './types';
 import { checkUserCall } from '../check-user/actions';
 import { ApplicationState } from '../..';
-import { parse } from '../../../entities/CustomError';
-import Page from '../../../entities/Page';
-import Printer from '../../../entities/Printer';
+import { parse } from '../../../model/CustomError';
+import Page from '../../../model/Page';
+import Printer from '../../../model/Printer';
 import api from '../../../services/api';
 
 export function* activatePrinter(data: any) {

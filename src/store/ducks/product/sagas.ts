@@ -24,9 +24,9 @@ import {
 import { ProductDataType } from './types';
 import { checkUserCall } from '../check-user/actions';
 import { ApplicationState } from '../..';
-import { parse } from '../../../entities/CustomError';
-import Page from '../../../entities/Page';
-import Product from '../../../entities/Product';
+import { parse } from '../../../model/CustomError';
+import Page from '../../../model/Page';
+import Product from '../../../model/Product';
 import api from '../../../services/api';
 
 export function* activateProduct(data: any) {

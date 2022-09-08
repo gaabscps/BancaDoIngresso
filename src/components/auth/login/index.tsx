@@ -1,16 +1,10 @@
-import React, { useState, useEffect, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Col, Form, Container, Row } from 'reactstrap';
-import Cookies from 'universal-cookie';
-import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+import { Loading, Button } from '@/components';
 import Input from '../../Utils/Input';
-import Button from '../../Utils/Button';
-import { getLocalStorage, setAuthLocalStorage } from '../../../helpers/localStorage';
-import Loader from '../../../layout/loader';
-import { cpfMask } from '../../../utils/input-mask';
 import logoBanca from '../../../assets/images/logo/logoBanca.png';
 import idCard from '../../../assets/images/svg/idCard.svg';
 import loginLock from '../../../assets/images/svg/loginLock.svg';
@@ -19,32 +13,19 @@ import closeEye from '../../../assets/images/login/closeEye.png';
 import { ApplicationState } from '../../../store';
 import { loginRequest } from '../../../store/ducks/auth/actions';
 import { AuthState } from '../../../store/ducks/auth/types';
-import { setAuthSessionStorage } from '../../../helpers/sessionStorage';
-import Auth from '../../../entities/Auth';
 
 interface Loginstate {
   username: string;
   password: string;
 }
 
-const schema = yup.object().shape({
-  username: yup.string().min(14, 'CPF Inválido').required('O CPF é obrigatório'),
-  password: yup.string().min(8, 'Senha Inválida').required('A senha é obrigatória'),
-});
-
 const Login = (): JSX.Element => {
   const auth = useSelector<ApplicationState, AuthState>(store => store.auth);
-  if (!auth.loading && !auth.error) {
-    if (auth.data && auth.data.login) {
-      setAuthLocalStorage(auth.data.login);
-      window.location.href = '/';
-    }
-  }
-  const history = useNavigate();
+
+  const history = useHistory();
   const dispatch = useDispatch();
   const [togglePassword, setTogglePassword] = useState(false);
   const [form, setForm] = useState({} as Loginstate);
-  const cookies = new Cookies();
   const HideShowPassword = (tPassword: boolean): void => {
     setTogglePassword(!tPassword);
   };
@@ -54,17 +35,8 @@ const Login = (): JSX.Element => {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema),
+    // resolver: yupResolver(schema),
   });
-  useEffect(() => {
-    if (getLocalStorage('token')) {
-      setAuthSessionStorage({
-        token: getLocalStorage('token') as string,
-        user: getLocalStorage('user') as string,
-      } as unknown as Auth);
-      history('/dashboard/admin');
-    }
-  }, [cookies, history]);
 
   const onSubmit = async (data: any): Promise<void> => {
     // e.preventDefault();
@@ -83,7 +55,7 @@ const Login = (): JSX.Element => {
 
   return (
     <>
-      <Loader isVisible={auth.loading} />
+      <Loading isVisible={auth.loading} />
       <div className="body-login">
         <Container>
           <Col className="login-card">
@@ -116,7 +88,7 @@ const Login = (): JSX.Element => {
                           type="text"
                           placeholder="123.456.789-00"
                           register={register}
-                          value={form?.username ? cpfMask(form?.username) : ''}
+                          value={form?.username ?? ''}
                           name="username"
                           onChange={handleChange}
                           error={errors?.username?.message}
@@ -177,12 +149,12 @@ const Login = (): JSX.Element => {
                   size="lg"
                   style={{ width: '100%' }}
                   disabled={!(form.username && form.password)}
-                >
-                  Entrar
-                </Button>
+                  onClick={handleSubmit(onSubmit)}
+                  title="Entrar"
+                />
                 <div className="d-flex justify-content-center align-items-center forgotPassword">
                   <a
-                    onClick={() => history('/forget-pwd')}
+                    onClick={() => history.push('/forget-pwd')}
                     className="link"
                     style={{ cursor: 'pointer', color: '#B2140C' }}
                   >

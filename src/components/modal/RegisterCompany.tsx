@@ -3,8 +3,8 @@ import { useDispatch } from 'react-redux';
 import { Card, Container, Label, Modal, Button, ModalHeader, ModalBody } from 'reactstrap';
 import CloseModal from '../../assets/images/svg/CloseModal';
 import { imageTeste } from '../../constant/imageTest';
-import Address from '../../entities/Address';
-import Contractor from '../../entities/Contractor';
+import Address from '../../model/Address';
+import Contractor from '../../model/Contractor';
 import { createRequest } from '../../store/ducks/contractor/actions';
 import SuperInput from '../sharedComponents/SuperInput';
 

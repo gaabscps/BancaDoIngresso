@@ -1,12 +1,12 @@
 import React, { useState, useEffect, FormEvent, ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Form, FormGroup, Container, Col } from 'reactstrap';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 // import { URLSearchParams } from 'url';
+import { Loading } from '@/components';
 import { ApplicationState } from '../../../store';
 import logoBanca from '../../../assets/images/logo/logoBanca.png';
 // import { setAuthLocalStorage } from '../../../helpers/localStorage';
-import Loader from '../../../layout/loader';
 import CpfComponent from './steps/cpf';
 import CodeComponent from './steps/code';
 import PasswordComponent from './steps/password';
@@ -17,7 +17,7 @@ import {
   loginRequest,
 } from '../../../store/ducks/auth/actions';
 import { AuthState } from '../../../store/ducks/auth/types';
-import ChangePassword from '../../../entities/ChangePassword';
+import ChangePassword from '../../../model/ChangePassword';
 
 interface RecoveryPassword {
   cpf: string;
@@ -30,7 +30,7 @@ interface RecoveryPassword {
 const ForgetPassword = (): JSX.Element => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const history = useNavigate();
+  const history = useHistory();
 
   const [form, setForm] = useState<RecoveryPassword>({} as RecoveryPassword);
   const [step, setStep] = useState<number>(0);
@@ -108,8 +108,7 @@ const ForgetPassword = (): JSX.Element => {
         handleCpf();
         break;
       case 1:
-        history('/');
-        history(0);
+        history.push('/');
         break;
       case 2:
         handleCode(chanagePassword);
@@ -138,7 +137,7 @@ const ForgetPassword = (): JSX.Element => {
         show={showSucessPasswordModal}
         setShowSucessPasswordModal={setShowSucessPasswordModal}
       />
-      <Loader isVisible={auth.loading} />
+      <Loading isVisible={auth.loading} />
       <div className="body-login">
         <Container>
           <Col className="login-card">

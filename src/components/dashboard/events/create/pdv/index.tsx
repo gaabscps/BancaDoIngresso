@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { Fragment, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Container, Label, Row, Col, Button, ButtonGroup } from 'reactstrap';
 import SuperInput from '../../../../sharedComponents/SuperInput';
 
@@ -28,13 +28,13 @@ const Sample = (): JSX.Element => {
   const [allowSellingWebsite, setAllowSellingWebsite] = useState(true);
   const [allowDiscount, setAllowDiscount] = useState(true);
 
-  const history = useNavigate();
+  const history = useHistory();
 
   const nextStep = (): void => {
-    history('/event/confirmation');
+    history.push('/event/confirmation');
   };
   const goBack = (): void => {
-    history(-1);
+    history.goBack();
   };
 
   const ShowInformation = (): JSX.Element => {
