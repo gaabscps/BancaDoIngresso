@@ -101,10 +101,14 @@ const Filter = (props: FilterCustomProps): JSX.Element => {
             />
             {watch('filterSearch') && (
               <Select
-                label="Select Exemplo"
+                label={watch('filterSearch') === 'name' ? 'Nome' : 'Nº de Série'}
                 options={watch('filterSearch') === 'name' ? optionName : optionserialNumber}
                 name="SelectSearch"
-                placeholder="Selecione ou digite o evento"
+                placeholder={
+                  watch('filterSearch') === 'name'
+                    ? 'Selecione o nome do evento'
+                    : 'Selecione o Nº de Série'
+                }
                 control={control}
                 //   error={errors?.address?.state?.value?.message}
               />
