@@ -11,7 +11,13 @@ import { ReactComponent as Trash } from '../../../assets/images/svg/lixeira.svg'
 import Button from '../../Utils/Button';
 import Page from '../../../entities/Page';
 import { ApplicationState } from '../../../store';
-import { listRequest, deleteRequest } from '../../../store/ducks/pos/actions';
+import {
+  listRequest,
+  deleteRequest,
+  getRequest,
+  updateRequest,
+  createRequest,
+} from '../../../store/ducks/pos/actions';
 import { CheckUserState } from '../../../store/ducks/check-user/types';
 import { PosState } from '../../../store/ducks/pos/types';
 import Pos from '../../../entities/Pos';
@@ -52,20 +58,23 @@ const Sample = (): JSX.Element => {
   };
   const [pagination, setPagination] = useState(page);
 
-  useEffect(() => {
-    console.log('pagination', pagination);
-  }, [pagination]);
-
   const pos = useSelector<ApplicationState, PosState>(store => store.pos);
   const checkUser = useSelector<ApplicationState, CheckUserState>(store => store.checkUser);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(getRequest(idPos));
+  }, [showPos]);
+
+  const saveRequesetPos = (data: Pos): void => {
+    if (idPos) dispatch(updateRequest({ ...data, id: idPos }));
+    else dispatch(createRequest(data));
+  };
+
   const callShowPos = (show: boolean): void => {
-    setIdPos('');
     setShowPos(show);
   };
   const callShowExclude = (show: boolean): void => {
-    setIdPos('');
     setShowExclude(show);
   };
   const callShowFilter = (show: boolean): void => {
@@ -175,7 +184,13 @@ const Sample = (): JSX.Element => {
         setShow={callShowExclude}
         onBtnAction={() => deletePos()}
       />
-      <RegisterPos show={showPos} setShow={callShowPos} idPos={idPos} />
+      <RegisterPos
+        show={showPos}
+        setShow={callShowPos}
+        idPos={idPos}
+        saveRequest={saveRequesetPos}
+        reload={() => handlePaginationChange(pagination.page)}
+      />
       <Container className="mainContainer" fluid={true}>
         <div className="d-flex justify-content-between" style={{ paddingBottom: '30px' }}>
           <div style={{ display: 'grid' }}>
