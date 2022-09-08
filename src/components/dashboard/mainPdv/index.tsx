@@ -6,7 +6,7 @@ import RegisterPdv from '../../modal/RegisterPdv';
 import SubPdvList from '../../modal/SubPdvs';
 import Button from '../../Utils/Button';
 import FilterVector from '../../../assets/images/svg/FilterVector';
-import Filter from '../../modal/Filter';
+import Filter from '../../modal/FilterPdv';
 import { CollumnImage, CustomTable, TableColumn } from '../../Utils/Table';
 import { ReactComponent as Pen } from '../../../assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '../../../assets/images/svg/lixeira.svg';
