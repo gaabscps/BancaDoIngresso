@@ -106,7 +106,7 @@ const Filter = (props: FilterCustomProps): JSX.Element => {
                 name="SelectSearch"
                 placeholder={
                   watch('filterSearch') === 'name'
-                    ? 'Selecione o nome do evento'
+                    ? 'Selecione o nome da POS'
                     : 'Selecione o Nº de Série'
                 }
                 control={control}
