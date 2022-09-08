@@ -19,6 +19,7 @@ import Filter from '../../modal/FilterPos';
 import FilterVector from '../../../assets/images/svg/FilterVector';
 import RegisterPos from '../../modal/RegisterPos';
 import PosStatus from '../../../entities/PosStatus';
+import Pagination from '../../Utils/Pagination';
 
 interface DataRow {
   id: string;
@@ -38,17 +39,18 @@ interface DataRow {
 // }
 
 const Sample = (): JSX.Element => {
+  const [showPos, setShowPos] = useState(false);
+  const [showExclude, setShowExclude] = useState(false);
+  const [showFilter, setShowFilter] = useState(false);
+  const [idPos, setIdPos] = useState('');
+  const [paginationPage, setPaginationPage] = useState(1);
   const page: Page<Pos, Pos> = {
-    page: 1,
-    pageSize: 10,
+    page: paginationPage,
+    pageSize: 5,
     sort: 'name', // Adicionar cidade!!!
     order: 'DESC',
   };
-  const [showPos, setShowPos] = useState(false);
-  const [showExclude, setShowExclude] = useState(false);
   const [pagination, setPagination] = useState(page);
-  const [showFilter, setShowFilter] = useState(false);
-  const [idPos, setIdPos] = useState('');
 
   const pos = useSelector<ApplicationState, PosState>(store => store.pos);
   const checkUser = useSelector<ApplicationState, CheckUserState>(store => store.checkUser);
@@ -149,6 +151,10 @@ const Sample = (): JSX.Element => {
       }))
     : [{ id: '', name: '', date: '', currentPdv: '', serialNumber: '', pdv: '' }];
 
+  async function handlePaginationChange(pageNumber: number): Promise<void> {
+    setPaginationPage(pageNumber);
+    dispatch(listRequest(pagination));
+  }
   return (
     <>
       <Filter show={showFilter} setShowFilter={callShowFilter} />
@@ -194,6 +200,13 @@ const Sample = (): JSX.Element => {
           </div>
         </div>
         <CustomTable theme={'primary'} columns={columnsPrimaryStatusColor} data={dataTablePos} />
+        <Pagination
+          currentPage={page.page}
+          totalCount={10}
+          pageSize={page.pageSize}
+          onPageChange={pagee => handlePaginationChange(pagee)}
+          total={page.total}
+        />
       </Container>
     </>
   );
