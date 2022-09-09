@@ -21,7 +21,7 @@ export const CustomTable: React.FC<TableCustomProps> = (props: TableCustomProps)
     {...props}
     columns={props.columns}
     data={props.data ?? []}
-    noDataComponent="Nenhum dado encontrado"
+    noDataComponent={<CustomLoader />}
     progressPending={props.progressPending}
     progressComponent={<CustomLoader numberRowsPerPage={props.numberRowsPerPage} />}
     customStyles={schemeTheme[props.theme as themeProps] ?? schemeTheme.primary}

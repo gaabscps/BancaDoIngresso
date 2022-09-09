@@ -52,7 +52,7 @@ const Sample = (): JSX.Element => {
   // const [paginationPage, setPaginationPage] = useState(1);
   const page: Page<Pos, Pos> = {
     page: 1,
-    pageSize: 5,
+    pageSize: 10,
     sort: 'name', // Adicionar cidade!!!
     order: 'DESC',
   };
@@ -175,7 +175,7 @@ const Sample = (): JSX.Element => {
           </>
         ),
       }))
-    : [{ id: '', name: '', date: '', currentPdv: '', serialNumber: '', pdv: '' }];
+    : [];
   return (
     <>
       <Filter show={showFilter} setShowFilter={callShowFilter} />
