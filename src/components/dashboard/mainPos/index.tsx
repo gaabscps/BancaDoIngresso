@@ -45,7 +45,7 @@ interface DataRow {
 // }
 
 const Sample = (): JSX.Element => {
-  const [dataList, setDataList] = useState<PosState>([]);
+  const [dataList, setDataList] = useState<Pos[] | undefined>([]);
   const [showPos, setShowPos] = useState(false);
   const [showExclude, setShowExclude] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
@@ -92,7 +92,8 @@ const Sample = (): JSX.Element => {
       if (!pos.loading && pos.data && !pos.data.page) {
         dispatch(listRequest(pagination));
       } else if (!pos.error && pos.data && pos.data.page && pos.data.page.total) {
-        setDataList(pos.data.page);
+        setDataList(pos.data.page.list);
+        setPagination({ ...pagination, ...pos.data.page });
       }
     }
   }, [pos]);
@@ -135,8 +136,8 @@ const Sample = (): JSX.Element => {
       width: '120px',
     },
   ];
-  const dataTablePos = dataList.list
-    ? dataList.list?.map(item => ({
+  const dataTablePos = dataList
+    ? dataList?.map(item => ({
         id: item.id,
         name: (
           <CollumnStatus statusColor={changeColorCollumn(item.status)}>{item.name}</CollumnStatus>

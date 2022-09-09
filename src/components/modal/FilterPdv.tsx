@@ -93,7 +93,7 @@ const Filter = (props: FilterCustomProps): JSX.Element => {
             <RadioCustom
               options={[
                 { label: 'Nome', value: 'name' },
-                { label: 'Cidade', value: 'cidade' },
+                { label: 'Cidade', value: 'city' },
               ]}
               style={{ fontSize: '21px' }}
               register={register}
