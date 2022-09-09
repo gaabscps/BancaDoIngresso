@@ -117,8 +117,8 @@ const RegisterPos = (props: Props): JSX.Element => {
     try {
       // if (idPos) props.saveRequest({ ...data, id: idPos });
       // else await props.saveRequest(data);
-      props.saveRequest(data);
-      props.reload();
+      await props.saveRequest(data);
+      await props.reload();
       props.setShow(false);
     } catch (error) {
       console.log(error);
