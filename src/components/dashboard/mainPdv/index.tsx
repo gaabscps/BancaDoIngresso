@@ -11,11 +11,12 @@ import { CollumnImage, CustomTable, TableColumn } from '../../Utils/Table';
 import { ReactComponent as Pen } from '../../../assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '../../../assets/images/svg/lixeira.svg';
 import { ReactComponent as SubPdvIcon } from '../../../assets/images/svg/subPDV.svg';
+
 // import Pagination from '../../Utils/Pagination';
 import Page from '../../../entities/Page';
 import Pdv from '../../../entities/Pdv';
 import { ApplicationState } from '../../../store';
-import { listRequest } from '../../../store/ducks/pdv/actions';
+import { listRequest, updateRequest, createRequest } from '../../../store/ducks/pdv/actions';
 import { CheckUserState } from '../../../store/ducks/check-user/types';
 import { PdvState } from '../../../store/ducks/pdv/types';
 import { ModalConfirmation } from '../../Utils/Modal/ModalConfirmation';
@@ -25,6 +26,7 @@ const Sample = (): JSX.Element => {
   const [showSubPdvList, setShowSubPdvList] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
   const [showExclude, setShowExclude] = useState(false);
+  const [idPdv, setIdPdv] = useState<string | undefined>('');
 
   const initialTablePdv = [
     {
@@ -49,19 +51,6 @@ const Sample = (): JSX.Element => {
     status: string;
   }
 
-  const callShow = (b: boolean): void => {
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    setShowPdv(b);
-  };
-  const callShowSub = (b: never): void => {
-    setShowSubPdvList(b);
-  };
-  const callShowFilter = (b: never): void => {
-    setShowFilter(b);
-  };
-  const callShowExclude = (b: never): void => {
-    setShowExclude(b);
-  };
   const columnsPrimaryImage: TableColumn<DataRow>[] = [
     {
       name: 'Imagem',
@@ -100,16 +89,47 @@ const Sample = (): JSX.Element => {
     order: 'DESC',
   };
   const [showPdv, setShowPdv] = useState(false);
-  const [idPdv, setIdPdv] = useState<string | undefined>('');
   const [pagination, setPagination] = useState(page);
   // const [form, setForm] = useState<CreatePDV | any>({} as CreatePDV);
+
+  async function handlePaginationChange(pageNumber: number): Promise<void> {
+    setPagination({
+      ...pagination,
+      page: pageNumber,
+    });
+    dispatch(
+      listRequest({
+        ...pagination,
+        page: pageNumber,
+      }),
+    );
+  }
+  const saveRequesetPdv = (data: Pdv): void => {
+    if (idPdv) dispatch(updateRequest({ ...data, id: idPdv }));
+    else dispatch(createRequest(data));
+  };
+  const callShow = (b: boolean): void => {
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    setShowPdv(b);
+  };
+  const callShowSub = (b: never): void => {
+    setShowSubPdvList(b);
+    setIdPdv('');
+  };
+  const callShowFilter = (b: never): void => {
+    setShowFilter(b);
+    setIdPdv('');
+  };
+  const callShowExclude = (b: never): void => {
+    setShowExclude(b);
+  };
 
   useEffect(() => {
     if (!checkUser.call && checkUser.logged) {
       if (!pdv.loading && pdv.data && !pdv.data.page) {
         dispatch(listRequest(pagination));
       } else if (!pdv.error && pdv.data && pdv.data.page && pdv.data.page.total) {
-        setPagination(pdv.data.page);
+        setPagination({ ...pagination, ...pdv.data.page });
       }
     }
   }, [pdv]);
@@ -176,18 +196,7 @@ const Sample = (): JSX.Element => {
   //   setPagination(pagePagination.page);
   //   await handleFetch(pageNumber);
   // }
-  async function handlePaginationChange(pageNumber: number): Promise<void> {
-    setPagination({
-      ...pagination,
-      page: pageNumber,
-    });
-    dispatch(
-      listRequest({
-        ...pagination,
-        page: pageNumber,
-      }),
-    );
-  }
+
   return (
     <Fragment>
       <ModalConfirmation show={showExclude} setShow={setShowExclude} />
@@ -198,7 +207,13 @@ const Sample = (): JSX.Element => {
         setShowSubPdvList={callShowSub}
         setShowExclude={callShowExclude}
       />
-      <RegisterPdv show={showPdv} setShow={callShow} _id={idPdv} />
+      <RegisterPdv
+        show={showPdv}
+        setShow={callShow}
+        pdvid={idPdv}
+        saveRequest={saveRequesetPdv}
+        reload={() => handlePaginationChange(pagination.page)}
+      />
       <Container className="mainContainer" fluid={true}>
         <div className="d-flex justify-content-between" style={{ paddingBottom: '30px' }}>
           <div className="pageTitle" style={{ display: 'grid' }}>
@@ -228,6 +243,7 @@ const Sample = (): JSX.Element => {
           totalCount={pagination.total}
           pageSize={page.pageSize}
           onPageChange={pagee => handlePaginationChange(pagee)}
+          total={page.total}
         />
       </Container>
     </Fragment>

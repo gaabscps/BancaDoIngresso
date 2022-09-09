@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 // import type { PdvDataType } from '../../store/ducks/pdv/types';
+import { AxiosError, AxiosResponse } from 'axios';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -10,17 +11,23 @@ import Input from '../Utils/Input';
 // import ButtonGroupCustom from '../Utils/ButtonGroup';
 import { ModalCustom } from '../Utils/Modal';
 import InputFile from '../Utils/InputFile';
-import { createRequest, updateRequest, getRequest } from '../../store/ducks/pdv/actions';
+import { getRequest } from '../../store/ducks/pdv/actions';
 import { ApplicationState } from '../../store';
 import { PdvState } from '../../store/ducks/pdv/types';
-import PdvSave from '../../entities/PdvSave';
 import Pdv from '../../entities/Pdv';
+import api from '../../services/api';
 
 interface ModalPdvProps {
   show: boolean;
   setShow(value: boolean): void;
-  _id?: string;
+  pdvid?: string;
+  reload: () => Promise<void>;
 }
+interface DispatchProps {
+  saveRequest: (data: Pdv) => void;
+}
+
+type Props = ModalPdvProps & DispatchProps;
 
 const schema = yup.object().shape({
   name: yup.string().required(),
@@ -44,7 +51,7 @@ const schema = yup.object().shape({
   // latitude: yup.number().required(),
 });
 
-const RegisterPdv = ({ show, setShow, _id }: ModalPdvProps): JSX.Element => {
+const RegisterPdv = (props: Props): JSX.Element => {
   const dispatch = useDispatch();
   const pdvStorage = useSelector<ApplicationState, PdvState>(store => store.pdv);
   const [textModal, setTextModal] = useState({
@@ -63,41 +70,56 @@ const RegisterPdv = ({ show, setShow, _id }: ModalPdvProps): JSX.Element => {
   } = useForm<Pdv>({
     resolver: yupResolver(schema),
   });
+  // const createPdv = async (data: PdvSave): Promise<void> => {
+  //   await dispatch(createRequest(data));
+  // };
+
+  // const updatePdv = async (data: PdvSave): Promise<void> => {
+  //   await dispatch(updateRequest(data));
+  //   handlePaginationChange(pagination.page);
+  // };
+
+  const getPdv = async (id: string): Promise<void> => {
+    try {
+      const response: AxiosResponse<Pdv> = await api.get(`/pdv/${id}`);
+      const entity = response.data;
+      reset(entity);
+    } catch (err) {
+      const error = err as AxiosError;
+      throw new Error(error.message);
+    }
+  };
 
   useEffect(() => {
-    if (_id) {
-      setTextModal({
-        title: 'Editar PDV',
-        btnLabel: 'Editar',
-      });
-      dispatch(getRequest(_id));
-    } else {
-      setTextModal({
-        title: 'Cadastrar PDV',
-        btnLabel: 'Cadastrar',
-      });
+    if (props.show) {
+      if (props.pdvid) {
+        getPdv(props.pdvid);
+        setTextModal({
+          title: 'Editar PDV',
+          btnLabel: 'Editar',
+        });
+        dispatch(getRequest(props.pdvid));
+      } else {
+        reset({});
+        setTextModal({
+          title: 'Cadastrar PDV',
+          btnLabel: 'Cadastrar',
+        });
+      }
     }
-  }, [_id]);
+  }, [props.pdvid]);
 
   useEffect(() => {
     setFormPdv(pdvStorage.data.entity);
   }, [pdvStorage]);
 
   useEffect(() => {
-    if (show === true) {
+    if (props.show) {
       reset();
     } else {
       reset(formPdv);
     }
-  }, [show, pdvStorage]);
-
-  const createPdv = async (data: PdvSave): Promise<void> => {
-    await dispatch(createRequest(data));
-  };
-
-  const updatePdv = async (data: PdvSave): Promise<void> => {
-    await dispatch(updateRequest(data));
-  };
+  }, [props.show]);
 
   // const fileToBase64 = (file: File): Promise<string> =>
   //   new Promise((resolve, reject) => {
@@ -108,11 +130,21 @@ const RegisterPdv = ({ show, setShow, _id }: ModalPdvProps): JSX.Element => {
   //   });
 
   const onSubmit = async (data: Pdv): Promise<void> => {
-    try {
-      const dataFetch = { ...data };
+    //   try {
+    //     const dataFetch = { ...data };
 
-      if (_id) updatePdv(dataFetch);
-      else createPdv(dataFetch);
+    //     if (_id) updatePdv(dataFetch);
+    //     else createPdv(dataFetch);
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // };
+    try {
+      // if (idPos) props.saveRequest({ ...data, id: idPos });
+      // else await props.saveRequest(data);
+      await props.saveRequest(data);
+      await props.reload();
+      props.setShow(false);
     } catch (error) {
       console.log(error);
     }
@@ -124,8 +156,8 @@ const RegisterPdv = ({ show, setShow, _id }: ModalPdvProps): JSX.Element => {
 
   return (
     <ModalCustom
-      setShow={setShow}
-      show={show}
+      setShow={props.setShow}
+      show={props.show}
       title={textModal.title}
       isCard
       onBtnAction={handleSubmit(onSubmit)}
