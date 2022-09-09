@@ -31,25 +31,8 @@ interface DispatchProps {
 type Props = ModalPosProps & DispatchProps;
 
 const schema = yup.object().shape({
-  // name: yup.string().required('Nome do POS é obrigatório'),
-  // document: yup.string().required(),
-  // telephone: yup.string().required(),
-  // email: yup.string().required(),
-  // address: yup.object().shape({
-  //   zipCode: yup.string().required(),
-  //   district: yup.string().required(),
-  //   street: yup.string().required(),
-  //   number: yup.string().required(),
-  //   state: yup.string().required(),
-  //   city: yup.string().required(),
-  // }),
-  // imageBase64: yup.string().required(),
-  // facebookUrl: yup.string().required(),
-  // twitterUrl: yup.string().required(),
-  // linkedinUrl: yup.string().required(),
-  // complement: yup.string().required(),
-  // longitude: yup.number().required(),
-  // latitude: yup.number().required(),
+  name: yup.string().required('Nome do POS é obrigatório'),
+  serialNumber: yup.string().required('O N. de Série da POS é obrigatório'),
 });
 
 const statusOptions = [
@@ -59,7 +42,7 @@ const statusOptions = [
   { value: 3, label: 'POS inativa' },
 ];
 
-const RegisterPos = (props: Props): JSX.Element => {
+const RegisterPos = ({ show, setShow, idPos, reload, saveRequest }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const pdvStorage = useSelector<ApplicationState, PdvState>(store => store.pdv);
   // const posStorage = useSelector<ApplicationState, PosState>(store => store.pos);
@@ -92,9 +75,9 @@ const RegisterPos = (props: Props): JSX.Element => {
   };
 
   useEffect(() => {
-    if (props.show) {
-      if (props.idPos) {
-        getPos(props.idPos);
+    if (show) {
+      if (idPos) {
+        getPos(idPos);
         setTextModal({
           title: 'Editar POS',
           btnLabel: 'Editar POS',
@@ -107,7 +90,7 @@ const RegisterPos = (props: Props): JSX.Element => {
         });
       }
     }
-  }, [props.show]);
+  }, [show]);
 
   const getPdv = async (): Promise<void> => {
     await dispatch(getAllRequest());
@@ -115,27 +98,25 @@ const RegisterPos = (props: Props): JSX.Element => {
 
   const onSubmit = async (data: Pos): Promise<void> => {
     try {
-      // if (idPos) props.saveRequest({ ...data, id: idPos });
-      // else await props.saveRequest(data);
-      await props.saveRequest(data);
-      await props.reload();
-      props.setShow(false);
+      await saveRequest(data);
+      await reload();
+      setShow(false);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    if (props.show) {
+    if (show) {
       getPdv();
     }
-  }, [props.show]);
+  }, [show]);
 
   return (
     <ModalCustom
       title={textModal.title}
-      show={props.show}
-      setShow={props.setShow}
+      show={show}
+      setShow={setShow}
       isCard={true}
       onBtnAction={handleSubmit(onSubmit)}
       btnLabel={textModal.btnLabel}
@@ -151,7 +132,7 @@ const RegisterPos = (props: Props): JSX.Element => {
         />
         <Input
           label="Nº de série da POS"
-          type="text"
+          type="number"
           placeholder="Digite o nº de serie da POS"
           register={register}
           name="serialNumber"
@@ -163,6 +144,7 @@ const RegisterPos = (props: Props): JSX.Element => {
           name="status"
           placeholder="Selecione ou digite a situação da POS"
           control={control}
+          defaultValue={statusOptions[0]}
           error={errors?.status?.message}
         />
         <Select

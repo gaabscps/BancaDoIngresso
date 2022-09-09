@@ -22,6 +22,7 @@ interface SelectAutoCompleteProps {
   style?: React.CSSProperties;
   wrapperClass?: string;
   control?: any;
+  defaultValue?: OptionProps;
 }
 
 const SelectAutoComplete = (props: SelectAutoCompleteProps) => {
@@ -50,6 +51,7 @@ const SelectAutoComplete = (props: SelectAutoCompleteProps) => {
               styles={customStyles()}
               noOptionsMessage={() => 'Nenhum resultado encontrado'}
               value={props.options.find((option: OptionProps) => option.value === value)}
+              defaultValue={props.defaultValue}
               ref={ref}
             />
           )}
