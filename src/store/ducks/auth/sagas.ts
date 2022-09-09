@@ -96,8 +96,17 @@ export function* authChangePassword(data: any) {
   } catch (err) {
     const error = err as AxiosError;
     console.log('Error', error);
-    if (error?.response?.statusText === 'Bad Request') {
-      toast.error('Ops... A nova senha precisa seguir os parâmetros solicitados!!');
+    // if (error?.details === 'Ter tamanho mínimo 6 e no máximo 15 caracteres.') {
+    //   toast.error('Ops... Essa senha é muito curta!!');
+    // }
+    // if (error?.response?.statusText === 'Deve ter no mínimo uma letra maiúscula e minúscula.') {
+    //   toast.error('Ops... Essa senha precisa ter uma letra maiúscula!!');
+    // }
+    // if (error?.response?.statusText === 'Deve ter no mínimo um numero.') {
+    //   toast.error('Ops... Essa senha precisa ter um número.');
+    // }
+    if (error?.response?.statusText === 'Bad Request' || error?.response?.status === 400) {
+      toast.warn('Ops... A nova senha precisa seguir os parâmetros solicitados!!');
     }
     yield put(changePasswordFailure(parse(error)));
   }

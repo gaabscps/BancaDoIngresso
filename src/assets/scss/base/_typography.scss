@@ -74,6 +74,7 @@ blockquote {
 
 svg {
   vertical-align: baseline;
+  transition: 0.2s
 }
 
 input {
@@ -202,7 +203,8 @@ pre {
 .modal {
   .modal-body {
     .card {
-      box-shadow: none !important;
+      box-shadow: none;
+      border: none;
     }
   }
   .close {

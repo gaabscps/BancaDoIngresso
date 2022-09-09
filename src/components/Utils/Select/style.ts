@@ -5,12 +5,12 @@ export const customStyles = () => ({
     // width: '546px',
     height: '62px',
     borderRadius: '5px',
-    backgroundColor: state.isFocused ? '#e6e6e6' : '#f1f1f1',
+    backgroundColor: '#E6E6E6',
     border: state.isFocused ? '1px solid #000' : 'none', // TODO: refactor this
     boxShadow: state.isFocused && 'none',
 
     '&:hover': {
-      backgroundColor: '#e6e6e6',
+      backgroundColor: '#D9D9D9',
     },
   }),
 

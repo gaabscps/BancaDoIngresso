@@ -1,4 +1,4 @@
-export const states: any = [
+export const statesUf: any = [
   { value: 'AC', label: 'AC' },
   { value: 'AL', label: 'AL' },
   { value: 'AP', label: 'AP' },

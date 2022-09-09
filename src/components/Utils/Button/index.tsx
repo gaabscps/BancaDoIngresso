@@ -5,7 +5,7 @@ export interface ButtonProps
     React.AriaAttributes {}
 
 type themeProps = 'dark' | 'outlineDark' | 'noneBorder' | 'red';
-type sizeProps = 'md' | 'lg';
+type sizeProps = 'sm' | 'md' | 'lg';
 
 interface ButtonCustomProps extends ButtonProps {
   children: React.ReactNode;
@@ -24,6 +24,7 @@ const Button: React.FC<ButtonCustomProps> = (props: ButtonCustomProps) => {
   };
 
   const schemeSize = {
+    sm: 'btn-sm',
     md: 'btn-md',
     lg: 'btn-lg',
   };

@@ -64,7 +64,7 @@ const Sample = (): JSX.Element => {
 
   return (
     <Fragment>
-      <RegisterPdv show={showPdv} setShowPdv={setShowPdv} />
+      {/* <RegisterPdv show={showPdv} setShow={setShowPdv} /> */}
 
       <Container className="mainContainer" fluid={true}>
         <div className="d-flex justify-content-center stepContainer">
