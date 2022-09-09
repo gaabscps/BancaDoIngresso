@@ -80,30 +80,32 @@ const RegisterPos = (props: Props): JSX.Element => {
   });
 
   // TO DO: Separar requisição da parte de UI
-  const getPos = async (data: any) => {
+  const getPos = async (id: string): Promise<void> => {
     try {
-      const response: AxiosResponse<Pos> = await api.get(`/pos/${data}`);
+      const response: AxiosResponse<Pos> = await api.get(`/pos/${id}`);
       const entity = response.data;
-      console.log('entity AQUI', entity);
       reset(entity);
     } catch (err) {
       const error = err as AxiosError;
-      console.log(error);
+      throw new Error(error.message);
     }
   };
 
   useEffect(() => {
-    if (props.idPos) {
-      getPos(props.idPos);
-      setTextModal({
-        title: 'Editar POS',
-        btnLabel: 'Editar POS',
-      });
-    } else {
-      setTextModal({
-        title: 'Cadastrar nova POS',
-        btnLabel: 'Cadastrar nova POS',
-      });
+    if (props.show) {
+      if (props.idPos) {
+        getPos(props.idPos);
+        setTextModal({
+          title: 'Editar POS',
+          btnLabel: 'Editar POS',
+        });
+      } else {
+        reset({});
+        setTextModal({
+          title: 'Cadastrar nova POS',
+          btnLabel: 'Cadastrar nova POS',
+        });
+      }
     }
   }, [props.show]);
 

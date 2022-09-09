@@ -14,7 +14,6 @@ import { ApplicationState } from '../../../store';
 import {
   listRequest,
   deleteRequest,
-  getRequest,
   updateRequest,
   createRequest,
 } from '../../../store/ducks/pos/actions';
@@ -63,9 +62,18 @@ const Sample = (): JSX.Element => {
   const checkUser = useSelector<ApplicationState, CheckUserState>(store => store.checkUser);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getRequest(idPos));
-  }, [showPos]);
+  async function handlePaginationChange(pageNumber: number): Promise<void> {
+    setPagination({
+      ...pagination,
+      page: pageNumber,
+    });
+    dispatch(
+      listRequest({
+        ...pagination,
+        page: pageNumber,
+      }),
+    );
+  }
 
   const saveRequesetPos = (data: Pos): void => {
     if (idPos) dispatch(updateRequest({ ...data, id: idPos }));
@@ -73,9 +81,11 @@ const Sample = (): JSX.Element => {
   };
 
   const callShowPos = (show: boolean): void => {
+    setIdPos('');
     setShowPos(show);
   };
   const callShowExclude = (show: boolean): void => {
+    setIdPos('');
     setShowExclude(show);
   };
   const callShowFilter = (show: boolean): void => {
@@ -85,6 +95,7 @@ const Sample = (): JSX.Element => {
   const deletePos = (): void => {
     dispatch(deleteRequest(idPos));
     callShowExclude(false);
+    handlePaginationChange(pagination.page);
   };
 
   useEffect(() => {
@@ -165,19 +176,6 @@ const Sample = (): JSX.Element => {
         ),
       }))
     : [{ id: '', name: '', date: '', currentPdv: '', serialNumber: '', pdv: '' }];
-
-  async function handlePaginationChange(pageNumber: number): Promise<void> {
-    setPagination({
-      ...pagination,
-      page: pageNumber,
-    });
-    dispatch(
-      listRequest({
-        ...pagination,
-        page: pageNumber,
-      }),
-    );
-  }
   return (
     <>
       <Filter show={showFilter} setShowFilter={callShowFilter} />
