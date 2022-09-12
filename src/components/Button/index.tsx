@@ -8,7 +8,7 @@ interface ButtonCustomProps extends ButtonProps {
   title: string;
   disabled?: boolean;
   theme?: 'dark' | 'outlineDark' | 'noneBorder' | 'red';
-  size?: 'md' | 'lg';
+  size?: 'sm' | 'md' | 'lg';
   type?: 'submit' | 'reset' | 'button';
   style?: React.CSSProperties;
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
@@ -32,6 +32,7 @@ export const Button: React.FC<ButtonCustomProps> = ({
   }[theme];
 
   const finalSize = {
+    sm: 'btn-sm',
     md: 'btn-md',
     lg: 'btn-lg',
   }[size];

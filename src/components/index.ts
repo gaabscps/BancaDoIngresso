@@ -4,6 +4,7 @@ import { Footer } from './Footer';
 import { Loading } from './Loading';
 import { InputText } from './InputText';
 import { Button } from './Button';
+import { Dialog } from './Dialog';
 import { Error400 } from './Errors/error400';
 import { Error401 } from './Errors/error401';
 import { Error403 } from './Errors/error403';
@@ -18,6 +19,7 @@ export {
   Loading,
   InputText,
   Button,
+  Dialog,
   Error400,
   Error401,
   Error403,

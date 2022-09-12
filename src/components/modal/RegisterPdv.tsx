@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 // import type { PdvDataType } from '../../store/ducks/pdv/types';
 import { AxiosError, AxiosResponse } from 'axios';
 import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
+// import { yupResolver } from '@hookform/resolvers/yup';
+// import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import Pdv from '@/model/Pdv';
 import { statesUf } from '../../constant/states';
@@ -29,27 +29,27 @@ interface DispatchProps {
 
 type Props = ModalPdvProps & DispatchProps;
 
-const schema = yup.object().shape({
-  name: yup.string().required(),
-  document: yup.string().required(),
-  telephone: yup.string().required(),
-  email: yup.string().required(),
-  address: yup.object().shape({
-    zipCode: yup.string().required(),
-    district: yup.string().required(),
-    street: yup.string().required(),
-    number: yup.string().required(),
-    state: yup.string().required(),
-    city: yup.string().required(),
-  }),
-  // imageBase64: yup.string().required(),
-  // facebookUrl: yup.string().required(),
-  // twitterUrl: yup.string().required(),
-  // linkedinUrl: yup.string().required(),
-  // complement: yup.string().required(),
-  // longitude: yup.number().required(),
-  // latitude: yup.number().required(),
-});
+// const schema = yup.object().shape({
+//   name: yup.string().required(),
+//   document: yup.string().required(),
+//   telephone: yup.string().required(),
+//   email: yup.string().required(),
+//   address: yup.object().shape({
+//     zipCode: yup.string().required(),
+//     district: yup.string().required(),
+//     street: yup.string().required(),
+//     number: yup.string().required(),
+//     state: yup.string().required(),
+//     city: yup.string().required(),
+//   }),
+//   // imageBase64: yup.string().required(),
+//   // facebookUrl: yup.string().required(),
+//   // twitterUrl: yup.string().required(),
+//   // linkedinUrl: yup.string().required(),
+//   // complement: yup.string().required(),
+//   // longitude: yup.number().required(),
+//   // latitude: yup.number().required(),
+// });
 
 const RegisterPdv = (props: Props): JSX.Element => {
   const dispatch = useDispatch();
@@ -68,7 +68,7 @@ const RegisterPdv = (props: Props): JSX.Element => {
     watch,
     reset,
   } = useForm<Pdv>({
-    resolver: yupResolver(schema),
+    // resolver: yupResolver(schema),
   });
   // const createPdv = async (data: PdvSave): Promise<void> => {
   //   await dispatch(createRequest(data));

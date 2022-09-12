@@ -1,5 +1,6 @@
 import { AUTH_ROUTES } from '@/features/auth/navigation';
 import { DASHBOARD_ROUTES } from '@/features/dashboard/navigation';
+import { PDV_ROUTES } from '@/features/pdv/navigation';
 
 const path = {
   Initial: {
@@ -17,7 +18,7 @@ const path = {
       edit: '/dashboard/users-groups/edit/:id',
     },
     Pdv: {
-      itself: '/dashboard/pdv',
+      ...PDV_ROUTES,
     },
     Pos: {
       itself: '/dashboard/pos',

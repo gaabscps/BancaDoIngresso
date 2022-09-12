@@ -3,6 +3,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { Navigation } from '@/navigation';
+import DialogProvider from '@/hooks/useDialog';
 import store from '@/store';
 
 import 'dayjs';
@@ -14,7 +15,9 @@ export const App: React.FC = (): JSX.Element => (
   <Fragment>
     <Provider store={store}>
       <BrowserRouter>
-        <Navigation />
+        <DialogProvider>
+          <Navigation />
+        </DialogProvider>
       </BrowserRouter>
     </Provider>
 
