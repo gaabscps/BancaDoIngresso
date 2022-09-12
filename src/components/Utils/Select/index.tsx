@@ -22,6 +22,7 @@ interface SelectAutoCompleteProps {
   style?: React.CSSProperties;
   wrapperClass?: string;
   control?: any;
+  defaultValue?: OptionProps;
 }
 
 const SelectAutoComplete = (props: SelectAutoCompleteProps) => {
@@ -41,15 +42,17 @@ const SelectAutoComplete = (props: SelectAutoCompleteProps) => {
         <Controller
           name={props.name}
           control={props.control}
-          render={({ field: { value, onChange, onBlur } }) => (
+          render={({ field: { value, onChange, onBlur, ref } }) => (
             <Select
               options={props.options}
               placeholder={props.placeholder}
-              onChange={onChange}
+              onChange={isValue => onChange(isValue.value)}
               onBlur={onBlur}
               styles={customStyles()}
               noOptionsMessage={() => 'Nenhum resultado encontrado'}
-              // defaultValue={}
+              value={props.options.find((option: OptionProps) => option.value === value)}
+              defaultValue={props.defaultValue}
+              ref={ref}
             />
           )}
         />

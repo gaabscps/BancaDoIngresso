@@ -17,7 +17,7 @@ import { ApplicationState } from '../../../../../store';
 import { EventState } from '../../../../../store/ducks/event/types';
 import { generalInformationRequest } from '../../../../../store/ducks/event/actions';
 import EventGeneralInformation from '../../../../../model/EventGeneralInformation';
-import { states } from '../../../../../constant/states';
+import { statesUf } from '../../../../../constant/states';
 import { cities } from '../../../../../constant/cities';
 import { listRequestCategory } from '../../../../../store/ducks/event-category/actions';
 import { EventCategoryState } from '../../../../../store/ducks/event-category/types';

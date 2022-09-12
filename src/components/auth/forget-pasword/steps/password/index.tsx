@@ -107,7 +107,7 @@ const Password = (props: Props): JSX.Element => {
               <div className="auxGrayText" style={{ marginTop: '15px' }}>
                 • No mínimo 8 caracteres;
                 <br /> • Pelo menos um número;
-                <br /> • pelo menos um caractere maiúsculo.{' '}
+                <br /> • Pelo menos um caractere maiúsculo.{' '}
               </div>
             </div>
             <div style={{ marginTop: '30px' }}>

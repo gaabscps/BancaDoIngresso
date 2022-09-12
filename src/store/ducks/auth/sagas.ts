@@ -71,6 +71,7 @@ export function* authRecoverPassword(data: any) {
     yield put(recoverPasswordSuccess(authData));
   } catch (err) {
     const error = err as AxiosError;
+    console.log('Error', error);
     if (error?.response?.statusText === 'Not Found') {
       toast.error('Ops... Esse CPF não foi encontrado');
     }

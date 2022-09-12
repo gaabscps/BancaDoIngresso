@@ -4,8 +4,6 @@
 import { call, put, select } from 'redux-saga/effects';
 import { AxiosResponse, AxiosError } from 'axios';
 import {
-  activateFailure,
-  activateSuccess,
   createFailure,
   createSuccess,
   deleteFailure,
@@ -14,8 +12,6 @@ import {
   getAllSuccess,
   getFailure,
   getSuccess,
-  inactivateFailure,
-  inactivateSuccess,
   listFailure,
   listSuccess,
   updateSuccess,
@@ -28,19 +24,6 @@ import { parse } from '../../../model/CustomError';
 import Page from '../../../model/Page';
 import Pos from '../../../model/Pos';
 import api from '../../../services/api';
-
-export function* activatePos(data: any) {
-  try {
-    yield call(api.patch, `/pos/activate/${data.payload}`);
-    yield put(activateSuccess());
-  } catch (err) {
-    const error = err as AxiosError;
-    if (error.response?.status === 401) {
-      yield put(checkUserCall());
-    }
-    yield put(activateFailure(parse(error)));
-  }
-}
 
 export function* createPos(data: any) {
   try {
@@ -120,19 +103,6 @@ export function* getPos(data: any) {
       yield put(checkUserCall());
     }
     yield put(getFailure(parse(error)));
-  }
-}
-
-export function* inactivatePos(data: any) {
-  try {
-    yield call(api.patch, `/pos/inactivate/${data.payload}`);
-    yield put(inactivateSuccess());
-  } catch (err) {
-    const error = err as AxiosError;
-    if (error.response?.status === 401) {
-      yield put(checkUserCall());
-    }
-    yield put(inactivateFailure(parse(error)));
   }
 }
 
