@@ -3,12 +3,11 @@ import { Col, Form, Row } from 'reactstrap';
 import { InputText, Button } from '@/components';
 import useForm from '@/hooks/useForm';
 import validators from '@/helpers/validators';
-// import Pdv from '@/model/Pdv';
 import { updateMask as updateMaskCPF } from '@/helpers/masks/cpf';
 import { updateMask as updateMaskCEP } from '@/helpers/masks/cep';
-import { usePdv } from '@/features/pdv/hook/usePdv';
 
-interface RegisterContentProps {
+interface EditContentProps {
+  data: any;
   onSubmit: (value: any) => void;
 }
 
@@ -18,15 +17,11 @@ enum FormInputName {
   zipcode = 'zipcode',
 }
 
-export const RegisterContent: React.FC<RegisterContentProps> = ({ onSubmit }) => {
-  const { pdvState } = usePdv();
-
-  console.log('state', pdvState);
-
+export const EditContent: React.FC<EditContentProps> = ({ data, onSubmit }) => {
   const { formData, formErrors, onChangeFormInput, isFormValid } = useForm({
     initialData: {
-      document: '',
-      zipcode: '',
+      document: data.document ?? '',
+      zipcode: data.zipcode ?? '',
     },
     validators: {
       document: [validators.required, validators.cpf],
@@ -38,15 +33,12 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({ onSubmit }) =>
     },
   });
 
-  const handleOnRegister = (): void => {
+  const handleOnEdit = (): void => {
     if (isFormValid()) {
-      // TODO: change type to Pdv
-
       const payload: any = {
         document: formData[FormInputName.document],
         zipcode: formData[FormInputName.zipcode],
       };
-
       onSubmit(payload);
     }
   };
@@ -56,7 +48,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({ onSubmit }) =>
       noValidate={true}
       onSubmit={(e): void => {
         e.preventDefault();
-        handleOnRegister();
+        handleOnEdit();
       }}
     >
       <Row>
@@ -88,8 +80,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({ onSubmit }) =>
       <hr />
 
       <div className="d-flex justify-content-end">
-        <h1>{pdvState?.document ?? 'banana'}</h1>
-        <Button title="Salvar" onClick={handleOnRegister} />
+        <Button title="Salvar" onClick={handleOnEdit} />
       </div>
     </Form>
   );
