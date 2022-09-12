@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
+import Page from '@/model/Page';
 import CloseModal from '../../assets/images/svg/CloseModal';
 import Button from '../Utils/Button';
 import Select from '../Utils/Select';
@@ -11,7 +12,6 @@ import RadioCustom from '../Utils/Radio';
 import { ApplicationState } from '../../store';
 import { PosState } from '../../store/ducks/pos/types';
 import { listRequest } from '../../store/ducks/pos/actions';
-import Page from '../../entities/Page';
 
 interface FilterCustomProps {
   show: boolean;

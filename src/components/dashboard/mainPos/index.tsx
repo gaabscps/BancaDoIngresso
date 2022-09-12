@@ -2,14 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { Container } from 'reactstrap';
 import { useSelector } from 'react-redux/es/hooks/useSelector';
 import { useDispatch } from 'react-redux/es/hooks/useDispatch';
-import moment from 'moment';
+import dayjs from 'dayjs';
+import Page from '@/model/Page';
+import Pos from '@/model/Pos';
+import PosStatus from '@/model/PosStatus';
 import { CollumnStatus, CustomTable, TableColumn } from '../../Utils/Table';
 import { ModalConfirmation } from '../../Utils/Modal/ModalConfirmation';
 import { ReactComponent as Pen } from '../../../assets/images/svg/pen.svg';
 import { ReactComponent as Status } from '../../../assets/images/svg/status.svg';
 import { ReactComponent as Trash } from '../../../assets/images/svg/lixeira.svg';
 import Button from '../../Utils/Button';
-import Page from '../../../entities/Page';
 import { ApplicationState } from '../../../store';
 import {
   listRequest,
@@ -19,11 +21,9 @@ import {
 } from '../../../store/ducks/pos/actions';
 import { CheckUserState } from '../../../store/ducks/check-user/types';
 import { PosState } from '../../../store/ducks/pos/types';
-import Pos from '../../../entities/Pos';
 import Filter from '../../modal/FilterPos';
 import FilterVector from '../../../assets/images/svg/FilterVector';
 import RegisterPos from '../../modal/RegisterPos';
-import PosStatus from '../../../entities/PosStatus';
 import Pagination from '../../Utils/Pagination';
 
 interface DataRow {
@@ -153,7 +153,7 @@ const Sample = (): JSX.Element => {
         name: (
           <CollumnStatus statusColor={changeColorCollumn(item.status)}>{item.name}</CollumnStatus>
         ),
-        date: moment(item.expirationDate, 'YYYY-DD-MM hh:mm:ss').format('DD/MM/YYYY'),
+        date: dayjs(item.expirationDate, 'YYYY-DD-MM hh:mm:ss').format('DD/MM/YYYY'),
         currentPdv: item.pdv?.name,
         serial: item.serialNumber,
         actions: (

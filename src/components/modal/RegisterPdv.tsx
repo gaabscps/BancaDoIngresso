@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
+import Pdv from '@/model/Pdv';
 import { statesUf } from '../../constant/states';
 import Select from '../Utils/Select';
 import Input from '../Utils/Input';
@@ -14,7 +15,6 @@ import InputFile from '../Utils/InputFile';
 import { getRequest } from '../../store/ducks/pdv/actions';
 import { ApplicationState } from '../../store';
 import { PdvState } from '../../store/ducks/pdv/types';
-import Pdv from '../../entities/Pdv';
 import api from '../../services/api';
 
 interface ModalPdvProps {
