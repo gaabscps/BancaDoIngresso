@@ -103,7 +103,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
         batchClosed: formData[FormInputName.batchClosed],
         askPasswordInactivity: formData[FormInputName.askPasswordInactivity],
         inactivityTimeout: formData[FormInputName.inactivityTimeout],
-        adrress: {
+        address: {
           id: dataList?.address.id ?? null,
           zipCode: formData[FormInputName.zipCode],
           state: formData[FormInputName.state],

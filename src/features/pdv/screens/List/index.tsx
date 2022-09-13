@@ -52,6 +52,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       const { data } = await api.post<any>('/pdv', values);
       console.log('creact success', data);
       onChange({ document: values.document });
+      handleRenderListPdv(pagePdv);
       handleOnClose();
     } catch (error) {
       console.log('error', error);
@@ -61,8 +62,9 @@ export const PdvScreen: React.FC = (): JSX.Element => {
   const handleOnEditSave = async (values: any): Promise<void> => {
     try {
       const { data } = await api.put<any>('/pdv', values);
-      console.log('delete success', data);
+      console.log('update success', data);
       // onChange({ document: values.document });
+      handleRenderListPdv(pagePdv);
       handleOnClose();
     } catch (error) {
       console.log('error', error);
@@ -102,8 +104,6 @@ export const PdvScreen: React.FC = (): JSX.Element => {
   };
 
   const handleOnShowDeletePdv = async (value: any): Promise<void> => {
-    // const { data } = await api.delete(`/pdv/${value}`);
-
     dialog.show({
       title: '',
       children: <DeleteContent id={value} onSubmit={handleOnDeletePdv} onClose={handleOnClose} />,
