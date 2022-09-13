@@ -3,12 +3,13 @@ import { Col, Form, Row } from 'reactstrap';
 import { InputText, Button } from '@/components';
 import useForm from '@/hooks/useForm';
 import validators from '@/helpers/validators';
-import { updateMask as updateMaskCPF } from '@/helpers/masks/cpf';
-import { updateMask as updateMaskCEP } from '@/helpers/masks/cep';
+import { updateMask as updateMaskCPFOrCNPJ } from '@/helpers/masks/cpfCnpj';
+import { updateMask as updateMaskCEP, isValid as isValidCEP } from '@/helpers/masks/cep';
 import { updateMask as updateMaskMobilePhone } from '@/helpers/masks/mobilePhone';
 import SelectAutoComplete from '@/components/Select';
 import ButtonGroup from '@/components/ButtonGroup';
 import Pdv from '@/model/Pdv';
+import cep from 'cep-promise';
 
 interface RegisterContentProps {
   document?: string;
@@ -51,15 +52,15 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
   const { formData, formErrors, onChangeFormInput, isFormValid } = useForm({
     initialData: {
       name: dataList?.name ?? '',
-      document: dataList?.document ?? '',
-      telephone: dataList?.telephone ?? '',
+      document: updateMaskCPFOrCNPJ(dataList?.document ?? ''),
+      telephone: updateMaskMobilePhone(dataList?.telephone ?? ''),
       email: dataList?.email ?? '',
       imageBase64: dataList?.imageBase64 ?? '',
       facebookUrl: dataList?.facebookUrl ?? '',
       instagramUrl: dataList?.instagramUrl ?? '',
       twitterUrl: dataList?.twitterUrl ?? '',
       linkedinUrl: dataList?.linkedinUrl ?? '',
-      zipCode: dataList?.address.zipCode ?? '',
+      zipCode: updateMaskCEP(dataList?.address.zipCode ?? ''),
       state: dataList?.address.state ?? '',
       city: dataList?.address.city ?? '',
       district: dataList?.address.district ?? '',
@@ -90,7 +91,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
       // users: [validators.required],
     },
     formatters: {
-      document: updateMaskCPF,
+      document: updateMaskCPFOrCNPJ,
       zipCode: updateMaskCEP,
       telephone: updateMaskMobilePhone,
     },
@@ -160,7 +161,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             name="document"
             label="CPF/CNPJ"
             placeholder="Digite o CPF ou CNPJ do PDV"
-            maxLength={14}
+            maxLength={18}
             value={formData[FormInputName.document]}
             onChange={e => onChangeFormInput(FormInputName.document)(e.target.value)}
             error={formErrors.document && formErrors.document[0]}
@@ -179,7 +180,16 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             placeholder="Digite o CEP do PDV"
             maxLength={9}
             value={formData[FormInputName.zipCode]}
-            onChange={e => onChangeFormInput(FormInputName.zipCode)(e.target.value)}
+            onChange={e => {
+              onChangeFormInput(FormInputName.zipCode)(e.target.value);
+              if (e.target.value.length === 9 && isValidCEP(e.target.value)) {
+                cep(e.target.value).then(data => {
+                  onChangeFormInput(FormInputName.district)(data.neighborhood);
+                  onChangeFormInput(FormInputName.number)(data.city);
+                });
+              }
+            }}
+            onBlur={e => onChangeFormInput(FormInputName.zipCode)(e.target.value)}
             error={formErrors.zipCode && formErrors.zipCode[0]}
           />
           {/* TODO: add select state and city */}
