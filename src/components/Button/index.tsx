@@ -19,7 +19,7 @@ export const Button: React.FC<ButtonCustomProps> = ({
   disabled,
   theme = 'dark',
   size = 'md',
-  type = 'submit',
+  type = 'button',
   className,
   style,
   onClick,

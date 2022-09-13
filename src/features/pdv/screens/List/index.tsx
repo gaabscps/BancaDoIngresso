@@ -18,11 +18,11 @@ export const PdvScreen: React.FC = (): JSX.Element => {
   const handleOnClose = (): void => dialog.hide();
 
   const handleOnRegister = (value: any): void => {
+    console.log('pdvState aqui!!', pdvState.document);
     console.log('logou!!', value);
 
     onChange({ document: value.document });
-
-    console.log('aqui', pdvState);
+    // handleOnClose();
   };
 
   // const handleOnEditSave = (): void => {
@@ -32,7 +32,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
   const handleOnShowRegister = (): void => {
     dialog.show({
       title: 'Cadastro de PDV',
-      children: <RegisterContent onSubmit={handleOnRegister} />,
+      children: <RegisterContent document={pdvState.document} onSubmit={handleOnRegister} />,
       onClose: handleOnClose,
     });
   };
@@ -48,5 +48,5 @@ export const PdvScreen: React.FC = (): JSX.Element => {
   //   });
   // };
 
-  return <PdvContainer onShowRegister={handleOnShowRegister} />;
+  return <PdvContainer document={pdvState.document} onShowRegister={handleOnShowRegister} />;
 };

@@ -1,5 +1,9 @@
-import React, { useState, createContext, useContext } from 'react';
+import React, { useState, createContext, useContext, useCallback, useMemo } from 'react';
 import { Dialog } from '@/components';
+
+interface DialogProviderProps {
+  children: React.ReactNode;
+}
 
 interface DialogProviderValue {
   show(options: DialogOptions): void;
@@ -21,25 +25,24 @@ const DialogContext = createContext<DialogProviderValue>({
   hide: () => undefined,
 });
 
-export const useDialog = (): DialogProviderValue => useContext(DialogContext);
-
-const DialogProvider = ({ children }: { children: React.ReactNode }): React.ReactElement => {
+export const DialogProvider = ({ children }: DialogProviderProps): JSX.Element => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [options, setOptions] = useState<Omit<DialogProviderValue, 'onClose' | 'visible'> | any>(
     {},
   );
   const [visible, setVisible] = useState(false);
 
-  const show = (currentOptions: DialogOptions): void => {
+  const show = useCallback((currentOptions: DialogOptions): void => {
     setOptions(currentOptions);
     setVisible(true);
-  };
+  }, []);
 
-  const hide = (): void => {
-    setVisible(false);
-  };
+  const hide = (): void => setVisible(false);
+
+  const providerValue = useMemo(() => ({ show, hide }), [show, hide]);
 
   return (
-    <DialogContext.Provider value={{ show, hide }}>
+    <DialogContext.Provider value={providerValue}>
       {children}
       {options.children && (
         <Dialog
@@ -56,4 +59,4 @@ const DialogProvider = ({ children }: { children: React.ReactNode }): React.Reac
   );
 };
 
-export default DialogProvider;
+export const useDialog = (): DialogProviderValue => useContext(DialogContext);

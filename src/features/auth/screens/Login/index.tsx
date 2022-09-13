@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { ApplicationState } from '@/store';
-import { loginRequest } from '@/store/ducks/auth/actions';
-import { AuthState } from '@/store/ducks/auth/types';
+import { Buffer } from 'buffer';
+import { setItem } from '@/helpers/common/localStorage';
+import { REACT_APP_AUTH, REACT_APP_USER } from '@/utils/config';
 import useForm from '@/hooks/useForm';
 import validators from '@/helpers/validators';
 import { updateMask } from '@/helpers/masks/cpf';
-
+import { Auth } from '@/model/Auth';
+import api, { AxiosError } from '@/services/api';
 import { path } from '@/navigation/path';
+
 import { LoginContainer, States, FormInputName } from './ui';
 
 export const LoginScreen: React.FC = (): JSX.Element => {
   const history = useHistory();
-  const { error } = useSelector<ApplicationState, AuthState>(store => store.auth);
+  const [state, setState] = useState<States>(States.default);
 
-  const dispatch = useDispatch();
   const [shouldShowPasswordToText, setShouldShowPasswordToText] = useState(false);
 
   const { formData, formErrors, setErrors, onChangeFormInput, isFormValid } = useForm({
@@ -24,7 +24,7 @@ export const LoginScreen: React.FC = (): JSX.Element => {
       password: '',
     },
     validators: {
-      document: [validators.required, validators.cpf],
+      document: [validators.required],
       password: [
         validators.required,
         validators.minLength(8),
@@ -38,8 +38,39 @@ export const LoginScreen: React.FC = (): JSX.Element => {
   });
 
   const handleOnSubmit = async (): Promise<void> => {
-    if (isFormValid()) {
-      dispatch(loginRequest(formData[FormInputName.document], formData[FormInputName.password]));
+    try {
+      if (isFormValid()) {
+        setState(States.loading);
+
+        const payload = Buffer.from(
+          `${formData[FormInputName.document]}:${formData[FormInputName.password]}`,
+          'utf8',
+        ).toString('base64');
+
+        const { data } = await api.post<Auth>(
+          '/auth',
+          {
+            grant_type: 'client_credentials',
+          },
+          {
+            headers: {
+              Authorization: `Basic ${payload}`,
+            },
+          },
+        );
+
+        setItem(String(REACT_APP_AUTH), data);
+        setItem(String(REACT_APP_USER), data.user);
+
+        history.push(path.Dashboard.itself);
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      setErrors({
+        document: [err.message],
+      });
+    } finally {
+      setState(States.default);
     }
   };
 
@@ -48,18 +79,9 @@ export const LoginScreen: React.FC = (): JSX.Element => {
 
   const handleGoToForgotPassword = (): void => history.push(path.Initial.ForgetPassword);
 
-  useEffect(() => {
-    if (error) {
-      setErrors({
-        document: ['Credencial inválida, por favor verifique e tente novamente.'],
-      });
-    }
-  }, [error]);
-
   return (
     <LoginContainer
-      state={States.default}
-      // isLoading={isLoading}
+      state={state}
       shouldShowPasswordToText={shouldShowPasswordToText}
       formData={formData}
       formErrors={formErrors}

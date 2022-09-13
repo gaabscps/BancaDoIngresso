@@ -6,9 +6,9 @@ import validators from '@/helpers/validators';
 // import Pdv from '@/model/Pdv';
 import { updateMask as updateMaskCPF } from '@/helpers/masks/cpf';
 import { updateMask as updateMaskCEP } from '@/helpers/masks/cep';
-import { usePdv } from '@/features/pdv/hook/usePdv';
 
 interface RegisterContentProps {
+  document: string;
   onSubmit: (value: any) => void;
 }
 
@@ -18,11 +18,7 @@ enum FormInputName {
   zipcode = 'zipcode',
 }
 
-export const RegisterContent: React.FC<RegisterContentProps> = ({ onSubmit }) => {
-  const { pdvState } = usePdv();
-
-  console.log('state', pdvState);
-
+export const RegisterContent: React.FC<RegisterContentProps> = ({ document, onSubmit }) => {
   const { formData, formErrors, onChangeFormInput, isFormValid } = useForm({
     initialData: {
       document: '',
@@ -88,8 +84,9 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({ onSubmit }) =>
       <hr />
 
       <div className="d-flex justify-content-end">
-        <h1>{pdvState?.document ?? 'banana'}</h1>
-        <Button title="Salvar" onClick={handleOnRegister} />
+        {/* //:TODO !important add type props to "button" */}
+        <h1>{document}</h1>
+        <Button title="Salvar" type="button" onClick={handleOnRegister} />
       </div>
     </Form>
   );

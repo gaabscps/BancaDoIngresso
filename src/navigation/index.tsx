@@ -4,6 +4,7 @@ import { Error404 } from '@/components';
 import { AuthNavigation } from '@/features/auth/navigation';
 import { DashboardNavigation } from '@/features/dashboard/navigation';
 import { PdvNavigation } from '@/features/pdv/navigation';
+import { PdvProvider } from '@/features/pdv/hook/usePdv';
 import { renderRoutes } from './utils';
 import { Route } from './Route';
 import { path } from './path';
@@ -14,12 +15,14 @@ const Navigation: React.FC = (): JSX.Element => {
   const pdvRoutes = renderRoutes(PdvNavigation);
 
   return (
-    <Switch>
-      {authRoutes}
-      {dashboardRoutes}
-      {pdvRoutes}
-      <Route path={path.Initial.All} component={Error404} />
-    </Switch>
+    <PdvProvider>
+      <Switch>
+        {authRoutes}
+        {dashboardRoutes}
+        {pdvRoutes}
+        <Route path={path.Initial.All} component={Error404} />
+      </Switch>
+    </PdvProvider>
   );
 };
 

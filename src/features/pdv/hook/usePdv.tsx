@@ -1,4 +1,8 @@
-import { createContext, useCallback, useContext, useState } from 'react';
+import { createContext, useCallback, useContext, useMemo, useState } from 'react';
+
+interface PdvProviderProps {
+  children: React.ReactNode;
+}
 
 interface PdvState {
   id: string;
@@ -13,7 +17,7 @@ interface PdvProviderValue {
 
 const initialState: PdvState = {
   id: '',
-  document: '005.075.572-20',
+  document: '',
 };
 
 const PdvContext = createContext<PdvProviderValue>({
@@ -22,7 +26,7 @@ const PdvContext = createContext<PdvProviderValue>({
   onClean: () => undefined,
 });
 
-export const PdvProvider = ({ children }: { children: React.ReactNode }): React.ReactElement => {
+export const PdvProvider = ({ children }: PdvProviderProps): JSX.Element => {
   const [pdvState, setPdvState] = useState<PdvState>(initialState);
 
   const onChange = useCallback((data: Partial<PdvState>): void => {
@@ -31,9 +35,14 @@ export const PdvProvider = ({ children }: { children: React.ReactNode }): React.
 
   const onClean = (): void => setPdvState(initialState);
 
+  const providerValue = useMemo(
+    () => ({ pdvState, onChange, onClean }),
+    [pdvState, onChange, onClean],
+  );
+
   return (
     // eslint-disable-next-line react/react-in-jsx-scope
-    <PdvContext.Provider value={{ pdvState, onChange, onClean }}>{children}</PdvContext.Provider>
+    <PdvContext.Provider value={providerValue}>{children}</PdvContext.Provider>
   );
 };
 

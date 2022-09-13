@@ -16,7 +16,7 @@ export const Error404 = (): JSX.Element => (
             <p className="sub-content">Página não encontrada.</p>
           </Col>
           <Link to={`/`}>
-            <Button color="danger-gradien" size="lg">
+            <Button color="danger-gradient" size="lg">
               Voltar para a Home
             </Button>
           </Link>
