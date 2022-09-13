@@ -5,20 +5,16 @@ import { mockSubPdv } from '../../Utils/Table/mock';
 import { ReactComponent as Pen } from '../../../assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '../../../assets/images/svg/lixeira.svg';
 import { ReactComponent as SubPdvIcon } from '../../../assets/images/svg/subPDV.svg';
-import { ModalConfirmation } from '../../Utils/Modal/ModalConfirmation';
+// import { ModalConfirmation } from '../../Utils/Modal/ModalConfirmation';
 
 interface StateProps {
   title: string;
   content: string;
 }
 
-interface DispatchProps {
-  leftIcon(): JSX.Element;
-  setShowExclude(value: boolean): void;
-  setShowRegisterSubpdv(value: boolean): void;
-}
+// interface DispatchProps {}
 
-type Props = StateProps & DispatchProps;
+type Props = StateProps;
 
 interface DataRow {
   image: string;
@@ -47,7 +43,6 @@ function LoteCollapse(props: Props): JSX.Element {
 
   return (
     <>
-      <ModalConfirmation show={false} setShow={props.setShowExclude} />
       <div
         className="collapseTable d-flex justify-content-between collapseTableText"
         onClick={() => setOpen(!open)}
@@ -80,34 +75,8 @@ function LoteCollapse(props: Props): JSX.Element {
               <p className="subpdv-title subpvd-title-name">• Promoter Ronaldo</p>
             </div>
             <div className="subpdv-icon-container">
-              <Pen onClick={() => props.setShowRegisterSubpdv(true)} className="mr-2 svg-icon" />
-              <Trash onClick={() => props.setShowExclude(true)} className="mr-2 svg-icon" />
-            </div>
-          </div>
-          <CustomTable theme={'secundary'} columns={columnsSubPdvList} data={dataSecundary} />
-        </Card>
-        <Card className="subpdv-main-container card-container">
-          <div className="supdv-title-flex">
-            <div className="subpdv-title-container">
-              <p className="subpdv-title subpdv-title-index">Sub PDV’s #1 </p>
-              <p className="subpdv-title subpvd-title-name">• Promoter Arnold Schwarzenegger</p>
-            </div>
-            <div className="subpdv-icon-container">
-              <Pen onClick={() => props.setShowRegisterSubpdv(true)} className="mr-2 svg-icon" />
-              <Trash onClick={() => props.setShowExclude(true)} className="mr-2 svg-icon" />
-            </div>
-          </div>
-          <CustomTable theme={'secundary'} columns={columnsSubPdvList} data={dataSecundary} />
-        </Card>
-        <Card className="subpdv-main-container card-container">
-          <div className="supdv-title-flex">
-            <div className="subpdv-title-container">
-              <p className="subpdv-title subpdv-title-index">Sub PDV’s #1 </p>
-              <p className="subpdv-title subpvd-title-name">• Promoter Maria Aparecida</p>
-            </div>
-            <div className="subpdv-icon-container">
-              <Pen onClick={() => props.setShowRegisterSubpdv(true)} className="mr-2 svg-icon" />
-              <Trash onClick={() => props.setShowExclude(true)} className="mr-2 svg-icon" />
+              <Pen onClick={() => {}} className="mr-2 svg-icon" />
+              <Trash onClick={() => {}} className="mr-2 svg-icon" />
             </div>
           </div>
           <CustomTable theme={'secundary'} columns={columnsSubPdvList} data={dataSecundary} />

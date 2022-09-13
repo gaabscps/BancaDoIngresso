@@ -4,6 +4,7 @@ import { useDialog } from '@/hooks/useDialog';
 import { usePdv } from '@/features/pdv/hook/usePdv';
 import { RegisterContent } from '@/features/pdv/components/RegisterContent';
 import { DeleteContent } from '@/features/pdv/components/DeleteContent';
+import { ListContentSub } from '@/features/pdv/components/ListContentSub';
 // import { EditContent } from '@/features/pdv/components/EditContent';
 import api from '@/services/api';
 // import Pdv from '@/model/Pdv';
@@ -24,8 +25,6 @@ export const PdvScreen: React.FC = (): JSX.Element => {
     total: 1,
   };
   const [pagePdv, setPagePvd] = useState(initial_state_pagination);
-
-  // const [pvd, setPvd] = React.useState(null);
 
   const handleOnClose = (): void => dialog.hide();
 
@@ -111,6 +110,36 @@ export const PdvScreen: React.FC = (): JSX.Element => {
     });
   };
 
+  const handleOnRegisterSubPdv = async (values: any): Promise<void> => {
+    console.log('handleOnRegisterSubPdv');
+  };
+
+  // ------- Sub Pdv -------
+
+  const handleOnShowListSubPdv = async (id: string, name: string): Promise<void> => {
+    // const { data } = await api.get(`/sub-pdv/${value}`);
+
+    dialog.show({
+      // title: name ?? 'Sub PDV',
+      title: (
+        <div className="subpdv-modal-header-container">
+          {name ?? 'Sub PDV'}
+          <div className="subpdv-register-buttom">
+            <a style={{ cursor: 'pointer' }} onClick={handleOnRegisterSubPdv}>
+              + cadastrar novo Sub PDV
+            </a>
+          </div>
+        </div>
+      ),
+      children: (
+        <ListContentSub
+        // onShowEditSubPdv={handleOnRegisterSubPdv}
+        />
+      ),
+      onClose: handleOnClose,
+    });
+  };
+
   return (
     <PdvContainer
       document={pdvState.document}
@@ -121,6 +150,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       onShowRegister={handleOnShowRegisterPdv}
       onShowEdit={handleOnShowEditPdv}
       onShowDelete={handleOnShowDeletePdv}
+      onShowListSub={handleOnShowListSubPdv}
     />
   );
 };

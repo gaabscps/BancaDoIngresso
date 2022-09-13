@@ -19,8 +19,9 @@ interface PdvContainerProps {
   pagination: Page<Pdv, Pdv>;
   setPagination: React.Dispatch<React.SetStateAction<Page<Pdv, Pdv>>>;
   onShowRegister: () => void;
-  onShowEdit: (value: any) => Promise<void>;
-  onShowDelete: (value: any) => Promise<void>;
+  onShowEdit: (id: string) => Promise<void>;
+  onShowDelete: (id: string) => Promise<void>;
+  onShowListSub: (id: string, name: string) => Promise<void>;
 }
 
 interface DataRow {
@@ -42,6 +43,7 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
   pagination,
   setPagination,
   handleRenderListPdv,
+  onShowListSub,
 }) => {
   useEffect(() => {
     handleRenderListPdv(pagination);
@@ -123,7 +125,7 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
             />
             <SubPdvIcon
               onClick={() => {
-                // TODO: Open modal to list sub PDVs
+                onShowListSub(item.id, item.name);
               }}
               className="mr-2 svg-icon action-icon"
             />
