@@ -17,7 +17,9 @@ interface PdvContainerProps {
   handleRenderListPdv: (page: Page<Pdv, Pdv>) => void;
   list: Pdv[];
   onShowRegister: () => void;
+  onShowRegisterSubPdv: () => void;
   onShowEdit: (value: any) => Promise<void>;
+  onShowEditSubPdv: (value: any) => Promise<void>;
 }
 
 interface DataRow {
@@ -33,7 +35,9 @@ interface DataRow {
 
 export const PdvContainer: React.FC<PdvContainerProps> = ({
   onShowRegister,
+  onShowRegisterSubPdv,
   onShowEdit,
+  // onShowEditSubPdv,
   list,
   handleRenderListPdv,
 }) => {
@@ -156,7 +160,7 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
             />
             <SubPdvIcon
               onClick={() => {
-                // TODO: Open modal to list sub PDVs
+                onShowRegisterSubPdv();
               }}
               className="mr-2 svg-icon action-icon"
             />

@@ -8,6 +8,7 @@ import api from '@/services/api';
 // import Pdv from '@/model/Pdv';
 // import { PdvDataType } from '@/store/ducks/pdv/types';
 import { PdvContainer } from './ui';
+import { RegisterContentSubPdv } from '../../components/RegisterContentSubPdv';
 
 export const PdvScreen: React.FC = (): JSX.Element => {
   const dialog = useDialog();
@@ -29,9 +30,31 @@ export const PdvScreen: React.FC = (): JSX.Element => {
     }
   };
 
+  const handleOnRegisterSubPdv = async (values: any): Promise<void> => {
+    try {
+      const { data } = await api.post<any>('/sub-pdv', values);
+      console.log('creact success', data);
+      onChange({ document: values.document });
+      handleOnClose();
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
   const handleOnEditSave = async (values: any): Promise<void> => {
     try {
       const { data } = await api.put<any>('/pdv', values);
+      console.log('edit success', data);
+      // onChange({ document: values.document });
+      handleOnClose();
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
+  const handleOnEditSaveSubPdv = async (values: any): Promise<void> => {
+    try {
+      const { data } = await api.put<any>('/sub-pdv', values);
       console.log('edit success', data);
       // onChange({ document: values.document });
       handleOnClose();
@@ -49,6 +72,14 @@ export const PdvScreen: React.FC = (): JSX.Element => {
     });
   };
 
+  const handleOnShowRegisterSubPdv = (): void => {
+    dialog.show({
+      title: 'Cadastrar novo Sub-PDV',
+      children: <RegisterContentSubPdv onSubmit={handleOnRegisterSubPdv} />,
+      onClose: handleOnClose,
+      isCard: true,
+    });
+  };
   const handleRenderListPdv = async (page: any): Promise<void> => {
     try {
       const { data } = await api.post<any>('/pdv/page', page);
@@ -61,11 +92,22 @@ export const PdvScreen: React.FC = (): JSX.Element => {
   };
 
   const handleOnShowEditPdv = async (value: any): Promise<void> => {
-    const { data } = await api.get(`/pdv/${value}`);
+    const { data } = await api.get(`/sub-pdv/${value}`);
 
     dialog.show({
       title: 'Editar PDV',
       children: <RegisterContent dataList={data} onSubmit={handleOnEditSave} />,
+      onClose: handleOnClose,
+      isCard: true,
+    });
+  };
+
+  const handleOnShowEditSubPdv = async (value: any): Promise<void> => {
+    const { data } = await api.get(`/sub-pdv/${value}`);
+
+    dialog.show({
+      title: 'Editar Sub PDV',
+      children: <RegisterContentSubPdv dataList={data} onSubmit={handleOnEditSaveSubPdv} />,
       onClose: handleOnClose,
       isCard: true,
     });
@@ -82,6 +124,8 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       list={listPdv}
       onShowRegister={handleOnShowRegisterPdv}
       onShowEdit={handleOnShowEditPdv}
+      onShowEditSubPdv={handleOnShowEditSubPdv}
+      onShowRegisterSubPdv={handleOnShowRegisterSubPdv}
       // onShowDelete={handleOnShowDeletePdv}
     />
   );

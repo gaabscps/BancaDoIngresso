@@ -8,12 +8,12 @@ export default interface SubPdv {
   document: string;
   telephone: string;
   email: string;
-  imageBase64: string;
-  facebookUrl: string;
-  instagramUrl: string;
-  twitterUrl: string;
-  linkedinUrl: string;
+  imageBase64?: string;
+  facebookUrl?: string;
+  instagramUrl?: string;
+  twitterUrl?: string;
+  linkedinUrl?: string;
   pdv: Pdv;
   address: Address;
-  users: User[];
+  users?: User[];
 }
