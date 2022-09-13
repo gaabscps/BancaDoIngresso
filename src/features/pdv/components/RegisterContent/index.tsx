@@ -65,8 +65,8 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
       street: dataList?.address.street ?? '',
       complement: dataList?.address.complement ?? '',
       number: dataList?.address.number ?? '',
-      latitude: dataList?.address.latitude ?? '',
-      longitude: dataList?.address.longitude ?? '',
+      latitude: String(dataList?.address.latitude) ?? '',
+      longitude: String(dataList?.address.longitude) ?? '',
       batchClosed: dataList?.batchClosed ?? '',
       askPasswordInactivity: dataList?.askPasswordInactivity ?? '',
       inactivityTimeout: dataList?.inactivityTimeout ?? '',
@@ -103,7 +103,6 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
         batchClosed: formData[FormInputName.batchClosed],
         askPasswordInactivity: formData[FormInputName.askPasswordInactivity],
         inactivityTimeout: formData[FormInputName.inactivityTimeout],
-        twitterUrl: 'twitterUrl',
         adrress: {
           id: dataList?.address.id ?? null,
           zipCode: formData[FormInputName.zipCode],

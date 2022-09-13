@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useDialog } from '@/hooks/useDialog';
 import { usePdv } from '@/features/pdv/hook/usePdv';
 import { RegisterContent } from '@/features/pdv/components/RegisterContent';
+import { DeleteContent } from '@/features/pdv/components/DeleteContent';
 // import { EditContent } from '@/features/pdv/components/EditContent';
 import api from '@/services/api';
 // import Pdv from '@/model/Pdv';
@@ -13,10 +14,28 @@ export const PdvScreen: React.FC = (): JSX.Element => {
   const dialog = useDialog();
   const { pdvState, onChange } = usePdv();
   const [listPdv, setListPvd] = useState([]);
+  const [pagePdv, setpagePvd] = useState({});
 
   // const [pvd, setPvd] = React.useState(null);
 
   const handleOnClose = (): void => dialog.hide();
+
+  const handleRenderListPdv = async (values: any): Promise<void> => {
+    try {
+      const { data } = await api.post<any>('/pdv/page', values);
+      const { list, order, page, pageSize, sort } = data;
+
+      setListPvd(list);
+      setpagePvd({
+        order,
+        page,
+        pageSize,
+        sort,
+      });
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
 
   const handleOnRegister = async (values: any): Promise<void> => {
     try {
@@ -32,8 +51,20 @@ export const PdvScreen: React.FC = (): JSX.Element => {
   const handleOnEditSave = async (values: any): Promise<void> => {
     try {
       const { data } = await api.put<any>('/pdv', values);
-      console.log('edit success', data);
+      console.log('delete success', data);
       // onChange({ document: values.document });
+      handleOnClose();
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
+  const handleOnDeletePdv = async (value: any): Promise<void> => {
+    try {
+      const { data } = await api.delete<any>(`/pdv/${value}`);
+      console.log('delete success', data);
+      // onChange({ document: values.document });
+      handleRenderListPdv(pagePdv);
       handleOnClose();
     } catch (error) {
       console.log('error', error);
@@ -49,17 +80,6 @@ export const PdvScreen: React.FC = (): JSX.Element => {
     });
   };
 
-  const handleRenderListPdv = async (page: any): Promise<void> => {
-    try {
-      const { data } = await api.post<any>('/pdv/page', page);
-      const { list } = data;
-
-      setListPvd(list);
-    } catch (error) {
-      console.log('error', error);
-    }
-  };
-
   const handleOnShowEditPdv = async (value: any): Promise<void> => {
     const { data } = await api.get(`/pdv/${value}`);
 
@@ -71,9 +91,15 @@ export const PdvScreen: React.FC = (): JSX.Element => {
     });
   };
 
-  // const handleOnShowDeletePdv = async (value: any): Promise<void> => {
-  //   const { data } = await api.delete(`/pdv/${value}`);
-  // };
+  const handleOnShowDeletePdv = async (value: any): Promise<void> => {
+    // const { data } = await api.delete(`/pdv/${value}`);
+
+    dialog.show({
+      title: '',
+      children: <DeleteContent id={value} onSubmit={handleOnDeletePdv} onClose={handleOnClose} />,
+      onClose: handleOnClose,
+    });
+  };
 
   return (
     <PdvContainer
@@ -82,7 +108,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       list={listPdv}
       onShowRegister={handleOnShowRegisterPdv}
       onShowEdit={handleOnShowEditPdv}
-      // onShowDelete={handleOnShowDeletePdv}
+      onShowDelete={handleOnShowDeletePdv}
     />
   );
 };

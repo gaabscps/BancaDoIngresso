@@ -18,6 +18,7 @@ interface PdvContainerProps {
   list: Pdv[];
   onShowRegister: () => void;
   onShowEdit: (value: any) => Promise<void>;
+  onShowDelete: (value: any) => Promise<void>;
 }
 
 interface DataRow {
@@ -34,6 +35,7 @@ interface DataRow {
 export const PdvContainer: React.FC<PdvContainerProps> = ({
   onShowRegister,
   onShowEdit,
+  onShowDelete,
   list,
   handleRenderListPdv,
 }) => {
@@ -102,35 +104,6 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
     //   }),
     // );
   }
-  // const saveRequesetPdv = (data: Pdv): void => {
-  //   if (idPdv) dispatch(updateRequest({ ...data, id: idPdv }));
-  //   else dispatch(createRequest(data));
-  // };
-  // const callShow = (b: boolean): void => {
-  //   // eslint-disable-next-line @typescript-eslint/no-use-before-define
-  //   setShowPdv(b);
-  // };
-  // const callShowSub = (b: never): void => {
-  //   setShowSubPdvList(b);
-  //   setIdPdv('');
-  // };
-  // const callShowFilter = (b: never): void => {
-  //   setShowFilter(b);
-  //   setIdPdv('');
-  // };
-  // const callShowExclude = (b: never): void => {
-  //   setShowExclude(b);
-  // };
-
-  // useEffect(() => {
-  //   if (!checkUser.call && checkUser.logged) {
-  //     if (!pdv.loading && pdv.data && !pdv.data.page) {
-  //       dispatch(listRequest(pagination));
-  //     } else if (!pdv.error && pdv.data && pdv.data.page && pdv.data.page.total) {
-  //       setPagination({ ...pagination, ...pdv.data.page });
-  //     }
-  //   }
-  // }, [pdv]);
 
   const dataTablePdv = list
     ? list?.map(item => ({
@@ -150,7 +123,7 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
             />
             <Trash
               onClick={() => {
-                // TODO: Open modal to delete PDV
+                onShowDelete(item.id);
               }}
               className="mr-2 svg-icon action-icon"
             />
