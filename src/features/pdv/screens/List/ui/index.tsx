@@ -13,13 +13,11 @@ import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { ReactComponent as SubPdvIcon } from '@/assets/images/svg/subPDV.svg';
 
 interface PdvContainerProps {
-  document: string;
   handleRenderListPdv: (page: Page<Pdv, Pdv>) => void;
   list: Pdv[];
   pagination: Page<Pdv, Pdv>;
   setPagination: React.Dispatch<React.SetStateAction<Page<Pdv, Pdv>>>;
   onShowRegister: () => void;
-  onShowEditSubPdv: (value: any) => Promise<void>;
   onShowEdit: (id: string) => Promise<void>;
   onShowDelete: (id: string) => Promise<void>;
   onShowListSub: (id: string, name: string) => Promise<void>;

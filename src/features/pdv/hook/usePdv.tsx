@@ -5,8 +5,9 @@ interface PdvProviderProps {
 }
 
 interface PdvState {
-  id: string;
-  document: string;
+  idPdv: string;
+  namePdv: string;
+  idSubPdv: string;
 }
 
 interface PdvProviderValue {
@@ -16,8 +17,9 @@ interface PdvProviderValue {
 }
 
 const initialState: PdvState = {
-  id: '',
-  document: '',
+  idPdv: '',
+  namePdv: '',
+  idSubPdv: '',
 };
 
 const PdvContext = createContext<PdvProviderValue>({

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import CloseModal from '../../assets/images/svg/CloseModal';
+// import CloseModal from '../../assets/images/svg/CloseModal';
 import LoteCollapse from '../sharedComponents/collapse/LoteCollapse';
 import { ModalCustom } from '../Utils/Modal';
 import RegisterSubPdv from './RegisterSubPdv';
@@ -90,7 +90,7 @@ const SubPdvList = (props: Props): JSX.Element => {
         show={props.show}
         setShow={handleCloseSubPdvList}
       >
-        <div className="card">
+        {/* <div className="card">
           <LoteCollapse
             title={'Sub PDV’s cadastrados (3)'}
             content={''}
@@ -98,7 +98,7 @@ const SubPdvList = (props: Props): JSX.Element => {
             // setShowExclude={props.setShowExclude}
             // setShowRegisterSubpdv={callShowRegisterSub}
           />
-        </div>
+        </div> */}
       </ModalCustom>
     </>
   );

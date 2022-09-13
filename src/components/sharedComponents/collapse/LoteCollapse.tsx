@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Card, Collapse } from 'reactstrap';
-import { CustomTable, TableColumn } from '../../Utils/Table';
-import { mockSubPdv } from '../../Utils/Table/mock';
+// import { CustomTable, TableColumn } from '../../Utils/Table';
+// import { mockSubPdv } from '../../Utils/Table/mock';
 import { ReactComponent as Pen } from '../../../assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '../../../assets/images/svg/lixeira.svg';
 import { ReactComponent as SubPdvIcon } from '../../../assets/images/svg/subPDV.svg';
@@ -9,6 +9,8 @@ import { ReactComponent as SubPdvIcon } from '../../../assets/images/svg/subPDV.
 
 interface StateProps {
   title: string;
+  onShowEditSubPdv: (value: any) => Promise<void>;
+  onShowDeleteSubPdv: (value: any) => Promise<void>;
   content: string;
 }
 
@@ -16,27 +18,27 @@ interface StateProps {
 
 type Props = StateProps;
 
-interface DataRow {
-  image: string;
-  pdvName: string;
-  address: string;
-  city: string;
-  state: string;
-  actions: string;
-  status: string;
-  dataSecundary: void;
-}
+// interface DataRow {
+//   image: string;
+//   pdvName: string;
+//   address: string;
+//   city: string;
+//   state: string;
+//   actions: string;
+//   status: string;
+//   dataSecundary: void;
+// }
 
-const columnsSubPdvList: TableColumn<DataRow>[] = [
-  {
-    name: 'Usuário',
-    selector: (row: { pdvName: any }) => row.pdvName,
-  },
-];
+// const columnsSubPdvList: TableColumn<DataRow>[] = [
+//   {
+//     name: 'Usuário',
+//     selector: (row: { pdvName: any }) => row.pdvName,
+//   },
+// ];
 
-const dataSecundary = mockSubPdv.map((item: { id: number; user: string }) => ({
-  id: item.id,
-}));
+// const dataSubPdv = mockSubPdv.map((item: { id: number; user: string }) => ({
+//   id: item.id,
+// }));
 
 function LoteCollapse(props: Props): JSX.Element {
   const [open, setOpen] = useState(false);
@@ -75,11 +77,14 @@ function LoteCollapse(props: Props): JSX.Element {
               <p className="subpdv-title subpvd-title-name">• Promoter Ronaldo</p>
             </div>
             <div className="subpdv-icon-container">
-              <Pen onClick={() => {}} className="mr-2 svg-icon" />
-              <Trash onClick={() => {}} className="mr-2 svg-icon" />
+              <Pen onClick={() => props.onShowEditSubPdv('definir')} className="mr-2 svg-icon" />
+              <Trash
+                onClick={() => props.onShowDeleteSubPdv('definir')}
+                className="mr-2 svg-icon"
+              />
             </div>
           </div>
-          <CustomTable theme={'secundary'} columns={columnsSubPdvList} data={dataSecundary} />
+          {/* <CustomTable theme={'secundary'} columns={columnsSubPdvList} data={dataSubPdv} /> */}
         </Card>
       </Collapse>
     </>
