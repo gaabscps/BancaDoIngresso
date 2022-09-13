@@ -124,7 +124,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
   };
 
   const handleOnShowEditPdv = async (value: any): Promise<void> => {
-    const { data } = await api.get(`/sub-pdv/${value}`);
+    const { data } = await api.get(`/pdv/${value}`);
 
     dialog.show({
       title: 'Editar PDV',
