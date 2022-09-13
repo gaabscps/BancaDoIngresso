@@ -51,7 +51,6 @@ export const RegisterContentSubPdv: React.FC<RegisterContentProps> = ({
     initialData: {
       name: dataList?.name ?? '',
       document: dataList?.document ?? '',
-
       zipCode: dataList?.address.zipCode ?? '',
       state: dataList?.address.state ?? '',
       city: dataList?.address.city ?? '',
@@ -108,7 +107,6 @@ export const RegisterContentSubPdv: React.FC<RegisterContentProps> = ({
         address: {
           id: dataList?.address.id ?? null,
           zipCode: formData[FormInputName.zipCode],
-          // zipCode: formData[FormInputName.zipCode],
           state: formData[FormInputName.state],
           city: formData[FormInputName.city],
           district: formData[FormInputName.district],
