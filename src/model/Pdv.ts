@@ -13,5 +13,8 @@ export default interface Pdv {
   twitterUrl: string;
   linkedinUrl: string;
   address: Address;
+  batchClosed: string;
+  askPasswordInactivity: string;
+  inactivityTimeout: string;
   users: string[];
 }
