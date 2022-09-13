@@ -44,7 +44,7 @@ const ButtonGroup: FC<RadioProps> = ({
         {options.map((option: OptionProps) => {
           const idRandom = Math.random().toString(36).substr(2, 9);
           return (
-            <div key={idRandom}>
+            <>
               <input
                 type="radio"
                 className="btn-check radio-button-gruop"
@@ -52,7 +52,6 @@ const ButtonGroup: FC<RadioProps> = ({
                 onChange={onChange}
                 name={name}
                 id={`${option.value}-${idRandom}`}
-                // checked={!!option.value}
               />
               <label
                 className="btn button-group label-radio-custom"
@@ -60,7 +59,7 @@ const ButtonGroup: FC<RadioProps> = ({
               >
                 {option.label}
               </label>
-            </div>
+            </>
           );
         })}
       </div>
