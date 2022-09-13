@@ -65,8 +65,8 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
       street: dataList?.address.street ?? '',
       complement: dataList?.address.complement ?? '',
       number: dataList?.address.number ?? '',
-      latitude: dataList?.address.latitude ?? '',
-      longitude: dataList?.address.longitude ?? '',
+      latitude: String(dataList?.address.latitude) ?? '',
+      longitude: String(dataList?.address.longitude) ?? '',
       batchClosed: dataList?.batchClosed ?? '',
       askPasswordInactivity: dataList?.askPasswordInactivity ?? '',
       inactivityTimeout: dataList?.inactivityTimeout ?? '',
@@ -103,8 +103,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
         batchClosed: formData[FormInputName.batchClosed],
         askPasswordInactivity: formData[FormInputName.askPasswordInactivity],
         inactivityTimeout: formData[FormInputName.inactivityTimeout],
-        twitterUrl: 'twitterUrl',
-        adrress: {
+        address: {
           id: dataList?.address.id ?? null,
           zipCode: formData[FormInputName.zipCode],
           state: formData[FormInputName.state],
@@ -294,8 +293,8 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             name="batchClosed"
             onChange={e => onChangeFormInput(FormInputName.batchClosed)(e.target.value)}
             options={[
-              { value: 1, label: 'Sim' },
-              { value: 2, label: 'não' },
+              { value: 0, label: 'Sim' },
+              { value: 1, label: 'não' },
             ]}
             error={formErrors.batchClosed && formErrors.batchClosed[0]}
           />
@@ -304,8 +303,8 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             name="askPasswordInactivity"
             onChange={e => onChangeFormInput(FormInputName.askPasswordInactivity)(e.target.value)}
             options={[
-              { value: 1, label: 'Sim' },
-              { value: 2, label: 'não' },
+              { value: 0, label: 'Sim' },
+              { value: 1, label: 'não' },
             ]}
             error={formErrors.askPasswordInactivity && formErrors.askPasswordInactivity[0]}
           />

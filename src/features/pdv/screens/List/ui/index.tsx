@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-key */
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { Container, Label } from 'reactstrap';
 import { CollumnImage, CustomTable, TableColumn } from '@/components/Utils/Table';
 import Button from '@/components/Utils/Button';
@@ -16,10 +16,13 @@ interface PdvContainerProps {
   document: string;
   handleRenderListPdv: (page: Page<Pdv, Pdv>) => void;
   list: Pdv[];
+  pagination: Page<Pdv, Pdv>;
+  setPagination: React.Dispatch<React.SetStateAction<Page<Pdv, Pdv>>>;
   onShowRegister: () => void;
-  onShowRegisterSubPdv: () => void;
-  onShowEdit: (value: any) => Promise<void>;
   onShowEditSubPdv: (value: any) => Promise<void>;
+  onShowEdit: (id: string) => Promise<void>;
+  onShowDelete: (id: string) => Promise<void>;
+  onShowListSub: (id: string, name: string) => Promise<void>;
 }
 
 interface DataRow {
@@ -35,20 +38,14 @@ interface DataRow {
 
 export const PdvContainer: React.FC<PdvContainerProps> = ({
   onShowRegister,
-  onShowRegisterSubPdv,
   onShowEdit,
-  // onShowEditSubPdv,
+  onShowDelete,
   list,
+  pagination,
+  setPagination,
   handleRenderListPdv,
+  onShowListSub,
 }) => {
-  const initial_state_pagination: Page<Pdv, Pdv> = {
-    page: 1,
-    pageSize: 10,
-    sort: 'name', // Adicionar cidade!!!
-    order: 'DESC',
-  };
-  const [pagination, setPagination] = useState(initial_state_pagination);
-
   useEffect(() => {
     handleRenderListPdv(pagination);
   }, []);
@@ -99,42 +96,11 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
       ...pagination,
       page: pageNumber,
     });
-    // dispatch(
-    //   listRequest({
-    //     ...pagination,
-    //     page: pageNumber,
-    //   }),
-    // );
+    handleRenderListPdv({
+      ...pagination,
+      page: pageNumber,
+    });
   }
-  // const saveRequesetPdv = (data: Pdv): void => {
-  //   if (idPdv) dispatch(updateRequest({ ...data, id: idPdv }));
-  //   else dispatch(createRequest(data));
-  // };
-  // const callShow = (b: boolean): void => {
-  //   // eslint-disable-next-line @typescript-eslint/no-use-before-define
-  //   setShowPdv(b);
-  // };
-  // const callShowSub = (b: never): void => {
-  //   setShowSubPdvList(b);
-  //   setIdPdv('');
-  // };
-  // const callShowFilter = (b: never): void => {
-  //   setShowFilter(b);
-  //   setIdPdv('');
-  // };
-  // const callShowExclude = (b: never): void => {
-  //   setShowExclude(b);
-  // };
-
-  // useEffect(() => {
-  //   if (!checkUser.call && checkUser.logged) {
-  //     if (!pdv.loading && pdv.data && !pdv.data.page) {
-  //       dispatch(listRequest(pagination));
-  //     } else if (!pdv.error && pdv.data && pdv.data.page && pdv.data.page.total) {
-  //       setPagination({ ...pagination, ...pdv.data.page });
-  //     }
-  //   }
-  // }, [pdv]);
 
   const dataTablePdv = list
     ? list?.map(item => ({
@@ -154,13 +120,13 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
             />
             <Trash
               onClick={() => {
-                // TODO: Open modal to delete PDV
+                onShowDelete(item.id);
               }}
               className="mr-2 svg-icon action-icon"
             />
             <SubPdvIcon
               onClick={() => {
-                onShowRegisterSubPdv();
+                onShowListSub(item.id, item.name);
               }}
               className="mr-2 svg-icon action-icon"
             />

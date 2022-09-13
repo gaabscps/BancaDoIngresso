@@ -94,9 +94,9 @@ const SubPdvList = (props: Props): JSX.Element => {
           <LoteCollapse
             title={'Sub PDV’s cadastrados (3)'}
             content={''}
-            leftIcon={() => <CloseModal />}
-            setShowExclude={props.setShowExclude}
-            setShowRegisterSubpdv={callShowRegisterSub}
+            // leftIcon={() => <CloseModal />}
+            // setShowExclude={props.setShowExclude}
+            // setShowRegisterSubpdv={callShowRegisterSub}
           />
         </div>
       </ModalCustom>

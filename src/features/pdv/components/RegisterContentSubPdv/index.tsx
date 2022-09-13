@@ -6,7 +6,7 @@ import validators from '@/helpers/validators';
 import { updateMask as updateMaskCPF } from '@/helpers/masks/cpf';
 import { updateMask as updateMaskCEP } from '@/helpers/masks/cep';
 import { updateMask as updateMaskMobilePhone } from '@/helpers/masks/mobilePhone';
-import SelectAutoComplete from '@/components/Select';
+// import SelectAutoComplete from '@/components/Select';
 import subPdv from '@/model/SubPdv';
 
 interface RegisterContentProps {
