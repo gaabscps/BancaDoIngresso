@@ -8,13 +8,22 @@ import { DeleteContent } from '@/features/pdv/components/DeleteContent';
 import api from '@/services/api';
 // import Pdv from '@/model/Pdv';
 // import { PdvDataType } from '@/store/ducks/pdv/types';
+import Page from '@/model/Page';
+import Pdv from '@/model/Pdv';
 import { PdvContainer } from './ui';
 
 export const PdvScreen: React.FC = (): JSX.Element => {
   const dialog = useDialog();
   const { pdvState, onChange } = usePdv();
   const [listPdv, setListPvd] = useState([]);
-  const [pagePdv, setpagePvd] = useState({});
+  const initial_state_pagination: Page<Pdv, Pdv> = {
+    page: 1,
+    pageSize: 10,
+    sort: 'name',
+    order: 'DESC',
+    total: 1,
+  };
+  const [pagePdv, setPagePvd] = useState(initial_state_pagination);
 
   // const [pvd, setPvd] = React.useState(null);
 
@@ -23,14 +32,15 @@ export const PdvScreen: React.FC = (): JSX.Element => {
   const handleRenderListPdv = async (values: any): Promise<void> => {
     try {
       const { data } = await api.post<any>('/pdv/page', values);
-      const { list, order, page, pageSize, sort } = data;
+      const { list, order, page, pageSize, sort, total } = data;
 
       setListPvd(list);
-      setpagePvd({
+      setPagePvd({
         order,
         page,
         pageSize,
         sort,
+        total,
       });
     } catch (error) {
       console.log('error', error);
@@ -106,6 +116,8 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       document={pdvState.document}
       handleRenderListPdv={handleRenderListPdv}
       list={listPdv}
+      pagination={pagePdv}
+      setPagination={setPagePvd}
       onShowRegister={handleOnShowRegisterPdv}
       onShowEdit={handleOnShowEditPdv}
       onShowDelete={handleOnShowDeletePdv}

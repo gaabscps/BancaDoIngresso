@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-key */
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { Container, Label } from 'reactstrap';
 import { CollumnImage, CustomTable, TableColumn } from '@/components/Utils/Table';
 import Button from '@/components/Utils/Button';
@@ -16,6 +16,8 @@ interface PdvContainerProps {
   document: string;
   handleRenderListPdv: (page: Page<Pdv, Pdv>) => void;
   list: Pdv[];
+  pagination: Page<Pdv, Pdv>;
+  setPagination: React.Dispatch<React.SetStateAction<Page<Pdv, Pdv>>>;
   onShowRegister: () => void;
   onShowEdit: (value: any) => Promise<void>;
   onShowDelete: (value: any) => Promise<void>;
@@ -37,16 +39,10 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
   onShowEdit,
   onShowDelete,
   list,
+  pagination,
+  setPagination,
   handleRenderListPdv,
 }) => {
-  const initial_state_pagination: Page<Pdv, Pdv> = {
-    page: 1,
-    pageSize: 10,
-    sort: 'name', // Adicionar cidade!!!
-    order: 'DESC',
-  };
-  const [pagination, setPagination] = useState(initial_state_pagination);
-
   useEffect(() => {
     handleRenderListPdv(pagination);
   }, []);
@@ -97,12 +93,10 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
       ...pagination,
       page: pageNumber,
     });
-    // dispatch(
-    //   listRequest({
-    //     ...pagination,
-    //     page: pageNumber,
-    //   }),
-    // );
+    handleRenderListPdv({
+      ...pagination,
+      page: pageNumber,
+    });
   }
 
   const dataTablePdv = list
