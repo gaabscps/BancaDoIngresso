@@ -2,9 +2,10 @@ import React from 'react';
 import { Col, Form, Row } from 'reactstrap';
 import { InputText, Button } from '@/components';
 import useForm from '@/hooks/useForm';
-// import validators from '@/helpers/validators';
-// import { updateMask as updateMaskCPF } from '@/helpers/masks/cpf';
-// import { updateMask as updateMaskCEP } from '@/helpers/masks/cep';
+import validators from '@/helpers/validators';
+import { updateMask as updateMaskCPF } from '@/helpers/masks/cpf';
+import { updateMask as updateMaskCEP } from '@/helpers/masks/cep';
+import { updateMask as updateMaskMobilePhone } from '@/helpers/masks/mobilePhone';
 import SelectAutoComplete from '@/components/Select';
 import ButtonGroup from '@/components/ButtonGroup';
 import Pdv from '@/model/Pdv';
@@ -73,14 +74,25 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
       // users: [],
     },
     validators: {
-      // name: [validators.required],
-      // state: [validators.required],
-      // document: [validators.required, validators.cpf],
-      // zipCode: [validators.required, validators.cep],
+      name: [validators.required],
+      document: [validators.required, validators.cpf],
+      zipCode: [validators.required, validators.cep],
+      state: [validators.required],
+      city: [validators.required],
+      district: [validators.required],
+      street: [validators.required],
+      number: [validators.required],
+      telephone: [validators.required, validators.mobilePhone],
+      email: [validators.required, validators.email],
+      batchClosed: [validators.required],
+      askPasswordInactivity: [validators.required],
+      inactivityTimeout: [validators.required],
+      // users: [validators.required],
     },
     formatters: {
-      //   document: updateMaskCPF,
-      //   zipCode: updateMaskCEP,
+      document: updateMaskCPF,
+      zipCode: updateMaskCEP,
+      telephone: updateMaskMobilePhone,
     },
   });
 
@@ -119,7 +131,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
       };
       if (payload.id === null) {
         delete payload.id;
-        delete payload.adrress.id;
+        delete payload.address.id;
       }
       onSubmit(payload);
     }
@@ -140,7 +152,6 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             name="name"
             label="Nome do PDV"
             placeholder="Digite o nome do PDV"
-            // maxLength={9}
             value={formData[FormInputName.name]}
             onChange={e => onChangeFormInput(FormInputName.name)(e.target.value)}
             error={formErrors.name && formErrors.name[0]}
@@ -158,7 +169,6 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             name="email"
             label="E-mail"
             placeholder="Digite o e-mail do PDV"
-            maxLength={14}
             value={formData[FormInputName.email]}
             onChange={e => onChangeFormInput(FormInputName.email)(e.target.value)}
             error={formErrors.email && formErrors.email[0]}
@@ -200,22 +210,20 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             error={formErrors.city && formErrors.city[0]}
           />
           <InputText
-            name="street"
+            name="district"
             label="Bairro"
             placeholder="Centro"
-            maxLength={15}
-            value={formData[FormInputName.street]}
-            onChange={e => onChangeFormInput(FormInputName.street)(e.target.value)}
-            error={formErrors.street && formErrors.street[0]}
-          />
-          <InputText
-            name="district"
-            label="Logradouro"
-            placeholder="Rua 123 da Costa"
-            maxLength={15}
             value={formData[FormInputName.district]}
             onChange={e => onChangeFormInput(FormInputName.district)(e.target.value)}
             error={formErrors.district && formErrors.district[0]}
+          />
+          <InputText
+            name="street"
+            label="Logradouro"
+            placeholder="Rua 123 da Costa"
+            value={formData[FormInputName.district]}
+            onChange={e => onChangeFormInput(FormInputName.district)(e.target.value)}
+            error={formErrors.street && formErrors.street[0]}
           />
           <InputText
             name="number"
@@ -230,7 +238,6 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             name="complement"
             label="Complemento"
             placeholder="Ex: Apto 12"
-            maxLength={15}
             value={formData[FormInputName.complement]}
             onChange={e => onChangeFormInput(FormInputName.complement)(e.target.value)}
             error={formErrors.complement && formErrors.complement[0]}
@@ -239,7 +246,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             name="latitude"
             label="Latitude (opcional)"
             placeholder="Ex: 0º"
-            maxLength={15}
+            maxLength={9}
             value={formData[FormInputName.latitude]}
             onChange={e => onChangeFormInput(FormInputName.latitude)(e.target.value)}
             error={formErrors.latitude && formErrors.latitude[0]}

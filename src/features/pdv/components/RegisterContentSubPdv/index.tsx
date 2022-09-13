@@ -51,7 +51,6 @@ export const RegisterContentSubPdv: React.FC<RegisterContentProps> = ({
     initialData: {
       name: dataList?.name ?? '',
       document: dataList?.document ?? '',
-
       zipCode: dataList?.address.zipCode ?? '',
       state: dataList?.address.state ?? '',
       city: dataList?.address.city ?? '',
@@ -108,7 +107,6 @@ export const RegisterContentSubPdv: React.FC<RegisterContentProps> = ({
         address: {
           id: dataList?.address.id ?? null,
           zipCode: formData[FormInputName.zipCode],
-          // zipCode: formData[FormInputName.zipCode],
           state: formData[FormInputName.state],
           city: formData[FormInputName.city],
           district: formData[FormInputName.district],
@@ -179,6 +177,7 @@ export const RegisterContentSubPdv: React.FC<RegisterContentProps> = ({
           />
           {/* TODO: add select state and city */}
           <InputText
+            id="subpdvState"
             name="state"
             label="Estado"
             placeholder="Selecione o estado do SubPdv"
@@ -187,6 +186,7 @@ export const RegisterContentSubPdv: React.FC<RegisterContentProps> = ({
             error={formErrors.state && formErrors.state[0]}
           />
           <InputText
+            id="subpdvCity"
             name="city"
             label="Cidade"
             placeholder="Selecione o estado do SubPdv"
@@ -195,20 +195,22 @@ export const RegisterContentSubPdv: React.FC<RegisterContentProps> = ({
             error={formErrors.city && formErrors.city[0]}
           />
           <InputText
-            name="street"
+            id="subpdvDistrict"
+            name="district"
             label="Bairro"
             placeholder="Centro"
             value={formData[FormInputName.street]}
             onChange={e => onChangeFormInput(FormInputName.street)(e.target.value)}
-            error={formErrors.street && formErrors.street[0]}
+            error={formErrors.district && formErrors.district[0]}
           />
           <InputText
-            name="district"
+            id="subpdvStreet"
+            name="street"
             label="Logradouro"
             placeholder="Rua 123 da Costa"
             value={formData[FormInputName.district]}
             onChange={e => onChangeFormInput(FormInputName.district)(e.target.value)}
-            error={formErrors.district && formErrors.district[0]}
+            error={formErrors.street && formErrors.street[0]}
           />
           <InputText
             name="number"
