@@ -9,6 +9,7 @@ interface RadioProps extends InputHTMLAttributes<HTMLInputElement> {
   className?: string;
   icon?: any;
   options?: any;
+  onChange?: any;
 }
 
 interface OptionProps {
@@ -16,7 +17,15 @@ interface OptionProps {
   label: string;
 }
 
-const Radio: FC<RadioProps> = ({ name, error, label, wrapperClass, icon, options, ...rest }) => (
+export const Radio: FC<RadioProps> = ({
+  name,
+  error,
+  label,
+  wrapperClass,
+  icon,
+  options,
+  onChange,
+}) => (
   <div className={`mb-4 flex-column ${wrapperClass}`}>
     {label && (
       <div className="d-flex flex-column-reverse">
@@ -37,12 +46,12 @@ const Radio: FC<RadioProps> = ({ name, error, label, wrapperClass, icon, options
         return (
           <>
             <input
-              name={name}
               type="radio"
-              value={option.value}
+              name={name}
               id={`${option.value}-${idRandom}`}
+              value={option.value}
+              onChange={onChange}
               className="form-check-input"
-              {...rest}
             />
             <label
               key={option.value}
@@ -58,5 +67,3 @@ const Radio: FC<RadioProps> = ({ name, error, label, wrapperClass, icon, options
     {icon}
   </div>
 );
-
-export default Radio;

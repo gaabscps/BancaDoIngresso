@@ -16,7 +16,7 @@ interface OptionProps {
   label: string;
 }
 
-const ButtonGroup: FC<RadioProps> = ({
+export const ButtonGroup: FC<RadioProps> = ({
   name,
   error,
   label,
@@ -67,5 +67,3 @@ const ButtonGroup: FC<RadioProps> = ({
     {icon}
   </div>
 );
-
-export default ButtonGroup;

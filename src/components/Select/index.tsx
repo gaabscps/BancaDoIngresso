@@ -27,7 +27,7 @@ interface SelectAutoCompleteProps {
   ref?: any;
 }
 
-const SelectAutoComplete = (props: SelectAutoCompleteProps) => {
+export const SelectCustom = (props: SelectAutoCompleteProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const onMenuOpen = () => setIsMenuOpen(true);
@@ -44,12 +44,10 @@ const SelectAutoComplete = (props: SelectAutoCompleteProps) => {
         <Select
           options={props.options}
           placeholder={props.placeholder}
-          // onChange={isValue => onChange(isValue.value)}
           onChange={props.onChange}
           onBlur={props.onBlur}
           styles={customStyles()}
           noOptionsMessage={() => 'Nenhum resultado encontrado'}
-          // value={props.options.find((option: OptionProps) => option.value === value)}
           value={props.options.find((option: OptionProps) => option.value === props.value)}
           defaultValue={props.defaultValue}
           ref={props.ref}
@@ -63,5 +61,3 @@ const SelectAutoComplete = (props: SelectAutoCompleteProps) => {
     </>
   );
 };
-
-export default SelectAutoComplete;

@@ -12,8 +12,10 @@ import api from '@/services/api';
 // import { PdvDataType } from '@/store/ducks/pdv/types';
 import Page from '@/model/Page';
 import Pdv from '@/model/Pdv';
+import { toast } from 'react-toastify';
+import { RegisterContentSubPdv } from '@/features/pdv/components/RegisterContentSubPdv';
+import { FilterContent } from '@/features/pdv/components/FilterContent';
 import { PdvContainer } from './ui';
-import { RegisterContentSubPdv } from '../../components/RegisterContentSubPdv';
 
 export const PdvScreen: React.FC = (): JSX.Element => {
   const dialog = useDialog();
@@ -36,17 +38,42 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       const { data } = await api.post<any>('/pdv/page', values);
       const { list, order, page, pageSize, sort, total } = data;
 
-      setListPvd(list);
-      setPagePvd({
-        order,
-        page,
-        pageSize,
-        sort,
-        total,
-      });
+      if (list.length > 0) {
+        setListPvd(list);
+        setPagePvd({
+          page,
+          pageSize,
+          sort,
+          order,
+          total,
+        });
+      } else {
+        toast.info('Nenhum registro encontrado');
+      }
     } catch (error) {
       console.log('error', error);
     }
+  };
+
+  // Filtra PDV
+  const handleOnFilter = async (value: object): Promise<void> => {
+    try {
+      setPagePvd({ ...pagePdv, ...value });
+      handleRenderListPdv({ ...pagePdv, ...value });
+      handleOnClose();
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
+  // Renderiza Modal de Registro de PDV
+  const handleOnShowFilterPdv = (): void => {
+    dialog.show({
+      title: '',
+      children: <FilterContent onSubmit={handleOnFilter} />,
+      onClose: handleOnClose,
+      position: 'right',
+    });
   };
 
   // ---------- PDV ------------
@@ -235,6 +262,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       list={listPdv}
       pagination={pagePdv}
       setPagination={setPagePvd}
+      onShowFilter={handleOnShowFilterPdv}
       onShowRegister={handleOnShowRegisterPdv}
       onShowEdit={handleOnShowEditPdv}
       // onShowEditSubPdv={handleOnShowEditSubPdv}

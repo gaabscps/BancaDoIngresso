@@ -1,13 +1,11 @@
 import React from 'react';
 import { Col, Form, Row } from 'reactstrap';
-import { InputText, Button } from '@/components';
+import { InputText, Button, SelectCustom } from '@/components';
 import useForm from '@/hooks/useForm';
 import validators from '@/helpers/validators';
 import { updateMask as updateMaskCPFOrCNPJ } from '@/helpers/masks/cpfCnpj';
 import { updateMask as updateMaskCEP, isValid as isValidCEP } from '@/helpers/masks/cep';
 import { updateMask as updateMaskMobilePhone } from '@/helpers/masks/mobilePhone';
-import SelectAutoComplete from '@/components/Select';
-import ButtonGroup from '@/components/ButtonGroup';
 import cep from 'cep-promise';
 import Pos from '@/model/Pos';
 
@@ -124,7 +122,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             onChange={e => onChangeFormInput(FormInputName.serialNumber)(e.target.value)}
             error={formErrors.serialNumber && formErrors.serialNumber[0]}
           />
-          <SelectAutoComplete
+          <SelectCustom
             label="Situação da POS"
             options={statusOptions}
             onChange={e => onChangeFormInput(FormInputName.status)(e.value)}

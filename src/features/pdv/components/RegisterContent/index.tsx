@@ -1,13 +1,12 @@
 import React from 'react';
 import { Col, Form, Row } from 'reactstrap';
-import { InputText, Button } from '@/components';
+import { InputText, Button, ButtonGroup } from '@/components';
 import useForm from '@/hooks/useForm';
 import validators from '@/helpers/validators';
 import { updateMask as updateMaskCPFOrCNPJ } from '@/helpers/masks/cpfCnpj';
 import { updateMask as updateMaskCEP, isValid as isValidCEP } from '@/helpers/masks/cep';
 import { updateMask as updateMaskMobilePhone } from '@/helpers/masks/mobilePhone';
 // import SelectAutoComplete from '@/components/Select';
-import ButtonGroup from '@/components/ButtonGroup';
 import Pdv from '@/model/Pdv';
 import cep from 'cep-promise';
 

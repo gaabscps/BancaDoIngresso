@@ -4,6 +4,9 @@ import { Footer } from './Footer';
 import { Loading } from './Loading';
 import { InputText } from './InputText';
 import { Button } from './Button';
+import { ButtonGroup } from './ButtonGroup';
+import { Radio } from './Radio';
+import { SelectCustom } from './Select';
 import { Dialog } from './Dialog';
 import { Error400 } from './Errors/error400';
 import { Error401 } from './Errors/error401';
@@ -19,6 +22,9 @@ export {
   Loading,
   InputText,
   Button,
+  ButtonGroup,
+  Radio,
+  SelectCustom,
   Dialog,
   Error400,
   Error401,

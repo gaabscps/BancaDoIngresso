@@ -21,6 +21,7 @@ interface PdvContainerProps {
   onShowEdit: (id: string) => Promise<void>;
   onShowDelete: (id: string) => Promise<void>;
   onShowListSub: (id: string, name: string) => Promise<void>;
+  onShowFilter: () => void;
 }
 
 interface DataRow {
@@ -43,6 +44,7 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
   setPagination,
   handleRenderListPdv,
   onShowListSub,
+  onShowFilter,
 }) => {
   useEffect(() => {
     handleRenderListPdv(pagination);
@@ -145,7 +147,7 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
               + Cadastrar novo PDV
             </Button>
             <div className="filter-container">
-              <div className="filter-content">
+              <div className="filter-content" onClick={onShowFilter}>
                 <FilterVector />
               </div>
             </div>
