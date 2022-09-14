@@ -31,10 +31,6 @@ export const PdvScreen: React.FC = (): JSX.Element => {
   const handleOnClose = (): void => {
     dialog.hide();
   };
-  const handleOnCloseSubPdv = (): void => {
-    dialog.hide();
-    handleOnShowListSubPdv(pdvState.idPdv, pdvState.namePdv);
-  };
   const handleRenderListPdv = async (values: any): Promise<void> => {
     try {
       const { data } = await api.post<any>('/pdv/page', values);
@@ -53,6 +49,9 @@ export const PdvScreen: React.FC = (): JSX.Element => {
     }
   };
 
+  // ---------- PDV ------------
+
+  // Registra PDV
   const handleOnRegister = async (values: any): Promise<void> => {
     try {
       const { data } = await api.post<any>('/pdv', values);
@@ -65,6 +64,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
     }
   };
 
+  // Edita PDV
   const handleOnEditSave = async (values: any): Promise<void> => {
     try {
       const { data } = await api.put<any>('/pdv', values);
@@ -77,6 +77,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
     }
   };
 
+  // Deleta PDV
   const handleOnDeletePdv = async (value: any): Promise<void> => {
     try {
       const { data } = await api.delete<any>(`/pdv/${value}`);
@@ -89,6 +90,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
     }
   };
 
+  // Renderiza Modal de Registro de PDV
   const handleOnShowRegisterPdv = (): void => {
     dialog.show({
       title: 'Cadastrar novo PDV',
@@ -98,6 +100,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
     });
   };
 
+  // Renderiza Modal de Edição de PDV
   const handleOnShowEditPdv = async (value: any): Promise<void> => {
     const { data } = await api.get(`/pdv/${value}`);
 
@@ -109,6 +112,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
     });
   };
 
+  // Renderiza Modal de Deleção de PDV
   const handleOnShowDeletePdv = async (value: any): Promise<void> => {
     dialog.show({
       title: '',
@@ -117,8 +121,14 @@ export const PdvScreen: React.FC = (): JSX.Element => {
     });
   };
 
-  // ------- Sub Pdv -------
+  // ---------- SUB PDV ------------
 
+  const handleOnCloseSubPdv = (): void => {
+    dialog.hide();
+    handleOnShowListSubPdv(pdvState.idPdv, pdvState.namePdv);
+  };
+
+  // Registra Sub PDV
   const handleOnRegisterSubPdv = async (values: any): Promise<void> => {
     try {
       const { data } = await api.post<any>('/sub-pdv', values);
@@ -130,6 +140,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
     }
   };
 
+  // Renderiza Modal de Registro de Sub PDV
   const handleOnShowRegisterSubPdv = (): void => {
     dialog.show({
       title: 'Cadastrar novo Sub-PDV',
@@ -139,6 +150,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
     });
   };
 
+  // Edita Sub PDV
   const handleOnEditSaveSubPdv = async (values: any): Promise<void> => {
     try {
       const { data } = await api.put<any>('/sub-pdv', values);
@@ -150,9 +162,9 @@ export const PdvScreen: React.FC = (): JSX.Element => {
     }
   };
 
+  // Renderiza Modal de Edição de Sub PDV
   const handleOnShowEditSubPdv = async (): Promise<void> => {
     // const { data } = await api.get(`/sub-pdv/${value}`);
-
     dialog.show({
       title: 'Editar Sub PDV',
       children: <RegisterContentSubPdv onSubmit={handleOnEditSaveSubPdv} />,
@@ -161,6 +173,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
     });
   };
 
+  // Deleta Sub PDV
   const handleOnDeleteSubPdv = async (value: any): Promise<void> => {
     try {
       const { data } = await api.delete<any>(`/sub-pdv/${value}`);
@@ -173,6 +186,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
     }
   };
 
+  // Renderiza Modal de Deleção de Sub PDV
   const handleOnShowDeleteSubPdv = async (value: any): Promise<void> => {
     dialog.show({
       title: '',
@@ -182,6 +196,8 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       onClose: handleOnCloseSubPdv,
     });
   };
+
+  // ----------------------
 
   const handleOnShowListSubPdv = async (id: string, name: string): Promise<void> => {
     // const { data } = await api.get(`/sub-pdv/${value}`);
