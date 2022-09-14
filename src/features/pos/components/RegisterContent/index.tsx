@@ -131,14 +131,14 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             error={formErrors.status && formErrors.status[0]}
           />
           <SelectCustom
-            label="PDV"
+            label="PDV (opcional)"
             options={
               dataListPdv && dataListPdv.map((item: any) => ({ value: item.id, label: item.name }))
             }
             onChange={e => onChangeFormInput(FormInputName.pdv)(e?.value as string)}
             error={formErrors.pdv && formErrors.pdv[0]}
             name="pdv"
-            placeholder="Selecione ou digite a situação da POS"
+            placeholder="Selecione ou digite o PDV à vincular"
             value={formData[FormInputName.status]}
           />
           <InputText
