@@ -2,13 +2,13 @@ import React from 'react';
 import { Card, Container, Modal, ModalHeader, ModalBody } from 'reactstrap';
 
 import CloseModal from '@/assets/images/svg/CloseModal';
-import { Button } from '@/components';
+// import { Button } from '@/components';
 
 interface ModalProps {
   title: React.ReactNode;
   children: React.ReactNode;
-  onBtnAction?: () => void;
-  btnLabel?: string;
+  // onBtnAction?: () => void;
+  // btnLabel?: string;
   isCard?: boolean;
   visible: boolean;
   onClose(): void;
@@ -21,8 +21,8 @@ export const Dialog: React.FC<ModalProps> = ({
   children,
   visible,
   onClose,
-  onBtnAction,
-  btnLabel = 'Confirmar',
+  // onBtnAction,
+  // btnLabel = 'Confirmar',
   isCard = false,
   position = 'center',
   size = 'xl',
@@ -66,7 +66,7 @@ export const Dialog: React.FC<ModalProps> = ({
         <Container>
           {isCard ? <Card className="modal__main-container">{children}</Card> : children}
         </Container>
-        {onBtnAction && (
+        {/* {onBtnAction && (
           <div className="nextPageButton">
             <div style={{ color: '#fff' }}>
               <Button
@@ -79,7 +79,7 @@ export const Dialog: React.FC<ModalProps> = ({
             </div>
             <Button title={btnLabel} theme="dark" size="sm" onClick={onBtnAction} />
           </div>
-        )}
+        )} */}
       </ModalBody>
     </Modal>
   );

@@ -6,10 +6,7 @@ import { usePdv } from '@/features/pdv/hook/usePdv';
 import { RegisterContent } from '@/features/pdv/components/RegisterContent';
 import { DeleteContent } from '@/features/pdv/components/DeleteContent';
 import { ListContentSub } from '@/features/pdv/components/ListContentSub';
-// import { EditContent } from '@/features/pdv/components/EditContent';
 import api from '@/services/api';
-// import Pdv from '@/model/Pdv';
-// import { PdvDataType } from '@/store/ducks/pdv/types';
 import Page from '@/model/Page';
 import Pdv from '@/model/Pdv';
 import { toast } from 'react-toastify';
@@ -66,7 +63,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
     }
   };
 
-  // Renderiza Modal de Registro de PDV
+  // Renderiza Modal de Filtro PDV
   const handleOnShowFilterPdv = (): void => {
     dialog.show({
       title: '',
@@ -81,9 +78,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
   // Registra PDV
   const handleOnRegister = async (values: any): Promise<void> => {
     try {
-      const { data } = await api.post<any>('/pdv', values);
-      console.log('creact success', data);
-      // onChange({ document: values.document });
+      await api.post<any>('/pdv', values);
       handleRenderListPdv(pagePdv);
       handleOnClose();
     } catch (error) {
@@ -94,9 +89,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
   // Edita PDV
   const handleOnEditSave = async (values: any): Promise<void> => {
     try {
-      const { data } = await api.put<any>('/pdv', values);
-      console.log('update success', data);
-      // onChange({ document: values.document });
+      await api.put<any>('/pdv', values);
       handleRenderListPdv(pagePdv);
       handleOnClose();
     } catch (error) {
@@ -107,9 +100,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
   // Deleta PDV
   const handleOnDeletePdv = async (value: any): Promise<void> => {
     try {
-      const { data } = await api.delete<any>(`/pdv/${value}`);
-      console.log('delete success', data);
-      // onChange({ document: values.document });
+      await api.delete<any>(`/pdv/${value}`);
       handleRenderListPdv(pagePdv);
       handleOnClose();
     } catch (error) {
@@ -159,9 +150,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
   // Registra Sub PDV
   const handleOnRegisterSubPdv = async (values: any): Promise<void> => {
     try {
-      const { data } = await api.post<any>('/sub-pdv', values);
-      console.log('creact success', data);
-      // onChange({ document: values.document });
+      await api.post<any>('/sub-pdv', values);
       handleOnCloseSubPdv();
     } catch (error) {
       console.log('error', error);
@@ -181,9 +170,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
   // Edita Sub PDV
   const handleOnEditSaveSubPdv = async (values: any): Promise<void> => {
     try {
-      const { data } = await api.put<any>('/sub-pdv', values);
-      console.log('edit success', data);
-      // onChange({ document: values.document });
+      await api.put<any>('/sub-pdv', values);
       handleOnCloseSubPdv();
     } catch (error) {
       console.log('error', error);
@@ -204,9 +191,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
   // Deleta Sub PDV
   const handleOnDeleteSubPdv = async (value: any): Promise<void> => {
     try {
-      const { data } = await api.delete<any>(`/sub-pdv/${value}`);
-      console.log('delete success', data);
-      // onChange({ document: values.document });
+      await api.delete<any>(`/sub-pdv/${value}`);
       handleRenderListPdv(pagePdv);
       handleOnCloseSubPdv();
     } catch (error) {
@@ -231,7 +216,6 @@ export const PdvScreen: React.FC = (): JSX.Element => {
     const { data } = await api.get(`/sub-pdv/pdv/${id}`);
     onChange({ idPdv: id, namePdv: name });
     dialog.show({
-      // title: name ?? 'Sub PDV',
       title: (
         <div className="subpdv-modal-header-container">
           {name ?? 'Sub PDV'}
@@ -266,7 +250,6 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       onShowFilter={handleOnShowFilterPdv}
       onShowRegister={handleOnShowRegisterPdv}
       onShowEdit={handleOnShowEditPdv}
-      // onShowEditSubPdv={handleOnShowEditSubPdv}
       onShowDelete={handleOnShowDeletePdv}
       onShowListSub={handleOnShowListSubPdv}
     />

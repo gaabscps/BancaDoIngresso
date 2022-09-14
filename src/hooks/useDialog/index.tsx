@@ -51,8 +51,8 @@ export const DialogProvider = ({ children }: DialogProviderProps): JSX.Element =
           title={options.title}
           visible={visible}
           onClose={options.onClose ?? hide}
-          onBtnAction={options.onBtnAction}
-          btnLabel={options.btnLabel}
+          // onBtnAction={options.onBtnAction}
+          // btnLabel={options.btnLabel}
           isCard={options.isCard}
           position={options.position}
           size={options.size}

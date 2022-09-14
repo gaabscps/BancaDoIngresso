@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-key */
 import React, { Fragment, useEffect } from 'react';
 import { Container, Label } from 'reactstrap';
 import { CollumnImage, CustomTable, TableColumn } from '@/components/Utils/Table';
@@ -153,14 +152,7 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
             </div>
           </div>
         </div>
-        <CustomTable
-          // progressPending={pending}
-          // // progressPending={true}
-          // numberRowsPerPage={numberRowsPerPage}
-          columns={columnsPrimaryImage}
-          data={dataTablePdv}
-          theme="primary"
-        />
+        <CustomTable columns={columnsPrimaryImage} data={dataTablePdv} theme="primary" />
         <Pagination
           currentPage={pagination.page}
           totalCount={pagination.total}

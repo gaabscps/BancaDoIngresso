@@ -16,7 +16,7 @@ enum FormInputName {
 export const FilterContent: React.FC<FilterContentProps> = ({ onSubmit }) => {
   const optionFilter = [
     { label: 'Nome', value: 'name' },
-    { label: 'Cidade', value: 'city' },
+    { label: 'Nº de série da POS', value: 'serialNumber' },
   ];
   const { formData, formErrors, onChangeFormInput, isFormValid } = useForm({
     initialData: {
@@ -39,12 +39,10 @@ export const FilterContent: React.FC<FilterContentProps> = ({ onSubmit }) => {
             },
           };
           break;
-        case 'city':
+        case 'serialNumber':
           payload = {
             entity: {
-              address: {
-                [formData[FormInputName.filterSearch]]: formData[FormInputName.inputSearch],
-              },
+              [formData[FormInputName.filterSearch]]: formData[FormInputName.inputSearch],
             },
           };
           break;
@@ -82,7 +80,7 @@ export const FilterContent: React.FC<FilterContentProps> = ({ onSubmit }) => {
                 ?.label ?? ''
             }
             placeholder={
-              formData[FormInputName.filterSearch] === 'name' ? 'Nome do PDV' : 'Nome da Cidade'
+              formData[FormInputName.filterSearch] === 'name' ? 'Nome do POS' : 'Nº de série da POS'
             }
             maxLength={30}
             value={formData[FormInputName.inputSearch]}

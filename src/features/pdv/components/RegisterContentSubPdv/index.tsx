@@ -6,7 +6,6 @@ import validators from '@/helpers/validators';
 import { updateMask as updateMaskCPFOrCNPJ } from '@/helpers/masks/cpfCnpj';
 import { updateMask as updateMaskCEP, isValid as isValidCEP } from '@/helpers/masks/cep';
 import { updateMask as updateMaskMobilePhone } from '@/helpers/masks/mobilePhone';
-// import SelectAutoComplete from '@/components/Select';
 import subPdv from '@/model/SubPdv';
 import cep from 'cep-promise';
 
@@ -68,7 +67,7 @@ export const RegisterContentSubPdv: React.FC<RegisterContentProps> = ({
       linkedinUrl: dataList?.linkedinUrl ?? '',
       twitterUrl: dataList?.twitterUrl ?? '',
 
-      // users: [],
+      // users: [], TO-DO Adicionar usuarios
     },
     validators: {
       name: [validators.required],
@@ -81,7 +80,7 @@ export const RegisterContentSubPdv: React.FC<RegisterContentProps> = ({
       number: [validators.required],
       telephone: [validators.required, validators.mobilePhone],
       email: [validators.required, validators.email],
-      // users: [validators.required],
+      // users: [validators.required], TO-DO Adicionar usuarios
     },
     formatters: {
       document: updateMaskCPFOrCNPJ,
@@ -93,7 +92,7 @@ export const RegisterContentSubPdv: React.FC<RegisterContentProps> = ({
   const handleOnRegister = (): void => {
     console.log('form before valid', formData);
     if (isFormValid()) {
-      // TODO: change type to subPdv
+      // TODO: change type to sub-Pdv
 
       const payload: any = {
         id: dataList?.id ?? null,
@@ -120,7 +119,7 @@ export const RegisterContentSubPdv: React.FC<RegisterContentProps> = ({
         pdv: {
           id: 'd0c9e4e4-6d56-4145-8a19-d6fa37425f35',
         },
-        // users: [],
+        // users: [], TO-DO Adicionar usuarios
       };
       if (payload.id === null) {
         delete payload.id;
@@ -145,7 +144,6 @@ export const RegisterContentSubPdv: React.FC<RegisterContentProps> = ({
             name="name"
             label="Nome do SubPdv"
             placeholder="Digite o nome do SubPdv"
-            // maxLength={9}
             value={formData[FormInputName.name]}
             onChange={e => onChangeFormInput(FormInputName.name)(e.target.value)}
             error={formErrors.name && formErrors.name[0]}
@@ -186,7 +184,7 @@ export const RegisterContentSubPdv: React.FC<RegisterContentProps> = ({
             }}
             error={formErrors.zipCode && formErrors.zipCode[0]}
           />
-          {/* TODO: add select state and city */}
+          {/* TO-DO: add select state and city */}
           <InputText
             id="subpdvState"
             name="state"
@@ -290,12 +288,12 @@ export const RegisterContentSubPdv: React.FC<RegisterContentProps> = ({
             onChange={e => onChangeFormInput(FormInputName.linkedinUrl)(e.target.value)}
             error={formErrors.linkedinUrl && formErrors.linkedinUrl[0]}
           />
-          {/* TODO: add input file Map and Image SubPdv */}
+          {/* TO-DO: add input file Map and Image SubPdv */}
         </Col>
       </Row>
       <hr />
       <div className="d-flex justify-content-end">
-        {/* //:TODO !important add type props to "button" */}
+        {/* //:TO-DO !important add type props to "button" */}
         <h1>{document}</h1>
         <Button title="Salvar" type="button" onClick={handleOnRegister} />
       </div>

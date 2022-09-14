@@ -2,20 +2,17 @@
 import React, { useState } from 'react';
 
 import { useDialog } from '@/hooks/useDialog';
-// import { usePos } from '@/features/pos/hook/usePos';
 import { RegisterContent } from '@/features/pos/components/RegisterContent';
 import { DeleteContent } from '@/features/pos/components/DeleteContent';
 import Pos from '@/model/Pos';
-// import { EditContent } from '@/features/pdv/components/EditContent';
 import api from '@/services/api';
-// import Pdv from '@/model/Pos';
-// import { PosDataType } from '@/store/ducks/pos/types';
 import Page from '@/model/Page';
+import { toast } from 'react-toastify';
 import { PosContainer } from './ui';
+import { FilterContent } from '../../components/FilterContent';
 
 export const PosScreen: React.FC = (): JSX.Element => {
   const dialog = useDialog();
-  // const { posState, onChange, onClean } = usePos();
   const [listPos, setListPos] = useState([]);
   const initial_state_pagination: Page<Pos, Pos> = {
     page: 1,
@@ -34,14 +31,18 @@ export const PosScreen: React.FC = (): JSX.Element => {
       const { data } = await api.post<any>('/pos/page', values);
       const { list, order, page, pageSize, sort, total } = data;
 
-      setListPos(list);
-      setPagePos({
-        order,
-        page,
-        pageSize,
-        sort,
-        total,
-      });
+      if (list.length > 0) {
+        setListPos(list);
+        setPagePos({
+          order,
+          page,
+          pageSize,
+          sort,
+          total,
+        });
+      } else {
+        toast.info('Nenhum registro encontrado');
+      }
     } catch (error) {
       console.log('error', error);
     }
@@ -52,9 +53,8 @@ export const PosScreen: React.FC = (): JSX.Element => {
   // Registra POS
   const handleOnRegister = async (values: any): Promise<void> => {
     try {
-      const { data } = await api.post<any>('/pos', values);
-      console.log('creact success', data);
-      // onChange({ document: values.document });
+      await api.post<any>('/pos', values);
+
       handleRenderListPos(pagePos);
       handleOnClose();
     } catch (error) {
@@ -65,9 +65,7 @@ export const PosScreen: React.FC = (): JSX.Element => {
   // Edita POS
   const handleOnEditSave = async (values: any): Promise<void> => {
     try {
-      const { data } = await api.put<any>('/pos', values);
-      console.log('update success', data);
-      // onChange({ document: values.document });
+      await api.put<any>('/pos', values);
       handleRenderListPos(pagePos);
       handleOnClose();
     } catch (error) {
@@ -78,9 +76,7 @@ export const PosScreen: React.FC = (): JSX.Element => {
   // Deleta POS
   const handleOnDeletePos = async (value: any): Promise<void> => {
     try {
-      const { data } = await api.delete<any>(`/pos/${value}`);
-      console.log('delete success', data);
-      // onChange({ document: values.document });
+      await api.delete<any>(`/pos/${value}`);
       handleRenderListPos(pagePos);
       handleOnClose();
     } catch (error) {
@@ -124,6 +120,27 @@ export const PosScreen: React.FC = (): JSX.Element => {
     });
   };
 
+  // Filtra POS
+  const handleOnFilter = async (value: object): Promise<void> => {
+    try {
+      setPagePos({ ...pagePos, ...value });
+      handleRenderListPos({ ...pagePos, ...value });
+      handleOnClose();
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
+  // Renderiza Modal de Filtro de POS
+  const handleOnShowFilterPdv = (): void => {
+    dialog.show({
+      title: '',
+      children: <FilterContent onSubmit={handleOnFilter} />,
+      onClose: handleOnClose,
+      position: 'right',
+    });
+  };
+
   // ----------------------
 
   return (
@@ -131,10 +148,10 @@ export const PosScreen: React.FC = (): JSX.Element => {
       handleRenderListPos={handleRenderListPos}
       list={listPos}
       pagination={pagePos}
+      onShowFilter={handleOnShowFilterPdv}
       setPagination={setPagePos}
       onShowRegister={handleOnShowRegisterPos}
       onShowEdit={handleOnShowEditPos}
-      // onShowEditSubPos={handleOnShowEditSubPos}
       onShowDelete={handleOnShowDeletePos}
     />
   );
