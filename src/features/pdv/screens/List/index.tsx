@@ -145,6 +145,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       title: '',
       children: <DeleteContent id={value} onSubmit={handleOnDeletePdv} onClose={handleOnClose} />,
       onClose: handleOnClose,
+      size: 'lg',
     });
   };
 

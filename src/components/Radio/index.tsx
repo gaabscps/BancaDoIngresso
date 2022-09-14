@@ -9,7 +9,7 @@ interface RadioProps extends InputHTMLAttributes<HTMLInputElement> {
   className?: string;
   icon?: any;
   options?: any;
-  onChange?: any;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 interface OptionProps {

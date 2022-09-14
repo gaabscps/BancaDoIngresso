@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-key */
 import React, { Fragment, useEffect } from 'react';
 import { Container, Label } from 'reactstrap';
-import { CollumnImage, CollumnStatus, CustomTable, TableColumn } from '@/components/Utils/Table';
+import { CollumnStatus, CustomTable, TableColumn } from '@/components/Utils/Table';
 import Button from '@/components/Utils/Button';
 import FilterVector from '@/assets/images/svg/FilterVector';
 import Page from '@/model/Page';
@@ -10,7 +10,6 @@ import Pagination from '@/components/Utils/Pagination';
 
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
-import { ReactComponent as SubPdvIcon } from '@/assets/images/svg/subPDV.svg';
 import PosStatus from '@/model/PosStatus';
 
 interface PosContainerProps {
@@ -116,6 +115,7 @@ export const PosContainer: React.FC<PosContainerProps> = ({
         ),
         serialNumber: item.serialNumber,
         expirationDate: item.expirationDate,
+        currentPos: item.name,
         actions: (
           <>
             <Pen
