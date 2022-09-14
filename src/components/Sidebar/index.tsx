@@ -129,6 +129,10 @@ export const Sidebar: React.FC = () => {
                   route: path.Dashboard.Pdv.itself,
                   title: 'PDV',
                 },
+                {
+                  route: path.Dashboard.Pos.itself,
+                  title: 'POS',
+                },
               ]}
             />
           </li>

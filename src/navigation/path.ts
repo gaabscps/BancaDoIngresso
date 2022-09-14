@@ -1,6 +1,7 @@
 import { AUTH_ROUTES } from '@/features/auth/navigation';
 import { DASHBOARD_ROUTES } from '@/features/dashboard/navigation';
 import { PDV_ROUTES } from '@/features/pdv/navigation';
+import { POS_ROUTES } from '@/features/pos/navigation';
 
 const path = {
   Initial: {
@@ -21,7 +22,7 @@ const path = {
       ...PDV_ROUTES,
     },
     Pos: {
-      itself: '/dashboard/pos',
+      ...POS_ROUTES,
     },
     Company: {
       itself: '/dashboard/company',
