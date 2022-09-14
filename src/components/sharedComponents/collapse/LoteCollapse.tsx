@@ -11,7 +11,9 @@ interface StateProps {
   title: string;
   onShowEditSubPdv: (value: any) => Promise<void>;
   onShowDeleteSubPdv: (value: any) => Promise<void>;
+  dataList?: any;
   content: string;
+  // idPdv: string;
 }
 
 // interface DispatchProps {}
@@ -70,22 +72,24 @@ function LoteCollapse(props: Props): JSX.Element {
       </div>
 
       <Collapse isOpen={open}>
-        <Card className="subpdv-main-container card-container">
-          <div className="supdv-title-flex">
-            <div className="subpdv-title-container">
-              <p className="subpdv-title subpdv-title-index">Sub PDV’s #1 </p>
-              <p className="subpdv-title subpvd-title-name">• Promoter Ronaldo</p>
+        {props.dataList.map((item: any, index: any) => (
+          <Card className="subpdv-main-container card-container" key={item.id}>
+            <div className="supdv-title-flex">
+              <div className="subpdv-title-container">
+                <p className="subpdv-title subpdv-title-index">Sub PDV’s #{String(index)} </p>
+                <p className="subpdv-title subpvd-title-name">• {item.name}</p>
+              </div>
+              <div className="subpdv-icon-container">
+                <Pen onClick={() => props.onShowEditSubPdv(item.id)} className="mr-2 svg-icon" />
+                <Trash
+                  onClick={() => props.onShowDeleteSubPdv(item.id)}
+                  className="mr-2 svg-icon"
+                />
+              </div>
             </div>
-            <div className="subpdv-icon-container">
-              <Pen onClick={() => props.onShowEditSubPdv('definir')} className="mr-2 svg-icon" />
-              <Trash
-                onClick={() => props.onShowDeleteSubPdv('definir')}
-                className="mr-2 svg-icon"
-              />
-            </div>
-          </div>
-          {/* <CustomTable theme={'secundary'} columns={columnsSubPdvList} data={dataSubPdv} /> */}
-        </Card>
+            {/* <CustomTable theme={'secundary'} columns={columnsSubPdvList} data={dataSubPdv} /> */}
+          </Card>
+        ))}
       </Collapse>
     </>
   );

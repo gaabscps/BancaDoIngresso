@@ -19,8 +19,8 @@ import { PdvContainer } from './ui';
 
 export const PdvScreen: React.FC = (): JSX.Element => {
   const dialog = useDialog();
-  const { pdvState, onChange, onClean } = usePdv();
-  const [listPdv, setListPvd] = useState([]);
+  const { pdvState, onChange } = usePdv();
+  const [listPdv, setListPdv] = useState([]);
   const initial_state_pagination: Page<Pdv, Pdv> = {
     page: 1,
     pageSize: 10,
@@ -28,7 +28,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
     order: 'DESC',
     total: 1,
   };
-  const [pagePdv, setPagePvd] = useState(initial_state_pagination);
+  const [pagePdv, setPagePdv] = useState(initial_state_pagination);
 
   const handleOnClose = (): void => {
     dialog.hide();
@@ -39,8 +39,8 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       const { list, order, page, pageSize, sort, total } = data;
 
       if (list.length > 0) {
-        setListPvd(list);
-        setPagePvd({
+        setListPdv(list);
+        setPagePdv({
           page,
           pageSize,
           sort,
@@ -58,7 +58,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
   // Filtra PDV
   const handleOnFilter = async (value: object): Promise<void> => {
     try {
-      setPagePvd({ ...pagePdv, ...value });
+      setPagePdv({ ...pagePdv, ...value });
       handleRenderListPdv({ ...pagePdv, ...value });
       handleOnClose();
     } catch (error) {
@@ -191,11 +191,11 @@ export const PdvScreen: React.FC = (): JSX.Element => {
   };
 
   // Renderiza Modal de Edição de Sub PDV
-  const handleOnShowEditSubPdv = async (): Promise<void> => {
-    // const { data } = await api.get(`/sub-pdv/${value}`);
+  const handleOnShowEditSubPdv = async (id: string): Promise<void> => {
+    const { data } = await api.get(`/sub-pdv/${id}`);
     dialog.show({
       title: 'Editar Sub PDV',
-      children: <RegisterContentSubPdv onSubmit={handleOnEditSaveSubPdv} />,
+      children: <RegisterContentSubPdv dataList={data} onSubmit={handleOnEditSaveSubPdv} />,
       onClose: handleOnCloseSubPdv,
       isCard: true,
     });
@@ -228,7 +228,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
   // ----------------------
 
   const handleOnShowListSubPdv = async (id: string, name: string): Promise<void> => {
-    // const { data } = await api.get(`/sub-pdv/${value}`);
+    const { data } = await api.get(`/sub-pdv/pdv/${id}`);
     onChange({ idPdv: id, namePdv: name });
     dialog.show({
       // title: name ?? 'Sub PDV',
@@ -244,9 +244,9 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       ),
       children: (
         <ListContentSub
-          dataList={listPdv}
-          stateContext={pdvState}
-          onCleanConstext={onClean}
+          dataList={data}
+          // stateContext={pdvState}
+          // onCleanConstext={onClean}
           onSubmit={handleOnRegisterSubPdv}
           onShowRegisterSubPdv={handleOnShowRegisterSubPdv}
           onShowEditSubPdv={handleOnShowEditSubPdv}
@@ -262,7 +262,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       handleRenderListPdv={handleRenderListPdv}
       list={listPdv}
       pagination={pagePdv}
-      setPagination={setPagePvd}
+      setPagination={setPagePdv}
       onShowFilter={handleOnShowFilterPdv}
       onShowRegister={handleOnShowRegisterPdv}
       onShowEdit={handleOnShowEditPdv}

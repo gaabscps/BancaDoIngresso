@@ -12,21 +12,19 @@ interface PdvContainerProps {
 }
 
 export const ListContentSub: React.FC<PdvContainerProps> = ({
-  stateContext,
+  // stateContext,
   onShowEditSubPdv,
   onShowDeleteSubPdv,
-}) => {
-  useEffect(() => {
-    console.log('pdvState', stateContext);
-  }, [stateContext]);
-  return (
-    <div className="card">
-      <LoteCollapse
-        title={'Sub PDV’s cadastrados (3)'}
-        onShowEditSubPdv={onShowEditSubPdv}
-        onShowDeleteSubPdv={onShowDeleteSubPdv}
-        content={''}
-      />
-    </div>
-  );
-};
+  dataList,
+}) => (
+  <div className="card">
+    <LoteCollapse
+      title={`Sub PDV’s cadastrados (${dataList.length})`}
+      onShowEditSubPdv={onShowEditSubPdv}
+      onShowDeleteSubPdv={onShowDeleteSubPdv}
+      dataList={dataList}
+      // idPdv={stateContext.idPdv}
+      content={''}
+    />
+  </div>
+);
