@@ -6,7 +6,6 @@ import validators from '@/helpers/validators';
 import { updateMask as updateMaskCPFOrCNPJ } from '@/helpers/masks/cpfCnpj';
 import SelectAutoComplete from '@/components/Select';
 import Pos from '@/model/Pos';
-import Pdv from '@/model/Pdv';
 
 interface RegisterContentProps {
   document?: string;
@@ -47,7 +46,6 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
       // users: [],
     },
     validators: {
-      document: [validators.required, validators.cpforcnpj],
       name: [validators.required],
       serialNumber: [validators.required],
       status: [validators.required],
@@ -56,7 +54,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
       model: [validators.required],
       telephoneOperator: [validators.required],
       cardOperator: [validators.required],
-      users: [validators.required],
+      // users: [validators.required],
     },
     formatters: {
       document: updateMaskCPFOrCNPJ,
@@ -88,14 +86,14 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
       onSubmit(payload);
     }
   };
+  console.log('error', formErrors);
+
   const statusOptions = [
     { value: '0', label: 'POS em estoque' },
     { value: '1', label: 'POS em uso' },
     { value: '2', label: 'POS reservada' },
     { value: '3', label: 'POS inativa' },
   ];
-
-  console.log('error', formErrors);
 
   return (
     <Form
@@ -117,9 +115,9 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             error={formErrors.name && formErrors.name[0]}
           />
           <InputText
-            name="name"
-            label="Nome da POS"
-            placeholder="Digite o nome da POS"
+            name="serialNumber"
+            label="Nº de série da POS"
+            placeholder="Digite o nº de serie da POS"
             value={formData[FormInputName.serialNumber]}
             onChange={e => onChangeFormInput(FormInputName.serialNumber)(e.target.value)}
             error={formErrors.serialNumber && formErrors.serialNumber[0]}
@@ -152,6 +150,39 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             onChange={e => onChangeFormInput(FormInputName.pdv)(e.target.value)}
             error={formErrors.pdv && formErrors.pdv[0]}
           /> */}
+          <InputText
+            name="model"
+            label="Modelo da POS (opcional)"
+            placeholder="Digite o modelo da POS"
+            value={formData[FormInputName.model]}
+            onChange={e => onChangeFormInput(FormInputName.model)(e.target.value)}
+            error={formErrors.model && formErrors.model[0]}
+          />
+          <InputText
+            name="telephoneOperator"
+            label="Operadora telefônica (opcional)"
+            placeholder="Digite o nome da POS"
+            value={formData[FormInputName.telephoneOperator]}
+            onChange={e => onChangeFormInput(FormInputName.telephoneOperator)(e.target.value)}
+            error={formErrors.telephoneOperator && formErrors.telephoneOperator[0]}
+          />
+          <InputText
+            name="cardOperator"
+            label="Operadora de Cartão (opcional)"
+            placeholder="Digite a operadora de Cartão"
+            value={formData[FormInputName.cardOperator]}
+            onChange={e => onChangeFormInput(FormInputName.cardOperator)(e.target.value)}
+            error={formErrors.cardOperator && formErrors.cardOperator[0]}
+          />
+          <InputText
+            type="date"
+            name="expirationDate"
+            label="Data de validade (opcional) "
+            placeholder="DD/MM/AAAA"
+            value={formData[FormInputName.expirationDate]}
+            onChange={e => onChangeFormInput(FormInputName.expirationDate)(e.target.value)}
+            error={formErrors.expirationDate && formErrors.expirationDate[0]}
+          />
         </Col>
       </Row>
       <hr />

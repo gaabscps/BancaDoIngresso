@@ -115,7 +115,7 @@ export const PosContainer: React.FC<PosContainerProps> = ({
         ),
         serialNumber: item.serialNumber,
         expirationDate: item.expirationDate,
-        currentPdv: item.pdv.name,
+        currentPos: item.name,
         actions: (
           <>
             <Pen
