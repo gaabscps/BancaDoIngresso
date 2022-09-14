@@ -28,8 +28,13 @@ export const PdvScreen: React.FC = (): JSX.Element => {
   };
   const [pagePdv, setPagePvd] = useState(initial_state_pagination);
 
-  const handleOnClose = (): void => dialog.hide();
-
+  const handleOnClose = (): void => {
+    dialog.hide();
+  };
+  const handleOnCloseSubPdv = (): void => {
+    dialog.hide();
+    handleOnShowListSubPdv(pdvState.idPdv, pdvState.namePdv);
+  };
   const handleRenderListPdv = async (values: any): Promise<void> => {
     try {
       const { data } = await api.post<any>('/pdv/page', values);
@@ -119,7 +124,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       const { data } = await api.post<any>('/sub-pdv', values);
       console.log('creact success', data);
       // onChange({ document: values.document });
-      handleOnClose();
+      handleOnCloseSubPdv();
     } catch (error) {
       console.log('error', error);
     }
@@ -129,7 +134,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
     dialog.show({
       title: 'Cadastrar novo Sub-PDV',
       children: <RegisterContentSubPdv onSubmit={handleOnRegisterSubPdv} />,
-      onClose: handleOnClose,
+      onClose: handleOnCloseSubPdv,
       isCard: true,
     });
   };
@@ -139,8 +144,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       const { data } = await api.put<any>('/sub-pdv', values);
       console.log('edit success', data);
       // onChange({ document: values.document });
-      handleOnClose();
-      handleOnShowListSubPdv(pdvState.idPdv, pdvState.namePdv);
+      handleOnCloseSubPdv();
     } catch (error) {
       console.log('error', error);
     }
@@ -152,7 +156,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
     dialog.show({
       title: 'Editar Sub PDV',
       children: <RegisterContentSubPdv onSubmit={handleOnEditSaveSubPdv} />,
-      onClose: handleOnClose,
+      onClose: handleOnCloseSubPdv,
       isCard: true,
     });
   };
@@ -163,8 +167,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       console.log('delete success', data);
       // onChange({ document: values.document });
       handleRenderListPdv(pagePdv);
-      handleOnClose();
-      handleOnShowListSubPdv(pdvState.idPdv, pdvState.namePdv);
+      handleOnCloseSubPdv();
     } catch (error) {
       console.log('error', error);
     }
@@ -174,9 +177,9 @@ export const PdvScreen: React.FC = (): JSX.Element => {
     dialog.show({
       title: '',
       children: (
-        <DeleteContent id={value} onSubmit={handleOnDeleteSubPdv} onClose={handleOnClose} />
+        <DeleteContent id={value} onSubmit={handleOnDeleteSubPdv} onClose={handleOnCloseSubPdv} />
       ),
-      onClose: handleOnClose,
+      onClose: handleOnCloseSubPdv,
     });
   };
 
