@@ -18,6 +18,8 @@ interface DialogOptions {
   isCard?: boolean;
   visible?: boolean;
   onClose?: () => void;
+  position?: 'center' | 'right';
+  size?: 'sm' | 'md' | 'lg' | 'xl';
 }
 
 const DialogContext = createContext<DialogProviderValue>({
@@ -52,6 +54,8 @@ export const DialogProvider = ({ children }: DialogProviderProps): JSX.Element =
           onBtnAction={options.onBtnAction}
           btnLabel={options.btnLabel}
           isCard={options.isCard}
+          position={options.position}
+          size={options.size}
         >
           {options.children}
         </Dialog>

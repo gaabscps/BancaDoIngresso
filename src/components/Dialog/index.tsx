@@ -12,6 +12,8 @@ interface ModalProps {
   isCard?: boolean;
   visible: boolean;
   onClose(): void;
+  position?: 'center' | 'right';
+  size?: 'sm' | 'md' | 'lg' | 'xl';
 }
 
 export const Dialog: React.FC<ModalProps> = ({
@@ -22,10 +24,30 @@ export const Dialog: React.FC<ModalProps> = ({
   onBtnAction,
   btnLabel = 'Confirmar',
   isCard = false,
+  position = 'center',
+  size = 'xl',
 }: ModalProps) => {
   const handleClose = (): void => onClose();
+
+  const finalPosition = {
+    center: '',
+    right: 'flex-modal-right',
+  }[position];
+
+  const finalSize = {
+    sm: 'sm',
+    md: 'md',
+    lg: 'lg',
+    xl: 'xl',
+  }[size];
+
   return (
-    <Modal size={'xl'} isOpen={visible} toggle={() => onClose()}>
+    <Modal
+      modalClassName={finalPosition}
+      size={finalSize}
+      isOpen={visible}
+      toggle={() => onClose()}
+    >
       <ModalHeader>
         <div className="modal__header-container">
           {title && <div className="header-title-text modal__title">{title}</div>}
