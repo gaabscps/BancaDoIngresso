@@ -63,7 +63,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
     }
   };
 
-  // Renderiza Modal de Registro de PDV
+  // Renderiza Modal de Filtro PDV
   const handleOnShowFilterPdv = (): void => {
     dialog.show({
       title: '',

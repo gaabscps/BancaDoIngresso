@@ -7,7 +7,9 @@ import { DeleteContent } from '@/features/pos/components/DeleteContent';
 import Pos from '@/model/Pos';
 import api from '@/services/api';
 import Page from '@/model/Page';
+import { toast } from 'react-toastify';
 import { PosContainer } from './ui';
+import { FilterContent } from '../../components/FilterContent';
 
 export const PosScreen: React.FC = (): JSX.Element => {
   const dialog = useDialog();
@@ -29,14 +31,18 @@ export const PosScreen: React.FC = (): JSX.Element => {
       const { data } = await api.post<any>('/pos/page', values);
       const { list, order, page, pageSize, sort, total } = data;
 
-      setListPos(list);
-      setPagePos({
-        order,
-        page,
-        pageSize,
-        sort,
-        total,
-      });
+      if (list.length > 0) {
+        setListPos(list);
+        setPagePos({
+          order,
+          page,
+          pageSize,
+          sort,
+          total,
+        });
+      } else {
+        toast.info('Nenhum registro encontrado');
+      }
     } catch (error) {
       console.log('error', error);
     }
@@ -114,6 +120,27 @@ export const PosScreen: React.FC = (): JSX.Element => {
     });
   };
 
+  // Filtra POS
+  const handleOnFilter = async (value: object): Promise<void> => {
+    try {
+      setPagePos({ ...pagePos, ...value });
+      handleRenderListPos({ ...pagePos, ...value });
+      handleOnClose();
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
+  // Renderiza Modal de Filtro de POS
+  const handleOnShowFilterPdv = (): void => {
+    dialog.show({
+      title: '',
+      children: <FilterContent onSubmit={handleOnFilter} />,
+      onClose: handleOnClose,
+      position: 'right',
+    });
+  };
+
   // ----------------------
 
   return (
@@ -121,6 +148,7 @@ export const PosScreen: React.FC = (): JSX.Element => {
       handleRenderListPos={handleRenderListPos}
       list={listPos}
       pagination={pagePos}
+      onShowFilter={handleOnShowFilterPdv}
       setPagination={setPagePos}
       onShowRegister={handleOnShowRegisterPos}
       onShowEdit={handleOnShowEditPos}

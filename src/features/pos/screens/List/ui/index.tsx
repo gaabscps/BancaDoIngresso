@@ -20,6 +20,7 @@ interface PosContainerProps {
   onShowRegister: () => void;
   onShowEdit: (id: string) => Promise<void>;
   onShowDelete: (id: string) => Promise<void>;
+  onShowFilter: () => void;
 }
 
 interface DataRow {
@@ -40,6 +41,7 @@ export const PosContainer: React.FC<PosContainerProps> = ({
   pagination,
   setPagination,
   handleRenderListPos,
+  onShowFilter,
 }) => {
   useEffect(() => {
     handleRenderListPos(pagination);
@@ -147,7 +149,7 @@ export const PosContainer: React.FC<PosContainerProps> = ({
               + Cadastrar novo POS
             </Button>
             <div className="filter-container">
-              <div className="filter-content">
+              <div className="filter-content" onClick={onShowFilter}>
                 <FilterVector />
               </div>
             </div>
