@@ -1,54 +1,67 @@
 /* eslint-disable react/jsx-key */
 import React, { Fragment, useEffect } from 'react';
 import { Container, Label } from 'reactstrap';
-import { CollumnImage, CustomTable, TableColumn } from '@/components/Utils/Table';
+import { CollumnImage, CollumnStatus, CustomTable, TableColumn } from '@/components/Utils/Table';
 import Button from '@/components/Utils/Button';
 import FilterVector from '@/assets/images/svg/FilterVector';
 import Page from '@/model/Page';
-import Pdv from '@/model/Pdv';
+import Pos from '@/model/Pos';
 import Pagination from '@/components/Utils/Pagination';
 
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { ReactComponent as SubPdvIcon } from '@/assets/images/svg/subPDV.svg';
+import PosStatus from '@/model/PosStatus';
 
-interface PdvContainerProps {
-  handleRenderListPdv: (page: Page<Pdv, Pdv>) => void;
-  list: Pdv[];
-  pagination: Page<Pdv, Pdv>;
-  setPagination: React.Dispatch<React.SetStateAction<Page<Pdv, Pdv>>>;
+interface PosContainerProps {
+  handleRenderListPos: (page: Page<Pos, Pos>) => void;
+  list: Pos[];
+  pagination: Page<Pos, Pos>;
+  setPagination: React.Dispatch<React.SetStateAction<Page<Pos, Pos>>>;
   onShowRegister: () => void;
   onShowEdit: (id: string) => Promise<void>;
   onShowDelete: (id: string) => Promise<void>;
-  onShowListSub: (id: string, name: string) => Promise<void>;
 }
 
 interface DataRow {
   id: string;
-  imageBase64: string;
   name: string;
-  street: string;
-  city: string;
-  state: string;
+  serialNumber: string;
   actions: string;
-  status: string;
+  status: number;
+  expirationDate: string;
+  currentPdv: string;
 }
 
-export const PdvContainer: React.FC<PdvContainerProps> = ({
+export const PosContainer: React.FC<PosContainerProps> = ({
   onShowRegister,
   onShowEdit,
   onShowDelete,
   list,
   pagination,
   setPagination,
-  handleRenderListPdv,
-  onShowListSub,
+  handleRenderListPos,
 }) => {
   useEffect(() => {
-    handleRenderListPdv(pagination);
+    handleRenderListPos(pagination);
   }, []);
 
-  const initialTablePdv = [
+  const changeColorCollumn = (status: PosStatus): string => {
+    switch (status) {
+      case 0:
+        return '#3CAFC8';
+      case 1:
+        return '#7AD81B';
+      case 2:
+        return '#FFE249';
+      case 3:
+        return '#E64F49';
+      default:
+        return 'grey';
+    }
+  };
+
+  const initialTablePos = [
     {
       id: '',
       imageBase64: '',
@@ -60,32 +73,27 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
     },
   ];
 
-  const columnsPrimaryImage: TableColumn<DataRow>[] = [
+  const columnsPrimaryStatusColor: TableColumn<DataRow>[] = [
     {
-      name: 'Imagem',
-      selector: row => row.imageBase64,
-      width: '100px',
-    },
-    {
-      name: 'Nome do PDV',
+      name: 'Nome da POS',
       selector: row => row.name,
     },
     {
-      name: 'Endereço',
-      selector: row => row.street,
+      name: 'Nº de serie',
+      selector: row => row.serialNumber,
     },
     {
-      name: 'Cidade',
-      selector: row => row.city,
+      name: 'Data do vínculo',
+      selector: row => row.expirationDate,
     },
     {
-      name: 'Estado',
-      selector: row => row.state,
+      name: 'PDV atual',
+      selector: row => row.currentPdv,
     },
     {
       name: 'Ações',
       selector: row => row.actions,
-      width: '160px',
+      width: '120px',
     },
   ];
 
@@ -94,20 +102,20 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
       ...pagination,
       page: pageNumber,
     });
-    handleRenderListPdv({
+    handleRenderListPos({
       ...pagination,
       page: pageNumber,
     });
   }
 
-  const dataTablePdv = list
+  const dataTablePos = list
     ? list?.map(item => ({
         id: item.id,
-        imageBase64: <CollumnImage srcImage={item.imageBase64} />,
-        name: item.name,
-        street: item.address.street,
-        city: item.address.city,
-        state: item.address.state,
+        name: (
+          <CollumnStatus statusColor={changeColorCollumn(item.status)}>{item.name}</CollumnStatus>
+        ),
+        serialNumber: item.serialNumber,
+        expirationDate: item.expirationDate,
         actions: (
           <>
             <Pen
@@ -122,27 +130,21 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
               }}
               className="mr-2 svg-icon action-icon"
             />
-            <SubPdvIcon
-              onClick={() => {
-                onShowListSub(item.id, item.name);
-              }}
-              className="mr-2 svg-icon action-icon"
-            />
           </>
         ),
       }))
-    : initialTablePdv;
+    : initialTablePos;
 
   return (
     <Fragment>
       <Container className="mainContainer" fluid={true}>
         <div className="d-flex justify-content-between" style={{ paddingBottom: '30px' }}>
           <div className="pageTitle" style={{ display: 'grid' }}>
-            <Label>PDV</Label>
+            <Label>POS</Label>
           </div>
           <div className="button-filter-container">
             <Button color="primary" onClick={onShowRegister}>
-              + Cadastrar novo PDV
+              + Cadastrar novo POS
             </Button>
             <div className="filter-container">
               <div className="filter-content">
@@ -155,8 +157,8 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
           // progressPending={pending}
           // // progressPending={true}
           // numberRowsPerPage={numberRowsPerPage}
-          columns={columnsPrimaryImage}
-          data={dataTablePdv}
+          columns={columnsPrimaryStatusColor}
+          data={dataTablePos}
           theme="primary"
         />
         <Pagination
