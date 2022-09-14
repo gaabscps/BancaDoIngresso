@@ -195,21 +195,19 @@ export const RegisterContentSubPdv: React.FC<RegisterContentProps> = ({
             error={formErrors.city && formErrors.city[0]}
           />
           <InputText
-            id="subpdvDistrict"
             name="district"
             label="Bairro"
             placeholder="Centro"
-            value={formData[FormInputName.street]}
-            onChange={e => onChangeFormInput(FormInputName.street)(e.target.value)}
+            value={formData[FormInputName.district]}
+            onChange={e => onChangeFormInput(FormInputName.district)(e.target.value)}
             error={formErrors.district && formErrors.district[0]}
           />
           <InputText
-            id="subpdvStreet"
             name="street"
             label="Logradouro"
             placeholder="Rua 123 da Costa"
-            value={formData[FormInputName.district]}
-            onChange={e => onChangeFormInput(FormInputName.district)(e.target.value)}
+            value={formData[FormInputName.street]}
+            onChange={e => onChangeFormInput(FormInputName.street)(e.target.value)}
             error={formErrors.street && formErrors.street[0]}
           />
           <InputText

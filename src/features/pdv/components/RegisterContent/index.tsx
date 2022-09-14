@@ -231,8 +231,8 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             name="street"
             label="Logradouro"
             placeholder="Rua 123 da Costa"
-            value={formData[FormInputName.district]}
-            onChange={e => onChangeFormInput(FormInputName.district)(e.target.value)}
+            value={formData[FormInputName.street]}
+            onChange={e => onChangeFormInput(FormInputName.street)(e.target.value)}
             error={formErrors.street && formErrors.street[0]}
           />
           <InputText
