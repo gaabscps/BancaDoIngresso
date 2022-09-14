@@ -42,7 +42,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
       cardOperator: dataList?.cardOperator ?? '',
       expirationDate: String(dataList?.expirationDate ?? ''),
 
-      // users: [],
+      // users: [], TO-DO Adicionar usuarios
     },
     validators: {
       name: [validators.required],
@@ -53,7 +53,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
       model: [validators.required],
       telephoneOperator: [validators.required],
       cardOperator: [validators.required],
-      // users: [validators.required],
+      // users: [validators.required], TO-DO Adicionar usuarios
     },
     formatters: {
       document: updateMaskCPFOrCNPJ,
@@ -63,7 +63,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
   const handleOnRegister = (): void => {
     console.log('form before valid', formData);
     if (isFormValid()) {
-      // TODO: change type to Pdv
+      // TO-DO: change type to Pdv
 
       const payload: any = {
         id: dataList?.id ?? null,
@@ -77,7 +77,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
         model: formData[FormInputName.model],
         telephoneOperator: formData[FormInputName.telephoneOperator],
         cardOperator: formData[FormInputName.cardOperator],
-        // users: formData[FormInputName.users],
+        // users: formData[FormInputName.users], TO-DO Adicionar usuarios
       };
       if (payload.id === null) {
         delete payload.id;
@@ -141,14 +141,6 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             placeholder="Selecione ou digite a situação da POS"
             value={formData[FormInputName.status]}
           />
-          {/* <InputText
-            name="PDV"
-            label="Nome do PDV"
-            placeholder="Digite o nome do PDV"
-            value={formData[FormInputName.pdv]}
-            onChange={e => onChangeFormInput(FormInputName.pdv)(e.target.value)}
-            error={formErrors.pdv && formErrors.pdv[0]}
-          /> */}
           <InputText
             name="model"
             label="Modelo da POS (opcional)"
@@ -186,7 +178,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
       </Row>
       <hr />
       <div className="d-flex justify-content-end">
-        {/* //:TODO !important add type props to "button" */}
+        {/* //:TO-DO !important add type props to "button" */}
         <h1>{document}</h1>
         <Button title="Salvar" type="button" onClick={handleOnRegister} />
       </div>

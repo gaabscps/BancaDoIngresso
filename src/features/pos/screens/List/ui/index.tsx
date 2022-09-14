@@ -153,14 +153,7 @@ export const PosContainer: React.FC<PosContainerProps> = ({
             </div>
           </div>
         </div>
-        <CustomTable
-          // progressPending={pending}
-          // // progressPending={true}
-          // numberRowsPerPage={numberRowsPerPage}
-          columns={columnsPrimaryStatusColor}
-          data={dataTablePos}
-          theme="primary"
-        />
+        <CustomTable columns={columnsPrimaryStatusColor} data={dataTablePos} theme="primary" />
         <Pagination
           currentPage={pagination.page}
           totalCount={pagination.total}

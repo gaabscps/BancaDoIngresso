@@ -40,7 +40,7 @@ enum FormInputName {
   batchClosed = 'batchClosed',
   askPasswordInactivity = 'askPasswordInactivity',
   inactivityTimeout = 'inactivityTimeout',
-  // users: string[];
+  // users: string[]; TO-DO Adicionar usuarios
 }
 
 export const RegisterContent: React.FC<RegisterContentProps> = ({
@@ -71,7 +71,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
       batchClosed: dataList?.batchClosed ?? '',
       askPasswordInactivity: dataList?.askPasswordInactivity ?? '',
       inactivityTimeout: dataList?.inactivityTimeout ?? '',
-      // users: [],
+      // users: [], TO-DO Adicionar usuarios
     },
     validators: {
       name: [validators.required],
@@ -87,7 +87,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
       batchClosed: [validators.required],
       askPasswordInactivity: [validators.required],
       inactivityTimeout: [validators.required],
-      // users: [validators.required],
+      // users: [validators.required], TO-DO Adicionar usuarios
     },
     formatters: {
       document: updateMaskCPFOrCNPJ,
@@ -99,7 +99,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
   const handleOnRegister = (): void => {
     console.log('form before valid', formData);
     if (isFormValid()) {
-      // TODO: change type to Pdv
+      // TO-DO: change type to Pdv
 
       const payload: any = {
         id: dataList?.id ?? null,
@@ -127,7 +127,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
           latitude: formData[FormInputName.latitude],
           longitude: formData[FormInputName.longitude],
         },
-        // users: [],
+        // users: [], TO-DO Adicionar usuarios
       };
       if (payload.id === null) {
         delete payload.id;
@@ -193,7 +193,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             onBlur={e => onChangeFormInput(FormInputName.zipCode)(e.target.value)}
             error={formErrors.zipCode && formErrors.zipCode[0]}
           />
-          {/* TODO: add select state and city */}
+          {/* TO-DO: add select state and city */}
           <InputText
             name="state"
             label="Estado"
@@ -295,7 +295,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             onChange={e => onChangeFormInput(FormInputName.linkedinUrl)(e.target.value)}
             error={formErrors.linkedinUrl && formErrors.linkedinUrl[0]}
           />
-          {/* TODO: add input file Map and Image PDV */}
+          {/* TO-DO: add input file Map and Image PDV */}
           <ButtonGroup
             label="Lote encerrado?"
             name="batchClosed"
@@ -329,7 +329,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
       </Row>
       <hr />
       <div className="d-flex justify-content-end">
-        {/* //:TODO !important add type props to "button" */}
+        {/* //:TO-DO !important add type props to "button" */}
         <h1>{document}</h1>
         <Button title="Salvar" type="button" onClick={handleOnRegister} />
       </div>

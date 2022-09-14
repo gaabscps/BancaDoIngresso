@@ -2,20 +2,15 @@
 import React, { useState } from 'react';
 
 import { useDialog } from '@/hooks/useDialog';
-// import { usePos } from '@/features/pos/hook/usePos';
 import { RegisterContent } from '@/features/pos/components/RegisterContent';
 import { DeleteContent } from '@/features/pos/components/DeleteContent';
 import Pos from '@/model/Pos';
-// import { EditContent } from '@/features/pdv/components/EditContent';
 import api from '@/services/api';
-// import Pdv from '@/model/Pos';
-// import { PosDataType } from '@/store/ducks/pos/types';
 import Page from '@/model/Page';
 import { PosContainer } from './ui';
 
 export const PosScreen: React.FC = (): JSX.Element => {
   const dialog = useDialog();
-  // const { posState, onChange, onClean } = usePos();
   const [listPos, setListPos] = useState([]);
   const initial_state_pagination: Page<Pos, Pos> = {
     page: 1,
@@ -52,9 +47,8 @@ export const PosScreen: React.FC = (): JSX.Element => {
   // Registra POS
   const handleOnRegister = async (values: any): Promise<void> => {
     try {
-      const { data } = await api.post<any>('/pos', values);
-      console.log('creact success', data);
-      // onChange({ document: values.document });
+      await api.post<any>('/pos', values);
+
       handleRenderListPos(pagePos);
       handleOnClose();
     } catch (error) {
@@ -65,9 +59,7 @@ export const PosScreen: React.FC = (): JSX.Element => {
   // Edita POS
   const handleOnEditSave = async (values: any): Promise<void> => {
     try {
-      const { data } = await api.put<any>('/pos', values);
-      console.log('update success', data);
-      // onChange({ document: values.document });
+      await api.put<any>('/pos', values);
       handleRenderListPos(pagePos);
       handleOnClose();
     } catch (error) {
@@ -78,9 +70,7 @@ export const PosScreen: React.FC = (): JSX.Element => {
   // Deleta POS
   const handleOnDeletePos = async (value: any): Promise<void> => {
     try {
-      const { data } = await api.delete<any>(`/pos/${value}`);
-      console.log('delete success', data);
-      // onChange({ document: values.document });
+      await api.delete<any>(`/pos/${value}`);
       handleRenderListPos(pagePos);
       handleOnClose();
     } catch (error) {
@@ -134,7 +124,6 @@ export const PosScreen: React.FC = (): JSX.Element => {
       setPagination={setPagePos}
       onShowRegister={handleOnShowRegisterPos}
       onShowEdit={handleOnShowEditPos}
-      // onShowEditSubPos={handleOnShowEditSubPos}
       onShowDelete={handleOnShowDeletePos}
     />
   );

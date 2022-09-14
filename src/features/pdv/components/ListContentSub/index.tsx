@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import LoteCollapse from '@/components/sharedComponents/collapse/LoteCollapse';
 
 interface PdvContainerProps {
@@ -12,21 +12,16 @@ interface PdvContainerProps {
 }
 
 export const ListContentSub: React.FC<PdvContainerProps> = ({
-  stateContext,
+  // stateContext,
   onShowEditSubPdv,
   onShowDeleteSubPdv,
-}) => {
-  useEffect(() => {
-    console.log('pdvState', stateContext);
-  }, [stateContext]);
-  return (
-    <div className="card">
-      <LoteCollapse
-        title={'Sub PDV’s cadastrados (3)'}
-        onShowEditSubPdv={onShowEditSubPdv}
-        onShowDeleteSubPdv={onShowDeleteSubPdv}
-        content={''}
-      />
-    </div>
-  );
-};
+}) => (
+  <div className="card">
+    <LoteCollapse
+      title={'Sub PDV’s cadastrados (3)'}
+      onShowEditSubPdv={onShowEditSubPdv}
+      onShowDeleteSubPdv={onShowDeleteSubPdv}
+      content={''}
+    />
+  </div>
+);

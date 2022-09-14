@@ -2,9 +2,6 @@ import React from 'react';
 import { Form } from 'reactstrap';
 import { Button, Radio, InputText } from '@/components';
 import useForm from '@/hooks/useForm';
-// import validators from '@/helpers/validators';
-// import { updateMask as updateMaskCPF } from '@/helpers/masks/cpf';
-// import { updateMask as updateMaskCEP } from '@/helpers/masks/cep';
 
 interface FilterContentProps {
   onSubmit: (value: any) => Promise<void>;
@@ -55,7 +52,6 @@ export const FilterContent: React.FC<FilterContentProps> = ({ onSubmit }) => {
           payload = {};
           break;
       }
-      // console.log(payload);
       onSubmit(payload);
     }
   };
@@ -94,8 +90,6 @@ export const FilterContent: React.FC<FilterContentProps> = ({ onSubmit }) => {
             error={formErrors.inputSearch && formErrors.inputSearch[0]}
           />
         )}
-        {/* <div className="filter-button exclude-button">
-      </div> */}
         <div className="d-flex justify-content-end">
           <Button title="Salvar" onClick={handleOnEdit} />
         </div>
