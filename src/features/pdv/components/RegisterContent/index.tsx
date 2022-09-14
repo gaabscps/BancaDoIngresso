@@ -6,7 +6,7 @@ import validators from '@/helpers/validators';
 import { updateMask as updateMaskCPFOrCNPJ } from '@/helpers/masks/cpfCnpj';
 import { updateMask as updateMaskCEP, isValid as isValidCEP } from '@/helpers/masks/cep';
 import { updateMask as updateMaskMobilePhone } from '@/helpers/masks/mobilePhone';
-import SelectAutoComplete from '@/components/Select';
+// import SelectAutoComplete from '@/components/Select';
 import ButtonGroup from '@/components/ButtonGroup';
 import Pdv from '@/model/Pdv';
 import cep from 'cep-promise';
@@ -76,7 +76,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
     },
     validators: {
       name: [validators.required],
-      document: [validators.required, validators.cpf],
+      document: [validators.required, validators.cpforcnpj],
       zipCode: [validators.required, validators.cep],
       state: [validators.required],
       city: [validators.required],
@@ -184,8 +184,10 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
               onChangeFormInput(FormInputName.zipCode)(e.target.value);
               if (e.target.value.length === 9 && isValidCEP(e.target.value)) {
                 cep(e.target.value).then(data => {
+                  onChangeFormInput(FormInputName.state)(data.state);
+                  onChangeFormInput(FormInputName.city)(data.city);
                   onChangeFormInput(FormInputName.district)(data.neighborhood);
-                  onChangeFormInput(FormInputName.number)(data.city);
+                  onChangeFormInput(FormInputName.street)(data.street);
                 });
               }
             }}
@@ -193,30 +195,20 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             error={formErrors.zipCode && formErrors.zipCode[0]}
           />
           {/* TODO: add select state and city */}
-          <SelectAutoComplete
+          <InputText
             name="state"
             label="Estado"
-            options={[
-              { value: 'SP', label: 'SP' },
-              { value: 'RJ', label: 'RJ' },
-              { value: 'MG', label: 'MG' },
-            ]}
             placeholder="Selecione o estado do PDV"
             value={formData[FormInputName.state]}
-            onChange={e => onChangeFormInput(FormInputName.state)(e?.value as string)}
+            onChange={e => onChangeFormInput(FormInputName.state)(e?.target.value as string)}
             error={formErrors.state && formErrors.state[0]}
           />
-          <SelectAutoComplete
+          <InputText
             name="city"
             label="Cidade"
-            options={[
-              { value: 'SP city', label: 'Cidade São Paulo' },
-              { value: 'RJ city', label: 'Cidade Rio de Janeiro' },
-              { value: 'MG city', label: 'Cidade Minas Gerais' },
-            ]}
             placeholder="Selecione o estado do PDV"
             value={formData[FormInputName.city]}
-            onChange={e => onChangeFormInput(FormInputName.city)(e?.value as string)}
+            onChange={e => onChangeFormInput(FormInputName.city)(e?.target.value as string)}
             error={formErrors.city && formErrors.city[0]}
           />
           <InputText
