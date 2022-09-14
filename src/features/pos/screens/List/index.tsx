@@ -89,10 +89,11 @@ export const PosScreen: React.FC = (): JSX.Element => {
   };
 
   // Renderiza Modal de Registro de POS
-  const handleOnShowRegisterPos = (): void => {
+  const handleOnShowRegisterPos = async (): Promise<void> => {
+    const { data: dataPdv } = await api.get(`/pdv/find`);
     dialog.show({
       title: 'Cadastrar novo POS',
-      children: <RegisterContent onSubmit={handleOnRegister} />,
+      children: <RegisterContent dataListPdv={dataPdv} onSubmit={handleOnRegister} />,
       onClose: handleOnClose,
       isCard: true,
     });
@@ -100,11 +101,14 @@ export const PosScreen: React.FC = (): JSX.Element => {
 
   // Renderiza Modal de Edição de POS
   const handleOnShowEditPos = async (value: any): Promise<void> => {
+    const { data: dataPdv } = await api.get(`/pdv/find`);
     const { data } = await api.get(`/pos/${value}`);
 
     dialog.show({
       title: 'Editar POS',
-      children: <RegisterContent dataList={data} onSubmit={handleOnEditSave} />,
+      children: (
+        <RegisterContent dataListPdv={dataPdv} dataList={data} onSubmit={handleOnEditSave} />
+      ),
       onClose: handleOnClose,
       isCard: true,
     });
@@ -116,6 +120,7 @@ export const PosScreen: React.FC = (): JSX.Element => {
       title: '',
       children: <DeleteContent id={value} onSubmit={handleOnDeletePos} onClose={handleOnClose} />,
       onClose: handleOnClose,
+      size: 'lg',
     });
   };
 
