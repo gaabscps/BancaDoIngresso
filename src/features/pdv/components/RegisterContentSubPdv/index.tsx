@@ -1,6 +1,6 @@
 import React from 'react';
 import { Col, Form, Row } from 'reactstrap';
-import { InputText, Button } from '@/components';
+import { InputText, Button, SelectCustom } from '@/components';
 import useForm from '@/hooks/useForm';
 import validators from '@/helpers/validators';
 import { updateMask as updateMaskCPFOrCNPJ } from '@/helpers/masks/cpfCnpj';
@@ -8,6 +8,7 @@ import { updateMask as updateMaskCEP, isValid as isValidCEP } from '@/helpers/ma
 import { updateMask as updateMaskMobilePhone } from '@/helpers/masks/mobilePhone';
 import subPdv from '@/model/SubPdv';
 import cep from 'cep-promise';
+import { statesUf } from '@/constant/states';
 
 interface RegisterContentProps {
   document?: string;
@@ -185,14 +186,15 @@ export const RegisterContentSubPdv: React.FC<RegisterContentProps> = ({
             error={formErrors.zipCode && formErrors.zipCode[0]}
           />
           {/* TO-DO: add select state and city */}
-          <InputText
+          <SelectCustom
             id="subpdvState"
             name="state"
             label="Estado"
             placeholder="Selecione o estado do SubPdv"
             value={formData[FormInputName.state]}
-            onChange={e => onChangeFormInput(FormInputName.state)(e?.target.value as string)}
+            onChange={e => onChangeFormInput(FormInputName.state)(e?.target?.value as string)}
             error={formErrors.state && formErrors.state[0]}
+            options={statesUf}
           />
           <InputText
             id="subpdvCity"

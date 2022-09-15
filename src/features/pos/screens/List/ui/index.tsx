@@ -81,7 +81,7 @@ export const PosContainer: React.FC<PosContainerProps> = ({
       selector: row => row.name,
     },
     {
-      name: 'Nº de serie',
+      name: 'Nº de série',
       selector: row => row.serialNumber,
     },
     {

@@ -20,6 +20,7 @@ interface SelectAutoCompleteProps {
   value: string;
   options: OptionProps[];
   placeholder?: string;
+  id?: string;
   style?: React.CSSProperties;
   wrapperClass?: string;
   control?: any;

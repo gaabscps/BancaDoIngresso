@@ -122,10 +122,6 @@ export const Sidebar: React.FC = () => {
               IconSvg={Settings}
               items={[
                 {
-                  route: path.Dashboard.Payment.itself,
-                  title: 'Pagamentos',
-                },
-                {
                   route: path.Dashboard.Pdv.itself,
                   title: 'PDV',
                 },
