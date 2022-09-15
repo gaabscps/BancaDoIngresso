@@ -10,6 +10,7 @@ import Pagination from '@/components/Utils/Pagination';
 
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
+import { ReactComponent as Status } from '@/assets/images/svg/status.svg';
 import PosStatus from '@/model/PosStatus';
 
 interface PosContainerProps {
@@ -153,6 +154,25 @@ export const PosContainer: React.FC<PosContainerProps> = ({
                 <FilterVector />
               </div>
             </div>
+          </div>
+        </div>
+        <div className="d-flex pb-2 status-container">
+          <div className="eventStatus subText">
+            <Status style={{ color: '#7AD81B' }} />
+            POS em uso
+          </div>
+          <div className="eventStatus subText">
+            <Status style={{ color: '#FFE249' }} />
+            POS reservada
+          </div>
+
+          <div className="eventStatus subText">
+            <Status style={{ color: '#3CAFC8' }} />
+            POS em estoque
+          </div>
+          <div className="eventStatus subText">
+            <Status style={{ color: '#E64F49' }} />
+            POS inativa
           </div>
         </div>
         <CustomTable columns={columnsPrimaryStatusColor} data={dataTablePos} theme="primary" />
