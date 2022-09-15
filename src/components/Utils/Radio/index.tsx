@@ -16,16 +16,7 @@ interface OptionProps {
   label: string;
 }
 
-const Radio: FC<RadioProps> = ({
-  register,
-  name,
-  error,
-  label,
-  wrapperClass,
-  icon,
-  options,
-  ...rest
-}) => (
+const Radio: FC<RadioProps> = ({ name, error, label, wrapperClass, icon, options, ...rest }) => (
   <div className={`mb-4 flex-column ${wrapperClass}`}>
     {label && (
       <div className="d-flex flex-column-reverse">
@@ -46,7 +37,7 @@ const Radio: FC<RadioProps> = ({
         return (
           <>
             <input
-              {...register(name)}
+              name={name}
               type="radio"
               value={option.value}
               id={`${option.value}-${idRandom}`}

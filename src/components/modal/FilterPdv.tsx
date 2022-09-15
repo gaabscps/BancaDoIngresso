@@ -4,13 +4,13 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
+import Page from '@/model/Page';
 import CloseModal from '../../assets/images/svg/CloseModal';
 import Button from '../Utils/Button';
 import Select from '../Utils/Select';
 import RadioCustom from '../Utils/Radio';
 import { ApplicationState } from '../../store';
 import { listRequest } from '../../store/ducks/pdv/actions';
-import Page from '../../entities/Page';
 import { PdvState } from '../../store/ducks/pdv/types';
 
 interface FilterCustomProps {

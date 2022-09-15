@@ -1,6 +1,6 @@
-import Company from '../../../entities/Company';
-import CustomError from '../../../entities/CustomError';
-import Page from '../../../entities/Page';
+import Company from '../../../model/Company';
+import CustomError from '../../../model/CustomError';
+import Page from '../../../model/Page';
 /**
  * Action types
  */

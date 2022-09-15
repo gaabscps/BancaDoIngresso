@@ -1,6 +1,6 @@
-import CustomError from '../../../entities/CustomError';
-import Page from '../../../entities/Page';
-import ChargeSetup from '../../../entities/ChargeSetup';
+import CustomError from '../../../model/CustomError';
+import Page from '../../../model/Page';
+import ChargeSetup from '../../../model/ChargeSetup';
 /**
  * Action types
  */

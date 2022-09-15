@@ -5,6 +5,14 @@ import { call, put, select } from 'redux-saga/effects';
 import { AxiosResponse, AxiosError } from 'axios';
 import { Buffer } from 'buffer';
 import { toast } from 'react-toastify';
+import { setItem } from '@/helpers/common/localStorage';
+import { REACT_APP_AUTH } from '@/utils/config';
+import { parse } from '@/model/CustomError';
+import api from '@/services/api';
+import { Auth } from '@/model/Auth';
+import RecoverEmail from '@/model/RecoverEmail';
+import RecoverLogin from '@/model/RecoverLogin';
+import { ApplicationState } from '../..';
 import {
   loginSuccess,
   loginFailure,
@@ -15,12 +23,6 @@ import {
   refreshTokenSuccess,
   refreshTokenFailure,
 } from './actions';
-import { parse } from '../../../entities/CustomError';
-import api from '../../../services/api';
-import { ApplicationState } from '../..';
-import Auth from '../../../entities/Auth';
-import RecoverEmail from '../../../entities/RecoverEmail';
-import RecoverLogin from '../../../entities/RecoverLogin';
 
 export function* authLogin(data: any) {
   try {
@@ -45,13 +47,12 @@ export function* authLogin(data: any) {
 
     const authData = stateData.auth.data;
     authData.login = auth;
+
+    setItem(String(REACT_APP_AUTH), auth);
+
     yield put(loginSuccess(authData));
   } catch (err) {
     const error = err as AxiosError;
-    console.log(error);
-    if (error?.response?.statusText === 'Unauthorized') {
-      toast.error('Ops... Credênciais Inválidas');
-    }
     yield put(loginFailure(parse(error)));
   }
 }
@@ -95,18 +96,8 @@ export function* authChangePassword(data: any) {
     yield put(changePasswordSuccess(authData));
   } catch (err) {
     const error = err as AxiosError;
-    console.log('Error', error);
-    // if (error?.details === 'Ter tamanho mínimo 6 e no máximo 15 caracteres.') {
-    //   toast.error('Ops... Essa senha é muito curta!!');
-    // }
-    // if (error?.response?.statusText === 'Deve ter no mínimo uma letra maiúscula e minúscula.') {
-    //   toast.error('Ops... Essa senha precisa ter uma letra maiúscula!!');
-    // }
-    // if (error?.response?.statusText === 'Deve ter no mínimo um numero.') {
-    //   toast.error('Ops... Essa senha precisa ter um número.');
-    // }
-    if (error?.response?.statusText === 'Bad Request' || error?.response?.status === 400) {
-      toast.warn('Ops... A nova senha precisa seguir os parâmetros solicitados!!');
+    if (error?.response?.statusText === 'Bad Request') {
+      toast.error('Ops... A nova senha precisa seguir os parâmetros solicitados!!');
     }
     yield put(changePasswordFailure(parse(error)));
   }

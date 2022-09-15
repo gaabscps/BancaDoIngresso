@@ -1,7 +1,7 @@
 import { action } from 'typesafe-actions';
-import CustomError from '../../../entities/CustomError';
-import Page from '../../../entities/Page';
-import Permission from '../../../entities/Permission';
+import CustomError from '../../../model/CustomError';
+import Page from '../../../model/Page';
+import Permission from '../../../model/Permission';
 import { PermissionDataType, PermissionTypes } from './types';
 
 export const activateRequest = (

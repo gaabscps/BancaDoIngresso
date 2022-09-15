@@ -25,10 +25,10 @@ import {
 } from './actions';
 import { ContractorDataType } from './types';
 import { ApplicationState } from '../..';
-import { parse } from '../../../entities/CustomError';
+import { parse } from '../../../model/CustomError';
 import api from '../../../services/api';
-import Contractor from '../../../entities/Contractor';
-import Page from '../../../entities/Page';
+import Contractor from '../../../model/Contractor';
+import Page from '../../../model/Page';
 
 export function* activateContractor(data: any) {
   try {

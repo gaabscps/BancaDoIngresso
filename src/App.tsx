@@ -1,40 +1,26 @@
 import React, { Fragment } from 'react';
 import { Provider } from 'react-redux';
-import { Routes, BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import CheckLogedUser from './helpers/CheckLogedUser';
-import PrivateRoute from './helpers/PrivateRoute';
-import { RoteContent, routes } from './route';
-import store from './store';
+import { Navigation } from '@/navigation';
+import { DialogProvider } from '@/hooks/useDialog';
+import store from '@/store';
+
+import 'dayjs';
+import 'dayjs/locale/pt-br';
 import 'react-toastify/dist/ReactToastify.min.css';
+import '@/styles/index.scss';
 
-function App(): JSX.Element {
-  const renderRoute = (index: number, routeContent: RoteContent): JSX.Element => {
-    const { path, child: Child, component: Component, privateRoute } = routeContent;
-    if (privateRoute) {
-      return (
-        <Route
-          key={index}
-          path={path}
-          element={<PrivateRoute component={Component} child={Child} />}
-        />
-      );
-    }
-    return <Route key={index} path={path} element={<Component />} />;
-  };
-  return (
-    <Fragment>
-      <Provider store={store}>
-        <CheckLogedUser />
+export const App: React.FC = (): JSX.Element => (
+  <Fragment>
+    <Provider store={store}>
+      <DialogProvider>
         <BrowserRouter>
-          <Routes>
-            {routes.map((route: RoteContent, index: number) => renderRoute(index, route))}
-          </Routes>
+          <Navigation />
         </BrowserRouter>
-      </Provider>
-      <ToastContainer />
-    </Fragment>
-  );
-}
+      </DialogProvider>
+    </Provider>
 
-export default App;
+    <ToastContainer />
+  </Fragment>
+);

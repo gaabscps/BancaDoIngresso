@@ -36,27 +36,27 @@ import {
 } from './actions';
 import { checkUserCall } from '../check-user/actions';
 import { EventDataType } from './types';
-import { parse } from '../../../entities/CustomError';
-import Event from '../../../entities/Event';
-import EventFind from '../../../entities/EventFind';
+import { parse } from '../../../model/CustomError';
+import Event from '../../../model/Event';
+import EventFind from '../../../model/EventFind';
 import EventGeneralInformation, {
   parseGeneralInformation,
-} from '../../../entities/EventGeneralInformation';
-import Page from '../../../entities/Page';
+} from '../../../model/EventGeneralInformation';
+import Page from '../../../model/Page';
 import api from '../../../services/api';
 import EventTicketMainConfiguration, {
   parseTicketMainConfigurations,
-} from '../../../entities/EventTicketMainConfiguration';
-import TicketPayment, { parseTicketPayments } from '../../../entities/TicketPayment';
+} from '../../../model/EventTicketMainConfiguration';
+import TicketPayment, { parseTicketPayments } from '../../../model/TicketPayment';
 import EventTicketGeneralSettings, {
   parseTicketGeneralSettings,
-} from '../../../entities/EventTicketGeneralSettings';
-import EventProduct from '../../../entities/EventProduct';
-import EventProductCombo from '../../../entities/EventProductCombo';
-import EventSection, { parseEventSectionGet } from '../../../entities/EventSection';
-import EventSectionGet from '../../../entities/EventSectionGet';
-import EventPos from '../../../entities/EventPos';
-import EventPdv from '../../../entities/EventPdv';
+} from '../../../model/EventTicketGeneralSettings';
+import EventProduct from '../../../model/EventProduct';
+import EventProductCombo from '../../../model/EventProductCombo';
+import EventSection, { parseEventSectionGet } from '../../../model/EventSection';
+import EventSectionGet from '../../../model/EventSectionGet';
+import EventPos from '../../../model/EventPos';
+import EventPdv from '../../../model/EventPdv';
 
 export function* listEvents(page: any) {
   try {

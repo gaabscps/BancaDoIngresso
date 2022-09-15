@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Container, Button, Media, Col } from 'reactstrap';
 import sad from '../../assets/images/other-images/sad.png';
 
-const Error404 = (): JSX.Element => (
+export const Error404 = (): JSX.Element => (
   <Fragment>
     <div className="page-wrapper">
       <div className="error-wrapper">
@@ -16,7 +16,7 @@ const Error404 = (): JSX.Element => (
             <p className="sub-content">Página não encontrada.</p>
           </Col>
           <Link to={`/`}>
-            <Button color="danger-gradien" size="lg">
+            <Button color="danger-gradient" size="lg">
               Voltar para a Home
             </Button>
           </Link>
@@ -25,5 +25,3 @@ const Error404 = (): JSX.Element => (
     </div>
   </Fragment>
 );
-
-export default Error404;

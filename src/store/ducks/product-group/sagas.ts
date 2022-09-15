@@ -24,9 +24,9 @@ import {
 import { ProductGroupDataType } from './types';
 import { checkUserCall } from '../check-user/actions';
 import { ApplicationState } from '../..';
-import { parse } from '../../../entities/CustomError';
-import Page from '../../../entities/Page';
-import ProductGroup from '../../../entities/ProductGroup';
+import { parse } from '../../../model/CustomError';
+import Page from '../../../model/Page';
+import ProductGroup from '../../../model/ProductGroup';
 import api from '../../../services/api';
 
 export function* activateProductGroup(data: any) {

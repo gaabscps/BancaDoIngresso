@@ -1,7 +1,7 @@
 import { action } from 'typesafe-actions';
 import { HomeTypes } from './types';
-import CustomError from '../../../entities/CustomError';
-import Home from '../../../entities/Home';
+import CustomError from '../../../model/CustomError';
+import Home from '../../../model/Home';
 
 export const getRequest = (): {
   type: HomeTypes.GET_HOME_REQUEST;

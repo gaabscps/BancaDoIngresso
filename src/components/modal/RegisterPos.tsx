@@ -5,8 +5,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { AxiosError, AxiosResponse } from 'axios';
+import Pos from '@/model/Pos';
 import { ModalCustom } from '../Utils/Modal';
-import Pos from '../../entities/Pos';
 
 import Input from '../Utils/Input';
 import Select from '../Utils/Select';

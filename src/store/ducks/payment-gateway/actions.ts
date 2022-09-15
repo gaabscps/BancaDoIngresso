@@ -1,7 +1,7 @@
 import { action } from 'typesafe-actions';
-import CustomError from '../../../entities/CustomError';
-import Page from '../../../entities/Page';
-import PaymentGateway from '../../../entities/PaymentGateway';
+import CustomError from '../../../model/CustomError';
+import Page from '../../../model/Page';
+import PaymentGateway from '../../../model/PaymentGateway';
 import { PaymentGatewayDataType, PaymentGatewayTypes } from './types';
 
 export const activateRequest = (

@@ -1,16 +1,16 @@
-import CustomError from '../../../entities/CustomError';
-import Page from '../../../entities/Page';
-import Event from '../../../entities/Event';
-import EventFind from '../../../entities/EventFind';
-import EventGeneralInformation from '../../../entities/EventGeneralInformation';
-import EventTicketMainConfiguration from '../../../entities/EventTicketMainConfiguration';
-import TicketPayment from '../../../entities/TicketPayment';
-import EventTicketGeneralSettings from '../../../entities/EventTicketGeneralSettings';
-import EventProduct from '../../../entities/EventProduct';
-import EventProductCombo from '../../../entities/EventProductCombo';
-import EventSection from '../../../entities/EventSection';
-import EventPos from '../../../entities/EventPos';
-import EventPdv from '../../../entities/EventPdv';
+import CustomError from '../../../model/CustomError';
+import Page from '../../../model/Page';
+import Event from '../../../model/Event';
+import EventFind from '../../../model/EventFind';
+import EventGeneralInformation from '../../../model/EventGeneralInformation';
+import EventTicketMainConfiguration from '../../../model/EventTicketMainConfiguration';
+import TicketPayment from '../../../model/TicketPayment';
+import EventTicketGeneralSettings from '../../../model/EventTicketGeneralSettings';
+import EventProduct from '../../../model/EventProduct';
+import EventProductCombo from '../../../model/EventProductCombo';
+import EventSection from '../../../model/EventSection';
+import EventPos from '../../../model/EventPos';
+import EventPdv from '../../../model/EventPdv';
 
 /**
  * Action types

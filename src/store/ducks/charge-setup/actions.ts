@@ -1,7 +1,7 @@
 import { action } from 'typesafe-actions';
-import ChargeSetup from '../../../entities/ChargeSetup';
-import CustomError from '../../../entities/CustomError';
-import Page from '../../../entities/Page';
+import ChargeSetup from '../../../model/ChargeSetup';
+import CustomError from '../../../model/CustomError';
+import Page from '../../../model/Page';
 import { ChargeSetupDataType, ChargeSetupTypes } from './types';
 
 export const listRequest = (

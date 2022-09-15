@@ -23,10 +23,10 @@ import {
 } from './actions';
 import { ModuleDataType } from './types';
 import { ApplicationState } from '../..';
-import { parse } from '../../../entities/CustomError';
+import { parse } from '../../../model/CustomError';
 import api from '../../../services/api';
-import Module from '../../../entities/Module';
-import Page from '../../../entities/Page';
+import Module from '../../../model/Module';
+import Page from '../../../model/Page';
 
 export function* activateModule(data: any) {
   try {

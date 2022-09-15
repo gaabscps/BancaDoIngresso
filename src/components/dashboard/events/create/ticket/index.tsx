@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Container, Label, Button, ButtonGroup } from 'reactstrap';
 
 import MainInformation from './main/index';
@@ -14,13 +14,13 @@ import SuperButton from '../../../../sharedComponents/SuperButton';
 const Sample = (): JSX.Element => {
   const [step, setStep] = useState(0);
   const [show, setShow] = useState(false);
-  const history = useNavigate();
+  const history = useHistory();
 
   const nextStep = (): void => {
-    history('/event/product');
+    history.push('/event/product');
   };
   const goBack = (): void => {
-    history(-1);
+    history.goBack();
   };
 
   const ShowInformation = (): JSX.Element => {

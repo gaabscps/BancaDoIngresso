@@ -2,6 +2,8 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Container, Label } from 'reactstrap';
+import Page from '@/model/Page';
+import Pdv from '@/model/Pdv';
 import RegisterPdv from '../../modal/RegisterPdv';
 import SubPdvList from '../../modal/SubPdvs';
 import Button from '../../Utils/Button';
@@ -13,8 +15,6 @@ import { ReactComponent as Trash } from '../../../assets/images/svg/lixeira.svg'
 import { ReactComponent as SubPdvIcon } from '../../../assets/images/svg/subPDV.svg';
 
 // import Pagination from '../../Utils/Pagination';
-import Page from '../../../entities/Page';
-import Pdv from '../../../entities/Pdv';
 import { ApplicationState } from '../../../store';
 import { listRequest, updateRequest, createRequest } from '../../../store/ducks/pdv/actions';
 import { CheckUserState } from '../../../store/ducks/check-user/types';

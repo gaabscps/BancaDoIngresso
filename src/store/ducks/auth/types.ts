@@ -1,7 +1,7 @@
-import CustomError from '../../../entities/CustomError';
-import Auth from '../../../entities/Auth';
-import RecoverEmail from '../../../entities/RecoverEmail';
-import RecoverLogin from '../../../entities/RecoverLogin';
+import CustomError from '../../../model/CustomError';
+import { Auth } from '../../../model/Auth';
+import RecoverEmail from '../../../model/RecoverEmail';
+import RecoverLogin from '../../../model/RecoverLogin';
 
 /**
  * Action types

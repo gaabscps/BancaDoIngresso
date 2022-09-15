@@ -17,9 +17,9 @@ import {
 } from './actions';
 import { ChargeSetupDataType } from './types';
 import { ApplicationState } from '../..';
-import ChargeSetup from '../../../entities/ChargeSetup';
-import Page from '../../../entities/Page';
-import { parse } from '../../../entities/CustomError';
+import ChargeSetup from '../../../model/ChargeSetup';
+import Page from '../../../model/Page';
+import { parse } from '../../../model/CustomError';
 import api from '../../../services/api';
 
 export function* listChargeSetup(page: any) {

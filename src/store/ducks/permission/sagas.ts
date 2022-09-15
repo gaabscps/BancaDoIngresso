@@ -23,10 +23,10 @@ import {
 } from './actions';
 import { PermissionDataType } from './types';
 import { ApplicationState } from '../..';
-import { parse } from '../../../entities/CustomError';
+import { parse } from '../../../model/CustomError';
 import api from '../../../services/api';
-import Page from '../../../entities/Page';
-import Permission from '../../../entities/Permission';
+import Page from '../../../model/Page';
+import Permission from '../../../model/Permission';
 
 export function* activatePermission(data: any) {
   try {

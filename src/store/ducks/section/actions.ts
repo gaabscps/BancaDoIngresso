@@ -1,7 +1,7 @@
 import { action } from 'typesafe-actions';
-import CustomError from '../../../entities/CustomError';
-import Page from '../../../entities/Page';
-import Section from '../../../entities/Section';
+import CustomError from '../../../model/CustomError';
+import Page from '../../../model/Page';
+import Section from '../../../model/Section';
 import { SectionDataType, SectionTypes } from './types';
 
 export const activateRequest = (

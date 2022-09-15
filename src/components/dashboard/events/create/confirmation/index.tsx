@@ -1,18 +1,18 @@
 import React, { Fragment } from 'react';
 import { Container, Col, Button } from 'reactstrap';
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import step5 from '../../../../../assets/images/svg/stepByStep/step5.svg';
 import titleLine from '../../../../../assets/images/svg/titleLine.svg';
 import SuperButton from '../../../../sharedComponents/SuperButton';
 
 const Sample = (): JSX.Element => {
-  const history = useNavigate();
+  const history = useHistory();
 
   const nextStep = (): void => {
-    history('/events');
+    history.push('/events');
   };
   const goBack = (): void => {
-    history(-1);
+    history.goBack();
   };
 
   return (

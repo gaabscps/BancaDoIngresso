@@ -1,6 +1,6 @@
-import User from '../../../entities/User';
-import CustomError from '../../../entities/CustomError';
-import Page from '../../../entities/Page';
+import User from '../../../model/User';
+import CustomError from '../../../model/CustomError';
+import Page from '../../../model/Page';
 /**
  * Action types
  */

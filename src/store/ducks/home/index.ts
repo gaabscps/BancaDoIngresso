@@ -1,5 +1,5 @@
 import { Reducer } from 'redux';
-import Home from '../../../entities/Home';
+import Home from '../../../model/Home';
 import { HomeState, HomeTypes } from './types';
 
 const INITIAL_STATE: HomeState = {

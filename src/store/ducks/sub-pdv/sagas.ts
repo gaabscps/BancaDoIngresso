@@ -25,9 +25,9 @@ import {
 } from './actions';
 import { SubPdvDataType } from './types';
 import { ApplicationState } from '../..';
-import { parse } from '../../../entities/CustomError';
-import Page from '../../../entities/Page';
-import SubPdv from '../../../entities/SubPdv';
+import { parse } from '../../../model/CustomError';
+import Page from '../../../model/Page';
+import SubPdv from '../../../model/SubPdv';
 import api from '../../../services/api';
 
 export function* activateSubPdv(data: any) {

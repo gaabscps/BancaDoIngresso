@@ -1,9 +1,9 @@
 import { action } from 'typesafe-actions';
-import Contractor from '../../../entities/Contractor';
-import ContractorSave from '../../../entities/ContractorSave';
-import ContractorUser from '../../../entities/ContractorUser';
-import CustomError from '../../../entities/CustomError';
-import Page from '../../../entities/Page';
+import Contractor from '../../../model/Contractor';
+import ContractorSave from '../../../model/ContractorSave';
+import ContractorUser from '../../../model/ContractorUser';
+import CustomError from '../../../model/CustomError';
+import Page from '../../../model/Page';
 import { ContractorDataType, ContractorTypes } from './types';
 
 export const activateRequest = (

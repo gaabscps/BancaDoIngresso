@@ -1,6 +1,6 @@
-import CustomError from '../../../entities/CustomError';
-import Page from '../../../entities/Page';
-import Pos from '../../../entities/Pos';
+import CustomError from '../../../model/CustomError';
+import Page from '../../../model/Page';
+import Pos from '../../../model/Pos';
 /**
  * Action types
  */

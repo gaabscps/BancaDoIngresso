@@ -1,8 +1,8 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { Container, Row, Col, Label, Input, FormGroup } from 'reactstrap';
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import Moment from 'moment';
+import dayjs from 'dayjs';
 import SuperButton from '../../../sharedComponents/SuperButton';
 import DiscountVoucher from '../../../modal/DiscountVoucher';
 import blackAlert from '../../../../assets/images/svg/blackAlert.svg';
@@ -16,9 +16,9 @@ import ticket from '../../../../assets/images/svg/ticket.svg';
 import { ApplicationState } from '../../../../store';
 import { listRequest } from '../../../../store/ducks/event/actions';
 import { EventState } from '../../../../store/ducks/event/types';
-import Page from '../../../../entities/Page';
-import EventFind from '../../../../entities/EventFind';
-import Event from '../../../../entities/Event';
+import Page from '../../../../model/Page';
+import EventFind from '../../../../model/EventFind';
+import Event from '../../../../model/Event';
 import { CheckUserState } from '../../../../store/ducks/check-user/types';
 
 const Sample = (): JSX.Element => {
@@ -54,11 +54,11 @@ const Sample = (): JSX.Element => {
   };
   */
 
-  const history = useNavigate();
+  const history = useHistory();
   const [show, setShow] = useState(false);
 
   const createEvent = (): void => {
-    history('/event/general');
+    history.push('/event/general');
   };
 
   const callShow = (b: boolean): void => {
@@ -74,7 +74,7 @@ const Sample = (): JSX.Element => {
 
   const convertDateToString = (date: Date): string => {
     if (date) {
-      return Moment(date).format('DD/MM/YYYY [às] HH:mm');
+      return dayjs(date).format('DD/MM/YYYY [às] HH:mm');
     }
     return '';
   };

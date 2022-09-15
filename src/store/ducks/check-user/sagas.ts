@@ -3,13 +3,14 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { call, put, select } from 'redux-saga/effects';
 import { AxiosError, AxiosResponse } from 'axios';
+import { setItem } from '@/helpers/common/localStorage';
+import { REACT_APP_AUTH } from '@/utils/config';
+import { parse } from '@/model/CustomError';
+import { Auth } from '@/model/Auth';
+import api from '@/services/api';
 import { checkUserFailure, checkUserSuccess } from './actions';
-import { parse } from '../../../entities/CustomError';
-import { ApplicationState } from '../..';
-import { setAuthLocalStorage } from '../../../helpers/localStorage';
-import Auth from '../../../entities/Auth';
-import api from '../../../services/api';
 import { refreshTokenFailure, refreshTokenSuccess } from '../auth/actions';
+import { ApplicationState } from '../..';
 
 export function* checkUser() {
   try {
@@ -21,7 +22,7 @@ export function* checkUser() {
     const authData = stateData.auth.data;
     authData.refreshToken = refreshToken;
     yield put(refreshTokenSuccess(authData));
-    setAuthLocalStorage(stateData.auth.data.refreshToken);
+    setItem(String(REACT_APP_AUTH), stateData.auth.data.refreshToken);
     yield put(checkUserSuccess());
   } catch (err) {
     const error = err as AxiosError;

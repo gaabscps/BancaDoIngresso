@@ -1,10 +1,10 @@
 import { action } from 'typesafe-actions';
 import { PdvDataType, PdvTypes } from './types';
-import CustomError from '../../../entities/CustomError';
-import Page from '../../../entities/Page';
-import Pdv from '../../../entities/Pdv';
-import PdvSave from '../../../entities/PdvSave';
-import PdvUser from '../../../entities/PdvUser';
+import CustomError from '../../../model/CustomError';
+import Page from '../../../model/Page';
+import Pdv from '../../../model/Pdv';
+import PdvSave from '../../../model/PdvSave';
+import PdvUser from '../../../model/PdvUser';
 
 export const activateRequest = (
   id: string,

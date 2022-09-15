@@ -24,9 +24,9 @@ import {
 import { PaymentGatewayDataType } from './types';
 import { checkUserCall } from '../check-user/actions';
 import { ApplicationState } from '../..';
-import { parse } from '../../../entities/CustomError';
-import Page from '../../../entities/Page';
-import PaymentGateway from '../../../entities/PaymentGateway';
+import { parse } from '../../../model/CustomError';
+import Page from '../../../model/Page';
+import PaymentGateway from '../../../model/PaymentGateway';
 import api from '../../../services/api';
 
 export function* activatePaymentGateway(data: any) {

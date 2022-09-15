@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from 'react';
 import { Container, Row, Col, Label, Input } from 'reactstrap';
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import SuperButton from '../../../sharedComponents/SuperButton';
 import DiscountVoucher from '../../../modal/DiscountVoucher';
 import goBackArrow from '../../../../assets/images/svg/goBackArrow.svg';
@@ -8,10 +8,10 @@ import detail from '../../../../assets/images/svg/detail.svg';
 
 const Sample = (): JSX.Element => {
   const [show, setShow] = useState(false);
-  const history = useNavigate();
+  const history = useHistory();
 
   const goBack = (): void => {
-    history(-1);
+    history.goBack();
   };
 
   const callShow = (b: boolean): void => {

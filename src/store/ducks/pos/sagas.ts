@@ -20,9 +20,9 @@ import {
 import { PosDataType } from './types';
 import { checkUserCall } from '../check-user/actions';
 import { ApplicationState } from '../..';
-import { parse } from '../../../entities/CustomError';
-import Page from '../../../entities/Page';
-import Pos from '../../../entities/Pos';
+import { parse } from '../../../model/CustomError';
+import Page from '../../../model/Page';
+import Pos from '../../../model/Pos';
 import api from '../../../services/api';
 
 export function* createPos(data: any) {

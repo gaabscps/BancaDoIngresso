@@ -12,7 +12,7 @@ import {
   ModalBody,
 } from 'reactstrap';
 import CloseModal from '../../assets/images/svg/CloseModal';
-import EventCategory from '../../entities/EventCategory';
+import EventCategory from '../../model/EventCategory';
 import { createRequest } from '../../store/ducks/event-category/actions';
 import SuperInput from '../sharedComponents/SuperInput';
 
