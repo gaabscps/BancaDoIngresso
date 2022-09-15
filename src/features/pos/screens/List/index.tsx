@@ -5,7 +5,7 @@ import { useDialog } from '@/hooks/useDialog';
 import { RegisterContent } from '@/features/pos/components/RegisterContent';
 import { DeleteContent } from '@/features/pos/components/DeleteContent';
 import Pos from '@/model/Pos';
-import api from '@/services/api';
+import api, { AxiosError } from '@/services/api';
 import Page from '@/model/Page';
 import { toast } from 'react-toastify';
 import { PosContainer } from './ui';
@@ -44,7 +44,8 @@ export const PosScreen: React.FC = (): JSX.Element => {
         toast.info('Nenhum registro encontrado');
       }
     } catch (error) {
-      console.log('error', error);
+      const err = error as AxiosError;
+      toast.error(err.message);
     }
   };
 
@@ -58,7 +59,8 @@ export const PosScreen: React.FC = (): JSX.Element => {
       handleRenderListPos(pagePos);
       handleOnClose();
     } catch (error) {
-      console.log('error', error);
+      const err = error as AxiosError;
+      toast.error(err.message);
     }
   };
 
@@ -69,7 +71,8 @@ export const PosScreen: React.FC = (): JSX.Element => {
       handleRenderListPos(pagePos);
       handleOnClose();
     } catch (error) {
-      console.log('error', error);
+      const err = error as AxiosError;
+      toast.error(err.message);
     }
   };
 
@@ -80,7 +83,8 @@ export const PosScreen: React.FC = (): JSX.Element => {
       handleRenderListPos(pagePos);
       handleOnClose();
     } catch (error) {
-      console.log('error', error);
+      const err = error as AxiosError;
+      toast.error(err.message);
     }
   };
 
@@ -127,7 +131,8 @@ export const PosScreen: React.FC = (): JSX.Element => {
       handleRenderListPos({ ...pagePos, ...value });
       handleOnClose();
     } catch (error) {
-      console.log('error', error);
+      const err = error as AxiosError;
+      toast.error(err.message);
     }
   };
 

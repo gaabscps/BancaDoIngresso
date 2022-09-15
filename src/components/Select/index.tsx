@@ -9,6 +9,7 @@ import { customStyles } from './style';
 interface OptionProps {
   value?: string | number;
   label: string;
+  target?: HTMLInputElement;
 }
 
 interface SelectAutoCompleteProps {

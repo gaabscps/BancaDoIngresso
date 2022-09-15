@@ -3,7 +3,7 @@ import React, { FC, InputHTMLAttributes } from 'react';
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string;
   value: string;
-  type?: 'text' | 'password' | 'email' | 'number' | 'tel' | 'date';
+  type?: 'text' | 'password' | 'email' | 'number' | 'tel' | 'date' | 'time' | 'datetime-local';
   label?: React.ReactNode | string;
   error?: string | null | undefined;
   wrapperClass?: string;

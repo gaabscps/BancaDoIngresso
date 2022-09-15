@@ -1,6 +1,6 @@
 import React from 'react';
 import { Col, Form, Row } from 'reactstrap';
-import { InputText, Button, ButtonGroup } from '@/components';
+import { InputText, Button, ButtonGroup, SelectCustom } from '@/components';
 import useForm from '@/hooks/useForm';
 import validators from '@/helpers/validators';
 import { updateMask as updateMaskCPFOrCNPJ } from '@/helpers/masks/cpfCnpj';
@@ -9,6 +9,7 @@ import { updateMask as updateMaskMobilePhone } from '@/helpers/masks/mobilePhone
 // import SelectAutoComplete from '@/components/Select';
 import Pdv from '@/model/Pdv';
 import cep from 'cep-promise';
+import { statesUf } from '@/constant/states';
 
 interface RegisterContentProps {
   document?: string;
@@ -70,7 +71,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
       longitude: String(dataList?.address.longitude ?? ''),
       batchClosed: dataList?.batchClosed ?? '',
       askPasswordInactivity: dataList?.askPasswordInactivity ?? '',
-      inactivityTimeout: dataList?.inactivityTimeout ?? '',
+      inactivityTimeout: dataList?.inactivityTimeout ?? '00:00:00',
       // users: [], TO-DO Adicionar usuarios
     },
     validators: {
@@ -194,13 +195,14 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             error={formErrors.zipCode && formErrors.zipCode[0]}
           />
           {/* TO-DO: add select state and city */}
-          <InputText
+          <SelectCustom
             name="state"
             label="Estado"
             placeholder="Selecione o estado do PDV"
             value={formData[FormInputName.state]}
-            onChange={e => onChangeFormInput(FormInputName.state)(e?.target.value as string)}
+            onChange={e => onChangeFormInput(FormInputName.state)(e?.target?.value as string)}
             error={formErrors.state && formErrors.state[0]}
+            options={statesUf}
           />
           <InputText
             name="city"
@@ -317,6 +319,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             error={formErrors.askPasswordInactivity && formErrors.askPasswordInactivity[0]}
           />
           <InputText
+            type="time"
             name="inactivityTimeout"
             label="Tempo limite de inatividade"
             placeholder="00:00"

@@ -6,7 +6,7 @@ import { usePdv } from '@/features/pdv/hook/usePdv';
 import { RegisterContent } from '@/features/pdv/components/RegisterContent';
 import { DeleteContent } from '@/features/pdv/components/DeleteContent';
 import { ListContentSub } from '@/features/pdv/components/ListContentSub';
-import api from '@/services/api';
+import api, { AxiosError } from '@/services/api';
 import Page from '@/model/Page';
 import Pdv from '@/model/Pdv';
 import { toast } from 'react-toastify';
@@ -48,7 +48,8 @@ export const PdvScreen: React.FC = (): JSX.Element => {
         toast.info('Nenhum registro encontrado');
       }
     } catch (error) {
-      console.log('error', error);
+      const err = error as AxiosError;
+      toast.error(err.message);
     }
   };
 
@@ -59,7 +60,8 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       handleRenderListPdv({ ...pagePdv, ...value });
       handleOnClose();
     } catch (error) {
-      console.log('error', error);
+      const err = error as AxiosError;
+      toast.error(err.message);
     }
   };
 
@@ -82,7 +84,8 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       handleRenderListPdv(pagePdv);
       handleOnClose();
     } catch (error) {
-      console.log('error', error);
+      const err = error as AxiosError;
+      toast.error(err.message);
     }
   };
 
@@ -93,7 +96,8 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       handleRenderListPdv(pagePdv);
       handleOnClose();
     } catch (error) {
-      console.log('error', error);
+      const err = error as AxiosError;
+      toast.error(err.message);
     }
   };
 
@@ -104,7 +108,8 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       handleRenderListPdv(pagePdv);
       handleOnClose();
     } catch (error) {
-      console.log('error', error);
+      const err = error as AxiosError;
+      toast.error(err.message);
     }
   };
 
@@ -153,7 +158,8 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       await api.post<any>('/sub-pdv', values);
       handleOnCloseSubPdv();
     } catch (error) {
-      console.log('error', error);
+      const err = error as AxiosError;
+      toast.error(err.message);
     }
   };
 
@@ -173,7 +179,8 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       await api.put<any>('/sub-pdv', values);
       handleOnCloseSubPdv();
     } catch (error) {
-      console.log('error', error);
+      const err = error as AxiosError;
+      toast.error(err.message);
     }
   };
 
@@ -195,7 +202,8 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       handleRenderListPdv(pagePdv);
       handleOnCloseSubPdv();
     } catch (error) {
-      console.log('error', error);
+      const err = error as AxiosError;
+      toast.error(err.message);
     }
   };
 
