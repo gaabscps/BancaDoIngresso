@@ -1,3 +1,5 @@
+/* eslint-disable no-useless-escape */
+
 import { isCPFOrCNPJ, formatToCPFOrCNPJ } from 'brazilian-values';
 
 const isValid = (value: string): boolean => {
