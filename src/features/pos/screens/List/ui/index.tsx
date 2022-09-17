@@ -10,11 +10,12 @@ import { ColumnStatus, CustomTable } from '@/components/Table';
 import Pagination from '@/components/Utils/Pagination';
 import Pos from '@/model/Pos';
 import { PosRequestParams } from '@/features/pos/types';
-import { FormData, FormErrors, OnChangeFormInput } from '@/hooks/useForm';
-import { cp } from 'fs';
-import { columns } from './table';
+// import { FormData, FormErrors, OnChangeFormInput } from '@/hooks/useForm';
+// import { cp } from 'fs';
 import dayjs from 'dayjs';
+import { columns } from './table';
 
+// eslint-disable-next-line no-shadow
 export enum States {
   default = 'default',
   loading = 'loading',

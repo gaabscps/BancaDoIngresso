@@ -2,16 +2,15 @@
 import React, { useEffect, useState } from 'react';
 
 import { useDialog } from '@/hooks/useDialog';
-import { RegisterContent } from '@/features/pos/components/RegisterContent';
-import { DeleteContent } from '@/features/pos/components/DeleteContent';
+// import { RegisterContent } from '@/features/pos/components/RegisterContent';
+// import { DeleteContent } from '@/features/pos/components/DeleteContent';
 import Pos from '@/model/Pos';
 import api, { AxiosError } from '@/services/api';
-import Page from '@/model/Page';
+// import Page from '@/model/Page';
 import { toast } from 'react-toastify';
-import { PosContainer } from './ui';
 import { PosResponse, PosRequestParams } from '@/features/pos/types';
 import { useConfirmDelete } from '@/hooks/useConfirmDelete';
-import { States } from '@/features/pos/screens/List/ui';
+import { States, PosContainer } from '@/features/pos/screens/List/ui';
 
 export const PosScreen: React.FC = (): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
@@ -64,7 +63,7 @@ export const PosScreen: React.FC = (): JSX.Element => {
       state={state}
       onPaginationChange={handleOnPaginationChange}
       // handleRenderListPos={handleRenderListPos}
-      list={listPos}
+      listPos={listPos}
       currentPage={currentPage}
       // pagination={pagePos}
       // onShowFilter={handleOnShowFilterPdv}
