@@ -23,7 +23,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
   const [listPdv, setListPdv] = useState<Pdv[]>([]);
   const [pdv, setPdv] = useState<Pdv>();
-  const [subPdv, setSubPdv] = useState<SubPdv>();
+  // const [subPdv, setSubPdv] = useState<SubPdv>();
   const [listSubPdv, setListSubPdv] = useState<SubPdv[]>([]);
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(ShouldShowModal.pdv);
 
@@ -45,7 +45,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
     onChangeFormInput: onChangeFormInputPdv,
     isFormValid: isFormValidPdv,
     resetForm: resetFormPdv,
-    setErrors: setErrorsPdv,
+    // setErrors: setErrorsPdv,
   } = useForm({
     initialData: {
       name: '',
@@ -152,7 +152,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
     onChangeTitle(newTitleModal);
     onToggle();
 
-    if (!pdvSelected?.id && value === ShouldShowModal.pdv) {
+    if ((!pdvSelected?.id && value === ShouldShowModal.pdv) || value !== ShouldShowModal.subpdv) {
       resetFormPdv();
     }
 
@@ -160,7 +160,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       handleOnShowListSubPdv(pdvSelected);
     }
 
-    if (pdvSelected?.id) {
+    if (pdvSelected?.id && value !== ShouldShowModal.subpdv) {
       resetFormPdv();
       setPdv(pdvSelected);
     } else {
@@ -416,7 +416,21 @@ export const PdvScreen: React.FC = (): JSX.Element => {
   useEffect(() => {
     if (pdv?.id) {
       onChangeFormInputPdv(FormInputNameToSavePdv.name)(pdv.name);
+      onChangeFormInputPdv(FormInputNameToSavePdv.document)(pdv.document);
+      onChangeFormInputPdv(FormInputNameToSavePdv.email)(pdv.email);
+      onChangeFormInputPdv(FormInputNameToSavePdv.zipCode)(pdv.address.zipCode);
+      onChangeFormInputPdv(FormInputNameToSavePdv.city)(pdv.address.city);
+      onChangeFormInputPdv(FormInputNameToSavePdv.district)(pdv.address.district);
+      onChangeFormInputPdv(FormInputNameToSavePdv.street)(pdv.address.street);
+      onChangeFormInputPdv(FormInputNameToSavePdv.number)(pdv.address.number);
+      onChangeFormInputPdv(FormInputNameToSavePdv.complement)(pdv.address.complement);
+      onChangeFormInputPdv(FormInputNameToSavePdv.state)(pdv.address.state);
+      onChangeFormInputPdv(FormInputNameToSavePdv.latitude)(pdv.address.latitude);
+      onChangeFormInputPdv(FormInputNameToSavePdv.longitude)(pdv.address.longitude);
       onChangeFormInputPdv(FormInputNameToSavePdv.telephone)(pdv.telephone);
+      // onChangeFormInputPdv(FormInputNameToSavePdv.batchClosed)(pdv.batchClosed);
+      // onChangeFormInputPdv(FormInputNameToSavePdv.askPasswordInactivity)(pdv.askPasswordInactivity);
+      onChangeFormInputPdv(FormInputNameToSavePdv.inactivityTimeout)(pdv.inactivityTimeout);
     }
   }, [pdv]);
 
