@@ -2,7 +2,7 @@ import React, { CSSProperties } from 'react';
 
 type justifyProps = 'left' | 'right';
 
-interface CollumnStatusProps {
+interface ColumnStatusProps {
   statusColor: string;
   justify?: justifyProps;
   children?: React.ReactNode;
@@ -19,7 +19,7 @@ const leftStyle: CSSProperties = {
   zIndex: 1,
 };
 
-const rigthStyle: CSSProperties = {
+const rightStyle: CSSProperties = {
   height: '5.188rem',
   width: '4px',
   position: 'absolute',
@@ -28,12 +28,12 @@ const rigthStyle: CSSProperties = {
   zIndex: 1,
 };
 
-const styleCollumn = {
+const styleColumn = {
   left: { ...leftStyle },
-  right: { ...rigthStyle },
+  right: { ...rightStyle },
 };
 
-export const CollumnStatus: React.FC<CollumnStatusProps> = ({
+export const ColumnStatus: React.FC<ColumnStatusProps> = ({
   statusColor,
   justify = 'left',
   children,
@@ -42,7 +42,7 @@ export const CollumnStatus: React.FC<CollumnStatusProps> = ({
     <div
       style={{
         backgroundColor: statusColor,
-        ...styleCollumn[justify as justifyProps],
+        ...styleColumn[justify as justifyProps],
       }}
     />
     <div

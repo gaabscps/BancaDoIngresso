@@ -816,9 +816,9 @@ hr.lineText {
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
-  // line-height: 1;
+  line-height: 1;
   color: #828282;
-  margin-bottom: 25px;
+  margin-bottom: 10px;
 }
 
 .button-label-file {
@@ -881,7 +881,7 @@ input[type='radio']:checked + .label-radio-custom {
 }
 
 .input-default {
-  height: 64px !important;
+  height: 62px !important;
   border-radius: 5px !important;
   background-color: #e6e6e6 !important;
   border-color: #e6e6e6 !important;

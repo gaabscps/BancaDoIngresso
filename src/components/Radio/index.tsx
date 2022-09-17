@@ -44,7 +44,7 @@ export const Radio: FC<RadioProps> = ({
       {options.map((option: OptionProps) => {
         const idRandom = Math.random().toString(36).substr(2, 9);
         return (
-          <>
+          <React.Fragment key={option.value}>
             <input
               type="radio"
               name={name}
@@ -60,7 +60,7 @@ export const Radio: FC<RadioProps> = ({
             >
               {option.label}
             </label>
-          </>
+          </React.Fragment>
         );
       })}
     </div>

@@ -1,8 +1,7 @@
 /* eslint-disable react/jsx-key */
 import React, { Fragment, useEffect } from 'react';
 import { Container, Label } from 'reactstrap';
-import { CollumnStatus, CustomTable, TableColumn } from '@/components/Utils/Table';
-import Button from '@/components/Utils/Button';
+import { Button } from '@/components/Button';
 import FilterVector from '@/assets/images/svg/FilterVector';
 import Page from '@/model/Page';
 import Pos from '@/model/Pos';
@@ -12,6 +11,7 @@ import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { ReactComponent as Status } from '@/assets/images/svg/status.svg';
 import PosStatus from '@/model/PosStatus';
+import { ColumnStatus, CustomTable, TableColumn } from '@/components/Table';
 
 interface PosContainerProps {
   handleRenderListPos: (page: Page<Pos, Pos>) => void;
@@ -114,7 +114,7 @@ export const PosContainer: React.FC<PosContainerProps> = ({
     ? list?.map(item => ({
         id: item.id,
         name: (
-          <CollumnStatus statusColor={changeColorCollumn(item.status)}>{item.name}</CollumnStatus>
+          <ColumnStatus statusColor={changeColorCollumn(item.status)}>{item.name}</ColumnStatus>
         ),
         serialNumber: item.serialNumber,
         expirationDate: item.expirationDate,
@@ -146,9 +146,7 @@ export const PosContainer: React.FC<PosContainerProps> = ({
             <Label>POS</Label>
           </div>
           <div className="button-filter-container">
-            <Button color="primary" onClick={onShowRegister}>
-              + Cadastrar novo POS
-            </Button>
+            <Button title="+ Cadastrar novo POS" color="primary" onClick={onShowRegister} />
             <div className="filter-container">
               <div className="filter-content" onClick={onShowFilter}>
                 <FilterVector />

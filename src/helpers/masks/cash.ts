@@ -1,6 +1,6 @@
 // unmasked (api view): 7654321
 // masked (user view): 7.654.321,00
-import { toString } from '../../common/amount';
+import { toString } from '../common/amount';
 
 const isValid = (value: string): boolean => {
   const regex = /^((\d{1,3}\.){0,1}(\d{3}\.)*(\d{3})|(\d{1,3}))\,(\d{2})$/;

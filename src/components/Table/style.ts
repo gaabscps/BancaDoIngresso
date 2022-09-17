@@ -39,7 +39,7 @@ export const primaryTheme = {
   },
 };
 
-export const secundaryTheme = {
+export const secondaryTheme = {
   headRow: {
     style: {
       border: 'none !important',

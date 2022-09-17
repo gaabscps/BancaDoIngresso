@@ -1,18 +1,15 @@
 import React from 'react';
+import SubPdv from '@/model/SubPdv';
 import LoteCollapse from '@/components/sharedComponents/collapse/LoteCollapse';
 
 interface PdvContainerProps {
-  onSubmit: (value: any) => Promise<void>;
   onShowRegisterSubPdv: () => void;
   onShowEditSubPdv: (value: any) => Promise<void>;
-  onShowDeleteSubPdv: (value: any) => Promise<void>;
-  stateContext?: any;
-  onCleanConstext?: () => void;
+  onShowDeleteSubPdv: (subPdv: SubPdv) => void;
   dataList?: any;
 }
 
 export const ListContentSub: React.FC<PdvContainerProps> = ({
-  // stateContext,
   onShowEditSubPdv,
   onShowDeleteSubPdv,
   dataList,
@@ -23,8 +20,6 @@ export const ListContentSub: React.FC<PdvContainerProps> = ({
       onShowEditSubPdv={onShowEditSubPdv}
       onShowDeleteSubPdv={onShowDeleteSubPdv}
       dataList={dataList}
-      // idPdv={stateContext.idPdv}
-      content={''}
     />
   </div>
 );

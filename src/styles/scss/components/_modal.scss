@@ -15,6 +15,7 @@
   &__title {
     font-weight: 700;
     font-size: 28px;
+    padding-bottom: 10px;
   }
   &__confirmation-title {
     color: #222222;
@@ -23,6 +24,10 @@
     font-weight: 700;
     font-size: 21px;
     line-height: 32px;
+  }
+
+  .modal__with-container {
+    padding: 0 !important;
   }
 }
 .modal-content {
@@ -38,13 +43,14 @@
   border: none;
   border-radius: 5px;
 }
-.modal__confirmation-text{
-  margin-top:2px
+.modal__confirmation-text {
+  margin-top: 2px;
 }
 
 .confirmation-modal {
   margin: 11rem auto;
 }
+
 // media query for mobile container
 @media (max-width: $media-query-sm) {
   .mainContainer,

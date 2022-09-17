@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { AlignJustify, Calendar, ChevronDown, Home, Settings, X, Power, Icon } from 'react-feather';
-import { NavLink, useHistory } from 'react-router-dom';
+import { NavLink, useHistory, useLocation } from 'react-router-dom';
 import { REACT_APP_USER, REACT_APP_AUTH } from '@/utils/config';
 import { removeItem } from '@/helpers/common/localStorage';
 
@@ -19,6 +19,7 @@ interface SubMenuProps {
 
 export const NavLinkWithSubMenu = ({ items, IconSvg }: SubMenuProps): React.ReactElement => {
   const [isOpen, setIsOpen] = useState(false);
+  const { pathname } = useLocation();
 
   const handleOnToggle = (): void => {
     setIsOpen(!isOpen);
@@ -32,17 +33,24 @@ export const NavLinkWithSubMenu = ({ items, IconSvg }: SubMenuProps): React.Reac
           e.preventDefault();
           handleOnToggle();
         }}
+        activeClassName={pathname === items[0].route ? 'active' : ''}
       >
         <IconSvg />
-        <span className="adm-span">Configurações</span>
+        <span className="adm-span">Administração</span>
         <ChevronDown
           className="icon-chevron"
-          style={{ transform: isOpen ? 'rotate(-180deg)' : 'rotate(0deg)' }}
+          style={{
+            transform: isOpen || pathname === items[0].route ? 'rotate(-180deg)' : 'rotate(0deg)',
+          }}
         />
       </NavLink>
 
       <div className="submenu-container">
-        <ul className={isOpen ? 'sidebar-submenu' : 'sidebar-submenu-collapsed'}>
+        <ul
+          className={
+            isOpen || pathname === items[0].route ? 'sidebar-submenu' : 'sidebar-submenu-collapsed'
+          }
+        >
           {items.map(item => (
             <li key={item.route}>
               <NavLink to={item.route}>
@@ -59,6 +67,7 @@ export const NavLinkWithSubMenu = ({ items, IconSvg }: SubMenuProps): React.Reac
 export const Sidebar: React.FC = () => {
   const [isMobile, setIsMobile] = useState(true);
   const history = useHistory();
+  const { pathname } = useLocation();
 
   const toggleMobile = (): void => {
     setIsMobile(!isMobile);
@@ -104,7 +113,10 @@ export const Sidebar: React.FC = () => {
         <img src={logoBanca} />
         <div className="list-container">
           <li className="sidebar-list">
-            <NavLink to={path.Dashboard.itself}>
+            <NavLink
+              to={path.Dashboard.itself}
+              activeClassName={path.Dashboard.itself === pathname ? 'active' : ''}
+            >
               <Home />
               <span className="adm-span">Home</span>
             </NavLink>

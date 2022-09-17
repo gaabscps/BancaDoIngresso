@@ -1,13 +1,13 @@
 import React from 'react';
 import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 
+import { Button } from '@/components/Button';
 import CloseModal from '../../../../assets/images/svg/CloseModal';
-import Button from '../../Button';
 
 import { ReactComponent as Warning } from '../../../../assets/images/svg/warning.svg';
 
 interface ModalProps {
-  onBtnAction?: () => void;
+  onBtnAction: (e: React.MouseEvent<HTMLButtonElement>) => void;
   show: boolean;
   setShow(value: boolean): void;
   btnLabel?: string;
@@ -57,17 +57,14 @@ export const ModalConfirmation: React.FC<ModalProps> = ({
         <div className="exclude-button">
           <div style={{ color: '#fff' }}>
             <Button
+              title="Não, quero manter"
               theme="noneBorder"
               size="sm"
               style={{ height: '50px', marginRight: '20px' }}
               onClick={() => handleClose()}
-            >
-              Não, quero manter
-            </Button>
+            ></Button>
           </div>
-          <Button theme="dark" size="sm" onClick={onBtnAction}>
-            {btnLabel}
-          </Button>
+          <Button title={btnLabel} theme="dark" size="sm" onClick={onBtnAction}></Button>
         </div>
       </ModalBody>
     </Modal>

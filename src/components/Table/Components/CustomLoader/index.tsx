@@ -17,8 +17,9 @@ export const CustomLoader: React.FC<CustomLoaderProps> = ({
       baseColor="#ffffff"
       highlightColor="#f8f8f8"
     />
-    {Array.from({ length: +numberRowsPerPage }, () => (
+    {Array.from({ length: +numberRowsPerPage }, (_, index) => (
       <Skeleton
+        key={index}
         height="5.188rem"
         borderRadius="10px"
         style={{ marginBottom: '25px' }}

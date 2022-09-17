@@ -1,12 +1,12 @@
 import React from 'react';
 import { Modal, ModalBody } from 'reactstrap';
 import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
+// import { yupResolver } from '@hookform/resolvers/yup';
+// import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import Page from '@/model/Page';
+import { Button } from '@/components/Button';
 import CloseModal from '../../assets/images/svg/CloseModal';
-import Button from '../Utils/Button';
 import Select from '../Utils/Select';
 import RadioCustom from '../Utils/Radio';
 import { ApplicationState } from '../../store';
@@ -18,7 +18,7 @@ interface FilterCustomProps {
   setShowFilter(value: boolean): void;
 }
 
-const schema = yup.object().shape({});
+// const schema = yup.object().shape({});
 
 const Filter = (props: FilterCustomProps): JSX.Element => {
   const handleClose = (): void => props.setShowFilter(false);
@@ -26,7 +26,6 @@ const Filter = (props: FilterCustomProps): JSX.Element => {
   const dispatch = useDispatch();
 
   const pdvStorage = useSelector<ApplicationState, PdvState>(store => store.pdv);
-  console.log('pdvStorage', pdvStorage);
 
   const optionName =
     pdvStorage.data?.page?.list?.map(item => ({
@@ -48,7 +47,7 @@ const Filter = (props: FilterCustomProps): JSX.Element => {
     watch,
     // reset,
   } = useForm({
-    resolver: yupResolver(schema),
+    // resolver: yupResolver(schema),
   });
 
   const onSubmit = async (data: any): Promise<void> => {
@@ -116,14 +115,14 @@ const Filter = (props: FilterCustomProps): JSX.Element => {
             )}
             <div className="filter-button exclude-button">
               <Button
+                title="Cancelar"
                 size="md"
                 theme="noneBorder"
                 style={{ height: '50px', marginRight: '20px' }}
                 onClick={() => handleClose()}
-              >
-                Cancelar
-              </Button>
+              ></Button>
               <Button
+                title="Aplicar"
                 size="md"
                 style={{
                   width: '152px',
@@ -134,9 +133,8 @@ const Filter = (props: FilterCustomProps): JSX.Element => {
                   justifyContent: 'center',
                 }}
                 className="botao-cadastro"
-              >
-                Aplicar
-              </Button>
+                onClick={() => handleClose()}
+              ></Button>
             </div>
           </form>
         </div>

@@ -1,32 +1,37 @@
 import React from 'react';
-import { Card, Container, Modal, ModalHeader, ModalBody } from 'reactstrap';
+import { Card, Container, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 import CloseModal from '@/assets/images/svg/CloseModal';
-// import { Button } from '@/components';
+import { Button, ButtonTheme, ButtonSize } from '@/components/Button';
 
-interface ModalProps {
-  title: React.ReactNode;
+export interface ActionProps {
+  title?: string;
+  theme?: ButtonTheme;
+  size?: ButtonSize;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+}
+
+export interface DialogProps {
+  title: string | React.ReactNode;
   children: React.ReactNode;
-  // onBtnAction?: () => void;
-  // btnLabel?: string;
-  isCard?: boolean;
+  isContentWithCard?: boolean;
   visible: boolean;
   onClose(): void;
   position?: 'center' | 'right';
   size?: 'sm' | 'md' | 'lg' | 'xl';
+  actions: ActionProps[];
 }
 
-export const Dialog: React.FC<ModalProps> = ({
+export const Dialog: React.FC<DialogProps> = ({
   title,
   children,
   visible,
   onClose,
-  // onBtnAction,
-  // btnLabel = 'Confirmar',
-  isCard = false,
+  isContentWithCard = false,
   position = 'center',
   size = 'xl',
-}: ModalProps) => {
+  actions,
+}) => {
   const handleClose = (): void => onClose();
 
   const finalPosition = {
@@ -62,25 +67,28 @@ export const Dialog: React.FC<ModalProps> = ({
           </div>
         </div>
       </ModalHeader>
-      <ModalBody>
+      <ModalBody className={isContentWithCard ? 'modal__with-container' : ''}>
         <Container>
-          {isCard ? <Card className="modal__main-container">{children}</Card> : children}
+          {isContentWithCard ? <Card className="modal__main-container">{children}</Card> : children}
         </Container>
-        {/* {onBtnAction && (
-          <div className="nextPageButton">
-            <div style={{ color: '#fff' }}>
-              <Button
-                title="Cancelar"
-                theme="noneBorder"
-                size="sm"
-                style={{ marginRight: '20px' }}
-                onClick={() => handleClose()}
-              />
-            </div>
-            <Button title={btnLabel} theme="dark" size="sm" onClick={onBtnAction} />
-          </div>
-        )} */}
       </ModalBody>
+      {actions.length > 0 && actions[0]?.title && (
+        <ModalFooter>
+          {actions?.map((action, index) => (
+            <React.Fragment key={index}>
+              {action.title && action.onClick && (
+                <Button
+                  key={action.title}
+                  title={action.title}
+                  theme={action.theme}
+                  size={action.size}
+                  onClick={action.onClick}
+                />
+              )}
+            </React.Fragment>
+          ))}
+        </ModalFooter>
+      )}
     </Modal>
   );
 };

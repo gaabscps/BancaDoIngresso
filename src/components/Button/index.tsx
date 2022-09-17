@@ -4,12 +4,18 @@ export interface ButtonProps
   extends React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>,
     React.AriaAttributes {}
 
+export type ButtonTheme = 'dark' | 'outlineDark' | 'noneBorder' | 'red';
+
+export type ButtonSize = 'sm' | 'md' | 'lg';
+
+export type ButtonType = 'submit' | 'reset' | 'button';
+
 interface ButtonCustomProps extends ButtonProps {
   title: string;
   disabled?: boolean;
-  theme?: 'dark' | 'outlineDark' | 'noneBorder' | 'red';
-  size?: 'sm' | 'md' | 'lg';
-  type?: 'submit' | 'reset' | 'button';
+  theme?: ButtonTheme;
+  size?: ButtonSize;
+  type?: ButtonType;
   style?: React.CSSProperties;
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }

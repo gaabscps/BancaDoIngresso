@@ -1,8 +1,8 @@
 import React from 'react';
 import { Card, Container, Modal, ModalHeader, ModalBody } from 'reactstrap';
 
+import { Button } from '@/components/Button';
 import CloseModal from '../../../../assets/images/svg/CloseModal';
-import Button from '../../Button';
 
 interface ModalProps {
   title: React.ReactNode;
@@ -53,17 +53,14 @@ export const ModalCustom: React.FC<ModalProps> = ({
           <div className="nextPageButton">
             <div style={{ color: '#fff' }}>
               <Button
+                title="Cancelar"
                 theme="noneBorder"
                 size="sm"
                 style={{ marginRight: '20px' }}
                 onClick={() => handleClose()}
-              >
-                Cancelar
-              </Button>
+              ></Button>
             </div>
-            <Button theme="dark" size="sm" onClick={onBtnAction}>
-              {btnLabel}
-            </Button>
+            <Button title={btnLabel} theme="dark" size="sm" onClick={onBtnAction}></Button>
           </div>
         )}
       </ModalBody>

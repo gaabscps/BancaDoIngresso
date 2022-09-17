@@ -1,22 +1,22 @@
 /* eslint-disable react/jsx-key */
 import React, { Fragment, useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Container, Label } from 'reactstrap';
 import Page from '@/model/Page';
 import Pdv from '@/model/Pdv';
-import RegisterPdv from '../../modal/RegisterPdv';
+// import { Button } from '@/components/Button';
+import { ColumnImage, CustomTable, TableColumn } from '@/components/Table';
+// import RegisterPdv from '../../modal/RegisterPdv';
 import SubPdvList from '../../modal/SubPdvs';
-import Button from '../../Utils/Button';
 import FilterVector from '../../../assets/images/svg/FilterVector';
 import Filter from '../../modal/FilterPdv';
-import { CollumnImage, CustomTable, TableColumn } from '../../Utils/Table';
-import { ReactComponent as Pen } from '../../../assets/images/svg/pen.svg';
+// import { ReactComponent as Pen } from '../../../assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '../../../assets/images/svg/lixeira.svg';
 import { ReactComponent as SubPdvIcon } from '../../../assets/images/svg/subPDV.svg';
 
 // import Pagination from '../../Utils/Pagination';
 import { ApplicationState } from '../../../store';
-import { listRequest, updateRequest, createRequest } from '../../../store/ducks/pdv/actions';
+// import { listRequest, updateRequest, createRequest } from '../../../store/ducks/pdv/actions';
 import { CheckUserState } from '../../../store/ducks/check-user/types';
 import { PdvState } from '../../../store/ducks/pdv/types';
 import { ModalConfirmation } from '../../Utils/Modal/ModalConfirmation';
@@ -26,7 +26,7 @@ const Sample = (): JSX.Element => {
   const [showSubPdvList, setShowSubPdvList] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
   const [showExclude, setShowExclude] = useState(false);
-  const [idPdv, setIdPdv] = useState<string | undefined>('');
+  // const [idPdv, setIdPdv] = useState<string | undefined>('');
 
   const initialTablePdv = [
     {
@@ -81,14 +81,14 @@ const Sample = (): JSX.Element => {
   ];
   const pdv = useSelector<ApplicationState, PdvState>(store => store.pdv);
   const checkUser = useSelector<ApplicationState, CheckUserState>(store => store.checkUser);
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const page: Page<Pdv, Pdv> = {
     page: 1,
     pageSize: 10,
     sort: 'name', // Adicionar cidade!!!
     order: 'DESC',
   };
-  const [showPdv, setShowPdv] = useState(false);
+  // const [showPdv, setShowPdv] = useState(false);
   const [pagination, setPagination] = useState(page);
   // const [form, setForm] = useState<CreatePDV | any>({} as CreatePDV);
 
@@ -97,28 +97,28 @@ const Sample = (): JSX.Element => {
       ...pagination,
       page: pageNumber,
     });
-    dispatch(
-      listRequest({
-        ...pagination,
-        page: pageNumber,
-      }),
-    );
+    // dispatch(
+    //   listRequest({
+    //     ...pagination,
+    //     page: pageNumber,
+    //   }),
+    // );
   }
-  const saveRequesetPdv = (data: Pdv): void => {
-    if (idPdv) dispatch(updateRequest({ ...data, id: idPdv }));
-    else dispatch(createRequest(data));
-  };
-  const callShow = (b: boolean): void => {
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    setShowPdv(b);
-  };
+  // const saveRequesetPdv = (data: Pdv): void => {
+  //   if (idPdv) dispatch(updateRequest({ ...data, id: idPdv }));
+  //   else dispatch(createRequest(data));
+  // };
+  // const callShow = (b: boolean): void => {
+  //   // eslint-disable-next-line @typescript-eslint/no-use-before-define
+  //   setShowPdv(b);
+  // };
   const callShowSub = (b: never): void => {
     setShowSubPdvList(b);
-    setIdPdv('');
+    // setIdPdv('');
   };
   const callShowFilter = (b: never): void => {
     setShowFilter(b);
-    setIdPdv('');
+    // setIdPdv('');
   };
   const callShowExclude = (b: never): void => {
     setShowExclude(b);
@@ -127,34 +127,34 @@ const Sample = (): JSX.Element => {
   useEffect(() => {
     if (!checkUser.call && checkUser.logged) {
       if (!pdv.loading && pdv.data && !pdv.data.page) {
-        dispatch(listRequest(pagination));
+        // dispatch(listRequest(pagination));
       } else if (!pdv.error && pdv.data && pdv.data.page && pdv.data.page.total) {
         setPagination({ ...pagination, ...pdv.data.page });
       }
     }
   }, [pdv]);
 
-  const onClickEditPdv = (id: string): void => {
-    setShowPdv(!showPdv);
-    setIdPdv(id);
-  };
+  // const onClickEditPdv = (id: string): void => {
+  //   setShowPdv(!showPdv);
+  //   setIdPdv(id);
+  // };
 
   const dataTablePdv = pagination.list
     ? pagination.list?.map(item => ({
         id: item.id,
-        imageBase64: <CollumnImage srcImage={item.imageBase64} />,
+        imageBase64: <ColumnImage srcImage={item.imageBase64} />,
         name: item.name,
         street: item.address.street,
         city: item.address.city,
         state: item.address.state,
         actions: (
           <>
-            <Pen
+            {/* <Pen
               onClick={() => {
                 onClickEditPdv(item.id);
               }}
               className="mr-2 svg-icon action-icon"
-            />
+            /> */}
             <Trash
               onClick={() => {
                 setShowExclude(!showExclude);
@@ -199,7 +199,11 @@ const Sample = (): JSX.Element => {
 
   return (
     <Fragment>
-      <ModalConfirmation show={showExclude} setShow={setShowExclude} />
+      <ModalConfirmation
+        onBtnAction={(): void => undefined}
+        show={showExclude}
+        setShow={setShowExclude}
+      />
       <Filter show={showFilter} setShowFilter={callShowFilter} />
       <SubPdvList
         showConfirm={showExclude}
@@ -207,22 +211,20 @@ const Sample = (): JSX.Element => {
         setShowSubPdvList={callShowSub}
         setShowExclude={callShowExclude}
       />
-      <RegisterPdv
+      {/* <RegisterPdv
         show={showPdv}
         setShow={callShow}
         pdvid={idPdv}
         saveRequest={saveRequesetPdv}
         reload={() => handlePaginationChange(pagination.page)}
-      />
+      /> */}
       <Container className="mainContainer" fluid={true}>
         <div className="d-flex justify-content-between" style={{ paddingBottom: '30px' }}>
           <div className="pageTitle" style={{ display: 'grid' }}>
             <Label>PDV</Label>
           </div>
           <div className="button-filter-container">
-            <Button color="primary" onClick={() => setShowPdv(true)}>
-              + Cadastrar novo PDV
-            </Button>
+            {/* <Button title="+ Cadastrar novo PDV" color="primary" onClick={() => setShowPdv(true)} /> */}
             <div onClick={() => setShowFilter(true)} className="filter-container">
               <div className="filter-content">
                 <FilterVector />

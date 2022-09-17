@@ -1,67 +1,26 @@
-import React, { useState, createContext, useContext, useCallback, useMemo } from 'react';
-import { Dialog } from '@/components';
+import React, { useState } from 'react';
 
-interface DialogProviderProps {
-  children: React.ReactNode;
+interface HookReturn {
+  visible: boolean;
+  title: string | React.ReactNode;
+  onChangeTitle(value: string | React.ReactNode): void;
+  onToggle(): void;
 }
 
-interface DialogProviderValue {
-  show(options: DialogOptions): void;
-  hide(): void;
-}
-
-interface DialogOptions {
-  title: React.ReactNode;
-  children: React.ReactNode;
-  onBtnAction?: () => void;
-  btnLabel?: string;
-  isCard?: boolean;
-  visible?: boolean;
-  onClose?: () => void;
-  position?: 'center' | 'right';
-  size?: 'sm' | 'md' | 'lg' | 'xl';
-}
-
-const DialogContext = createContext<DialogProviderValue>({
-  show: () => undefined,
-  hide: () => undefined,
-});
-
-export const DialogProvider = ({ children }: DialogProviderProps): JSX.Element => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [options, setOptions] = useState<Omit<DialogProviderValue, 'onClose' | 'visible'> | any>(
-    {},
-  );
+export const useDialog = (): HookReturn => {
   const [visible, setVisible] = useState(false);
+  const [title, setTitle] = useState<string | React.ReactNode>('');
 
-  const show = useCallback((currentOptions: DialogOptions): void => {
-    setOptions(currentOptions);
-    setVisible(true);
-  }, []);
+  const onToggle = (): void => {
+    setVisible(!visible);
+  };
 
-  const hide = (): void => setVisible(false);
+  const onChangeTitle = (value: string | React.ReactNode): void => setTitle(value);
 
-  const providerValue = useMemo(() => ({ show, hide }), [show, hide]);
-
-  return (
-    <DialogContext.Provider value={providerValue}>
-      {children}
-      {options.children && (
-        <Dialog
-          title={options.title}
-          visible={visible}
-          onClose={options.onClose ?? hide}
-          // onBtnAction={options.onBtnAction}
-          // btnLabel={options.btnLabel}
-          isCard={options.isCard}
-          position={options.position}
-          size={options.size}
-        >
-          {options.children}
-        </Dialog>
-      )}
-    </DialogContext.Provider>
-  );
+  return {
+    visible,
+    title,
+    onToggle,
+    onChangeTitle,
+  };
 };
-
-export const useDialog = (): DialogProviderValue => useContext(DialogContext);

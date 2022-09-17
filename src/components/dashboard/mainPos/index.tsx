@@ -6,12 +6,12 @@ import dayjs from 'dayjs';
 import Page from '@/model/Page';
 import Pos from '@/model/Pos';
 import PosStatus from '@/model/PosStatus';
-import { CollumnStatus, CustomTable, TableColumn } from '../../Utils/Table';
+import { Button } from '@/components/Button';
+import { ColumnStatus, CustomTable, TableColumn } from '@/components/Table';
 import { ModalConfirmation } from '../../Utils/Modal/ModalConfirmation';
 import { ReactComponent as Pen } from '../../../assets/images/svg/pen.svg';
 import { ReactComponent as Status } from '../../../assets/images/svg/status.svg';
 import { ReactComponent as Trash } from '../../../assets/images/svg/lixeira.svg';
-import Button from '../../Utils/Button';
 import { ApplicationState } from '../../../store';
 import {
   listRequest,
@@ -151,7 +151,7 @@ const Sample = (): JSX.Element => {
     ? dataList?.map(item => ({
         id: item.id,
         name: (
-          <CollumnStatus statusColor={changeColorCollumn(item.status)}>{item.name}</CollumnStatus>
+          <ColumnStatus statusColor={changeColorCollumn(item.status)}>{item.name}</ColumnStatus>
         ),
         date: dayjs(item.expirationDate, 'YYYY-DD-MM hh:mm:ss').format('DD/MM/YYYY'),
         currentPdv: item.pdv?.name,
@@ -197,9 +197,11 @@ const Sample = (): JSX.Element => {
             <div className="pageTitle">POS</div>
           </div>
           <div className="button-filter-container">
-            <Button color="primary" onClick={() => setShowPos(true)}>
-              + Cadastrar nova POS
-            </Button>
+            <Button
+              title="+ Cadastrar nova POS"
+              color="primary"
+              onClick={() => setShowPos(true)}
+            ></Button>
             <div onClick={() => setShowFilter(true)} className="filter-container">
               <div className="filter-content">
                 <FilterVector />

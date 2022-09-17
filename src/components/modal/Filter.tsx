@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, ModalHeader, ModalBody } from 'reactstrap';
+import { Button } from '@/components/Button';
 import CloseModal from '../../assets/images/svg/CloseModal';
-import Button from '../Utils/Button';
 
 interface FilterCustomProps {
   show: boolean;
@@ -39,12 +39,11 @@ const Filter = (props: Props): JSX.Element => {
       <ModalBody>
         <div className="filter-button exclude-button">
           <Button
+            title="Cancelar"
             theme="noneBorder"
             style={{ height: '50px', marginRight: '20px' }}
             onClick={() => handleClose()}
-          >
-            Cancelar
-          </Button>
+          ></Button>
           <Button
             style={{
               width: '152px',
@@ -55,9 +54,9 @@ const Filter = (props: Props): JSX.Element => {
               justifyContent: 'center',
             }}
             className="botao-cadastro"
-          >
-            Aplicar
-          </Button>
+            title="Aplicar"
+            onClick={() => handleClose()}
+          ></Button>
         </div>
       </ModalBody>
     </Modal>

@@ -2,8 +2,8 @@ import React, { Fragment } from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
+import { ConfirmDeleteProvider } from '@/hooks/useConfirmDelete';
 import { Navigation } from '@/navigation';
-import { DialogProvider } from '@/hooks/useDialog';
 import store from '@/store';
 
 import 'dayjs';
@@ -14,11 +14,11 @@ import '@/styles/index.scss';
 export const App: React.FC = (): JSX.Element => (
   <Fragment>
     <Provider store={store}>
-      <DialogProvider>
-        <BrowserRouter>
+      <BrowserRouter>
+        <ConfirmDeleteProvider>
           <Navigation />
-        </BrowserRouter>
-      </DialogProvider>
+        </ConfirmDeleteProvider>
+      </BrowserRouter>
     </Provider>
 
     <ToastContainer />

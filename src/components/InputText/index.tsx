@@ -28,7 +28,7 @@ export const InputText: FC<InputProps> = ({
   wrapperClass,
   renderForward,
 }) => (
-  <div className={`mb-4 flex-column ${wrapperClass}`}>
+  <div className={`mb-2 flex-column ${wrapperClass}`}>
     {label && (
       <label htmlFor={name} className="input-label">
         {label}
@@ -46,7 +46,7 @@ export const InputText: FC<InputProps> = ({
     />
     {renderForward}
     {error && (
-      <span role="alert" className="alert-error">
+      <span role="alert" className="alert-error position-relative text-sm mb-2">
         {error}
       </span>
     )}

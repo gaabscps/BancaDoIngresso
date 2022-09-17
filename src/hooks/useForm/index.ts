@@ -1,18 +1,19 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-shadow */
 import { useState, useCallback } from 'react';
 import * as R from 'ramda';
 
 type FormDataValue = string;
 
-interface FormData {
+export interface FormData {
   [key: string]: FormDataValue;
 }
 
-interface FormErrors {
+export interface FormErrors {
   [key: string]: string[] | null | undefined;
 }
 
-type OnChangeFormInput = (inputName: string) => (data: FormDataValue) => void;
+export type OnChangeFormInput = (inputName: string) => (data: FormDataValue) => void;
 type SetFormErrors = (errors: FormErrors) => void;
 type SetFormData = <FormData>(newFormData: FormData) => void;
 type IsFormValid = () => boolean;
@@ -21,6 +22,7 @@ type SetErrors = (dynamicErrors: FormErrors) => void;
 
 export interface UseFormReturn {
   onChangeFormInput: OnChangeFormInput;
+  resetForm: () => void;
   formData: FormData;
   formErrors: FormErrors;
   setFormErrors: SetFormErrors;
@@ -148,8 +150,14 @@ const useForm = ({
     setFormErrors(newErrors);
   };
 
+  const resetForm = (): void => {
+    setFormData(initialData);
+    setFormErrors(initialErrors);
+  };
+
   return {
     onChangeFormInput,
+    resetForm,
     formData,
     formErrors,
     setFormErrors,

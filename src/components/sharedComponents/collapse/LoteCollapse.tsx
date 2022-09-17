@@ -1,48 +1,24 @@
 import React, { useState } from 'react';
 import { Card, Collapse } from 'reactstrap';
-// import { CustomTable, TableColumn } from '../../Utils/Table';
-// import { mockSubPdv } from '../../Utils/Table/mock';
+import SubPdv from '@/model/SubPdv';
 import { ReactComponent as Pen } from '../../../assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '../../../assets/images/svg/lixeira.svg';
 import { ReactComponent as SubPdvIcon } from '../../../assets/images/svg/subPDV.svg';
 // import { ModalConfirmation } from '../../Utils/Modal/ModalConfirmation';
 
-interface StateProps {
+interface LoteCollapseProps {
   title: string;
   onShowEditSubPdv: (value: any) => Promise<void>;
-  onShowDeleteSubPdv: (value: any) => Promise<void>;
+  onShowDeleteSubPdv: (subPdv: SubPdv) => void;
   dataList?: any;
-  content: string;
-  // idPdv: string;
 }
 
-// interface DispatchProps {}
-
-type Props = StateProps;
-
-// interface DataRow {
-//   image: string;
-//   pdvName: string;
-//   address: string;
-//   city: string;
-//   state: string;
-//   actions: string;
-//   status: string;
-//   dataSecundary: void;
-// }
-
-// const columnsSubPdvList: TableColumn<DataRow>[] = [
-//   {
-//     name: 'Usuário',
-//     selector: (row: { pdvName: any }) => row.pdvName,
-//   },
-// ];
-
-// const dataSubPdv = mockSubPdv.map((item: { id: number; user: string }) => ({
-//   id: item.id,
-// }));
-
-function LoteCollapse(props: Props): JSX.Element {
+const LoteCollapse: React.FC<LoteCollapseProps> = ({
+  title,
+  onShowDeleteSubPdv,
+  onShowEditSubPdv,
+  dataList,
+}): JSX.Element => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -55,7 +31,7 @@ function LoteCollapse(props: Props): JSX.Element {
           <div className="iconTable">
             <SubPdvIcon />
           </div>
-          <div className="normalText ">{props.title}</div>
+          <div className="normalText ">{title}</div>
         </div>
         <div>
           <svg
@@ -72,7 +48,7 @@ function LoteCollapse(props: Props): JSX.Element {
       </div>
 
       <Collapse isOpen={open}>
-        {props.dataList.map((item: any, index: any) => (
+        {dataList.map((item: any, index: any) => (
           <Card className="subpdv-main-container card-container" key={item.id}>
             <div className="supdv-title-flex">
               <div className="subpdv-title-container">
@@ -80,19 +56,14 @@ function LoteCollapse(props: Props): JSX.Element {
                 <p className="subpdv-title subpvd-title-name">• {item.name}</p>
               </div>
               <div className="subpdv-icon-container">
-                <Pen onClick={() => props.onShowEditSubPdv(item.id)} className="mr-2 svg-icon" />
-                <Trash
-                  onClick={() => props.onShowDeleteSubPdv(item.id)}
-                  className="mr-2 svg-icon"
-                />
+                <Pen onClick={() => onShowEditSubPdv(item.id)} className="mr-2 svg-icon" />
+                <Trash onClick={() => onShowDeleteSubPdv(item)} className="mr-2 svg-icon" />
               </div>
             </div>
-            {/* <CustomTable theme={'secundary'} columns={columnsSubPdvList} data={dataSubPdv} /> */}
           </Card>
         ))}
       </Collapse>
     </>
   );
-}
-// Para voltar collapse vazio basta retirar a tag <card> inteira
+};
 export default LoteCollapse;

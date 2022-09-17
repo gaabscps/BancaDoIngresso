@@ -1,24 +1,19 @@
 import React from 'react';
-import { Col, Form, Row } from 'reactstrap';
-import { InputText, Button, ButtonGroup, SelectCustom } from '@/components';
-import useForm from '@/hooks/useForm';
-import validators from '@/helpers/validators';
-import { updateMask as updateMaskCPFOrCNPJ } from '@/helpers/masks/cpfCnpj';
-import { updateMask as updateMaskCEP, isValid as isValidCEP } from '@/helpers/masks/cep';
-import { updateMask as updateMaskMobilePhone } from '@/helpers/masks/mobilePhone';
-// import SelectAutoComplete from '@/components/Select';
-import Pdv from '@/model/Pdv';
+import { Col, Form, FormGroup, Row } from 'reactstrap';
+import { InputText, ButtonGroup, SelectCustom } from '@/components';
+import { FormData, FormErrors, OnChangeFormInput } from '@/hooks/useForm';
+import { isValid as isValidCEP } from '@/helpers/masks/cep';
 import cep from 'cep-promise';
 import { statesUf } from '@/constant/states';
 
 interface RegisterContentProps {
-  document?: string;
-  onSubmit: (value: any) => void;
-  dataList?: Pdv;
+  formData: FormData;
+  formErrors: FormErrors;
+  onChangeFormInput: OnChangeFormInput;
 }
 
 // eslint-disable-next-line no-shadow
-enum FormInputName {
+export enum FormInputName {
   name = 'name',
   document = 'document',
   telephone = 'telephone',
@@ -41,114 +36,24 @@ enum FormInputName {
   batchClosed = 'batchClosed',
   askPasswordInactivity = 'askPasswordInactivity',
   inactivityTimeout = 'inactivityTimeout',
-  // users: string[]; TO-DO Adicionar usuarios
 }
 
 export const RegisterContent: React.FC<RegisterContentProps> = ({
-  document,
-  onSubmit,
-  dataList,
-}) => {
-  const { formData, formErrors, onChangeFormInput, isFormValid } = useForm({
-    initialData: {
-      name: dataList?.name ?? '',
-      document: updateMaskCPFOrCNPJ(dataList?.document ?? ''),
-      telephone: updateMaskMobilePhone(dataList?.telephone ?? ''),
-      email: dataList?.email ?? '',
-      imageBase64: dataList?.imageBase64 ?? '',
-      facebookUrl: dataList?.facebookUrl ?? '',
-      instagramUrl: dataList?.instagramUrl ?? '',
-      twitterUrl: dataList?.twitterUrl ?? '',
-      linkedinUrl: dataList?.linkedinUrl ?? '',
-      zipCode: updateMaskCEP(dataList?.address.zipCode ?? ''),
-      state: dataList?.address.state ?? '',
-      city: dataList?.address.city ?? '',
-      district: dataList?.address.district ?? '',
-      street: dataList?.address.street ?? '',
-      complement: dataList?.address.complement ?? '',
-      number: dataList?.address.number ?? '',
-      latitude: String(dataList?.address.latitude ?? ''),
-      longitude: String(dataList?.address.longitude ?? ''),
-      batchClosed: dataList?.batchClosed ?? '',
-      askPasswordInactivity: dataList?.askPasswordInactivity ?? '',
-      inactivityTimeout: dataList?.inactivityTimeout ?? '00:00:00',
-      // users: [], TO-DO Adicionar usuarios
-    },
-    validators: {
-      name: [validators.required],
-      document: [validators.required, validators.cpforcnpj],
-      zipCode: [validators.required, validators.cep],
-      state: [validators.required],
-      city: [validators.required],
-      district: [validators.required],
-      street: [validators.required],
-      number: [validators.required],
-      telephone: [validators.required, validators.mobilePhone],
-      email: [validators.required, validators.email],
-      batchClosed: [validators.required],
-      askPasswordInactivity: [validators.required],
-      inactivityTimeout: [validators.required],
-      // users: [validators.required], TO-DO Adicionar usuarios
-    },
-    formatters: {
-      document: updateMaskCPFOrCNPJ,
-      zipCode: updateMaskCEP,
-      telephone: updateMaskMobilePhone,
-    },
-  });
+  formData,
+  formErrors,
+  onChangeFormInput,
+}) => (
+  <Form
+    noValidate={true}
+    onSubmit={(e): void => {
+      e.preventDefault();
+    }}
+  >
+    <Row>
+      <Col md={12}>
+        <h5 className="mb-2">Informações gerais e endereço</h5>
 
-  const handleOnRegister = (): void => {
-    console.log('form before valid', formData);
-    if (isFormValid()) {
-      // TO-DO: change type to Pdv
-
-      const payload: any = {
-        id: dataList?.id ?? null,
-        name: formData[FormInputName.name],
-        document: formData[FormInputName.document],
-        telephone: formData[FormInputName.telephone],
-        email: formData[FormInputName.email],
-        imageBase64: formData[FormInputName.imageBase64],
-        facebookUrl: formData[FormInputName.facebookUrl],
-        instagramUrl: formData[FormInputName.instagramUrl],
-        twitterUrl: formData[FormInputName.twitterUrl],
-        linkedinUrl: formData[FormInputName.linkedinUrl],
-        batchClosed: formData[FormInputName.batchClosed],
-        askPasswordInactivity: formData[FormInputName.askPasswordInactivity],
-        inactivityTimeout: formData[FormInputName.inactivityTimeout],
-        address: {
-          id: dataList?.address.id ?? null,
-          zipCode: formData[FormInputName.zipCode],
-          state: formData[FormInputName.state],
-          city: formData[FormInputName.city],
-          district: formData[FormInputName.district],
-          street: formData[FormInputName.street],
-          complement: formData[FormInputName.complement],
-          number: formData[FormInputName.number],
-          latitude: formData[FormInputName.latitude],
-          longitude: formData[FormInputName.longitude],
-        },
-        // users: [], TO-DO Adicionar usuarios
-      };
-      if (payload.id === null) {
-        delete payload.id;
-        delete payload.address.id;
-      }
-      onSubmit(payload);
-    }
-  };
-
-  return (
-    <Form
-      noValidate={true}
-      onSubmit={(e): void => {
-        e.preventDefault();
-        handleOnRegister();
-      }}
-    >
-      <Row>
-        <Col md={10}>
-          <h5>Informações gerais e endereço</h5>
+        <FormGroup className="mb-2">
           <InputText
             name="name"
             label="Nome do PDV"
@@ -157,6 +62,9 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             onChange={e => onChangeFormInput(FormInputName.name)(e.target.value)}
             error={formErrors.name && formErrors.name[0]}
           />
+        </FormGroup>
+
+        <FormGroup className="mb-2">
           <InputText
             name="document"
             label="CPF/CNPJ"
@@ -166,6 +74,9 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             onChange={e => onChangeFormInput(FormInputName.document)(e.target.value)}
             error={formErrors.document && formErrors.document[0]}
           />
+        </FormGroup>
+
+        <FormGroup className="mb-2">
           <InputText
             name="email"
             label="E-mail"
@@ -174,6 +85,9 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             onChange={e => onChangeFormInput(FormInputName.email)(e.target.value)}
             error={formErrors.email && formErrors.email[0]}
           />
+        </FormGroup>
+
+        <FormGroup className="mb-2">
           <InputText
             name="zipCode"
             label="CEP"
@@ -194,7 +108,10 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             onBlur={e => onChangeFormInput(FormInputName.zipCode)(e.target.value)}
             error={formErrors.zipCode && formErrors.zipCode[0]}
           />
-          {/* TO-DO: add select state and city */}
+        </FormGroup>
+        {/* TO-DO: add select state and city */}
+
+        <FormGroup className="mb-2">
           <SelectCustom
             name="state"
             label="Estado"
@@ -204,6 +121,9 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             error={formErrors.state && formErrors.state[0]}
             options={statesUf}
           />
+        </FormGroup>
+
+        <FormGroup className="mb-2">
           <InputText
             name="city"
             label="Cidade"
@@ -212,6 +132,9 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             onChange={e => onChangeFormInput(FormInputName.city)(e?.target.value as string)}
             error={formErrors.city && formErrors.city[0]}
           />
+        </FormGroup>
+
+        <FormGroup className="mb-2">
           <InputText
             name="district"
             label="Bairro"
@@ -220,6 +143,9 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             onChange={e => onChangeFormInput(FormInputName.district)(e.target.value)}
             error={formErrors.district && formErrors.district[0]}
           />
+        </FormGroup>
+
+        <FormGroup className="mb-2">
           <InputText
             name="street"
             label="Logradouro"
@@ -228,6 +154,9 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             onChange={e => onChangeFormInput(FormInputName.street)(e.target.value)}
             error={formErrors.street && formErrors.street[0]}
           />
+        </FormGroup>
+
+        <FormGroup className="mb-2">
           <InputText
             name="number"
             label="Número"
@@ -237,6 +166,9 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             onChange={e => onChangeFormInput(FormInputName.number)(e.target.value)}
             error={formErrors.number && formErrors.number[0]}
           />
+        </FormGroup>
+
+        <FormGroup className="mb-2">
           <InputText
             name="complement"
             label="Complemento"
@@ -245,6 +177,9 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             onChange={e => onChangeFormInput(FormInputName.complement)(e.target.value)}
             error={formErrors.complement && formErrors.complement[0]}
           />
+        </FormGroup>
+
+        <FormGroup className="mb-2">
           <InputText
             name="latitude"
             label="Latitude (opcional)"
@@ -254,6 +189,9 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             onChange={e => onChangeFormInput(FormInputName.latitude)(e.target.value)}
             error={formErrors.latitude && formErrors.latitude[0]}
           />
+        </FormGroup>
+
+        <FormGroup className="mb-2">
           <InputText
             name="longitude"
             label="Longitude (opcional)"
@@ -263,7 +201,10 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             onChange={e => onChangeFormInput(FormInputName.longitude)(e.target.value)}
             error={formErrors.longitude && formErrors.longitude[0]}
           />
-          <h5>Informações complementares</h5>
+        </FormGroup>
+
+        <h5 className="mb-2">Informações complementares</h5>
+        <FormGroup className="mb-2">
           <InputText
             name="telephone"
             label="Telefone celular"
@@ -273,6 +214,9 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             onChange={e => onChangeFormInput(FormInputName.telephone)(e.target.value)}
             error={formErrors.telephone && formErrors.telephone[0]}
           />
+        </FormGroup>
+
+        <FormGroup className="mb-2">
           <InputText
             name="instagramUrl"
             label="Instagram do PDV (opcional)"
@@ -281,6 +225,9 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             onChange={e => onChangeFormInput(FormInputName.instagramUrl)(e.target.value)}
             error={formErrors.instagramUrl && formErrors.instagramUrl[0]}
           />
+        </FormGroup>
+
+        <FormGroup className="mb-2">
           <InputText
             name="facebookUrl"
             label="Facebook do PDV (opcional)"
@@ -289,6 +236,9 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             onChange={e => onChangeFormInput(FormInputName.facebookUrl)(e.target.value)}
             error={formErrors.facebookUrl && formErrors.facebookUrl[0]}
           />
+        </FormGroup>
+
+        <FormGroup className="mb-2">
           <InputText
             name="telephone"
             label="LinkedIn do PDV (opcional)"
@@ -297,7 +247,10 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             onChange={e => onChangeFormInput(FormInputName.linkedinUrl)(e.target.value)}
             error={formErrors.linkedinUrl && formErrors.linkedinUrl[0]}
           />
-          {/* TO-DO: add input file Map and Image PDV */}
+        </FormGroup>
+
+        {/* TO-DO: add input file Map and Image PDV */}
+        <FormGroup className="mb-2">
           <ButtonGroup
             label="Lote encerrado?"
             name="batchClosed"
@@ -308,6 +261,9 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             ]}
             error={formErrors.batchClosed && formErrors.batchClosed[0]}
           />
+        </FormGroup>
+
+        <FormGroup className="mb-2">
           <ButtonGroup
             label="Pedir senha após inatividade?"
             name="askPasswordInactivity"
@@ -318,6 +274,9 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             ]}
             error={formErrors.askPasswordInactivity && formErrors.askPasswordInactivity[0]}
           />
+        </FormGroup>
+
+        <FormGroup className="mb-2">
           <InputText
             type="time"
             name="inactivityTimeout"
@@ -328,14 +287,8 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             onChange={e => onChangeFormInput(FormInputName.inactivityTimeout)(e.target.value)}
             error={formErrors.inactivityTimeout && formErrors.inactivityTimeout[0]}
           />
-        </Col>
-      </Row>
-      <hr />
-      <div className="d-flex justify-content-end">
-        {/* //:TO-DO !important add type props to "button" */}
-        <h1>{document}</h1>
-        <Button title="Salvar" type="button" onClick={handleOnRegister} />
-      </div>
-    </Form>
-  );
-};
+        </FormGroup>
+      </Col>
+    </Row>
+  </Form>
+);

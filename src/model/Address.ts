@@ -7,6 +7,6 @@ export default interface Address {
   street: string;
   complement?: string;
   number?: string;
-  latitude?: number;
-  longitude?: number;
+  latitude?: number | string;
+  longitude?: number | string;
 }

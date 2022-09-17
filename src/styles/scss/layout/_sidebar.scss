@@ -115,6 +115,14 @@ button {
                 align-items: center;
               }
             }
+
+            &.active {
+              color: #d8231b;
+              background-color: #ffffff !important;
+              span {
+                color: #d8231b;
+              }
+            }
           }
         }
       }
@@ -148,10 +156,6 @@ button {
     }
 
     // a {
-    //   display: inline-block;
-    //   height: 0px;
-    //   margin: 0.5rem 0;
-
     //   .active {
     //     border: none;
     //     border-radius: 20px;
@@ -196,6 +200,19 @@ button {
         margin-top: 2px;
         &:hover {
           transition: 0.3s;
+          color: #d8231b;
+        }
+      }
+
+      &.active {
+        border: none;
+        border-radius: 20px;
+        background-color: rgba(216, 35, 27, 0.05);
+        transition: 0.4s;
+        span {
+          color: #d8231b;
+        }
+        svg {
           color: #d8231b;
         }
       }
