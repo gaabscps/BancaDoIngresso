@@ -1,154 +1,104 @@
 /* eslint-disable react/jsx-key */
-import React, { Fragment, useEffect } from 'react';
-import { Container, Label } from 'reactstrap';
-import { Button } from '@/components/Button';
+import React, { Fragment, useState } from 'react';
 import FilterVector from '@/assets/images/svg/FilterVector';
-import Page from '@/model/Page';
-import Pos from '@/model/Pos';
-import Pagination from '@/components/Utils/Pagination';
-
+import { Button, Loading, Dialog } from '@/components';
+import { Container, Label } from 'reactstrap';
+import { ReactComponent as Status } from '@/assets/images/svg/status.svg';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
-import { ReactComponent as Status } from '@/assets/images/svg/status.svg';
-import PosStatus from '@/model/PosStatus';
-import { ColumnStatus, CustomTable, TableColumn } from '@/components/Table';
+import { ColumnStatus, CustomTable } from '@/components/Table';
+import Pagination from '@/components/Utils/Pagination';
+import Pos from '@/model/Pos';
+import { PosRequestParams } from '@/features/pos/types';
+import { FormData, FormErrors, OnChangeFormInput } from '@/hooks/useForm';
+import { cp } from 'fs';
+import { columns } from './table';
+import dayjs from 'dayjs';
 
-interface PosContainerProps {
-  handleRenderListPos: (page: Page<Pos, Pos>) => void;
-  list: Pos[];
-  pagination: Page<Pos, Pos>;
-  setPagination: React.Dispatch<React.SetStateAction<Page<Pos, Pos>>>;
-  onShowRegister: () => void;
-  onShowEdit: (id: string) => Promise<void>;
-  onShowDelete: (id: string) => Promise<void>;
-  onShowFilter: () => void;
+export enum States {
+  default = 'default',
+  loading = 'loading',
 }
-
-interface DataRow {
+export interface DataRow {
   id: string;
   name: string;
-  serialNumber: string;
+  serial: string;
   actions: string;
   status: number;
-  expirationDate: string;
+  date: string;
   currentPdv: string;
+}
+interface PosContainerProps {
+  state: States;
+  posState?: Pos;
+  listPos: Pos[];
+  currentPage: PosRequestParams;
+  // title: string | React.ReactNode;
+  // currentPage: PosRequestParams;
+  // visible: boolean;
+  // // shouldShowModal: ShouldShowModal;
+  // formDataPdv: FormData;
+  // formErrorsPdv: FormErrors;
+  // onChangeFormInputPdv: OnChangeFormInput;
+  // formDataFilter: FormData;
+  // formErrorsFilter: FormErrors;
+  // onChangeFormInputFilter: OnChangeFormInput;
+  // onToggle: () => void;
+  onPaginationChange: (page: number) => void;
+  // onShouldShowModal: ({
+  //   // value,
+  //   newTitleModal,
+  //   pos,
+  // }: {
+  //   // value: ShouldShowModal;
+  //   newTitleModal: string | React.ReactNode;
+  //   pos?: Pos;
+  // }) => void;
+  // onSavePdv: () => Promise<void>;
+  // onFilter: () => Promise<void>;
+  // // onShowEdit: (id: string) => Promise<void>;
+  // onShowDelete: (pdv: Pos) => void;
+  // // onShowFilter: () => void;
 }
 
 export const PosContainer: React.FC<PosContainerProps> = ({
-  onShowRegister,
-  onShowEdit,
-  onShowDelete,
-  list,
-  pagination,
-  setPagination,
-  handleRenderListPos,
-  onShowFilter,
+  listPos,
+  state,
+  posState,
+  currentPage,
+  onPaginationChange,
 }) => {
-  useEffect(() => {
-    handleRenderListPos(pagination);
-  }, []);
-
-  const changeColorCollumn = (status: PosStatus): string => {
-    switch (status) {
-      case 0:
-        return '#3CAFC8';
-      case 1:
-        return '#7AD81B';
-      case 2:
-        return '#FFE249';
-      case 3:
-        return '#E64F49';
-      default:
-        return 'grey';
-    }
-  };
-
-  const initialTablePos = [
-    {
-      id: '',
-      imageBase64: '',
-      name: '',
-      street: '',
-      city: '',
-      state: '',
-      actions: '',
-    },
-  ];
-
-  const columnsPrimaryStatusColor: TableColumn<DataRow>[] = [
-    {
-      name: 'Nome da POS',
-      selector: row => row.name,
-    },
-    {
-      name: 'Nº de série',
-      selector: row => row.serialNumber,
-    },
-    {
-      name: 'Data do vínculo',
-      selector: row => row.expirationDate,
-    },
-    {
-      name: 'PDV atual',
-      selector: row => row.currentPdv,
-    },
-    {
-      name: 'Ações',
-      selector: row => row.actions,
-      width: '120px',
-    },
-  ];
-
-  async function handlePaginationChange(pageNumber: number): Promise<void> {
-    setPagination({
-      ...pagination,
-      page: pageNumber,
-    });
-    handleRenderListPos({
-      ...pagination,
-      page: pageNumber,
-    });
-  }
-
-  const dataTablePos = list
-    ? list?.map(item => ({
-        id: item.id,
-        name: (
-          <ColumnStatus statusColor={changeColorCollumn(item.status)}>{item.name}</ColumnStatus>
-        ),
-        serialNumber: item.serialNumber,
-        expirationDate: item.expirationDate,
-        currentPdv: item.pdv?.name,
-        actions: (
-          <>
-            <Pen
-              onClick={() => {
-                onShowEdit(item.id);
-              }}
-              className="mr-2 svg-icon action-icon"
-            />
-            <Trash
-              onClick={() => {
-                onShowDelete(item.id);
-              }}
-              className="mr-2 svg-icon action-icon"
-            />
-          </>
-        ),
-      }))
-    : initialTablePos;
-
+  const dataTablePos = listPos?.map(item => ({
+    id: item.id,
+    name: <ColumnStatus statusColor={'#0000'}>{item.name}</ColumnStatus>,
+    date: dayjs(item.expirationDate, 'YYYY-DD-MM hh:mm:ss').format('DD/MM/YYYY'),
+    currentPdv: item.pdv.name,
+    serial: item.serialNumber,
+    actions: (
+      <React.Fragment>
+        <Pen className="mr-2 svg-icon action-icon" />
+        <Trash className="mr-2 svg-icon action-icon" />
+      </React.Fragment>
+    ),
+  }));
   return (
     <Fragment>
+      <Loading isVisible={state === States.loading} />
       <Container className="mainContainer" fluid={true}>
         <div className="d-flex justify-content-between" style={{ paddingBottom: '30px' }}>
           <div className="pageTitle" style={{ display: 'grid' }}>
-            <Label>POS</Label>
+            <Label onClick={() => console.log(listPos)}>POS</Label>
           </div>
           <div className="button-filter-container">
-            <Button title="+ Cadastrar novo POS" color="primary" onClick={onShowRegister} />
+            <Button
+              title="+ Cadastrar novo POS"
+              color="primary"
+              onClick={() => {
+                undefined;
+              }}
+            />
             <div className="filter-container">
-              <div className="filter-content" onClick={onShowFilter}>
+              <div className="filter-content">
                 <FilterVector />
               </div>
             </div>
@@ -173,13 +123,13 @@ export const PosContainer: React.FC<PosContainerProps> = ({
             POS inativa
           </div>
         </div>
-        <CustomTable columns={columnsPrimaryStatusColor} data={dataTablePos} theme="primary" />
+        <CustomTable columns={columns} data={dataTablePos} theme="primary" />
         <Pagination
-          currentPage={pagination.page}
-          totalCount={pagination.total}
-          pageSize={pagination.pageSize}
-          onPageChange={pagee => handlePaginationChange(pagee)}
-          total={pagination.total}
+          currentPage={currentPage.page}
+          totalCount={currentPage.total}
+          pageSize={currentPage.pageSize}
+          onPageChange={page => onPaginationChange(page)}
+          total={currentPage.total}
         />
       </Container>
     </Fragment>
