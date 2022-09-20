@@ -10,7 +10,7 @@ import logoBanca from '../../../assets/images/logo/logoBanca.png';
 import CpfComponent from './steps/cpf';
 import CodeComponent from './steps/code';
 import PasswordComponent from './steps/password';
-import SuccessComponent from './steps/success';
+import SuccessComponent from '../../../features/auth/components/ModalSuccess';
 import {
   recoverPasswordRequest,
   changePasswordRequest,

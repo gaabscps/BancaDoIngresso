@@ -7,7 +7,7 @@ import eye from '@/assets/images/login/eye.png';
 import closeEye from '@/assets/images/login/closeEye.png';
 import { REACT_APP_AUTH } from '@/utils/config';
 import { getBoolean } from '@/helpers/common/localStorage';
-import SuccessComponent from '../success';
+import SuccessComponent from '../../../../../features/auth/screens/Success';
 
 interface ConfirmPassword {
   password: string;
@@ -52,10 +52,7 @@ const Password = (props: Props): JSX.Element => {
 
   return (
     <>
-      <SuccessComponent
-        show={showSucessPasswordModal}
-        setShowSucessPasswordModal={setShowSucessPasswordModal}
-      />
+      <SuccessComponent show={showSucessPasswordModal} />
       <Container>
         <Col>
           <Row>
