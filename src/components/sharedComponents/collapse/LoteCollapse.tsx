@@ -8,7 +8,7 @@ import { ReactComponent as SubPdvIcon } from '../../../assets/images/svg/subPDV.
 
 interface LoteCollapseProps {
   title: string;
-  onShowEditSubPdv: (value: any) => Promise<void>;
+  onShowEditSubPdv: (value: any) => void;
   onShowDeleteSubPdv: (subPdv: SubPdv) => void;
   dataList?: any;
 }

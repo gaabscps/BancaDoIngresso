@@ -10,7 +10,6 @@ import logoBanca from '../../../assets/images/logo/logoBanca.png';
 import CpfComponent from './steps/cpf';
 import CodeComponent from './steps/code';
 import PasswordComponent from './steps/password';
-import SuccessComponent from '../../../features/auth/components/ModalSuccess';
 import {
   recoverPasswordRequest,
   changePasswordRequest,
@@ -34,7 +33,6 @@ const ForgetPassword = (): JSX.Element => {
 
   const [form, setForm] = useState<RecoveryPassword>({} as RecoveryPassword);
   const [step, setStep] = useState<number>(0);
-  const [showSucessPasswordModal, setShowSucessPasswordModal] = useState(false);
 
   // const cookies = new Cookies();
 
@@ -66,7 +64,6 @@ const ForgetPassword = (): JSX.Element => {
         };
         setForm(newForm);
         // setStep(2);
-        setShowSucessPasswordModal(true);
 
         login(auth.data.changePassword.login);
       }
@@ -133,10 +130,6 @@ const ForgetPassword = (): JSX.Element => {
 
   return (
     <>
-      <SuccessComponent
-        show={showSucessPasswordModal}
-        setShowSucessPasswordModal={setShowSucessPasswordModal}
-      />
       <Loading isVisible={auth.loading} />
       <div className="body-login">
         <Container>

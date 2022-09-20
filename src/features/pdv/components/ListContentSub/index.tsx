@@ -4,7 +4,7 @@ import LoteCollapse from '@/components/sharedComponents/collapse/LoteCollapse';
 
 interface PdvContainerProps {
   onShowRegisterSubPdv: () => void;
-  onShowEditSubPdv: (value: any) => Promise<void>;
+  onShowEditSubPdv: (value: any) => void;
   onShowDeleteSubPdv: (subPdv: SubPdv) => void;
   dataList?: any;
 }

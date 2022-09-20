@@ -2,10 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useDialog } from '@/hooks/useDialog';
-import { usePdv } from '@/features/pdv/hook/usePdv';
 import { useConfirmDelete } from '@/hooks/useConfirmDelete';
 import { DeleteContent } from '@/features/pdv/components/DeleteContent';
-// import { RegisterContentSubPdv } from '@/features/pdv/components/RegisterContentSubPdv';
 import useForm from '@/hooks/useForm';
 import validators from '@/helpers/validators';
 import { updateMask as updateMaskCPFOrCNPJ } from '@/helpers/masks/cpfCnpj';
@@ -422,11 +420,11 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       onChangeFormInputPdv(FormInputNameToSavePdv.city)(pdv.address.city);
       onChangeFormInputPdv(FormInputNameToSavePdv.district)(pdv.address.district);
       onChangeFormInputPdv(FormInputNameToSavePdv.street)(pdv.address.street);
-      onChangeFormInputPdv(FormInputNameToSavePdv.number)(pdv.address.number);
-      onChangeFormInputPdv(FormInputNameToSavePdv.complement)(pdv.address.complement);
+      onChangeFormInputPdv(FormInputNameToSavePdv.number)(String(pdv.address.number));
+      onChangeFormInputPdv(FormInputNameToSavePdv.complement)(String(pdv.address.complement));
       onChangeFormInputPdv(FormInputNameToSavePdv.state)(pdv.address.state);
-      onChangeFormInputPdv(FormInputNameToSavePdv.latitude)(pdv.address.latitude);
-      onChangeFormInputPdv(FormInputNameToSavePdv.longitude)(pdv.address.longitude);
+      onChangeFormInputPdv(FormInputNameToSavePdv.latitude)(String(pdv.address.latitude));
+      onChangeFormInputPdv(FormInputNameToSavePdv.longitude)(String(pdv.address.longitude));
       onChangeFormInputPdv(FormInputNameToSavePdv.telephone)(pdv.telephone);
       // onChangeFormInputPdv(FormInputNameToSavePdv.batchClosed)(pdv.batchClosed);
       // onChangeFormInputPdv(FormInputNameToSavePdv.askPasswordInactivity)(pdv.askPasswordInactivity);
