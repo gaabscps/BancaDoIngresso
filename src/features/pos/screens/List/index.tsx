@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { useEffect, useState } from 'react';
 
-import { useDialog } from '@/hooks/useDialog';
+// import { useDialog } from '@/hooks/useDialog';
 // import { RegisterContent } from '@/features/pos/components/RegisterContent';
 // import { DeleteContent } from '@/features/pos/components/DeleteContent';
 import Pos from '@/model/Pos';
@@ -9,7 +9,7 @@ import api, { AxiosError } from '@/services/api';
 // import Page from '@/model/Page';
 import { toast } from 'react-toastify';
 import { PosResponse, PosRequestParams } from '@/features/pos/types';
-import { useConfirmDelete } from '@/hooks/useConfirmDelete';
+// import { useConfirmDelete } from '@/hooks/useConfirmDelete';
 import { States, PosContainer } from '@/features/pos/screens/List/ui';
 
 export const PosScreen: React.FC = (): JSX.Element => {
@@ -23,8 +23,8 @@ export const PosScreen: React.FC = (): JSX.Element => {
     total: 1,
   });
 
-  const { title, visible, onChangeTitle, onToggle } = useDialog();
-  const confirmDelete = useConfirmDelete();
+  // const { title, visible, onChangeTitle, onToggle } = useDialog();
+  // const confirmDelete = useConfirmDelete();
 
   const handleFetch = async (values: PosRequestParams): Promise<void> => {
     try {
@@ -34,7 +34,7 @@ export const PosScreen: React.FC = (): JSX.Element => {
       if (data) {
         setListPos(data?.list ?? []);
 
-        setCurrentPage(currentPageState => ({
+        setCurrentPage((currentPageState: PosRequestParams) => ({
           ...currentPageState,
           ...data,
         }));

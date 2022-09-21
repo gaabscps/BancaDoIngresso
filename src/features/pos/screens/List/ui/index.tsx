@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-key */
-import React, { Fragment, useState } from 'react';
+import React, { Fragment } from 'react';
 import FilterVector from '@/assets/images/svg/FilterVector';
-import { Button, Loading, Dialog } from '@/components';
+import { Button, Loading } from '@/components';
 import { Container, Label } from 'reactstrap';
 import { ReactComponent as Status } from '@/assets/images/svg/status.svg';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
@@ -65,7 +65,7 @@ interface PosContainerProps {
 export const PosContainer: React.FC<PosContainerProps> = ({
   listPos,
   state,
-  posState,
+  // posState,
   currentPage,
   onPaginationChange,
 }) => {
@@ -95,6 +95,7 @@ export const PosContainer: React.FC<PosContainerProps> = ({
               title="+ Cadastrar novo POS"
               color="primary"
               onClick={() => {
+                // eslint-disable-next-line no-unused-expressions
                 undefined;
               }}
             />
