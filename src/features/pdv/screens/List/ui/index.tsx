@@ -17,6 +17,7 @@ import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { ReactComponent as SubPdvIcon } from '@/assets/images/svg/subPDV.svg';
 
+import { RegisterContentSubPdv } from '@/features/pdv/components/RegisterContentSubPdv';
 import { columns } from './table';
 
 // eslint-disable-next-line no-shadow
@@ -29,6 +30,7 @@ export enum States {
 export enum ShouldShowModal {
   pdv = 'pdv',
   subpdv = 'subpdv',
+  subpdvRegister = 'subpdvRegister',
   filter = 'filter',
 }
 
@@ -44,6 +46,9 @@ interface PdvContainerProps {
   formDataPdv: FormData;
   formErrorsPdv: FormErrors;
   onChangeFormInputPdv: OnChangeFormInput;
+  formDataSubPdv: FormData;
+  formErrorsSubPdv: FormErrors;
+  onChangeFormInputSubPdv: OnChangeFormInput;
   formDataFilter: FormData;
   formErrorsFilter: FormErrors;
   onChangeFormInputFilter: OnChangeFormInput;
@@ -59,10 +64,12 @@ interface PdvContainerProps {
     pdv?: Pdv;
   }) => void;
   onSavePdv: () => Promise<void>;
+  onSaveSubPdv: () => Promise<void>;
   onFilter: () => Promise<void>;
   // onShowEdit: (id: string) => Promise<void>;
   onShowDelete: (pdv: Pdv) => void;
   onShowDeleteSubPdv: (subPdv: SubPdv) => void;
+  onShowEditSubPdv: (subPdv: SubPdv) => void;
   // onShowListSub: (id: string, name: string) => Promise<void>;
   // onShowFilter: () => void;
 }
@@ -90,6 +97,9 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
   formDataPdv,
   formErrorsPdv,
   onChangeFormInputPdv,
+  formDataSubPdv,
+  formErrorsSubPdv,
+  onChangeFormInputSubPdv,
   formDataFilter,
   formErrorsFilter,
   onChangeFormInputFilter,
@@ -100,10 +110,12 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
   // onShowListSub,
   // onShowFilter,
   onSavePdv,
+  onSaveSubPdv,
   onFilter,
   // onShowEdit,
   onShowDelete,
   onShowDeleteSubPdv,
+  onShowEditSubPdv,
 }) => {
   const dataTablePdv = listPdv?.map(pdv => ({
     id: pdv.id,
@@ -134,7 +146,15 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
                 <div className="subpdv-modal-header-container">
                   {pdv.name ?? 'Sub PDV'}
                   <div className="subpdv-register-buttom">
-                    <a style={{ cursor: 'pointer' }} onClick={(): void => onToggle()}>
+                    <a
+                      style={{ cursor: 'pointer' }}
+                      onClick={(): void =>
+                        onShouldShowModal({
+                          newTitleModal: 'Cadastrar Sub PDV',
+                          value: ShouldShowModal.subpdvRegister,
+                        })
+                      }
+                    >
                       + cadastrar novo Sub PDV
                     </a>
                   </div>
@@ -152,6 +172,35 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
   const renderActionDialogToCancel: ActionProps = {
     title: 'Cancelar',
     onClick: (): void => onToggle(),
+    theme: 'noneBorder',
+  };
+
+  const renderActionDialogToReturnListSubPdv: ActionProps = {
+    title: 'Cancelar',
+    onClick: (): void =>
+      onShouldShowModal({
+        value: ShouldShowModal.subpdv,
+        newTitleModal: (
+          <div className="subpdv-modal-header-container">
+            {pdvState?.name ?? 'Sub PDV'}
+            <div className="subpdv-register-buttom">
+              <a
+                style={{ cursor: 'pointer' }}
+                onClick={(): void =>
+                  onShouldShowModal({
+                    newTitleModal: 'Cadastrar Sub PDV',
+                    value: ShouldShowModal.subpdvRegister,
+                  })
+                }
+              >
+                + cadastrar novo Sub PDV
+              </a>
+            </div>
+          </div>
+        ),
+        pdv: pdvState,
+      }),
+    theme: 'noneBorder',
   };
 
   return (
@@ -163,12 +212,15 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
         visible={visible}
         onClose={onToggle}
         position={shouldShowModal === ShouldShowModal.filter ? 'right' : 'center'}
-        isContentWithCard={shouldShowModal !== ShouldShowModal.filter}
+        isContentWithCard={
+          shouldShowModal !== ShouldShowModal.filter && shouldShowModal !== ShouldShowModal.subpdv
+        }
         actions={[
           {
             [ShouldShowModal.filter]: renderActionDialogToCancel,
             [ShouldShowModal.pdv]: renderActionDialogToCancel,
             [ShouldShowModal.subpdv]: {},
+            [ShouldShowModal.subpdvRegister]: renderActionDialogToReturnListSubPdv,
           }[shouldShowModal],
           {
             [ShouldShowModal.filter]: {
@@ -180,6 +232,10 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
               onClick: (): Promise<void> => onSavePdv(),
             },
             [ShouldShowModal.subpdv]: {},
+            [ShouldShowModal.subpdvRegister]: {
+              title: pdvState?.id ? 'Editar SubPDV' : 'Cadastrar novo SubPDV',
+              onClick: (): Promise<void> => onSaveSubPdv(),
+            },
           }[shouldShowModal],
         ]}
       >
@@ -203,8 +259,20 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
               <ListContentSub
                 dataList={listSubPdv}
                 onShowDeleteSubPdv={onShowDeleteSubPdv}
-                onShowEditSubPdv={(): void => onToggle()}
-                onShowRegisterSubPdv={(): void => onToggle()}
+                onShowEditSubPdv={onShowEditSubPdv}
+              />
+            ),
+            [ShouldShowModal.subpdvRegister]: (
+              // <ListContentSub
+              //   dataList={listSubPdv}
+              //   onShowDeleteSubPdv={onShowDeleteSubPdv}
+              //   onShowEditSubPdv={(): void => onToggle()}
+              //   onShowRegisterSubPdv={(): void => onToggle()}
+              // />
+              <RegisterContentSubPdv
+                formData={formDataSubPdv}
+                formErrors={formErrorsSubPdv}
+                onChangeFormInput={onChangeFormInputSubPdv}
               />
             ),
           }[shouldShowModal]

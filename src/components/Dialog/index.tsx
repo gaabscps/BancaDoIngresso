@@ -73,7 +73,7 @@ export const Dialog: React.FC<DialogProps> = ({
         </Container>
       </ModalBody>
       {actions.length > 0 && actions[0]?.title && (
-        <ModalFooter>
+        <ModalFooter style={{ border: '1px solid #E6E6E6' }}>
           {actions?.map((action, index) => (
             <React.Fragment key={index}>
               {action.title && action.onClick && (
