@@ -1196,3 +1196,7 @@ figure.partyCard {
     margin-top: 18px;
   }
 }
+input::-ms-reveal,
+input::-ms-clear {
+  display: none;
+}
