@@ -9,9 +9,9 @@ import PosStatus from '@/model/PosStatus';
 import { Button } from '@/components/Button';
 import { ColumnStatus, CustomTable, TableColumn } from '@/components/Table';
 import { ModalConfirmation } from '../../Utils/Modal/ModalConfirmation';
-import { ReactComponent as Pen } from '../../../assets/images/svg/pen.svg';
-import { ReactComponent as Status } from '../../../assets/images/svg/status.svg';
-import { ReactComponent as Trash } from '../../../assets/images/svg/lixeira.svg';
+// import { ReactComponent as Pen } from '../../../assets/images/svg/pen.svg';
+// import { ReactComponent as Status } from '../../../assets/images/svg/status.svg';
+// import { ReactComponent as Trash } from '../../../assets/images/svg/lixeira.svg';
 import { ApplicationState } from '../../../store';
 import {
   listRequest,
@@ -158,7 +158,7 @@ const Sample = (): JSX.Element => {
         serial: item.serialNumber,
         actions: (
           <>
-            <Pen
+            {/* <Pen
               onClick={() => {
                 setShowPos(!showPos);
                 setIdPos(item.id);
@@ -171,7 +171,7 @@ const Sample = (): JSX.Element => {
                 setIdPos(item.id);
               }}
               className="mr-2 svg-icon action-icon"
-            />
+            /> */}
           </>
         ),
       }))
@@ -209,7 +209,7 @@ const Sample = (): JSX.Element => {
             </div>
           </div>
         </div>
-        <div className="d-flex pb-2 status-container">
+        {/* <div className="d-flex pb-2 status-container">
           <div className="eventStatus subText">
             <Status style={{ color: '#7AD81B' }} />
             POS em uso
@@ -227,7 +227,7 @@ const Sample = (): JSX.Element => {
             <Status style={{ color: '#E64F49' }} />
             POS inativa
           </div>
-        </div>
+        </div> */}
         <CustomTable theme={'primary'} columns={columnsPrimaryStatusColor} data={dataTablePos} />
         <Pagination
           currentPage={pagination.page}
