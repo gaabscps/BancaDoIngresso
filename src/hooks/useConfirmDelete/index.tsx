@@ -41,7 +41,7 @@ export const ConfirmDeleteProvider = ({ children }: ConfirmDeleteProps): JSX.Ele
           onClose={options.onClose ?? hide}
           isContentWithCard={options.isContentWithCard}
           position={options.position}
-          size={options.size}
+          size="lg"
           actions={options.actions}
         >
           {options.children}
