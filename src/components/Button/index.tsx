@@ -31,16 +31,16 @@ export const Button: React.FC<ButtonCustomProps> = ({
   onClick,
 }) => {
   const finalTheme = {
-    dark: 'btn-dark',
-    outlineDark: 'btn-outline-dark',
-    noneBorder: 'btn-none-border',
-    red: 'btn-red',
+    dark: 'button-dark',
+    outlineDark: 'button-outline-dark',
+    noneBorder: 'button-none-border',
+    red: 'button-red',
   }[theme];
 
   const finalSize = {
-    sm: 'btn-sm',
-    md: 'btn-md',
-    lg: 'btn-lg',
+    sm: 'button-sm',
+    md: 'button-md',
+    lg: 'button-lg',
   }[size];
 
   return (
