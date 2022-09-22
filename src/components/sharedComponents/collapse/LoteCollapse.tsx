@@ -8,7 +8,7 @@ import { ReactComponent as SubPdvIcon } from '../../../assets/images/svg/subPDV.
 
 interface LoteCollapseProps {
   title: string;
-  onShowEditSubPdv: (value: any) => void;
+  onShowEditSubPdv: (subPdv: SubPdv) => void;
   onShowDeleteSubPdv: (subPdv: SubPdv) => void;
   dataList?: any;
 }
@@ -52,11 +52,11 @@ const LoteCollapse: React.FC<LoteCollapseProps> = ({
           <Card className="subpdv-main-container card-container" key={item.id}>
             <div className="supdv-title-flex">
               <div className="subpdv-title-container">
-                <p className="subpdv-title subpdv-title-index">Sub PDV’s #{String(index)} </p>
+                <p className="subpdv-title subpdv-title-index">Sub PDV’s #{String(index + 1)} </p>
                 <p className="subpdv-title subpvd-title-name">• {item.name}</p>
               </div>
               <div className="subpdv-icon-container">
-                <Pen onClick={() => onShowEditSubPdv(item.id)} className="mr-2 svg-icon" />
+                <Pen onClick={() => onShowEditSubPdv(item)} className="mr-2 svg-icon" />
                 <Trash onClick={() => onShowDeleteSubPdv(item)} className="mr-2 svg-icon" />
               </div>
             </div>

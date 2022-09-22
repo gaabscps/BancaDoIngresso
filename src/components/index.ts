@@ -3,6 +3,7 @@ import { Sidebar } from './Sidebar';
 import { Footer } from './Footer';
 import { Loading } from './Loading';
 import { InputText } from './InputText';
+import { InputFile } from './InputFile';
 import { Button } from './Button';
 import { ButtonGroup } from './ButtonGroup';
 import { Radio } from './Radio';
@@ -21,6 +22,7 @@ export {
   Footer,
   Loading,
   InputText,
+  InputFile,
   Button,
   ButtonGroup,
   Radio,

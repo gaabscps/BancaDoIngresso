@@ -3,7 +3,7 @@ import Pdv from './Pdv';
 import User from './User';
 
 export default interface SubPdv {
-  id: string;
+  id?: string;
   name: string;
   document: string;
   telephone: string;

@@ -72,23 +72,25 @@ export const Dialog: React.FC<DialogProps> = ({
           {isContentWithCard ? <Card className="modal__main-container">{children}</Card> : children}
         </Container>
       </ModalBody>
-      {actions.length > 0 && actions[0]?.title && (
-        <ModalFooter>
-          {actions?.map((action, index) => (
-            <React.Fragment key={index}>
-              {action.title && action.onClick && (
-                <Button
-                  key={action.title}
-                  title={action.title}
-                  theme={action.theme}
-                  size={action.size}
-                  onClick={action.onClick}
-                />
-              )}
-            </React.Fragment>
-          ))}
-        </ModalFooter>
-      )}
+      <div style={{ padding: '0 40px' }}>
+        {actions.length > 0 && actions[0]?.title && (
+          <ModalFooter style={{ borderTop: '1px solid #E6E6E6', padding: '15px 0' }}>
+            {actions?.map((action, index) => (
+              <React.Fragment key={index}>
+                {action.title && action.onClick && (
+                  <Button
+                    key={action.title}
+                    title={action.title}
+                    theme={action.theme}
+                    size={action.size}
+                    onClick={action.onClick}
+                  />
+                )}
+              </React.Fragment>
+            ))}
+          </ModalFooter>
+        )}
+      </div>
     </Modal>
   );
 };

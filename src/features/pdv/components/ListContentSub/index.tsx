@@ -3,7 +3,6 @@ import SubPdv from '@/model/SubPdv';
 import LoteCollapse from '@/components/sharedComponents/collapse/LoteCollapse';
 
 interface PdvContainerProps {
-  onShowRegisterSubPdv: () => void;
   onShowEditSubPdv: (value: any) => void;
   onShowDeleteSubPdv: (subPdv: SubPdv) => void;
   dataList?: any;
