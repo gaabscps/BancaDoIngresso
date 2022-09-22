@@ -12,6 +12,7 @@ export default interface Pdv {
   twitterUrl: string;
   linkedinUrl: string;
   address: Address;
+  amountSubPdvs?: number;
   batchClosed: boolean;
   askPasswordInactivity: boolean;
   inactivityTimeout: string;
