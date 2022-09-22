@@ -15,6 +15,7 @@ import { PosRequestParams } from '@/features/pos/types';
 import dayjs from 'dayjs';
 import { FilterContent } from '@/features/pos/components/FilterContent';
 import { FormErrors, OnChangeFormInput, FormData } from '@/hooks/useForm';
+import Pdv from '@/model/Pdv';
 import { columns } from './table';
 
 // eslint-disable-next-line no-shadow
@@ -50,7 +51,7 @@ interface PosContainerProps {
   formErrorsPos: FormErrors;
   formDataFilter: FormData;
   formErrorsFilter: FormErrors;
-  isFormValidFilter: boolean;
+  listPdv: Pdv[];
   onSavePos: () => Promise<void>;
   onPaginationChange: (page: number) => void;
   changeColorColumn: (status: number) => void;
@@ -82,6 +83,7 @@ export const PosContainer: React.FC<PosContainerProps> = ({
   formErrorsPos,
   formDataFilter,
   formErrorsFilter,
+  listPdv,
   onChangeFormInputFilter,
   onChangeFormInputPos,
   onSavePos,
@@ -117,7 +119,6 @@ export const PosContainer: React.FC<PosContainerProps> = ({
         <Trash
           className="mr-2 svg-icon action-icon"
           onClick={() => {
-            console.log(`deletar ${item.name}`);
             onShowDeletePos(item);
           }}
         />
@@ -171,6 +172,7 @@ export const PosContainer: React.FC<PosContainerProps> = ({
                 formErrors={formErrorsPos}
                 onChangeFormInput={onChangeFormInputPos}
                 listPos={listPos}
+                listPdv={listPdv}
               />
             ),
           }[shouldShowModal]

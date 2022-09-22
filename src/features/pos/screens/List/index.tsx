@@ -12,7 +12,8 @@ import validators from '@/helpers/validators';
 import { FormInputName as FormInputNameToSavePos } from '@/features/pos/components/RegisterContent';
 import { useConfirmDelete } from '@/hooks/useConfirmDelete';
 import { FormInputName as FormInputNameToFilter } from '@/features/pos/components/FilterContent';
-import { updateMask } from '@/helpers/masks/generalDate';
+import Pdv from '@/model/Pdv';
+import dayjs from 'dayjs';
 import { DeleteContent } from '../../components/DeleteContent';
 
 export default interface PayloadPos {
@@ -32,6 +33,7 @@ export default interface PayloadPos {
 export const PosScreen: React.FC = (): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
   const [listPos, setListPos] = useState<Pos[]>([]);
+  const [listPdv, setListPdv] = useState<Pdv[]>([]);
   const [pos, setPos] = useState<Pos>();
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(ShouldShowModal.pos);
 
@@ -137,6 +139,7 @@ export const PosScreen: React.FC = (): JSX.Element => {
     if (posSelected?.id && value === ShouldShowModal.pos) {
       resetFormPos();
       setPos(posSelected);
+      handleFecthPdvList();
     } else {
       resetFormPos();
       setPos(undefined);
@@ -144,8 +147,6 @@ export const PosScreen: React.FC = (): JSX.Element => {
   };
 
   const handleOnSavePos = async (): Promise<void> => {
-    console.log('handleOnSavePos');
-
     try {
       if (isFormValidPos()) {
         const payload: PayloadPos = {
@@ -174,12 +175,23 @@ export const PosScreen: React.FC = (): JSX.Element => {
 
         onToggle();
         handleFetch(currentPage);
-      } else {
-        console.log('form invalido');
       }
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
+    }
+  };
+
+  const handleFecthPdvList = async (): Promise<void> => {
+    try {
+      setState(States.loading);
+      const { data } = await api.get<Pdv[]>('/pdv/find');
+      setListPdv(data ?? []);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
     }
   };
 
@@ -258,11 +270,11 @@ export const PosScreen: React.FC = (): JSX.Element => {
       onChangeFormInputPos(FormInputNameToSavePos.serialNumber)(pos.serialNumber);
       onChangeFormInputPos(FormInputNameToSavePos.status)(String(pos.status));
       onChangeFormInputPos(FormInputNameToSavePos.model)(pos.model);
-      onChangeFormInputPos(FormInputNameToSavePos.pdv)(String(pos.pdv.name));
+      onChangeFormInputPos(FormInputNameToSavePos.pdv)(String(pos.pdv.id));
       onChangeFormInputPos(FormInputNameToSavePos.telephoneOperator)(pos.telephoneOperator);
       onChangeFormInputPos(FormInputNameToSavePos.cardOperator)(pos.cardOperator);
       onChangeFormInputPos(FormInputNameToSavePos.expirationDate)(
-        updateMask(String(pos.expirationDate)),
+        String(dayjs(pos.expirationDate, 'YYYY-DD-MM hh:mm:ss').format('YYYY-MM-DD')),
       );
     }
   }, [pos]);
@@ -290,9 +302,9 @@ export const PosScreen: React.FC = (): JSX.Element => {
       onChangeFormInputPos={onChangeFormInputPos}
       formDataFilter={formDataFilter}
       formErrorsFilter={formErrorsFilter}
-      isFormValidFilter={isFormValidFilter}
       onShowDeletePos={handleOnShowDeletePos}
       onFilter={handleOnFilter}
+      listPdv={listPdv}
     />
   );
 };

@@ -3,14 +3,14 @@ import { Col, Form, FormGroup, Row } from 'reactstrap';
 import { InputText, SelectCustom } from '@/components';
 import { FormData, FormErrors, OnChangeFormInput } from '@/hooks/useForm';
 import Pos from '@/model/Pos';
-// import Pdv from '@/model/Pdv';
-// import Pos from '@/model/Pos';
+import Pdv from '@/model/Pdv';
 
 interface RegisterContentProps {
   formData: FormData;
   formErrors: FormErrors;
   onChangeFormInput: OnChangeFormInput;
   listPos: Pos[];
+  listPdv: Pdv[];
 }
 
 // eslint-disable-next-line no-shadow
@@ -28,8 +28,7 @@ export enum FormInputName {
 export const RegisterContent: React.FC<RegisterContentProps> = ({
   formData,
   formErrors,
-  // pdvList,
-  listPos,
+  listPdv,
   onChangeFormInput,
 }) => {
   const statusOptions = [
@@ -89,7 +88,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
               value={formData[FormInputName.pdv]}
               onChange={e => onChangeFormInput(FormInputName.pdv)(e?.value as string)}
               error={formErrors.pdv && formErrors.pdv[0]}
-              options={listPos.map(item => ({ value: item.pdv.id, label: item.pdv.name }))}
+              options={listPdv.map(item => ({ value: item.id, label: item.name }))}
             />
           </FormGroup>
           <FormGroup className="mb-2">

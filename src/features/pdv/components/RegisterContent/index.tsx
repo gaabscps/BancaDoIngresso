@@ -36,6 +36,7 @@ export enum FormInputName {
   batchClosed = 'batchClosed',
   askPasswordInactivity = 'askPasswordInactivity',
   inactivityTimeout = 'inactivityTimeout',
+  mapBase64 = 'mapBase64',
 }
 
 export const RegisterContent: React.FC<RegisterContentProps> = ({
@@ -50,8 +51,8 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
     }}
   >
     <Row>
-      <Col md={12}>
-        <h5 className="mb-2">Informações gerais e endereço</h5>
+      <Col md={8}>
+        <h5 className="mb-2 border-bottom-title">Informações gerais e endereço</h5>
 
         <FormGroup className="mb-2">
           <InputText
@@ -110,29 +111,33 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
           />
         </FormGroup>
         {/* TO-DO: add select state and city */}
-
-        <FormGroup className="mb-2">
-          <SelectCustom
-            name="state"
-            label="Estado"
-            placeholder="Selecione o estado do PDV"
-            value={formData[FormInputName.state]}
-            onChange={e => onChangeFormInput(FormInputName.state)(e?.target?.value as string)}
-            error={formErrors.state && formErrors.state[0]}
-            options={statesUf}
-          />
-        </FormGroup>
-
-        <FormGroup className="mb-2">
-          <InputText
-            name="city"
-            label="Cidade"
-            placeholder="Selecione o estado do PDV"
-            value={formData[FormInputName.city]}
-            onChange={e => onChangeFormInput(FormInputName.city)(e?.target.value as string)}
-            error={formErrors.city && formErrors.city[0]}
-          />
-        </FormGroup>
+        <Row>
+          <Col md={4} className="pl-0">
+            <FormGroup className="mb-2">
+              <SelectCustom
+                name="state"
+                label="Estado"
+                placeholder="Selecione o estado do PDV"
+                value={formData[FormInputName.state]}
+                onChange={e => onChangeFormInput(FormInputName.state)(e?.target?.value as string)}
+                error={formErrors.state && formErrors.state[0]}
+                options={statesUf}
+              />
+            </FormGroup>
+          </Col>
+          <Col md={8} className="pr-0">
+            <FormGroup className="mb-2">
+              <InputText
+                name="city"
+                label="Cidade"
+                placeholder="Selecione o estado do PDV"
+                value={formData[FormInputName.city]}
+                onChange={e => onChangeFormInput(FormInputName.city)(e?.target.value as string)}
+                error={formErrors.city && formErrors.city[0]}
+              />
+            </FormGroup>
+          </Col>
+        </Row>
 
         <FormGroup className="mb-2">
           <InputText
@@ -203,7 +208,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
           />
         </FormGroup>
 
-        <h5 className="mb-2">Informações complementares</h5>
+        <h5 className="mb-2 border-bottom-title">Informações complementares</h5>
         <FormGroup className="mb-2">
           <InputText
             name="telephone"
@@ -240,7 +245,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
 
         <FormGroup className="mb-2">
           <InputText
-            name="telephone"
+            name="linkedinUrl"
             label="LinkedIn do PDV (opcional)"
             placeholder=""
             value={formData[FormInputName.linkedinUrl]}
@@ -248,7 +253,6 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             error={formErrors.linkedinUrl && formErrors.linkedinUrl[0]}
           />
         </FormGroup>
-
         {/* TO-DO: add input file Map and Image PDV */}
         <FormGroup className="mb-2">
           <ButtonGroup

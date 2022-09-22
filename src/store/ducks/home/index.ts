@@ -13,8 +13,6 @@ const reducer: Reducer<HomeState> = (state = INITIAL_STATE, action) => {
     case HomeTypes.GET_HOME_REQUEST:
       return { ...state, loading: true };
     case HomeTypes.GET_HOME_SUCCCES:
-      console.log(state);
-      console.log(action);
       return {
         ...state,
         data: action.payload,

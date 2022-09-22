@@ -102,7 +102,7 @@ const Sample = (): JSX.Element => {
       observation: form.observation,
       batchs: form.batchs,
     };
-    console.log(createTicketMainConfiguration);
+
     // dispatch(
     //   ticketMainConfigurationRequest(
     //     event.data.eventGeneralInformation.id,

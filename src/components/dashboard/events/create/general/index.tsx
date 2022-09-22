@@ -94,12 +94,9 @@ const Sample = (): JSX.Element => {
         },
       });
     }
-    // console.log('form', form);
   };
 
-  useEffect(() => {
-    console.log('form', form);
-  }, [form]);
+  useEffect(() => {}, [form]);
 
   /**
    * Transforma arquivo de imagem em base64
@@ -202,10 +199,6 @@ const Sample = (): JSX.Element => {
     dispatch(listRequestCategory({ page: 1, pageSize: 10 }));
     dispatch(listRequestContractor({ page: 1, pageSize: 10 }));
   }, []);
-
-  useEffect(() => {
-    console.log('contractor', contractor);
-  }, [contractor]);
 
   return (
     <Fragment>

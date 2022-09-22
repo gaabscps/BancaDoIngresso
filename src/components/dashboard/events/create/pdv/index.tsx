@@ -112,11 +112,7 @@ const Sample = (): JSX.Element => {
                     PDV
                   </Label>
                   <SuperInput id="pdvName" name="pdvName" placeholder="Digite ou selecione o PDV" />
-                  <div
-                    className="auxSucessText"
-                    style={{ paddingTop: '20px' }}
-                    onClick={() => setShowPdv(true)}
-                  >
+                  <div className="auxSucessText" onClick={() => setShowPdv(true)}>
                     + cadastrar novo PDV
                   </div>
                 </div>

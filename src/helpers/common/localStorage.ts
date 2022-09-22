@@ -3,7 +3,6 @@ const setItem = (key: string, value: any): void => localStorage.setItem(key, JSO
 
 const getItem = (key: string): any => {
   const value = localStorage.getItem(key);
-  console.log(key, value);
 
   if (value) {
     return JSON.parse(value);
