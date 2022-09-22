@@ -50,8 +50,8 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
     }}
   >
     <Row>
-      <Col md={12}>
-        <h5 className="mb-2">Informações gerais e endereço</h5>
+      <Col md={8}>
+        <h5 className="mb-2 border-bottom-title">Informações gerais e endereço</h5>
 
         <FormGroup className="mb-2">
           <InputText
@@ -203,7 +203,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
           />
         </FormGroup>
 
-        <h5 className="mb-2">Informações complementares</h5>
+        <h5 className="mb-2 border-bottom-title">Informações complementares</h5>
         <FormGroup className="mb-2">
           <InputText
             name="telephone"

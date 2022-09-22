@@ -52,7 +52,7 @@ export const RegisterContentSubPdv: React.FC<RegisterContentProps> = ({
     }}
   >
     <Row>
-      <Col md={10}>
+      <Col md={8}>
         <h5>Informações gerais e endereço</h5>
         <InputText
           name="name"
