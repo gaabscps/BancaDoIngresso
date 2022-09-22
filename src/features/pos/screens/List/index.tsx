@@ -12,6 +12,7 @@ import validators from '@/helpers/validators';
 import { FormInputName as FormInputNameToSavePos } from '@/features/pos/components/RegisterContent';
 import { useConfirmDelete } from '@/hooks/useConfirmDelete';
 import { FormInputName as FormInputNameToFilter } from '@/features/pos/components/FilterContent';
+import { updateMask } from '@/helpers/masks/generalDate';
 import { DeleteContent } from '../../components/DeleteContent';
 
 export default interface PayloadPos {
@@ -257,9 +258,12 @@ export const PosScreen: React.FC = (): JSX.Element => {
       onChangeFormInputPos(FormInputNameToSavePos.serialNumber)(pos.serialNumber);
       onChangeFormInputPos(FormInputNameToSavePos.status)(String(pos.status));
       onChangeFormInputPos(FormInputNameToSavePos.model)(pos.model);
+      onChangeFormInputPos(FormInputNameToSavePos.pdv)(String(pos.pdv.name));
       onChangeFormInputPos(FormInputNameToSavePos.telephoneOperator)(pos.telephoneOperator);
       onChangeFormInputPos(FormInputNameToSavePos.cardOperator)(pos.cardOperator);
-      onChangeFormInputPos(FormInputNameToSavePos.expirationDate)(String(pos.expirationDate));
+      onChangeFormInputPos(FormInputNameToSavePos.expirationDate)(
+        updateMask(String(pos.expirationDate)),
+      );
     }
   }, [pos]);
 

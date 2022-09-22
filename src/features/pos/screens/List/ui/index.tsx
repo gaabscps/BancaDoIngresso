@@ -170,6 +170,7 @@ export const PosContainer: React.FC<PosContainerProps> = ({
                 formData={formDataPos}
                 formErrors={formErrorsPos}
                 onChangeFormInput={onChangeFormInputPos}
+                listPos={listPos}
               />
             ),
           }[shouldShowModal]

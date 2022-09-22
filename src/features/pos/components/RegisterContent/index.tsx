@@ -2,6 +2,7 @@ import React from 'react';
 import { Col, Form, FormGroup, Row } from 'reactstrap';
 import { InputText, SelectCustom } from '@/components';
 import { FormData, FormErrors, OnChangeFormInput } from '@/hooks/useForm';
+import Pos from '@/model/Pos';
 // import Pdv from '@/model/Pdv';
 // import Pos from '@/model/Pos';
 
@@ -9,7 +10,7 @@ interface RegisterContentProps {
   formData: FormData;
   formErrors: FormErrors;
   onChangeFormInput: OnChangeFormInput;
-  // pdvList: Pos[];
+  listPos: Pos[];
 }
 
 // eslint-disable-next-line no-shadow
@@ -28,6 +29,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
   formData,
   formErrors,
   // pdvList,
+  listPos,
   onChangeFormInput,
 }) => {
   const statusOptions = [
@@ -73,7 +75,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
               name="status"
               label="Situação da POS"
               placeholder="Selecione ou digite a situação da POS"
-              onChange={e => onChangeFormInput(FormInputName.status)(e?.target?.value as string)}
+              onChange={e => onChangeFormInput(FormInputName.status)(e?.value as string)}
               error={formErrors.status && formErrors.status[0]}
               value={formData[FormInputName.status]}
               options={statusOptions}
@@ -85,9 +87,9 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
               label="PDV (opcional)"
               placeholder="Selecione ou digite o PDV à vincular"
               value={formData[FormInputName.pdv]}
-              onChange={e => onChangeFormInput(FormInputName.pdv)(e?.target?.value as string)}
+              onChange={e => onChangeFormInput(FormInputName.pdv)(e?.value as string)}
               error={formErrors.pdv && formErrors.pdv[0]}
-              options={statusOptions}
+              options={listPos.map(item => ({ value: item.pdv.id, label: item.pdv.name }))}
             />
           </FormGroup>
           <FormGroup className="mb-2">
