@@ -137,9 +137,11 @@ export const PosScreen: React.FC = (): JSX.Element => {
     onToggle();
 
     if (posSelected?.id && value === ShouldShowModal.pos) {
-      resetFormPos();
       setPos(posSelected);
       handleFecthPdvList();
+      if (posSelected.id !== pos?.id) {
+        resetFormPos();
+      }
     } else {
       resetFormPos();
       setPos(undefined);
@@ -277,7 +279,7 @@ export const PosScreen: React.FC = (): JSX.Element => {
         String(dayjs(pos.expirationDate, 'YYYY-DD-MM hh:mm:ss').format('YYYY-MM-DD')),
       );
     }
-  }, [pos, onChangeFormInputPos]);
+  }, [pos]);
 
   useEffect(() => {
     handleFetch(currentPage);
@@ -305,6 +307,7 @@ export const PosScreen: React.FC = (): JSX.Element => {
       onShowDeletePos={handleOnShowDeletePos}
       onFilter={handleOnFilter}
       listPdv={listPdv}
+      posState={pos}
     />
   );
 };
