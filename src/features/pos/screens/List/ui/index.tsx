@@ -13,7 +13,7 @@ import Pagination from '@/components/Utils/Pagination';
 import Pos from '@/model/Pos';
 import { PosRequestParams } from '@/features/pos/types';
 import dayjs from 'dayjs';
-import { FilterContent } from '@/features/pdv/components/FilterContent';
+import { FilterContent } from '@/features/pos/components/FilterContent';
 import { FormErrors, OnChangeFormInput, FormData } from '@/hooks/useForm';
 import { columns } from './table';
 
@@ -58,6 +58,7 @@ interface PosContainerProps {
   onToggle: () => void;
   onFilter: () => Promise<void>;
   onChangeFormInputPos: OnChangeFormInput;
+  onShowDeletePos: (pos: Pos) => void;
   onShouldShowModal: ({
     value,
     newTitleModal,
@@ -89,6 +90,7 @@ export const PosContainer: React.FC<PosContainerProps> = ({
   onToggle,
   onFilter,
   onShouldShowModal,
+  onShowDeletePos,
 }) => {
   const dataTablePos = listPos?.map(item => ({
     id: item.id,
@@ -112,7 +114,13 @@ export const PosContainer: React.FC<PosContainerProps> = ({
             })
           }
         />
-        <Trash className="mr-2 svg-icon action-icon" />
+        <Trash
+          className="mr-2 svg-icon action-icon"
+          onClick={() => {
+            console.log(`deletar ${item.name}`);
+            onShowDeletePos(item);
+          }}
+        />
       </React.Fragment>
     ),
   }));
@@ -184,7 +192,15 @@ export const PosContainer: React.FC<PosContainerProps> = ({
               }
             />
             <div className="filter-container">
-              <div className="filter-content">
+              <div
+                className="filter-content"
+                onClick={(): void =>
+                  onShouldShowModal({
+                    value: ShouldShowModal.filter,
+                    newTitleModal: '',
+                  })
+                }
+              >
                 <FilterVector />
               </div>
             </div>

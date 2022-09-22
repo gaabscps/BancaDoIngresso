@@ -15,7 +15,7 @@ export enum FormInputName {
   inputSearch = 'inputSearch',
 }
 
-export const FilterInputName: React.FC<FilterContentProps> = ({
+export const FilterContent: React.FC<FilterContentProps> = ({
   formData,
   formErrors,
   onChangeFormInput,

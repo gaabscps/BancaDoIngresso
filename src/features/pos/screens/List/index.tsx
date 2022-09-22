@@ -1,22 +1,18 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { useEffect, useState } from 'react';
-
 import { useDialog } from '@/hooks/useDialog';
-// import { RegisterContent } from '@/features/pos/components/RegisterContent';
-// import { DeleteContent } from '@/features/pos/components/DeleteContent';
 import Pos from '@/model/Pos';
 import api, { AxiosError } from '@/services/api';
-// import Page from '@/model/Page';
 import { toast } from 'react-toastify';
 import { PosResponse, PosRequestParams } from '@/features/pos/types';
-// import { useConfirmDelete } from '@/hooks/useConfirmDelete';
 import useForm from '@/hooks/useForm';
 import { States, PosContainer, ShouldShowModal } from '@/features/pos/screens/List/ui';
 import PosStatus from '@/model/PosStatus';
 import validators from '@/helpers/validators';
-import { updateMask as updateMaskExpirationDate } from '@/helpers/masks/expirationDate';
 import { FormInputName as FormInputNameToSavePos } from '@/features/pos/components/RegisterContent';
-// import { FilterInputName as FormInputNameToFilter } from '@/features/pos/components/FilterContent';
+import { useConfirmDelete } from '@/hooks/useConfirmDelete';
+import { FormInputName as FormInputNameToFilter } from '@/features/pos/components/FilterContent';
+import { DeleteContent } from '../../components/DeleteContent';
 
 export default interface PayloadPos {
   id?: string;
@@ -47,7 +43,7 @@ export const PosScreen: React.FC = (): JSX.Element => {
   });
 
   const { title, visible, onChangeTitle, onToggle } = useDialog();
-  // const confirmDelete = useConfirmDelete();
+  const confirmDelete = useConfirmDelete();
 
   const {
     formData: formDataPos,
@@ -186,34 +182,67 @@ export const PosScreen: React.FC = (): JSX.Element => {
     }
   };
 
-  // const handleOnFilter = async (): Promise<void> => {
-  //   try {
-  //     if (isFormValidFilter()) {
-  //       const payload =
-  //         {
-  //           name: {
-  //             entity: {
-  //               name: formDataFilter[FormInputNameToFilter.inputSearch],
-  //             },
-  //           },
-  //           serialNumber: {
-  //             entity: {
-  //               serialNumber: formDataFilter[FormInputNameToFilter.serialNumber],
-  //             },
-  //           },
-  //         }[formDataFilter[FormInputNameToFilter.filterSearch]] || {};
+  const handleOnClose = (): void => confirmDelete.hide();
 
-  //       onToggle();
-  //       await handleFetch({
-  //         ...currentPage,
-  //         ...payload,
-  //       });
-  //     }
-  //   } catch (error) {
-  //     const err = error as AxiosError;
-  //     toast.error(err.message);
-  //   }
-  // };
+  const handleOnConfirmDeleteToPos = async (posSelected: Pos): Promise<void> => {
+    try {
+      await api.delete(`/pos/${posSelected?.id}`);
+
+      toast.success('POS excluído com sucesso!');
+      handleOnClose();
+      handleFetch(currentPage);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    }
+  };
+
+  const handleOnShowDeletePos = (posSelected: Pos): void => {
+    confirmDelete.show({
+      title: '',
+      children: <DeleteContent />,
+      actions: [
+        {
+          title: 'Não, quero manter',
+          theme: 'noneBorder',
+          onClick: (): void => handleOnClose(),
+        },
+        {
+          title: 'Sim, quero remover',
+          onClick: (): Promise<void> => handleOnConfirmDeleteToPos(posSelected),
+        },
+      ],
+    });
+  };
+
+  const handleOnFilter = async (): Promise<void> => {
+    try {
+      if (isFormValidFilter()) {
+        const payload =
+          {
+            name: {
+              entity: {
+                name: formDataFilter[FormInputNameToFilter.inputSearch],
+              },
+            },
+            serialNumber: {
+              entity: {
+                serialNumber: formDataFilter[FormInputNameToFilter.inputSearch],
+              },
+            },
+          }[formDataFilter[FormInputNameToFilter.filterSearch]] || {};
+
+        onToggle();
+        await handleFetch({
+          ...currentPage,
+          ...payload,
+        });
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    }
+  };
 
   const handleOnPaginationChange = async (page: number): Promise<void> => {
     handleFetch({
@@ -258,6 +287,8 @@ export const PosScreen: React.FC = (): JSX.Element => {
       formDataFilter={formDataFilter}
       formErrorsFilter={formErrorsFilter}
       isFormValidFilter={isFormValidFilter}
+      onShowDeletePos={handleOnShowDeletePos}
+      onFilter={handleOnFilter}
     />
   );
 };
