@@ -277,7 +277,7 @@ export const PosScreen: React.FC = (): JSX.Element => {
         String(dayjs(pos.expirationDate, 'YYYY-DD-MM hh:mm:ss').format('YYYY-MM-DD')),
       );
     }
-  }, [pos]);
+  }, [pos, onChangeFormInputPos]);
 
   useEffect(() => {
     handleFetch(currentPage);

@@ -141,6 +141,7 @@ export const LoginContainer: React.FC<LoginContainerProps> = ({
                   state === States.loading
                 }
                 onClick={onSubmit}
+                theme="red"
               />
               <div className="d-flex justify-content-center align-items-center forgotPassword">
                 <a
