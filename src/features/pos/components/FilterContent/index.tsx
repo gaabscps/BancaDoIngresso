@@ -1,68 +1,33 @@
 import React from 'react';
 import { Form } from 'reactstrap';
-import { Button, Radio, InputText } from '@/components';
-import useForm from '@/hooks/useForm';
+import { Radio, InputText } from '@/components';
+import { FormData, FormErrors, OnChangeFormInput } from '@/hooks/useForm';
 
 interface FilterContentProps {
-  onSubmit: (value: any) => Promise<void>;
+  formData: FormData;
+  formErrors: FormErrors;
+  onChangeFormInput: OnChangeFormInput;
 }
 
 // eslint-disable-next-line no-shadow
-enum FormInputName {
+export enum FormInputName {
   filterSearch = 'filterSearch',
   inputSearch = 'inputSearch',
 }
 
-export const FilterContent: React.FC<FilterContentProps> = ({ onSubmit }) => {
+export const FilterContent: React.FC<FilterContentProps> = ({
+  formData,
+  formErrors,
+  onChangeFormInput,
+}) => {
   const optionFilter = [
     { label: 'Nome', value: 'name' },
-    { label: 'Nº de série da POS', value: 'serialNumber' },
+    { label: 'Numero de Série', value: 'serialNumber' },
   ];
-  const { formData, formErrors, onChangeFormInput, isFormValid } = useForm({
-    initialData: {
-      filterSearch: '',
-      inputSearch: '',
-    },
-    validators: {},
-    formatters: {},
-  });
-
-  const handleOnEdit = (): void => {
-    if (isFormValid()) {
-      let payload = {};
-
-      switch (formData[FormInputName.filterSearch]) {
-        case 'name':
-          payload = {
-            entity: {
-              [formData[FormInputName.filterSearch]]: formData[FormInputName.inputSearch],
-            },
-          };
-          break;
-        case 'serialNumber':
-          payload = {
-            entity: {
-              [formData[FormInputName.filterSearch]]: formData[FormInputName.inputSearch],
-            },
-          };
-          break;
-        default:
-          payload = {};
-          break;
-      }
-      onSubmit(payload);
-    }
-  };
 
   return (
-    <div className="filter-modal-content ">
-      <Form
-        noValidate={true}
-        onSubmit={(e): void => {
-          e.preventDefault();
-          handleOnEdit();
-        }}
-      >
+    <div className="filter-modal-content">
+      <Form noValidate={true} onSubmit={(e): void => e.preventDefault()}>
         <span className="filter-name">Filtrar por:</span>
         <Radio
           options={optionFilter}
@@ -80,7 +45,7 @@ export const FilterContent: React.FC<FilterContentProps> = ({ onSubmit }) => {
                 ?.label ?? ''
             }
             placeholder={
-              formData[FormInputName.filterSearch] === 'name' ? 'Nome do POS' : 'Nº de série da POS'
+              formData[FormInputName.filterSearch] === 'name' ? 'Nome do POS' : 'Numero de Série'
             }
             maxLength={30}
             value={formData[FormInputName.inputSearch]}
@@ -88,9 +53,6 @@ export const FilterContent: React.FC<FilterContentProps> = ({ onSubmit }) => {
             error={formErrors.inputSearch && formErrors.inputSearch[0]}
           />
         )}
-        <div className="d-flex justify-content-end">
-          <Button title="Salvar" onClick={handleOnEdit} />
-        </div>
       </Form>
     </div>
   );

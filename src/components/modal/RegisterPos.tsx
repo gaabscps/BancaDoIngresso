@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { useForm } from 'react-hook-form';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';

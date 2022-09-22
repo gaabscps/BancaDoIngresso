@@ -495,8 +495,6 @@ export const PdvScreen: React.FC = (): JSX.Element => {
 
   // Renderiza Modal de Edição de Sub PDV
   const handleOnShowEditSubPdv = async (subPdvSelected: SubPdv): Promise<void> => {
-    console.log('subPdvSelected', subPdvSelected);
-
     const { data: subPdvSelectedFetch } = await api.get(`/sub-pdv/${subPdvSelected.id}`);
     setSubPdv(subPdvSelectedFetch);
     handleOnShouldShowModal({
@@ -559,7 +557,6 @@ export const PdvScreen: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     if (pdv?.id) {
-      console.log('pdv', pdv);
       onChangeFormInputPdv(FormInputNameToSavePdv.name)(pdv.name);
       onChangeFormInputPdv(FormInputNameToSavePdv.document)(pdv.document);
       onChangeFormInputPdv(FormInputNameToSavePdv.email)(pdv.email);

@@ -11,7 +11,7 @@ export const columns: TableColumn<DataRow>[] = [
     selector: row => row.serial,
   },
   {
-    name: 'Data do vínculo',
+    name: 'Data de Validade',
     selector: row => row.date,
   },
   {
