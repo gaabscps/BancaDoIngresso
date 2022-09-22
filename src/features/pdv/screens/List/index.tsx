@@ -121,6 +121,10 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       filterSearch: '',
       inputSearch: '',
     },
+    validators: {
+      filterSearch: [validators.required],
+      inputSearch: [validators.required],
+    },
   });
 
   const {
@@ -404,7 +408,6 @@ export const PdvScreen: React.FC = (): JSX.Element => {
   const handleOnSaveSubPdv = async (): Promise<void> => {
     if (isFormValidSubPdv()) {
       // TODO: change type to sub-Pdv
-
       const payload: PayloadSubPdv = {
         id: subPdv?.id ?? undefined,
         name: formDataSubPdv[FormInputNameToSaveSubPdv.name],
@@ -428,7 +431,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
           longitude: formDataSubPdv[FormInputNameToSaveSubPdv.longitude],
         },
         pdv: {
-          id: subPdv?.pdv.id ?? undefined,
+          id: subPdv?.pdv.id ?? pdv?.id,
           // id: 'd0c9e4e4-6d56-4145-8a19-d6fa37425f35',
         },
         // users: [], TO-DO Adicionar usuarios

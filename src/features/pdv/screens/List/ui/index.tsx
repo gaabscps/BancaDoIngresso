@@ -126,16 +126,6 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
     state: pdv.address.state,
     actions: (
       <div className="d-flex">
-        <Pen
-          onClick={(): void =>
-            onShouldShowModal({
-              value: ShouldShowModal.pdv,
-              newTitleModal: `Editar ${pdv.name}`,
-              pdv,
-            })
-          }
-          className="mr-2 svg-icon action-icon"
-        />
         {/* <div style={{ position: 'relative' }}>
           <div className="circle-notification">
             <span className="circle-notification__number">1</span>
@@ -154,6 +144,7 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
                         onShouldShowModal({
                           newTitleModal: 'Cadastrar Sub PDV',
                           value: ShouldShowModal.subpdvRegister,
+                          pdv,
                         })
                       }
                     >
@@ -168,6 +159,16 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
           className="mr-2 svg-icon action-icon"
         />
         {/* </div> */}
+        <Pen
+          onClick={(): void =>
+            onShouldShowModal({
+              value: ShouldShowModal.pdv,
+              newTitleModal: `Editar ${pdv.name}`,
+              pdv,
+            })
+          }
+          className="mr-2 svg-icon action-icon"
+        />
         <Trash onClick={(): void => onShowDelete(pdv)} className="mr-2 svg-icon action-icon" />
       </div>
     ),

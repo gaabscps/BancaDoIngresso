@@ -52,7 +52,7 @@ const LoteCollapse: React.FC<LoteCollapseProps> = ({
           <Card className="subpdv-main-container card-container" key={item.id}>
             <div className="supdv-title-flex">
               <div className="subpdv-title-container">
-                <p className="subpdv-title subpdv-title-index">Sub PDV’s #{String(index)} </p>
+                <p className="subpdv-title subpdv-title-index">Sub PDV’s #{String(index + 1)} </p>
                 <p className="subpdv-title subpvd-title-name">• {item.name}</p>
               </div>
               <div className="subpdv-icon-container">

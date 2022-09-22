@@ -99,25 +99,31 @@ export const RegisterContentSubPdv: React.FC<RegisterContentProps> = ({
           error={formErrors.zipCode && formErrors.zipCode[0]}
         />
         {/* TO-DO: add select state and city */}
-        <SelectCustom
-          id="subpdvState"
-          name="state"
-          label="Estado"
-          placeholder="Selecione o estado do SubPdv"
-          value={formData[FormInputName.state]}
-          onChange={e => onChangeFormInput(FormInputName.state)(e?.target?.value as string)}
-          error={formErrors.state && formErrors.state[0]}
-          options={statesUf}
-        />
-        <InputText
-          id="subpdvCity"
-          name="city"
-          label="Cidade"
-          placeholder="Selecione o estado do SubPdv"
-          value={formData[FormInputName.city]}
-          onChange={e => onChangeFormInput(FormInputName.city)(e?.target.value as string)}
-          error={formErrors.city && formErrors.city[0]}
-        />
+        <Row>
+          <Col md={4} className="pl-0">
+            <SelectCustom
+              id="subpdvState"
+              name="state"
+              label="Estado"
+              placeholder="Selecione o estado do SubPdv"
+              value={formData[FormInputName.state]}
+              onChange={e => onChangeFormInput(FormInputName.state)(e?.target?.value as string)}
+              error={formErrors.state && formErrors.state[0]}
+              options={statesUf}
+            />
+          </Col>
+          <Col md={8} className="pr-0">
+            <InputText
+              id="subpdvCity"
+              name="city"
+              label="Cidade"
+              placeholder="Selecione o estado do SubPdv"
+              value={formData[FormInputName.city]}
+              onChange={e => onChangeFormInput(FormInputName.city)(e?.target.value as string)}
+              error={formErrors.city && formErrors.city[0]}
+            />
+          </Col>
+        </Row>
         <InputText
           name="district"
           label="Bairro"

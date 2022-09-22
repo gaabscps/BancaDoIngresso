@@ -111,29 +111,33 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
           />
         </FormGroup>
         {/* TO-DO: add select state and city */}
-
-        <FormGroup className="mb-2">
-          <SelectCustom
-            name="state"
-            label="Estado"
-            placeholder="Selecione o estado do PDV"
-            value={formData[FormInputName.state]}
-            onChange={e => onChangeFormInput(FormInputName.state)(e?.target?.value as string)}
-            error={formErrors.state && formErrors.state[0]}
-            options={statesUf}
-          />
-        </FormGroup>
-
-        <FormGroup className="mb-2">
-          <InputText
-            name="city"
-            label="Cidade"
-            placeholder="Selecione o estado do PDV"
-            value={formData[FormInputName.city]}
-            onChange={e => onChangeFormInput(FormInputName.city)(e?.target.value as string)}
-            error={formErrors.city && formErrors.city[0]}
-          />
-        </FormGroup>
+        <Row>
+          <Col md={4} className="pl-0">
+            <FormGroup className="mb-2">
+              <SelectCustom
+                name="state"
+                label="Estado"
+                placeholder="Selecione o estado do PDV"
+                value={formData[FormInputName.state]}
+                onChange={e => onChangeFormInput(FormInputName.state)(e?.target?.value as string)}
+                error={formErrors.state && formErrors.state[0]}
+                options={statesUf}
+              />
+            </FormGroup>
+          </Col>
+          <Col md={8} className="pr-0">
+            <FormGroup className="mb-2">
+              <InputText
+                name="city"
+                label="Cidade"
+                placeholder="Selecione o estado do PDV"
+                value={formData[FormInputName.city]}
+                onChange={e => onChangeFormInput(FormInputName.city)(e?.target.value as string)}
+                error={formErrors.city && formErrors.city[0]}
+              />
+            </FormGroup>
+          </Col>
+        </Row>
 
         <FormGroup className="mb-2">
           <InputText
