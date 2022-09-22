@@ -36,6 +36,7 @@ export enum FormInputName {
   batchClosed = 'batchClosed',
   askPasswordInactivity = 'askPasswordInactivity',
   inactivityTimeout = 'inactivityTimeout',
+  mapBase64 = 'mapBase64',
 }
 
 export const RegisterContent: React.FC<RegisterContentProps> = ({
@@ -240,7 +241,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
 
         <FormGroup className="mb-2">
           <InputText
-            name="telephone"
+            name="linkedinUrl"
             label="LinkedIn do PDV (opcional)"
             placeholder=""
             value={formData[FormInputName.linkedinUrl]}
@@ -248,7 +249,6 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             error={formErrors.linkedinUrl && formErrors.linkedinUrl[0]}
           />
         </FormGroup>
-
         {/* TO-DO: add input file Map and Image PDV */}
         <FormGroup className="mb-2">
           <ButtonGroup

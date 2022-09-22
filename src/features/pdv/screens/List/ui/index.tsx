@@ -125,7 +125,7 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
     city: pdv.address.city,
     state: pdv.address.state,
     actions: (
-      <React.Fragment>
+      <div className="d-flex">
         <Pen
           onClick={(): void =>
             onShouldShowModal({
@@ -136,8 +136,10 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
           }
           className="mr-2 svg-icon action-icon"
         />
-        <Trash onClick={(): void => onShowDelete(pdv)} className="mr-2 svg-icon action-icon" />
-
+        {/* <div style={{ position: 'relative' }}>
+          <div className="circle-notification">
+            <span className="circle-notification__number">1</span>
+          </div> */}
         <SubPdvIcon
           onClick={(): void =>
             onShouldShowModal({
@@ -165,7 +167,9 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
           }
           className="mr-2 svg-icon action-icon"
         />
-      </React.Fragment>
+        {/* </div> */}
+        <Trash onClick={(): void => onShowDelete(pdv)} className="mr-2 svg-icon action-icon" />
+      </div>
     ),
   }));
 

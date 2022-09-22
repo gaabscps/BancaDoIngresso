@@ -1201,3 +1201,22 @@ figure.partyCard {
 .border-bottom-title {
   border-bottom: 2px solid #222222;
 }
+
+.circle-notification {
+  height: 17px;
+  width: 17px;
+  background-color: red;
+  border-radius: 50%;
+  display: inline-block;
+  position: absolute;
+
+  top: -5px;
+  right: 19px;
+  &__number {
+    position: absolute;
+    top: 0px;
+    right: 5px;
+    font-size: 12px;
+    color: white;
+  }
+}
