@@ -10,7 +10,7 @@ interface RegisterContentProps {
   formData: FormData;
   formErrors: FormErrors;
   onChangeFormInput: OnChangeFormInput;
-  onChangeFileInput: (inputName: string) => (file: File) => void;
+  onChangeFileInput: (inputName: string) => (file: File | undefined) => void;
 }
 
 // eslint-disable-next-line no-shadow
@@ -266,7 +266,9 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
               formData[FormInputName.mapBase64] &&
               JSON.parse(formData[FormInputName.mapBase64])?.name
             }
-            onChange={e => onChangeFileInput(FormInputName.mapBase64)(e.target.files[0])}
+            onChange={e =>
+              onChangeFileInput(FormInputName.mapBase64)((e.target as HTMLInputElement)?.files?.[0])
+            }
             error={formErrors.mapBase64 && formErrors.mapBase64[0]}
           />
         </FormGroup>
@@ -280,7 +282,11 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
               formData[FormInputName.imageBase64] &&
               JSON.parse(formData[FormInputName.imageBase64])?.name
             }
-            onChange={e => onChangeFileInput(FormInputName.imageBase64)(e.target.files[0])}
+            onChange={e =>
+              onChangeFileInput(FormInputName.imageBase64)(
+                (e.target as HTMLInputElement)?.files?.[0],
+              )
+            }
             error={formErrors.imageBase64 && formErrors.imageBase64[0]}
           />
         </FormGroup>

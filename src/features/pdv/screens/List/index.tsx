@@ -177,7 +177,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
 
   const handleOnChangeFileInput =
     (inputName: string) =>
-    (file: File | null): void => {
+    (file: File | undefined): void => {
       // validate if file is image
       if (file && file.type.includes('image')) {
         const reader = new FileReader();

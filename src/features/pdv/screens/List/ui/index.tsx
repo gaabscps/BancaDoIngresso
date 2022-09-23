@@ -70,7 +70,7 @@ interface PdvContainerProps {
   onShowDelete: (pdv: Pdv) => void;
   onShowDeleteSubPdv: (subPdv: SubPdv) => void;
   onShowEditSubPdv: (subPdv: SubPdv) => void;
-  onChangeFileInput: (inputName: string) => (file: File) => void;
+  onChangeFileInput: (inputName: string) => (file: File | undefined) => void;
   // onShowListSub: (id: string, name: string) => Promise<void>;
   // onShowFilter: () => void;
 }
