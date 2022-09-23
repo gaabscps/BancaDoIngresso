@@ -64,14 +64,13 @@ export const PdvScreen: React.FC = (): JSX.Element => {
     onChangeFormInput: onChangeFormInputPdv,
     isFormValid: isFormValidPdv,
     resetForm: resetFormPdv,
-    // setErrors: setErrorsPdv,
+    setErrors: setErrorsPdv,
   } = useForm({
     initialData: {
       name: '',
       document: updateMaskCPFOrCNPJ(''),
       telephone: updateMaskMobilePhone(''),
       email: '',
-      imageBase64: '',
       facebookUrl: '',
       instagramUrl: '',
       twitterUrl: '',
@@ -100,6 +99,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       number: [validators.required],
       telephone: [validators.required, validators.mobilePhone],
       email: [validators.required, validators.email],
+      mapBase64: [validators.required],
       // batchClosed: [validators.required],
       // askPasswordInactivity: [validators.required],
       inactivityTimeout: [validators.required],
@@ -174,6 +174,27 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       telephone: updateMaskMobilePhone,
     },
   });
+
+  const handleOnChangeFileInput =
+    (inputName: string) =>
+    (file: File | undefined): void => {
+      // validate if file is image
+      if (file && file.type.includes('image')) {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          const base64 = reader.result?.toString();
+          if (base64) {
+            onChangeFormInputPdv(inputName)('');
+            onChangeFormInputPdv(inputName)(JSON.stringify({ name: file.name, value: base64 }));
+          }
+        };
+      } else {
+        setErrorsPdv({
+          [inputName]: ['O formato deve ser .jpg, .jpeg ou .png'],
+        });
+      }
+    };
 
   const handleFetch = async (values: PdvRequestParams): Promise<void> => {
     try {
@@ -264,7 +285,6 @@ export const PdvScreen: React.FC = (): JSX.Element => {
           document: formDataPdv[FormInputNameToSavePdv.document],
           telephone: formDataPdv[FormInputNameToSavePdv.telephone],
           email: formDataPdv[FormInputNameToSavePdv.email],
-          imageBase64: formDataPdv[FormInputNameToSavePdv.imageBase64],
           facebookUrl: formDataPdv[FormInputNameToSavePdv.facebookUrl],
           instagramUrl: formDataPdv[FormInputNameToSavePdv.instagramUrl],
           twitterUrl: formDataPdv[FormInputNameToSavePdv.twitterUrl],
@@ -284,6 +304,8 @@ export const PdvScreen: React.FC = (): JSX.Element => {
             latitude: formDataPdv[FormInputNameToSavePdv.latitude] ?? 0,
             longitude: formDataPdv[FormInputNameToSavePdv.longitude] ?? 0,
           },
+          mapBase64: String(JSON.parse(formDataPdv[FormInputNameToSavePdv.mapBase64])?.value),
+          imageBase64: JSON.parse(formDataPdv[FormInputNameToSavePdv.imageBase64])?.value,
         };
 
         if (!payload.id) {
@@ -642,6 +664,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       onShowDelete={handleOnShowDeletePdv}
       onShowDeleteSubPdv={handleOnShowDeleteSubPdv}
       onShowEditSubPdv={handleOnShowEditSubPdv}
+      onChangeFileInput={handleOnChangeFileInput}
       // onShowListSub={handleOnShowListSubPdv}
     />
   );
