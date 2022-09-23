@@ -43,9 +43,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
       }}
     >
       <Row>
-        <Col md={12}>
-          <h5 className="mb-2">Informações gerais e endereço</h5>
-
+        <Col md={8}>
           <FormGroup className="mb-2">
             <InputText
               name="name"

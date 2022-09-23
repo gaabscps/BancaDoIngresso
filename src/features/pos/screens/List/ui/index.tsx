@@ -129,6 +129,7 @@ export const PosContainer: React.FC<PosContainerProps> = ({
   const renderActionDialogToCancel: ActionProps = {
     title: 'Cancelar',
     onClick: (): void => onToggle(),
+    theme: 'noneBorder',
   };
 
   return (
@@ -151,7 +152,7 @@ export const PosContainer: React.FC<PosContainerProps> = ({
               onClick: (): Promise<void> => onFilter(),
             },
             [ShouldShowModal.pos]: {
-              title: posState?.id ? 'Editar POS' : 'Cadastrar nova POS',
+              title: posState?.id ? 'Salvar' : 'Cadastrar nova POS',
               onClick: (): Promise<void> => onSavePos(),
             },
           }[shouldShowModal],

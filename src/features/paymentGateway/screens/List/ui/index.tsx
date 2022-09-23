@@ -122,6 +122,7 @@ export const PaymentGatewayContainer: React.FC<PosContainerProps> = ({
   const renderActionDialogToCancel: ActionProps = {
     title: 'Cancelar',
     onClick: (): void => onToggle(),
+    theme: 'noneBorder',
   };
 
   return (

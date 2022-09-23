@@ -145,6 +145,7 @@ export const PosScreen: React.FC = (): JSX.Element => {
     } else {
       resetFormPos();
       setPos(undefined);
+      handleFecthPdvList();
     }
   };
 
