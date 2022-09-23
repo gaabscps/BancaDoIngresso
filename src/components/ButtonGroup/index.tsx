@@ -9,6 +9,7 @@ interface RadioProps {
   icon?: any;
   options?: any;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  value: string;
 }
 
 interface OptionProps {
@@ -24,6 +25,7 @@ export const ButtonGroup: FC<RadioProps> = ({
   icon,
   options,
   onChange,
+  value,
 }) => (
   <div className={`flex-column mb-4 ${wrapperClass}`}>
     {label && (
@@ -42,7 +44,8 @@ export const ButtonGroup: FC<RadioProps> = ({
               <input
                 type="radio"
                 className="btn-check radio-button-gruop"
-                value={option.value}
+                value={String(option.value)}
+                checked={String(option.value) === value}
                 onChange={onChange}
                 name={name}
                 id={`${option.value}-${idRandom}`}

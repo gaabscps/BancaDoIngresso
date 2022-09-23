@@ -5,12 +5,14 @@ import { FormData, FormErrors, OnChangeFormInput } from '@/hooks/useForm';
 import { isValid as isValidCEP } from '@/helpers/masks/cep';
 import cep from 'cep-promise';
 import { statesUf } from '@/constant/states';
+import { NameFiles } from '../../screens/List';
 
 interface RegisterContentProps {
   formData: FormData;
   formErrors: FormErrors;
   onChangeFormInput: OnChangeFormInput;
   onChangeFileInput: (inputName: string) => (file: File | undefined) => void;
+  nameFiles: NameFiles;
 }
 
 // eslint-disable-next-line no-shadow
@@ -45,6 +47,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
   formErrors,
   onChangeFormInput,
   onChangeFileInput,
+  nameFiles,
 }) => (
   <Form
     noValidate={true}
@@ -55,7 +58,6 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
     <Row>
       <Col md={8}>
         <h5 className="mb-2 border-bottom-title">Informações gerais e endereço</h5>
-
         <FormGroup className="mb-2">
           <InputText
             name="name"
@@ -262,10 +264,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             name="mapBase64"
             label="Mapa"
             placeholder=""
-            fileName={
-              formData[FormInputName.mapBase64] &&
-              JSON.parse(formData[FormInputName.mapBase64])?.name
-            }
+            fileName={nameFiles?.mapBase64}
             onChange={e =>
               onChangeFileInput(FormInputName.mapBase64)((e.target as HTMLInputElement)?.files?.[0])
             }
@@ -278,10 +277,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             name="imageBase64"
             label="Imagem do PDV"
             placeholder=""
-            fileName={
-              formData[FormInputName.imageBase64] &&
-              JSON.parse(formData[FormInputName.imageBase64])?.name
-            }
+            fileName={nameFiles?.imageBase64}
             onChange={e =>
               onChangeFileInput(FormInputName.imageBase64)(
                 (e.target as HTMLInputElement)?.files?.[0],
@@ -295,10 +291,11 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
           <ButtonGroup
             label="Lote encerrado?"
             name="batchClosed"
+            value={formData[FormInputName.batchClosed]}
             onChange={e => onChangeFormInput(FormInputName.batchClosed)(e.target.value)}
             options={[
-              { value: 0, label: 'Sim' },
-              { value: 1, label: 'não' },
+              { value: true, label: 'Sim' },
+              { value: false, label: 'não' },
             ]}
             error={formErrors.batchClosed && formErrors.batchClosed[0]}
           />
@@ -310,12 +307,13 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
               <ButtonGroup
                 label="Pedir senha após inatividade?"
                 name="askPasswordInactivity"
+                value={formData[FormInputName.askPasswordInactivity]}
                 onChange={e =>
                   onChangeFormInput(FormInputName.askPasswordInactivity)(e.target.value)
                 }
                 options={[
-                  { value: 0, label: 'Sim' },
-                  { value: 1, label: 'não' },
+                  { value: true, label: 'Sim' },
+                  { value: false, label: 'não' },
                 ]}
                 error={formErrors.askPasswordInactivity && formErrors.askPasswordInactivity[0]}
               />
