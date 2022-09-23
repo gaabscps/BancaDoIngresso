@@ -324,8 +324,6 @@ export const PdvScreen: React.FC = (): JSX.Element => {
           delete payload.id;
           delete payload.address.id;
 
-          console.log('payload', payload);
-
           await api.post<Pdv>('/pdv', payload);
           toast.success(
             `PDV "${formDataPdv[FormInputNameToSavePdv.name]}" cadastrado com sucesso!`,
