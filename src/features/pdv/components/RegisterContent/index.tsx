@@ -5,7 +5,7 @@ import { FormData, FormErrors, OnChangeFormInput } from '@/hooks/useForm';
 import { isValid as isValidCEP } from '@/helpers/masks/cep';
 import cep from 'cep-promise';
 import { statesUf } from '@/constant/states';
-import { NameFiles } from '../../screens/List';
+import { NameFiles } from '@/features/pdv/types';
 
 interface RegisterContentProps {
   formData: FormData;
