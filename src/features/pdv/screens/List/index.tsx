@@ -339,7 +339,6 @@ export const PdvScreen: React.FC = (): JSX.Element => {
         handleFetch(currentPage);
       }
     } catch (error) {
-      console.log('error', error);
       const err = error as AxiosError;
       toast.error(err.message);
     }
