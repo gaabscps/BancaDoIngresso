@@ -20,10 +20,7 @@ export const FilterContent: React.FC<FilterContentProps> = ({
   formErrors,
   onChangeFormInput,
 }) => {
-  const optionFilter = [
-    { label: 'Nome', value: 'name' },
-    { label: 'Numero de Série', value: 'serialNumber' },
-  ];
+  const optionFilter = [{ label: 'Nome', value: 'name' }];
 
   return (
     <div className="filter-modal-content">
@@ -45,7 +42,7 @@ export const FilterContent: React.FC<FilterContentProps> = ({
                 ?.label ?? ''
             }
             placeholder={
-              formData[FormInputName.filterSearch] === 'name' ? 'Nome do POS' : 'Numero de Série'
+              formData[FormInputName.filterSearch] === 'name' ? 'Nome do Gateway de Pagamento' : ''
             }
             maxLength={30}
             value={formData[FormInputName.inputSearch]}

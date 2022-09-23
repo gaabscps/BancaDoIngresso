@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-key */
 import React, { Fragment } from 'react';
 import FilterVector from '@/assets/images/svg/FilterVector';
 import { Button, Loading } from '@/components';
@@ -11,7 +10,7 @@ import { ActionProps, Dialog } from '@/components/Dialog';
 import { ColumnStatus, CustomTable } from '@/components/Table';
 import Pagination from '@/components/Utils/Pagination';
 import { PosRequestParams } from '@/features/pos/types';
-import { FilterContent } from '@/features/pos/components/FilterContent';
+import { FilterContent } from '@/features/paymentGateway/components/FilterContent';
 import { FormErrors, OnChangeFormInput, FormData } from '@/hooks/useForm';
 import PaymentGateway from '@/model/PaymentGateway';
 import { columns } from './table';
@@ -173,7 +172,7 @@ export const PaymentGatewayContainer: React.FC<PosContainerProps> = ({
       </Dialog>
 
       <Container className="mainContainer" fluid={true}>
-        <div className="d-flex justify-content-between" style={{ paddingBottom: '30px' }}>
+        <div className="d-flex justify-content-between">
           <div className="pageTitle" style={{ display: 'grid' }}>
             <span>Gateway de pagamento</span>
           </div>

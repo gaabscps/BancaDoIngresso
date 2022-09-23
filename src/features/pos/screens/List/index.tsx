@@ -54,7 +54,6 @@ export const PosScreen: React.FC = (): JSX.Element => {
     onChangeFormInput: onChangeFormInputPos,
     isFormValid: isFormValidPos,
     resetForm: resetFormPos,
-    // setErrors: setErrorsPos,
   } = useForm({
     initialData: {
       name: '',
@@ -71,7 +70,6 @@ export const PosScreen: React.FC = (): JSX.Element => {
       serialNumber: [validators.required],
       status: [validators.required],
       expirationDate: [validators.isDateLessThanCurrentDate],
-      // adicionar validação de data de expiração maior que a data atual
     },
     formatters: {},
   });
@@ -108,20 +106,13 @@ export const PosScreen: React.FC = (): JSX.Element => {
       setState(States.default);
     }
   };
-  const handleOnChangeColorColumn = (status: PosStatus): string => {
-    switch (status) {
-      case 0:
-        return '#3CAFC8';
-      case 1:
-        return '#7AD81B';
-      case 2:
-        return '#FFE249';
-      case 3:
-        return '#E64F49';
-      default:
-        return 'grey';
-    }
-  };
+  const handleOnChangeColorColumn = (status: PosStatus): string =>
+    ({
+      0: '#3CAFC8',
+      1: '#7AD81B',
+      2: '#FFE249',
+      3: '#E64F49',
+    }[status] || 'grey');
 
   const handleOnShouldShowModal = ({
     value,

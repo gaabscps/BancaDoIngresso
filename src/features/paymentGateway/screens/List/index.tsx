@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { useEffect, useState } from 'react';
 import { useDialog } from '@/hooks/useDialog';
 import api, { AxiosError } from '@/services/api';
@@ -9,7 +8,7 @@ import PosStatus from '@/model/PosStatus';
 import validators from '@/helpers/validators';
 import { FormInputName as FormInputNameToSavePos } from '@/features/pos/components/RegisterContent';
 import { useConfirmDelete } from '@/hooks/useConfirmDelete';
-import { FormInputName as FormInputNameToFilter } from '@/features/pos/components/FilterContent';
+import { FormInputName as FormInputNameToFilter } from '@/features/paymentGateway/components/FilterContent';
 import {
   PaymentGatewayResponse,
   PaymentGatewayRequestParams,
@@ -55,7 +54,6 @@ export const PaymentGatewayScreen: React.FC = (): JSX.Element => {
     onChangeFormInput: onChangeFormInputPos,
     isFormValid: isFormValidPos,
     resetForm: resetFormPos,
-    // setErrors: setErrorsPos,
   } = useForm({
     initialData: {
       name: '',
@@ -72,7 +70,6 @@ export const PaymentGatewayScreen: React.FC = (): JSX.Element => {
       serialNumber: [validators.required],
       status: [validators.required],
       expirationDate: [validators.isDateLessThanCurrentDate],
-      // adicionar validação de data de expiração maior que a data atual
     },
     formatters: {},
   });
@@ -109,45 +106,13 @@ export const PaymentGatewayScreen: React.FC = (): JSX.Element => {
       setState(States.default);
     }
   };
-  const handleOnChangeColorColumn = (status: PosStatus): string => {
-    switch (status) {
-      case 0:
-        return '#3CAFC8';
-      case 1:
-        return '#7AD81B';
-      case 2:
-        return '#FFE249';
-      case 3:
-        return '#E64F49';
-      default:
-        return 'grey';
-    }
-  };
-
-  const handleOnShouldShowModal = ({
-    value,
-    newTitleModal,
-    pos: posSelected,
-  }: {
-    value: ShouldShowModal;
-    newTitleModal: string | React.ReactNode;
-    pos?: PaymentGateway;
-  }): void => {
-    setShouldShowModal(value);
-    onChangeTitle(newTitleModal);
-    onToggle();
-
-    if (posSelected?.id && value === ShouldShowModal.pos) {
-      setPaymentGateway(posSelected);
-      handleFecthPdvList();
-      if (posSelected.id !== paymentGateway?.id) {
-        resetFormPos();
-      }
-    } else {
-      resetFormPos();
-      setPaymentGateway(undefined);
-    }
-  };
+  const handleOnChangeColorColumn = (status: PosStatus): string =>
+    ({
+      0: '#3CAFC8',
+      1: '#7AD81B',
+      2: '#FFE249',
+      3: '#E64F49',
+    }[status] || 'grey');
 
   const handleOnSavePos = async (): Promise<void> => {
     try {
@@ -230,6 +195,30 @@ export const PaymentGatewayScreen: React.FC = (): JSX.Element => {
       ],
     });
   };
+  const handleOnShouldShowModal = ({
+    value,
+    newTitleModal,
+    pos: posSelected,
+  }: {
+    value: ShouldShowModal;
+    newTitleModal: string | React.ReactNode;
+    pos?: PaymentGateway;
+  }): void => {
+    setShouldShowModal(value);
+    onChangeTitle(newTitleModal);
+    onToggle();
+
+    if (posSelected?.id && value === ShouldShowModal.pos) {
+      setPaymentGateway(posSelected);
+      handleFecthPdvList();
+      if (posSelected.id !== paymentGateway?.id) {
+        resetFormPos();
+      }
+    } else {
+      resetFormPos();
+      setPaymentGateway(undefined);
+    }
+  };
 
   const handleOnFilter = async (): Promise<void> => {
     try {
@@ -266,21 +255,6 @@ export const PaymentGatewayScreen: React.FC = (): JSX.Element => {
       page,
     });
   };
-
-  // useEffect(() => {
-  //   if (pos?.id) {
-  //     onChangeFormInputPos(FormInputNameToSavePos.name)(pos.name);
-  //     onChangeFormInputPos(FormInputNameToSavePos.serialNumber)(pos.serialNumber);
-  //     onChangeFormInputPos(FormInputNameToSavePos.status)(String(pos.status));
-  //     onChangeFormInputPos(FormInputNameToSavePos.model)(pos.model);
-  //     onChangeFormInputPos(FormInputNameToSavePos.pdv)(String(pos.pdv.id));
-  //     onChangeFormInputPos(FormInputNameToSavePos.telephoneOperator)(pos.telephoneOperator);
-  //     onChangeFormInputPos(FormInputNameToSavePos.cardOperator)(pos.cardOperator);
-  //     onChangeFormInputPos(FormInputNameToSavePos.expirationDate)(
-  //       String(dayjs(pos.expirationDate, 'YYYY-DD-MM hh:mm:ss').format('YYYY-MM-DD')),
-  //     );
-  //   }
-  // }, [pos]);
 
   useEffect(() => {
     handleFetch(currentPage);

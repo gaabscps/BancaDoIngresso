@@ -87,16 +87,6 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
           </FormGroup>
           <FormGroup className="mb-2">
             <InputText
-              name="telephoneOperator"
-              label="Operadora de Cartão (opcional)"
-              placeholder="Digite a operadora de Cartão"
-              value={formData[FormInputName.cardOperator]}
-              onChange={e => onChangeFormInput(FormInputName.cardOperator)(e.target.value)}
-              error={formErrors.cardOperator && formErrors.cardOperator[0]}
-            />
-          </FormGroup>
-          <FormGroup className="mb-2">
-            <InputText
               name="expirationDate"
               label="Porta"
               placeholder="Ex: 123"
