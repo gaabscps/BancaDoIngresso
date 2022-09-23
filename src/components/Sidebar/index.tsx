@@ -141,6 +141,10 @@ export const Sidebar: React.FC = () => {
                   route: path.Dashboard.Pos.itself,
                   title: 'POS',
                 },
+                {
+                  route: path.Dashboard.Gateway.itself,
+                  title: 'Gateway de pagamento',
+                },
               ]}
             />
           </li>

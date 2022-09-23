@@ -2,6 +2,7 @@ import { AUTH_ROUTES } from '@/features/auth/navigation';
 import { DASHBOARD_ROUTES } from '@/features/dashboard/navigation';
 import { PDV_ROUTES } from '@/features/pdv/navigation';
 import { POS_ROUTES } from '@/features/pos/navigation';
+import { PAYMENTGATEWAY_ROUTES } from '@/features/paymentGateway/navigation';
 
 const path = {
   Initial: {
@@ -28,7 +29,7 @@ const path = {
       itself: '/dashboard/company',
     },
     Gateway: {
-      itself: '/dashboard/gateway',
+      ...PAYMENTGATEWAY_ROUTES,
     },
     Payment: {
       itself: '/dashboard/payment',
