@@ -70,6 +70,7 @@ interface PdvContainerProps {
   onShowDelete: (pdv: Pdv) => void;
   onShowDeleteSubPdv: (subPdv: SubPdv) => void;
   onShowEditSubPdv: (subPdv: SubPdv) => void;
+  onChangeFileInput: (inputName: string) => (file: File) => void;
   // onShowListSub: (id: string, name: string) => Promise<void>;
   // onShowFilter: () => void;
 }
@@ -116,6 +117,7 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
   onShowDelete,
   onShowDeleteSubPdv,
   onShowEditSubPdv,
+  onChangeFileInput,
 }) => {
   const dataTablePdv = listPdv?.map(pdv => ({
     id: pdv.id,
@@ -258,6 +260,7 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
                 formData={formDataPdv}
                 formErrors={formErrorsPdv}
                 onChangeFormInput={onChangeFormInputPdv}
+                onChangeFileInput={onChangeFileInput}
               />
             ),
             [ShouldShowModal.subpdv]: (
