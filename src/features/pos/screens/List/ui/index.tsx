@@ -228,7 +228,13 @@ export const PosContainer: React.FC<PosContainerProps> = ({
             POS inativa
           </div>
         </div>
-        <CustomTable columns={columns} data={dataTablePos} theme="primary" />
+        <CustomTable
+          columns={columns}
+          data={dataTablePos}
+          numberRowsPerPage={currentPage.pageSize}
+          progressPending={state === States.loading}
+          theme="primary"
+        />
         <Pagination
           currentPage={currentPage.page}
           totalCount={currentPage.total}
