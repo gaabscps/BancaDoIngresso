@@ -7,6 +7,7 @@ export default interface Pdv {
   telephone: string;
   email: string;
   imageBase64: string;
+  mapBase64: string;
   facebookUrl: string;
   instagramUrl: string;
   twitterUrl: string;

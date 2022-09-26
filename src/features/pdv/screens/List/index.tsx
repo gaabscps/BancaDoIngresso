@@ -18,6 +18,7 @@ import Pdv from '@/model/Pdv';
 import SubPdv from '@/model/SubPdv';
 import Address from '@/model/Address';
 import User from '@/model/User';
+import { convertToBoolean } from '@/helpers/common/convertToBoolean';
 import { PdvContainer, States, ShouldShowModal } from './ui';
 
 interface PayloadSubPdv {
@@ -37,6 +38,9 @@ interface PayloadSubPdv {
   address: Address;
   users?: User[];
 }
+export interface NameFiles {
+  [key: string]: string;
+}
 
 export const PdvScreen: React.FC = (): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
@@ -45,6 +49,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
   const [subPdv, setSubPdv] = useState<SubPdv>();
   const [listSubPdv, setListSubPdv] = useState<SubPdv[]>([]);
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(ShouldShowModal.pdv);
+  const [nameFiles, setNameFiles] = useState<NameFiles>({});
 
   const [currentPage, setCurrentPage] = useState<PdvRequestParams>({
     page: 1,
@@ -64,14 +69,13 @@ export const PdvScreen: React.FC = (): JSX.Element => {
     onChangeFormInput: onChangeFormInputPdv,
     isFormValid: isFormValidPdv,
     resetForm: resetFormPdv,
-    // setErrors: setErrorsPdv,
+    setErrors: setErrorsPdv,
   } = useForm({
     initialData: {
       name: '',
       document: updateMaskCPFOrCNPJ(''),
       telephone: updateMaskMobilePhone(''),
       email: '',
-      imageBase64: '',
       facebookUrl: '',
       instagramUrl: '',
       twitterUrl: '',
@@ -100,8 +104,9 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       number: [validators.required],
       telephone: [validators.required, validators.mobilePhone],
       email: [validators.required, validators.email],
-      // batchClosed: [validators.required],
-      // askPasswordInactivity: [validators.required],
+      mapBase64: [validators.required],
+      batchClosed: [validators.required],
+      askPasswordInactivity: [validators.required],
       inactivityTimeout: [validators.required],
     },
     formatters: {
@@ -175,6 +180,28 @@ export const PdvScreen: React.FC = (): JSX.Element => {
     },
   });
 
+  const handleOnChangeFileInput =
+    (inputName: string) =>
+    (file: File | undefined): void => {
+      // validate if file is image
+      if (file && file.type.includes('image')) {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          const base64 = reader.result?.toString();
+          if (base64) {
+            setNameFiles({ ...nameFiles, [inputName]: file.name });
+            onChangeFormInputPdv(inputName)('');
+            onChangeFormInputPdv(inputName)(base64);
+          }
+        };
+      } else {
+        setErrorsPdv({
+          [inputName]: ['O formato deve ser .jpg, .jpeg ou .png'],
+        });
+      }
+    };
+
   const handleFetch = async (values: PdvRequestParams): Promise<void> => {
     try {
       setState(States.loading);
@@ -234,7 +261,9 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       resetFormSubPdv();
     }
     if ((!pdvSelected?.id && value === ShouldShowModal.pdv) || value !== ShouldShowModal.subpdv) {
-      resetFormPdv();
+      if (pdvSelected?.id !== pdv?.id) {
+        resetFormPdv();
+      }
     }
 
     if (pdvSelected && value === ShouldShowModal.subpdv) {
@@ -242,7 +271,9 @@ export const PdvScreen: React.FC = (): JSX.Element => {
     }
 
     if (pdvSelected?.id && value !== ShouldShowModal.subpdv) {
-      resetFormPdv();
+      if (pdvSelected?.id !== pdv?.id) {
+        resetFormPdv();
+      }
       setPdv(pdvSelected);
     } else {
       setPdv(undefined);
@@ -264,13 +295,14 @@ export const PdvScreen: React.FC = (): JSX.Element => {
           document: formDataPdv[FormInputNameToSavePdv.document],
           telephone: formDataPdv[FormInputNameToSavePdv.telephone],
           email: formDataPdv[FormInputNameToSavePdv.email],
-          imageBase64: formDataPdv[FormInputNameToSavePdv.imageBase64],
           facebookUrl: formDataPdv[FormInputNameToSavePdv.facebookUrl],
           instagramUrl: formDataPdv[FormInputNameToSavePdv.instagramUrl],
           twitterUrl: formDataPdv[FormInputNameToSavePdv.twitterUrl],
           linkedinUrl: formDataPdv[FormInputNameToSavePdv.linkedinUrl],
-          batchClosed: !!formDataPdv[FormInputNameToSavePdv.batchClosed],
-          askPasswordInactivity: !!formDataPdv[FormInputNameToSavePdv.askPasswordInactivity],
+          batchClosed: convertToBoolean(formDataPdv[FormInputNameToSavePdv.batchClosed]),
+          askPasswordInactivity: convertToBoolean(
+            formDataPdv[FormInputNameToSavePdv.askPasswordInactivity],
+          ),
           inactivityTimeout: formDataPdv[FormInputNameToSavePdv.inactivityTimeout],
           address: {
             id: pdv?.address.id,
@@ -284,6 +316,8 @@ export const PdvScreen: React.FC = (): JSX.Element => {
             latitude: formDataPdv[FormInputNameToSavePdv.latitude] ?? 0,
             longitude: formDataPdv[FormInputNameToSavePdv.longitude] ?? 0,
           },
+          mapBase64: formDataPdv[FormInputNameToSavePdv.mapBase64],
+          imageBase64: formDataPdv[FormInputNameToSavePdv.imageBase64],
         };
 
         if (!payload.id) {
@@ -456,43 +490,6 @@ export const PdvScreen: React.FC = (): JSX.Element => {
     }
   };
 
-  // const handleOnCloseSubPdv = (): void => {
-  //   dialog.hide();
-  //   handleOnShowListSubPdv(pdvState.idPdv, pdvState.namePdv);
-  // };
-
-  // Registra Sub PDV
-  // const handleOnRegisterSubPdv = async (values: any): Promise<void> => {
-  //   try {
-  //     await api.post<any>('/sub-pdv', values);
-  //     handleOnCloseSubPdv();
-  //   } catch (error) {
-  //     const err = error as AxiosError;
-  //     toast.error(err.message);
-  //   }
-  // };
-
-  // Renderiza Modal de Registro de Sub PDV
-  // const handleOnShowRegisterSubPdv = (): void => {
-  //   dialog.show({
-  //     title: 'Cadastrar novo Sub-PDV',
-  //     children: <RegisterContentSubPdv onSubmit={handleOnRegisterSubPdv} />,
-  //     onClose: handleOnCloseSubPdv,
-  //     isCard: true,
-  //   });
-  // };
-
-  // Edita Sub PDV
-  // const handleOnEditSaveSubPdv = async (values: any): Promise<void> => {
-  //   try {
-  //     await api.put<any>('/sub-pdv', values);
-  //     handleOnCloseSubPdv();
-  //   } catch (error) {
-  //     const err = error as AxiosError;
-  //     toast.error(err.message);
-  //   }
-  // };
-
   // Renderiza Modal de Edição de Sub PDV
   const handleOnShowEditSubPdv = async (subPdvSelected: SubPdv): Promise<void> => {
     const { data: subPdvSelectedFetch } = await api.get(`/sub-pdv/${subPdvSelected.id}`);
@@ -503,50 +500,6 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       subPdv: subPdvSelectedFetch,
     });
   };
-
-  // Deleta Sub PDV
-
-  // Renderiza Modal de Deleção de Sub PDV
-  // const handleOnShowDeleteSubPdv = async (value: any): Promise<void> => {
-  //   dialog.show({
-  //     title: '',
-  //     children: (
-  //       <DeleteContent id={value} onSubmit={handleOnDeleteSubPdv} onClose={handleOnCloseSubPdv} />
-  //     ),
-  //     onClose: handleOnCloseSubPdv,
-  //   });
-  // };
-
-  // ----------------------
-
-  // const handleOnShowListSubPdv = async (id: string, name: string): Promise<void> => {
-  //   const { data } = await api.get(`/sub-pdv/pdv/${id}`);
-  //   onChange({ idPdv: id, namePdv: name });
-  //   dialog.show({
-  //     title: (
-  //       <div className="subpdv-modal-header-container">
-  //         {name ?? 'Sub PDV'}
-  //         <div className="subpdv-register-buttom">
-  //           <a style={{ cursor: 'pointer' }} onClick={handleOnShowRegisterSubPdv}>
-  //             + cadastrar novo Sub PDV
-  //           </a>
-  //         </div>
-  //       </div>
-  //     ),
-  //     children: (
-  //       <ListContentSub
-  //         dataList={data}
-  //         // stateContext={pdvState}
-  //         // onCleanConstext={onClean}
-  //         onSubmit={handleOnRegisterSubPdv}
-  //         onShowRegisterSubPdv={handleOnShowRegisterSubPdv}
-  //         onShowEditSubPdv={handleOnShowEditSubPdv}
-  //         onShowDeleteSubPdv={handleOnShowDeleteSubPdv}
-  //       />
-  //     ),
-  //     onClose: handleOnClose,
-  //   });
-  // };
 
   const handleOnPaginationChange = async (page: number): Promise<void> => {
     handleFetch({
@@ -576,8 +529,8 @@ export const PdvScreen: React.FC = (): JSX.Element => {
         String(pdv.askPasswordInactivity),
       );
       onChangeFormInputPdv(FormInputNameToSavePdv.inactivityTimeout)(pdv.inactivityTimeout);
-      // onChangeFormInputPdv(FormInputNameToSavePdv.batchClosed)(pdv.batchClosed);
-      // onChangeFormInputPdv(FormInputNameToSavePdv.askPasswordInactivity)(pdv.askPasswordInactivity);
+      onChangeFormInputPdv(FormInputNameToSavePdv.mapBase64)(pdv.mapBase64);
+      onChangeFormInputPdv(FormInputNameToSavePdv.imageBase64)(pdv.imageBase64);
     }
   }, [pdv]);
 
@@ -587,17 +540,15 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       onChangeFormInputSubPdv(FormInputNameToSaveSubPdv.document)(subPdv.document);
       onChangeFormInputSubPdv(FormInputNameToSaveSubPdv.email)(subPdv.email);
       onChangeFormInputSubPdv(FormInputNameToSaveSubPdv.telephone)(subPdv.telephone);
-      onChangeFormInputSubPdv(FormInputNameToSaveSubPdv.imageBase64)(subPdv.imageBase64 ?? '');
       onChangeFormInputSubPdv(FormInputNameToSaveSubPdv.facebookUrl)(subPdv.facebookUrl ?? '');
       onChangeFormInputSubPdv(FormInputNameToSaveSubPdv.instagramUrl)(subPdv.instagramUrl ?? '');
       onChangeFormInputSubPdv(FormInputNameToSaveSubPdv.twitterUrl)(subPdv.twitterUrl ?? '');
       onChangeFormInputSubPdv(FormInputNameToSaveSubPdv.linkedinUrl)(subPdv.linkedinUrl ?? '');
-      // onChangeFormInputSubPdv(FormInputNameToSaveSubPdv.address)(subPdv.address);
-      onChangeFormInputSubPdv(FormInputNameToSaveSubPdv.zipCode)(subPdv.address?.zipCode ?? '');
-      onChangeFormInputSubPdv(FormInputNameToSaveSubPdv.state)(subPdv.address?.state ?? '');
-      onChangeFormInputSubPdv(FormInputNameToSaveSubPdv.city)(subPdv.address?.city ?? '');
-      onChangeFormInputSubPdv(FormInputNameToSaveSubPdv.district)(subPdv.address?.district ?? '');
-      onChangeFormInputSubPdv(FormInputNameToSaveSubPdv.street)(subPdv.address?.street ?? '');
+      onChangeFormInputSubPdv(FormInputNameToSaveSubPdv.zipCode)(subPdv.address?.zipCode);
+      onChangeFormInputSubPdv(FormInputNameToSaveSubPdv.state)(subPdv.address?.state);
+      onChangeFormInputSubPdv(FormInputNameToSaveSubPdv.city)(subPdv.address?.city);
+      onChangeFormInputSubPdv(FormInputNameToSaveSubPdv.district)(subPdv.address?.district);
+      onChangeFormInputSubPdv(FormInputNameToSaveSubPdv.street)(subPdv.address?.street);
       onChangeFormInputSubPdv(FormInputNameToSaveSubPdv.complement)(
         subPdv.address?.complement ?? '',
       );
@@ -619,6 +570,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       pdvState={pdv}
       listPdv={listPdv}
       listSubPdv={listSubPdv}
+      nameFiles={nameFiles}
       title={title}
       currentPage={currentPage}
       visible={visible}
@@ -642,6 +594,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       onShowDelete={handleOnShowDeletePdv}
       onShowDeleteSubPdv={handleOnShowDeleteSubPdv}
       onShowEditSubPdv={handleOnShowEditSubPdv}
+      onChangeFileInput={handleOnChangeFileInput}
       // onShowListSub={handleOnShowListSubPdv}
     />
   );

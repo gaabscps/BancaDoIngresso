@@ -137,9 +137,11 @@ export const PosScreen: React.FC = (): JSX.Element => {
     onToggle();
 
     if (posSelected?.id && value === ShouldShowModal.pos) {
-      resetFormPos();
       setPos(posSelected);
       handleFecthPdvList();
+      if (posSelected.id !== pos?.id) {
+        resetFormPos();
+      }
     } else {
       resetFormPos();
       setPos(undefined);
@@ -305,6 +307,7 @@ export const PosScreen: React.FC = (): JSX.Element => {
       onShowDeletePos={handleOnShowDeletePos}
       onFilter={handleOnFilter}
       listPdv={listPdv}
+      posState={pos}
     />
   );
 };

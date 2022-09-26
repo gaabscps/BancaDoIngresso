@@ -1,15 +1,18 @@
 import React from 'react';
 import { Col, Form, FormGroup, Row } from 'reactstrap';
-import { InputText, ButtonGroup, SelectCustom } from '@/components';
+import { InputText, ButtonGroup, SelectCustom, InputFile } from '@/components';
 import { FormData, FormErrors, OnChangeFormInput } from '@/hooks/useForm';
 import { isValid as isValidCEP } from '@/helpers/masks/cep';
 import cep from 'cep-promise';
 import { statesUf } from '@/constant/states';
+import { NameFiles } from '@/features/pdv/types';
 
 interface RegisterContentProps {
   formData: FormData;
   formErrors: FormErrors;
   onChangeFormInput: OnChangeFormInput;
+  onChangeFileInput: (inputName: string) => (file: File | undefined) => void;
+  nameFiles: NameFiles;
 }
 
 // eslint-disable-next-line no-shadow
@@ -43,6 +46,8 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
   formData,
   formErrors,
   onChangeFormInput,
+  onChangeFileInput,
+  nameFiles,
 }) => (
   <Form
     noValidate={true}
@@ -53,7 +58,6 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
     <Row>
       <Col md={8}>
         <h5 className="mb-2 border-bottom-title">Informações gerais e endereço</h5>
-
         <FormGroup className="mb-2">
           <InputText
             name="name"
@@ -254,44 +258,82 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
           />
         </FormGroup>
         {/* TO-DO: add input file Map and Image PDV */}
+
+        <FormGroup className="mb-2">
+          <InputFile
+            name="mapBase64"
+            label="Mapa"
+            placeholder=""
+            fileName={nameFiles?.mapBase64}
+            onChange={e =>
+              onChangeFileInput(FormInputName.mapBase64)((e.target as HTMLInputElement)?.files?.[0])
+            }
+            error={formErrors.mapBase64 && formErrors.mapBase64[0]}
+          />
+        </FormGroup>
+
+        <FormGroup className="mb-2">
+          <InputFile
+            name="imageBase64"
+            label="Imagem do PDV"
+            placeholder=""
+            fileName={nameFiles?.imageBase64}
+            onChange={e =>
+              onChangeFileInput(FormInputName.imageBase64)(
+                (e.target as HTMLInputElement)?.files?.[0],
+              )
+            }
+            error={formErrors.imageBase64 && formErrors.imageBase64[0]}
+          />
+        </FormGroup>
+
         <FormGroup className="mb-2">
           <ButtonGroup
             label="Lote encerrado?"
             name="batchClosed"
+            value={formData[FormInputName.batchClosed]}
             onChange={e => onChangeFormInput(FormInputName.batchClosed)(e.target.value)}
             options={[
-              { value: 0, label: 'Sim' },
-              { value: 1, label: 'não' },
+              { value: true, label: 'Sim' },
+              { value: false, label: 'não' },
             ]}
             error={formErrors.batchClosed && formErrors.batchClosed[0]}
           />
         </FormGroup>
 
-        <FormGroup className="mb-2">
-          <ButtonGroup
-            label="Pedir senha após inatividade?"
-            name="askPasswordInactivity"
-            onChange={e => onChangeFormInput(FormInputName.askPasswordInactivity)(e.target.value)}
-            options={[
-              { value: 0, label: 'Sim' },
-              { value: 1, label: 'não' },
-            ]}
-            error={formErrors.askPasswordInactivity && formErrors.askPasswordInactivity[0]}
-          />
-        </FormGroup>
-
-        <FormGroup className="mb-2">
-          <InputText
-            type="time"
-            name="inactivityTimeout"
-            label="Tempo limite de inatividade"
-            placeholder="00:00"
-            max={5}
-            value={formData[FormInputName.inactivityTimeout]}
-            onChange={e => onChangeFormInput(FormInputName.inactivityTimeout)(e.target.value)}
-            error={formErrors.inactivityTimeout && formErrors.inactivityTimeout[0]}
-          />
-        </FormGroup>
+        <Row>
+          <Col md={6} className="pl-0">
+            <FormGroup className="mb-2">
+              <ButtonGroup
+                label="Pedir senha após inatividade?"
+                name="askPasswordInactivity"
+                value={formData[FormInputName.askPasswordInactivity]}
+                onChange={e =>
+                  onChangeFormInput(FormInputName.askPasswordInactivity)(e.target.value)
+                }
+                options={[
+                  { value: true, label: 'Sim' },
+                  { value: false, label: 'não' },
+                ]}
+                error={formErrors.askPasswordInactivity && formErrors.askPasswordInactivity[0]}
+              />
+            </FormGroup>
+          </Col>
+          <Col md={6} className="pr-0">
+            <FormGroup className="mb-2">
+              <InputText
+                type="time"
+                name="inactivityTimeout"
+                label="Tempo limite de inatividade"
+                placeholder="00:00"
+                max={5}
+                value={formData[FormInputName.inactivityTimeout]}
+                onChange={e => onChangeFormInput(FormInputName.inactivityTimeout)(e.target.value)}
+                error={formErrors.inactivityTimeout && formErrors.inactivityTimeout[0]}
+              />
+            </FormGroup>
+          </Col>
+        </Row>
       </Col>
     </Row>
   </Form>

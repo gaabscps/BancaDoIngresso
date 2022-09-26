@@ -19,6 +19,7 @@ import { ReactComponent as SubPdvIcon } from '@/assets/images/svg/subPDV.svg';
 
 import { RegisterContentSubPdv } from '@/features/pdv/components/RegisterContentSubPdv';
 import { columns } from './table';
+import { NameFiles } from '..';
 
 // eslint-disable-next-line no-shadow
 export enum States {
@@ -39,6 +40,7 @@ interface PdvContainerProps {
   pdvState?: Pdv;
   listPdv: Pdv[];
   listSubPdv: SubPdv[];
+  nameFiles: NameFiles;
   title: string | React.ReactNode;
   currentPage: PdvRequestParams;
   visible: boolean;
@@ -70,6 +72,7 @@ interface PdvContainerProps {
   onShowDelete: (pdv: Pdv) => void;
   onShowDeleteSubPdv: (subPdv: SubPdv) => void;
   onShowEditSubPdv: (subPdv: SubPdv) => void;
+  onChangeFileInput: (inputName: string) => (file: File | undefined) => void;
   // onShowListSub: (id: string, name: string) => Promise<void>;
   // onShowFilter: () => void;
 }
@@ -90,6 +93,7 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
   pdvState,
   listPdv,
   listSubPdv,
+  nameFiles,
   title,
   currentPage,
   visible,
@@ -116,6 +120,7 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
   onShowDelete,
   onShowDeleteSubPdv,
   onShowEditSubPdv,
+  onChangeFileInput,
 }) => {
   const dataTablePdv = listPdv?.map(pdv => ({
     id: pdv.id,
@@ -258,6 +263,8 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
                 formData={formDataPdv}
                 formErrors={formErrorsPdv}
                 onChangeFormInput={onChangeFormInputPdv}
+                onChangeFileInput={onChangeFileInput}
+                nameFiles={nameFiles}
               />
             ),
             [ShouldShowModal.subpdv]: (

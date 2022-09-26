@@ -12,7 +12,6 @@ interface InputFileProps {
   wrapperClass?: string;
   accept?: string;
   onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-  value: string;
 }
 // export default InputFile;
 
@@ -23,7 +22,7 @@ export const InputFile: React.FC<InputFileProps> = ({
   label,
   wrapperClass,
   accept,
-  value,
+  onChange,
 }: InputFileProps) => (
   <div className={`mb-4 flex-column ${wrapperClass}`}>
     {label && (
@@ -35,7 +34,7 @@ export const InputFile: React.FC<InputFileProps> = ({
       style={{
         display: 'flex',
         alignItems: 'center',
-        padding: '10px',
+        padding: '8px 10px',
         background: '#E6E6E6',
         borderRadius: '5px',
         height: '62px',
@@ -45,9 +44,10 @@ export const InputFile: React.FC<InputFileProps> = ({
         htmlFor={name}
         className="input-label button-label-file"
         style={{
-          padding: '10px 10px',
-          width: '170px',
-          backgroundColor: 'rgba(196, 196, 196, 1)',
+          fontSize: '12px',
+          padding: '15px',
+          width: '145px',
+          backgroundColor: '#C4C4C4',
           color: 'rgba(34, 34, 34, 1)',
           textAlign: 'center',
           margin: 'auto 0',
@@ -63,7 +63,7 @@ export const InputFile: React.FC<InputFileProps> = ({
         accept={accept}
         name={name}
         id={name}
-        value={value}
+        onChange={onChange}
         style={{ display: 'none' }}
         className={`${error ? 'input-error' : ''}`}
       />
