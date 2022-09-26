@@ -109,11 +109,11 @@ export const PaymentGatewayScreen: React.FC = (): JSX.Element => {
   };
   const handleOnChangeColorColumn = (status: PosStatus): string =>
     ({
-      0: colors.stock,
-      1: colors.use,
-      2: colors.reserved,
-      3: colors.inactive,
-    }[status] || colors.default);
+      0: colors.lightBlue,
+      1: colors.green,
+      2: colors.yellow,
+      3: colors.red,
+    }[status] || colors.grey);
 
   const handleOnSavePos = async (): Promise<void> => {
     try {

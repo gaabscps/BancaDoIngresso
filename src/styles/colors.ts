@@ -1,7 +1,7 @@
 export const colors = {
-  stock: '#3CAFC8',
-  use: '#7AD81B',
-  reserved: '#FFE249',
-  inactive: '#E64F49',
-  default: 'grey',
+  lightBlue: '#3CAFC8',
+  green: '#7AD81B',
+  yellow: '#FFE249',
+  red: '#E64F49',
+  grey: '#808080',
 };
