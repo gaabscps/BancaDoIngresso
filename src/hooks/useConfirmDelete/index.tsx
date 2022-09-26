@@ -43,6 +43,8 @@ export const ConfirmDeleteProvider = ({ children }: ConfirmDeleteProps): JSX.Ele
           position={options.position}
           size="lg"
           actions={options.actions}
+          footerPosition="center"
+          footerBorder="none"
         >
           {options.children}
         </Dialog>
