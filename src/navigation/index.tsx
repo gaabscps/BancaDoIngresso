@@ -4,6 +4,7 @@ import { Error404 } from '@/components';
 import { AuthNavigation } from '@/features/auth/navigation';
 import { DashboardNavigation } from '@/features/dashboard/navigation';
 import { PdvNavigation } from '@/features/pdv/navigation';
+import { PaymentGatewayNavigation } from '@/features/paymentGateway/navigation';
 import { PosNavigation } from '@/features/pos/navigation';
 import { PdvProvider } from '@/features/pdv/hook/usePdv';
 import { renderRoutes } from './utils';
@@ -15,6 +16,7 @@ const Navigation: React.FC = (): JSX.Element => {
   const dashboardRoutes = renderRoutes(DashboardNavigation);
   const pdvRoutes = renderRoutes(PdvNavigation);
   const posRoutes = renderRoutes(PosNavigation);
+  const paymentGatewayRoutes = renderRoutes(PaymentGatewayNavigation);
 
   return (
     <PdvProvider>
@@ -23,6 +25,7 @@ const Navigation: React.FC = (): JSX.Element => {
         {dashboardRoutes}
         {pdvRoutes}
         {posRoutes}
+        {paymentGatewayRoutes}
         <Route path={path.Initial.All} component={Error404} />
       </Switch>
     </PdvProvider>

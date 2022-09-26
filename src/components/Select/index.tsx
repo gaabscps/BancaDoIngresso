@@ -37,7 +37,7 @@ export const SelectCustom = (props: SelectAutoCompleteProps) => {
 
   return (
     <>
-      <div className={`mb-4 flex-column ${props.wrapperClass}`}>
+      <div className={`flex-column input-component ${props.wrapperClass}`}>
         {props.label && (
           <label htmlFor={props.name} className="input-label">
             {props.label}
