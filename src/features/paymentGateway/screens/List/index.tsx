@@ -3,42 +3,40 @@ import { useDialog } from '@/hooks/useDialog';
 import api, { AxiosError } from '@/services/api';
 import { toast } from 'react-toastify';
 import useForm from '@/hooks/useForm';
-import { States, ShouldShowModal } from '@/features/pos/screens/List/ui';
+import {
+  States,
+  ShouldShowModal,
+  PaymentGatewayContainer,
+} from '@/features/paymentGateway/screens/List/ui';
 import PosStatus from '@/model/PosStatus';
-import validators from '@/helpers/validators';
-import { FormInputName as FormInputNameToSavePos } from '@/features/pos/components/RegisterContent';
+import { FormInputName as FormInputNameToSavePaymentGateway } from '@/features/paymentGateway/components/RegisterContent';
 import { useConfirmDelete } from '@/hooks/useConfirmDelete';
 import { FormInputName as FormInputNameToFilter } from '@/features/paymentGateway/components/FilterContent';
-import {
-  PaymentGatewayResponse,
-  PaymentGatewayRequestParams,
-} from '@/features/paymentGateway/types';
-import PaymentGateway from '@/model/PaymentGateway';
+import ChargeSetup from '@/model/ChargeSetup';
 import { colors } from '@/styles/colors';
-import { DeleteContent } from '../../components/DeleteContent';
-import { PaymentGatewayContainer } from './ui';
+import { ChargeSetupResponse, ChargeSetupRequestParams } from '@/features/paymentGateway/types';
 
-export default interface PayloadPos {
+import { DeleteContent } from '../../components/DeleteContent';
+
+export default interface PayloadGateway {
   id?: string;
   name: string;
-  serialNumber: string;
-  status: PosStatus;
-  pdv: {
-    id: string;
-  };
-  model: string;
-  telephoneOperator: string;
-  cardOperator: string;
-  expirationDate: string;
+  url: string;
+  token: string;
+  frontToken: string;
+  email: string;
+  notificationURL: string;
+  webhook: string;
+  actived: boolean;
 }
 
 export const PaymentGatewayScreen: React.FC = (): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
-  const [listPaymentGateway, setListPaymentGateway] = useState<PaymentGateway[]>([]);
-  const [paymentGateway, setPaymentGateway] = useState<PaymentGateway>();
-  const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(ShouldShowModal.pos);
+  const [listPaymentGateway, setListPaymentGateway] = useState<ChargeSetup[]>([]);
+  const [paymentGateway, setPaymentGateway] = useState<ChargeSetup>();
+  const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(ShouldShowModal.gateway);
 
-  const [currentPage, setCurrentPage] = useState<PaymentGatewayRequestParams>({
+  const [currentPage, setCurrentPage] = useState<ChargeSetupRequestParams>({
     page: 1,
     pageSize: 10,
     sort: 'name',
@@ -50,28 +48,25 @@ export const PaymentGatewayScreen: React.FC = (): JSX.Element => {
   const confirmDelete = useConfirmDelete();
 
   const {
-    formData: formDataPos,
-    formErrors: formErrorsPos,
-    onChangeFormInput: onChangeFormInputPos,
-    isFormValid: isFormValidPos,
-    resetForm: resetFormPos,
+    formData: formDataPaymentGateway,
+    formErrors: formErrorsPaymentGateway,
+    onChangeFormInput: onChangeFormInputPaymentGateway,
+    isFormValid: isFormValidPaymentGateway,
+    resetForm: resetFormPaymentGateway,
   } = useForm({
     initialData: {
+      id: '',
       name: '',
-      serialNumber: '',
-      status: '',
-      pdv: '',
-      model: '',
-      telephoneOperator: '',
-      cardOperator: '',
-      expirationDate: '',
+      chargeId: '',
+      chargeName: '',
+      url: '',
+      token: '',
+      frontToken: '',
+      email: '',
+      notificationURL: '',
+      webhook: '',
     },
-    validators: {
-      name: [validators.required],
-      serialNumber: [validators.required],
-      status: [validators.required],
-      expirationDate: [validators.isDateLessThanCurrentDate],
-    },
+    validators: {},
     formatters: {},
   });
 
@@ -87,10 +82,10 @@ export const PaymentGatewayScreen: React.FC = (): JSX.Element => {
     },
   });
 
-  const handleFetch = async (values: PaymentGatewayRequestParams): Promise<void> => {
+  const handleFetch = async (values: ChargeSetupRequestParams): Promise<void> => {
     try {
       setState(States.loading);
-      const { data } = await api.post<PaymentGatewayResponse>('/payment-gateway/page', values);
+      const { data } = await api.post<ChargeSetupResponse>('/charge-setup/page', values);
 
       if (data) {
         setListPaymentGateway(data?.list ?? []);
@@ -115,30 +110,29 @@ export const PaymentGatewayScreen: React.FC = (): JSX.Element => {
       3: colors.red,
     }[status] || colors.grey);
 
-  const handleOnSavePos = async (): Promise<void> => {
+  const handleOnSavePaymentGateway = async (): Promise<void> => {
     try {
-      if (isFormValidPos()) {
-        const payload: PayloadPos = {
+      if (isFormValidPaymentGateway()) {
+        const payload: PayloadGateway = {
           id: paymentGateway?.id,
-          name: formDataPos[FormInputNameToSavePos.name],
-          serialNumber: formDataPos[FormInputNameToSavePos.serialNumber],
-          status: +formDataPos[FormInputNameToSavePos.status],
-          pdv: {
-            id: formDataPos[FormInputNameToSavePos.pdv],
-          },
-          model: formDataPos[FormInputNameToSavePos.model],
-          telephoneOperator: formDataPos[FormInputNameToSavePos.telephoneOperator],
-          cardOperator: formDataPos[FormInputNameToSavePos.cardOperator],
-          expirationDate: formDataPos[FormInputNameToSavePos.expirationDate],
+          name: formDataPaymentGateway[FormInputNameToSavePaymentGateway.name],
+          actived: true,
+          url: formDataPaymentGateway[FormInputNameToSavePaymentGateway.url],
+          frontToken: formDataPaymentGateway[FormInputNameToSavePaymentGateway.frontToken],
+          token: formDataPaymentGateway[FormInputNameToSavePaymentGateway.token],
+          email: formDataPaymentGateway[FormInputNameToSavePaymentGateway.email],
+          notificationURL:
+            formDataPaymentGateway[FormInputNameToSavePaymentGateway.notificationURL],
+          webhook: formDataPaymentGateway[FormInputNameToSavePaymentGateway.webhook],
         };
 
         if (!payload.id) {
           delete payload.id;
 
-          await api.post<PaymentGateway>('/payment-gateway', payload);
+          await api.post<ChargeSetup>('/charge-setup', payload);
           toast.success('Gateway de pagamento cadastrado com sucesso!');
         } else {
-          await api.put<PaymentGateway>('/payment-gateway', payload);
+          await api.put<ChargeSetup>('/charge-setup', payload);
           toast.success('Gateway de pagamento atualizado com sucesso!');
         }
 
@@ -151,24 +145,15 @@ export const PaymentGatewayScreen: React.FC = (): JSX.Element => {
     }
   };
 
-  const handleFecthPdvList = async (): Promise<void> => {
-    try {
-      setState(States.loading);
-    } catch (error) {
-      const err = error as AxiosError;
-      toast.error(err.message);
-    } finally {
-      setState(States.default);
-    }
-  };
-
   const handleOnClose = (): void => confirmDelete.hide();
 
-  const handleOnConfirmDeleteToPos = async (posSelected: PaymentGateway): Promise<void> => {
+  const handleOnConfirmDeleteToPaymentGateway = async (
+    gatewaySelected: ChargeSetup,
+  ): Promise<void> => {
     try {
-      await api.delete(`/pos/${posSelected?.id}`);
+      await api.delete(`/charge-setup/${gatewaySelected?.id}`);
 
-      toast.success('POS excluído com sucesso!');
+      toast.success('Gateway de pagamento excluído com sucesso!');
       handleOnClose();
       handleFetch(currentPage);
     } catch (error) {
@@ -177,7 +162,7 @@ export const PaymentGatewayScreen: React.FC = (): JSX.Element => {
     }
   };
 
-  const handleOnShowDeletePos = (posSelected: PaymentGateway): void => {
+  const handleOnShowDeletePaymentGateway = (gatewaySelected: ChargeSetup): void => {
     confirmDelete.show({
       title: '',
       children: <DeleteContent />,
@@ -189,7 +174,7 @@ export const PaymentGatewayScreen: React.FC = (): JSX.Element => {
         },
         {
           title: 'Sim, quero remover',
-          onClick: (): Promise<void> => handleOnConfirmDeleteToPos(posSelected),
+          onClick: (): Promise<void> => handleOnConfirmDeleteToPaymentGateway(gatewaySelected),
         },
       ],
     });
@@ -197,24 +182,23 @@ export const PaymentGatewayScreen: React.FC = (): JSX.Element => {
   const handleOnShouldShowModal = ({
     value,
     newTitleModal,
-    pos: posSelected,
+    gateway: gatewaySelected,
   }: {
     value: ShouldShowModal;
     newTitleModal: string | React.ReactNode;
-    pos?: PaymentGateway;
+    gateway?: ChargeSetup;
   }): void => {
     setShouldShowModal(value);
     onChangeTitle(newTitleModal);
     onToggle();
 
-    if (posSelected?.id && value === ShouldShowModal.pos) {
-      setPaymentGateway(posSelected);
-      handleFecthPdvList();
-      if (posSelected.id !== paymentGateway?.id) {
-        resetFormPos();
+    if (gatewaySelected?.id && value === ShouldShowModal.gateway) {
+      setPaymentGateway(gatewaySelected);
+      if (gatewaySelected.id !== paymentGateway?.id) {
+        resetFormPaymentGateway();
       }
     } else {
-      resetFormPos();
+      resetFormPaymentGateway();
       setPaymentGateway(undefined);
     }
   };
@@ -227,11 +211,6 @@ export const PaymentGatewayScreen: React.FC = (): JSX.Element => {
             name: {
               entity: {
                 name: formDataFilter[FormInputNameToFilter.inputSearch],
-              },
-            },
-            serialNumber: {
-              entity: {
-                serialNumber: formDataFilter[FormInputNameToFilter.inputSearch],
               },
             },
           }[formDataFilter[FormInputNameToFilter.filterSearch]] || {};
@@ -256,6 +235,28 @@ export const PaymentGatewayScreen: React.FC = (): JSX.Element => {
   };
 
   useEffect(() => {
+    if (paymentGateway?.id) {
+      onChangeFormInputPaymentGateway(FormInputNameToSavePaymentGateway.name)(paymentGateway.name);
+      onChangeFormInputPaymentGateway(FormInputNameToSavePaymentGateway.url)(paymentGateway.url);
+      onChangeFormInputPaymentGateway(FormInputNameToSavePaymentGateway.frontToken)(
+        paymentGateway.frontToken,
+      );
+      onChangeFormInputPaymentGateway(FormInputNameToSavePaymentGateway.token)(
+        paymentGateway.token,
+      );
+      onChangeFormInputPaymentGateway(FormInputNameToSavePaymentGateway.email)(
+        paymentGateway.email,
+      );
+      onChangeFormInputPaymentGateway(FormInputNameToSavePaymentGateway.notificationURL)(
+        paymentGateway.notificationURL,
+      );
+      onChangeFormInputPaymentGateway(FormInputNameToSavePaymentGateway.webhook)(
+        paymentGateway.webhook,
+      );
+    }
+  }, [paymentGateway]);
+
+  useEffect(() => {
     handleFetch(currentPage);
   }, []);
 
@@ -267,20 +268,20 @@ export const PaymentGatewayScreen: React.FC = (): JSX.Element => {
       onToggle={onToggle}
       onPaginationChange={handleOnPaginationChange}
       shouldShowModal={shouldShowModal}
-      onSavePos={handleOnSavePos}
-      listPos={listPaymentGateway}
+      onSavePaymentGateway={handleOnSavePaymentGateway}
+      listPaymentGateway={listPaymentGateway}
       currentPage={currentPage}
       changeColorColumn={handleOnChangeColorColumn}
       onChangeFormInputFilter={onChangeFormInputFilter}
       onShouldShowModal={handleOnShouldShowModal}
-      formDataPos={formDataPos}
-      formErrorsPos={formErrorsPos}
-      onChangeFormInputPos={onChangeFormInputPos}
+      formDataPaymentGateway={formDataPaymentGateway}
+      formErrorsPaymentGateway={formErrorsPaymentGateway}
+      onChangeFormInputPaymentGateway={onChangeFormInputPaymentGateway}
       formDataFilter={formDataFilter}
       formErrorsFilter={formErrorsFilter}
-      onShowDeletePos={handleOnShowDeletePos}
+      onShowDeletePaymentGateway={handleOnShowDeletePaymentGateway}
       onFilter={handleOnFilter}
-      posState={paymentGateway}
+      gatewayState={paymentGateway}
     />
   );
 };
