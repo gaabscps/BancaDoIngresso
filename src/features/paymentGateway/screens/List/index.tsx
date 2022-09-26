@@ -14,6 +14,7 @@ import {
   PaymentGatewayRequestParams,
 } from '@/features/paymentGateway/types';
 import PaymentGateway from '@/model/PaymentGateway';
+import { colors } from '@/styles/colors';
 import { DeleteContent } from '../../components/DeleteContent';
 import { PaymentGatewayContainer } from './ui';
 
@@ -108,11 +109,11 @@ export const PaymentGatewayScreen: React.FC = (): JSX.Element => {
   };
   const handleOnChangeColorColumn = (status: PosStatus): string =>
     ({
-      0: '#3CAFC8',
-      1: '#7AD81B',
-      2: '#FFE249',
-      3: '#E64F49',
-    }[status] || 'grey');
+      0: colors.stock,
+      1: colors.use,
+      2: colors.reserved,
+      3: colors.inactive,
+    }[status] || colors.default);
 
   const handleOnSavePos = async (): Promise<void> => {
     try {
@@ -153,8 +154,6 @@ export const PaymentGatewayScreen: React.FC = (): JSX.Element => {
   const handleFecthPdvList = async (): Promise<void> => {
     try {
       setState(States.loading);
-      // const { data } = await api.get<Pdv[]>('/pdv/find');
-      // setListPdv(data ?? []);
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);

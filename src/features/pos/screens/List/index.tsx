@@ -14,6 +14,7 @@ import { useConfirmDelete } from '@/hooks/useConfirmDelete';
 import { FormInputName as FormInputNameToFilter } from '@/features/pos/components/FilterContent';
 import Pdv from '@/model/Pdv';
 import dayjs from 'dayjs';
+import { colors } from '@/styles/colors';
 import { DeleteContent } from '../../components/DeleteContent';
 
 export default interface PayloadPos {
@@ -108,12 +109,11 @@ export const PosScreen: React.FC = (): JSX.Element => {
   };
   const handleOnChangeColorColumn = (status: PosStatus): string =>
     ({
-      0: '#3CAFC8',
-      1: '#7AD81B',
-      2: '#FFE249',
-      3: '#E64F49',
-    }[status] || 'grey');
-
+      0: colors.stock,
+      1: colors.use,
+      2: colors.reserved,
+      3: colors.inactive,
+    }[status] || colors.default);
   const handleOnShouldShowModal = ({
     value,
     newTitleModal,

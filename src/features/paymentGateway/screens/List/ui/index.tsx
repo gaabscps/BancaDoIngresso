@@ -173,7 +173,7 @@ export const PaymentGatewayContainer: React.FC<PosContainerProps> = ({
 
       <Container className="mainContainer" fluid={true}>
         <div className="d-flex justify-content-between">
-          <div className="pageTitle" style={{ display: 'grid' }}>
+          <div className="pageTitle">
             <span>Gateway de pagamento</span>
           </div>
           <div className="button-filter-container">
