@@ -70,7 +70,7 @@ export const InputFile: React.FC<InputFileProps> = ({
       <p
         style={{
           margin: '0 20px',
-          color: '#A5A5A5',
+          color: fileName ? '#222222' : '#A5A5A5',
           fontSize: '16px',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
