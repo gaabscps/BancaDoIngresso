@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { useEffect, useState } from 'react';
 import { useDialog } from '@/hooks/useDialog';
-// import PaymentMethods from '@/model/PaymentMethods';
 import api, { AxiosError } from '@/services/api';
 import { toast } from 'react-toastify';
 import {
@@ -18,20 +17,23 @@ import validators from '@/helpers/validators';
 import { FormInputName as FormInputNameToSavePaymentMethods } from '@/features/paymentMethods/components/RegisterContent';
 import { useConfirmDelete } from '@/hooks/useConfirmDelete';
 import { FormInputName as FormInputNameToFilter } from '@/features/paymentMethods/components/FilterContent';
-import PaymentMethods from '@/model/PaymentMethods';
-import PaymentMethodsStatus from '@/model/PaymentMethodsStatus';
+import PaymentMethodsStatus from '@/model/StatusType';
+import ChargeSetup from '@/model/ChargeSetup';
+import PaymentGateway from '@/model/PaymentGateway';
 import { DeleteContent } from '../../components/DeleteContent';
 
 export default interface PayloadPaymentMethods {
   id?: string;
   name: string;
-  paymentGateway: string;
+  charge: { id: string };
+  pix: object; // TODO: remover
 }
 
 export const PaymentMethodsScreen: React.FC = (): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
-  const [listPaymentMethods, setListPaymentMethods] = useState<PaymentMethods[]>([]);
-  const [paymentMethods, setPaymentMethods] = useState<PaymentMethods>();
+  const [listPaymentMethods, setListPaymentMethods] = useState<PaymentGateway[]>([]);
+  const [listChargeSetup, setListChargeSetup] = useState<ChargeSetup[]>([]);
+  const [paymentMethods, setPaymentMethods] = useState<PaymentGateway>();
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(
     ShouldShowModal.paymentMethods,
   );
@@ -53,7 +55,6 @@ export const PaymentMethodsScreen: React.FC = (): JSX.Element => {
     onChangeFormInput: onChangeFormInputPaymentMethods,
     isFormValid: isFormValidPaymentMethods,
     resetForm: resetFormPaymentMethods,
-    // setErrors: setErrorsPaymentMethods,
   } = useForm({
     initialData: {
       name: '',
@@ -78,10 +79,23 @@ export const PaymentMethodsScreen: React.FC = (): JSX.Element => {
     },
   });
 
+  const handleFecthChargeSetupList = async (): Promise<void> => {
+    try {
+      setState(States.loading);
+      const { data } = await api.get<ChargeSetup[]>('/charge-setup/find');
+      setListChargeSetup(data ?? []);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
   const handleFetch = async (values: PaymentMethodsRequestParams): Promise<void> => {
     try {
       setState(States.loading);
-      const { data } = await api.post<PaymentMethodsResponse>('/payment/page', values);
+      const { data } = await api.post<PaymentMethodsResponse>('/payment-gateway/page', values);
 
       if (data) {
         setListPaymentMethods(data?.list ?? []);
@@ -98,6 +112,7 @@ export const PaymentMethodsScreen: React.FC = (): JSX.Element => {
       setState(States.default);
     }
   };
+
   const handleOnChangeColorColumn = (status: PaymentMethodsStatus): string => {
     switch (status) {
       case 0:
@@ -116,12 +131,13 @@ export const PaymentMethodsScreen: React.FC = (): JSX.Element => {
   }: {
     value: ShouldShowModal;
     newTitleModal: string | React.ReactNode;
-    paymentMethods?: PaymentMethods;
+    paymentMethods?: PaymentGateway;
   }): void => {
     setShouldShowModal(value);
     onChangeTitle(newTitleModal);
     onToggle();
-
+    console.log('paymentMethodsSelected', paymentMethodsSelected);
+    handleFecthChargeSetupList();
     if (paymentMethodsSelected?.id && value === ShouldShowModal.paymentMethods) {
       setPaymentMethods(paymentMethodsSelected);
       if (paymentMethodsSelected.id !== paymentMethods?.id) {
@@ -139,16 +155,19 @@ export const PaymentMethodsScreen: React.FC = (): JSX.Element => {
         const payload: PayloadPaymentMethods = {
           id: paymentMethods?.id,
           name: formDataPaymentMethods[FormInputNameToSavePaymentMethods.name],
-          paymentGateway: formDataPaymentMethods[FormInputNameToSavePaymentMethods.paymentGateway],
+          charge: {
+            id: formDataPaymentMethods[FormInputNameToSavePaymentMethods.paymentGateway],
+          },
+          pix: {},
         };
 
         if (!payload.id) {
           delete payload.id;
 
-          await api.post<PaymentMethods>('/paymentMethods', payload);
+          await api.post<PaymentGateway>('/payment-gateway', payload);
           toast.success('Forma de pagamento cadastrado com sucesso!');
         } else {
-          await api.put<PaymentMethods>('/paymentMethods', payload);
+          await api.put<PaymentGateway>('/payment-gateway', payload);
           toast.success('Forma de pagamento atualizado com sucesso!');
         }
 
@@ -164,12 +183,12 @@ export const PaymentMethodsScreen: React.FC = (): JSX.Element => {
   const handleOnClose = (): void => confirmDelete.hide();
 
   const handleOnConfirmDeleteToPaymentMethods = async (
-    paymentMethodsSelected: PaymentMethods,
+    paymentMethodsSelected: PaymentGateway,
   ): Promise<void> => {
     try {
-      await api.delete(`/paymentMethods/${paymentMethodsSelected?.id}`);
+      await api.delete(`/payment-gateway/${paymentMethodsSelected?.id}`);
 
-      toast.success('Formas de pagamento excluído com sucesso!');
+      toast.success('Forma de pagamento excluído com sucesso!');
       handleOnClose();
       handleFetch(currentPage);
     } catch (error) {
@@ -178,7 +197,7 @@ export const PaymentMethodsScreen: React.FC = (): JSX.Element => {
     }
   };
 
-  const handleOnShowDeletePaymentMethods = (paymentMethodsSelected: PaymentMethods): void => {
+  const handleOnShowDeletePaymentMethods = (paymentMethodsSelected: PaymentGateway): void => {
     confirmDelete.show({
       title: '',
       children: <DeleteContent />,
@@ -207,11 +226,6 @@ export const PaymentMethodsScreen: React.FC = (): JSX.Element => {
                 name: formDataFilter[FormInputNameToFilter.inputSearch],
               },
             },
-            serialNumber: {
-              entity: {
-                serialNumber: formDataFilter[FormInputNameToFilter.inputSearch],
-              },
-            },
           }[formDataFilter[FormInputNameToFilter.filterSearch]] || {};
 
         onToggle();
@@ -237,7 +251,7 @@ export const PaymentMethodsScreen: React.FC = (): JSX.Element => {
     if (paymentMethods?.id) {
       onChangeFormInputPaymentMethods(FormInputNameToSavePaymentMethods.name)(paymentMethods.name);
       onChangeFormInputPaymentMethods(FormInputNameToSavePaymentMethods.paymentGateway)(
-        paymentMethods.paymentGateway.name,
+        paymentMethods.charge.id,
       );
     }
   }, [paymentMethods]);
@@ -256,6 +270,7 @@ export const PaymentMethodsScreen: React.FC = (): JSX.Element => {
       shouldShowModal={shouldShowModal}
       onSavePaymentMethods={handleOnSavePaymentMethods}
       listPaymentMethods={listPaymentMethods}
+      listChargeSetup={listChargeSetup}
       currentPage={currentPage}
       changeColorColumn={handleOnChangeColorColumn}
       onChangeFormInputFilter={onChangeFormInputFilter}

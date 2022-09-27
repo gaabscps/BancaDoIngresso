@@ -1,9 +1,9 @@
 import Page from '@/model/Page';
-import PaymentMethods from '@/model/PaymentMethods';
+import PaymentGateway from '@/model/PaymentGateway';
 
-export type PaymentMethodsResponse = Page<PaymentMethods, PaymentMethods>;
+export type PaymentMethodsResponse = Page<PaymentGateway, PaymentGateway>;
 
 export type PaymentMethodsRequestParams = Pick<
-  Page<PaymentMethods, PaymentMethods>,
+  Page<PaymentGateway, PaymentGateway>,
   'page' | 'pageSize' | 'order' | 'sort' | 'total'
 >;

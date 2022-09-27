@@ -10,12 +10,13 @@ import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { ActionProps, Dialog } from '@/components/Dialog';
 import { ColumnStatus, CustomTable } from '@/components/Table';
 import Pagination from '@/components/Utils/Pagination';
-// import { PaymentMethodsRequestParams } from '@/features/paymentMethods/types';
+import { PaymentMethodsRequestParams } from '@/features/paymentMethods/types';
 import { FilterContent } from '@/features/paymentMethods/components/FilterContent';
 import { FormErrors, OnChangeFormInput, FormData } from '@/hooks/useForm';
 import Pdv from '@/model/Pdv';
 // import PaymentMethods from '@/model/PaymentMethods';
-import PaymentMethods from '@/model/PaymentMethods';
+
+import PaymentGateway from '@/model/PaymentGateway';
 import { columns } from './table';
 
 // eslint-disable-next-line no-shadow
@@ -39,8 +40,8 @@ export enum ShouldShowModal {
 
 interface PaymentMethodsContainerProps {
   state: States;
-  paymentMethodsState?: PaymentMethods;
-  listPaymentMethods: PaymentMethods[];
+  paymentMethodsState?: PaymentGateway;
+  listPaymentMethods: PaymentGateway[];
   currentPage: PaymentMethodsRequestParams;
   shouldShowModal: ShouldShowModal;
   title: string | React.ReactNode;
@@ -49,7 +50,7 @@ interface PaymentMethodsContainerProps {
   formErrorsPaymentMethods: FormErrors;
   formDataFilter: FormData;
   formErrorsFilter: FormErrors;
-  listPdv: Pdv[];
+  listChargeSetup: any[];
   onSavePaymentMethods: () => Promise<void>;
   onPaginationChange: (page: number) => void;
   changeColorColumn: (status: number) => void;
@@ -57,7 +58,7 @@ interface PaymentMethodsContainerProps {
   onToggle: () => void;
   onFilter: () => Promise<void>;
   onChangeFormInputPaymentMethods: OnChangeFormInput;
-  onShowDeletePaymentMethods: (paymentMethods: PaymentMethods) => void;
+  onShowDeletePaymentMethods: (paymentMethods: PaymentGateway) => void;
   onShouldShowModal: ({
     value,
     newTitleModal,
@@ -65,7 +66,7 @@ interface PaymentMethodsContainerProps {
   }: {
     value: ShouldShowModal;
     newTitleModal: string | React.ReactNode;
-    paymentMethods?: PaymentMethods;
+    paymentMethods?: PaymentGateway;
   }) => void;
 }
 
@@ -81,7 +82,7 @@ export const PaymentMethodsContainer: React.FC<PaymentMethodsContainerProps> = (
   formErrorsPaymentMethods,
   formDataFilter,
   formErrorsFilter,
-  listPdv,
+  listChargeSetup,
   onChangeFormInputFilter,
   onChangeFormInputPaymentMethods,
   onSavePaymentMethods,
@@ -92,62 +93,62 @@ export const PaymentMethodsContainer: React.FC<PaymentMethodsContainerProps> = (
   onShouldShowModal,
   onShowDeletePaymentMethods,
 }) => {
-  // const dataTablePaymentMethods = listPaymentMethods?.map(item => ({
-  //   id: item.id,
-  //   name: (
-  //     <ColumnStatus statusColor={String(changeColorColumn(Number(item.status)))}>
-  //       {item.name}
-  //     </ColumnStatus>
-  //   ),
-  //   paymentGateway: item.paymentGateway,
-  //   actions: (
-  //     <React.Fragment>
-  //       <Pen
-  //         className="mr-2 svg-icon action-icon"
-  //         onClick={(): void =>
-  //           onShouldShowModal({
-  //             value: ShouldShowModal.paymentMethods,
-  //             newTitleModal: `Editar ${item.name}`,
-  //             paymentMethods: item,
-  //           })
-  //         }
-  //       />
-  //       <Trash
-  //         className="mr-2 svg-icon action-icon"
-  //         onClick={() => {
-  //           onShowDeletePaymentMethods(item);
-  //         }}
-  //       />
-  //     </React.Fragment>
-  //   ),
-  // }));
-  const dataTablePaymentMethods = [
-    {
-      id: '1',
-      name: <ColumnStatus statusColor={String(changeColorColumn(1))}>PayPal</ColumnStatus>,
-      paymentGateway: 'gateway',
-      actions: (
-        <React.Fragment>
-          <Pen
-            className="mr-2 svg-icon action-icon"
-            onClick={(): void =>
-              onShouldShowModal({
-                value: ShouldShowModal.paymentMethods,
-                newTitleModal: `Editar PayPal`,
-                // paymentMethods: 1,
-              })
-            }
-          />
-          <Trash
-            className="mr-2 svg-icon action-icon"
-            onClick={() => {
-              // onShowDeletePaymentMethods();
-            }}
-          />
-        </React.Fragment>
-      ),
-    },
-  ];
+  const dataTablePaymentMethods = listPaymentMethods?.map(paymentMethods => ({
+    id: paymentMethods.id,
+    name: (
+      <ColumnStatus statusColor={String(changeColorColumn(Number(paymentMethods.status)))}>
+        {paymentMethods.name}
+      </ColumnStatus>
+    ),
+    paymentGateway: paymentMethods.charge.name,
+    actions: (
+      <React.Fragment>
+        <Pen
+          className="mr-2 svg-icon action-icon"
+          onClick={(): void =>
+            onShouldShowModal({
+              value: ShouldShowModal.paymentMethods,
+              newTitleModal: `Editar ${paymentMethods.name}`,
+              paymentMethods,
+            })
+          }
+        />
+        <Trash
+          className="mr-2 svg-icon action-icon"
+          onClick={() => {
+            onShowDeletePaymentMethods(paymentMethods);
+          }}
+        />
+      </React.Fragment>
+    ),
+  }));
+  // const dataTablePaymentMethods = [
+  //   {
+  //     id: '1',
+  //     name: <ColumnStatus statusColor={String(changeColorColumn(1))}>PayPal</ColumnStatus>,
+  //     paymentGateway: 'gateway',
+  //     actions: (
+  //       <React.Fragment>
+  //         <Pen
+  //           className="mr-2 svg-icon action-icon"
+  //           onClick={(): void =>
+  //             onShouldShowModal({
+  //               value: ShouldShowModal.paymentMethods,
+  //               newTitleModal: `Editar PayPal`,
+  //               // paymentMethods: 1,
+  //             })
+  //           }
+  //         />
+  //         <Trash
+  //           className="mr-2 svg-icon action-icon"
+  //           onClick={() => {
+  //             // onShowDeletePaymentMethods();
+  //           }}
+  //         />
+  //       </React.Fragment>
+  //     ),
+  //   },
+  // ];
 
   const renderActionDialogToCancel: ActionProps = {
     title: 'Cancelar',
@@ -198,7 +199,7 @@ export const PaymentMethodsContainer: React.FC<PaymentMethodsContainerProps> = (
                 formErrors={formErrorsPaymentMethods}
                 onChangeFormInput={onChangeFormInputPaymentMethods}
                 listPaymentMethods={listPaymentMethods}
-                listPdv={listPdv}
+                listChargeSetup={listChargeSetup}
               />
             ),
           }[shouldShowModal]
@@ -216,7 +217,7 @@ export const PaymentMethodsContainer: React.FC<PaymentMethodsContainerProps> = (
               onClick={(): void =>
                 onShouldShowModal({
                   value: ShouldShowModal.paymentMethods,
-                  newTitleModal: 'Cadastrar nova formas de pagamento',
+                  newTitleModal: 'Cadastrar nova forma de pagamento',
                 })
               }
             />
