@@ -7,3 +7,7 @@ export type PdvRequestParams = Pick<
   Page<Pdv, Pdv>,
   'page' | 'pageSize' | 'order' | 'sort' | 'total'
 >;
+
+export interface NameFiles {
+  [key: string]: string;
+}

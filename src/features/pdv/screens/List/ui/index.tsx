@@ -19,6 +19,7 @@ import { ReactComponent as SubPdvIcon } from '@/assets/images/svg/subPDV.svg';
 
 import { RegisterContentSubPdv } from '@/features/pdv/components/RegisterContentSubPdv';
 import { columns } from './table';
+import { NameFiles } from '..';
 
 // eslint-disable-next-line no-shadow
 export enum States {
@@ -39,6 +40,7 @@ interface PdvContainerProps {
   pdvState?: Pdv;
   listPdv: Pdv[];
   listSubPdv: SubPdv[];
+  nameFiles: NameFiles;
   title: string | React.ReactNode;
   currentPage: PdvRequestParams;
   visible: boolean;
@@ -91,6 +93,7 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
   pdvState,
   listPdv,
   listSubPdv,
+  nameFiles,
   title,
   currentPage,
   visible,
@@ -261,6 +264,7 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
                 formErrors={formErrorsPdv}
                 onChangeFormInput={onChangeFormInputPdv}
                 onChangeFileInput={onChangeFileInput}
+                nameFiles={nameFiles}
               />
             ),
             [ShouldShowModal.subpdv]: (
@@ -317,7 +321,12 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
             </div>
           </div>
         </div>
-        <CustomTable columns={columns} data={dataTablePdv} />
+        <CustomTable
+          columns={columns}
+          data={dataTablePdv}
+          numberRowsPerPage={currentPage.pageSize}
+          progressPending={state === States.loading}
+        />
         <Pagination
           currentPage={currentPage.page}
           totalCount={currentPage.total}

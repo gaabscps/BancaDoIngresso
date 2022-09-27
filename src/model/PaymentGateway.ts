@@ -1,10 +1,9 @@
 import ChargeSetup from './ChargeSetup';
-import PixSetup from './PixSetup';
+import StatusType from './StatusType';
 
 export default interface PaymentGateway {
   id: string;
   name: string;
   charge: ChargeSetup;
-  pix: PixSetup;
-  actived: boolean;
+  status: StatusType;
 }

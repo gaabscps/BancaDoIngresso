@@ -212,7 +212,13 @@ export const PaymentGatewayContainer: React.FC<PosContainerProps> = ({
             Gateway de pagamento inativo
           </div>
         </div>
-        <CustomTable columns={columns} data={dataTablePos} theme="primary" />
+        <CustomTable
+          columns={columns}
+          data={dataTablePos}
+          theme="primary"
+          numberRowsPerPage={currentPage.pageSize}
+          progressPending={state === States.loading}
+        />
         <Pagination
           currentPage={currentPage.page}
           totalCount={currentPage.total}
