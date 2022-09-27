@@ -228,7 +228,7 @@ const Sample = (): JSX.Element => {
             POS inativa
           </div>
         </div> */}
-        <CustomTable theme={'primary'} columns={columnsPrimaryStatusColor} data={dataTablePos} />
+        {/* <CustomTable theme={'primary'} columns={columnsPrimaryStatusColor} data={dataTablePos} /> */}
         <Pagination
           currentPage={pagination.page}
           totalCount={pagination.total}

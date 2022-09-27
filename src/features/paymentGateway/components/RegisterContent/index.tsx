@@ -2,15 +2,13 @@ import React from 'react';
 import { Col, Form, FormGroup, Row } from 'reactstrap';
 import { InputText, SelectCustom } from '@/components';
 import { FormData, FormErrors, OnChangeFormInput } from '@/hooks/useForm';
-import Pos from '@/model/Pos';
-import Pdv from '@/model/Pdv';
+import PaymentGateway from '@/model/PaymentGateway';
 
 interface RegisterContentProps {
   formData: FormData;
   formErrors: FormErrors;
   onChangeFormInput: OnChangeFormInput;
-  listPos: Pos[];
-  listPdv: Pdv[];
+  listPos: PaymentGateway[];
 }
 
 // eslint-disable-next-line no-shadow
@@ -28,7 +26,6 @@ export enum FormInputName {
 export const RegisterContent: React.FC<RegisterContentProps> = ({
   formData,
   formErrors,
-  listPdv,
   onChangeFormInput,
 }) => {
   const statusOptions = [
@@ -50,28 +47,18 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
           <FormGroup className="mb-2">
             <InputText
               name="name"
-              label="Nome da POS"
-              placeholder="Digite o nome da POS"
+              label="Nome do gateway de pagamento"
+              placeholder="Digite o nome do gateway de pagamento"
               value={formData[FormInputName.name]}
               onChange={e => onChangeFormInput(FormInputName.name)(e.target.value)}
               error={formErrors.name && formErrors.name[0]}
             />
           </FormGroup>
           <FormGroup className="mb-2">
-            <InputText
-              name="serialNumber"
-              label="Numero de Série da POS"
-              placeholder="Digite o numero de Série da POS"
-              value={formData[FormInputName.serialNumber]}
-              onChange={e => onChangeFormInput(FormInputName.serialNumber)(e.target.value)}
-              error={formErrors.serialNumber && formErrors.serialNumber[0]}
-            />
-          </FormGroup>
-          <FormGroup className="mb-2">
             <SelectCustom
               name="status"
-              label="Situação da POS"
-              placeholder="Selecione ou digite a situação da POS"
+              label="Tipo do gateway de pagamento"
+              placeholder="Selecione ou digite o tipo do gateway de pagamento"
               onChange={e => onChangeFormInput(FormInputName.status)(e?.value as string)}
               error={formErrors.status && formErrors.status[0]}
               value={formData[FormInputName.status]}
@@ -79,21 +66,10 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             />
           </FormGroup>
           <FormGroup className="mb-2">
-            <SelectCustom
-              name="pdv"
-              label="PDV (opcional)"
-              placeholder="Selecione ou digite o PDV à vincular"
-              value={formData[FormInputName.pdv]}
-              onChange={e => onChangeFormInput(FormInputName.pdv)(e?.value as string)}
-              error={formErrors.pdv && formErrors.pdv[0]}
-              options={listPdv.map(item => ({ value: item.id, label: item.name }))}
-            />
-          </FormGroup>
-          <FormGroup className="mb-2">
             <InputText
               name="model"
-              label="Modelo da POS (opcional)"
-              placeholder="Digite o modelo da POS"
+              label="Token do gateway de pagamento"
+              placeholder="Ex: 123456"
               value={formData[FormInputName.model]}
               onChange={e => onChangeFormInput(FormInputName.model)(e.target.value)}
               error={formErrors.model && formErrors.model[0]}
@@ -102,8 +78,8 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
           <FormGroup className="mb-2">
             <InputText
               name="telephoneOperator"
-              label="Operadora telefônica (opcional)"
-              placeholder="Digite a operadora telefônica"
+              label="Secret"
+              placeholder="Ex: 1234567"
               value={formData[FormInputName.telephoneOperator]}
               onChange={e => onChangeFormInput(FormInputName.telephoneOperator)(e.target.value)}
               error={formErrors.telephoneOperator && formErrors.telephoneOperator[0]}
@@ -111,20 +87,19 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
           </FormGroup>
           <FormGroup className="mb-2">
             <InputText
-              name="telephoneOperator"
-              label="Operadora de Cartão (opcional)"
-              placeholder="Digite a operadora de Cartão"
-              value={formData[FormInputName.cardOperator]}
-              onChange={e => onChangeFormInput(FormInputName.cardOperator)(e.target.value)}
-              error={formErrors.cardOperator && formErrors.cardOperator[0]}
+              name="expirationDate"
+              label="Porta"
+              placeholder="Ex: 123"
+              value={formData[FormInputName.expirationDate]}
+              onChange={e => onChangeFormInput(FormInputName.expirationDate)(e.target.value)}
+              error={formErrors.expirationDate && formErrors.expirationDate[0]}
             />
           </FormGroup>
           <FormGroup className="mb-2">
             <InputText
-              type="date"
               name="expirationDate"
-              label="Data de validade (opcional)"
-              placeholder="DD/MM/AAAA"
+              label="IP de Destino"
+              placeholder="Ex: 000.000.0.0"
               value={formData[FormInputName.expirationDate]}
               onChange={e => onChangeFormInput(FormInputName.expirationDate)(e.target.value)}
               error={formErrors.expirationDate && formErrors.expirationDate[0]}

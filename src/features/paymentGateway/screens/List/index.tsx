@@ -1,21 +1,22 @@
-/* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { useEffect, useState } from 'react';
 import { useDialog } from '@/hooks/useDialog';
-import Pos from '@/model/Pos';
 import api, { AxiosError } from '@/services/api';
 import { toast } from 'react-toastify';
-import { PosResponse, PosRequestParams } from '@/features/pos/types';
 import useForm from '@/hooks/useForm';
-import { States, PosContainer, ShouldShowModal } from '@/features/pos/screens/List/ui';
+import { States, ShouldShowModal } from '@/features/pos/screens/List/ui';
 import PosStatus from '@/model/PosStatus';
 import validators from '@/helpers/validators';
 import { FormInputName as FormInputNameToSavePos } from '@/features/pos/components/RegisterContent';
 import { useConfirmDelete } from '@/hooks/useConfirmDelete';
-import { FormInputName as FormInputNameToFilter } from '@/features/pos/components/FilterContent';
-import Pdv from '@/model/Pdv';
-import dayjs from 'dayjs';
+import { FormInputName as FormInputNameToFilter } from '@/features/paymentGateway/components/FilterContent';
+import {
+  PaymentGatewayResponse,
+  PaymentGatewayRequestParams,
+} from '@/features/paymentGateway/types';
+import PaymentGateway from '@/model/PaymentGateway';
 import { colors } from '@/styles/colors';
 import { DeleteContent } from '../../components/DeleteContent';
+import { PaymentGatewayContainer } from './ui';
 
 export default interface PayloadPos {
   id?: string;
@@ -31,14 +32,13 @@ export default interface PayloadPos {
   expirationDate: string;
 }
 
-export const PosScreen: React.FC = (): JSX.Element => {
+export const PaymentGatewayScreen: React.FC = (): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
-  const [listPos, setListPos] = useState<Pos[]>([]);
-  const [listPdv, setListPdv] = useState<Pdv[]>([]);
-  const [pos, setPos] = useState<Pos>();
+  const [listPaymentGateway, setListPaymentGateway] = useState<PaymentGateway[]>([]);
+  const [paymentGateway, setPaymentGateway] = useState<PaymentGateway>();
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(ShouldShowModal.pos);
 
-  const [currentPage, setCurrentPage] = useState<PosRequestParams>({
+  const [currentPage, setCurrentPage] = useState<PaymentGatewayRequestParams>({
     page: 1,
     pageSize: 10,
     sort: 'name',
@@ -87,13 +87,13 @@ export const PosScreen: React.FC = (): JSX.Element => {
     },
   });
 
-  const handleFetch = async (values: PosRequestParams): Promise<void> => {
+  const handleFetch = async (values: PaymentGatewayRequestParams): Promise<void> => {
     try {
       setState(States.loading);
-      const { data } = await api.post<PosResponse>('/pos/page', values);
+      const { data } = await api.post<PaymentGatewayResponse>('/payment-gateway/page', values);
 
       if (data) {
-        setListPos(data?.list ?? []);
+        setListPaymentGateway(data?.list ?? []);
 
         setCurrentPage(currentPageState => ({
           ...currentPageState,
@@ -114,37 +114,12 @@ export const PosScreen: React.FC = (): JSX.Element => {
       2: colors.yellow,
       3: colors.red,
     }[status] || colors.grey);
-  const handleOnShouldShowModal = ({
-    value,
-    newTitleModal,
-    pos: posSelected,
-  }: {
-    value: ShouldShowModal;
-    newTitleModal: string | React.ReactNode;
-    pos?: Pos;
-  }): void => {
-    setShouldShowModal(value);
-    onChangeTitle(newTitleModal);
-    onToggle();
-
-    if (posSelected?.id && value === ShouldShowModal.pos) {
-      setPos(posSelected);
-      handleFecthPdvList();
-      if (posSelected.id !== pos?.id) {
-        resetFormPos();
-      }
-    } else {
-      resetFormPos();
-      setPos(undefined);
-      handleFecthPdvList();
-    }
-  };
 
   const handleOnSavePos = async (): Promise<void> => {
     try {
       if (isFormValidPos()) {
         const payload: PayloadPos = {
-          id: pos?.id,
+          id: paymentGateway?.id,
           name: formDataPos[FormInputNameToSavePos.name],
           serialNumber: formDataPos[FormInputNameToSavePos.serialNumber],
           status: +formDataPos[FormInputNameToSavePos.status],
@@ -160,11 +135,11 @@ export const PosScreen: React.FC = (): JSX.Element => {
         if (!payload.id) {
           delete payload.id;
 
-          await api.post<Pos>('/pos', payload);
-          toast.success('POS cadastrado com sucesso!');
+          await api.post<PaymentGateway>('/payment-gateway', payload);
+          toast.success('Gateway de pagamento cadastrado com sucesso!');
         } else {
-          await api.put<Pos>('/pos', payload);
-          toast.success('POS atualizado com sucesso!');
+          await api.put<PaymentGateway>('/payment-gateway', payload);
+          toast.success('Gateway de pagamento atualizado com sucesso!');
         }
 
         onToggle();
@@ -179,8 +154,6 @@ export const PosScreen: React.FC = (): JSX.Element => {
   const handleFecthPdvList = async (): Promise<void> => {
     try {
       setState(States.loading);
-      const { data } = await api.get<Pdv[]>('/pdv/find');
-      setListPdv(data ?? []);
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
@@ -191,7 +164,7 @@ export const PosScreen: React.FC = (): JSX.Element => {
 
   const handleOnClose = (): void => confirmDelete.hide();
 
-  const handleOnConfirmDeleteToPos = async (posSelected: Pos): Promise<void> => {
+  const handleOnConfirmDeleteToPos = async (posSelected: PaymentGateway): Promise<void> => {
     try {
       await api.delete(`/pos/${posSelected?.id}`);
 
@@ -204,7 +177,7 @@ export const PosScreen: React.FC = (): JSX.Element => {
     }
   };
 
-  const handleOnShowDeletePos = (posSelected: Pos): void => {
+  const handleOnShowDeletePos = (posSelected: PaymentGateway): void => {
     confirmDelete.show({
       title: '',
       children: <DeleteContent />,
@@ -220,6 +193,30 @@ export const PosScreen: React.FC = (): JSX.Element => {
         },
       ],
     });
+  };
+  const handleOnShouldShowModal = ({
+    value,
+    newTitleModal,
+    pos: posSelected,
+  }: {
+    value: ShouldShowModal;
+    newTitleModal: string | React.ReactNode;
+    pos?: PaymentGateway;
+  }): void => {
+    setShouldShowModal(value);
+    onChangeTitle(newTitleModal);
+    onToggle();
+
+    if (posSelected?.id && value === ShouldShowModal.pos) {
+      setPaymentGateway(posSelected);
+      handleFecthPdvList();
+      if (posSelected.id !== paymentGateway?.id) {
+        resetFormPos();
+      }
+    } else {
+      resetFormPos();
+      setPaymentGateway(undefined);
+    }
   };
 
   const handleOnFilter = async (): Promise<void> => {
@@ -259,26 +256,11 @@ export const PosScreen: React.FC = (): JSX.Element => {
   };
 
   useEffect(() => {
-    if (pos?.id) {
-      onChangeFormInputPos(FormInputNameToSavePos.name)(pos.name);
-      onChangeFormInputPos(FormInputNameToSavePos.serialNumber)(pos.serialNumber);
-      onChangeFormInputPos(FormInputNameToSavePos.status)(String(pos.status));
-      onChangeFormInputPos(FormInputNameToSavePos.model)(pos.model);
-      onChangeFormInputPos(FormInputNameToSavePos.pdv)(String(pos.pdv.id));
-      onChangeFormInputPos(FormInputNameToSavePos.telephoneOperator)(pos.telephoneOperator);
-      onChangeFormInputPos(FormInputNameToSavePos.cardOperator)(pos.cardOperator);
-      onChangeFormInputPos(FormInputNameToSavePos.expirationDate)(
-        String(dayjs(pos.expirationDate, 'YYYY-DD-MM hh:mm:ss').format('YYYY-MM-DD')),
-      );
-    }
-  }, [pos]);
-
-  useEffect(() => {
     handleFetch(currentPage);
   }, []);
 
   return (
-    <PosContainer
+    <PaymentGatewayContainer
       state={state}
       title={title}
       visible={visible}
@@ -286,7 +268,7 @@ export const PosScreen: React.FC = (): JSX.Element => {
       onPaginationChange={handleOnPaginationChange}
       shouldShowModal={shouldShowModal}
       onSavePos={handleOnSavePos}
-      listPos={listPos}
+      listPos={listPaymentGateway}
       currentPage={currentPage}
       changeColorColumn={handleOnChangeColorColumn}
       onChangeFormInputFilter={onChangeFormInputFilter}
@@ -298,8 +280,7 @@ export const PosScreen: React.FC = (): JSX.Element => {
       formErrorsFilter={formErrorsFilter}
       onShowDeletePos={handleOnShowDeletePos}
       onFilter={handleOnFilter}
-      listPdv={listPdv}
-      posState={pos}
+      posState={paymentGateway}
     />
   );
 };
