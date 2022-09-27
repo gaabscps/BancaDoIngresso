@@ -257,9 +257,17 @@ export const PaymentMethodsScreen: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     if (paymentMethods?.id) {
+      const statusBooleanString = {
+        0: 'true',
+        1: 'false',
+      }[paymentMethods.status];
+
       onChangeFormInputPaymentMethods(FormInputNameToSavePaymentMethods.name)(paymentMethods.name);
       onChangeFormInputPaymentMethods(FormInputNameToSavePaymentMethods.paymentGateway)(
         paymentMethods.charge.id,
+      );
+      onChangeFormInputPaymentMethods(FormInputNameToSavePaymentMethods.status)(
+        statusBooleanString,
       );
     }
   }, [paymentMethods]);
