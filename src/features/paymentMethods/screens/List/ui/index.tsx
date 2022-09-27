@@ -172,7 +172,7 @@ export const PaymentMethodsContainer: React.FC<PaymentMethodsContainerProps> = (
           }[shouldShowModal],
           {
             [ShouldShowModal.filter]: {
-              title: 'Filtrar',
+              title: 'Aplicar',
               onClick: (): Promise<void> => onFilter(),
             },
             [ShouldShowModal.paymentMethods]: {

@@ -1,22 +1,24 @@
 import React from 'react';
 import { Col, Form, FormGroup, Row } from 'reactstrap';
-import { InputText, SelectCustom } from '@/components';
+import { InputText, SelectCustom, Switch } from '@/components';
 import { FormData, FormErrors, OnChangeFormInput } from '@/hooks/useForm';
-import Pdv from '@/model/Pdv';
 import PaymentGateway from '@/model/PaymentGateway';
+import ChargeSetup from '@/model/ChargeSetup';
+import { convertToBoolean } from '@/helpers/common/convertToBoolean';
 
 interface RegisterContentProps {
   formData: FormData;
   formErrors: FormErrors;
   onChangeFormInput: OnChangeFormInput;
   listPaymentMethods: PaymentGateway[];
-  listChargeSetup: any[];
+  listChargeSetup: ChargeSetup[];
 }
 
 // eslint-disable-next-line no-shadow
 export enum FormInputName {
   name = 'name',
   paymentGateway = 'paymentGateway',
+  status = 'status',
 }
 
 export const RegisterContent: React.FC<RegisterContentProps> = ({
@@ -32,7 +34,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
     }}
   >
     <Row>
-      <Col md={12}>
+      <Col md={8}>
         <FormGroup className="mb-2">
           <InputText
             name="name"
@@ -57,6 +59,16 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             }))}
           />
         </FormGroup>
+      </Col>
+      <Col md={4}>
+        <Switch
+          name="status"
+          label={`Forma de pagamento ${
+            convertToBoolean(formData[FormInputName.status]) ? 'ativa' : 'inativa'
+          }`}
+          onChange={e => onChangeFormInput(FormInputName.status)(String(e.target.checked))}
+          checked={convertToBoolean(formData[FormInputName.status])}
+        />
       </Col>
     </Row>
   </Form>

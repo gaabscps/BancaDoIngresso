@@ -20,12 +20,14 @@ import { FormInputName as FormInputNameToFilter } from '@/features/paymentMethod
 import PaymentMethodsStatus from '@/model/StatusType';
 import ChargeSetup from '@/model/ChargeSetup';
 import PaymentGateway from '@/model/PaymentGateway';
+import { convertToBoolean } from '@/helpers/common/convertToBoolean';
 import { DeleteContent } from '../../components/DeleteContent';
 
 export default interface PayloadPaymentMethods {
   id?: string;
   name: string;
   charge: { id: string };
+  status: PaymentMethodsStatus;
   pix: object; // TODO: remover
 }
 
@@ -116,9 +118,9 @@ export const PaymentMethodsScreen: React.FC = (): JSX.Element => {
   const handleOnChangeColorColumn = (status: PaymentMethodsStatus): string => {
     switch (status) {
       case 0:
-        return '#E64F49';
-      case 1:
         return '#7AD81B';
+      case 1:
+        return '#E64F49';
       default:
         return 'grey';
     }
@@ -158,6 +160,9 @@ export const PaymentMethodsScreen: React.FC = (): JSX.Element => {
           charge: {
             id: formDataPaymentMethods[FormInputNameToSavePaymentMethods.paymentGateway],
           },
+          status: convertToBoolean(formDataPaymentMethods[FormInputNameToSavePaymentMethods.status])
+            ? 0
+            : 1,
           pix: {},
         };
 
