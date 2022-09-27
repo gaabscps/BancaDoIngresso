@@ -8,7 +8,7 @@ import {
   ShouldShowModal,
   PaymentGatewayContainer,
 } from '@/features/paymentGateway/screens/List/ui';
-import PosStatus from '@/model/PosStatus';
+import PaymentGatewayStatus from '@/model/StatusType';
 import { FormInputName as FormInputNameToSavePaymentGateway } from '@/features/paymentGateway/components/RegisterContent';
 import { useConfirmDelete } from '@/hooks/useConfirmDelete';
 import { FormInputName as FormInputNameToFilter } from '@/features/paymentGateway/components/FilterContent';
@@ -16,6 +16,7 @@ import ChargeSetup from '@/model/ChargeSetup';
 import { colors } from '@/styles/colors';
 import { ChargeSetupResponse, ChargeSetupRequestParams } from '@/features/paymentGateway/types';
 import validators from '@/helpers/validators';
+import { convertToBoolean } from '@/helpers/common/convertToBoolean';
 import { DeleteContent } from '../../components/DeleteContent';
 
 export default interface PayloadGateway {
@@ -27,7 +28,6 @@ export default interface PayloadGateway {
   email: string;
   notificationURL: string;
   webhook: string;
-  actived: boolean;
 }
 
 export const PaymentGatewayScreen: React.FC = (): JSX.Element => {
@@ -108,21 +108,21 @@ export const PaymentGatewayScreen: React.FC = (): JSX.Element => {
       setState(States.default);
     }
   };
-  const handleOnChangeColorColumn = (status: PosStatus): string =>
+  const handleOnChangeColorColumn = (status: PaymentGatewayStatus): string =>
     ({
-      0: colors.lightBlue,
-      1: colors.green,
-      2: colors.yellow,
-      3: colors.red,
+      0: colors.green,
+      1: colors.red,
     }[status] || colors.grey);
 
   const handleOnSavePaymentGateway = async (): Promise<void> => {
     try {
       if (isFormValidPaymentGateway()) {
+        const activedInput = convertToBoolean(
+          formDataPaymentGateway[FormInputNameToSavePaymentGateway.status],
+        );
         const payload: PayloadGateway = {
           id: paymentGateway?.id,
           name: formDataPaymentGateway[FormInputNameToSavePaymentGateway.name],
-          actived: true,
           url: formDataPaymentGateway[FormInputNameToSavePaymentGateway.url],
           frontToken: formDataPaymentGateway[FormInputNameToSavePaymentGateway.frontToken],
           token: formDataPaymentGateway[FormInputNameToSavePaymentGateway.token],
@@ -135,10 +135,17 @@ export const PaymentGatewayScreen: React.FC = (): JSX.Element => {
         if (!payload.id) {
           delete payload.id;
 
-          await api.post<ChargeSetup>('/charge-setup', payload);
+          const { data: dataPostCharge } = await api.post<ChargeSetup>('/charge-setup', payload);
+
+          await api.patch<ChargeSetup>(
+            `/charge-setup${activedInput ? '/activate' : '/inactivate'}/${dataPostCharge.id}`,
+          );
           toast.success('Gateway de pagamento cadastrado com sucesso!');
         } else {
           await api.put<ChargeSetup>('/charge-setup', payload);
+          await api.patch<ChargeSetup>(
+            `/charge-setup${activedInput ? '/activate' : '/inactivate'}/${paymentGateway?.id}`,
+          );
           toast.success('Gateway de pagamento atualizado com sucesso!');
         }
 
@@ -233,6 +240,16 @@ export const PaymentGatewayScreen: React.FC = (): JSX.Element => {
     }
   };
 
+  // eslint-disable-next-line consistent-return
+  // const convertNumberToBoolean = (value: string): boolean | undefined => {
+  //   if (Number(value) === 0) {
+  //     return true;
+  //   }
+  //   if (Number(value) === 1) {
+  //     return false;
+  //   }
+  // };
+
   const handleOnPaginationChange = async (page: number): Promise<void> => {
     handleFetch({
       ...currentPage,
@@ -258,9 +275,6 @@ export const PaymentGatewayScreen: React.FC = (): JSX.Element => {
       );
       onChangeFormInputPaymentGateway(FormInputNameToSavePaymentGateway.webhook)(
         paymentGateway.webhook,
-      );
-      onChangeFormInputPaymentGateway(FormInputNameToSavePaymentGateway.status)(
-        String(paymentGateway.status),
       );
     }
   }, [paymentGateway]);

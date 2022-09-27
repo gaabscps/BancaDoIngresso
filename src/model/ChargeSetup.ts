@@ -1,9 +1,9 @@
-import PosStatus from './PosStatus';
+import StatusType from './StatusType';
 
 export default interface ChargeSetup {
   id: string;
   name: string;
-  status: PosStatus;
+  status: StatusType;
   url: string;
   token: string;
   frontToken: string;
