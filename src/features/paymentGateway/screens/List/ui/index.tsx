@@ -92,7 +92,7 @@ export const PaymentGatewayContainer: React.FC<PosContainerProps> = ({
   const dataTablePos = listPos?.map(item => ({
     id: item.id,
     name: (
-      <ColumnStatus statusColor={String(changeColorColumn(Number(item.actived)))}>
+      <ColumnStatus statusColor={String(changeColorColumn(Number(item.status)))}>
         {item.name}
       </ColumnStatus>
     ),

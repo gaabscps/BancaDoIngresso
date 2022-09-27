@@ -218,7 +218,13 @@ export const PaymentMethodsContainer: React.FC<PaymentMethodsContainerProps> = (
             Forma de pagamento inativo
           </div>
         </div>
-        <CustomTable columns={columns} data={dataTablePaymentMethods} theme="primary" />
+        <CustomTable
+          columns={columns}
+          data={dataTablePaymentMethods}
+          theme="primary"
+          numberRowsPerPage={currentPage.pageSize}
+          progressPending={state === States.loading}
+        />
         <Pagination
           currentPage={currentPage.page}
           totalCount={currentPage.total}
