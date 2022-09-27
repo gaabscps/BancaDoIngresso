@@ -28,7 +28,7 @@ export const InputText: FC<InputProps> = ({
   wrapperClass,
   renderForward,
 }) => (
-  <div className={`mb-2 flex-column ${wrapperClass}`}>
+  <div className={`flex-column input-component ${wrapperClass}`}>
     {label && (
       <label htmlFor={name} className="input-label">
         {label}
