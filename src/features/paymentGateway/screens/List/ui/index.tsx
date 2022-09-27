@@ -24,7 +24,7 @@ export interface DataRow {
   id: string;
   name: string;
   url: string;
-  webhook: string;
+  email: string;
   actions: string;
   status: number;
 }
@@ -95,6 +95,8 @@ export const PaymentGatewayContainer: React.FC<PosContainerProps> = ({
         {item.name}
       </ColumnStatus>
     ),
+    url: item.url,
+    email: item.email,
     actions: (
       <React.Fragment>
         <Pen
@@ -102,7 +104,7 @@ export const PaymentGatewayContainer: React.FC<PosContainerProps> = ({
           onClick={(): void =>
             onShouldShowModal({
               value: ShouldShowModal.gateway,
-              newTitleModal: `Editar ${item.name}`,
+              newTitleModal: `${item.name}`,
               gateway: item,
             })
           }
@@ -139,7 +141,7 @@ export const PaymentGatewayContainer: React.FC<PosContainerProps> = ({
           }[shouldShowModal],
           {
             [ShouldShowModal.filter]: {
-              title: 'Filtrar',
+              title: 'Aplicar',
               onClick: (): Promise<void> => onFilter(),
             },
             [ShouldShowModal.gateway]: {

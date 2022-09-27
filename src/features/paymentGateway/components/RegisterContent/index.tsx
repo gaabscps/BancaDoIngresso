@@ -21,6 +21,7 @@ export enum FormInputName {
   email = 'email',
   notificationURL = 'notificationURL',
   webhook = 'webhook',
+  status = 'status',
 }
 
 export const RegisterContent: React.FC<RegisterContentProps> = ({
@@ -34,19 +35,20 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
       e.preventDefault();
     }}
   >
-    <Row>
-      <Col md={8}>
-        <FormGroup className="mb-2">
-          <InputText
-            name="Name"
-            label="Nome do gateway de pagamento"
-            placeholder="Digite o nome do gateway de pagamento"
-            value={formData[FormInputName.name]}
-            onChange={e => onChangeFormInput(FormInputName.name)(e.target.value)}
-            error={formErrors.name && formErrors.name[0]}
-          />
-        </FormGroup>
-        {/* <FormGroup className="mb-2">
+    <div className="d-flex">
+      <Row className="container-with-buttom">
+        <Col md={8}>
+          <FormGroup className="mb-2">
+            <InputText
+              name="Name"
+              label="Nome do gateway de pagamento"
+              placeholder="Digite o nome do gateway de pagamento"
+              value={formData[FormInputName.name]}
+              onChange={e => onChangeFormInput(FormInputName.name)(e.target.value)}
+              error={formErrors.name && formErrors.name[0]}
+            />
+          </FormGroup>
+          {/* <FormGroup className="mb-2">
             <SelectCustom
               name="type"
               label="Tipo do gateway de pagamento"
@@ -57,67 +59,69 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
               options={optionGateway}
             />
           </FormGroup> */}
-        <FormGroup className="mb-2">
-          <InputText
-            name="token"
-            label="Token do gateway de pagamento"
-            placeholder="Ex: 123456"
-            value={formData[FormInputName.token]}
-            onChange={e => onChangeFormInput(FormInputName.token)(e.target.value)}
-            error={formErrors.token && formErrors.token[0]}
-          />
-        </FormGroup>
-        <FormGroup className="mb-2">
-          <InputText
-            name="frontToken"
-            label="Secret"
-            placeholder="Ex: 1234567"
-            value={formData[FormInputName.frontToken]}
-            onChange={e => onChangeFormInput(FormInputName.frontToken)(e.target.value)}
-            error={formErrors.frontToken && formErrors.frontToken[0]}
-          />
-        </FormGroup>
-        <FormGroup className="mb-2">
-          <InputText
-            name="email"
-            label="Email"
-            placeholder="Ex: email@email.com"
-            value={formData[FormInputName.email]}
-            onChange={e => onChangeFormInput(FormInputName.email)(e.target.value)}
-            error={formErrors.email && formErrors.email[0]}
-          />
-        </FormGroup>
-        <FormGroup className="mb-2">
-          <InputText
-            name="notificationURL"
-            label="URL de Notificação"
-            placeholder="Ex: 123"
-            value={formData[FormInputName.notificationURL]}
-            onChange={e => onChangeFormInput(FormInputName.notificationURL)(e.target.value)}
-            error={formErrors.notificationURL && formErrors.notificationURL[0]}
-          />
-        </FormGroup>
-        <FormGroup className="mb-2">
-          <InputText
-            name="webhook"
-            label="webhook"
-            placeholder="Ex: 000.000.0.0"
-            value={formData[FormInputName.webhook]}
-            onChange={e => onChangeFormInput(FormInputName.webhook)(e.target.value)}
-            error={formErrors.webhook && formErrors.webhook[0]}
-          />
-        </FormGroup>
-        <FormGroup className="mb-2">
-          <InputText
-            name="url"
-            label="URL"
-            placeholder="Ex: 000.000.0.0"
-            value={formData[FormInputName.url]}
-            onChange={e => onChangeFormInput(FormInputName.url)(e.target.value)}
-            error={formErrors.url && formErrors.url[0]}
-          />
-        </FormGroup>
-      </Col>
-    </Row>
+          <FormGroup className="mb-2">
+            <InputText
+              name="token"
+              label="Token do gateway de pagamento"
+              placeholder="Dado fornecido pelo gateway de pagamento"
+              value={formData[FormInputName.token]}
+              onChange={e => onChangeFormInput(FormInputName.token)(e.target.value)}
+              error={formErrors.token && formErrors.token[0]}
+            />
+          </FormGroup>
+          <FormGroup className="mb-2">
+            <InputText
+              name="frontToken"
+              label="Secret"
+              placeholder="Dado fornecido pelo gateway de pagamento"
+              value={formData[FormInputName.frontToken]}
+              onChange={e => onChangeFormInput(FormInputName.frontToken)(e.target.value)}
+              error={formErrors.frontToken && formErrors.frontToken[0]}
+            />
+          </FormGroup>
+          <FormGroup className="mb-2">
+            <InputText
+              name="email"
+              label="Email"
+              placeholder="Ex: email@email.com"
+              value={formData[FormInputName.email]}
+              onChange={e => onChangeFormInput(FormInputName.email)(e.target.value)}
+              error={formErrors.email && formErrors.email[0]}
+            />
+          </FormGroup>
+          <FormGroup className="mb-2">
+            <InputText
+              name="notificationURL"
+              label="URL de Notificação"
+              placeholder="https://www.exemplo.com"
+              value={formData[FormInputName.notificationURL]}
+              onChange={e => onChangeFormInput(FormInputName.notificationURL)(e.target.value)}
+              error={formErrors.notificationURL && formErrors.notificationURL[0]}
+            />
+          </FormGroup>
+          <FormGroup className="mb-2">
+            <InputText
+              name="webhook"
+              label="Webhook"
+              placeholder="https://www.exemplo.com"
+              value={formData[FormInputName.webhook]}
+              onChange={e => onChangeFormInput(FormInputName.webhook)(e.target.value)}
+              error={formErrors.webhook && formErrors.webhook[0]}
+            />
+          </FormGroup>
+          <FormGroup className="mb-2">
+            <InputText
+              name="url"
+              label="URL"
+              placeholder="https://www.exemplo.com"
+              value={formData[FormInputName.url]}
+              onChange={e => onChangeFormInput(FormInputName.url)(e.target.value)}
+              error={formErrors.url && formErrors.url[0]}
+            />
+          </FormGroup>
+        </Col>
+      </Row>
+      <div></div>
+    </div>
   </Form>
 );

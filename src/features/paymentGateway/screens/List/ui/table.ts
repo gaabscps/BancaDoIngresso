@@ -12,6 +12,10 @@ export const columns: TableColumn<DataRow>[] = [
     selector: row => row.url,
   },
   {
+    name: 'Email',
+    selector: row => row.email,
+  },
+  {
     name: 'Ações',
     selector: row => row.actions,
     width: '120px',

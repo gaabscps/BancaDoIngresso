@@ -15,7 +15,7 @@ import { FormInputName as FormInputNameToFilter } from '@/features/paymentGatewa
 import ChargeSetup from '@/model/ChargeSetup';
 import { colors } from '@/styles/colors';
 import { ChargeSetupResponse, ChargeSetupRequestParams } from '@/features/paymentGateway/types';
-
+import validators from '@/helpers/validators';
 import { DeleteContent } from '../../components/DeleteContent';
 
 export default interface PayloadGateway {
@@ -57,8 +57,6 @@ export const PaymentGatewayScreen: React.FC = (): JSX.Element => {
     initialData: {
       id: '',
       name: '',
-      chargeId: '',
-      chargeName: '',
       url: '',
       token: '',
       frontToken: '',
@@ -66,7 +64,15 @@ export const PaymentGatewayScreen: React.FC = (): JSX.Element => {
       notificationURL: '',
       webhook: '',
     },
-    validators: {},
+    validators: {
+      name: [validators.required],
+      url: [validators.required],
+      token: [validators.required],
+      frontToken: [validators.required],
+      email: [validators.required],
+      notificationURL: [validators.required],
+      webhook: [validators.required],
+    },
     formatters: {},
   });
 
@@ -252,6 +258,9 @@ export const PaymentGatewayScreen: React.FC = (): JSX.Element => {
       );
       onChangeFormInputPaymentGateway(FormInputNameToSavePaymentGateway.webhook)(
         paymentGateway.webhook,
+      );
+      onChangeFormInputPaymentGateway(FormInputNameToSavePaymentGateway.status)(
+        String(paymentGateway.status),
       );
     }
   }, [paymentGateway]);
