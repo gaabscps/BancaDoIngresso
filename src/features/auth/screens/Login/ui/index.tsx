@@ -133,8 +133,6 @@ export const LoginContainer: React.FC<LoginContainerProps> = ({
 
               <Button
                 title="Entrar"
-                className="mainButton w-100"
-                style={{ width: '100%' }}
                 disabled={
                   !formData[FormInputName.document] ||
                   !formData[FormInputName.password] ||
@@ -142,6 +140,7 @@ export const LoginContainer: React.FC<LoginContainerProps> = ({
                 }
                 onClick={onSubmit}
                 theme="red"
+                size="xl"
               />
               <div className="d-flex justify-content-center align-items-center forgotPassword">
                 <a

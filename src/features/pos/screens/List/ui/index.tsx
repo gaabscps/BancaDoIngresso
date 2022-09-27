@@ -147,7 +147,7 @@ export const PosContainer: React.FC<PosContainerProps> = ({
           }[shouldShowModal],
           {
             [ShouldShowModal.filter]: {
-              title: 'Filtrar',
+              title: 'Aplicar',
               onClick: (): Promise<void> => onFilter(),
             },
             [ShouldShowModal.pos]: {

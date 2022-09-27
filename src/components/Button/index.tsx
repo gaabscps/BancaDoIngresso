@@ -6,7 +6,7 @@ export interface ButtonProps
 
 export type ButtonTheme = 'dark' | 'outlineDark' | 'noneBorder' | 'red';
 
-export type ButtonSize = 'sm' | 'md' | 'lg';
+export type ButtonSize = 'sm' | 'md' | 'lg' | 'xl';
 
 export type ButtonType = 'submit' | 'reset' | 'button';
 
@@ -41,6 +41,7 @@ export const Button: React.FC<ButtonCustomProps> = ({
     sm: 'button-sm',
     md: 'button-md',
     lg: 'button-lg',
+    xl: 'button-xl',
   }[size];
 
   return (

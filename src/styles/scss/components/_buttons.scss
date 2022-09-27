@@ -390,15 +390,23 @@
   line-height: 24px;
   border-radius: 5px;
 
+  &.button-xl {
+    padding: 16px 0;
+    width: 100%;
+    font-weight: 700;
+    font-size: 1.313rem;
+    line-height: 32px;
+  }
   &.button-lg {
     font-size: 1.313rem;
-    padding: 15px 20px;
+    padding: 20px;
     line-height: 32px;
   }
   &.button-md {
     font-size: 1rem;
-    padding: 13px 20px;
+    padding: 13px 15px;
     line-height: 24px;
+    height: 50px;
   }
   &.button-sm {
     font-size: 0.75rem;
@@ -459,6 +467,34 @@
   }
 }
 
+// Filter Button
+
+.filter-container {
+  display: flex;
+  align-items: center;
+  margin-left: 15px;
+  height: fit-content;
+  margin-top: 15px;
+  .filter-content {
+    width: fit-content;
+  }
+  svg {
+    cursor: pointer;
+    pointer-events: stroke;
+    path {
+      fill: #828282;
+      color: #828282;
+      &:hover {
+        fill: #222222;
+        color: #222222;
+      }
+      &:active {
+        fill: #222222;
+        color: #222222;
+      }
+    }
+  }
+}
 /**=====================
      06. Button CSS end
 ==========================**/

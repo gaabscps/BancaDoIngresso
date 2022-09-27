@@ -234,7 +234,7 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
           }[shouldShowModal],
           {
             [ShouldShowModal.filter]: {
-              title: 'Filtrar',
+              title: 'Aplicar',
               onClick: (): Promise<void> => onFilter(),
             },
             [ShouldShowModal.pdv]: {
@@ -298,6 +298,7 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
           </div>
           <div className="button-filter-container">
             <Button
+              size="md"
               title="+ Cadastrar novo PDV"
               onClick={(): void =>
                 onShouldShowModal({
