@@ -12,20 +12,14 @@ interface TablePropsCustom {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface TableCustomProps extends TableProps<TablePropsCustom | any> {
-  numberRowsPerPage?: number;
+  numberRowsPerPage: number;
+  progressPending: boolean;
 }
 
 const schemeTheme = {
   primary: primaryTheme,
   secondary: secondaryTheme,
 };
-
-export const initialTable = [
-  {
-    id: 'id',
-    name: 'name',
-  },
-];
 
 export const CustomTable: React.FC<TableCustomProps> = ({
   theme = 'primary',
@@ -36,8 +30,8 @@ export const CustomTable: React.FC<TableCustomProps> = ({
 }: TableCustomProps) => (
   <DataTable
     columns={columns}
-    data={data ?? initialTable}
-    noDataComponent={<CustomLoader />}
+    data={data}
+    noDataComponent={'Sem dados para exibir'}
     progressPending={progressPending}
     progressComponent={<CustomLoader numberRowsPerPage={numberRowsPerPage} />}
     customStyles={schemeTheme[theme as themeProps] ?? schemeTheme.primary}

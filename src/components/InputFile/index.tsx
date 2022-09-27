@@ -24,7 +24,7 @@ export const InputFile: React.FC<InputFileProps> = ({
   accept,
   onChange,
 }: InputFileProps) => (
-  <div className={`mb-4 flex-column ${wrapperClass}`}>
+  <div className={`flex-column input-component ${wrapperClass}`}>
     {label && (
       <label htmlFor={name} className="input-label">
         {label}

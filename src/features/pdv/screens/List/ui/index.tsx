@@ -321,7 +321,12 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
             </div>
           </div>
         </div>
-        <CustomTable columns={columns} data={dataTablePdv} />
+        <CustomTable
+          columns={columns}
+          data={dataTablePdv}
+          numberRowsPerPage={currentPage.pageSize}
+          progressPending={state === States.loading}
+        />
         <Pagination
           currentPage={currentPage.page}
           totalCount={currentPage.total}

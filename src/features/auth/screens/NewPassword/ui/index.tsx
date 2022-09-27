@@ -86,7 +86,7 @@ export const NewPasswordContainer: React.FC<NewPasswordContainerProps> = ({
                   error={formErrors.password && formErrors.password[0]}
                   renderForward={
                     <div
-                      className="show-hide"
+                      className="new-password-show-hide"
                       onClick={onTogglePasswordToText}
                       style={{ cursor: 'pointer' }}
                     >
@@ -126,9 +126,8 @@ export const NewPasswordContainer: React.FC<NewPasswordContainerProps> = ({
                   type={shouldShowConfirmPasswordToText ? 'text' : 'password'}
                   renderForward={
                     <div
-                      className="show-hide"
+                      className="new-password-confirm-show-hide"
                       onClick={onToggleConfirmPasswordToText}
-                      style={{ cursor: 'pointer', position: 'absolute', left: '0' }}
                     >
                       {shouldShowConfirmPasswordToText ? <img src={eye} /> : <img src={closeEye} />}
                     </div>

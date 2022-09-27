@@ -1,21 +1,18 @@
-/* eslint-disable react/jsx-key */
 import React, { Fragment } from 'react';
 import FilterVector from '@/assets/images/svg/FilterVector';
 import { Button, Loading } from '@/components';
-import { Container, Label } from 'reactstrap';
-import { RegisterContent } from '@/features/pos/components/RegisterContent';
+import { Container } from 'reactstrap';
+import { RegisterContent } from '@/features/paymentGateway/components/RegisterContent';
 import { ReactComponent as Status } from '@/assets/images/svg/status.svg';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { ActionProps, Dialog } from '@/components/Dialog';
 import { ColumnStatus, CustomTable } from '@/components/Table';
 import Pagination from '@/components/Utils/Pagination';
-import Pos from '@/model/Pos';
 import { PosRequestParams } from '@/features/pos/types';
-import dayjs from 'dayjs';
-import { FilterContent } from '@/features/pos/components/FilterContent';
+import { FilterContent } from '@/features/paymentGateway/components/FilterContent';
 import { FormErrors, OnChangeFormInput, FormData } from '@/hooks/useForm';
-import Pdv from '@/model/Pdv';
+import PaymentGateway from '@/model/PaymentGateway';
 import { columns } from './table';
 
 // eslint-disable-next-line no-shadow
@@ -41,8 +38,8 @@ export enum ShouldShowModal {
 
 interface PosContainerProps {
   state: States;
-  posState?: Pos;
-  listPos: Pos[];
+  posState?: PaymentGateway;
+  listPos: PaymentGateway[];
   currentPage: PosRequestParams;
   shouldShowModal: ShouldShowModal;
   title: string | React.ReactNode;
@@ -51,7 +48,6 @@ interface PosContainerProps {
   formErrorsPos: FormErrors;
   formDataFilter: FormData;
   formErrorsFilter: FormErrors;
-  listPdv: Pdv[];
   onSavePos: () => Promise<void>;
   onPaginationChange: (page: number) => void;
   changeColorColumn: (status: number) => void;
@@ -59,7 +55,7 @@ interface PosContainerProps {
   onToggle: () => void;
   onFilter: () => Promise<void>;
   onChangeFormInputPos: OnChangeFormInput;
-  onShowDeletePos: (pos: Pos) => void;
+  onShowDeletePos: (pos: PaymentGateway) => void;
   onShouldShowModal: ({
     value,
     newTitleModal,
@@ -67,11 +63,11 @@ interface PosContainerProps {
   }: {
     value: ShouldShowModal;
     newTitleModal: string | React.ReactNode;
-    pos?: Pos;
+    pos?: PaymentGateway;
   }) => void;
 }
 
-export const PosContainer: React.FC<PosContainerProps> = ({
+export const PaymentGatewayContainer: React.FC<PosContainerProps> = ({
   listPos,
   state,
   posState,
@@ -83,7 +79,6 @@ export const PosContainer: React.FC<PosContainerProps> = ({
   formErrorsPos,
   formDataFilter,
   formErrorsFilter,
-  listPdv,
   onChangeFormInputFilter,
   onChangeFormInputPos,
   onSavePos,
@@ -101,9 +96,7 @@ export const PosContainer: React.FC<PosContainerProps> = ({
         {item.name}
       </ColumnStatus>
     ),
-    date: dayjs(item.expirationDate, 'YYYY-DD-MM hh:mm:ss').format('DD/MM/YYYY'),
-    currentPdv: item.pdv?.name,
-    serial: item.serialNumber,
+    idd: item.charge.name,
     actions: (
       <React.Fragment>
         <Pen
@@ -112,7 +105,6 @@ export const PosContainer: React.FC<PosContainerProps> = ({
             onShouldShowModal({
               value: ShouldShowModal.pos,
               newTitleModal: `Editar ${item.name}`,
-              pos: item,
             })
           }
         />
@@ -152,7 +144,7 @@ export const PosContainer: React.FC<PosContainerProps> = ({
               onClick: (): Promise<void> => onFilter(),
             },
             [ShouldShowModal.pos]: {
-              title: posState?.id ? 'Salvar' : 'Cadastrar nova POS',
+              title: posState?.id ? 'Salvar' : 'Cadastrar novo gateway de pagamento',
               onClick: (): Promise<void> => onSavePos(),
             },
           }[shouldShowModal],
@@ -173,7 +165,6 @@ export const PosContainer: React.FC<PosContainerProps> = ({
                 formErrors={formErrorsPos}
                 onChangeFormInput={onChangeFormInputPos}
                 listPos={listPos}
-                listPdv={listPdv}
               />
             ),
           }[shouldShowModal]
@@ -181,17 +172,17 @@ export const PosContainer: React.FC<PosContainerProps> = ({
       </Dialog>
 
       <Container className="mainContainer" fluid={true}>
-        <div className="d-flex justify-content-between" style={{ paddingBottom: '30px' }}>
-          <div className="pageTitle" style={{ display: 'grid' }}>
-            <Label>POS</Label>
+        <div className="d-flex justify-content-between">
+          <div className="pageTitle">
+            <span>Gateway de pagamento</span>
           </div>
           <div className="button-filter-container">
             <Button
-              title="+ Cadastrar nova POS"
+              title="+ Cadastrar novo gateway de pagamento"
               onClick={(): void =>
                 onShouldShowModal({
                   value: ShouldShowModal.pos,
-                  newTitleModal: 'Cadastrar nova POS',
+                  newTitleModal: 'Cadastrar novo gateway de pagamento',
                 })
               }
             />
@@ -213,28 +204,19 @@ export const PosContainer: React.FC<PosContainerProps> = ({
         <div className="d-flex pb-2 status-container">
           <div className="eventStatus subText">
             <Status style={{ color: '#7AD81B' }} />
-            POS em uso
-          </div>
-          <div className="eventStatus subText">
-            <Status style={{ color: '#FFE249' }} />
-            POS reservada
-          </div>
-
-          <div className="eventStatus subText">
-            <Status style={{ color: '#3CAFC8' }} />
-            POS em estoque
+            Gateway de pagamento ativo
           </div>
           <div className="eventStatus subText">
             <Status style={{ color: '#E64F49' }} />
-            POS inativa
+            Gateway de pagamento inativo
           </div>
         </div>
         <CustomTable
           columns={columns}
           data={dataTablePos}
+          theme="primary"
           numberRowsPerPage={currentPage.pageSize}
           progressPending={state === States.loading}
-          theme="primary"
         />
         <Pagination
           currentPage={currentPage.page}

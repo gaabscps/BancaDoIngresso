@@ -232,14 +232,14 @@ const Sample = (): JSX.Element => {
             </div>
           </div>
         </div>
-        <CustomTable
+        {/* <CustomTable
           // progressPending={pending}
           // // progressPending={true}
           // numberRowsPerPage={numberRowsPerPage}
           columns={columnsPrimaryImage}
           data={dataTablePdv}
           theme="primary"
-        />
+        /> */}
         <Pagination
           currentPage={pagination.page}
           totalCount={pagination.total}

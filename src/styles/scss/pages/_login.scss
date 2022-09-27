@@ -25,7 +25,7 @@
       padding: 10px 15px;
       margin: 0;
 
-      &+.btn {
+      & + .btn {
         margin-left: 5px;
       }
 
@@ -66,7 +66,7 @@
         position: relative;
 
         &:before {
-          content: "";
+          content: '';
           position: absolute;
           width: 65%;
           height: 2px;
@@ -132,7 +132,7 @@
               transition: 0.5s;
             }
             &:after {
-              content: "";
+              content: '';
               position: absolute;
               width: 0;
               height: 0;
@@ -164,14 +164,14 @@
               background-color: lighten($primary-color, 25%);
               box-shadow: 0 0 37px rgba(8, 21, 66, 0.1);
             }
-        
+
             &:hover {
               &:after {
                 opacity: 1;
                 transform: scale(1);
                 transition: all 0.3s ease;
               }
-        
+
               span {
                 opacity: 1;
                 right: 56px;
@@ -192,7 +192,6 @@
         height: 458px;
       }
 
-      
       .border-tab {
         border-radius: 0;
         &.nav-tabs {
@@ -201,7 +200,9 @@
               border-bottom: none;
               border-right: 2px solid transparent;
               border-top-right-radius: 0;
-              &.active, &.show, &:focus {
+              &.active,
+              &.show,
+              &:focus {
                 border-right: 2px solid var(--theme-deafult);
                 border-bottom: none;
               }
@@ -221,7 +222,7 @@
 
 .show-hide {
   position: absolute;
-  top: 60px;
+  top: 44px;
   right: 50px;
   transform: translateY(-50%);
   z-index: auto;
@@ -233,14 +234,31 @@
 
     &.show {
       &:before {
-        content: "show";
+        content: 'show';
       }
     }
 
     &:before {
-      content: "hide";
+      content: 'hide';
     }
   }
+}
+.new-password-show-hide {
+  position: absolute;
+  top: 172px;
+  right: 110px;
+  transform: translateY(-50%);
+  z-index: auto;
+  cursor: pointer;
+}
+
+.new-password-confirm-show-hide {
+  position: absolute;
+  top: 477px;
+  right: 110px;
+  transform: translateY(-50%);
+  z-index: auto;
+  cursor: pointer;
 }
 
 .needs-validation {
