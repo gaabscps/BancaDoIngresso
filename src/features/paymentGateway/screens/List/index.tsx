@@ -240,16 +240,6 @@ export const PaymentGatewayScreen: React.FC = (): JSX.Element => {
     }
   };
 
-  // eslint-disable-next-line consistent-return
-  // const convertNumberToBoolean = (value: string): boolean | undefined => {
-  //   if (Number(value) === 0) {
-  //     return true;
-  //   }
-  //   if (Number(value) === 1) {
-  //     return false;
-  //   }
-  // };
-
   const handleOnPaginationChange = async (page: number): Promise<void> => {
     handleFetch({
       ...currentPage,
@@ -259,6 +249,11 @@ export const PaymentGatewayScreen: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     if (paymentGateway?.id) {
+      const statusBooleanString = {
+        0: 'true',
+        1: 'false',
+      }[paymentGateway.status];
+
       onChangeFormInputPaymentGateway(FormInputNameToSavePaymentGateway.name)(paymentGateway.name);
       onChangeFormInputPaymentGateway(FormInputNameToSavePaymentGateway.url)(paymentGateway.url);
       onChangeFormInputPaymentGateway(FormInputNameToSavePaymentGateway.frontToken)(
@@ -275,6 +270,9 @@ export const PaymentGatewayScreen: React.FC = (): JSX.Element => {
       );
       onChangeFormInputPaymentGateway(FormInputNameToSavePaymentGateway.webhook)(
         paymentGateway.webhook,
+      );
+      onChangeFormInputPaymentGateway(FormInputNameToSavePaymentGateway.status)(
+        statusBooleanString,
       );
     }
   }, [paymentGateway]);
