@@ -13,8 +13,6 @@ import Pagination from '@/components/Utils/Pagination';
 import { PaymentMethodsRequestParams } from '@/features/paymentMethods/types';
 import { FilterContent } from '@/features/paymentMethods/components/FilterContent';
 import { FormErrors, OnChangeFormInput, FormData } from '@/hooks/useForm';
-import Pdv from '@/model/Pdv';
-// import PaymentMethods from '@/model/PaymentMethods';
 
 import PaymentGateway from '@/model/PaymentGateway';
 import { columns } from './table';
@@ -122,33 +120,6 @@ export const PaymentMethodsContainer: React.FC<PaymentMethodsContainerProps> = (
       </React.Fragment>
     ),
   }));
-  // const dataTablePaymentMethods = [
-  //   {
-  //     id: '1',
-  //     name: <ColumnStatus statusColor={String(changeColorColumn(1))}>PayPal</ColumnStatus>,
-  //     paymentGateway: 'gateway',
-  //     actions: (
-  //       <React.Fragment>
-  //         <Pen
-  //           className="mr-2 svg-icon action-icon"
-  //           onClick={(): void =>
-  //             onShouldShowModal({
-  //               value: ShouldShowModal.paymentMethods,
-  //               newTitleModal: `Editar PayPal`,
-  //               // paymentMethods: 1,
-  //             })
-  //           }
-  //         />
-  //         <Trash
-  //           className="mr-2 svg-icon action-icon"
-  //           onClick={() => {
-  //             // onShowDeletePaymentMethods();
-  //           }}
-  //         />
-  //       </React.Fragment>
-  //     ),
-  //   },
-  // ];
 
   const renderActionDialogToCancel: ActionProps = {
     title: 'Cancelar',

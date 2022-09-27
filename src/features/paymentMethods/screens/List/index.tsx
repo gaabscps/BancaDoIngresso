@@ -21,14 +21,13 @@ import PaymentMethodsStatus from '@/model/StatusType';
 import ChargeSetup from '@/model/ChargeSetup';
 import PaymentGateway from '@/model/PaymentGateway';
 import { convertToBoolean } from '@/helpers/common/convertToBoolean';
+import { colors } from '@/styles/colors';
 import { DeleteContent } from '../../components/DeleteContent';
 
 export default interface PayloadPaymentMethods {
   id?: string;
   name: string;
   charge: { id: string };
-  status: PaymentMethodsStatus;
-  pix: object; // TODO: remover
 }
 
 export const PaymentMethodsScreen: React.FC = (): JSX.Element => {
@@ -115,16 +114,11 @@ export const PaymentMethodsScreen: React.FC = (): JSX.Element => {
     }
   };
 
-  const handleOnChangeColorColumn = (status: PaymentMethodsStatus): string => {
-    switch (status) {
-      case 0:
-        return '#7AD81B';
-      case 1:
-        return '#E64F49';
-      default:
-        return 'grey';
-    }
-  };
+  const handleOnChangeColorColumn = (status: PaymentMethodsStatus): string =>
+    ({
+      0: colors.green,
+      1: colors.red,
+    }[status] || colors.grey);
 
   const handleOnShouldShowModal = ({
     value,
@@ -154,25 +148,34 @@ export const PaymentMethodsScreen: React.FC = (): JSX.Element => {
   const handleOnSavePaymentMethods = async (): Promise<void> => {
     try {
       if (isFormValidPaymentMethods()) {
+        const activedInput = convertToBoolean(
+          formDataPaymentMethods[FormInputNameToSavePaymentMethods.status],
+        );
+
         const payload: PayloadPaymentMethods = {
           id: paymentMethods?.id,
           name: formDataPaymentMethods[FormInputNameToSavePaymentMethods.name],
           charge: {
             id: formDataPaymentMethods[FormInputNameToSavePaymentMethods.paymentGateway],
           },
-          status: convertToBoolean(formDataPaymentMethods[FormInputNameToSavePaymentMethods.status])
-            ? 0
-            : 1,
-          pix: {},
         };
 
         if (!payload.id) {
           delete payload.id;
 
-          await api.post<PaymentGateway>('/payment-gateway', payload);
+          const { data: dataPostGateway } = await api.post<PaymentGateway>(
+            '/payment-gateway',
+            payload,
+          );
+          await api.patch<PaymentGateway>(
+            `/payment-gateway${activedInput ? '/activate' : '/inactivate'}/${dataPostGateway.id}`,
+          );
           toast.success('Forma de pagamento cadastrado com sucesso!');
         } else {
           await api.put<PaymentGateway>('/payment-gateway', payload);
+          await api.patch<PaymentGateway>(
+            `/payment-gateway${activedInput ? '/activate' : '/inactivate'}/${paymentMethods?.id}`,
+          );
           toast.success('Forma de pagamento atualizado com sucesso!');
         }
 
