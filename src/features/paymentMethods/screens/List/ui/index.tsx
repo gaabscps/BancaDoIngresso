@@ -15,6 +15,7 @@ import { FilterContent } from '@/features/paymentMethods/components/FilterConten
 import { FormErrors, OnChangeFormInput, FormData } from '@/hooks/useForm';
 
 import PaymentGateway from '@/model/PaymentGateway';
+import { colors } from '@/styles/colors';
 import { columns } from './table';
 
 // eslint-disable-next-line no-shadow
@@ -178,8 +179,8 @@ export const PaymentMethodsContainer: React.FC<PaymentMethodsContainerProps> = (
       </Dialog>
 
       <Container className="mainContainer" fluid={true}>
-        <div className="d-flex justify-content-between" style={{ paddingBottom: '30px' }}>
-          <div className="pageTitle" style={{ display: 'grid' }}>
+        <div className="d-flex justify-content-between pb-4">
+          <div className="pageTitle">
             <Label>Formas de pagamento</Label>
           </div>
           <div className="button-filter-container">
@@ -209,11 +210,11 @@ export const PaymentMethodsContainer: React.FC<PaymentMethodsContainerProps> = (
         </div>
         <div className="d-flex pb-2 status-container">
           <div className="eventStatus subText">
-            <Status style={{ color: '#7AD81B' }} />
+            <Status color={colors.green} />
             Forma de pagamento ativo
           </div>
           <div className="eventStatus subText">
-            <Status style={{ color: '#E64F49' }} />
+            <Status color={colors.red} />
             Forma de pagamento inativo
           </div>
         </div>
