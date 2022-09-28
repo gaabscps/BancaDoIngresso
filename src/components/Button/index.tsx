@@ -4,7 +4,7 @@ export interface ButtonProps
   extends React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>,
     React.AriaAttributes {}
 
-export type ButtonTheme = 'dark' | 'outlineDark' | 'noneBorder' | 'red';
+export type ButtonTheme = 'dark' | 'outlineDark' | 'outlineGray' | 'noneBorder' | 'red';
 
 export type ButtonSize = 'sm' | 'md' | 'lg' | 'xl';
 
@@ -33,6 +33,7 @@ export const Button: React.FC<ButtonCustomProps> = ({
   const finalTheme = {
     dark: 'button-dark',
     outlineDark: 'button-outline-dark',
+    outlineGray: 'button-outline-gray',
     noneBorder: 'button-none-border',
     red: 'button-red',
   }[theme];
