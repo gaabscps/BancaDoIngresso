@@ -50,6 +50,7 @@ export const ColumnStatus: React.FC<ColumnStatusProps> = ({
         height: '100%',
         display: 'flex',
         alignItems: 'center',
+        marginLeft: '16px',
       }}
     >
       {children}
