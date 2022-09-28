@@ -29,7 +29,7 @@ export const HomeContainer: React.FC<HomeContainerProps> = ({ state }) => (
         </div>
       </div>
       <div className="father-cards">
-        <Link to={'#!'}>
+        <Link to={`${process.env.PUBLIC_URL}/dashboard/productscombos/product`}>
           <Products width={20} />
           Produtos
         </Link>
