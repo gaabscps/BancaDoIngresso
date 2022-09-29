@@ -18,6 +18,8 @@ export interface DialogProps {
   visible: boolean;
   onClose(): void;
   position?: 'center' | 'right';
+  footerPosition?: 'center' | 'right' | 'left';
+  footerBorder?: 'top' | 'none';
   size?: 'sm' | 'md' | 'lg' | 'xl';
   actions: ActionProps[];
 }
@@ -29,6 +31,8 @@ export const Dialog: React.FC<DialogProps> = ({
   onClose,
   isContentWithCard = false,
   position = 'center',
+  footerPosition = 'right',
+  footerBorder = 'top',
   size = 'xl',
   actions,
 }) => {
@@ -45,6 +49,17 @@ export const Dialog: React.FC<DialogProps> = ({
     lg: 'lg',
     xl: 'xl',
   }[size];
+
+  const ftPosition = {
+    center: 'justify-content-center',
+    left: 'justify-content-left',
+    right: 'justify-content-right',
+  }[footerPosition];
+
+  const ftBorder = {
+    top: 'modal__forter-main',
+    none: 'border-0',
+  }[footerBorder];
 
   return (
     <Modal
@@ -74,7 +89,7 @@ export const Dialog: React.FC<DialogProps> = ({
       </ModalBody>
       <div style={{ padding: '0 40px' }}>
         {actions.length > 0 && actions[0]?.title && (
-          <ModalFooter style={{ borderTop: '1px solid #E6E6E6', padding: '15px 0' }}>
+          <ModalFooter className={`${ftPosition} ${ftBorder}`} style={{ padding: '30px 0' }}>
             {actions?.map((action, index) => (
               <React.Fragment key={index}>
                 {action.title && action.onClick && (

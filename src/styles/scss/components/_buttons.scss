@@ -390,35 +390,94 @@
   line-height: 24px;
   border-radius: 5px;
 
-  &.button-lg {
+  &.button-xl {
+    padding: 16px 0;
+    width: 100%;
+    font-weight: 700;
     font-size: 1.313rem;
-    padding: 15px 20px;
     line-height: 32px;
+  }
+  &.button-lg {
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 20px;
+    line-height: 24px;
+    height: 64px;
   }
   &.button-md {
     font-size: 1rem;
-    padding: 13px 20px;
+    font-weight: 500;
+    padding: 8px 15px;
     line-height: 24px;
+    height: 50px;
   }
   &.button-sm {
     font-size: 0.75rem;
-    padding: 8px 20px;
+    padding: 8px 24px;
     line-height: 18px;
+    height: 34px;
+    font-weight: 300;
   }
   &.button-none-border {
     background: transparent;
     border: none;
+    color: #222222;
+    font-weight: 400;
+    &:hover {
+      color: #0c0201;
+    }
+    &:active {
+      color: #050100;
+      font-weight: 500;
+    }
+    &:disabled {
+      color: #a5a5a5;
+    }
+  }
+
+  &.button-outline-gray {
+    border: 2px solid #222222;
+    color: #222222;
+    background: transparent;
+    &:hover {
+      background: #0c020114;
+    }
+    &:active {
+      background: #05010033;
+    }
+    &:disabled {
+      border: 2px solid #c4c4c4;
+      color: #c4c4c4;
+      &:hover {
+        background: transparent;
+      }
+      &:active {
+        background: transparent;
+      }
+    }
   }
 
   &.button-outline-dark {
     border: 2px solid #222222;
-    color: '#222222';
+    color: #222222;
     background: transparent;
     &:hover {
       background: #0c0201;
+      color: #ffffff;
     }
     &:active {
       background: #050100;
+      color: #ffffff;
+    }
+    &:disabled {
+      border: 2px solid #c4c4c4;
+      color: #c4c4c4;
+      &:hover {
+        background: transparent;
+      }
+      &:active {
+        background: transparent;
+      }
     }
   }
 
@@ -433,32 +492,58 @@
     }
     &:disabled {
       background: #c4c4c4;
-      color: #f8f8f8;
-      &:hover {
-        background: #a5a5a5;
-        color: #ffffff;
-      }
+      color: #ffffff;
     }
   }
 
   &.button-red {
-    background: #b3140c;
+    background: #b2140c;
     color: #ffffff;
+    font-weight: 700;
     &:hover {
       background: #d8231b;
       color: #ffffff;
     }
     &:active {
-      background: #b3140c;
+      background: #b2140c;
       color: #ffffff;
     }
     &:disabled {
       background: #f1f1f1;
       color: #a5a5a5;
+      font-weight: 500;
     }
   }
 }
 
+// Filter Button
+
+.filter-container {
+  display: flex;
+  align-items: center;
+  margin-left: 15px;
+  height: fit-content;
+  margin-top: 15px;
+  .filter-content {
+    width: fit-content;
+  }
+  svg {
+    cursor: pointer;
+    pointer-events: stroke;
+    path {
+      fill: #828282;
+      color: #828282;
+      &:hover {
+        fill: #222222;
+        color: #222222;
+      }
+      &:active {
+        fill: #222222;
+        color: #222222;
+      }
+    }
+  }
+}
 /**=====================
      06. Button CSS end
 ==========================**/
