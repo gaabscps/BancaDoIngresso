@@ -6,7 +6,7 @@
     border-radius: 5px;
     max-height: 580px;
     overflow: auto;
-    margin: 5px 40px 20px;
+    margin: 0px 40px 30px;
   }
   &__header-container {
     display: flex;
@@ -28,6 +28,10 @@
   .modal__with-container {
     padding: 0 !important;
   }
+
+  .modal__forter-border-top {
+    border-top: 1px solid #E6E6E6;
+  }
 }
 .modal-content {
   background-color: #f8f8f8;
@@ -38,7 +42,6 @@
   flex-direction: column;
   align-items: center;
   background-color: #f8f8f8;
-  padding-bottom: 50px;
   border: none;
   border-radius: 5px;
 }
