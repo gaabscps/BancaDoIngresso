@@ -2,9 +2,8 @@
 import React, { Fragment } from 'react';
 import FilterVector from '@/assets/images/svg/FilterVector';
 import { Button, Loading } from '@/components';
-import { Container, Label } from 'reactstrap';
+import { Container } from 'reactstrap';
 import { RegisterContent } from '@/features/product/components/RegisterContent';
-import { ReactComponent as Status } from '@/assets/images/svg/status.svg';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { ActionProps, Dialog } from '@/components/Dialog';
@@ -14,12 +13,12 @@ import Product from '@/model/Product';
 import { NameFiles, ProductRequestParams } from '@/features/product/types';
 import { FilterContent } from '@/features/product/components/FilterContent';
 import { FormErrors, OnChangeFormInput, FormData } from '@/hooks/useForm';
-import { columns } from './table';
 import ProductGroup from '@/model/ProductGroup';
 import ProductSubgroup from '@/model/ProductSubgroup';
-import { ArrowLeft, ArrowRight } from 'react-feather';
+import { ArrowLeft } from 'react-feather';
 import { Link } from 'react-router-dom';
 import { colors } from '@/styles/colors';
+import { columns } from './table';
 
 // eslint-disable-next-line no-shadow
 export enum States {
@@ -100,35 +99,6 @@ export const ProductContainer: React.FC<ProductContainerProps> = ({
   listProductGroup,
   listProductSubGroup,
 }) => {
-  // const dataTableProduct = listProduct?.map(item => ({
-  //   id: item.id,
-  //   name: (
-  //       {item.name}
-  //   ),
-  //   date: dayjs(item.expirationDate, 'YYYY-DD-MM hh:mm:ss').format('DD/MM/YYYY'),
-  //   serial: item.serialNumber,
-  //   actions: (
-  //     <React.Fragment>
-  //       <Pen
-  //         className="mr-2 svg-icon action-icon"
-  //         onClick={(): void =>
-  //           onShouldShowModal({
-  //             value: ShouldShowModal.product,
-  //             newTitleModal: `Editar ${item.name}`,
-  //             product: item,
-  //           })
-  //         }
-  //       />
-  //       <Trash
-  //         className="mr-2 svg-icon action-icon"
-  //         onClick={() => {
-  //           onShowDeleteProduct(item);
-  //         }}
-  //       />
-  //     </React.Fragment>
-  //   ),
-  // }));
-
   const dataTableProduct = listProduct?.map(item => ({
     id: item.id,
     image: <ColumnImage srcImage={item.imageBase64} />,
@@ -150,9 +120,9 @@ export const ProductContainer: React.FC<ProductContainerProps> = ({
         />
         <Trash
           className="mr-2 svg-icon action-icon"
-          // onClick={() => {
-          //   onShowDeleteProduct(item);
-          // }}
+          onClick={() => {
+            onShowDeleteProduct(item);
+          }}
         />
       </React.Fragment>
     ),

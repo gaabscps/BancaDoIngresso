@@ -11,24 +11,20 @@ import validators from '@/helpers/validators';
 import { FormInputName as FormInputNameToSaveProduct } from '@/features/product/components/RegisterContent';
 import { useConfirmDelete } from '@/hooks/useConfirmDelete';
 import { FormInputName as FormInputNameToFilter } from '@/features/product/components/FilterContent';
-import { DeleteContent } from '../../components/DeleteContent';
 import ProductGroup from '@/model/ProductGroup';
+import ProductSubgroup from '@/model/ProductSubgroup';
+import { DeleteContent } from '../../components/DeleteContent';
 
 export default interface PayloadProduct {
   id?: string;
   name: string;
-  serialNumber: string;
-  model: string;
-  telephoneOperator: string;
-  cardOperator: string;
-  expirationDate: string;
 }
 
 export const ProductScreen: React.FC = (): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
   const [listProduct, setListProduct] = useState<Product[]>([]);
   const [listProductGroup, setListProductGroup] = useState<ProductGroup[]>([]);
-  const [listProductSubGroup, setListProductSubGroup] = useState<ProductGroup[]>([]);
+  const [listProductSubGroup, setListProductSubGroup] = useState<ProductSubgroup[]>([]);
   const [product, setProduct] = useState<Product>();
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(ShouldShowModal.product);
   const [nameFiles, setNameFiles] = useState<NameFiles>({});
@@ -141,7 +137,7 @@ export const ProductScreen: React.FC = (): JSX.Element => {
   const handleFecthProductSubGroupList = async (): Promise<void> => {
     try {
       setState(States.loading);
-      const { data } = await api.get<ProductGroup[]>('/product-subgroup/find');
+      const { data } = await api.get<ProductSubgroup[]>('/product-subgroup/find');
       setListProductSubGroup(data ?? []);
     } catch (error) {
       const err = error as AxiosError;
@@ -185,11 +181,6 @@ export const ProductScreen: React.FC = (): JSX.Element => {
         const payload: PayloadProduct = {
           id: product?.id,
           name: formDataProduct[FormInputNameToSaveProduct.name],
-          serialNumber: formDataProduct[FormInputNameToSaveProduct.serialNumber],
-          model: formDataProduct[FormInputNameToSaveProduct.model],
-          telephoneOperator: formDataProduct[FormInputNameToSaveProduct.telephoneOperator],
-          cardOperator: formDataProduct[FormInputNameToSaveProduct.cardOperator],
-          expirationDate: formDataProduct[FormInputNameToSaveProduct.expirationDate],
         };
 
         if (!payload.id) {
