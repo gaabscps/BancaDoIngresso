@@ -161,7 +161,7 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
               pdv,
             })
           }
-          className="mr-2 svg-icon action-icon"
+          className="mr-4 svg-icon action-icon"
         />
         {/* </div> */}
         <Pen
@@ -172,9 +172,9 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
               pdv,
             })
           }
-          className="mr-2 svg-icon action-icon"
+          className="mr-4 svg-icon action-icon"
         />
-        <Trash onClick={(): void => onShowDelete(pdv)} className="mr-2 svg-icon action-icon" />
+        <Trash onClick={(): void => onShowDelete(pdv)} className="mr-4 svg-icon action-icon" />
       </div>
     ),
   }));

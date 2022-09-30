@@ -100,7 +100,7 @@ export const PaymentGatewayContainer: React.FC<PosContainerProps> = ({
     actions: (
       <React.Fragment>
         <Pen
-          className="mr-2 svg-icon action-icon"
+          className="mr-4 svg-icon action-icon"
           onClick={(): void =>
             onShouldShowModal({
               value: ShouldShowModal.pos,
@@ -109,7 +109,7 @@ export const PaymentGatewayContainer: React.FC<PosContainerProps> = ({
           }
         />
         <Trash
-          className="mr-2 svg-icon action-icon"
+          className="mr-4 svg-icon action-icon"
           onClick={() => {
             onShowDeletePos(item);
           }}

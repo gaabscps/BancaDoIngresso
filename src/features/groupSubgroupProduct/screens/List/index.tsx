@@ -1,44 +1,38 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { useEffect, useState } from 'react';
 import { useDialog } from '@/hooks/useDialog';
-import GroupSubgroupProduct from '@/model/GroupSubgroupProduct';
 import api, { AxiosError } from '@/services/api';
 import { toast } from 'react-toastify';
-import { GroupSubgroupProductResponse, GroupSubgroupProductRequestParams } from '@/features/groupSubgroupProduct/types';
 import useForm from '@/hooks/useForm';
-import { States, GroupSubgroupProductContainer, ShouldShowModal } from '@/features/groupSubgroupProduct/screens/List/ui';
-import GroupSubgroupProductStatus from '@/model/GroupSubgroupProductStatus';
 import validators from '@/helpers/validators';
-import { FormInputName as FormInputNameToSaveGroupSubgroupProduct } from '@/features/groupSubgroupProduct/components/RegisterContent';
 import { useConfirmDelete } from '@/hooks/useConfirmDelete';
-import { FormInputName as FormInputNameToFilter } from '@/features/groupSubgroupProduct/components/FilterContent';
 import Pdv from '@/model/Pdv';
-import dayjs from 'dayjs';
-import { colors } from '@/styles/colors';
+import {
+  States,
+  GroupProductContainer,
+  ShouldShowModal,
+} from '@/features/groupSubgroupProduct/screens/List/ui';
+import { FormInputName as FormInputNameToFilter } from '@/features/groupSubgroupProduct/components/FilterContent';
+import { FormInputName as FormInputNameToSaveGroupProduct } from '@/features/groupSubgroupProduct/components/RegisterGroupContent';
+
+import GroupProduct from '@/model/GroupProduct';
 import { DeleteContent } from '../../components/DeleteContent';
 
-export default interface PayloadGroupSubgroupProduct {
+export default interface PayloadGroupProduct {
   id?: string;
   name: string;
-  serialNumber: string;
-  status: GroupSubgroupProductStatus;
-  pdv: {
-    id: string;
-  };
-  model: string;
-  telephoneOperator: string;
-  cardOperator: string;
-  expirationDate: string;
 }
 
-export const GroupSubgroupProductScreen: React.FC = (): JSX.Element => {
+export const GroupProductScreen: React.FC = (): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
-  const [listGroupSubgroupProduct, setListGroupSubgroupProduct] = useState<GroupSubgroupProduct[]>([]);
+  const [listGroupProduct, setListGroupProduct] = useState<GroupProduct[]>([]);
   const [listPdv, setListPdv] = useState<Pdv[]>([]);
-  const [groupSubgroupProduct, setGroupSubgroupProduct] = useState<GroupSubgroupProduct>();
-  const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(ShouldShowModal.groupSubgroupProduct);
+  const [groupProduct, setGroupProduct] = useState<GroupProduct>();
+  const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(
+    ShouldShowModal.groupProduct,
+  );
 
-  const [currentPage, setCurrentPage] = useState<GroupSubgroupProductRequestParams>({
+  const [currentPage, setCurrentPage] = useState<GroupProductRequestParams>({
     page: 1,
     pageSize: 10,
     sort: 'name',
@@ -50,27 +44,17 @@ export const GroupSubgroupProductScreen: React.FC = (): JSX.Element => {
   const confirmDelete = useConfirmDelete();
 
   const {
-    formData: formDataGroupSubgroupProduct,
-    formErrors: formErrorsGroupSubgroupProduct,
-    onChangeFormInput: onChangeFormInputGroupSubgroupProduct,
-    isFormValid: isFormValidGroupSubgroupProduct,
-    resetForm: resetFormGroupSubgroupProduct,
+    formData: formDataGroupProduct,
+    formErrors: formErrorsGroupProduct,
+    onChangeFormInput: onChangeFormInputGroupProduct,
+    isFormValid: isFormValidGroupProduct,
+    resetForm: resetFormGroupProduct,
   } = useForm({
     initialData: {
       name: '',
-      serialNumber: '',
-      status: '',
-      pdv: '',
-      model: '',
-      telephoneOperator: '',
-      cardOperator: '',
-      expirationDate: '',
     },
     validators: {
       name: [validators.required],
-      serialNumber: [validators.required],
-      status: [validators.required],
-      expirationDate: [validators.isDateLessThanCurrentDate],
     },
     formatters: {},
   });
@@ -87,13 +71,13 @@ export const GroupSubgroupProductScreen: React.FC = (): JSX.Element => {
     },
   });
 
-  const handleFetch = async (values: GroupSubgroupProductRequestParams): Promise<void> => {
+  const handleFetch = async (values: GroupProductRequestParams): Promise<void> => {
     try {
       setState(States.loading);
-      const { data } = await api.groupSubgroupProductt<GroupSubgroupProductResponse>('/groupSubgroupProduct/page', values);
+      const { data } = await api.get<GroupProductResponse>('/groupProduct/page', values);
 
       if (data) {
-        setListGroupSubgroupProduct(data?.list ?? []);
+        setListGroupProduct(data?.list ?? []);
 
         setCurrentPage(currentPageState => ({
           ...currentPageState,
@@ -107,63 +91,47 @@ export const GroupSubgroupProductScreen: React.FC = (): JSX.Element => {
       setState(States.default);
     }
   };
-  const handleOnChangeColorColumn = (status: GroupSubgroupProductStatus): string =>
-    ({
-      0: colors.lightBlue,
-      1: colors.green,
-      2: colors.yellow,
-      3: colors.red,
-    }[status] || colors.grey);
   const handleOnShouldShowModal = ({
     value,
     newTitleModal,
-    groupSubgroupProduct: groupSubgroupProductSelected,
+    groupProduct: groupProductSelected,
   }: {
     value: ShouldShowModal;
     newTitleModal: string | React.ReactNode;
-    groupSubgroupProduct?: GroupSubgroupProduct;
+    groupProduct?: GroupProduct;
   }): void => {
     setShouldShowModal(value);
     onChangeTitle(newTitleModal);
     onToggle();
 
-    if (groupSubgroupProductSelected?.id && value === ShouldShowModal.groupSubgroupProduct) {
-      setGroupSubgroupProduct(groupSubgroupProductSelected);
+    if (groupProductSelected?.id && value === ShouldShowModal.groupProduct) {
+      setGroupProduct(groupProductSelected);
       handleFecthPdvList();
-      if (groupSubgroupProductSelected.id !== groupSubgroupProduct?.id) {
-        resetFormGroupSubgroupProduct();
+      if (groupProductSelected.id !== groupProduct?.id) {
+        resetFormGroupProduct();
       }
     } else {
-      resetFormGroupSubgroupProduct();
-      setGroupSubgroupProduct(undefined);
+      resetFormGroupProduct();
+      setGroupProduct(undefined);
       handleFecthPdvList();
     }
   };
 
-  const handleOnSaveGroupSubgroupProduct = async (): Promise<void> => {
+  const handleOnSaveGroupProduct = async (): Promise<void> => {
     try {
-      if (isFormValidGroupSubgroupProduct()) {
-        const payload: PayloadGroupSubgroupProduct = {
-          id: groupSubgroupProduct?.id,
-          name: formDataGroupSubgroupProduct[FormInputNameToSaveGroupSubgroupProduct.name],
-          serialNumber: formDataGroupSubgroupProduct[FormInputNameToSaveGroupSubgroupProduct.serialNumber],
-          status: +formDataGroupSubgroupProduct[FormInputNameToSaveGroupSubgroupProduct.status],
-          pdv: {
-            id: formDataGroupSubgroupProduct[FormInputNameToSaveGroupSubgroupProduct.pdv],
-          },
-          model: formDataGroupSubgroupProduct[FormInputNameToSaveGroupSubgroupProduct.model],
-          telephoneOperator: formDataGroupSubgroupProduct[FormInputNameToSaveGroupSubgroupProduct.telephoneOperator],
-          cardOperator: formDataGroupSubgroupProduct[FormInputNameToSaveGroupSubgroupProduct.cardOperator],
-          expirationDate: formDataGroupSubgroupProduct[FormInputNameToSaveGroupSubgroupProduct.expirationDate],
+      if (isFormValidGroupProduct()) {
+        const payload: PayloadGroupProduct = {
+          id: groupProduct?.id,
+          name: formDataGroupProduct[FormInputNameToSaveGroupProduct.name],
         };
 
         if (!payload.id) {
           delete payload.id;
 
-          await api.groupSubgroupProductt<GroupSubgroupProduct>('/groupSubgroupProduct', payload);
+          await api.post<GroupProduct>('/groupProduct', payload);
           toast.success('Grupo e subgrupo de produto cadastrado com sucesso!');
         } else {
-          await api.put<GroupSubgroupProduct>('/groupSubgroupProduct', payload);
+          await api.put<GroupProduct>('/groupProduct', payload);
           toast.success('Grupo e subgrupo de produto atualizado com sucesso!');
         }
 
@@ -191,9 +159,11 @@ export const GroupSubgroupProductScreen: React.FC = (): JSX.Element => {
 
   const handleOnClose = (): void => confirmDelete.hide();
 
-  const handleOnConfirmDeleteToGroupSubgroupProduct = async (groupSubgroupProductSelected: GroupSubgroupProduct): Promise<void> => {
+  const handleOnConfirmDeleteToGroupProduct = async (
+    groupProductSelected: GroupProduct,
+  ): Promise<void> => {
     try {
-      await api.delete(`/groupSubgroupProduct/${groupSubgroupProductSelected?.id}`);
+      await api.delete(`/groupProduct/${groupProductSelected?.id}`);
 
       toast.success('Grupo e subgrupo de produtos excluído com sucesso!');
       handleOnClose();
@@ -204,7 +174,7 @@ export const GroupSubgroupProductScreen: React.FC = (): JSX.Element => {
     }
   };
 
-  const handleOnShowDeleteGroupSubgroupProduct = (groupSubgroupProductSelected: GroupSubgroupProduct): void => {
+  const handleOnShowDeleteGroupProduct = (groupProductSelected: GroupProduct): void => {
     confirmDelete.show({
       title: '',
       children: <DeleteContent />,
@@ -216,7 +186,7 @@ export const GroupSubgroupProductScreen: React.FC = (): JSX.Element => {
         },
         {
           title: 'Sim, quero remover',
-          onClick: (): Promise<void> => handleOnConfirmDeleteToGroupSubgroupProduct(groupSubgroupProductSelected),
+          onClick: (): Promise<void> => handleOnConfirmDeleteToGroupProduct(groupProductSelected),
         },
       ],
     });
@@ -259,47 +229,37 @@ export const GroupSubgroupProductScreen: React.FC = (): JSX.Element => {
   };
 
   useEffect(() => {
-    if (groupSubgroupProduct?.id) {
-      onChangeFormInputGroupSubgroupProduct(FormInputNameToSaveGroupSubgroupProduct.name)(groupSubgroupProduct.name);
-      onChangeFormInputGroupSubgroupProduct(FormInputNameToSaveGroupSubgroupProduct.serialNumber)(groupSubgroupProduct.serialNumber);
-      onChangeFormInputGroupSubgroupProduct(FormInputNameToSaveGroupSubgroupProduct.status)(String(groupSubgroupProduct.status));
-      onChangeFormInputGroupSubgroupProduct(FormInputNameToSaveGroupSubgroupProduct.model)(groupSubgroupProduct.model);
-      onChangeFormInputGroupSubgroupProduct(FormInputNameToSaveGroupSubgroupProduct.pdv)(String(groupSubgroupProduct.pdv.id));
-      onChangeFormInputGroupSubgroupProduct(FormInputNameToSaveGroupSubgroupProduct.telephoneOperator)(groupSubgroupProduct.telephoneOperator);
-      onChangeFormInputGroupSubgroupProduct(FormInputNameToSaveGroupSubgroupProduct.cardOperator)(groupSubgroupProduct.cardOperator);
-      onChangeFormInputGroupSubgroupProduct(FormInputNameToSaveGroupSubgroupProduct.expirationDate)(
-        String(dayjs(groupSubgroupProduct.expirationDate, 'YYYY-DD-MM hh:mm:ss').format('YYYY-MM-DD')),
-      );
+    if (groupProduct?.id) {
+      onChangeFormInputGroupProduct(FormInputNameToSaveGroupProduct.name)(groupProduct.name);
     }
-  }, [groupSubgroupProduct]);
+  }, [groupProduct]);
 
   useEffect(() => {
     handleFetch(currentPage);
   }, []);
 
   return (
-    <GroupSubgroupProductContainer
+    <GroupProductContainer
       state={state}
       title={title}
       visible={visible}
       onToggle={onToggle}
       onPaginationChange={handleOnPaginationChange}
       shouldShowModal={shouldShowModal}
-      onSaveGroupSubgroupProduct={handleOnSaveGroupSubgroupProduct}
-      listGroupSubgroupProduct={listGroupSubgroupProduct}
+      onSaveGroupProduct={handleOnSaveGroupProduct}
+      listGroupProduct={listGroupProduct}
       currentPage={currentPage}
-      changeColorColumn={handleOnChangeColorColumn}
       onChangeFormInputFilter={onChangeFormInputFilter}
       onShouldShowModal={handleOnShouldShowModal}
-      formDataGroupSubgroupProduct={formDataGroupSubgroupProduct}
-      formErrorsGroupSubgroupProduct={formErrorsGroupSubgroupProduct}
-      onChangeFormInputGroupSubgroupProduct={onChangeFormInputGroupSubgroupProduct}
+      formDataGroupProduct={formDataGroupProduct}
+      formErrorsGroupProduct={formErrorsGroupProduct}
+      onChangeFormInputGroupProduct={onChangeFormInputGroupProduct}
       formDataFilter={formDataFilter}
       formErrorsFilter={formErrorsFilter}
-      onShowDeleteGroupSubgroupProduct={handleOnShowDeleteGroupSubgroupProduct}
+      onShowDeleteGroupProduct={handleOnShowDeleteGroupProduct}
       onFilter={handleOnFilter}
       listPdv={listPdv}
-      groupSubgroupProductState={groupSubgroupProduct}
+      groupProductState={groupProduct}
     />
   );
 };

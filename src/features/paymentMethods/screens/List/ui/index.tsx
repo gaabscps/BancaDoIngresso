@@ -103,7 +103,7 @@ export const PaymentMethodsContainer: React.FC<PaymentMethodsContainerProps> = (
     actions: (
       <React.Fragment>
         <Pen
-          className="mr-2 svg-icon action-icon"
+          className="mr-4 svg-icon action-icon"
           onClick={(): void =>
             onShouldShowModal({
               value: ShouldShowModal.paymentMethods,
@@ -113,7 +113,7 @@ export const PaymentMethodsContainer: React.FC<PaymentMethodsContainerProps> = (
           }
         />
         <Trash
-          className="mr-2 svg-icon action-icon"
+          className="mr-4 svg-icon action-icon"
           onClick={() => {
             onShowDeletePaymentMethods(paymentMethods);
           }}

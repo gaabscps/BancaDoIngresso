@@ -1,22 +1,20 @@
 /* eslint-disable react/jsx-key */
 import React, { Fragment } from 'react';
 import FilterVector from '@/assets/images/svg/FilterVector';
-import { Button, Loading } from '@/components';
-import { Container, Label } from 'reactstrap';
-import { RegisterContent } from '@/features/groupSubgroupProduct/components/RegisterContent';
-import { ReactComponent as Status } from '@/assets/images/svg/status.svg';
+import { Button, CollapseCustom, Loading } from '@/components';
+import { Col, Container, Label, Row } from 'reactstrap';
+import { RegisterGroupContent } from '@/features/groupSubgroupProduct/components/RegisterGroupContent';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { ActionProps, Dialog } from '@/components/Dialog';
-import { ColumnStatus, CustomTable } from '@/components/Table';
-import Pagination from '@/components/Utils/Pagination';
-import GroupSubgroupProduct from '@/model/GroupSubgroupProduct';
+import { ColumnStatus } from '@/components/Table';
 import { GroupSubgroupProductRequestParams } from '@/features/groupSubgroupProduct/types';
 import dayjs from 'dayjs';
 import { FilterContent } from '@/features/groupSubgroupProduct/components/FilterContent';
 import { FormErrors, OnChangeFormInput, FormData } from '@/hooks/useForm';
 import Pdv from '@/model/Pdv';
-import { columns } from './table';
+import GroupSubgroupProduct from '@/model/GroupSubgroupProduct';
+import './styles.scss';
 
 // eslint-disable-next-line no-shadow
 export enum States {
@@ -36,7 +34,8 @@ export interface DataRow {
 // eslint-disable-next-line no-shadow
 export enum ShouldShowModal {
   filter = 'filter',
-  groupSubgroupProduct = 'groupSubgroupProduct',
+  groupProduct = 'groupProduct',
+  subgroupProduct = 'subgroupProduct',
 }
 
 interface GroupSubgroupProductContainerProps {
@@ -107,17 +106,17 @@ export const GroupSubgroupProductContainer: React.FC<GroupSubgroupProductContain
     actions: (
       <React.Fragment>
         <Pen
-          className="mr-2 svg-icon action-icon"
+          className="mr-4 svg-icon action-icon"
           onClick={(): void =>
             onShouldShowModal({
-              value: ShouldShowModal.groupSubgroupProduct,
+              value: ShouldShowModal.groupProduct,
               newTitleModal: `Editar ${item.name}`,
               groupSubgroupProduct: item,
             })
           }
         />
         <Trash
-          className="mr-2 svg-icon action-icon"
+          className="mr-4 svg-icon action-icon"
           onClick={() => {
             onShowDeleteGroupSubgroupProduct(item);
           }}
@@ -139,19 +138,24 @@ export const GroupSubgroupProductContainer: React.FC<GroupSubgroupProductContain
         title={title}
         visible={visible}
         onClose={onToggle}
-        groupSubgroupProductition={shouldShowModal === ShouldShowModal.filter ? 'right' : 'center'}
+        position={shouldShowModal === ShouldShowModal.filter ? 'right' : 'center'}
         isContentWithCard={shouldShowModal !== ShouldShowModal.filter}
         actions={[
           {
             [ShouldShowModal.filter]: renderActionDialogToCancel,
-            [ShouldShowModal.groupSubgroupProduct]: renderActionDialogToCancel,
+            [ShouldShowModal.groupProduct]: renderActionDialogToCancel,
+            [ShouldShowModal.subgroupProduct]: renderActionDialogToCancel,
           }[shouldShowModal],
           {
             [ShouldShowModal.filter]: {
               title: 'Aplicar',
               onClick: (): Promise<void> => onFilter(),
             },
-            [ShouldShowModal.groupSubgroupProduct]: {
+            [ShouldShowModal.groupProduct]: {
+              title: groupSubgroupProductState?.id ? 'Salvar' : 'Cadastrar novo grupo',
+              onClick: (): Promise<void> => onSaveGroupSubgroupProduct(),
+            },
+            [ShouldShowModal.subgroupProduct]: {
               title: groupSubgroupProductState?.id ? 'Salvar' : 'Cadastrar novo grupo',
               onClick: (): Promise<void> => onSaveGroupSubgroupProduct(),
             },
@@ -167,8 +171,17 @@ export const GroupSubgroupProductContainer: React.FC<GroupSubgroupProductContain
                 onChangeFormInput={onChangeFormInputFilter}
               />
             ),
-            [ShouldShowModal.groupSubgroupProduct]: (
-              <RegisterContent
+            [ShouldShowModal.groupProduct]: (
+              <RegisterGroupContent
+                formData={formDataGroupSubgroupProduct}
+                formErrors={formErrorsGroupSubgroupProduct}
+                onChangeFormInput={onChangeFormInputGroupSubgroupProduct}
+                listGroupSubgroupProduct={listGroupSubgroupProduct}
+                listPdv={listPdv}
+              />
+            ),
+            [ShouldShowModal.subgroupProduct]: (
+              <RegisterGroupContent
                 formData={formDataGroupSubgroupProduct}
                 formErrors={formErrorsGroupSubgroupProduct}
                 onChangeFormInput={onChangeFormInputGroupSubgroupProduct}
@@ -210,14 +223,103 @@ export const GroupSubgroupProductContainer: React.FC<GroupSubgroupProductContain
             </div>
           </div>
         </div>
-        
-        <Pagination
-          currentPage={currentPage.page}
-          totalCount={currentPage.total}
-          pageSize={currentPage.pageSize}
-          onPageChange={page => onPaginationChange(page)}
-          total={currentPage.total}
-        />
+
+        <CollapseCustom title="Grupos e subgrupos">
+          <Row>
+            <Col>
+              <p className="text-title-gruop">Nome do grupo</p>
+            </Col>
+          </Row>
+          <Row>
+            <Col md={4}>
+              <div className="d-flex">
+                <div className="d-flex text-gruop">
+                  <div style={{ margin: 'auto 0' }}>Bebidas</div>
+                  <div style={{ margin: 'auto 0' }}>
+                    <Pen
+                      className="ml-4 mr-4 svg-icon action-icon"
+                      // onClick={(): void =>
+                      //   onShouldShowModal({
+                      //     value: ShouldShowModal.groupSubgroupProduct,
+                      //     newTitleModal: `Editar ${item.name}`,
+                      //     groupSubgroupProduct: item,
+                      //   })
+                      // }
+                    />
+                    <Trash
+                      className="mr-0 svg-icon"
+                      // onClick={() => {
+                      //   onShowDeleteGroupSubgroupProduct(item);
+                      // }}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <a
+                    className="text-success-link"
+                    style={{ cursor: 'pointer' }}
+                    // onClick={(): void =>
+                    //   onShouldShowModal({
+                    //     newTitleModal: 'Cadastrar Sub PDV',
+                    //     value: ShouldShowModal.subpdvRegister,
+                    //     pdv,
+                    //   })
+                    // }
+                  >
+                    + novo subgrupo
+                  </a>
+                </div>
+              </div>
+              <div className="tree">
+                <ul>
+                  <li>
+                    <div>Bebidas alcoolicas</div>
+                    <div className="flex-shrink-0">
+                      <Pen
+                        className="mr-4 svg-icon action-icon"
+                        // onClick={(): void =>
+                        //   onShouldShowModal({
+                        //     value: ShouldShowModal.groupSubgroupProduct,
+                        //     newTitleModal: `Editar ${item.name}`,
+                        //     groupSubgroupProduct: item,
+                        //   })
+                        // }
+                      />
+                      <Trash
+                        className="mr-4 svg-icon action-icon"
+                        // onClick={() => {
+                        //   onShowDeleteGroupSubgroupProduct(item);
+                        // }}
+                      />
+                    </div>
+                  </li>
+                  <li>
+                    <div>Bebidas alcoolicas</div>
+                    <div className="flex-shrink-0">
+                      <Pen
+                        className="mr-4 svg-icon action-icon"
+                        // onClick={(): void =>
+                        //   onShouldShowModal({
+                        //     value: ShouldShowModal.groupSubgroupProduct,
+                        //     newTitleModal: `Editar ${item.name}`,
+                        //     groupSubgroupProduct: item,
+                        //   })
+                        // }
+                      />
+                      <Trash
+                        className="mr-4 svg-icon action-icon"
+                        // onClick={() => {
+                        //   onShowDeleteGroupSubgroupProduct(item);
+                        // }}
+                      />
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </Col>
+            <Col md={4}>-</Col>
+          </Row>
+        </CollapseCustom>
       </Container>
     </Fragment>
   );
