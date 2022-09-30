@@ -7,13 +7,9 @@ import { RegisterGroupContent } from '@/features/groupSubgroupProduct/components
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { ActionProps, Dialog } from '@/components/Dialog';
-import { ColumnStatus } from '@/components/Table';
-import { GroupSubgroupProductRequestParams } from '@/features/groupSubgroupProduct/types';
-import dayjs from 'dayjs';
 import { FilterContent } from '@/features/groupSubgroupProduct/components/FilterContent';
 import { FormErrors, OnChangeFormInput, FormData } from '@/hooks/useForm';
-import Pdv from '@/model/Pdv';
-import GroupSubgroupProduct from '@/model/GroupSubgroupProduct';
+import GroupProduct from '@/model/GroupProduct';
 import './styles.scss';
 
 // eslint-disable-next-line no-shadow
@@ -35,95 +31,55 @@ export interface DataRow {
 export enum ShouldShowModal {
   filter = 'filter',
   groupProduct = 'groupProduct',
-  subgroupProduct = 'subgroupProduct',
 }
 
-interface GroupSubgroupProductContainerProps {
+interface GroupProductContainerProps {
   state: States;
-  groupSubgroupProductState?: GroupSubgroupProduct;
-  listGroupSubgroupProduct: GroupSubgroupProduct[];
-  currentPage: GroupSubgroupProductRequestParams;
+  groupProductState?: GroupProduct;
   shouldShowModal: ShouldShowModal;
   title: string | React.ReactNode;
   visible: boolean;
-  formDataGroupSubgroupProduct: FormData;
-  formErrorsGroupSubgroupProduct: FormErrors;
+  formDataGroupProduct: FormData;
+  formErrorsGroupProduct: FormErrors;
   formDataFilter: FormData;
   formErrorsFilter: FormErrors;
-  listPdv: Pdv[];
-  onSaveGroupSubgroupProduct: () => Promise<void>;
-  onPaginationChange: (page: number) => void;
-  changeColorColumn: (status: number) => void;
+  onSaveGroupProduct: () => Promise<void>;
   onChangeFormInputFilter: OnChangeFormInput;
   onToggle: () => void;
   onFilter: () => Promise<void>;
-  onChangeFormInputGroupSubgroupProduct: OnChangeFormInput;
-  onShowDeleteGroupSubgroupProduct: (groupSubgroupProduct: GroupSubgroupProduct) => void;
+  onChangeFormInputGroupProduct: OnChangeFormInput;
+  // onShowDeleteGroupProduct: (groupProduct: GroupProduct) => void;
   onShouldShowModal: ({
     value,
     newTitleModal,
-    groupSubgroupProduct,
+    groupProduct,
   }: {
     value: ShouldShowModal;
     newTitleModal: string | React.ReactNode;
-    groupSubgroupProduct?: GroupSubgroupProduct;
+    groupProduct?: GroupProduct;
   }) => void;
+  listGroupProduct: GroupProduct[];
 }
 
-export const GroupSubgroupProductContainer: React.FC<GroupSubgroupProductContainerProps> = ({
-  listGroupSubgroupProduct,
+export const GroupProductContainer: React.FC<GroupProductContainerProps> = ({
   state,
-  groupSubgroupProductState,
-  currentPage,
+  groupProductState,
   title,
   visible,
   shouldShowModal,
-  formDataGroupSubgroupProduct,
-  formErrorsGroupSubgroupProduct,
+  formDataGroupProduct,
+  formErrorsGroupProduct,
   formDataFilter,
   formErrorsFilter,
-  listPdv,
   onChangeFormInputFilter,
-  onChangeFormInputGroupSubgroupProduct,
-  onSaveGroupSubgroupProduct,
-  onPaginationChange,
-  changeColorColumn,
+  onChangeFormInputGroupProduct,
+  onSaveGroupProduct,
   onToggle,
   onFilter,
   onShouldShowModal,
-  onShowDeleteGroupSubgroupProduct,
+  listGroupProduct,
+  // onShowDeleteGroupProduct,
 }) => {
-  const dataTableGroupSubgroupProduct = listGroupSubgroupProduct?.map(item => ({
-    id: item.id,
-    name: (
-      <ColumnStatus statusColor={String(changeColorColumn(Number(item.status)))}>
-        {item.name}
-      </ColumnStatus>
-    ),
-    date: dayjs(item.expirationDate, 'YYYY-DD-MM hh:mm:ss').format('DD/MM/YYYY'),
-    currentPdv: item.pdv?.name,
-    serial: item.serialNumber,
-    actions: (
-      <React.Fragment>
-        <Pen
-          className="mr-4 svg-icon action-icon"
-          onClick={(): void =>
-            onShouldShowModal({
-              value: ShouldShowModal.groupProduct,
-              newTitleModal: `Editar ${item.name}`,
-              groupSubgroupProduct: item,
-            })
-          }
-        />
-        <Trash
-          className="mr-4 svg-icon action-icon"
-          onClick={() => {
-            onShowDeleteGroupSubgroupProduct(item);
-          }}
-        />
-      </React.Fragment>
-    ),
-  }));
 
   const renderActionDialogToCancel: ActionProps = {
     title: 'Cancelar',
@@ -144,7 +100,6 @@ export const GroupSubgroupProductContainer: React.FC<GroupSubgroupProductContain
           {
             [ShouldShowModal.filter]: renderActionDialogToCancel,
             [ShouldShowModal.groupProduct]: renderActionDialogToCancel,
-            [ShouldShowModal.subgroupProduct]: renderActionDialogToCancel,
           }[shouldShowModal],
           {
             [ShouldShowModal.filter]: {
@@ -152,12 +107,8 @@ export const GroupSubgroupProductContainer: React.FC<GroupSubgroupProductContain
               onClick: (): Promise<void> => onFilter(),
             },
             [ShouldShowModal.groupProduct]: {
-              title: groupSubgroupProductState?.id ? 'Salvar' : 'Cadastrar novo grupo',
-              onClick: (): Promise<void> => onSaveGroupSubgroupProduct(),
-            },
-            [ShouldShowModal.subgroupProduct]: {
-              title: groupSubgroupProductState?.id ? 'Salvar' : 'Cadastrar novo grupo',
-              onClick: (): Promise<void> => onSaveGroupSubgroupProduct(),
+              title: groupProductState?.id ? 'Salvar' : 'Cadastrar novo grupo',
+              onClick: (): Promise<void> => onSaveGroupProduct(),
             },
           }[shouldShowModal],
         ]}
@@ -173,20 +124,9 @@ export const GroupSubgroupProductContainer: React.FC<GroupSubgroupProductContain
             ),
             [ShouldShowModal.groupProduct]: (
               <RegisterGroupContent
-                formData={formDataGroupSubgroupProduct}
-                formErrors={formErrorsGroupSubgroupProduct}
-                onChangeFormInput={onChangeFormInputGroupSubgroupProduct}
-                listGroupSubgroupProduct={listGroupSubgroupProduct}
-                listPdv={listPdv}
-              />
-            ),
-            [ShouldShowModal.subgroupProduct]: (
-              <RegisterGroupContent
-                formData={formDataGroupSubgroupProduct}
-                formErrors={formErrorsGroupSubgroupProduct}
-                onChangeFormInput={onChangeFormInputGroupSubgroupProduct}
-                listGroupSubgroupProduct={listGroupSubgroupProduct}
-                listPdv={listPdv}
+                formData={formDataGroupProduct}
+                formErrors={formErrorsGroupProduct}
+                onChangeFormInput={onChangeFormInputGroupProduct}
               />
             ),
           }[shouldShowModal]
@@ -203,7 +143,7 @@ export const GroupSubgroupProductContainer: React.FC<GroupSubgroupProductContain
               title="+ Cadastrar novo grupo"
               onClick={(): void =>
                 onShouldShowModal({
-                  value: ShouldShowModal.groupSubgroupProduct,
+                  value: ShouldShowModal.groupProduct,
                   newTitleModal: 'Cadastrar nova grupo',
                 })
               }
@@ -240,16 +180,16 @@ export const GroupSubgroupProductContainer: React.FC<GroupSubgroupProductContain
                       className="ml-4 mr-4 svg-icon action-icon"
                       // onClick={(): void =>
                       //   onShouldShowModal({
-                      //     value: ShouldShowModal.groupSubgroupProduct,
+                      //     value: ShouldShowModal.groupProduct,
                       //     newTitleModal: `Editar ${item.name}`,
-                      //     groupSubgroupProduct: item,
+                      //     groupProduct: item,
                       //   })
                       // }
                     />
                     <Trash
                       className="mr-0 svg-icon"
                       // onClick={() => {
-                      //   onShowDeleteGroupSubgroupProduct(item);
+                      //   onShowDeleteGroupProduct(item);
                       // }}
                     />
                   </div>
@@ -279,16 +219,16 @@ export const GroupSubgroupProductContainer: React.FC<GroupSubgroupProductContain
                         className="mr-4 svg-icon action-icon"
                         // onClick={(): void =>
                         //   onShouldShowModal({
-                        //     value: ShouldShowModal.groupSubgroupProduct,
+                        //     value: ShouldShowModal.subgroupProduct,
                         //     newTitleModal: `Editar ${item.name}`,
-                        //     groupSubgroupProduct: item,
+                        //     subgroupProduct: item,
                         //   })
                         // }
                       />
                       <Trash
                         className="mr-4 svg-icon action-icon"
                         // onClick={() => {
-                        //   onShowDeleteGroupSubgroupProduct(item);
+                        //   onShowDeleteSubgroupProduct(item);
                         // }}
                       />
                     </div>
@@ -300,16 +240,16 @@ export const GroupSubgroupProductContainer: React.FC<GroupSubgroupProductContain
                         className="mr-4 svg-icon action-icon"
                         // onClick={(): void =>
                         //   onShouldShowModal({
-                        //     value: ShouldShowModal.groupSubgroupProduct,
+                        //     value: ShouldShowModal.subgroupProduct,
                         //     newTitleModal: `Editar ${item.name}`,
-                        //     groupSubgroupProduct: item,
+                        //     subgroupProduct: item,
                         //   })
                         // }
                       />
                       <Trash
                         className="mr-4 svg-icon action-icon"
                         // onClick={() => {
-                        //   onShowDeleteGroupSubgroupProduct(item);
+                        //   onShowDeleteSubgroupProduct(item);
                         // }}
                       />
                     </div>

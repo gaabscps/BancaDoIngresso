@@ -1,16 +1,12 @@
 import React from 'react';
 import { Col, Form, FormGroup, Row } from 'reactstrap';
-import { InputText, SelectCustom } from '@/components';
+import { InputText } from '@/components';
 import { FormData, FormErrors, OnChangeFormInput } from '@/hooks/useForm';
-import Pdv from '@/model/Pdv';
-import GroupSubgroupProduct from '@/model/GroupSubgroupProduct';
 
 interface RegisterGroupContentProps {
   formData: FormData;
   formErrors: FormErrors;
   onChangeFormInput: OnChangeFormInput;
-  listGroupSubgroupProduct: GroupSubgroupProduct[];
-  listPdv: Pdv[];
 }
 
 // eslint-disable-next-line no-shadow

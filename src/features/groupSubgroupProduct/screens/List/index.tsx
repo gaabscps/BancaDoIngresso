@@ -14,7 +14,11 @@ import {
 } from '@/features/groupSubgroupProduct/screens/List/ui';
 import { FormInputName as FormInputNameToFilter } from '@/features/groupSubgroupProduct/components/FilterContent';
 import { FormInputName as FormInputNameToSaveGroupProduct } from '@/features/groupSubgroupProduct/components/RegisterGroupContent';
-
+import {
+  GroupProductResponse,
+  GroupProductRequestParams,
+  // GroupProductResponse,
+} from '@/features/groupSubgroupProduct/types';
 import GroupProduct from '@/model/GroupProduct';
 import { DeleteContent } from '../../components/DeleteContent';
 
@@ -32,7 +36,7 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
     ShouldShowModal.groupProduct,
   );
 
-  const [currentPage, setCurrentPage] = useState<GroupProductRequestParams>({
+  const [currentPage] = useState<GroupProductRequestParams>({
     page: 1,
     pageSize: 10,
     sort: 'name',
@@ -74,15 +78,10 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
   const handleFetch = async (values: GroupProductRequestParams): Promise<void> => {
     try {
       setState(States.loading);
-      const { data } = await api.get<GroupProductResponse>('/groupProduct/page', values);
+      const { data } = await api.post<GroupProductResponse>('/product-group/page', values);
 
       if (data) {
         setListGroupProduct(data?.list ?? []);
-
-        setCurrentPage(currentPageState => ({
-          ...currentPageState,
-          ...data,
-        }));
       }
     } catch (error) {
       const err = error as AxiosError;
@@ -128,10 +127,10 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
         if (!payload.id) {
           delete payload.id;
 
-          await api.post<GroupProduct>('/groupProduct', payload);
+          await api.post<GroupProduct>('/product-group', payload);
           toast.success('Grupo e subgrupo de produto cadastrado com sucesso!');
         } else {
-          await api.put<GroupProduct>('/groupProduct', payload);
+          await api.put<GroupProduct>('/product-group', payload);
           toast.success('Grupo e subgrupo de produto atualizado com sucesso!');
         }
 
@@ -163,7 +162,7 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
     groupProductSelected: GroupProduct,
   ): Promise<void> => {
     try {
-      await api.delete(`/groupProduct/${groupProductSelected?.id}`);
+      await api.delete(`/product-group/${groupProductSelected?.id}`);
 
       toast.success('Grupo e subgrupo de produtos excluído com sucesso!');
       handleOnClose();
@@ -221,13 +220,6 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
     }
   };
 
-  const handleOnPaginationChange = async (page: number): Promise<void> => {
-    handleFetch({
-      ...currentPage,
-      page,
-    });
-  };
-
   useEffect(() => {
     if (groupProduct?.id) {
       onChangeFormInputGroupProduct(FormInputNameToSaveGroupProduct.name)(groupProduct.name);
@@ -244,7 +236,6 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
       title={title}
       visible={visible}
       onToggle={onToggle}
-      onPaginationChange={handleOnPaginationChange}
       shouldShowModal={shouldShowModal}
       onSaveGroupProduct={handleOnSaveGroupProduct}
       listGroupProduct={listGroupProduct}

@@ -1,49 +1,49 @@
 import { createContext, useCallback, useContext, useMemo, useState } from 'react';
 
-interface GroupSubgroupProductProviderProps {
+interface GroupProductProviderProps {
   children: React.ReactNode;
 }
 
-interface GroupSubgroupProductState {
-  idGroupSubgroupProduct: string;
-  nameGroupSubgroupProduct: string;
+interface GroupProductState {
+  idGroupProduct: string;
+  nameGroupProduct: string;
 }
 
-interface GroupSubgroupProductProviderValue {
-  groupSubgroupProductState: GroupSubgroupProductState;
-  onChange: (data: Partial<GroupSubgroupProductState>) => void;
+interface GroupProductProviderValue {
+  groupProductState: GroupProductState;
+  onChange: (data: Partial<GroupProductState>) => void;
   onClean: () => void;
 }
 
-const initialState: GroupSubgroupProductState = {
-  idGroupSubgroupProduct: '',
-  nameGroupSubgroupProduct: '',
+const initialState: GroupProductState = {
+  idGroupProduct: '',
+  nameGroupProduct: '',
 };
 
-const GroupSubgroupProductContext = createContext<GroupSubgroupProductProviderValue>({
-  groupSubgroupProductState: initialState,
+const GroupProductContext = createContext<GroupProductProviderValue>({
+  groupProductState: initialState,
   onChange: () => undefined,
   onClean: () => undefined,
 });
 
-export const GroupSubgroupProductProvider = ({ children }: GroupSubgroupProductProviderProps): JSX.Element => {
-  const [groupSubgroupProductState, setGroupSubgroupProductState] = useState<GroupSubgroupProductState>(initialState);
+export const GroupProductProvider = ({ children }: GroupProductProviderProps): JSX.Element => {
+  const [groupProductState, setGroupProductState] = useState<GroupProductState>(initialState);
 
-  const onChange = useCallback((data: Partial<GroupSubgroupProductState>): void => {
-    setGroupSubgroupProductState(previousState => ({ ...previousState, ...data }));
+  const onChange = useCallback((data: Partial<GroupProductState>): void => {
+    setGroupProductState(previousState => ({ ...previousState, ...data }));
   }, []);
 
-  const onClean = (): void => setGroupSubgroupProductState(initialState);
+  const onClean = (): void => setGroupProductState(initialState);
 
   const providerValue = useMemo(
-    () => ({ groupSubgroupProductState, onChange, onClean }),
-    [groupSubgroupProductState, onChange, onClean],
+    () => ({ groupProductState, onChange, onClean }),
+    [groupProductState, onChange, onClean],
   );
 
   return (
     // eslint-disable-next-line react/react-in-jsx-scope
-    <GroupSubgroupProductContext.Provider value={providerValue}>{children}</GroupSubgroupProductContext.Provider>
+    <GroupProductContext.Provider value={providerValue}>{children}</GroupProductContext.Provider>
   );
 };
 
-export const useGroupSubgroupProduct = (): GroupSubgroupProductProviderValue => useContext(GroupSubgroupProductContext);
+export const useGroupProduct = (): GroupProductProviderValue => useContext(GroupProductContext);

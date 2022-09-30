@@ -3,13 +3,13 @@ import { Col, Form, FormGroup, Row } from 'reactstrap';
 import { InputText, SelectCustom } from '@/components';
 import { FormData, FormErrors, OnChangeFormInput } from '@/hooks/useForm';
 import Pdv from '@/model/Pdv';
-import GroupSubgroupProduct from '@/model/GroupSubgroupProduct';
+import GroupProduct from '@/model/GroupProduct';
 
 interface RegisterSubgroupContentProps {
   formData: FormData;
   formErrors: FormErrors;
   onChangeFormInput: OnChangeFormInput;
-  listGroupSubgroupProduct: GroupSubgroupProduct[];
+  listGroupProduct: GroupProduct[];
   listPdv: Pdv[];
 }
 
