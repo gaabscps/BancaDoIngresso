@@ -250,8 +250,16 @@ export const PdvScreen: React.FC = (): JSX.Element => {
   }): void => {
     setShouldShowModal(value);
     onChangeTitle(newTitleModal);
-    if (ShouldShowModal.subpdvRegister !== value) {
-      onToggle();
+    onToggle();
+
+    if (pdvSelected?.id && value === ShouldShowModal.pdv) {
+      setPdv(pdvSelected);
+      if (pdvSelected.id !== pdv?.id) {
+        resetFormPdv();
+      }
+    } else {
+      resetFormPdv();
+      setPdv(undefined);
     }
 
     if (
@@ -260,30 +268,31 @@ export const PdvScreen: React.FC = (): JSX.Element => {
     ) {
       resetFormSubPdv();
     }
-    if ((!pdvSelected?.id && value === ShouldShowModal.pdv) || value !== ShouldShowModal.subpdv) {
-      if (pdvSelected?.id !== pdv?.id) {
-        resetFormPdv();
-      }
-    }
 
     if (pdvSelected && value === ShouldShowModal.subpdv) {
       handleOnShowListSubPdv(pdvSelected);
     }
 
-    if (pdvSelected?.id && value !== ShouldShowModal.subpdv) {
-      if (pdvSelected?.id !== pdv?.id) {
-        resetFormPdv();
-      }
-      setPdv(pdvSelected);
-    } else {
-      setPdv(undefined);
-    }
     if (subPdvSelected?.id && value !== ShouldShowModal.subpdv) {
       resetFormSubPdv();
       setSubPdv(subPdvSelected);
     } else {
       setSubPdv(undefined);
     }
+
+    // if ((!pdvSelected?.id && value === ShouldShowModal.pdv) || value !== ShouldShowModal.subpdv) {
+    //   if (pdvSelected?.id !== pdv?.id) {
+    //     resetFormPdv();
+    //   }
+    // }
+    // if (pdvSelected?.id && value !== ShouldShowModal.subpdv) {
+    //   if (pdvSelected?.id !== pdv?.id) {
+    //     resetFormPdv();
+    //   }
+    //   setPdv(pdvSelected);
+    // } else {
+    //   setPdv(undefined);
+    // }
   };
 
   const handleOnSavePdv = async (): Promise<void> => {
