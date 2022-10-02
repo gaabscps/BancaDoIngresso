@@ -53,6 +53,7 @@ interface PdvContainerProps {
   onChangeFormInputSubPdv: OnChangeFormInput;
   formDataFilter: FormData;
   formErrorsFilter: FormErrors;
+  clearFilter: () => void;
   onChangeFormInputFilter: OnChangeFormInput;
   onToggle: () => void;
   onPaginationChange: (page: number) => void;
@@ -110,6 +111,7 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
   onToggle,
   onPaginationChange,
   onShouldShowModal,
+  clearFilter,
   // handleRenderListPdv,
   // onShowListSub,
   // onShowFilter,
@@ -184,6 +186,13 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
     onClick: (): void => onToggle(),
     theme: 'noneBorder',
   };
+  const renderActionDialogToClearFilter: ActionProps = {
+    title: 'Limpar',
+    onClick: (): void => {
+      clearFilter();
+    },
+    theme: 'noneBorder',
+  };
 
   const renderActionDialogToReturnListSubPdv: ActionProps = {
     title: 'Cancelar',
@@ -227,7 +236,7 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
         }
         actions={[
           {
-            [ShouldShowModal.filter]: renderActionDialogToCancel,
+            [ShouldShowModal.filter]: renderActionDialogToClearFilter,
             [ShouldShowModal.pdv]: renderActionDialogToCancel,
             [ShouldShowModal.subpdv]: {},
             [ShouldShowModal.subpdvRegister]: renderActionDialogToReturnListSubPdv,

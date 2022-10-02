@@ -119,16 +119,13 @@ export const PdvScreen: React.FC = (): JSX.Element => {
   const {
     formData: formDataFilter,
     formErrors: formErrorsFilter,
+    resetForm: resetFormFilter,
     onChangeFormInput: onChangeFormInputFilter,
     isFormValid: isFormValidFilter,
   } = useForm({
     initialData: {
       filterSearch: '',
       inputSearch: '',
-    },
-    validators: {
-      filterSearch: [validators.required],
-      inputSearch: [validators.required],
     },
   });
 
@@ -363,9 +360,11 @@ export const PdvScreen: React.FC = (): JSX.Element => {
                 name: formDataFilter[FormInputNameToFilter.inputSearch],
               },
             },
-            address: {
+            city: {
               entity: {
-                address: formDataFilter[FormInputNameToFilter.inputSearch],
+                address: {
+                  city: formDataFilter[FormInputNameToFilter.inputSearch],
+                },
               },
             },
           }[formDataFilter[FormInputNameToFilter.filterSearch]] || {};
@@ -380,6 +379,12 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       const err = error as AxiosError;
       toast.error(err.message);
     }
+  };
+
+  const clearFilter = (): void => {
+    resetFormFilter();
+    formDataFilter[FormInputNameToFilter.inputSearch] = '';
+    handleOnFilter();
   };
 
   const handleOnClose = (): void => confirmDelete.hide();
@@ -605,6 +610,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       onShowEditSubPdv={handleOnShowEditSubPdv}
       onChangeFileInput={handleOnChangeFileInput}
       // onShowListSub={handleOnShowListSubPdv}
+      clearFilter={clearFilter}
     />
   );
 };

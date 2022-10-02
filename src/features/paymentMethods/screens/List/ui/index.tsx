@@ -50,6 +50,7 @@ interface PaymentMethodsContainerProps {
   formDataFilter: FormData;
   formErrorsFilter: FormErrors;
   listChargeSetup: any[];
+  clearFilter: () => void;
   onSavePaymentMethods: () => Promise<void>;
   onPaginationChange: (page: number) => void;
   changeColorColumn: (status: number) => void;
@@ -82,6 +83,7 @@ export const PaymentMethodsContainer: React.FC<PaymentMethodsContainerProps> = (
   formDataFilter,
   formErrorsFilter,
   listChargeSetup,
+  clearFilter,
   onChangeFormInputFilter,
   onChangeFormInputPaymentMethods,
   onSavePaymentMethods,
@@ -128,6 +130,12 @@ export const PaymentMethodsContainer: React.FC<PaymentMethodsContainerProps> = (
     theme: 'noneBorder',
   };
 
+  const renderActionDialogToClearFilter: ActionProps = {
+    title: 'Limpar',
+    onClick: (): void => clearFilter(),
+    theme: 'noneBorder',
+  };
+
   return (
     <Fragment>
       <Loading isVisible={state === States.loading} />
@@ -139,7 +147,7 @@ export const PaymentMethodsContainer: React.FC<PaymentMethodsContainerProps> = (
         isContentWithCard={shouldShowModal !== ShouldShowModal.filter}
         actions={[
           {
-            [ShouldShowModal.filter]: renderActionDialogToCancel,
+            [ShouldShowModal.filter]: renderActionDialogToClearFilter,
             [ShouldShowModal.paymentMethods]: renderActionDialogToCancel,
           }[shouldShowModal],
           {
