@@ -149,6 +149,10 @@ export const Sidebar: React.FC = () => {
                   route: path.Dashboard.Gateway.itself,
                   title: 'Gateway de pagamento',
                 },
+                {
+                  route: path.Dashboard.ProductsCombos.itself,
+                  title: 'Produtos e Combos',
+                },
               ]}
             />
           </li>
