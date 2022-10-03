@@ -22,7 +22,6 @@ export const primaryTheme = {
       marginBottom: '30px',
       fontSize: '0.75rem',
       fontWidth: '300',
-      overflow: 'hidden',
     },
   },
   headCells: {
