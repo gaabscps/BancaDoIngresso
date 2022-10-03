@@ -212,7 +212,7 @@ export const ComboContainer: React.FC<ComboContainerProps> = ({
             <Link to={`${process.env.PUBLIC_URL}/dashboard/comboscombos`} className="m-auto">
               <ArrowLeft color={colors.black} className="m-auto" />
             </Link>
-            <h5 className="ml-3 mb-0 mt-1">Combo</h5>
+            <h5 className="ml-3 mb-0 mt-1">Combos</h5>
           </div>
           <div className="button-filter-container">
             <Button
