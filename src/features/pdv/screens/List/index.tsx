@@ -96,7 +96,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
     validators: {
       name: [validators.required],
       document: [validators.required, validators.cpforcnpj],
-      zipCode: [validators.required, validators.cep],
+      zipCode: [validators.required],
       state: [validators.required],
       city: [validators.required],
       district: [validators.required],
@@ -119,16 +119,13 @@ export const PdvScreen: React.FC = (): JSX.Element => {
   const {
     formData: formDataFilter,
     formErrors: formErrorsFilter,
+    resetForm: resetFormFilter,
     onChangeFormInput: onChangeFormInputFilter,
     isFormValid: isFormValidFilter,
   } = useForm({
     initialData: {
       filterSearch: '',
       inputSearch: '',
-    },
-    validators: {
-      filterSearch: [validators.required],
-      inputSearch: [validators.required],
     },
   });
 
@@ -253,11 +250,12 @@ export const PdvScreen: React.FC = (): JSX.Element => {
     if (ShouldShowModal.subpdvRegister !== value) {
       onToggle();
     }
-
     if (
       (!subPdvSelected?.id && value === ShouldShowModal.subpdvRegister) ||
       value !== ShouldShowModal.subpdv
     ) {
+      console.log('aqui');
+
       resetFormSubPdv();
     }
     if ((!pdvSelected?.id && value === ShouldShowModal.pdv) || value !== ShouldShowModal.subpdv) {
@@ -277,6 +275,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       setPdv(pdvSelected);
     } else {
       setPdv(undefined);
+      resetFormPdv();
     }
     if (subPdvSelected?.id && value !== ShouldShowModal.subpdv) {
       resetFormSubPdv();
@@ -354,9 +353,11 @@ export const PdvScreen: React.FC = (): JSX.Element => {
                 name: formDataFilter[FormInputNameToFilter.inputSearch],
               },
             },
-            address: {
+            city: {
               entity: {
-                address: formDataFilter[FormInputNameToFilter.inputSearch],
+                address: {
+                  city: formDataFilter[FormInputNameToFilter.inputSearch],
+                },
               },
             },
           }[formDataFilter[FormInputNameToFilter.filterSearch]] || {};
@@ -371,6 +372,12 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       const err = error as AxiosError;
       toast.error(err.message);
     }
+  };
+
+  const clearFilter = (): void => {
+    resetFormFilter();
+    formDataFilter[FormInputNameToFilter.inputSearch] = '';
+    handleOnFilter();
   };
 
   const handleOnClose = (): void => confirmDelete.hide();
@@ -399,7 +406,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
           onClick: (): void => handleOnClose(),
         },
         {
-          title: 'Sim, quero remover',
+          title: 'Sim, quero excluir',
           onClick: (): Promise<void> => handleOnConfirmDeleteToPdv(pdvSelected),
         },
       ],
@@ -596,6 +603,8 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       onShowEditSubPdv={handleOnShowEditSubPdv}
       onChangeFileInput={handleOnChangeFileInput}
       // onShowListSub={handleOnShowListSubPdv}
+      clearFilter={clearFilter}
+      setErrorsPdv={setErrorsPdv}
     />
   );
 };

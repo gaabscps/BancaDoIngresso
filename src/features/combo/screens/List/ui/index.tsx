@@ -1,21 +1,23 @@
 /* eslint-disable react/jsx-key */
-import React, { Fragment } from 'react';
+import React, { ChangeEvent, Fragment } from 'react';
 import FilterVector from '@/assets/images/svg/FilterVector';
-import { Button, Loading } from '@/components';
-import { Container, Label } from 'reactstrap';
-import { RegisterContent } from '@/features/pos/components/RegisterContent';
-import { ReactComponent as Status } from '@/assets/images/svg/status.svg';
+import { Button, Loading, DropdonwFlags } from '@/components';
+import { Container } from 'reactstrap';
+import { ProductQuantity, RegisterContent } from '@/features/combo/components/RegisterContent';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { ActionProps, Dialog } from '@/components/Dialog';
-import { ColumnStatus, CustomTable } from '@/components/Table';
+import { ColumnImage, CustomTable } from '@/components/Table';
 import Pagination from '@/components/Utils/Pagination';
-import Pos from '@/model/Pos';
-import { PosRequestParams } from '@/features/pos/types';
-import dayjs from 'dayjs';
-import { FilterContent } from '@/features/pos/components/FilterContent';
+import Combo from '@/model/Combo';
+import { NameFiles, ComboRequestParams } from '@/features/combo/types';
+import { FilterContent } from '@/features/combo/components/FilterContent';
 import { FormErrors, OnChangeFormInput, FormData } from '@/hooks/useForm';
-import Pdv from '@/model/Pdv';
+import { ArrowLeft } from 'react-feather';
+import { Link } from 'react-router-dom';
+import { colors } from '@/styles/colors';
+import ComboGroup from '@/model/ComboGroup';
+import ComboSubgroup from '@/model/ComboSubgroup';
 import { columns } from './table';
 
 // eslint-disable-next-line no-shadow
@@ -25,103 +27,121 @@ export enum States {
 }
 export interface DataRow {
   id: string;
-  name: string;
-  serial: string;
+  image: string;
+  comboName: string;
+  comboProducts: string;
+  gruposubgroup: number;
   actions: string;
-  status: number;
-  date: string;
-  currentPdv: string;
 }
 
 // eslint-disable-next-line no-shadow
 export enum ShouldShowModal {
   filter = 'filter',
-  pos = 'pos',
+  combo = 'combo',
 }
 
-interface PosContainerProps {
+interface ComboContainerProps {
   state: States;
-  posState?: Pos;
-  listPos: Pos[];
-  currentPage: PosRequestParams;
+  comboState?: Combo;
+  listCombo: Combo[];
+  currentPage: ComboRequestParams;
   shouldShowModal: ShouldShowModal;
   title: string | React.ReactNode;
   visible: boolean;
-  formDataPos: FormData;
-  formErrorsPos: FormErrors;
+  formDataCombo: FormData;
+  formErrorsCombo: FormErrors;
   formDataFilter: FormData;
   formErrorsFilter: FormErrors;
-  listPdv: Pdv[];
-  clearFilter: () => void;
-  onSavePos: () => Promise<void>;
+  onSaveCombo: () => Promise<void>;
   onPaginationChange: (page: number) => void;
-  changeColorColumn: (status: number) => void;
   onChangeFormInputFilter: OnChangeFormInput;
   onToggle: () => void;
   onFilter: () => Promise<void>;
-  onChangeFormInputPos: OnChangeFormInput;
-  onShowDeletePos: (pos: Pos) => void;
+  onChangeFormInputCombo: OnChangeFormInput;
+  onChangeFileInput: (inputName: string) => (file: File | undefined) => void;
+  onShowDeleteCombo: (combo: Combo) => void;
   onShouldShowModal: ({
     value,
     newTitleModal,
-    pos,
+    combo,
   }: {
     value: ShouldShowModal;
     newTitleModal: string | React.ReactNode;
-    pos?: Pos;
+    combo?: Combo;
   }) => void;
+  nameFiles: NameFiles;
+  listComboGroup: ComboGroup[];
+  listComboSubGroup: ComboSubgroup[];
+  controllerInputAppendProduct: {
+    handleAddProduct(): void;
+    handleChangeProduct(
+      inputName: string,
+      index: number,
+      event: ChangeEvent<HTMLInputElement>,
+    ): void;
+    handleRemoveProduct(index: number): void;
+    productQuantity: ProductQuantity[];
+    setProductQuantity: React.Dispatch<React.SetStateAction<ProductQuantity[]>>;
+  };
 }
 
-export const PosContainer: React.FC<PosContainerProps> = ({
-  listPos,
+export const ComboContainer: React.FC<ComboContainerProps> = ({
+  listCombo,
   state,
-  posState,
+  comboState,
   currentPage,
   title,
   visible,
   shouldShowModal,
-  formDataPos,
-  formErrorsPos,
+  formDataCombo,
+  formErrorsCombo,
   formDataFilter,
   formErrorsFilter,
-  listPdv,
-  clearFilter,
   onChangeFormInputFilter,
-  onChangeFormInputPos,
-  onSavePos,
+  onChangeFormInputCombo,
+  onSaveCombo,
   onPaginationChange,
-  changeColorColumn,
   onToggle,
   onFilter,
   onShouldShowModal,
-  onShowDeletePos,
+  onShowDeleteCombo,
+  nameFiles,
+  onChangeFileInput,
+  listComboGroup,
+  listComboSubGroup,
+  controllerInputAppendProduct,
 }) => {
-  const dataTablePos = listPos?.map(item => ({
+  const dataColumnComboProducts = [
+    { id: '1', name: 'Exclusão de eventos' },
+    { id: '2', name: 'Edição de PDV’s' },
+    { id: '4', name: 'Exclusão de PDV’s' },
+    { id: '5', name: 'Edição de produtos' },
+    { id: '6', name: 'Exclusão de produtos' },
+  ];
+
+  const dataTableCombo = listCombo?.map(item => ({
     id: item.id,
-    name: (
-      <ColumnStatus statusColor={String(changeColorColumn(Number(item.status)))}>
-        {item.name}
-      </ColumnStatus>
-    ),
-    date: dayjs(item.expirationDate, 'YYYY-DD-MM hh:mm:ss').format('DD/MM/YYYY'),
-    currentPdv: item.pdv?.name,
-    serial: item.serialNumber,
+    image: <ColumnImage srcImage={item.imageBase64} />,
+    comboName: item.name,
+    comboProducts: <DropdonwFlags dataColumn={dataColumnComboProducts} />,
+    gruposubgroup: '-',
+
     actions: (
       <React.Fragment>
         <Pen
           className="mr-2 svg-icon action-icon"
-          onClick={(): void =>
-            onShouldShowModal({
-              value: ShouldShowModal.pos,
-              newTitleModal: `Editar ${item.name}`,
-              pos: item,
-            })
-          }
+          // onClick={(): void =>
+          //   onShouldShowModal({
+          //     value: ShouldShowModal.combo,
+          //     newTitleModal: `Editar ${item.name}`,
+          //     combo: item,
+          //   })
+          // }
         />
         <Trash
           className="mr-2 svg-icon action-icon"
           onClick={() => {
-            onShowDeletePos(item);
+            onShowDeleteCombo(item);
           }}
         />
       </React.Fragment>
@@ -131,11 +151,6 @@ export const PosContainer: React.FC<PosContainerProps> = ({
   const renderActionDialogToCancel: ActionProps = {
     title: 'Cancelar',
     onClick: (): void => onToggle(),
-    theme: 'noneBorder',
-  };
-  const renderActionDialogToCancelFilter: ActionProps = {
-    title: 'Limpar',
-    onClick: (): void => clearFilter(),
     theme: 'noneBorder',
   };
 
@@ -150,17 +165,17 @@ export const PosContainer: React.FC<PosContainerProps> = ({
         isContentWithCard={shouldShowModal !== ShouldShowModal.filter}
         actions={[
           {
-            [ShouldShowModal.filter]: renderActionDialogToCancelFilter,
-            [ShouldShowModal.pos]: renderActionDialogToCancel,
+            [ShouldShowModal.filter]: renderActionDialogToCancel,
+            [ShouldShowModal.combo]: renderActionDialogToCancel,
           }[shouldShowModal],
           {
             [ShouldShowModal.filter]: {
-              title: 'Aplicar',
+              title: 'Filtrar',
               onClick: (): Promise<void> => onFilter(),
             },
-            [ShouldShowModal.pos]: {
-              title: posState?.id ? 'Salvar' : 'Cadastrar nova POS',
-              onClick: (): Promise<void> => onSavePos(),
+            [ShouldShowModal.combo]: {
+              title: comboState?.id ? 'Salvar' : 'Cadastrar novo combo',
+              onClick: (): Promise<void> => onSaveCombo(),
             },
           }[shouldShowModal],
         ]}
@@ -174,13 +189,17 @@ export const PosContainer: React.FC<PosContainerProps> = ({
                 onChangeFormInput={onChangeFormInputFilter}
               />
             ),
-            [ShouldShowModal.pos]: (
+            [ShouldShowModal.combo]: (
               <RegisterContent
-                formData={formDataPos}
-                formErrors={formErrorsPos}
-                onChangeFormInput={onChangeFormInputPos}
-                listPos={listPos}
-                listPdv={listPdv}
+                formData={formDataCombo}
+                formErrors={formErrorsCombo}
+                onChangeFormInput={onChangeFormInputCombo}
+                onChangeFileInput={onChangeFileInput}
+                nameFiles={nameFiles}
+                listCombo={listCombo}
+                listComboGroup={listComboGroup}
+                listComboSubGroup={listComboSubGroup}
+                controllerInputAppendProduct={controllerInputAppendProduct}
               />
             ),
           }[shouldShowModal]
@@ -189,16 +208,19 @@ export const PosContainer: React.FC<PosContainerProps> = ({
 
       <Container className="mainContainer" fluid={true}>
         <div className="d-flex justify-content-between" style={{ paddingBottom: '30px' }}>
-          <div className="pageTitle" style={{ display: 'grid' }}>
-            <Label>POS</Label>
+          <div className="d-flex">
+            <Link to={`${process.env.PUBLIC_URL}/dashboard/comboscombos`} className="m-auto">
+              <ArrowLeft color={colors.black} className="m-auto" />
+            </Link>
+            <h5 className="ml-3 mb-0 mt-1">Combos</h5>
           </div>
           <div className="button-filter-container">
             <Button
-              title="+ Cadastrar nova POS"
+              title="+ Cadastrar novo combo"
               onClick={(): void =>
                 onShouldShowModal({
-                  value: ShouldShowModal.pos,
-                  newTitleModal: 'Cadastrar nova POS',
+                  value: ShouldShowModal.combo,
+                  newTitleModal: 'Cadastrar novo combo',
                 })
               }
             />
@@ -217,28 +239,9 @@ export const PosContainer: React.FC<PosContainerProps> = ({
             </div>
           </div>
         </div>
-        <div className="d-flex pb-2 status-container">
-          <div className="eventStatus subText">
-            <Status style={{ color: '#7AD81B' }} />
-            POS em uso
-          </div>
-          <div className="eventStatus subText">
-            <Status style={{ color: '#FFE249' }} />
-            POS reservada
-          </div>
-
-          <div className="eventStatus subText">
-            <Status style={{ color: '#3CAFC8' }} />
-            POS em estoque
-          </div>
-          <div className="eventStatus subText">
-            <Status style={{ color: '#E64F49' }} />
-            POS inativa
-          </div>
-        </div>
         <CustomTable
           columns={columns}
-          data={dataTablePos}
+          data={dataTableCombo}
           numberRowsPerPage={currentPage.pageSize}
           progressPending={state === States.loading}
           theme="primary"

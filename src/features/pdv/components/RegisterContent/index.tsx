@@ -10,9 +10,10 @@ import { NameFiles } from '@/features/pdv/types';
 interface RegisterContentProps {
   formData: FormData;
   formErrors: FormErrors;
-  onChangeFormInput: OnChangeFormInput;
-  onChangeFileInput: (inputName: string) => (file: File | undefined) => void;
   nameFiles: NameFiles;
+  onChangeFormInput: OnChangeFormInput;
+  setErrorsPdv: (errors: FormErrors) => void;
+  onChangeFileInput: (inputName: string) => (file: File | undefined) => void;
 }
 
 // eslint-disable-next-line no-shadow
@@ -45,9 +46,10 @@ export enum FormInputName {
 export const RegisterContent: React.FC<RegisterContentProps> = ({
   formData,
   formErrors,
+  nameFiles,
+  setErrorsPdv,
   onChangeFormInput,
   onChangeFileInput,
-  nameFiles,
 }) => (
   <Form
     noValidate={true}
@@ -57,7 +59,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
   >
     <Row>
       <Col md={8}>
-        <h5 className="mb-2 border-bottom-title">Informações gerais e endereço</h5>
+        <h5 className="mb-5 border-bottom-title">Informações gerais e endereço</h5>
         <FormGroup className="mb-2">
           <InputText
             name="name"
@@ -107,6 +109,25 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
                   onChangeFormInput(FormInputName.city)(data.city);
                   onChangeFormInput(FormInputName.district)(data.neighborhood);
                   onChangeFormInput(FormInputName.street)(data.street);
+
+                  setErrorsPdv({
+                    ...formErrors,
+                    zipCode: [''],
+                    state: [''],
+                    city: [''],
+                    district: [''],
+                    street: [''],
+                    // TODO: Melhorar esta solução
+                    name: [''],
+                    document: [''],
+                    number: [''],
+                    telephone: [''],
+                    email: [''],
+                    mapBase64: [''],
+                    batchClosed: [''],
+                    askPasswordInactivity: [''],
+                    inactivityTimeout: [''],
+                  });
                 });
               }
             }}
@@ -121,7 +142,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
               <SelectCustom
                 name="state"
                 label="Estado"
-                placeholder="Selecione o estado do PDV"
+                placeholder="SP"
                 value={formData[FormInputName.state]}
                 onChange={e => onChangeFormInput(FormInputName.state)(e?.target?.value as string)}
                 error={formErrors.state && formErrors.state[0]}
@@ -134,7 +155,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
               <InputText
                 name="city"
                 label="Cidade"
-                placeholder="Selecione o estado do PDV"
+                placeholder="Campinas"
                 value={formData[FormInputName.city]}
                 onChange={e => onChangeFormInput(FormInputName.city)(e?.target.value as string)}
                 error={formErrors.city && formErrors.city[0]}
@@ -212,7 +233,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
           />
         </FormGroup>
 
-        <h5 className="mb-2 border-bottom-title">Informações complementares</h5>
+        <h5 className="border-bottom-title mb-5 ">Informações complementares e usuário</h5>
         <FormGroup className="mb-2">
           <InputText
             name="telephone"

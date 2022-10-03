@@ -9,6 +9,7 @@ export const statesUf: any = [
   { value: 'ES', label: 'ES' },
   { value: 'GO', label: 'GO' },
   { value: 'MA', label: 'MA' },
+  { value: 'MG', label: 'MG' },
   { value: 'MT', label: 'MT' },
   { value: 'MS', label: 'MS' },
   { value: 'PA', label: 'PA' },

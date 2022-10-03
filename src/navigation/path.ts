@@ -3,6 +3,7 @@ import { DASHBOARD_ROUTES } from '@/features/dashboard/navigation';
 import { PDV_ROUTES } from '@/features/pdv/navigation';
 import { POS_ROUTES } from '@/features/pos/navigation';
 import { PAYMENTGATEWAY_ROUTES } from '@/features/paymentGateway/navigation';
+import { PRODUTCTSCOMBOS_ROUTES } from '@/features/productsAndCombos/navigation';
 
 const path = {
   Initial: {
@@ -33,6 +34,9 @@ const path = {
     },
     Payment: {
       itself: '/dashboard/payment',
+    },
+    ProductsCombos: {
+      ...PRODUTCTSCOMBOS_ROUTES,
     },
   },
 } as const;

@@ -2,19 +2,21 @@
 import React, { Fragment } from 'react';
 import FilterVector from '@/assets/images/svg/FilterVector';
 import { Button, Loading } from '@/components';
-import { Container, Label } from 'reactstrap';
-import { RegisterContent } from '@/features/paymentMethods/components/RegisterContent';
-import { ReactComponent as Status } from '@/assets/images/svg/status.svg';
+import { Container } from 'reactstrap';
+import { RegisterContent } from '@/features/product/components/RegisterContent';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { ActionProps, Dialog } from '@/components/Dialog';
-import { ColumnStatus, CustomTable } from '@/components/Table';
+import { ColumnImage, CustomTable } from '@/components/Table';
 import Pagination from '@/components/Utils/Pagination';
-import { PaymentMethodsRequestParams } from '@/features/paymentMethods/types';
-import { FilterContent } from '@/features/paymentMethods/components/FilterContent';
+import Product from '@/model/Product';
+import { NameFiles, ProductRequestParams } from '@/features/product/types';
+import { FilterContent } from '@/features/product/components/FilterContent';
 import { FormErrors, OnChangeFormInput, FormData } from '@/hooks/useForm';
-
-import PaymentGateway from '@/model/PaymentGateway';
+import ProductGroup from '@/model/ProductGroup';
+import ProductSubgroup from '@/model/ProductSubgroup';
+import { ArrowLeft } from 'react-feather';
+import { Link } from 'react-router-dom';
 import { colors } from '@/styles/colors';
 import { columns } from './table';
 
@@ -25,99 +27,101 @@ export enum States {
 }
 export interface DataRow {
   id: string;
-  name: string;
-  paymentGateway: string;
-  status: number;
+  image: string;
+  productName: string;
+  group: string;
+  subgroup: number;
   actions: string;
 }
 
 // eslint-disable-next-line no-shadow
 export enum ShouldShowModal {
   filter = 'filter',
-  paymentMethods = 'paymentMethods',
+  product = 'product',
 }
 
-interface PaymentMethodsContainerProps {
+interface ProductContainerProps {
   state: States;
-  paymentMethodsState?: PaymentGateway;
-  listPaymentMethods: PaymentGateway[];
-  currentPage: PaymentMethodsRequestParams;
+  productState?: Product;
+  listProduct: Product[];
+  currentPage: ProductRequestParams;
   shouldShowModal: ShouldShowModal;
   title: string | React.ReactNode;
   visible: boolean;
-  formDataPaymentMethods: FormData;
-  formErrorsPaymentMethods: FormErrors;
+  formDataProduct: FormData;
+  formErrorsProduct: FormErrors;
   formDataFilter: FormData;
   formErrorsFilter: FormErrors;
-  listChargeSetup: any[];
-  clearFilter: () => void;
-  onSavePaymentMethods: () => Promise<void>;
+  onSaveProduct: () => Promise<void>;
   onPaginationChange: (page: number) => void;
-  changeColorColumn: (status: number) => void;
   onChangeFormInputFilter: OnChangeFormInput;
   onToggle: () => void;
   onFilter: () => Promise<void>;
-  onChangeFormInputPaymentMethods: OnChangeFormInput;
-  onShowDeletePaymentMethods: (paymentMethods: PaymentGateway) => void;
+  onChangeFormInputProduct: OnChangeFormInput;
+  onChangeFileInput: (inputName: string) => (file: File | undefined) => void;
+  onShowDeleteProduct: (product: Product) => void;
   onShouldShowModal: ({
     value,
     newTitleModal,
-    paymentMethods,
+    product,
   }: {
     value: ShouldShowModal;
     newTitleModal: string | React.ReactNode;
-    paymentMethods?: PaymentGateway;
+    product?: Product;
   }) => void;
+  nameFiles: NameFiles;
+  listProductGroup: ProductGroup[];
+  listProductSubGroup: ProductSubgroup[];
 }
 
-export const PaymentMethodsContainer: React.FC<PaymentMethodsContainerProps> = ({
-  listPaymentMethods,
+export const ProductContainer: React.FC<ProductContainerProps> = ({
+  listProduct,
   state,
-  paymentMethodsState,
+  productState,
   currentPage,
   title,
   visible,
   shouldShowModal,
-  formDataPaymentMethods,
-  formErrorsPaymentMethods,
+  formDataProduct,
+  formErrorsProduct,
   formDataFilter,
   formErrorsFilter,
-  listChargeSetup,
-  clearFilter,
   onChangeFormInputFilter,
-  onChangeFormInputPaymentMethods,
-  onSavePaymentMethods,
+  onChangeFormInputProduct,
+  onSaveProduct,
   onPaginationChange,
-  changeColorColumn,
   onToggle,
   onFilter,
   onShouldShowModal,
-  onShowDeletePaymentMethods,
+  onShowDeleteProduct,
+  nameFiles,
+  onChangeFileInput,
+  listProductGroup,
+  listProductSubGroup,
 }) => {
-  const dataTablePaymentMethods = listPaymentMethods?.map(paymentMethods => ({
-    id: paymentMethods.id,
-    name: (
-      <ColumnStatus statusColor={String(changeColorColumn(Number(paymentMethods.status)))}>
-        {paymentMethods.name}
-      </ColumnStatus>
-    ),
-    paymentGateway: paymentMethods.charge.name,
+  const dataTableProduct = listProduct?.map(item => ({
+    id: item.id,
+    image: <ColumnImage srcImage={item.imageBase64} />,
+    productName: item.name,
+    group: '-',
+    subgroup: '-',
+
     actions: (
       <React.Fragment>
         <Pen
           className="mr-2 svg-icon action-icon"
-          onClick={(): void =>
-            onShouldShowModal({
-              value: ShouldShowModal.paymentMethods,
-              newTitleModal: `Editar ${paymentMethods.name}`,
-              paymentMethods,
-            })
-          }
+          // onClick={(): void =>
+          //   onShouldShowModal({
+          //     value: ShouldShowModal.product,
+          //     newTitleModal: `Editar ${item.name}`,
+          //     product: item,
+          //   })
+          // }
         />
         <Trash
           className="mr-2 svg-icon action-icon"
           onClick={() => {
-            onShowDeletePaymentMethods(paymentMethods);
+            onShowDeleteProduct(item);
           }}
         />
       </React.Fragment>
@@ -127,12 +131,6 @@ export const PaymentMethodsContainer: React.FC<PaymentMethodsContainerProps> = (
   const renderActionDialogToCancel: ActionProps = {
     title: 'Cancelar',
     onClick: (): void => onToggle(),
-    theme: 'noneBorder',
-  };
-
-  const renderActionDialogToClearFilter: ActionProps = {
-    title: 'Limpar',
-    onClick: (): void => clearFilter(),
     theme: 'noneBorder',
   };
 
@@ -147,19 +145,17 @@ export const PaymentMethodsContainer: React.FC<PaymentMethodsContainerProps> = (
         isContentWithCard={shouldShowModal !== ShouldShowModal.filter}
         actions={[
           {
-            [ShouldShowModal.filter]: renderActionDialogToClearFilter,
-            [ShouldShowModal.paymentMethods]: renderActionDialogToCancel,
+            [ShouldShowModal.filter]: renderActionDialogToCancel,
+            [ShouldShowModal.product]: renderActionDialogToCancel,
           }[shouldShowModal],
           {
             [ShouldShowModal.filter]: {
-              title: 'Aplicar',
+              title: 'Filtrar',
               onClick: (): Promise<void> => onFilter(),
             },
-            [ShouldShowModal.paymentMethods]: {
-              title: paymentMethodsState?.id
-                ? 'Editar forma de pagamento'
-                : 'Cadastrar nova forma de pagamento',
-              onClick: (): Promise<void> => onSavePaymentMethods(),
+            [ShouldShowModal.product]: {
+              title: productState?.id ? 'Salvar' : 'Cadastrar novo produto',
+              onClick: (): Promise<void> => onSaveProduct(),
             },
           }[shouldShowModal],
         ]}
@@ -173,13 +169,16 @@ export const PaymentMethodsContainer: React.FC<PaymentMethodsContainerProps> = (
                 onChangeFormInput={onChangeFormInputFilter}
               />
             ),
-            [ShouldShowModal.paymentMethods]: (
+            [ShouldShowModal.product]: (
               <RegisterContent
-                formData={formDataPaymentMethods}
-                formErrors={formErrorsPaymentMethods}
-                onChangeFormInput={onChangeFormInputPaymentMethods}
-                listPaymentMethods={listPaymentMethods}
-                listChargeSetup={listChargeSetup}
+                formData={formDataProduct}
+                formErrors={formErrorsProduct}
+                onChangeFormInput={onChangeFormInputProduct}
+                onChangeFileInput={onChangeFileInput}
+                nameFiles={nameFiles}
+                listProduct={listProduct}
+                listProductGroup={listProductGroup}
+                listProductSubGroup={listProductSubGroup}
               />
             ),
           }[shouldShowModal]
@@ -187,17 +186,20 @@ export const PaymentMethodsContainer: React.FC<PaymentMethodsContainerProps> = (
       </Dialog>
 
       <Container className="mainContainer" fluid={true}>
-        <div className="d-flex justify-content-between pb-4">
-          <div className="pageTitle">
-            <Label>Formas de pagamento</Label>
+        <div className="d-flex justify-content-between" style={{ paddingBottom: '30px' }}>
+          <div className="d-flex">
+            <Link to={`${process.env.PUBLIC_URL}/dashboard/productscombos`} className="m-auto">
+              <ArrowLeft color={colors.black} className="m-auto" />
+            </Link>
+            <h5 className="ml-3 mb-0 mt-1">Produtos</h5>
           </div>
           <div className="button-filter-container">
             <Button
-              title="+ Cadastrar nova forma de pagamento"
+              title="+ Cadastrar novo produto"
               onClick={(): void =>
                 onShouldShowModal({
-                  value: ShouldShowModal.paymentMethods,
-                  newTitleModal: 'Cadastrar nova forma de pagamento',
+                  value: ShouldShowModal.product,
+                  newTitleModal: 'Cadastrar novo produto',
                 })
               }
             />
@@ -216,22 +218,12 @@ export const PaymentMethodsContainer: React.FC<PaymentMethodsContainerProps> = (
             </div>
           </div>
         </div>
-        <div className="d-flex pb-2 status-container">
-          <div className="eventStatus subText">
-            <Status color={colors.green} />
-            Forma de pagamento ativo
-          </div>
-          <div className="eventStatus subText">
-            <Status color={colors.red} />
-            Forma de pagamento inativo
-          </div>
-        </div>
         <CustomTable
           columns={columns}
-          data={dataTablePaymentMethods}
-          theme="primary"
+          data={dataTableProduct}
           numberRowsPerPage={currentPage.pageSize}
           progressPending={state === States.loading}
+          theme="primary"
         />
         <Pagination
           currentPage={currentPage.page}

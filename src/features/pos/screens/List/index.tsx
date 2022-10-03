@@ -80,6 +80,7 @@ export const PosScreen: React.FC = (): JSX.Element => {
     formErrors: formErrorsFilter,
     onChangeFormInput: onChangeFormInputFilter,
     isFormValid: isFormValidFilter,
+    resetForm: resetFormFilter,
   } = useForm({
     initialData: {
       filterSearch: '',
@@ -127,16 +128,24 @@ export const PosScreen: React.FC = (): JSX.Element => {
     onChangeTitle(newTitleModal);
     onToggle();
 
-    if (posSelected?.id && value === ShouldShowModal.pos) {
+    if (
+      (posSelected?.id && value !== ShouldShowModal.filter) ||
+      (!posSelected?.id && value !== ShouldShowModal.filter)
+    ) {
       setPos(posSelected);
       handleFecthPdvList();
-      if (posSelected.id !== pos?.id) {
+      if (posSelected?.id !== pos?.id) {
         resetFormPos();
       }
     } else {
       resetFormPos();
       setPos(undefined);
-      handleFecthPdvList();
+    }
+    if (
+      (!posSelected?.id && value !== ShouldShowModal.filter) ||
+      (!posSelected?.id && value !== ShouldShowModal.pos)
+    ) {
+      resetFormPos();
     }
   };
 
@@ -251,6 +260,12 @@ export const PosScreen: React.FC = (): JSX.Element => {
     }
   };
 
+  const clearFilter = (): void => {
+    resetFormFilter();
+    formDataFilter[FormInputNameToFilter.inputSearch] = '';
+    handleOnFilter();
+  };
+
   const handleOnPaginationChange = async (page: number): Promise<void> => {
     handleFetch({
       ...currentPage,
@@ -300,6 +315,7 @@ export const PosScreen: React.FC = (): JSX.Element => {
       onFilter={handleOnFilter}
       listPdv={listPdv}
       posState={pos}
+      clearFilter={clearFilter}
     />
   );
 };

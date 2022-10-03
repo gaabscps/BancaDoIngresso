@@ -868,6 +868,7 @@ input[type='radio']:checked + .label-radio-custom {
 }
 .button-filter-container {
   display: flex;
+  height: fit-content;
 }
 .btn-group {
   :nth-child(2) {
@@ -1201,7 +1202,6 @@ input::-ms-reveal,
 input::-ms-clear {
   display: none;
 }
-
 
 .border-bottom-title {
   border-bottom: 2px solid #222222;

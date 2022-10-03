@@ -73,6 +73,7 @@ export const PaymentMethodsScreen: React.FC = (): JSX.Element => {
     formErrors: formErrorsFilter,
     onChangeFormInput: onChangeFormInputFilter,
     isFormValid: isFormValidFilter,
+    resetForm: resetFormFilter,
   } = useForm({
     initialData: {
       filterSearch: '',
@@ -132,16 +133,24 @@ export const PaymentMethodsScreen: React.FC = (): JSX.Element => {
     setShouldShowModal(value);
     onChangeTitle(newTitleModal);
     onToggle();
-    console.log('paymentMethodsSelected', paymentMethodsSelected);
-    handleFecthChargeSetupList();
-    if (paymentMethodsSelected?.id && value === ShouldShowModal.paymentMethods) {
+    if (
+      (paymentMethodsSelected?.id && value !== ShouldShowModal.filter) ||
+      (!paymentMethodsSelected?.id && value !== ShouldShowModal.filter)
+    ) {
       setPaymentMethods(paymentMethodsSelected);
-      if (paymentMethodsSelected.id !== paymentMethods?.id) {
+      handleFecthChargeSetupList();
+      if (paymentMethodsSelected?.id !== paymentMethods?.id) {
         resetFormPaymentMethods();
       }
     } else {
       resetFormPaymentMethods();
       setPaymentMethods(undefined);
+    }
+    if (
+      (!paymentMethodsSelected?.id && value !== ShouldShowModal.filter) ||
+      (!paymentMethodsSelected?.id && value !== ShouldShowModal.paymentMethods)
+    ) {
+      resetFormPaymentMethods();
     }
   };
 
@@ -248,6 +257,12 @@ export const PaymentMethodsScreen: React.FC = (): JSX.Element => {
     }
   };
 
+  const clearFilter = (): void => {
+    resetFormFilter();
+    formDataFilter[FormInputNameToFilter.inputSearch] = '';
+    handleOnFilter();
+  };
+
   const handleOnPaginationChange = async (page: number): Promise<void> => {
     handleFetch({
       ...currentPage,
@@ -299,6 +314,7 @@ export const PaymentMethodsScreen: React.FC = (): JSX.Element => {
       onShowDeletePaymentMethods={handleOnShowDeletePaymentMethods}
       onFilter={handleOnFilter}
       paymentMethodsState={paymentMethods}
+      clearFilter={clearFilter}
     />
   );
 };
