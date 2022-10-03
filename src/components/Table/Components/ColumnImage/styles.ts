@@ -9,4 +9,5 @@ export const imageStyle: CSSObject = {
   bottom: '0',
   left: '0',
   overflow: 'hidden',
+  borderRadius: '10px 0px 0px 10px',
 };

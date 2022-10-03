@@ -17,6 +17,7 @@ const leftStyle: CSSProperties = {
   bottom: '0',
   left: '0',
   zIndex: 1,
+  borderRadius: '10px 0px 0px 10px',
 };
 
 const rightStyle: CSSProperties = {
