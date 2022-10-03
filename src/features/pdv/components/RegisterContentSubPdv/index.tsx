@@ -74,14 +74,6 @@ export const RegisterContentSubPdv: React.FC<RegisterContentProps> = ({
           error={formErrors.document && formErrors.document[0]}
         />
         <InputText
-          name="email"
-          label="E-mail"
-          placeholder="Digite o e-mail do Sub PDV"
-          value={formData[FormInputName.email]}
-          onChange={e => onChangeFormInput(FormInputName.email)(e.target.value)}
-          error={formErrors.email && formErrors.email[0]}
-        />
-        <InputText
           name="zipCode"
           label="CEP"
           placeholder="Digite o CEP do Sub PDV"
@@ -192,6 +184,14 @@ export const RegisterContentSubPdv: React.FC<RegisterContentProps> = ({
           value={formData[FormInputName.telephone]}
           onChange={e => onChangeFormInput(FormInputName.telephone)(e.target.value)}
           error={formErrors.telephone && formErrors.telephone[0]}
+        />
+        <InputText
+          name="email"
+          label="E-mail Sub PDV (opcional)"
+          placeholder="email@teste.com.br"
+          value={formData[FormInputName.email]}
+          onChange={e => onChangeFormInput(FormInputName.email)(e.target.value)}
+          error={formErrors.email && formErrors.email[0]}
         />
         <InputText
           name="instagramUrl"

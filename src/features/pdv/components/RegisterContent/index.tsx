@@ -85,17 +85,6 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
 
         <FormGroup className="mb-2">
           <InputText
-            name="email"
-            label="E-mail"
-            placeholder="Digite o e-mail do PDV"
-            value={formData[FormInputName.email]}
-            onChange={e => onChangeFormInput(FormInputName.email)(e.target.value)}
-            error={formErrors.email && formErrors.email[0]}
-          />
-        </FormGroup>
-
-        <FormGroup className="mb-2">
-          <InputText
             name="zipCode"
             label="CEP"
             placeholder="Digite o CEP do PDV"
@@ -243,6 +232,17 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             value={formData[FormInputName.telephone]}
             onChange={e => onChangeFormInput(FormInputName.telephone)(e.target.value)}
             error={formErrors.telephone && formErrors.telephone[0]}
+          />
+        </FormGroup>
+
+        <FormGroup className="mb-2">
+          <InputText
+            name="email"
+            label="E-mail PDV (opcional)"
+            placeholder="email@teste.com.br"
+            value={formData[FormInputName.email]}
+            onChange={e => onChangeFormInput(FormInputName.email)(e.target.value)}
+            error={formErrors.email && formErrors.email[0]}
           />
         </FormGroup>
 
