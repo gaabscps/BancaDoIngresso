@@ -11,6 +11,7 @@ interface RegisterContentProps {
   formData: FormData;
   formErrors: FormErrors;
   onChangeFormInput: OnChangeFormInput;
+  setErrorsPdv: (errors: any) => void;
 }
 
 // eslint-disable-next-line no-shadow
@@ -44,6 +45,7 @@ export const RegisterContentSubPdv: React.FC<RegisterContentProps> = ({
   formData,
   formErrors,
   onChangeFormInput,
+  setErrorsPdv,
 }) => (
   <Form
     noValidate={true}
@@ -53,11 +55,11 @@ export const RegisterContentSubPdv: React.FC<RegisterContentProps> = ({
   >
     <Row>
       <Col md={8}>
-        <h5>Informações gerais e endereço</h5>
+        <h5 className="mb-5 border-bottom-title">Informações gerais e endereço</h5>
         <InputText
           name="name"
-          label="Nome do SubPdv"
-          placeholder="Digite o nome do SubPdv"
+          label="Nome do Sub PDV"
+          placeholder="Digite o nome do Sub PDV"
           value={formData[FormInputName.name]}
           onChange={e => onChangeFormInput(FormInputName.name)(e.target.value)}
           error={formErrors.name && formErrors.name[0]}
@@ -65,7 +67,7 @@ export const RegisterContentSubPdv: React.FC<RegisterContentProps> = ({
         <InputText
           name="document"
           label="CPF/CNPJ"
-          placeholder="Digite o CPF ou CNPJ do SubPdv"
+          placeholder="Digite o CPF ou CNPJ do Sub PDV"
           maxLength={18}
           value={formData[FormInputName.document]}
           onChange={e => onChangeFormInput(FormInputName.document)(e.target.value)}
@@ -74,7 +76,7 @@ export const RegisterContentSubPdv: React.FC<RegisterContentProps> = ({
         <InputText
           name="email"
           label="E-mail"
-          placeholder="Digite o e-mail do SubPdv"
+          placeholder="Digite o e-mail do Sub PDV"
           value={formData[FormInputName.email]}
           onChange={e => onChangeFormInput(FormInputName.email)(e.target.value)}
           error={formErrors.email && formErrors.email[0]}
@@ -82,7 +84,7 @@ export const RegisterContentSubPdv: React.FC<RegisterContentProps> = ({
         <InputText
           name="zipCode"
           label="CEP"
-          placeholder="Digite o CEP do SubPdv"
+          placeholder="Digite o CEP do Sub PDV"
           maxLength={9}
           value={formData[FormInputName.zipCode]}
           onChange={e => {
@@ -93,6 +95,12 @@ export const RegisterContentSubPdv: React.FC<RegisterContentProps> = ({
                 onChangeFormInput(FormInputName.city)(data.city);
                 onChangeFormInput(FormInputName.district)(data.neighborhood);
                 onChangeFormInput(FormInputName.street)(data.street);
+                setErrorsPdv({
+                  state: [],
+                  city: [],
+                  street: [],
+                  neighborhood: [],
+                });
               });
             }
           }}
@@ -105,7 +113,7 @@ export const RegisterContentSubPdv: React.FC<RegisterContentProps> = ({
               id="subpdvState"
               name="state"
               label="Estado"
-              placeholder="Selecione o estado do SubPdv"
+              placeholder="SP"
               value={formData[FormInputName.state]}
               onChange={e => onChangeFormInput(FormInputName.state)(e?.target?.value as string)}
               error={formErrors.state && formErrors.state[0]}
@@ -117,7 +125,7 @@ export const RegisterContentSubPdv: React.FC<RegisterContentProps> = ({
               id="subpdvCity"
               name="city"
               label="Cidade"
-              placeholder="Selecione o estado do SubPdv"
+              placeholder="Campinas"
               value={formData[FormInputName.city]}
               onChange={e => onChangeFormInput(FormInputName.city)(e?.target.value as string)}
               error={formErrors.city && formErrors.city[0]}
@@ -175,7 +183,7 @@ export const RegisterContentSubPdv: React.FC<RegisterContentProps> = ({
           onChange={e => onChangeFormInput(FormInputName.longitude)(e.target.value)}
           error={formErrors.longitude && formErrors.longitude[0]}
         />
-        <h5>Informações complementares</h5>
+        <h5 className="mb-5 border-bottom-title">Informações complementares</h5>
         <InputText
           name="telephone"
           label="Telefone celular"
@@ -187,7 +195,7 @@ export const RegisterContentSubPdv: React.FC<RegisterContentProps> = ({
         />
         <InputText
           name="instagramUrl"
-          label="Instagram do SubPdv (opcional)"
+          label="Instagram do Sub PDV (opcional)"
           placeholder=""
           value={formData[FormInputName.instagramUrl]}
           onChange={e => onChangeFormInput(FormInputName.instagramUrl)(e.target.value)}
@@ -195,7 +203,7 @@ export const RegisterContentSubPdv: React.FC<RegisterContentProps> = ({
         />
         <InputText
           name="facebookUrl"
-          label="Facebook do SubPdv (opcional)"
+          label="Facebook do Sub PDV (opcional)"
           placeholder=""
           value={formData[FormInputName.facebookUrl]}
           onChange={e => onChangeFormInput(FormInputName.facebookUrl)(e.target.value)}
@@ -203,7 +211,7 @@ export const RegisterContentSubPdv: React.FC<RegisterContentProps> = ({
         />
         <InputText
           name="telephone"
-          label="LinkedIn do SubPdv (opcional)"
+          label="LinkedIn do Sub PDV (opcional)"
           placeholder=""
           value={formData[FormInputName.linkedinUrl]}
           onChange={e => onChangeFormInput(FormInputName.linkedinUrl)(e.target.value)}

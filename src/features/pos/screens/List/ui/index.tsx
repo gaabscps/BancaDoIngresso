@@ -52,6 +52,7 @@ interface PosContainerProps {
   formDataFilter: FormData;
   formErrorsFilter: FormErrors;
   listPdv: Pdv[];
+  clearFilter: () => void;
   onSavePos: () => Promise<void>;
   onPaginationChange: (page: number) => void;
   changeColorColumn: (status: number) => void;
@@ -84,6 +85,7 @@ export const PosContainer: React.FC<PosContainerProps> = ({
   formDataFilter,
   formErrorsFilter,
   listPdv,
+  clearFilter,
   onChangeFormInputFilter,
   onChangeFormInputPos,
   onSavePos,
@@ -131,6 +133,11 @@ export const PosContainer: React.FC<PosContainerProps> = ({
     onClick: (): void => onToggle(),
     theme: 'noneBorder',
   };
+  const renderActionDialogToCancelFilter: ActionProps = {
+    title: 'Limpar',
+    onClick: (): void => clearFilter(),
+    theme: 'noneBorder',
+  };
 
   return (
     <Fragment>
@@ -143,7 +150,7 @@ export const PosContainer: React.FC<PosContainerProps> = ({
         isContentWithCard={shouldShowModal !== ShouldShowModal.filter}
         actions={[
           {
-            [ShouldShowModal.filter]: renderActionDialogToCancel,
+            [ShouldShowModal.filter]: renderActionDialogToCancelFilter,
             [ShouldShowModal.pos]: renderActionDialogToCancel,
           }[shouldShowModal],
           {

@@ -47,12 +47,14 @@ interface PdvContainerProps {
   shouldShowModal: ShouldShowModal;
   formDataPdv: FormData;
   formErrorsPdv: FormErrors;
-  onChangeFormInputPdv: OnChangeFormInput;
   formDataSubPdv: FormData;
   formErrorsSubPdv: FormErrors;
-  onChangeFormInputSubPdv: OnChangeFormInput;
   formDataFilter: FormData;
   formErrorsFilter: FormErrors;
+  setErrorsPdv: (errors: FormErrors) => void;
+  onChangeFormInputPdv: OnChangeFormInput;
+  onChangeFormInputSubPdv: OnChangeFormInput;
+  clearFilter: () => void;
   onChangeFormInputFilter: OnChangeFormInput;
   onToggle: () => void;
   onPaginationChange: (page: number) => void;
@@ -100,16 +102,18 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
   shouldShowModal,
   formDataPdv,
   formErrorsPdv,
-  onChangeFormInputPdv,
   formDataSubPdv,
   formErrorsSubPdv,
-  onChangeFormInputSubPdv,
   formDataFilter,
   formErrorsFilter,
+  setErrorsPdv,
+  onChangeFormInputPdv,
+  onChangeFormInputSubPdv,
   onChangeFormInputFilter,
   onToggle,
   onPaginationChange,
   onShouldShowModal,
+  clearFilter,
   // handleRenderListPdv,
   // onShowListSub,
   // onShowFilter,
@@ -184,6 +188,13 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
     onClick: (): void => onToggle(),
     theme: 'noneBorder',
   };
+  const renderActionDialogToClearFilter: ActionProps = {
+    title: 'Limpar',
+    onClick: (): void => {
+      clearFilter();
+    },
+    theme: 'noneBorder',
+  };
 
   const renderActionDialogToReturnListSubPdv: ActionProps = {
     title: 'Cancelar',
@@ -198,7 +209,7 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
                 style={{ cursor: 'pointer' }}
                 onClick={(): void =>
                   onShouldShowModal({
-                    newTitleModal: 'Cadastrar Sub PDV',
+                    newTitleModal: 'Cadastrar novo Sub PDV',
                     value: ShouldShowModal.subpdvRegister,
                   })
                 }
@@ -227,7 +238,7 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
         }
         actions={[
           {
-            [ShouldShowModal.filter]: renderActionDialogToCancel,
+            [ShouldShowModal.filter]: renderActionDialogToClearFilter,
             [ShouldShowModal.pdv]: renderActionDialogToCancel,
             [ShouldShowModal.subpdv]: {},
             [ShouldShowModal.subpdvRegister]: renderActionDialogToReturnListSubPdv,
@@ -243,7 +254,7 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
             },
             [ShouldShowModal.subpdv]: {},
             [ShouldShowModal.subpdvRegister]: {
-              title: pdvState?.id ? 'Editar SubPDV' : 'Cadastrar novo SubPDV',
+              title: !pdvState?.id ? 'Editar SubPDV' : 'Cadastrar novo SubPDV',
               onClick: (): Promise<void> => onSaveSubPdv(),
             },
           }[shouldShowModal],
@@ -265,6 +276,7 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
                 onChangeFormInput={onChangeFormInputPdv}
                 onChangeFileInput={onChangeFileInput}
                 nameFiles={nameFiles}
+                setErrorsPdv={setErrorsPdv}
               />
             ),
             [ShouldShowModal.subpdv]: (
@@ -285,6 +297,7 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
                 formData={formDataSubPdv}
                 formErrors={formErrorsSubPdv}
                 onChangeFormInput={onChangeFormInputSubPdv}
+                setErrorsPdv={setErrorsPdv}
               />
             ),
           }[shouldShowModal]
