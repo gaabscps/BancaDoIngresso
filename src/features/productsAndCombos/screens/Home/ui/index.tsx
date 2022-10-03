@@ -33,7 +33,7 @@ export const HomeContainer: React.FC<HomeContainerProps> = ({ state }) => (
           <Products width={20} />
           Produtos
         </Link>
-        <Link to={'#!'}>
+        <Link to={`${process.env.PUBLIC_URL}/dashboard/productscombos/combo`}>
           <Combos width={20} />
           Combos
         </Link>

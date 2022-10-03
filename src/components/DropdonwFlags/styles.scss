@@ -1,0 +1,70 @@
+.flag-item {
+  padding: 4px 12px;
+  gap: 10px;
+  margin: 0;
+  background: rgba(34, 34, 34, 0.05);
+  border-radius: 20px;
+}
+
+/* Dropdown */
+
+.dropdown {
+  display: inline-block;
+  position: relative;
+  overflow: visible;
+  margin: 0;
+}
+
+.dd-button {
+  cursor: pointer;
+}
+
+.dd-button:after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+}
+
+.dd-button:hover {
+  background-color: #eeeeee;
+}
+
+.dd-input {
+  display: none;
+}
+
+.dd-menu {
+  position: absolute;
+  top: 100%;
+  border-radius: 4px;
+  padding: 15px 10px;
+  margin: 9px 0 0 0;
+  background-color: #ffffff;
+  list-style-type: none;
+  background: #ffffff;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  z-index: 1;
+  & > div:first-child {
+    min-width: 325px;
+    max-width: 450px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+}
+
+.dd-input + .dd-menu {
+  display: none;
+}
+
+.dd-input:checked + .dd-menu {
+  display: block;
+}
+
+.dd-menu li:hover {
+  background-color: #f6f6f6;
+}

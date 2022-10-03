@@ -9,6 +9,7 @@ import { ButtonGroup } from './ButtonGroup';
 import { Radio } from './Radio';
 import { SelectCustom } from './Select';
 import { Switch } from './Switch';
+import { DropdonwFlags } from './DropdonwFlags';
 import { Dialog } from './Dialog';
 import { Error400 } from './Errors/error400';
 import { Error401 } from './Errors/error401';
@@ -29,6 +30,7 @@ export {
   Radio,
   SelectCustom,
   Switch,
+  DropdonwFlags,
   Dialog,
   Error400,
   Error401,
