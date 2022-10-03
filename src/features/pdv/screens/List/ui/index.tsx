@@ -47,12 +47,13 @@ interface PdvContainerProps {
   shouldShowModal: ShouldShowModal;
   formDataPdv: FormData;
   formErrorsPdv: FormErrors;
-  onChangeFormInputPdv: OnChangeFormInput;
   formDataSubPdv: FormData;
   formErrorsSubPdv: FormErrors;
-  onChangeFormInputSubPdv: OnChangeFormInput;
   formDataFilter: FormData;
   formErrorsFilter: FormErrors;
+  setErrorsPdv: (errors: FormErrors) => void;
+  onChangeFormInputPdv: OnChangeFormInput;
+  onChangeFormInputSubPdv: OnChangeFormInput;
   clearFilter: () => void;
   onChangeFormInputFilter: OnChangeFormInput;
   onToggle: () => void;
@@ -101,12 +102,13 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
   shouldShowModal,
   formDataPdv,
   formErrorsPdv,
-  onChangeFormInputPdv,
   formDataSubPdv,
   formErrorsSubPdv,
-  onChangeFormInputSubPdv,
   formDataFilter,
   formErrorsFilter,
+  setErrorsPdv,
+  onChangeFormInputPdv,
+  onChangeFormInputSubPdv,
   onChangeFormInputFilter,
   onToggle,
   onPaginationChange,
@@ -207,7 +209,7 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
                 style={{ cursor: 'pointer' }}
                 onClick={(): void =>
                   onShouldShowModal({
-                    newTitleModal: 'Cadastrar Sub PDV',
+                    newTitleModal: 'Cadastrar novo Sub PDV',
                     value: ShouldShowModal.subpdvRegister,
                   })
                 }
@@ -252,7 +254,7 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
             },
             [ShouldShowModal.subpdv]: {},
             [ShouldShowModal.subpdvRegister]: {
-              title: pdvState?.id ? 'Editar SubPDV' : 'Cadastrar novo SubPDV',
+              title: !pdvState?.id ? 'Editar SubPDV' : 'Cadastrar novo SubPDV',
               onClick: (): Promise<void> => onSaveSubPdv(),
             },
           }[shouldShowModal],
@@ -274,6 +276,7 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
                 onChangeFormInput={onChangeFormInputPdv}
                 onChangeFileInput={onChangeFileInput}
                 nameFiles={nameFiles}
+                setErrorsPdv={setErrorsPdv}
               />
             ),
             [ShouldShowModal.subpdv]: (
@@ -294,6 +297,7 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
                 formData={formDataSubPdv}
                 formErrors={formErrorsSubPdv}
                 onChangeFormInput={onChangeFormInputSubPdv}
+                setErrorsPdv={setErrorsPdv}
               />
             ),
           }[shouldShowModal]

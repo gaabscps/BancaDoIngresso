@@ -10,9 +10,10 @@ import { NameFiles } from '@/features/pdv/types';
 interface RegisterContentProps {
   formData: FormData;
   formErrors: FormErrors;
-  onChangeFormInput: OnChangeFormInput;
-  onChangeFileInput: (inputName: string) => (file: File | undefined) => void;
   nameFiles: NameFiles;
+  onChangeFormInput: OnChangeFormInput;
+  setErrorsPdv: (errors: FormErrors) => void;
+  onChangeFileInput: (inputName: string) => (file: File | undefined) => void;
 }
 
 // eslint-disable-next-line no-shadow
@@ -45,9 +46,10 @@ export enum FormInputName {
 export const RegisterContent: React.FC<RegisterContentProps> = ({
   formData,
   formErrors,
+  nameFiles,
+  setErrorsPdv,
   onChangeFormInput,
   onChangeFileInput,
-  nameFiles,
 }) => (
   <Form
     noValidate={true}
@@ -107,6 +109,25 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
                   onChangeFormInput(FormInputName.city)(data.city);
                   onChangeFormInput(FormInputName.district)(data.neighborhood);
                   onChangeFormInput(FormInputName.street)(data.street);
+
+                  setErrorsPdv({
+                    ...formErrors,
+                    zipCode: [''],
+                    state: [''],
+                    city: [''],
+                    district: [''],
+                    street: [''],
+                    // TODO: Melhorar esta solução
+                    name: [''],
+                    document: [''],
+                    number: [''],
+                    telephone: [''],
+                    email: [''],
+                    mapBase64: [''],
+                    batchClosed: [''],
+                    askPasswordInactivity: [''],
+                    inactivityTimeout: [''],
+                  });
                 });
               }
             }}

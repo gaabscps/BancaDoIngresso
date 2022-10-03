@@ -96,7 +96,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
     validators: {
       name: [validators.required],
       document: [validators.required, validators.cpforcnpj],
-      zipCode: [validators.required, validators.cep],
+      zipCode: [validators.required],
       state: [validators.required],
       city: [validators.required],
       district: [validators.required],
@@ -247,49 +247,42 @@ export const PdvScreen: React.FC = (): JSX.Element => {
   }): void => {
     setShouldShowModal(value);
     onChangeTitle(newTitleModal);
-    onToggle();
-
-    if (pdvSelected?.id && value === ShouldShowModal.pdv) {
-      setPdv(pdvSelected);
-      if (pdvSelected.id !== pdv?.id) {
-        resetFormPdv();
-      }
-    } else {
-      resetFormPdv();
-      setPdv(undefined);
+    if (ShouldShowModal.subpdvRegister !== value) {
+      onToggle();
     }
-
     if (
       (!subPdvSelected?.id && value === ShouldShowModal.subpdvRegister) ||
       value !== ShouldShowModal.subpdv
     ) {
+      console.log('aqui');
+
       resetFormSubPdv();
+    }
+    if ((!pdvSelected?.id && value === ShouldShowModal.pdv) || value !== ShouldShowModal.subpdv) {
+      if (pdvSelected?.id !== pdv?.id) {
+        resetFormPdv();
+      }
     }
 
     if (pdvSelected && value === ShouldShowModal.subpdv) {
       handleOnShowListSubPdv(pdvSelected);
     }
 
+    if (pdvSelected?.id && value !== ShouldShowModal.subpdv) {
+      if (pdvSelected?.id !== pdv?.id) {
+        resetFormPdv();
+      }
+      setPdv(pdvSelected);
+    } else {
+      setPdv(undefined);
+      resetFormPdv();
+    }
     if (subPdvSelected?.id && value !== ShouldShowModal.subpdv) {
       resetFormSubPdv();
       setSubPdv(subPdvSelected);
     } else {
       setSubPdv(undefined);
     }
-
-    // if ((!pdvSelected?.id && value === ShouldShowModal.pdv) || value !== ShouldShowModal.subpdv) {
-    //   if (pdvSelected?.id !== pdv?.id) {
-    //     resetFormPdv();
-    //   }
-    // }
-    // if (pdvSelected?.id && value !== ShouldShowModal.subpdv) {
-    //   if (pdvSelected?.id !== pdv?.id) {
-    //     resetFormPdv();
-    //   }
-    //   setPdv(pdvSelected);
-    // } else {
-    //   setPdv(undefined);
-    // }
   };
 
   const handleOnSavePdv = async (): Promise<void> => {
@@ -413,7 +406,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
           onClick: (): void => handleOnClose(),
         },
         {
-          title: 'Sim, quero remover',
+          title: 'Sim, quero excluir',
           onClick: (): Promise<void> => handleOnConfirmDeleteToPdv(pdvSelected),
         },
       ],
@@ -611,6 +604,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       onChangeFileInput={handleOnChangeFileInput}
       // onShowListSub={handleOnShowListSubPdv}
       clearFilter={clearFilter}
+      setErrorsPdv={setErrorsPdv}
     />
   );
 };
