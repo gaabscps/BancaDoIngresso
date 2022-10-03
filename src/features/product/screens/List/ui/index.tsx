@@ -191,7 +191,7 @@ export const ProductContainer: React.FC<ProductContainerProps> = ({
             <Link to={`${process.env.PUBLIC_URL}/dashboard/productscombos`} className="m-auto">
               <ArrowLeft color={colors.black} className="m-auto" />
             </Link>
-            <h5 className="ml-3 mb-0 mt-1">Produto</h5>
+            <h5 className="ml-3 mb-0 mt-1">Produtos</h5>
           </div>
           <div className="button-filter-container">
             <Button

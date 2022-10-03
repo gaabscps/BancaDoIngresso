@@ -79,7 +79,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
           <FormGroup className="mb-2">
             <InputFile
               name="imageBase64"
-              label="Imagem do PDV"
+              label="Imagem do produto (opcional)"
               placeholder=""
               fileName={nameFiles?.imageBase64}
               onChange={e =>
