@@ -107,7 +107,7 @@ export const PosContainer: React.FC<PosContainerProps> = ({
       item.expirationDate === null
         ? '-----'
         : dayjs(item.expirationDate, 'YYYY-DD-MM hh:mm:ss').format('DD/MM/YYYY'),
-    currentPdv: item.pdv?.name,
+    currentPdv: item.pdv?.name === undefined ? '-----' : item.pdv?.name,
     serial: item.serialNumber,
     actions: (
       <React.Fragment>
