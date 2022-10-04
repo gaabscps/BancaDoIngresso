@@ -103,8 +103,6 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       street: [validators.required],
       number: [validators.required],
       telephone: [validators.required, validators.mobilePhone],
-      mapBase64: [validators.required],
-      imageBase64: [validators.required],
       batchClosed: [validators.required],
       askPasswordInactivity: [validators.required],
       inactivityTimeout: [validators.required],
