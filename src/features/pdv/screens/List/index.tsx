@@ -103,7 +103,6 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       street: [validators.required],
       number: [validators.required],
       telephone: [validators.required, validators.mobilePhone],
-      email: [validators.email],
       mapBase64: [validators.required],
       imageBase64: [validators.required],
       batchClosed: [validators.required],
@@ -168,7 +167,6 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       street: [validators.required],
       number: [validators.required],
       telephone: [validators.required, validators.mobilePhone],
-      email: [validators.email],
       // users: [validators.required], TO-DO Adicionar usuarios
     },
     formatters: {
