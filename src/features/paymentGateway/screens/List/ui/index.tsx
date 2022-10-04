@@ -9,10 +9,10 @@ import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { ActionProps, Dialog } from '@/components/Dialog';
 import { ColumnStatus, CustomTable } from '@/components/Table';
 import Pagination from '@/components/Utils/Pagination';
-import { PosRequestParams } from '@/features/pos/types';
+import { ChargeSetupRequestParams } from '@/features/paymentGateway/types';
 import { FilterContent } from '@/features/paymentGateway/components/FilterContent';
 import { FormErrors, OnChangeFormInput, FormData } from '@/hooks/useForm';
-import PaymentGateway from '@/model/PaymentGateway';
+import ChargeSetup from '@/model/ChargeSetup';
 import { columns } from './table';
 
 // eslint-disable-next-line no-shadow
@@ -23,95 +23,96 @@ export enum States {
 export interface DataRow {
   id: string;
   name: string;
-  serial: string;
+  url: string;
+  email: string;
   actions: string;
   status: number;
-  date: string;
-  currentPdv: string;
 }
 
 // eslint-disable-next-line no-shadow
 export enum ShouldShowModal {
   filter = 'filter',
-  pos = 'pos',
+  gateway = 'gateway',
 }
 
-interface PosContainerProps {
+interface PaymentGatewayContainerProps {
   state: States;
-  posState?: PaymentGateway;
-  listPos: PaymentGateway[];
-  currentPage: PosRequestParams;
+  gatewayState?: ChargeSetup;
+  listPaymentGateway: ChargeSetup[];
+  currentPage: ChargeSetupRequestParams;
   shouldShowModal: ShouldShowModal;
   title: string | React.ReactNode;
   visible: boolean;
-  formDataPos: FormData;
-  formErrorsPos: FormErrors;
+  formDataPaymentGateway: FormData;
+  formErrorsPaymentGateway: FormErrors;
   formDataFilter: FormData;
   formErrorsFilter: FormErrors;
-  onSavePos: () => Promise<void>;
+  onSavePaymentGateway: () => Promise<void>;
   onPaginationChange: (page: number) => void;
   changeColorColumn: (status: number) => void;
   onChangeFormInputFilter: OnChangeFormInput;
   onToggle: () => void;
   onFilter: () => Promise<void>;
-  onChangeFormInputPos: OnChangeFormInput;
-  onShowDeletePos: (pos: PaymentGateway) => void;
+  onChangeFormInputPaymentGateway: OnChangeFormInput;
+  onShowDeletePaymentGateway: (gateway: ChargeSetup) => void;
   onShouldShowModal: ({
     value,
     newTitleModal,
-    pos,
+    gateway,
   }: {
     value: ShouldShowModal;
     newTitleModal: string | React.ReactNode;
-    pos?: PaymentGateway;
+    gateway?: ChargeSetup;
   }) => void;
 }
 
-export const PaymentGatewayContainer: React.FC<PosContainerProps> = ({
-  listPos,
+export const PaymentGatewayContainer: React.FC<PaymentGatewayContainerProps> = ({
+  listPaymentGateway,
   state,
-  posState,
+  gatewayState,
   currentPage,
   title,
   visible,
   shouldShowModal,
-  formDataPos,
-  formErrorsPos,
+  formDataPaymentGateway,
+  formErrorsPaymentGateway,
   formDataFilter,
   formErrorsFilter,
   onChangeFormInputFilter,
-  onChangeFormInputPos,
-  onSavePos,
+  onChangeFormInputPaymentGateway,
+  onSavePaymentGateway,
   onPaginationChange,
   changeColorColumn,
   onToggle,
   onFilter,
   onShouldShowModal,
-  onShowDeletePos,
+  onShowDeletePaymentGateway,
 }) => {
-  const dataTablePos = listPos?.map(item => ({
+  const dataTablePaymentGateway = listPaymentGateway?.map(item => ({
     id: item.id,
     name: (
       <ColumnStatus statusColor={String(changeColorColumn(Number(item.status)))}>
         {item.name}
       </ColumnStatus>
     ),
-    idd: item.charge.name,
+    url: item.url,
+    email: item.email,
     actions: (
       <React.Fragment>
         <Pen
           className="mr-2 svg-icon action-icon"
           onClick={(): void =>
             onShouldShowModal({
-              value: ShouldShowModal.pos,
-              newTitleModal: `Editar ${item.name}`,
+              value: ShouldShowModal.gateway,
+              newTitleModal: `${item.name}`,
+              gateway: item,
             })
           }
         />
         <Trash
           className="mr-2 svg-icon action-icon"
           onClick={() => {
-            onShowDeletePos(item);
+            onShowDeletePaymentGateway(item);
           }}
         />
       </React.Fragment>
@@ -136,16 +137,16 @@ export const PaymentGatewayContainer: React.FC<PosContainerProps> = ({
         actions={[
           {
             [ShouldShowModal.filter]: renderActionDialogToCancel,
-            [ShouldShowModal.pos]: renderActionDialogToCancel,
+            [ShouldShowModal.gateway]: renderActionDialogToCancel,
           }[shouldShowModal],
           {
             [ShouldShowModal.filter]: {
-              title: 'Filtrar',
+              title: 'Aplicar',
               onClick: (): Promise<void> => onFilter(),
             },
-            [ShouldShowModal.pos]: {
-              title: posState?.id ? 'Salvar' : 'Cadastrar novo gateway de pagamento',
-              onClick: (): Promise<void> => onSavePos(),
+            [ShouldShowModal.gateway]: {
+              title: gatewayState?.id ? 'Salvar' : 'Cadastrar novo gateway de pagamento',
+              onClick: (): Promise<void> => onSavePaymentGateway(),
             },
           }[shouldShowModal],
         ]}
@@ -159,12 +160,11 @@ export const PaymentGatewayContainer: React.FC<PosContainerProps> = ({
                 onChangeFormInput={onChangeFormInputFilter}
               />
             ),
-            [ShouldShowModal.pos]: (
+            [ShouldShowModal.gateway]: (
               <RegisterContent
-                formData={formDataPos}
-                formErrors={formErrorsPos}
-                onChangeFormInput={onChangeFormInputPos}
-                listPos={listPos}
+                formData={formDataPaymentGateway}
+                formErrors={formErrorsPaymentGateway}
+                onChangeFormInput={onChangeFormInputPaymentGateway}
               />
             ),
           }[shouldShowModal]
@@ -181,7 +181,7 @@ export const PaymentGatewayContainer: React.FC<PosContainerProps> = ({
               title="+ Cadastrar novo gateway de pagamento"
               onClick={(): void =>
                 onShouldShowModal({
-                  value: ShouldShowModal.pos,
+                  value: ShouldShowModal.gateway,
                   newTitleModal: 'Cadastrar novo gateway de pagamento',
                 })
               }
@@ -213,7 +213,7 @@ export const PaymentGatewayContainer: React.FC<PosContainerProps> = ({
         </div>
         <CustomTable
           columns={columns}
-          data={dataTablePos}
+          data={dataTablePaymentGateway}
           theme="primary"
           numberRowsPerPage={currentPage.pageSize}
           progressPending={state === States.loading}

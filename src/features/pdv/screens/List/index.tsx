@@ -103,7 +103,6 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       street: [validators.required],
       number: [validators.required],
       telephone: [validators.required, validators.mobilePhone],
-      email: [validators.email],
       mapBase64: [validators.required],
       imageBase64: [validators.required],
       batchClosed: [validators.required],
@@ -168,7 +167,6 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       street: [validators.required],
       number: [validators.required],
       telephone: [validators.required, validators.mobilePhone],
-      email: [validators.email],
       // users: [validators.required], TO-DO Adicionar usuarios
     },
     formatters: {
@@ -313,8 +311,8 @@ export const PdvScreen: React.FC = (): JSX.Element => {
             street: formDataPdv[FormInputNameToSavePdv.street],
             complement: formDataPdv[FormInputNameToSavePdv.complement],
             number: formDataPdv[FormInputNameToSavePdv.number],
-            latitude: formDataPdv[FormInputNameToSavePdv.latitude] ?? 0,
-            longitude: formDataPdv[FormInputNameToSavePdv.longitude] ?? 0,
+            latitude: parseFloat(formDataPdv[FormInputNameToSavePdv.latitude]) || 0.0,
+            longitude: parseFloat(formDataPdv[FormInputNameToSavePdv.longitude]) || 0.0,
           },
           mapBase64: formDataPdv[FormInputNameToSavePdv.mapBase64],
           imageBase64: formDataPdv[FormInputNameToSavePdv.imageBase64],
@@ -469,12 +467,11 @@ export const PdvScreen: React.FC = (): JSX.Element => {
           street: formDataSubPdv[FormInputNameToSaveSubPdv.street],
           complement: formDataSubPdv[FormInputNameToSaveSubPdv.complement],
           number: formDataSubPdv[FormInputNameToSaveSubPdv.number],
-          latitude: formDataSubPdv[FormInputNameToSaveSubPdv.latitude],
-          longitude: formDataSubPdv[FormInputNameToSaveSubPdv.longitude],
+          latitude: parseFloat(formDataSubPdv[FormInputNameToSaveSubPdv.latitude]) || 0,
+          longitude: parseFloat(formDataSubPdv[FormInputNameToSaveSubPdv.longitude]) || 0,
         },
         pdv: {
           id: subPdv?.pdv.id ?? pdv?.id,
-          // id: 'd0c9e4e4-6d56-4145-8a19-d6fa37425f35',
         },
         // users: [], TO-DO Adicionar usuarios
       };
