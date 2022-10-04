@@ -45,7 +45,7 @@ export const FilterContent: React.FC<FilterContentProps> = ({
                 ?.label ?? ''
             }
             placeholder={
-              formData[FormInputName.filterSearch] === 'name' ? 'Nome do POS' : 'Numero de Série'
+              formData[FormInputName.filterSearch] === 'name' ? 'Nome da POS' : 'Numero de Série'
             }
             maxLength={30}
             value={formData[FormInputName.inputSearch]}
