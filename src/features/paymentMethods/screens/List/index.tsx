@@ -225,7 +225,7 @@ export const PaymentMethodsScreen: React.FC = (): JSX.Element => {
           onClick: (): void => handleOnClose(),
         },
         {
-          title: 'Sim, quero remover',
+          title: 'Sim, quero excluir',
           onClick: (): Promise<void> =>
             handleOnConfirmDeleteToPaymentMethods(paymentMethodsSelected),
         },

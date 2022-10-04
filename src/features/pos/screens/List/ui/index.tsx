@@ -103,7 +103,10 @@ export const PosContainer: React.FC<PosContainerProps> = ({
         {item.name}
       </ColumnStatus>
     ),
-    date: dayjs(item.expirationDate, 'YYYY-DD-MM hh:mm:ss').format('DD/MM/YYYY'),
+    date:
+      item.expirationDate === null
+        ? '-----'
+        : dayjs(item.expirationDate, 'YYYY-DD-MM hh:mm:ss').format('DD/MM/YYYY'),
     currentPdv: item.pdv?.name,
     serial: item.serialNumber,
     actions: (
