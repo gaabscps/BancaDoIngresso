@@ -21,14 +21,14 @@ export default interface PayloadPos {
   id?: string;
   name: string;
   serialNumber: string;
-  status: PosStatus;
-  pdv: {
-    id: string;
+  status?: PosStatus;
+  pdv?: {
+    id?: string;
   };
-  model: string;
-  telephoneOperator: string;
-  cardOperator: string;
-  expirationDate: string;
+  model?: string;
+  telephoneOperator?: string;
+  cardOperator?: string;
+  expirationDate?: string;
 }
 
 export const PosScreen: React.FC = (): JSX.Element => {
@@ -60,7 +60,6 @@ export const PosScreen: React.FC = (): JSX.Element => {
       name: '',
       serialNumber: '',
       status: '',
-      pdv: '',
       model: '',
       telephoneOperator: '',
       cardOperator: '',
@@ -69,8 +68,6 @@ export const PosScreen: React.FC = (): JSX.Element => {
     validators: {
       name: [validators.required],
       serialNumber: [validators.required],
-      status: [validators.required],
-      expirationDate: [validators.isDateLessThanCurrentDate],
     },
     formatters: {},
   });
@@ -156,7 +153,7 @@ export const PosScreen: React.FC = (): JSX.Element => {
           id: pos?.id,
           name: formDataPos[FormInputNameToSavePos.name],
           serialNumber: formDataPos[FormInputNameToSavePos.serialNumber],
-          status: +formDataPos[FormInputNameToSavePos.status],
+          status: +formDataPos[FormInputNameToSavePos.status] || 0,
           pdv: {
             id: formDataPos[FormInputNameToSavePos.pdv],
           },
@@ -165,6 +162,29 @@ export const PosScreen: React.FC = (): JSX.Element => {
           cardOperator: formDataPos[FormInputNameToSavePos.cardOperator],
           expirationDate: formDataPos[FormInputNameToSavePos.expirationDate],
         };
+
+        if (payload.model === '') {
+          delete payload.model;
+        }
+        if (payload.status === 0) {
+          delete payload.status;
+        }
+
+        if (payload.cardOperator === '') {
+          delete payload.cardOperator;
+        }
+
+        if (payload.telephoneOperator === '') {
+          delete payload.telephoneOperator;
+        }
+
+        if (payload.expirationDate === '') {
+          delete payload.expirationDate;
+        }
+
+        if (payload.pdv?.id === 'empty' || {}) {
+          delete payload.pdv;
+        }
 
         if (!payload.id) {
           delete payload.id;

@@ -38,6 +38,8 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
     { value: '3', label: 'POS inativa' },
   ];
 
+  const newListPdv = [{ id: 'empty', name: 'Nenhum' }, ...listPdv];
+
   return (
     <Form
       noValidate={true}
@@ -86,7 +88,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
               value={formData[FormInputName.pdv]}
               onChange={e => onChangeFormInput(FormInputName.pdv)(e?.value as string)}
               error={formErrors.pdv && formErrors.pdv[0]}
-              options={listPdv.map(item => ({ value: item.id, label: item.name }))}
+              options={newListPdv.map(item => ({ value: item.id, label: item.name }))}
             />
           </FormGroup>
           <FormGroup className="mb-2">
