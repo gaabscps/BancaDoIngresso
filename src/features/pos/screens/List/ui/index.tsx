@@ -113,7 +113,7 @@ export const PosContainer: React.FC<PosContainerProps> = ({
           onClick={(): void =>
             onShouldShowModal({
               value: ShouldShowModal.pos,
-              newTitleModal: `Editar ${item.name}`,
+              newTitleModal: `${item.name}`,
               pos: item,
             })
           }

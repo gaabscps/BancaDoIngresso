@@ -54,6 +54,10 @@
   margin: 11rem auto;
 }
 
+.container-with-buttom {
+  width: 100%;
+}
+
 // media query for mobile container
 @media (max-width: $media-query-sm) {
   .mainContainer,
@@ -61,3 +65,4 @@
     padding: 20px !important;
   }
 }
+

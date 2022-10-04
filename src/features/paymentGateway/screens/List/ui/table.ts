@@ -8,16 +8,12 @@ export const columns: TableColumn<DataRow>[] = [
     width: '35%',
   },
   {
-    name: 'Tipo',
-    selector: row => row.id,
+    name: 'URL',
+    selector: row => row.url,
   },
   {
-    name: 'Porta',
-    selector: row => row.date,
-  },
-  {
-    name: 'IP de Destino',
-    selector: row => row.currentPdv,
+    name: 'Email',
+    selector: row => row.email,
   },
   {
     name: 'Ações',
