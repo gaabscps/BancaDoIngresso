@@ -298,10 +298,10 @@ export const PosScreen: React.FC = (): JSX.Element => {
       onChangeFormInputPos(FormInputNameToSavePos.name)(pos.name);
       onChangeFormInputPos(FormInputNameToSavePos.serialNumber)(pos.serialNumber);
       onChangeFormInputPos(FormInputNameToSavePos.status)(String(pos.status));
-      onChangeFormInputPos(FormInputNameToSavePos.model)(pos.model);
-      onChangeFormInputPos(FormInputNameToSavePos.pdv)(String(pos.pdv.id));
-      onChangeFormInputPos(FormInputNameToSavePos.telephoneOperator)(pos.telephoneOperator);
-      onChangeFormInputPos(FormInputNameToSavePos.cardOperator)(pos.cardOperator);
+      onChangeFormInputPos(FormInputNameToSavePos.model)(pos?.model);
+      onChangeFormInputPos(FormInputNameToSavePos.pdv)(String(pos?.pdv?.id));
+      onChangeFormInputPos(FormInputNameToSavePos.telephoneOperator)(pos?.telephoneOperator);
+      onChangeFormInputPos(FormInputNameToSavePos.cardOperator)(pos?.cardOperator);
       onChangeFormInputPos(FormInputNameToSavePos.expirationDate)(
         String(dayjs(pos.expirationDate, 'YYYY-DD-MM hh:mm:ss').format('YYYY-MM-DD')),
       );
