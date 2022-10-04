@@ -25,10 +25,10 @@ export default interface PayloadPos {
   pdv?: {
     id?: string;
   };
-  model?: string;
-  telephoneOperator?: string;
-  cardOperator?: string;
-  expirationDate?: string;
+  model?: string | null;
+  telephoneOperator?: string | null;
+  cardOperator?: string | null;
+  expirationDate?: string | null;
 }
 
 export const PosScreen: React.FC = (): JSX.Element => {
@@ -155,34 +155,34 @@ export const PosScreen: React.FC = (): JSX.Element => {
           serialNumber: formDataPos[FormInputNameToSavePos.serialNumber],
           status: +formDataPos[FormInputNameToSavePos.status] || 0,
           pdv: {
-            id: formDataPos[FormInputNameToSavePos.pdv],
+            id: formDataPos[FormInputNameToSavePos.pdv] || 'undefined',
           },
-          model: formDataPos[FormInputNameToSavePos.model],
-          telephoneOperator: formDataPos[FormInputNameToSavePos.telephoneOperator],
-          cardOperator: formDataPos[FormInputNameToSavePos.cardOperator],
-          expirationDate: formDataPos[FormInputNameToSavePos.expirationDate],
+          model: formDataPos[FormInputNameToSavePos.model] || null,
+          telephoneOperator: formDataPos[FormInputNameToSavePos.telephoneOperator] || null,
+          cardOperator: formDataPos[FormInputNameToSavePos.cardOperator] || null,
+          expirationDate: formDataPos[FormInputNameToSavePos.expirationDate] || null,
         };
 
-        if (payload.model === '') {
+        if (payload.model === null) {
           delete payload.model;
         }
         if (payload.status === 0) {
           delete payload.status;
         }
 
-        if (payload.cardOperator === '') {
+        if (payload.cardOperator === null) {
           delete payload.cardOperator;
         }
 
-        if (payload.telephoneOperator === '') {
+        if (payload.telephoneOperator === null) {
           delete payload.telephoneOperator;
         }
 
-        if (payload.expirationDate === '') {
+        if (payload.expirationDate === 'Invalid Date') {
           delete payload.expirationDate;
         }
 
-        if (payload.pdv?.id === 'empty' || {}) {
+        if (payload.pdv?.id === 'empty' || payload.pdv?.id === 'undefined') {
           delete payload.pdv;
         }
 
@@ -303,7 +303,7 @@ export const PosScreen: React.FC = (): JSX.Element => {
       onChangeFormInputPos(FormInputNameToSavePos.telephoneOperator)(pos?.telephoneOperator);
       onChangeFormInputPos(FormInputNameToSavePos.cardOperator)(pos?.cardOperator);
       onChangeFormInputPos(FormInputNameToSavePos.expirationDate)(
-        String(dayjs(pos.expirationDate, 'YYYY-DD-MM hh:mm:ss').format('YYYY-MM-DD')),
+        String(dayjs(pos?.expirationDate, 'YYYY-DD-MM hh:mm:ss').format('YYYY-MM-DD')),
       );
     }
   }, [pos]);
