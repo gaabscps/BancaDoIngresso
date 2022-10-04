@@ -2,14 +2,12 @@ import React from 'react';
 import { Col, Form, FormGroup, Row } from 'reactstrap';
 import { InputText, Switch } from '@/components';
 import { FormData, FormErrors, OnChangeFormInput } from '@/hooks/useForm';
-import ChargeSetup from '@/model/ChargeSetup';
 import { convertToBoolean } from '@/helpers/common/convertToBoolean';
 
 interface RegisterContentProps {
   formData: FormData;
   formErrors: FormErrors;
   onChangeFormInput: OnChangeFormInput;
-  listPos: ChargeSetup[];
 }
 
 // eslint-disable-next-line no-shadow
@@ -68,36 +66,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             error={formErrors.frontToken && formErrors.frontToken[0]}
           />
         </FormGroup>
-        <FormGroup className="mb-2">
-          <InputText
-            name="email"
-            label="Email"
-            placeholder="Ex: email@email.com"
-            value={formData[FormInputName.email]}
-            onChange={e => onChangeFormInput(FormInputName.email)(e.target.value)}
-            error={formErrors.email && formErrors.email[0]}
-          />
-        </FormGroup>
-        <FormGroup className="mb-2">
-          <InputText
-            name="notificationURL"
-            label="URL de Notificação"
-            placeholder="https://www.exemplo.com"
-            value={formData[FormInputName.notificationURL]}
-            onChange={e => onChangeFormInput(FormInputName.notificationURL)(e.target.value)}
-            error={formErrors.notificationURL && formErrors.notificationURL[0]}
-          />
-        </FormGroup>
-        <FormGroup className="mb-2">
-          <InputText
-            name="webhook"
-            label="Webhook"
-            placeholder="https://www.exemplo.com"
-            value={formData[FormInputName.webhook]}
-            onChange={e => onChangeFormInput(FormInputName.webhook)(e.target.value)}
-            error={formErrors.webhook && formErrors.webhook[0]}
-          />
-        </FormGroup>
+
         <FormGroup className="mb-2">
           <InputText
             name="url"
@@ -108,7 +77,41 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             error={formErrors.url && formErrors.url[0]}
           />
         </FormGroup>
+
+        <FormGroup className="mb-2">
+          <InputText
+            name="notificationURL"
+            label="URL de Notificação"
+            placeholder="https://www.exemplo.com"
+            value={formData[FormInputName.notificationURL]}
+            onChange={e => onChangeFormInput(FormInputName.notificationURL)(e.target.value)}
+            error={formErrors.notificationURL && formErrors.notificationURL[0]}
+          />
+        </FormGroup>
+
+        <FormGroup className="mb-2">
+          <InputText
+            name="webhook"
+            label="Webhook"
+            placeholder="https://www.exemplo.com"
+            value={formData[FormInputName.webhook]}
+            onChange={e => onChangeFormInput(FormInputName.webhook)(e.target.value)}
+            error={formErrors.webhook && formErrors.webhook[0]}
+          />
+        </FormGroup>
+
+        <FormGroup className="mb-2">
+          <InputText
+            name="email"
+            label="Email"
+            placeholder="Ex: email@email.com"
+            value={formData[FormInputName.email]}
+            onChange={e => onChangeFormInput(FormInputName.email)(e.target.value)}
+            error={formErrors.email && formErrors.email[0]}
+          />
+        </FormGroup>
       </Col>
+
       <Col md={4}>
         <Switch
           name="status"

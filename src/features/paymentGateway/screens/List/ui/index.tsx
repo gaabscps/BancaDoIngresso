@@ -9,7 +9,7 @@ import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { ActionProps, Dialog } from '@/components/Dialog';
 import { ColumnStatus, CustomTable } from '@/components/Table';
 import Pagination from '@/components/Utils/Pagination';
-import { PosRequestParams } from '@/features/pos/types';
+import { ChargeSetupRequestParams } from '@/features/paymentGateway/types';
 import { FilterContent } from '@/features/paymentGateway/components/FilterContent';
 import { FormErrors, OnChangeFormInput, FormData } from '@/hooks/useForm';
 import ChargeSetup from '@/model/ChargeSetup';
@@ -35,11 +35,11 @@ export enum ShouldShowModal {
   gateway = 'gateway',
 }
 
-interface PosContainerProps {
+interface PaymentGatewayContainerProps {
   state: States;
   gatewayState?: ChargeSetup;
   listPaymentGateway: ChargeSetup[];
-  currentPage: PosRequestParams;
+  currentPage: ChargeSetupRequestParams;
   shouldShowModal: ShouldShowModal;
   title: string | React.ReactNode;
   visible: boolean;
@@ -66,7 +66,7 @@ interface PosContainerProps {
   }) => void;
 }
 
-export const PaymentGatewayContainer: React.FC<PosContainerProps> = ({
+export const PaymentGatewayContainer: React.FC<PaymentGatewayContainerProps> = ({
   listPaymentGateway,
   state,
   gatewayState,
@@ -88,7 +88,7 @@ export const PaymentGatewayContainer: React.FC<PosContainerProps> = ({
   onShouldShowModal,
   onShowDeletePaymentGateway,
 }) => {
-  const dataTablePos = listPaymentGateway?.map(item => ({
+  const dataTablePaymentGateway = listPaymentGateway?.map(item => ({
     id: item.id,
     name: (
       <ColumnStatus statusColor={String(changeColorColumn(Number(item.status)))}>
@@ -165,7 +165,6 @@ export const PaymentGatewayContainer: React.FC<PosContainerProps> = ({
                 formData={formDataPaymentGateway}
                 formErrors={formErrorsPaymentGateway}
                 onChangeFormInput={onChangeFormInputPaymentGateway}
-                listPos={listPaymentGateway}
               />
             ),
           }[shouldShowModal]
@@ -214,7 +213,7 @@ export const PaymentGatewayContainer: React.FC<PosContainerProps> = ({
         </div>
         <CustomTable
           columns={columns}
-          data={dataTablePos}
+          data={dataTablePaymentGateway}
           theme="primary"
           numberRowsPerPage={currentPage.pageSize}
           progressPending={state === States.loading}
