@@ -12,7 +12,7 @@ export const columns: TableColumn<DataRow>[] = [
     selector: row => row.url,
   },
   {
-    name: 'Email',
+    name: 'E-mail',
     selector: row => row.email,
   },
   {

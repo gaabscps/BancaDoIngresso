@@ -50,7 +50,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
           <InputText
             name="token"
             label="Token do gateway de pagamento"
-            placeholder="Dado fornecido pelo gateway de pagamento"
+            placeholder="Ex: 123456"
             value={formData[FormInputName.token]}
             onChange={e => onChangeFormInput(FormInputName.token)(e.target.value)}
             error={formErrors.token && formErrors.token[0]}
@@ -60,7 +60,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
           <InputText
             name="frontToken"
             label="Secret"
-            placeholder="Dado fornecido pelo gateway de pagamento"
+            placeholder="Ex: 123456"
             value={formData[FormInputName.frontToken]}
             onChange={e => onChangeFormInput(FormInputName.frontToken)(e.target.value)}
             error={formErrors.frontToken && formErrors.frontToken[0]}
@@ -82,7 +82,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
           <InputText
             name="notificationURL"
             label="URL de Notificação"
-            placeholder="https://www.exemplo.com"
+            placeholder="https://exemplo.com.br/notificação"
             value={formData[FormInputName.notificationURL]}
             onChange={e => onChangeFormInput(FormInputName.notificationURL)(e.target.value)}
             error={formErrors.notificationURL && formErrors.notificationURL[0]}
@@ -93,7 +93,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
           <InputText
             name="webhook"
             label="Webhook"
-            placeholder="https://www.exemplo.com"
+            placeholder="Ex: 000.000.0.0"
             value={formData[FormInputName.webhook]}
             onChange={e => onChangeFormInput(FormInputName.webhook)(e.target.value)}
             error={formErrors.webhook && formErrors.webhook[0]}
@@ -103,8 +103,8 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
         <FormGroup className="mb-2">
           <InputText
             name="email"
-            label="Email"
-            placeholder="Ex: email@email.com"
+            label="E-mail"
+            placeholder="email@teste.com.br"
             value={formData[FormInputName.email]}
             onChange={e => onChangeFormInput(FormInputName.email)(e.target.value)}
             error={formErrors.email && formErrors.email[0]}
