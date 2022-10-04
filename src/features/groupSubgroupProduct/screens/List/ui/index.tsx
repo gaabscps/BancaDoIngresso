@@ -11,6 +11,8 @@ import { FilterContent } from '@/features/groupSubgroupProduct/components/Filter
 import { FormErrors, OnChangeFormInput, FormData } from '@/hooks/useForm';
 import GroupProduct from '@/model/GroupProduct';
 import './styles.scss';
+import { RegisterSubgroupContent } from '@/features/groupSubgroupProduct/components/RegisterSubgroupContent';
+import SubgroupProduct from '@/model/SubgroupProduct';
 
 // eslint-disable-next-line no-shadow
 export enum States {
@@ -24,13 +26,13 @@ export interface DataRow {
   actions: string;
   status: number;
   date: string;
-  currentPdv: string;
 }
 
 // eslint-disable-next-line no-shadow
 export enum ShouldShowModal {
   filter = 'filter',
   groupProduct = 'groupProduct',
+  subgroupProduct = 'subgroupProduct',
 }
 
 interface GroupProductContainerProps {
@@ -44,11 +46,13 @@ interface GroupProductContainerProps {
   formDataFilter: FormData;
   formErrorsFilter: FormErrors;
   onSaveGroupProduct: () => Promise<void>;
+  onSaveGroupSubgroupProduct: () => Promise<void>;
   onChangeFormInputFilter: OnChangeFormInput;
   onToggle: () => void;
   onFilter: () => Promise<void>;
   onChangeFormInputGroupProduct: OnChangeFormInput;
-  // onShowDeleteGroupProduct: (groupProduct: GroupProduct) => void;
+  onShowDeleteGroupProduct: (groupProduct: GroupProduct) => void;
+  onShowDeleteSubgroupProduct: (subgroupProduct: SubgroupProduct) => void;
   onShouldShowModal: ({
     value,
     newTitleModal,
@@ -58,7 +62,13 @@ interface GroupProductContainerProps {
     newTitleModal: string | React.ReactNode;
     groupProduct?: GroupProduct;
   }) => void;
-  listGroupProduct: GroupProduct[];
+  listGroupProduct: SubgroupProduct[];
+  formSubgroup: {
+    formData: FormData;
+    formErrors: FormErrors;
+    onChangeFormInput: OnChangeFormInput;
+    resetForm: () => void;
+  };
 }
 
 export const GroupProductContainer: React.FC<GroupProductContainerProps> = ({
@@ -74,13 +84,16 @@ export const GroupProductContainer: React.FC<GroupProductContainerProps> = ({
   onChangeFormInputFilter,
   onChangeFormInputGroupProduct,
   onSaveGroupProduct,
+  onSaveGroupSubgroupProduct,
   onToggle,
   onFilter,
   onShouldShowModal,
   listGroupProduct,
-  // onShowDeleteGroupProduct,
+  onShowDeleteGroupProduct,
+  onShowDeleteSubgroupProduct,
+  formSubgroup,
 }) => {
-
+  console.log('listGroupProduct :>> ', listGroupProduct);
   const renderActionDialogToCancel: ActionProps = {
     title: 'Cancelar',
     onClick: (): void => onToggle(),
@@ -100,6 +113,7 @@ export const GroupProductContainer: React.FC<GroupProductContainerProps> = ({
           {
             [ShouldShowModal.filter]: renderActionDialogToCancel,
             [ShouldShowModal.groupProduct]: renderActionDialogToCancel,
+            [ShouldShowModal.subgroupProduct]: renderActionDialogToCancel,
           }[shouldShowModal],
           {
             [ShouldShowModal.filter]: {
@@ -109,6 +123,10 @@ export const GroupProductContainer: React.FC<GroupProductContainerProps> = ({
             [ShouldShowModal.groupProduct]: {
               title: groupProductState?.id ? 'Salvar' : 'Cadastrar novo grupo',
               onClick: (): Promise<void> => onSaveGroupProduct(),
+            },
+            [ShouldShowModal.subgroupProduct]: {
+              title: groupProductState?.id ? 'Salvar' : 'Cadastrar novo Subgrupo',
+              onClick: (): Promise<void> => onSaveGroupSubgroupProduct(),
             },
           }[shouldShowModal],
         ]}
@@ -128,6 +146,9 @@ export const GroupProductContainer: React.FC<GroupProductContainerProps> = ({
                 formErrors={formErrorsGroupProduct}
                 onChangeFormInput={onChangeFormInputGroupProduct}
               />
+            ),
+            [ShouldShowModal.subgroupProduct]: (
+              <RegisterSubgroupContent formSubgroup={formSubgroup} />
             ),
           }[shouldShowModal]
         }
@@ -171,93 +192,72 @@ export const GroupProductContainer: React.FC<GroupProductContainerProps> = ({
             </Col>
           </Row>
           <Row>
-            <Col md={4}>
-              <div className="d-flex">
-                <div className="d-flex text-gruop">
-                  <div style={{ margin: 'auto 0' }}>Bebidas</div>
-                  <div style={{ margin: 'auto 0' }}>
-                    <Pen
-                      className="ml-4 mr-4 svg-icon action-icon"
-                      // onClick={(): void =>
-                      //   onShouldShowModal({
-                      //     value: ShouldShowModal.groupProduct,
-                      //     newTitleModal: `Editar ${item.name}`,
-                      //     groupProduct: item,
-                      //   })
-                      // }
-                    />
-                    <Trash
-                      className="mr-0 svg-icon"
-                      // onClick={() => {
-                      //   onShowDeleteGroupProduct(item);
-                      // }}
-                    />
+            {listGroupProduct.map((productSubgroup: SubgroupProduct) => (
+              <Col md={4}>
+                <div className="d-flex justify-content-between">
+                  <div className="d-flex text-gruop">
+                    <div style={{ margin: 'auto 0' }}>{productSubgroup.productGroup?.name}</div>
+                    <div style={{ margin: 'auto 0' }}>
+                      <Pen
+                        className="ml-4 mr-4 svg-icon action-icon"
+                        onClick={(): void =>
+                          onShouldShowModal({
+                            value: ShouldShowModal.groupProduct,
+                            newTitleModal: `${productSubgroup.productGroup?.name}`,
+                            // productSubgroup: productSubgroup?.productGroup,
+                          })
+                        }
+                      />
+                      <Trash
+                        className="mr-0 svg-icon"
+                        onClick={() => {
+                          onShowDeleteGroupProduct(productSubgroup);
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <a
+                      className="text-success-link"
+                      style={{ cursor: 'pointer' }}
+                      onClick={(): void =>
+                        onShouldShowModal({
+                          value: ShouldShowModal.groupProduct,
+                          newTitleModal: 'Cadastrar Grupo',
+                        })
+                      }
+                    >
+                      + novo subgrupo
+                    </a>
                   </div>
                 </div>
-                <div>
-                  <a
-                    className="text-success-link"
-                    style={{ cursor: 'pointer' }}
-                    // onClick={(): void =>
-                    //   onShouldShowModal({
-                    //     newTitleModal: 'Cadastrar Sub PDV',
-                    //     value: ShouldShowModal.subpdvRegister,
-                    //     pdv,
-                    //   })
-                    // }
-                  >
-                    + novo subgrupo
-                  </a>
+                <div className="tree">
+                  <ul>
+                    <li>
+                      <div>{productSubgroup.name}</div>
+                      <div className="flex-shrink-0">
+                        <Pen
+                          className="mr-4 svg-icon action-icon"
+                          onClick={(): void =>
+                            onShouldShowModal({
+                              value: ShouldShowModal.subgroupProduct,
+                              newTitleModal: `${productSubgroup.name}`,
+                              // subgroupProduct: productSubgroup,
+                            })
+                          }
+                        />
+                        <Trash
+                          className="mr-4 svg-icon action-icon"
+                          onClick={() => {
+                            onShowDeleteSubgroupProduct(productSubgroup);
+                          }}
+                        />
+                      </div>
+                    </li>
+                  </ul>
                 </div>
-              </div>
-              <div className="tree">
-                <ul>
-                  <li>
-                    <div>Bebidas alcoolicas</div>
-                    <div className="flex-shrink-0">
-                      <Pen
-                        className="mr-4 svg-icon action-icon"
-                        // onClick={(): void =>
-                        //   onShouldShowModal({
-                        //     value: ShouldShowModal.subgroupProduct,
-                        //     newTitleModal: `Editar ${item.name}`,
-                        //     subgroupProduct: item,
-                        //   })
-                        // }
-                      />
-                      <Trash
-                        className="mr-4 svg-icon action-icon"
-                        // onClick={() => {
-                        //   onShowDeleteSubgroupProduct(item);
-                        // }}
-                      />
-                    </div>
-                  </li>
-                  <li>
-                    <div>Bebidas alcoolicas</div>
-                    <div className="flex-shrink-0">
-                      <Pen
-                        className="mr-4 svg-icon action-icon"
-                        // onClick={(): void =>
-                        //   onShouldShowModal({
-                        //     value: ShouldShowModal.subgroupProduct,
-                        //     newTitleModal: `Editar ${item.name}`,
-                        //     subgroupProduct: item,
-                        //   })
-                        // }
-                      />
-                      <Trash
-                        className="mr-4 svg-icon action-icon"
-                        // onClick={() => {
-                        //   onShowDeleteSubgroupProduct(item);
-                        // }}
-                      />
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </Col>
-            <Col md={4}>-</Col>
+              </Col>
+            ))}
           </Row>
         </CollapseCustom>
       </Container>

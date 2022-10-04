@@ -1,15 +1,8 @@
-import Page from '@/model/Page';
 import GroupProduct from '@/model/GroupProduct';
-import SubgruopProduct from '@/model/SubgruopProduct';
+import SubgroupProduct from '@/model/SubgroupProduct';
 
-export type GroupProductResponse = Page<GroupProduct, GroupProduct>;
-export type GroupProductRequestParams = Page<SubgruopProduct, SubgruopProduct>;
+export type GroupProductResponse = GroupProduct[];
+export type GroupProductRequestParams = GroupProduct[];
 
-export type SubGroupProductResponse = Pick<
-  Page<GroupProduct, GroupProduct>,
-  'page' | 'pageSize' | 'order' | 'sort' | 'total'
->;
-export type SubGroupProductRequestParams = Pick<
-  Page<GroupProduct, GroupProduct>,
-  'page' | 'pageSize' | 'order' | 'sort' | 'total'
->;
+export type SubGroupProductResponse = SubgroupProduct[];
+export type SubGroupProductRequestParams = SubgroupProduct[];

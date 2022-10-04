@@ -6,20 +6,21 @@ import { toast } from 'react-toastify';
 import useForm from '@/hooks/useForm';
 import validators from '@/helpers/validators';
 import { useConfirmDelete } from '@/hooks/useConfirmDelete';
-import Pdv from '@/model/Pdv';
 import {
   States,
   GroupProductContainer,
   ShouldShowModal,
 } from '@/features/groupSubgroupProduct/screens/List/ui';
-import { FormInputName as FormInputNameToFilter } from '@/features/groupSubgroupProduct/components/FilterContent';
+// import { FormInputName as FormInputNameToFilter } from '@/features/groupSubgroupProduct/components/FilterContent';
 import { FormInputName as FormInputNameToSaveGroupProduct } from '@/features/groupSubgroupProduct/components/RegisterGroupContent';
 import {
-  GroupProductResponse,
-  GroupProductRequestParams,
+  // GroupProductResponse,
+  // GroupProductRequestParams,
+  SubGroupProductResponse,
   // GroupProductResponse,
 } from '@/features/groupSubgroupProduct/types';
 import GroupProduct from '@/model/GroupProduct';
+import SubgroupProduct from '@/model/SubgroupProduct';
 import { DeleteContent } from '../../components/DeleteContent';
 
 export default interface PayloadGroupProduct {
@@ -29,20 +30,20 @@ export default interface PayloadGroupProduct {
 
 export const GroupProductScreen: React.FC = (): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
-  const [listGroupProduct, setListGroupProduct] = useState<GroupProduct[]>([]);
-  const [listPdv, setListPdv] = useState<Pdv[]>([]);
+  const [listGroupProduct, setListGroupProduct] = useState<SubgroupProduct[]>([]);
   const [groupProduct, setGroupProduct] = useState<GroupProduct>();
+  const [subgroupProduct, setSubgroupProduct] = useState<GroupProduct>();
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(
     ShouldShowModal.groupProduct,
   );
 
-  const [currentPage] = useState<GroupProductRequestParams>({
-    page: 1,
-    pageSize: 10,
-    sort: 'name',
-    order: 'DESC',
-    total: 1,
-  });
+  // const [currentPage] = useState<GroupProductRequestParams>({
+  //   page: 1,
+  //   pageSize: 10,
+  //   sort: 'name',
+  //   order: 'DESC',
+  //   total: 1,
+  // });
 
   const { title, visible, onChangeTitle, onToggle } = useDialog();
   const confirmDelete = useConfirmDelete();
@@ -64,6 +65,30 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
   });
 
   const {
+    formData: formDataSubgroupProduct,
+    formErrors: formErrorsSubgroupProduct,
+    onChangeFormInput: onChangeFormInputSubgroupProduct,
+    isFormValid: isFormValidSubgroupProduct,
+    resetForm: resetFormSubgroupProduct,
+  } = useForm({
+    initialData: {
+      name: '',
+    },
+    validators: {
+      name: [validators.required],
+    },
+    formatters: {},
+  });
+
+  const formSubgroup = {
+    formData: formDataSubgroupProduct,
+    formErrors: formErrorsSubgroupProduct,
+    onChangeFormInput: onChangeFormInputSubgroupProduct,
+    isFormValid: isFormValidSubgroupProduct,
+    resetForm: resetFormSubgroupProduct,
+  };
+
+  const {
     formData: formDataFilter,
     formErrors: formErrorsFilter,
     onChangeFormInput: onChangeFormInputFilter,
@@ -75,13 +100,13 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
     },
   });
 
-  const handleFetch = async (values: GroupProductRequestParams): Promise<void> => {
+  const handleFetch = async (): Promise<void> => {
     try {
       setState(States.loading);
-      const { data } = await api.post<GroupProductResponse>('/product-group/page', values);
+      const { data } = await api.get<SubGroupProductResponse>('/product-subgroup/find');
 
       if (data) {
-        setListGroupProduct(data?.list ?? []);
+        setListGroupProduct(data);
       }
     } catch (error) {
       const err = error as AxiosError;
@@ -94,10 +119,12 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
     value,
     newTitleModal,
     groupProduct: groupProductSelected,
+    subgroupProduct: subgroupProductSelected,
   }: {
     value: ShouldShowModal;
     newTitleModal: string | React.ReactNode;
     groupProduct?: GroupProduct;
+    subgroupProduct?: SubgroupProduct;
   }): void => {
     setShouldShowModal(value);
     onChangeTitle(newTitleModal);
@@ -105,14 +132,23 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
 
     if (groupProductSelected?.id && value === ShouldShowModal.groupProduct) {
       setGroupProduct(groupProductSelected);
-      handleFecthPdvList();
+
       if (groupProductSelected.id !== groupProduct?.id) {
         resetFormGroupProduct();
       }
     } else {
       resetFormGroupProduct();
       setGroupProduct(undefined);
-      handleFecthPdvList();
+    }
+
+    if (subgroupProductSelected?.id && value === ShouldShowModal.subgroupProduct) {
+      setSubgroupProduct(subgroupProductSelected);
+      if (subgroupProductSelected.id !== subgroupProduct?.id) {
+        resetFormSubgroupProduct();
+      }
+    } else {
+      resetFormSubgroupProduct();
+      setSubgroupProduct(undefined);
     }
   };
 
@@ -135,24 +171,37 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
         }
 
         onToggle();
-        handleFetch(currentPage);
+        handleFetch();
       }
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
     }
   };
-
-  const handleFecthPdvList = async (): Promise<void> => {
+  const handleOnSaveGroupSubgroupProduct = async (): Promise<void> => {
     try {
-      setState(States.loading);
-      const { data } = await api.get<Pdv[]>('/pdv/find');
-      setListPdv(data ?? []);
+      if (isFormValidSubgroupProduct()) {
+        const payload: PayloadGroupProduct = {
+          id: groupProduct?.id,
+          name: formDataSubgroupProduct[FormInputNameToSaveGroupProduct.name],
+        };
+
+        if (!payload.id) {
+          delete payload.id;
+
+          await api.post<SubgroupProduct>('/product-subgroup', payload);
+          toast.success('Grupo e subgrupo de produto cadastrado com sucesso!');
+        } else {
+          await api.put<SubgroupProduct>('/product-subgroup', payload);
+          toast.success('Grupo e subgrupo de produto atualizado com sucesso!');
+        }
+
+        onToggle();
+        handleFetch();
+      }
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
-    } finally {
-      setState(States.default);
     }
   };
 
@@ -166,7 +215,7 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
 
       toast.success('Grupo e subgrupo de produtos excluído com sucesso!');
       handleOnClose();
-      handleFetch(currentPage);
+      handleFetch();
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
@@ -191,28 +240,43 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
     });
   };
 
+  const handleOnShowDeleteSubgroupProduct = (groupProductSelected: GroupProduct): void => {
+    confirmDelete.show({
+      title: '',
+      children: <DeleteContent />,
+      actions: [
+        {
+          title: 'Não, quero manter',
+          theme: 'noneBorder',
+          onClick: (): void => handleOnClose(),
+        },
+        {
+          title: 'Sim, quero remover',
+          onClick: (): Promise<void> => handleOnConfirmDeleteToGroupProduct(groupProductSelected),
+        },
+      ],
+    });
+  };
+
   const handleOnFilter = async (): Promise<void> => {
     try {
       if (isFormValidFilter()) {
-        const payload =
-          {
-            name: {
-              entity: {
-                name: formDataFilter[FormInputNameToFilter.inputSearch],
-              },
-            },
-            serialNumber: {
-              entity: {
-                serialNumber: formDataFilter[FormInputNameToFilter.inputSearch],
-              },
-            },
-          }[formDataFilter[FormInputNameToFilter.filterSearch]] || {};
+        // const payload =
+        //   {
+        //     name: {
+        //       entity: {
+        //         name: formDataFilter[FormInputNameToFilter.inputSearch],
+        //       },
+        //     },
+        //     serialNumber: {
+        //       entity: {
+        //         serialNumber: formDataFilter[FormInputNameToFilter.inputSearch],
+        //       },
+        //     },
+        //   }[formDataFilter[FormInputNameToFilter.filterSearch]] || {};
 
         onToggle();
-        await handleFetch({
-          ...currentPage,
-          ...payload,
-        });
+        await handleFetch();
       }
     } catch (error) {
       const err = error as AxiosError;
@@ -227,7 +291,7 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
   }, [groupProduct]);
 
   useEffect(() => {
-    handleFetch(currentPage);
+    handleFetch();
   }, []);
 
   return (
@@ -239,7 +303,6 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
       shouldShowModal={shouldShowModal}
       onSaveGroupProduct={handleOnSaveGroupProduct}
       listGroupProduct={listGroupProduct}
-      currentPage={currentPage}
       onChangeFormInputFilter={onChangeFormInputFilter}
       onShouldShowModal={handleOnShouldShowModal}
       formDataGroupProduct={formDataGroupProduct}
@@ -248,9 +311,11 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
       formDataFilter={formDataFilter}
       formErrorsFilter={formErrorsFilter}
       onShowDeleteGroupProduct={handleOnShowDeleteGroupProduct}
+      onSaveGroupSubgroupProduct={handleOnSaveGroupSubgroupProduct}
+      onShowDeleteSubgroupProduct={handleOnShowDeleteSubgroupProduct}
       onFilter={handleOnFilter}
-      listPdv={listPdv}
       groupProductState={groupProduct}
+      formSubgroup={formSubgroup}
     />
   );
 };
