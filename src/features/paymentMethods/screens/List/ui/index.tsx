@@ -156,9 +156,7 @@ export const PaymentMethodsContainer: React.FC<PaymentMethodsContainerProps> = (
               onClick: (): Promise<void> => onFilter(),
             },
             [ShouldShowModal.paymentMethods]: {
-              title: paymentMethodsState?.id
-                ? 'Editar forma de pagamento'
-                : 'Cadastrar nova forma de pagamento',
+              title: paymentMethodsState?.id ? 'Salvar' : 'Cadastrar nova forma de pagamento',
               onClick: (): Promise<void> => onSavePaymentMethods(),
             },
           }[shouldShowModal],

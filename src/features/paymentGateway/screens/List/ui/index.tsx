@@ -47,6 +47,7 @@ interface PaymentGatewayContainerProps {
   formErrorsPaymentGateway: FormErrors;
   formDataFilter: FormData;
   formErrorsFilter: FormErrors;
+  clearFilter: () => void;
   onSavePaymentGateway: () => Promise<void>;
   onPaginationChange: (page: number) => void;
   changeColorColumn: (status: number) => void;
@@ -78,6 +79,7 @@ export const PaymentGatewayContainer: React.FC<PaymentGatewayContainerProps> = (
   formErrorsPaymentGateway,
   formDataFilter,
   formErrorsFilter,
+  clearFilter,
   onChangeFormInputFilter,
   onChangeFormInputPaymentGateway,
   onSavePaymentGateway,
@@ -124,6 +126,11 @@ export const PaymentGatewayContainer: React.FC<PaymentGatewayContainerProps> = (
     onClick: (): void => onToggle(),
     theme: 'noneBorder',
   };
+  const renderActionDialogToCancelFilter: ActionProps = {
+    title: 'Limpar',
+    onClick: (): void => clearFilter(),
+    theme: 'noneBorder',
+  };
 
   return (
     <Fragment>
@@ -136,7 +143,7 @@ export const PaymentGatewayContainer: React.FC<PaymentGatewayContainerProps> = (
         isContentWithCard={shouldShowModal !== ShouldShowModal.filter}
         actions={[
           {
-            [ShouldShowModal.filter]: renderActionDialogToCancel,
+            [ShouldShowModal.filter]: renderActionDialogToCancelFilter,
             [ShouldShowModal.gateway]: renderActionDialogToCancel,
           }[shouldShowModal],
           {

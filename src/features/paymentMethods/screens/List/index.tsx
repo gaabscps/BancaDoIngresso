@@ -27,7 +27,7 @@ import { DeleteContent } from '../../components/DeleteContent';
 export default interface PayloadPaymentMethods {
   id?: string;
   name: string;
-  charge: { id: string };
+  charge?: { id: string };
 }
 
 export const PaymentMethodsScreen: React.FC = (): JSX.Element => {
@@ -168,6 +168,12 @@ export const PaymentMethodsScreen: React.FC = (): JSX.Element => {
             id: formDataPaymentMethods[FormInputNameToSavePaymentMethods.paymentGateway],
           },
         };
+
+        // TODO: Logica caso seja opcional
+
+        // if (payload.charge?.id === 'empty') {
+        //   delete payload.charge;
+        // }
 
         if (!payload.id) {
           delete payload.id;
