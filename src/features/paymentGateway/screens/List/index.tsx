@@ -81,6 +81,7 @@ export const PaymentGatewayScreen: React.FC = (): JSX.Element => {
     formErrors: formErrorsFilter,
     onChangeFormInput: onChangeFormInputFilter,
     isFormValid: isFormValidFilter,
+    resetForm: resetFormFilter,
   } = useForm({
     initialData: {
       filterSearch: '',
@@ -240,6 +241,12 @@ export const PaymentGatewayScreen: React.FC = (): JSX.Element => {
     }
   };
 
+  const clearFilter = (): void => {
+    resetFormFilter();
+    formDataFilter[FormInputNameToFilter.inputSearch] = '';
+    handleOnFilter();
+  };
+
   const handleOnPaginationChange = async (page: number): Promise<void> => {
     handleFetch({
       ...currentPage,
@@ -302,6 +309,7 @@ export const PaymentGatewayScreen: React.FC = (): JSX.Element => {
       formErrorsFilter={formErrorsFilter}
       onShowDeletePaymentGateway={handleOnShowDeletePaymentGateway}
       onFilter={handleOnFilter}
+      clearFilter={clearFilter}
       gatewayState={paymentGateway}
     />
   );

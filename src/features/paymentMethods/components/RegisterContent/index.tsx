@@ -27,6 +27,9 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
   onChangeFormInput,
   listChargeSetup,
 }) => (
+  // TODO : Caso seja Opcional
+  // const newListPaymentGateway = [{ id: 'empty', name: 'Nenhum' }, ...listChargeSetup];
+
   <Form
     noValidate={true}
     onSubmit={(e): void => {
@@ -57,6 +60,8 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
               value: item.id,
               label: item.name,
             }))}
+            // TODO : Caso seja opcional
+            // options={newListPaymentGateway.map(item => ({ value: item.id, label: item.name }))}
           />
         </FormGroup>
       </Col>
