@@ -5,8 +5,10 @@ import { FormData, FormErrors, OnChangeFormInput } from '@/hooks/useForm';
 import Company from '@/model/Company';
 import { statesUf } from '@/constant/states';
 import { CustomTable } from '@/components/Table';
+import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { colors } from '@/styles/colors';
-import { ArrowLeft, PenTool, X } from 'react-feather';
+import { ArrowLeft } from 'react-feather';
+import { ReactComponent as CloseX } from '@/assets/images/svg/closeX.svg';
 import { columnsBankAccount } from '../../screens/List/ui/table';
 import { DataRowBankAccount, ShouldShowModal } from '../../screens/List/ui';
 
@@ -64,7 +66,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
     conta: item.conta,
     actions: (
       <React.Fragment>
-        <PenTool
+        <Pen
           className="mr-2 svg-icon action-icon"
           onClick={(): void =>
             onShouldShowModal({
@@ -90,7 +92,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             })
           }
         />
-        <X
+        <CloseX
           className="mr-2 svg-icon action-icon"
           onClick={() => {
             onDeleteRowBankAccount(item);
