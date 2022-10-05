@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import React, { useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useDialog } from '@/hooks/useDialog';
 import Company from '@/model/Company';
 import api, { AxiosError } from '@/services/api';
@@ -7,35 +7,27 @@ import { toast } from 'react-toastify';
 import { CompanyResponse, CompanyRequestParams } from '@/features/company/types';
 import useForm from '@/hooks/useForm';
 import { States, CompanyContainer, ShouldShowModal } from '@/features/company/screens/List/ui';
-import CompanyStatus from '@/model/CompanyStatus';
 import validators from '@/helpers/validators';
 import { FormInputName as FormInputNameToSaveCompany } from '@/features/company/components/RegisterContent';
 import { useConfirmDelete } from '@/hooks/useConfirmDelete';
 import { FormInputName as FormInputNameToFilter } from '@/features/company/components/FilterContent';
-import Pdv from '@/model/Pdv';
-import dayjs from 'dayjs';
 import { colors } from '@/styles/colors';
+import StatusType from '@/model/StatusType';
 import { DeleteContent } from '../../components/DeleteContent';
 
 export default interface PayloadCompany {
   id?: string;
   name: string;
-  serialNumber: string;
-  status?: CompanyStatus;
-  pdv?: {
-    id?: string;
-  };
-  model?: string | null;
-  telephoneOperator?: string | null;
-  cardOperator?: string | null;
-  expirationDate?: string | null;
 }
 
 export const CompanyScreen: React.FC = (): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
   const [listCompany, setListCompany] = useState<Company[]>([]);
+  const [listCompanyType, setListCompanyType] = useState<any[]>([]);
+  const [listBank, setListBank] = useState<any[]>([]);
   const [listBankAccount, setListBankAccount] = useState<any[]>([]);
-  const [pos, setCompany] = useState<Company>();
+  const [bankAccount, setBankAccount] = useState<any[]>([]);
+  const [company, setCompany] = useState<Company>();
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(
     ShouldShowModal.registerCompany,
   );
@@ -60,12 +52,17 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
   } = useForm({
     initialData: {
       name: '',
-      serialNumber: '',
-      status: '',
-      model: '',
-      telephoneOperator: '',
-      cardOperator: '',
-      expirationDate: '',
+      document: '',
+      telephone: '',
+      email: '',
+      imageUrl: '',
+      facebookUrl: '',
+      instagramUrl: '',
+      twitterUrl: '',
+      linkedinUrl: '',
+      urlApi: '',
+      urlAdmin: '',
+      urlSite: '',
     },
     validators: {
       name: [validators.required],
@@ -87,6 +84,66 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
     },
   });
 
+  const controllerInputAppendBankAccount = {
+    listBank,
+    bankAccount,
+    setBankAccount,
+    handleAddBanckAccount(): void {
+      setBankAccount([
+        ...bankAccount,
+        {
+          id: '',
+          name: '',
+          agencia: '',
+          conta: '',
+        },
+      ]);
+    },
+    handleChangeBanckAccount(inputName: string, index: number, value: string): void {
+      console.log('value :>> ', value);
+      const newFormValues = [...bankAccount] as any;
+      newFormValues[index][inputName] = value;
+      setBankAccount(newFormValues);
+    },
+    handleRemoveBanckAccount(index: number): void {
+      const values = [...bankAccount];
+      values.splice(index, 1);
+      setBankAccount(values);
+    },
+  };
+
+  const handleGetbankAccount = async (): Promise<void> => {
+    try {
+      setState(States.loading);
+      const { data } = await api.post<CompanyResponse>('/bank/page', {});
+
+      if (data) {
+        setListBank(data?.list ?? []);
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
+  const handleGetCompanyType = async (): Promise<void> => {
+    try {
+      setState(States.loading);
+      const { data } = await api.post<CompanyResponse>('/company/type/page', {});
+
+      if (data) {
+        setListCompanyType(data?.list ?? []);
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
   const handleFetch = async (values: CompanyRequestParams): Promise<void> => {
     try {
       setState(States.loading);
@@ -107,33 +164,33 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
       setState(States.default);
     }
   };
-  const handleOnChangeColorColumn = (status: CompanyStatus): string =>
+  const handleOnChangeColorColumn = (status: StatusType): string =>
     ({
-      0: colors.lightBlue,
-      1: colors.green,
-      2: colors.yellow,
-      3: colors.red,
+      0: colors.green,
+      1: colors.red,
     }[status] || colors.grey);
   const handleOnShouldShowModal = ({
     value,
     newTitleModal,
-    pos: posSelected,
+    company: companySelected,
   }: {
     value: ShouldShowModal;
     newTitleModal: string | React.ReactNode;
-    pos?: Company;
+    company?: Company;
   }): void => {
     setShouldShowModal(value);
     onChangeTitle(newTitleModal);
-    onToggle();
+    if (value !== ShouldShowModal.filter) {
+      setBankAccount(listBankAccount);
+    }
 
     if (
-      (posSelected?.id && value !== ShouldShowModal.filter) ||
-      (!posSelected?.id && value !== ShouldShowModal.filter)
+      (companySelected?.id && value !== ShouldShowModal.filter) ||
+      (!companySelected?.id && value !== ShouldShowModal.filter)
     ) {
-      setCompany(posSelected);
+      setCompany(companySelected);
       handleBankAccountList();
-      if (posSelected?.id !== pos?.id) {
+      if (companySelected?.id !== company?.id) {
         resetFormCompany();
       }
     } else {
@@ -141,8 +198,8 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
       setCompany(undefined);
     }
     if (
-      (!posSelected?.id && value !== ShouldShowModal.filter) ||
-      (!posSelected?.id && value !== ShouldShowModal.registerCompany)
+      (!companySelected?.id && value !== ShouldShowModal.filter) ||
+      (!companySelected?.id && value !== ShouldShowModal.registerCompany)
     ) {
       resetFormCompany();
     }
@@ -152,49 +209,17 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
     try {
       if (isFormValidCompany()) {
         const payload: PayloadCompany = {
-          id: pos?.id,
+          id: company?.id,
           name: formDataCompany[FormInputNameToSaveCompany.name],
-          serialNumber: formDataCompany[FormInputNameToSaveCompany.serialNumber],
-          status: +formDataCompany[FormInputNameToSaveCompany.status] || 0,
-          pdv: {
-            id: formDataCompany[FormInputNameToSaveCompany.pdv] || 'undefined',
-          },
-          model: formDataCompany[FormInputNameToSaveCompany.model] || null,
-          telephoneOperator: formDataCompany[FormInputNameToSaveCompany.telephoneOperator] || null,
-          cardOperator: formDataCompany[FormInputNameToSaveCompany.cardOperator] || null,
-          expirationDate: formDataCompany[FormInputNameToSaveCompany.expirationDate] || null,
         };
-
-        if (payload.model === null) {
-          delete payload.model;
-        }
-        if (payload.status === 0) {
-          delete payload.status;
-        }
-
-        if (payload.cardOperator === null) {
-          delete payload.cardOperator;
-        }
-
-        if (payload.telephoneOperator === null) {
-          delete payload.telephoneOperator;
-        }
-
-        if (payload.expirationDate === 'Invalid Date') {
-          delete payload.expirationDate;
-        }
-
-        if (payload.pdv?.id === 'empty' || payload.pdv?.id === 'undefined') {
-          delete payload.pdv;
-        }
 
         if (!payload.id) {
           delete payload.id;
 
-          await api.post<Company>('/pos', payload);
+          await api.post<Company>('/company', payload);
           toast.success('empresa cadastrada com sucesso!');
         } else {
-          await api.put<Company>('/pos', payload);
+          await api.put<Company>('/company', payload);
           toast.success('empresa atualizada com sucesso!');
         }
 
@@ -209,6 +234,20 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
 
   const handleBankAccountList = async (): Promise<void> => {
     // TODO: implementar
+  };
+
+  const handleOnBankAccount = async (): Promise<void> => {
+    try {
+      console.log('bankAccount :>> ', bankAccount);
+      setListBankAccount(bankAccount);
+      handleOnShouldShowModal({
+        value: ShouldShowModal.registerCompany,
+        newTitleModal: 'Cadastrar nova empresa',
+      });
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    }
   };
 
   const handleOnClose = (): void => confirmDelete.hide();
@@ -242,6 +281,11 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
         },
       ],
     });
+  };
+
+  const handleOnDeleteRowBankAccount = (bankAccount): void => {
+    listBankAccount.splice(listBankAccount.indexOf(bankAccount), 1);
+    setListBankAccount([...listBankAccount]);
   };
 
   const handleOnFilter = async (): Promise<void> => {
@@ -287,24 +331,28 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
   };
 
   useEffect(() => {
-    if (pos?.id) {
-      onChangeFormInputCompany(FormInputNameToSaveCompany.name)(pos.name);
-      onChangeFormInputCompany(FormInputNameToSaveCompany.serialNumber)(pos.serialNumber);
-      onChangeFormInputCompany(FormInputNameToSaveCompany.status)(String(pos.status));
-      onChangeFormInputCompany(FormInputNameToSaveCompany.model)(pos?.model);
-      onChangeFormInputCompany(FormInputNameToSaveCompany.pdv)(String(pos?.pdv?.id));
-      onChangeFormInputCompany(FormInputNameToSaveCompany.telephoneOperator)(
-        pos?.telephoneOperator,
-      );
-      onChangeFormInputCompany(FormInputNameToSaveCompany.cardOperator)(pos?.cardOperator);
-      onChangeFormInputCompany(FormInputNameToSaveCompany.expirationDate)(
-        String(dayjs(pos?.expirationDate, 'YYYY-DD-MM hh:mm:ss').format('YYYY-MM-DD')),
-      );
+    if (company?.id) {
+      onChangeFormInputCompany(FormInputNameToSaveCompany.name)(company.name);
+      onChangeFormInputCompany(FormInputNameToSaveCompany.document)(company.document);
+      onChangeFormInputCompany(FormInputNameToSaveCompany.companyType)(company.companyType?.id);
+      onChangeFormInputCompany(FormInputNameToSaveCompany.telephone)(company.telephone);
+      onChangeFormInputCompany(FormInputNameToSaveCompany.state)(company.address.state);
+      onChangeFormInputCompany(FormInputNameToSaveCompany.city)(company.address.city);
+      onChangeFormInputCompany(FormInputNameToSaveCompany.district)(company.address.district);
+      onChangeFormInputCompany(FormInputNameToSaveCompany.street)(company.address.street);
+      // onChangeFormInputCompany(FormInputNameToSaveCompany.number)(company.address.number);
+      // onChangeFormInputCompany(FormInputNameToSaveCompany.complement)(company.address.complement);
+      // onChangeFormInputCompany(FormInputNameToSaveCompany.latitude)(company.address.latitude);
+      // onChangeFormInputCompany(FormInputNameToSaveCompany.longitude)(company.address.longitude);
+      // onChangeFormInputCompany(FormInputNameToSaveCompany.pix)(company.pix);
+      setListBankAccount(company.bankAccount);
     }
-  }, [pos]);
+  }, [company]);
 
   useEffect(() => {
     handleFetch(currentPage);
+    handleGetbankAccount();
+    handleGetCompanyType();
   }, []);
 
   return (
@@ -316,6 +364,7 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
       onPaginationChange={handleOnPaginationChange}
       shouldShowModal={shouldShowModal}
       onSaveCompany={handleOnSaveCompany}
+      onSaveBankAccount={handleOnBankAccount}
       listCompany={listCompany}
       currentPage={currentPage}
       changeColorColumn={handleOnChangeColorColumn}
@@ -329,8 +378,11 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
       onShowDeleteCompany={handleOnShowDeleteCompany}
       onFilter={handleOnFilter}
       listBankAccount={listBankAccount}
-      posState={pos}
       clearFilter={clearFilter}
+      controllerInputAppendBankAccount={controllerInputAppendBankAccount}
+      onDeleteRowBankAccount={handleOnDeleteRowBankAccount}
+      isFormValidCompany={isFormValidCompany}
+      listCompanyType={listCompanyType}
     />
   );
 };

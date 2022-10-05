@@ -12,11 +12,10 @@ import { ColumnStatus, CustomTable } from '@/components/Table';
 import Pagination from '@/components/Utils/Pagination';
 import Company from '@/model/Company';
 import { CompanyControllerBankAccount, CompanyRequestParams } from '@/features/company/types';
-import dayjs from 'dayjs';
 import { FilterContent } from '@/features/company/components/FilterContent';
 import { FormErrors, OnChangeFormInput, FormData } from '@/hooks/useForm';
-import Pdv from '@/model/Pdv';
-import { columns, columnsCompany } from './table';
+import { RegisterBankAccount } from '@/features/company/components/RegisterBankAccount';
+import { columnsCompany } from './table';
 
 // eslint-disable-next-line no-shadow
 export enum States {
@@ -59,9 +58,10 @@ interface CompanyContainerProps {
   formErrorsCompany: FormErrors;
   formDataFilter: FormData;
   formErrorsFilter: FormErrors;
-  listBankAccount: Pdv[];
+  listBankAccount: DataRowBankAccount[];
   clearFilter: () => void;
   onSaveCompany: () => Promise<void>;
+  onSaveBankAccount: () => Promise<void>;
   onPaginationChange: (page: number) => void;
   changeColorColumn: (status: number) => void;
   onChangeFormInputFilter: OnChangeFormInput;
@@ -72,17 +72,20 @@ interface CompanyContainerProps {
   onShouldShowModal: ({
     value,
     newTitleModal,
-    pos,
+    company,
   }: {
     value: ShouldShowModal;
     newTitleModal: string | React.ReactNode;
-    pos?: Company;
+    company?: Company;
   }) => void;
   controllerInputAppendBankAccount: CompanyControllerBankAccount;
+  onDeleteRowBankAccount: (company: Company) => void;
+  isFormValidCompany: boolean;
 }
 
 export const CompanyContainer: React.FC<CompanyContainerProps> = ({
   listCompany,
+  listCompanyType,
   state,
   posState,
   currentPage,
@@ -98,6 +101,7 @@ export const CompanyContainer: React.FC<CompanyContainerProps> = ({
   onChangeFormInputFilter,
   onChangeFormInputCompany,
   onSaveCompany,
+  onSaveBankAccount,
   onPaginationChange,
   changeColorColumn,
   onToggle,
@@ -105,6 +109,8 @@ export const CompanyContainer: React.FC<CompanyContainerProps> = ({
   onShouldShowModal,
   onShowDeleteCompany,
   controllerInputAppendBankAccount,
+  onDeleteRowBankAccount,
+  isFormValidCompany,
 }) => {
   const dataTableCompany = listCompany?.map(item => ({
     id: item.id,
@@ -120,13 +126,14 @@ export const CompanyContainer: React.FC<CompanyContainerProps> = ({
       <React.Fragment>
         <Pen
           className="mr-2 svg-icon action-icon"
-          onClick={(): void =>
+          onClick={(): void => {
+            onToggle();
             onShouldShowModal({
-              value: ShouldShowModal.pos,
+              value: ShouldShowModal.registerCompany,
               newTitleModal: `${item.name}`,
-              pos: item,
-            })
-          }
+              company: item,
+            });
+          }}
         />
         <Trash
           className="mr-2 svg-icon action-icon"
@@ -141,6 +148,15 @@ export const CompanyContainer: React.FC<CompanyContainerProps> = ({
   const renderActionDialogToCancel: ActionProps = {
     title: 'Cancelar',
     onClick: (): void => onToggle(),
+    theme: 'noneBorder',
+  };
+  const renderActionDialogToReturn: ActionProps = {
+    title: 'Cancelar',
+    onClick: (): void =>
+      onShouldShowModal({
+        value: ShouldShowModal.registerCompany,
+        newTitleModal: 'Cadastrar nova empresa',
+      }),
     theme: 'noneBorder',
   };
   const renderActionDialogToCancelFilter: ActionProps = {
@@ -162,7 +178,7 @@ export const CompanyContainer: React.FC<CompanyContainerProps> = ({
           {
             [ShouldShowModal.filter]: renderActionDialogToCancelFilter,
             [ShouldShowModal.registerCompany]: renderActionDialogToCancel,
-            [ShouldShowModal.registerBankAccount]: renderActionDialogToCancel,
+            [ShouldShowModal.registerBankAccount]: renderActionDialogToReturn,
           }[shouldShowModal],
           {
             [ShouldShowModal.filter]: {
@@ -172,10 +188,12 @@ export const CompanyContainer: React.FC<CompanyContainerProps> = ({
             [ShouldShowModal.registerCompany]: {
               title: posState?.id ? 'Salvar' : 'Cadastrar nova empresa',
               onClick: (): Promise<void> => onSaveCompany(),
+              disabled: !isFormValidCompany,
             },
             [ShouldShowModal.registerBankAccount]: {
-              title: posState?.id ? 'Salvar' : 'Adicionar conta bancária',
-              onClick: (): Promise<void> => onSaveCompany(),
+              title: 'Salvar',
+              onClick: (): Promise<void> => onSaveBankAccount(),
+              disabled: controllerInputAppendBankAccount.bankAccount.length === 0,
             },
           }[shouldShowModal],
         ]}
@@ -195,17 +213,15 @@ export const CompanyContainer: React.FC<CompanyContainerProps> = ({
                 formErrors={formErrorsCompany}
                 onChangeFormInput={onChangeFormInputCompany}
                 listCompany={listCompany}
+                listCompanyType={listCompanyType}
                 listBankAccount={listBankAccount}
-                controllerInputAppendBankAccount={controllerInputAppendBankAccount}
+                onShouldShowModal={onShouldShowModal}
+                onDeleteRowBankAccount={onDeleteRowBankAccount}
               />
             ),
             [ShouldShowModal.registerBankAccount]: (
-              <RegisterContent
-                formData={formDataCompany}
+              <RegisterBankAccount
                 formErrors={formErrorsCompany}
-                onChangeFormInput={onChangeFormInputCompany}
-                listCompany={listCompany}
-                listBankAccount={listBankAccount}
                 controllerInputAppendBankAccount={controllerInputAppendBankAccount}
               />
             ),
@@ -221,22 +237,24 @@ export const CompanyContainer: React.FC<CompanyContainerProps> = ({
           <div className="button-filter-container">
             <Button
               title="+ Cadastrar nova empresa"
-              onClick={(): void =>
+              onClick={(): void => {
+                onToggle();
                 onShouldShowModal({
                   value: ShouldShowModal.registerCompany,
                   newTitleModal: 'Cadastrar nova empresa',
-                })
-              }
+                });
+              }}
             />
             <div className="filter-container">
               <div
                 className="filter-content"
-                onClick={(): void =>
+                onClick={(): void => {
+                  onToggle();
                   onShouldShowModal({
                     value: ShouldShowModal.filter,
                     newTitleModal: '',
-                  })
-                }
+                  });
+                }}
               >
                 <FilterVector />
               </div>

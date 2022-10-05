@@ -10,15 +10,9 @@ export type CompanyRequestParams = Pick<
 >;
 
 export type CompanyControllerBankAccount = {
-  controllerInputAppendBankAccount: {
-    handleAddBanckAccount(): void;
-    handleChangeBanckAccount(
-      inputName: string,
-      index: number,
-      event: ChangeEvent<HTMLInputElement>,
-    ): void;
-    handleRemoveBanckAccount(index: number): void;
-    bankAccount: any[];
-    setBankAccount: React.Dispatch<React.SetStateAction<any[]>>;
-  };
-}
+  handleAddBanckAccount(): void;
+  handleChangeBanckAccount(inputName: string, index: number, event: string): void;
+  handleRemoveBanckAccount(index: number): void;
+  bankAccount: any[];
+  setBankAccount: React.Dispatch<React.SetStateAction<any[]>>;
+};

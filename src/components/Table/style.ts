@@ -39,6 +39,11 @@ export const primaryTheme = {
 };
 
 export const secondaryTheme = {
+  table: {
+    style: {
+      backgroundColor: 'transparent',
+    },
+  },
   headRow: {
     style: {
       border: 'none !important',
@@ -51,6 +56,7 @@ export const secondaryTheme = {
   rows: {
     style: {
       border: 'none !important',
+      backgroundColor: 'transparent',
       fontSize: '0.75rem',
       fontWidth: '400',
       overflow: 'hidden',

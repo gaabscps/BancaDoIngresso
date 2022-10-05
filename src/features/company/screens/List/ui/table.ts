@@ -36,7 +36,7 @@ export const columnsBankAccount: TableColumn<DataRowBankAccount>[] = [
     minWidth: '35%',
   },
   {
-    name: 'CPF/CNPJ',
+    name: 'Agência',
     selector: row => row.agencia,
     minWidth: '10%',
   },
