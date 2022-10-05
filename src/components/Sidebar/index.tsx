@@ -153,6 +153,10 @@ export const Sidebar: React.FC = () => {
                   route: path.Dashboard.ProductsCombos.itself,
                   title: 'Produtos e Combos',
                 },
+                {
+                  route: path.Dashboard.Company.itself,
+                  title: 'Empresas',
+                },
               ]}
             />
           </li>
