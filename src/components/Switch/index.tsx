@@ -24,11 +24,7 @@ export const Switch: FC<SwitchProps> = ({
 }) => {
   const displayStyle = checked ? 'switch-success' : 'switch-danger';
   return (
-    <div
-      className={`mb-2 flex-column ${wrapperClass} ${
-        label === 'Gateway inativo' ? 'disabled' : ''
-      }`}
-    >
+    <div className={`mb-2 flex-column ${wrapperClass} ${checked === false ? 'disabled' : ''}`}>
       <label className="d-flex justify-content-between" htmlFor={name}>
         <label className="mr-2 w-100 text-right">{label}</label>
         <span className={`switch-wrapper`}>
