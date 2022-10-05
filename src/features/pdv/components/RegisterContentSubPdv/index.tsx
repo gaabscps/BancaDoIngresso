@@ -220,6 +220,5 @@ export const RegisterContentSubPdv: React.FC<RegisterContentProps> = ({
         {/* TO-DO: add input file Map and Image SubPdv */}
       </Col>
     </Row>
-    <hr />
   </Form>
 );
