@@ -58,7 +58,6 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
   onDeleteRowBankAccount,
   listCompanyType,
 }) => {
-  console.log('listBankAccount :>> ', listBankAccount);
   const dataTableBankAccount = listBankAccount?.map(item => ({
     id: item.id,
     name: item.name,
@@ -283,6 +282,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
       <Row>
         <Col md={8}>
           <FormGroup className="mb-2">
+          <h5 className="mb-2">Informações financeiras</h5>
             <InputText
               name="pix"
               label="Chave PIX (opcional)"
@@ -292,7 +292,6 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
               onChange={e => onChangeFormInput(FormInputName.pix)(e.target.value)}
             />
           </FormGroup>
-          <h5 className="mb-2">Informações financeiras</h5>
         </Col>
       </Row>
       <Row>

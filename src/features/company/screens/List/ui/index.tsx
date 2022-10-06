@@ -264,11 +264,11 @@ export const CompanyContainer: React.FC<CompanyContainerProps> = ({
         <div className="d-flex pb-2 status-container">
           <div className="eventStatus subText">
             <Status style={{ color: '#7AD81B' }} />
-            empresa ativa
+            Empresa ativa
           </div>
           <div className="eventStatus subText">
             <Status style={{ color: '#E64F49' }} />
-            empresa inativa
+            Empresa inativa
           </div>
         </div>
         <CustomTable
