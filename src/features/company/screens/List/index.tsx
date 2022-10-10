@@ -8,11 +8,15 @@ import { CompanyResponse, CompanyRequestParams } from '@/features/company/types'
 import useForm from '@/hooks/useForm';
 import { States, CompanyContainer, ShouldShowModal } from '@/features/company/screens/List/ui';
 import validators from '@/helpers/validators';
+import { updateMask as updateMaskCPFOrCNPJ } from '@/helpers/masks/cpfCnpj';
+import { updateMask as updateMaskCEP } from '@/helpers/masks/cep';
+import { updateMask as updateMaskMobilePhone } from '@/helpers/masks/mobilePhone';
 import { FormInputName as FormInputNameToSaveCompany } from '@/features/company/components/RegisterContent';
 import { useConfirmDelete } from '@/hooks/useConfirmDelete';
 import { FormInputName as FormInputNameToFilter } from '@/features/company/components/FilterContent';
 import { colors } from '@/styles/colors';
 import StatusType from '@/model/StatusType';
+import { convertToBoolean } from '@/helpers/common/convertToBoolean';
 import { DeleteContent } from '../../components/DeleteContent';
 
 export default interface PayloadCompany {
@@ -55,6 +59,7 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
       document: '',
       telephone: '',
       email: '',
+      zipCode: '',
       imageUrl: '',
       facebookUrl: '',
       instagramUrl: '',
@@ -66,9 +71,13 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
     },
     validators: {
       name: [validators.required],
-      serialNumber: [validators.required],
+      // serialNumber: [validators.required],
     },
-    formatters: {},
+    formatters: {
+      document: updateMaskCPFOrCNPJ,
+      telephone: updateMaskMobilePhone,
+      zipCode: updateMaskCEP,
+    },
   });
 
   const {
@@ -100,7 +109,6 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
       ]);
     },
     handleChangeBanckAccount(inputName: string, index: number, value: string): void {
-      console.log('value :>> ', value);
       const newFormValues = [...bankAccount] as any;
       newFormValues[index][inputName] = value;
       setBankAccount(newFormValues);
@@ -131,7 +139,7 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
   const handleGetCompanyType = async (): Promise<void> => {
     try {
       setState(States.loading);
-      const { data } = await api.post<CompanyResponse>('/company/type/page', {});
+      const { data } = await api.post<CompanyResponse>('/contractor/type/page', {});
 
       if (data) {
         setListCompanyType(data?.list ?? []);
@@ -147,7 +155,7 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
   const handleFetch = async (values: CompanyRequestParams): Promise<void> => {
     try {
       setState(States.loading);
-      const { data } = await api.post<CompanyResponse>('/company/page', values);
+      const { data } = await api.post<CompanyResponse>('/contractor/page', values);
 
       if (data) {
         setListCompany(data?.list ?? []);
@@ -208,18 +216,52 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
   const handleOnSaveCompany = async (): Promise<void> => {
     try {
       if (isFormValidCompany()) {
+        const activedInput = convertToBoolean(formDataCompany[FormInputNameToSaveCompany.status]);
+
         const payload: PayloadCompany = {
           id: company?.id,
           name: formDataCompany[FormInputNameToSaveCompany.name],
+          document: formDataCompany[FormInputNameToSaveCompany.document],
+          telephone: formDataCompany[FormInputNameToSaveCompany.telephone],
+          email: 'email@email.com',
+          address: {
+            id: company?.address?.id,
+            zipCode: formDataCompany[FormInputNameToSaveCompany.zipCode],
+            state: formDataCompany[FormInputNameToSaveCompany.state],
+            city: formDataCompany[FormInputNameToSaveCompany.city],
+            district: formDataCompany[FormInputNameToSaveCompany.district],
+            street: formDataCompany[FormInputNameToSaveCompany.street],
+            complement: formDataCompany[FormInputNameToSaveCompany.complement],
+            number: formDataCompany[FormInputNameToSaveCompany.number],
+            latitude: formDataCompany[FormInputNameToSaveCompany.latitude],
+            longitude: formDataCompany[FormInputNameToSaveCompany.longitude],
+          },
+          contractorType: {
+            id: formDataCompany[FormInputNameToSaveCompany.companyType],
+          },
+          bankAccount: listBankAccount.map(bank => ({
+            id: company?.bankAccount?.id,
+            contractorId: company?.id,
+            agency: bank.agencia,
+            account: bank.conta.split('-')[0],
+            digit: bank.conta.split('-')[1],
+            bank: {
+              id: bank.id,
+            },
+          })),
         };
 
         if (!payload.id) {
           delete payload.id;
 
-          await api.post<Company>('/company', payload);
+          const { data: dataContractor } = await api.post<Company>('/contractor', payload);
+
+          await api.patch<Company>(
+            `/charge-setup${activedInput ? '/activate' : '/inactivate'}/${dataContractor.id}`,
+          );
           toast.success('empresa cadastrada com sucesso!');
         } else {
-          await api.put<Company>('/company', payload);
+          await api.put<Company>('/contractor', payload);
           toast.success('empresa atualizada com sucesso!');
         }
 
@@ -238,11 +280,19 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
 
   const handleOnBankAccount = async (): Promise<void> => {
     try {
-      console.log('bankAccount :>> ', bankAccount);
+      // verify if the bank account not exists values empty
+      const bankAccountEmpty = bankAccount.find(
+        item => item.id === '' || item.name === '' || item.agencia === '' || item.conta === '',
+      );
+      if (bankAccountEmpty) {
+        toast.warn('Preencha todos os campos ou remova a conta bancária que contém campos vazios');
+        return;
+      }
       setListBankAccount(bankAccount);
       handleOnShouldShowModal({
         value: ShouldShowModal.registerCompany,
-        newTitleModal: 'Cadastrar nova empresa',
+        newTitleModal: company?.id ? company.name : 'Cadastrar nova empresa',
+        company,
       });
     } catch (error) {
       const err = error as AxiosError;
@@ -254,7 +304,7 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
 
   const handleOnConfirmDeleteToCompany = async (posSelected: Company): Promise<void> => {
     try {
-      await api.delete(`/company/${posSelected?.id}`);
+      await api.delete(`/contractor/${posSelected?.id}`);
 
       toast.success('empresa excluída com sucesso!');
       handleOnClose();
@@ -358,6 +408,7 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
   return (
     <CompanyContainer
       state={state}
+      companyState={company}
       title={title}
       visible={visible}
       onToggle={onToggle}
@@ -381,7 +432,7 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
       clearFilter={clearFilter}
       controllerInputAppendBankAccount={controllerInputAppendBankAccount}
       onDeleteRowBankAccount={handleOnDeleteRowBankAccount}
-      isFormValidCompany={isFormValidCompany}
+      formErrorsCompany={formErrorsCompany}
       listCompanyType={listCompanyType}
     />
   );

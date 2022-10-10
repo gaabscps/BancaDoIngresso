@@ -48,7 +48,7 @@ export enum ShouldShowModal {
 
 interface CompanyContainerProps {
   state: States;
-  posState?: Company;
+  companyState?: Company;
   listCompany: Company[];
   currentPage: CompanyRequestParams;
   shouldShowModal: ShouldShowModal;
@@ -80,14 +80,13 @@ interface CompanyContainerProps {
   }) => void;
   controllerInputAppendBankAccount: CompanyControllerBankAccount;
   onDeleteRowBankAccount: (company: Company) => void;
-  isFormValidCompany: boolean;
 }
 
 export const CompanyContainer: React.FC<CompanyContainerProps> = ({
   listCompany,
   listCompanyType,
   state,
-  posState,
+  companyState,
   currentPage,
   title,
   visible,
@@ -121,7 +120,7 @@ export const CompanyContainer: React.FC<CompanyContainerProps> = ({
     ),
     document: item.document,
     telephone: item.telephone,
-    companyType: '----',
+    companyType: item.contractorType ?? '----',
     actions: (
       <React.Fragment>
         <Pen
@@ -155,7 +154,8 @@ export const CompanyContainer: React.FC<CompanyContainerProps> = ({
     onClick: (): void =>
       onShouldShowModal({
         value: ShouldShowModal.registerCompany,
-        newTitleModal: 'Cadastrar nova empresa',
+        newTitleModal: companyState?.id ? companyState.name : 'Cadastrar nova empresa',
+        company: companyState,
       }),
     theme: 'noneBorder',
   };
@@ -186,9 +186,11 @@ export const CompanyContainer: React.FC<CompanyContainerProps> = ({
               onClick: (): Promise<void> => onFilter(),
             },
             [ShouldShowModal.registerCompany]: {
-              title: posState?.id ? 'Salvar' : 'Cadastrar nova empresa',
+              title: companyState?.id ? 'Salvar' : 'Cadastrar nova empresa',
               onClick: (): Promise<void> => onSaveCompany(),
-              disabled: !isFormValidCompany,
+              disabled:
+                Object.keys(formErrorsCompany).length === 0 &&
+                formErrorsCompany.constructor === Object,
             },
             [ShouldShowModal.registerBankAccount]: {
               title: 'Salvar',
@@ -213,6 +215,7 @@ export const CompanyContainer: React.FC<CompanyContainerProps> = ({
                 formErrors={formErrorsCompany}
                 onChangeFormInput={onChangeFormInputCompany}
                 listCompany={listCompany}
+                companyState={companyState}
                 listCompanyType={listCompanyType}
                 listBankAccount={listBankAccount}
                 onShouldShowModal={onShouldShowModal}
@@ -241,7 +244,8 @@ export const CompanyContainer: React.FC<CompanyContainerProps> = ({
                 onToggle();
                 onShouldShowModal({
                   value: ShouldShowModal.registerCompany,
-                  newTitleModal: 'Cadastrar nova empresa',
+                  newTitleModal: companyState?.id ? companyState.name : 'Cadastrar nova empresa',
+                  company: companyState,
                 });
               }}
             />

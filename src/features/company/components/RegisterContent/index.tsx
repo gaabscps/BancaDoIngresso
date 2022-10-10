@@ -1,14 +1,17 @@
 import React from 'react';
 import { Col, Form, FormGroup, Row } from 'reactstrap';
-import { InputText, SelectCustom } from '@/components';
+import { InputText, SelectCustom, Switch } from '@/components';
 import { FormData, FormErrors, OnChangeFormInput } from '@/hooks/useForm';
 import Company from '@/model/Company';
 import { statesUf } from '@/constant/states';
 import { CustomTable } from '@/components/Table';
+import { isValid as isValidCEP } from '@/helpers/masks/cep';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { colors } from '@/styles/colors';
 import { ArrowLeft } from 'react-feather';
 import { ReactComponent as CloseX } from '@/assets/images/svg/closeX.svg';
+import cep from 'cep-promise';
+import { convertToBoolean } from '@/helpers/common/convertToBoolean';
 import { columnsBankAccount } from '../../screens/List/ui/table';
 import { DataRowBankAccount, ShouldShowModal } from '../../screens/List/ui';
 
@@ -47,6 +50,7 @@ export enum FormInputName {
   latitude = 'latitude',
   longitude = 'longitude',
   pix = 'pix',
+  status = 'status',
 }
 
 export const RegisterContent: React.FC<RegisterContentProps> = ({
@@ -57,6 +61,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
   onShouldShowModal,
   onDeleteRowBankAccount,
   listCompanyType,
+  companyState,
 }) => {
   const dataTableBankAccount = listBankAccount?.map(item => ({
     id: item.id,
@@ -77,7 +82,8 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
                     onClick={() => {
                       onShouldShowModal({
                         value: ShouldShowModal.registerCompany,
-                        newTitleModal: 'Cadastrar nova empresa',
+                        newTitleModal: companyState?.id ? item.name : 'Cadastrar nova empresa',
+                        company: companyState,
                       });
                     }}
                   >
@@ -88,6 +94,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
                   </h5>
                 </div>
               ),
+              company: companyState,
             })
           }
         />
@@ -175,8 +182,19 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
               name="zipCode"
               label="CEP (opcional)"
               placeholder="Digite o CEP da empresa"
+              maxLength={9}
               value={formData[FormInputName.zipCode]}
-              onChange={e => onChangeFormInput(FormInputName.zipCode)(e.target.value)}
+              onChange={e => {
+                onChangeFormInput(FormInputName.zipCode)(e.target.value);
+                if (e.target.value.length === 9 && isValidCEP(e.target.value)) {
+                  cep(e.target.value).then(data => {
+                    onChangeFormInput(FormInputName.state)(data.state);
+                    onChangeFormInput(FormInputName.city)(data.city);
+                    onChangeFormInput(FormInputName.district)(data.neighborhood);
+                    onChangeFormInput(FormInputName.street)(data.street);
+                  });
+                }
+              }}
               error={formErrors.zipCode && formErrors.zipCode[0]}
             />
           </FormGroup>
@@ -278,11 +296,21 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             />
           </FormGroup>
         </Col>
+        <Col md={4}>
+          <Switch
+            name="status"
+            label={`Empresa ${
+              convertToBoolean(formData[FormInputName.status]) ? 'ativa' : 'inativa'
+            }`}
+            onChange={e => onChangeFormInput(FormInputName.status)(String(e.target.checked))}
+            checked={convertToBoolean(formData[FormInputName.status])}
+          />
+        </Col>
       </Row>
       <Row>
         <Col md={8}>
           <FormGroup className="mb-2">
-          <h5 className="mb-2">Informações financeiras</h5>
+            <h5 className="mb-2">Informações financeiras</h5>
             <InputText
               name="pix"
               label="Chave PIX (opcional)"
@@ -332,7 +360,10 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
                       onClick={() => {
                         onShouldShowModal({
                           value: ShouldShowModal.registerCompany,
-                          newTitleModal: 'Cadastrar nova empresa',
+                          newTitleModal: companyState?.id
+                            ? companyState.name
+                            : 'Cadastrar nova empresa',
+                          company: companyState,
                         });
                       }}
                     >
@@ -343,6 +374,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
                     </h5>
                   </div>
                 ),
+                company: companyState,
               });
             }}
           >

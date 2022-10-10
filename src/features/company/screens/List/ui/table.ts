@@ -1,4 +1,5 @@
 import { TableColumn } from '@/components/Table';
+import { formatToCPFOrCNPJ, formatToPhone } from 'brazilian-values';
 import { DataRowBankAccount, DataRowCompany } from '.';
 
 export const columnsCompany: TableColumn<DataRowCompany>[] = [
@@ -9,12 +10,12 @@ export const columnsCompany: TableColumn<DataRowCompany>[] = [
   },
   {
     name: 'CPF/CNPJ',
-    selector: row => row.document,
+    selector: row => formatToCPFOrCNPJ(row.document),
     minWidth: '15%',
   },
   {
     name: 'Telefone',
-    selector: row => row.telephone,
+    selector: row => formatToPhone(row.telephone),
     minWidth: '20%',
   },
   {

@@ -4,6 +4,7 @@ import { InputText, SelectCustom } from '@/components';
 import { FormErrors } from '@/hooks/useForm';
 import { X } from 'react-feather';
 import { CompanyControllerBankAccount } from '../../types';
+import { updateMask as updateMaskAccountAgency } from '@/helpers/masks/AccountAgency';
 
 interface RegisterContentProps {
   formErrors?: FormErrors;
@@ -50,7 +51,7 @@ export const RegisterBankAccount: React.FC<RegisterContentProps> = ({
                   );
                 }}
                 error={formErrors?.name && formErrors.name[0]}
-                value={item.name}
+                value={item.id}
                 options={controllerInputAppendBankAccount.listBank.map(item => ({
                   label: item.fullName,
                   value: item.id,
@@ -62,9 +63,10 @@ export const RegisterBankAccount: React.FC<RegisterContentProps> = ({
             <FormGroup className="mb-2">
               <InputText
                 name="agencia"
-                label="Agencia"
-                placeholder="Digite a agencia"
+                label="Agência"
+                placeholder="Digite a agência"
                 value={item.agencia}
+                maxLength={6}
                 onChange={e =>
                   controllerInputAppendBankAccount.handleChangeBanckAccount(
                     FormInputName.agencia,
@@ -83,11 +85,12 @@ export const RegisterBankAccount: React.FC<RegisterContentProps> = ({
                 label="Conta"
                 placeholder="Digite a conta"
                 value={item.conta}
+                maxLength={13}
                 onChange={e =>
                   controllerInputAppendBankAccount.handleChangeBanckAccount(
                     FormInputName.conta,
                     index,
-                    e?.target.value,
+                    updateMaskAccountAgency(e?.target.value),
                   )
                 }
                 error={formErrors?.conta && formErrors.conta[0]}
