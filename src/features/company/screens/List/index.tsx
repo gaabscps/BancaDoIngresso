@@ -30,6 +30,8 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
   const [listCompanyType, setListCompanyType] = useState<any[]>([]);
   const [listBank, setListBank] = useState<any[]>([]);
   const [listBankAccount, setListBankAccount] = useState<any[]>([]);
+  const [listPixTable, setListPixTable] = useState<any[]>([]);
+  const [pix, setPix] = useState<any[]>([]);
   const [bankAccount, setBankAccount] = useState<any[]>([]);
   const [company, setCompany] = useState<Company>();
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(
@@ -120,6 +122,35 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
     },
   };
 
+  const controllerInputAppendPix = {
+    listPixTable,
+    listBank,
+    pix,
+    setPix,
+    handleAddPix(): void {
+      setPix([
+        ...pix,
+        {
+          idInstitution: '',
+          nameInstitution: '',
+          idType: '',
+          nameType: '',
+          pix: '',
+        },
+      ]);
+    },
+    handleChangePix(inputName: string, index: number, value: string): void {
+      const newFormValues = [...pix] as any;
+      newFormValues[index][inputName] = value;
+      setPix(newFormValues);
+    },
+    handleRemovePix(index: number): void {
+      const values = [...pix];
+      values.splice(index, 1);
+      setPix(values);
+    },
+  };
+
   const handleGetbankAccount = async (): Promise<void> => {
     try {
       setState(States.loading);
@@ -190,6 +221,7 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
     onChangeTitle(newTitleModal);
     if (value !== ShouldShowModal.filter) {
       setBankAccount(listBankAccount);
+      setPix(listPixTable);
     }
 
     if (
@@ -217,6 +249,17 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
     try {
       if (isFormValidCompany()) {
         const activedInput = convertToBoolean(formDataCompany[FormInputNameToSaveCompany.status]);
+        const payloadBankAccount = listBankAccount.map(bank => ({
+          id: company?.bankAccount?.id,
+          contractorId: company?.id,
+          agency: bank.agencia,
+          account: bank.conta.split('-')[0],
+          digit: bank.conta.split('-')[1],
+          bank: {
+            id: bank.id,
+            fullName: bank.name,
+          },
+        }));
 
         const payload: PayloadCompany = {
           id: company?.id,
@@ -239,16 +282,7 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
           contractorType: {
             id: formDataCompany[FormInputNameToSaveCompany.companyType],
           },
-          bankAccount: listBankAccount.map(bank => ({
-            id: company?.bankAccount?.id,
-            contractorId: company?.id,
-            agency: bank.agencia,
-            account: bank.conta.split('-')[0],
-            digit: bank.conta.split('-')[1],
-            bank: {
-              id: bank.id,
-            },
-          })),
+          bankAccount: payloadBankAccount,
         };
 
         if (!payload.id) {
@@ -257,12 +291,15 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
           const { data: dataContractor } = await api.post<Company>('/contractor', payload);
 
           await api.patch<Company>(
-            `/charge-setup${activedInput ? '/activate' : '/inactivate'}/${dataContractor.id}`,
+            `/contractor${activedInput ? '/activate' : '/inactivate'}/${dataContractor.id}`,
           );
-          toast.success('empresa cadastrada com sucesso!');
+          toast.success('Empresa cadastrada com sucesso!');
         } else {
           await api.put<Company>('/contractor', payload);
-          toast.success('empresa atualizada com sucesso!');
+          await api.patch<Company>(
+            `/contractor${activedInput ? '/activate' : '/inactivate'}/${company?.id}`,
+          );
+          toast.success('Empresa atualizada com sucesso!');
         }
 
         onToggle();
@@ -289,6 +326,29 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
         return;
       }
       setListBankAccount(bankAccount);
+      handleOnShouldShowModal({
+        value: ShouldShowModal.registerCompany,
+        newTitleModal: company?.id ? company.name : 'Cadastrar nova empresa',
+        company,
+      });
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    }
+  };
+
+  const handleOnPix = async (): Promise<void> => {
+    try {
+      console.log('pix :>> ', pix);
+      // verify if the bank account not exists values empty
+      const pixEmpty = pix.find(
+        item => item.idInstitution === '' || item.idType === '' || item.pix === '',
+      );
+      if (pixEmpty) {
+        toast.warn('Preencha todos os campos ou remova a Chave Pix que contém campos vazios');
+        return;
+      }
+      setListPixTable(pix);
       handleOnShouldShowModal({
         value: ShouldShowModal.registerCompany,
         newTitleModal: company?.id ? company.name : 'Cadastrar nova empresa',
@@ -338,6 +398,11 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
     setListBankAccount([...listBankAccount]);
   };
 
+  const handleOnDeleteRowPix = (pix): void => {
+    listPixTable.splice(listPixTable.indexOf(pix), 1);
+    setListPixTable([...listPixTable]);
+  };
+
   const handleOnFilter = async (): Promise<void> => {
     try {
       if (isFormValidFilter()) {
@@ -382,20 +447,29 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     if (company?.id) {
+      const statusBooleanString = {
+        0: 'true',
+        1: 'false',
+      }[company.status];
+
       onChangeFormInputCompany(FormInputNameToSaveCompany.name)(company.name);
       onChangeFormInputCompany(FormInputNameToSaveCompany.document)(company.document);
-      onChangeFormInputCompany(FormInputNameToSaveCompany.companyType)(company.companyType?.id);
+      onChangeFormInputCompany(FormInputNameToSaveCompany.companyType)(company.contractorType?.id);
       onChangeFormInputCompany(FormInputNameToSaveCompany.telephone)(company.telephone);
+      onChangeFormInputCompany(FormInputNameToSaveCompany.email)(company.email);
+      onChangeFormInputCompany(FormInputNameToSaveCompany.zipCode)(company.address.zipCode);
       onChangeFormInputCompany(FormInputNameToSaveCompany.state)(company.address.state);
       onChangeFormInputCompany(FormInputNameToSaveCompany.city)(company.address.city);
       onChangeFormInputCompany(FormInputNameToSaveCompany.district)(company.address.district);
       onChangeFormInputCompany(FormInputNameToSaveCompany.street)(company.address.street);
-      // onChangeFormInputCompany(FormInputNameToSaveCompany.number)(company.address.number);
-      // onChangeFormInputCompany(FormInputNameToSaveCompany.complement)(company.address.complement);
-      // onChangeFormInputCompany(FormInputNameToSaveCompany.latitude)(company.address.latitude);
-      // onChangeFormInputCompany(FormInputNameToSaveCompany.longitude)(company.address.longitude);
+      onChangeFormInputCompany(FormInputNameToSaveCompany.number)(company.address.number);
+      onChangeFormInputCompany(FormInputNameToSaveCompany.complement)(company.address.complement);
+      onChangeFormInputCompany(FormInputNameToSaveCompany.latitude)(company.address.latitude);
+      onChangeFormInputCompany(FormInputNameToSaveCompany.longitude)(company.address.longitude);
+      onChangeFormInputCompany(FormInputNameToSaveCompany.status)(statusBooleanString);
       // onChangeFormInputCompany(FormInputNameToSaveCompany.pix)(company.pix);
       setListBankAccount(company.bankAccount);
+      // setListPixTable(company.pix);
     }
   }, [company]);
 
@@ -416,6 +490,7 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
       shouldShowModal={shouldShowModal}
       onSaveCompany={handleOnSaveCompany}
       onSaveBankAccount={handleOnBankAccount}
+      onSavePix={handleOnPix}
       listCompany={listCompany}
       currentPage={currentPage}
       changeColorColumn={handleOnChangeColorColumn}
@@ -429,9 +504,12 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
       onShowDeleteCompany={handleOnShowDeleteCompany}
       onFilter={handleOnFilter}
       listBankAccount={listBankAccount}
+      listPixTable={listPixTable}
       clearFilter={clearFilter}
       controllerInputAppendBankAccount={controllerInputAppendBankAccount}
+      controllerInputAppendPix={controllerInputAppendPix}
       onDeleteRowBankAccount={handleOnDeleteRowBankAccount}
+      onDeleteRowPix={handleOnDeleteRowPix}
       formErrorsCompany={formErrorsCompany}
       listCompanyType={listCompanyType}
     />

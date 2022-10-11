@@ -16,3 +16,11 @@ export type CompanyControllerBankAccount = {
   bankAccount: any[];
   setBankAccount: React.Dispatch<React.SetStateAction<any[]>>;
 };
+
+export type CompanyControllerPix = {
+  handleAddPix(): void;
+  handleChangePix(inputName: string, index: number, event: string): void;
+  handleRemovePix(index: number): void;
+  pix: any[];
+  setPix: React.Dispatch<React.SetStateAction<any[]>>;
+};

@@ -12,7 +12,7 @@ import { ArrowLeft } from 'react-feather';
 import { ReactComponent as CloseX } from '@/assets/images/svg/closeX.svg';
 import cep from 'cep-promise';
 import { convertToBoolean } from '@/helpers/common/convertToBoolean';
-import { columnsBankAccount } from '../../screens/List/ui/table';
+import { columnsBankAccount, columnsPix } from '../../screens/List/ui/table';
 import { DataRowBankAccount, ShouldShowModal } from '../../screens/List/ui';
 
 interface RegisterContentProps {
@@ -57,9 +57,11 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
   formData,
   formErrors,
   listBankAccount,
+  listPixTable,
   onChangeFormInput,
   onShouldShowModal,
   onDeleteRowBankAccount,
+  onDeleteRowPix,
   listCompanyType,
   companyState,
 }) => {
@@ -108,6 +110,49 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
     ),
   }));
 
+  const dataTablePix = listPixTable?.map(item => ({
+    id: item.id,
+    name: item.nameInstitution,
+    type: item.nameType,
+    pix: item.pix,
+    actions: (
+      <React.Fragment>
+        <Pen
+          className="mr-2 svg-icon action-icon"
+          onClick={(): void =>
+            onShouldShowModal({
+              value: ShouldShowModal.registerPix,
+              newTitleModal: (
+                <div className="d-flex">
+                  <div
+                    className="m-auto"
+                    onClick={() => {
+                      onShouldShowModal({
+                        value: ShouldShowModal.registerCompany,
+                        newTitleModal: companyState?.id ? item.name : 'Cadastrar nova empresa',
+                        company: companyState,
+                      });
+                    }}
+                  >
+                    <ArrowLeft color={colors.black} width="30" height="30" className="m-auto" />
+                  </div>
+                  <h5 className="header-title-text modal__title ml-3 mb-0">Adicionar chave pix</h5>
+                </div>
+              ),
+              company: companyState,
+            })
+          }
+        />
+        <CloseX
+          className="mr-2 svg-icon action-icon"
+          onClick={() => {
+            onDeleteRowPix(item);
+          }}
+        />
+      </React.Fragment>
+    ),
+  }));
+
   return (
     <Form
       noValidate={true}
@@ -117,7 +162,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
     >
       <Row>
         <Col md={8}>
-          <h5 className="mb-2">Informações gerais e endereço</h5>
+          <h5 className="mb-5 border-bottom-title">Informações gerais e endereço</h5>
           <FormGroup className="mb-2">
             <InputText
               name="name"
@@ -309,8 +354,8 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
       </Row>
       <Row>
         <Col md={8}>
-          <FormGroup className="mb-2">
-            <h5 className="mb-2">Informações financeiras</h5>
+          <h5 className="mb-5 border-bottom-title">Informações financeiras</h5>
+          {/* <FormGroup className="mb-2">
             <InputText
               name="pix"
               label="Chave PIX (opcional)"
@@ -319,7 +364,67 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
               value={formData[FormInputName.pix]}
               onChange={e => onChangeFormInput(FormInputName.pix)(e.target.value)}
             />
-          </FormGroup>
+          </FormGroup> */}
+        </Col>
+      </Row>
+      <Row>
+        <Col md={10}>
+          <h6 style={{ paddingTop: '20px', paddingBottom: '30px' }}>
+            Insira a(s) chave(s) pix da empresa (opcional)
+          </h6>
+          {listPixTable.length > 0 ? (
+            <>
+              <CustomTable
+                columns={columnsPix}
+                data={dataTablePix}
+                theme="secondary"
+                progressPending={false}
+                numberRowsPerPage={15}
+              />
+            </>
+          ) : (
+            <>
+              <div style={{ padding: '10px 0 20px 0', color: '#A5A5A5' }}>
+                Você ainda não adicionou nenhuma chave pix
+              </div>
+              <div style={{ color: '#A5A5A5', paddingBottom: '30px' }}>
+                Aqui será exibida uma lista das chaves pix inseridas.
+              </div>
+            </>
+          )}
+          <div
+            style={{ margin: '0 0', cursor: 'pointer' }}
+            className="subpdv-register-buttom"
+            onClick={() => {
+              onShouldShowModal({
+                value: ShouldShowModal.registerPix,
+                newTitleModal: (
+                  <div className="d-flex">
+                    <div
+                      className="m-auto"
+                      onClick={() => {
+                        onShouldShowModal({
+                          value: ShouldShowModal.registerCompany,
+                          newTitleModal: companyState?.id
+                            ? companyState.name
+                            : 'Cadastrar nova empresa',
+                          company: companyState,
+                        });
+                      }}
+                    >
+                      <ArrowLeft color={colors.black} width="30" height="30" className="m-auto" />
+                    </div>
+                    <h5 className="header-title-text modal__title ml-3 mb-0">
+                      Adicionar chave pix
+                    </h5>
+                  </div>
+                ),
+                company: companyState,
+              });
+            }}
+          >
+            + adicionar chave pix
+          </div>
         </Col>
       </Row>
       <Row>

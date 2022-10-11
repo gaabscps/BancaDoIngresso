@@ -11,10 +11,11 @@ import { ActionProps, Dialog } from '@/components/Dialog';
 import { ColumnStatus, CustomTable } from '@/components/Table';
 import Pagination from '@/components/Utils/Pagination';
 import Company from '@/model/Company';
-import { CompanyControllerBankAccount, CompanyRequestParams } from '@/features/company/types';
+import { CompanyControllerBankAccount, CompanyControllerPix, CompanyRequestParams } from '@/features/company/types';
 import { FilterContent } from '@/features/company/components/FilterContent';
 import { FormErrors, OnChangeFormInput, FormData } from '@/hooks/useForm';
 import { RegisterBankAccount } from '@/features/company/components/RegisterBankAccount';
+import { RegisterPix } from '@/features/company/components/RegisterPix';
 import { columnsCompany } from './table';
 
 // eslint-disable-next-line no-shadow
@@ -39,11 +40,20 @@ export interface DataRowBankAccount {
   actions: string;
 }
 
+export interface DataRowPix {
+  id: number;
+  name: string;
+  type: string;
+  pix: string;
+  actions: string;
+}
+
 // eslint-disable-next-line no-shadow
 export enum ShouldShowModal {
   filter = 'filter',
   registerCompany = 'registerCompany',
   registerBankAccount = 'registerBankAccount',
+  registerPix = 'registerPix',
 }
 
 interface CompanyContainerProps {
@@ -62,6 +72,7 @@ interface CompanyContainerProps {
   clearFilter: () => void;
   onSaveCompany: () => Promise<void>;
   onSaveBankAccount: () => Promise<void>;
+  onSavePix: () => Promise<void>;
   onPaginationChange: (page: number) => void;
   changeColorColumn: (status: number) => void;
   onChangeFormInputFilter: OnChangeFormInput;
@@ -79,6 +90,7 @@ interface CompanyContainerProps {
     company?: Company;
   }) => void;
   controllerInputAppendBankAccount: CompanyControllerBankAccount;
+  controllerInputAppendPix: CompanyControllerPix;
   onDeleteRowBankAccount: (company: Company) => void;
 }
 
@@ -96,11 +108,13 @@ export const CompanyContainer: React.FC<CompanyContainerProps> = ({
   formDataFilter,
   formErrorsFilter,
   listBankAccount,
+  listPixTable,
   clearFilter,
   onChangeFormInputFilter,
   onChangeFormInputCompany,
   onSaveCompany,
   onSaveBankAccount,
+  onSavePix,
   onPaginationChange,
   changeColorColumn,
   onToggle,
@@ -108,7 +122,9 @@ export const CompanyContainer: React.FC<CompanyContainerProps> = ({
   onShouldShowModal,
   onShowDeleteCompany,
   controllerInputAppendBankAccount,
+  controllerInputAppendPix,
   onDeleteRowBankAccount,
+  onDeleteRowPix,
 }) => {
   const dataTableCompany = listCompany?.map(item => ({
     id: item.id,
@@ -178,6 +194,7 @@ export const CompanyContainer: React.FC<CompanyContainerProps> = ({
             [ShouldShowModal.filter]: renderActionDialogToCancelFilter,
             [ShouldShowModal.registerCompany]: renderActionDialogToCancel,
             [ShouldShowModal.registerBankAccount]: renderActionDialogToReturn,
+            [ShouldShowModal.registerPix]: renderActionDialogToReturn,
           }[shouldShowModal],
           {
             [ShouldShowModal.filter]: {
@@ -195,6 +212,11 @@ export const CompanyContainer: React.FC<CompanyContainerProps> = ({
               title: 'Salvar',
               onClick: (): Promise<void> => onSaveBankAccount(),
               disabled: controllerInputAppendBankAccount.bankAccount.length === 0,
+            },
+            [ShouldShowModal.registerPix]: {
+              title: 'Salvar',
+              onClick: (): Promise<void> => onSavePix(),
+              disabled: controllerInputAppendPix.pix.length === 0,
             },
           }[shouldShowModal],
         ]}
@@ -214,17 +236,25 @@ export const CompanyContainer: React.FC<CompanyContainerProps> = ({
                 formErrors={formErrorsCompany}
                 onChangeFormInput={onChangeFormInputCompany}
                 listCompany={listCompany}
+                listPixTable={listPixTable}
                 companyState={companyState}
                 listCompanyType={listCompanyType}
                 listBankAccount={listBankAccount}
                 onShouldShowModal={onShouldShowModal}
                 onDeleteRowBankAccount={onDeleteRowBankAccount}
+                onDeleteRowPix={onDeleteRowPix}
               />
             ),
             [ShouldShowModal.registerBankAccount]: (
               <RegisterBankAccount
                 formErrors={formErrorsCompany}
                 controllerInputAppendBankAccount={controllerInputAppendBankAccount}
+              />
+            ),
+            [ShouldShowModal.registerPix]: (
+              <RegisterPix
+                formErrors={formErrorsCompany}
+                controllerInputAppendPix={controllerInputAppendPix}
               />
             ),
           }[shouldShowModal]
