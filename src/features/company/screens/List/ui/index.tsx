@@ -109,7 +109,6 @@ export const CompanyContainer: React.FC<CompanyContainerProps> = ({
   onShowDeleteCompany,
   controllerInputAppendBankAccount,
   onDeleteRowBankAccount,
-  isFormValidCompany,
 }) => {
   const dataTableCompany = listCompany?.map(item => ({
     id: item.id,
@@ -120,7 +119,7 @@ export const CompanyContainer: React.FC<CompanyContainerProps> = ({
     ),
     document: item.document,
     telephone: item.telephone,
-    companyType: item.contractorType ?? '----',
+    companyType: item.contractorType.name ?? '----',
     actions: (
       <React.Fragment>
         <Pen
@@ -244,8 +243,7 @@ export const CompanyContainer: React.FC<CompanyContainerProps> = ({
                 onToggle();
                 onShouldShowModal({
                   value: ShouldShowModal.registerCompany,
-                  newTitleModal: companyState?.id ? companyState.name : 'Cadastrar nova empresa',
-                  company: companyState,
+                  newTitleModal: 'Cadastrar nova empresa',
                 });
               }}
             />
