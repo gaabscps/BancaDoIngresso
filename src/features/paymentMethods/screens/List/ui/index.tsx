@@ -2,7 +2,7 @@
 import React, { Fragment } from 'react';
 import FilterVector from '@/assets/images/svg/FilterVector';
 import { Button, Loading } from '@/components';
-import { Container, Label } from 'reactstrap';
+import { Container } from 'reactstrap';
 import { RegisterContent } from '@/features/paymentMethods/components/RegisterContent';
 import { ReactComponent as Status } from '@/assets/images/svg/status.svg';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
@@ -186,9 +186,7 @@ export const PaymentMethodsContainer: React.FC<PaymentMethodsContainerProps> = (
 
       <Container className="mainContainer" fluid={true}>
         <div className="d-flex justify-content-between pb-4">
-          <div className="pageTitle">
-            <Label>Formas de pagamento</Label>
-          </div>
+          <h5 className="pageTitle">Formas de pagamento</h5>
           <div className="button-filter-container">
             <Button
               title="+ Cadastrar nova forma de pagamento"

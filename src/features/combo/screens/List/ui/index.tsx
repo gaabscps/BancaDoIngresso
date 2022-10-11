@@ -179,7 +179,6 @@ export const ComboContainer: React.FC<ComboContainerProps> = ({
               // disabled:
               //   (formDataCombo.name && formDataCombo.groupCombo && formDataCombo.subgroupCombo) ===
               //   '',
-              disabled: !!formErrorsCombo,
             },
           }[shouldShowModal],
         ]}
@@ -212,11 +211,11 @@ export const ComboContainer: React.FC<ComboContainerProps> = ({
 
       <Container className="mainContainer" fluid={true}>
         <div className="d-flex justify-content-between" style={{ paddingBottom: '30px' }}>
-          <div className="d-flex">
-            <Link to={`${process.env.PUBLIC_URL}/dashboard/productscombos`} className="m-auto">
-              <ArrowLeft color={colors.black} className="m-auto" />
+          <div className="pageTitle d-flex">
+            <Link to={`${process.env.PUBLIC_URL}/dashboard/productscombos`}>
+              <ArrowLeft color={colors.black} style={{ position: 'relative', top: '3px' }} />
             </Link>
-            <h5 className="ml-3 mb-0 mt-1">Combos</h5>
+            <h5 className="ml-3 mb-0 mt-1 pageTitle">Combos</h5>
           </div>
           <div className="button-filter-container">
             <Button

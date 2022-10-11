@@ -110,13 +110,13 @@ export const ProductContainer: React.FC<ProductContainerProps> = ({
       <React.Fragment>
         <Pen
           className="mr-2 svg-icon action-icon"
-          // onClick={(): void =>
-          //   onShouldShowModal({
-          //     value: ShouldShowModal.product,
-          //     newTitleModal: `Editar ${item.name}`,
-          //     product: item,
-          //   })
-          // }
+          onClick={(): void =>
+            onShouldShowModal({
+              value: ShouldShowModal.product,
+              newTitleModal: `Editar ${item.name}`,
+              product: item,
+            })
+          }
         />
         <Trash
           className="mr-2 svg-icon action-icon"
@@ -156,6 +156,9 @@ export const ProductContainer: React.FC<ProductContainerProps> = ({
             [ShouldShowModal.product]: {
               title: productState?.id ? 'Salvar' : 'Cadastrar novo produto',
               onClick: (): Promise<void> => onSaveProduct(),
+              disabled:
+                Object.keys(formErrorsProduct).length === 0 &&
+                formErrorsProduct.constructor === Object,
             },
           }[shouldShowModal],
         ]}
@@ -187,12 +190,13 @@ export const ProductContainer: React.FC<ProductContainerProps> = ({
 
       <Container className="mainContainer" fluid={true}>
         <div className="d-flex justify-content-between" style={{ paddingBottom: '30px' }}>
-          <div className="d-flex">
-            <Link to={`${process.env.PUBLIC_URL}/dashboard/productscombos`} className="m-auto">
-              <ArrowLeft color={colors.black} className="m-auto" />
+          <div className="pageTitle d-flex">
+            <Link to={`${process.env.PUBLIC_URL}/dashboard/productscombos`}>
+              <ArrowLeft color={colors.black} style={{ position: 'relative', top: '3px' }} />
             </Link>
-            <h5 className="ml-3 mb-0 mt-1">Produtos</h5>
+            <h5 className="ml-3 mb-0 mt-2 pageTitle">Produtos</h5>
           </div>
+
           <div className="button-filter-container">
             <Button
               title="+ Cadastrar novo produto"

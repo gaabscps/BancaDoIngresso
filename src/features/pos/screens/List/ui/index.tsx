@@ -2,7 +2,7 @@
 import React, { Fragment } from 'react';
 import FilterVector from '@/assets/images/svg/FilterVector';
 import { Button, Loading } from '@/components';
-import { Container, Label } from 'reactstrap';
+import { Container } from 'reactstrap';
 import { RegisterContent } from '@/features/pos/components/RegisterContent';
 import { ReactComponent as Status } from '@/assets/images/svg/status.svg';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
@@ -193,7 +193,7 @@ export const PosContainer: React.FC<PosContainerProps> = ({
       <Container className="mainContainer" fluid={true}>
         <div className="d-flex justify-content-between" style={{ paddingBottom: '30px' }}>
           <div className="pageTitle" style={{ display: 'grid' }}>
-            <Label>POS</Label>
+            <h5 className="pageTitle">POS</h5>
           </div>
           <div className="button-filter-container">
             <Button

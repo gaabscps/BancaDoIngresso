@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Label } from 'reactstrap';
+import { Container } from 'reactstrap';
 import { Button, Loading, Dialog } from '@/components';
 import { ColumnImage, CustomTable } from '@/components/Table';
 import { ActionProps } from '@/components/Dialog';
@@ -306,9 +306,7 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
 
       <Container className="mainContainer" fluid={true}>
         <div className="d-flex justify-content-between" style={{ paddingBottom: '30px' }}>
-          <div className="pageTitle" style={{ display: 'grid' }}>
-            <Label>PDV</Label>
-          </div>
+          <h5 className="pageTitle">PDV</h5>
           <div className="button-filter-container">
             <Button
               size="md"
