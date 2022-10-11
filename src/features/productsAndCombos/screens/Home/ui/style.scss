@@ -3,7 +3,7 @@
   justify-content: space-between;
   width: 615px;
   min-width: 615px;
-  
+
   a {
     display: flex;
     flex-direction: column;
@@ -41,6 +41,9 @@
       width: 100%;
       min-width: 100%;
       margin-bottom: 30px;
+    }
+    a {
+      margin-bottom: 27px;
     }
   }
 }
