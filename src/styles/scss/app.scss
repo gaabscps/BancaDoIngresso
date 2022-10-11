@@ -1202,7 +1202,6 @@ input::-ms-clear {
   display: none;
 }
 
-
 .border-bottom-title {
   border-bottom: 2px solid #222222;
 }
@@ -1224,4 +1223,8 @@ input::-ms-clear {
     font-size: 12px;
     color: white;
   }
+}
+
+.sm-icon {
+  transform: scale(0.8);
 }

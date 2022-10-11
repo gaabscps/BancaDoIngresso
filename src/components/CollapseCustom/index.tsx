@@ -5,9 +5,14 @@ import { Card, Collapse } from 'reactstrap';
 interface CollapseCustomProps {
   title: string;
   children: React.ReactNode;
+  className?: string;
 }
 
-export const CollapseCustom: React.FC<CollapseCustomProps> = ({ title, children }): JSX.Element => {
+export const CollapseCustom: React.FC<CollapseCustomProps> = ({
+  title,
+  children,
+  className,
+}): JSX.Element => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -32,7 +37,7 @@ export const CollapseCustom: React.FC<CollapseCustomProps> = ({ title, children 
       </div>
 
       <Collapse isOpen={open}>
-        <Card className="p-5">{children}</Card>
+        <Card className={`${className}`}>{children}</Card>
       </Collapse>
     </>
   );
