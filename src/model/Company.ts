@@ -1,6 +1,7 @@
 import Address from './Address';
 
 export default interface Company {
+  status: any;
   id: string;
   name: string;
   document: string;

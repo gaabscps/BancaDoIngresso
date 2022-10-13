@@ -3,27 +3,34 @@ import React, { Fragment } from 'react';
 import FilterVector from '@/assets/images/svg/FilterVector';
 import { Button, Loading } from '@/components';
 import { Container, Label } from 'reactstrap';
-import { RegisterContent } from '@/features/company/components/RegisterContent';
+import { RegisterContent } from '@/features/contractor/components/RegisterContent';
 import { ReactComponent as Status } from '@/assets/images/svg/status.svg';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { ActionProps, Dialog } from '@/components/Dialog';
 import { ColumnStatus, CustomTable } from '@/components/Table';
 import Pagination from '@/components/Utils/Pagination';
-import Company from '@/model/Company';
-import { CompanyControllerBankAccount, CompanyControllerPix, CompanyRequestParams } from '@/features/company/types';
-import { FilterContent } from '@/features/company/components/FilterContent';
+import Contractor from '@/model/Contractor';
+import {
+  BanckAccountForm,
+  ContractorControllerBankAccount,
+  ContractorControllerPix,
+  ContractorRequestParams,
+  PixForm,
+} from '@/features/contractor/types';
+import { FilterContent } from '@/features/contractor/components/FilterContent';
 import { FormErrors, OnChangeFormInput, FormData } from '@/hooks/useForm';
-import { RegisterBankAccount } from '@/features/company/components/RegisterBankAccount';
-import { RegisterPix } from '@/features/company/components/RegisterPix';
-import { columnsCompany } from './table';
+import { RegisterBankAccount } from '@/features/contractor/components/RegisterBankAccount';
+import { RegisterPix } from '@/features/contractor/components/RegisterPix';
+import ContractorType from '@/model/ContractorType';
+import { columnsContractor } from './table';
 
 // eslint-disable-next-line no-shadow
 export enum States {
   default = 'default',
   loading = 'loading',
 }
-export interface DataRowCompany {
+export interface DataRowContractor {
   id: string;
   name: string;
   document: string;
@@ -51,26 +58,26 @@ export interface DataRowPix {
 // eslint-disable-next-line no-shadow
 export enum ShouldShowModal {
   filter = 'filter',
-  registerCompany = 'registerCompany',
+  registerContractor = 'registerContractor',
   registerBankAccount = 'registerBankAccount',
   registerPix = 'registerPix',
 }
 
-interface CompanyContainerProps {
+interface ContractorContainerProps {
   state: States;
-  companyState?: Company;
-  listCompany: Company[];
-  currentPage: CompanyRequestParams;
+  contractorState: Contractor;
+  listContractor: Contractor[];
+  currentPage: ContractorRequestParams;
   shouldShowModal: ShouldShowModal;
   title: string | React.ReactNode;
   visible: boolean;
-  formDataCompany: FormData;
-  formErrorsCompany: FormErrors;
+  formDataContractor: FormData;
+  formErrorsContractor: FormErrors;
   formDataFilter: FormData;
   formErrorsFilter: FormErrors;
-  listBankAccount: DataRowBankAccount[];
+  listBankAccount: BanckAccountForm[];
   clearFilter: () => void;
-  onSaveCompany: () => Promise<void>;
+  onSaveContractor: () => Promise<void>;
   onSaveBankAccount: () => Promise<void>;
   onSavePix: () => Promise<void>;
   onPaginationChange: (page: number) => void;
@@ -78,41 +85,44 @@ interface CompanyContainerProps {
   onChangeFormInputFilter: OnChangeFormInput;
   onToggle: () => void;
   onFilter: () => Promise<void>;
-  onChangeFormInputCompany: OnChangeFormInput;
-  onShowDeleteCompany: (pos: Company) => void;
+  onChangeFormInputContractor: OnChangeFormInput;
+  onShowDeleteContractor: (pos: Contractor) => void;
   onShouldShowModal: ({
     value,
     newTitleModal,
-    company,
+    contractor,
   }: {
     value: ShouldShowModal;
     newTitleModal: string | React.ReactNode;
-    company?: Company;
+    contractor?: Contractor;
   }) => void;
-  controllerInputAppendBankAccount: CompanyControllerBankAccount;
-  controllerInputAppendPix: CompanyControllerPix;
-  onDeleteRowBankAccount: (company: Company) => void;
+  controllerInputAppendBankAccount: ContractorControllerBankAccount;
+  controllerInputAppendPix: ContractorControllerPix;
+  onDeleteRowBankAccount: (bankAccount: BanckAccountForm) => void;
+  listPixTable: PixForm[];
+  onDeleteRowPix: (pix: PixForm) => void;
+  listContractorType: ContractorType[];
 }
 
-export const CompanyContainer: React.FC<CompanyContainerProps> = ({
-  listCompany,
-  listCompanyType,
+export const ContractorContainer: React.FC<ContractorContainerProps> = ({
+  listContractor,
+  listContractorType,
   state,
-  companyState,
+  contractorState,
   currentPage,
   title,
   visible,
   shouldShowModal,
-  formDataCompany,
-  formErrorsCompany,
+  formDataContractor,
+  formErrorsContractor,
   formDataFilter,
   formErrorsFilter,
   listBankAccount,
   listPixTable,
   clearFilter,
   onChangeFormInputFilter,
-  onChangeFormInputCompany,
-  onSaveCompany,
+  onChangeFormInputContractor,
+  onSaveContractor,
   onSaveBankAccount,
   onSavePix,
   onPaginationChange,
@@ -120,13 +130,13 @@ export const CompanyContainer: React.FC<CompanyContainerProps> = ({
   onToggle,
   onFilter,
   onShouldShowModal,
-  onShowDeleteCompany,
+  onShowDeleteContractor,
   controllerInputAppendBankAccount,
   controllerInputAppendPix,
   onDeleteRowBankAccount,
   onDeleteRowPix,
 }) => {
-  const dataTableCompany = listCompany?.map(item => ({
+  const dataTableContractor = listContractor?.map(item => ({
     id: item.id,
     name: (
       <ColumnStatus statusColor={String(changeColorColumn(Number(item.status)))}>
@@ -143,16 +153,16 @@ export const CompanyContainer: React.FC<CompanyContainerProps> = ({
           onClick={(): void => {
             onToggle();
             onShouldShowModal({
-              value: ShouldShowModal.registerCompany,
+              value: ShouldShowModal.registerContractor,
               newTitleModal: `${item.name}`,
-              company: item,
+              contractor: item,
             });
           }}
         />
         <Trash
           className="mr-2 svg-icon action-icon"
           onClick={() => {
-            onShowDeleteCompany(item);
+            onShowDeleteContractor(item);
           }}
         />
       </React.Fragment>
@@ -168,9 +178,9 @@ export const CompanyContainer: React.FC<CompanyContainerProps> = ({
     title: 'Cancelar',
     onClick: (): void =>
       onShouldShowModal({
-        value: ShouldShowModal.registerCompany,
-        newTitleModal: companyState?.id ? companyState.name : 'Cadastrar nova empresa',
-        company: companyState,
+        value: ShouldShowModal.registerContractor,
+        newTitleModal: contractorState?.id ? contractorState.name : 'Cadastrar nova empresa',
+        contractor: contractorState,
       }),
     theme: 'noneBorder',
   };
@@ -192,7 +202,7 @@ export const CompanyContainer: React.FC<CompanyContainerProps> = ({
         actions={[
           {
             [ShouldShowModal.filter]: renderActionDialogToCancelFilter,
-            [ShouldShowModal.registerCompany]: renderActionDialogToCancel,
+            [ShouldShowModal.registerContractor]: renderActionDialogToCancel,
             [ShouldShowModal.registerBankAccount]: renderActionDialogToReturn,
             [ShouldShowModal.registerPix]: renderActionDialogToReturn,
           }[shouldShowModal],
@@ -201,12 +211,12 @@ export const CompanyContainer: React.FC<CompanyContainerProps> = ({
               title: 'Aplicar',
               onClick: (): Promise<void> => onFilter(),
             },
-            [ShouldShowModal.registerCompany]: {
-              title: companyState?.id ? 'Salvar' : 'Cadastrar nova empresa',
-              onClick: (): Promise<void> => onSaveCompany(),
+            [ShouldShowModal.registerContractor]: {
+              title: contractorState?.id ? 'Salvar' : 'Cadastrar nova empresa',
+              onClick: (): Promise<void> => onSaveContractor(),
               disabled:
-                Object.keys(formErrorsCompany).length === 0 &&
-                formErrorsCompany.constructor === Object,
+                Object.keys(formErrorsContractor).length === 0 &&
+                formErrorsContractor.constructor === Object,
             },
             [ShouldShowModal.registerBankAccount]: {
               title: 'Salvar',
@@ -230,15 +240,15 @@ export const CompanyContainer: React.FC<CompanyContainerProps> = ({
                 onChangeFormInput={onChangeFormInputFilter}
               />
             ),
-            [ShouldShowModal.registerCompany]: (
+            [ShouldShowModal.registerContractor]: (
               <RegisterContent
-                formData={formDataCompany}
-                formErrors={formErrorsCompany}
-                onChangeFormInput={onChangeFormInputCompany}
-                listCompany={listCompany}
+                formData={formDataContractor}
+                formErrors={formErrorsContractor}
+                onChangeFormInput={onChangeFormInputContractor}
+                // listContractor={listContractor}
                 listPixTable={listPixTable}
-                companyState={companyState}
-                listCompanyType={listCompanyType}
+                contractorState={contractorState}
+                listContractorType={listContractorType}
                 listBankAccount={listBankAccount}
                 onShouldShowModal={onShouldShowModal}
                 onDeleteRowBankAccount={onDeleteRowBankAccount}
@@ -247,13 +257,13 @@ export const CompanyContainer: React.FC<CompanyContainerProps> = ({
             ),
             [ShouldShowModal.registerBankAccount]: (
               <RegisterBankAccount
-                formErrors={formErrorsCompany}
+                formErrors={formErrorsContractor}
                 controllerInputAppendBankAccount={controllerInputAppendBankAccount}
               />
             ),
             [ShouldShowModal.registerPix]: (
               <RegisterPix
-                formErrors={formErrorsCompany}
+                formErrors={formErrorsContractor}
                 controllerInputAppendPix={controllerInputAppendPix}
               />
             ),
@@ -272,7 +282,7 @@ export const CompanyContainer: React.FC<CompanyContainerProps> = ({
               onClick={(): void => {
                 onToggle();
                 onShouldShowModal({
-                  value: ShouldShowModal.registerCompany,
+                  value: ShouldShowModal.registerContractor,
                   newTitleModal: 'Cadastrar nova empresa',
                 });
               }}
@@ -304,8 +314,8 @@ export const CompanyContainer: React.FC<CompanyContainerProps> = ({
           </div>
         </div>
         <CustomTable
-          columns={columnsCompany}
-          data={dataTableCompany}
+          columns={columnsContractor}
+          data={dataTableContractor}
           numberRowsPerPage={currentPage.pageSize}
           progressPending={state === States.loading}
           theme="primary"

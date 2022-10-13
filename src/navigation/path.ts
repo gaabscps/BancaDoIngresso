@@ -4,7 +4,7 @@ import { PDV_ROUTES } from '@/features/pdv/navigation';
 import { POS_ROUTES } from '@/features/pos/navigation';
 import { PAYMENTGATEWAY_ROUTES } from '@/features/paymentGateway/navigation';
 import { PRODUTCTSCOMBOS_ROUTES } from '@/features/productsAndCombos/navigation';
-import { COMPANY_ROUTES } from '@/features/company/navigation';
+import { COMPANY_ROUTES } from '@/features/contractor/navigation';
 
 const path = {
   Initial: {

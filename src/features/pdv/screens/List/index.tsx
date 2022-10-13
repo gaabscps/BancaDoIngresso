@@ -251,8 +251,6 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       (!subPdvSelected?.id && value === ShouldShowModal.subpdvRegister) ||
       value !== ShouldShowModal.subpdv
     ) {
-      console.log('aqui');
-
       resetFormSubPdv();
     }
     if ((!pdvSelected?.id && value === ShouldShowModal.pdv) || value !== ShouldShowModal.subpdv) {

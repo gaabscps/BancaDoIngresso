@@ -1,8 +1,8 @@
 import { TableColumn } from '@/components/Table';
 import { formatToCPFOrCNPJ, formatToPhone } from 'brazilian-values';
-import { DataRowBankAccount, DataRowCompany, DataRowPix } from '.';
+import { DataRowBankAccount, DataRowContractor, DataRowPix } from '.';
 
-export const columnsCompany: TableColumn<DataRowCompany>[] = [
+export const columnsContractor: TableColumn<DataRowContractor>[] = [
   {
     name: 'Nome da empresa',
     selector: row => row.name,

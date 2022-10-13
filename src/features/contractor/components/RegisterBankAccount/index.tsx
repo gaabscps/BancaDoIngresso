@@ -3,12 +3,12 @@ import { Col, Form, FormGroup, Row } from 'reactstrap';
 import { InputText, SelectCustom } from '@/components';
 import { FormErrors } from '@/hooks/useForm';
 import { X } from 'react-feather';
-import { CompanyControllerBankAccount } from '../../types';
 import { updateMask as updateMaskAccountAgency } from '@/helpers/masks/AccountAgency';
+import { ContractorControllerBankAccount } from '../../types';
 
 interface RegisterContentProps {
   formErrors?: FormErrors;
-  controllerInputAppendBankAccount: CompanyControllerBankAccount;
+  controllerInputAppendBankAccount: ContractorControllerBankAccount;
 }
 
 // eslint-disable-next-line no-shadow
@@ -52,9 +52,9 @@ export const RegisterBankAccount: React.FC<RegisterContentProps> = ({
                 }}
                 error={formErrors?.name && formErrors.name[0]}
                 value={item.id}
-                options={controllerInputAppendBankAccount.listBank.map(item => ({
-                  label: item.fullName,
-                  value: item.id,
+                options={controllerInputAppendBankAccount.listBank.map(itemBank => ({
+                  label: itemBank.fullName,
+                  value: itemBank.id,
                 }))}
               />
             </FormGroup>

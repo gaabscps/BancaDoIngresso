@@ -3,12 +3,11 @@ import { Col, Form, FormGroup, Row } from 'reactstrap';
 import { InputText, SelectCustom } from '@/components';
 import { FormErrors } from '@/hooks/useForm';
 import { X } from 'react-feather';
-import { CompanyControllerPix } from '../../types';
-import { updateMask as updateMaskAccountAgency } from '@/helpers/masks/AccountAgency';
+import { ContractorControllerPix } from '../../types';
 
 interface RegisterContentProps {
   formErrors?: FormErrors;
-  controllerInputAppendPix: CompanyControllerPix;
+  controllerInputAppendPix: ContractorControllerPix;
 }
 
 // eslint-disable-next-line no-shadow
@@ -52,10 +51,10 @@ export const RegisterPix: React.FC<RegisterContentProps> = ({
                   );
                 }}
                 error={formErrors?.name && formErrors.name[0]}
-                value={item.id}
-                options={controllerInputAppendPix.listBank.map(item => ({
-                  label: item.fullName,
-                  value: item.id,
+                value={item.idInstitution}
+                options={controllerInputAppendPix.listBank.map(itemBank => ({
+                  label: itemBank.fullName,
+                  value: itemBank.id,
                 }))}
               />
             </FormGroup>
@@ -79,12 +78,12 @@ export const RegisterPix: React.FC<RegisterContentProps> = ({
                   );
                 }}
                 error={formErrors?.name && formErrors.name[0]}
-                value={item.id}
+                value={item.idType}
                 options={[
-                  { value: 0, label: 'CPF/CNPJ' },
-                  { value: 1, label: 'Telefone' },
-                  { value: 2, label: 'E-mail' },
-                  { value: 3, label: 'Chave aletória' },
+                  { value: '0', label: 'CPF/CNPJ' },
+                  { value: '1', label: 'Telefone' },
+                  { value: '2', label: 'E-mail' },
+                  { value: '3', label: 'Chave aletória' },
                 ]}
               />
             </FormGroup>

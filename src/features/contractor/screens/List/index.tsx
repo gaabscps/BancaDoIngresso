@@ -1,43 +1,93 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDialog } from '@/hooks/useDialog';
-import Company from '@/model/Company';
+import Contractor from '@/model/Contractor';
 import api, { AxiosError } from '@/services/api';
 import { toast } from 'react-toastify';
-import { CompanyResponse, CompanyRequestParams } from '@/features/company/types';
+import {
+  ContractorResponse,
+  ContractorRequestParams,
+  PixForm,
+  BanckAccountForm,
+  BankResponse,
+} from '@/features/contractor/types';
 import useForm from '@/hooks/useForm';
-import { States, CompanyContainer, ShouldShowModal } from '@/features/company/screens/List/ui';
+import {
+  States,
+  ContractorContainer,
+  ShouldShowModal,
+} from '@/features/contractor/screens/List/ui';
 import validators from '@/helpers/validators';
 import { updateMask as updateMaskCPFOrCNPJ } from '@/helpers/masks/cpfCnpj';
 import { updateMask as updateMaskCEP } from '@/helpers/masks/cep';
 import { updateMask as updateMaskMobilePhone } from '@/helpers/masks/mobilePhone';
-import { FormInputName as FormInputNameToSaveCompany } from '@/features/company/components/RegisterContent';
+import { FormInputName as FormInputNameToSaveContractor } from '@/features/contractor/components/RegisterContent';
 import { useConfirmDelete } from '@/hooks/useConfirmDelete';
-import { FormInputName as FormInputNameToFilter } from '@/features/company/components/FilterContent';
+import { FormInputName as FormInputNameToFilter } from '@/features/contractor/components/FilterContent';
 import { colors } from '@/styles/colors';
 import StatusType from '@/model/StatusType';
 import { convertToBoolean } from '@/helpers/common/convertToBoolean';
+import ContractorType from '@/model/ContractorType';
+import Bank from '@/model/Bank';
+import PixType from '@/model/PixType';
 import { DeleteContent } from '../../components/DeleteContent';
 
-export default interface PayloadCompany {
+export default interface PayloadContractor {
   id?: string;
   name: string;
+  document: string;
+  telephone: string;
+  email: string;
+  address: {
+    id?: string;
+    zipCode: string;
+    state: string;
+    city: string;
+    district: string;
+    street: string;
+    complement: string;
+    number: string;
+    latitude: string;
+    longitude: string;
+  };
+  contractorType: {
+    id: string;
+  };
+  bankAccount: {
+    // id: string;
+    contractorId?: string;
+    agency: string;
+    account: string;
+    digit: string;
+    bank: {
+      id: string;
+    };
+  }[];
+  pixKey: {
+    // id?: string;
+    contractorId?: string;
+    key: string;
+    pixKeyType: PixType;
+    bank: {
+      id: string;
+    };
+  }[];
 }
 
-export const CompanyScreen: React.FC = (): JSX.Element => {
+export const ContractorScreen: React.FC = (): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
-  const [listCompany, setListCompany] = useState<Company[]>([]);
-  const [listCompanyType, setListCompanyType] = useState<any[]>([]);
-  const [listBank, setListBank] = useState<any[]>([]);
-  const [listBankAccount, setListBankAccount] = useState<any[]>([]);
-  const [listPixTable, setListPixTable] = useState<any[]>([]);
-  const [pix, setPix] = useState<any[]>([]);
-  const [bankAccount, setBankAccount] = useState<any[]>([]);
-  const [company, setCompany] = useState<Company>();
+  const [listContractor, setListContractor] = useState<Contractor[]>([]);
+  const [listContractorType, setListContractorType] = useState<ContractorType[]>([]);
+  const [listBank, setListBank] = useState<Bank[]>([]);
+  const [listBankAccount, setListBankAccount] = useState<BanckAccountForm[]>([]);
+  const [listPixTable, setListPixTable] = useState<PixForm[]>([]);
+  const [pix, setPix] = useState<PixForm[]>([]);
+  const [bankAccount, setBankAccount] = useState<BanckAccountForm[]>([]);
+  const [contractor, setContractor] = useState<Contractor>();
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(
-    ShouldShowModal.registerCompany,
+    ShouldShowModal.registerContractor,
   );
-  const [currentPage, setCurrentPage] = useState<CompanyRequestParams>({
+  const [currentPage, setCurrentPage] = useState<ContractorRequestParams>({
     page: 1,
     pageSize: 10,
     sort: 'name',
@@ -49,11 +99,11 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
   const confirmDelete = useConfirmDelete();
 
   const {
-    formData: formDataCompany,
-    formErrors: formErrorsCompany,
-    onChangeFormInput: onChangeFormInputCompany,
-    isFormValid: isFormValidCompany,
-    resetForm: resetFormCompany,
+    formData: formDataContractor,
+    formErrors: formErrorsContractor,
+    onChangeFormInput: onChangeFormInputContractor,
+    isFormValid: isFormValidContractor,
+    resetForm: resetFormContractor,
   } = useForm({
     initialData: {
       name: '',
@@ -97,9 +147,8 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
   useEffect(() => {
     if (!visible) {
       setTimeout(() => {
-        resetFormCompany();
+        resetFormContractor();
         resetFormFilter();
-        setCompany(undefined);
         setListBankAccount([]);
         setListPixTable([]);
       }, 500);
@@ -144,7 +193,7 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
         {
           idInstitution: '',
           nameInstitution: '',
-          idType: '',
+          idType: 0,
           nameType: '',
           pix: '',
         },
@@ -165,7 +214,7 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
   const handleGetbankAccount = async (): Promise<void> => {
     try {
       setState(States.loading);
-      const { data } = await api.post<CompanyResponse>('/bank/page', {});
+      const { data } = await api.post<BankResponse>('/bank/page', {});
 
       if (data) {
         setListBank(data?.list ?? []);
@@ -178,13 +227,13 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
     }
   };
 
-  const handleGetCompanyType = async (): Promise<void> => {
+  const handleGetContractorType = async (): Promise<void> => {
     try {
       setState(States.loading);
-      const { data } = await api.post<CompanyResponse>('/contractor/type/page', {});
+      const { data } = await api.post<ContractorResponse>('/contractor/type/page', {});
 
       if (data) {
-        setListCompanyType(data?.list ?? []);
+        setListContractorType(data?.list ?? []);
       }
     } catch (error) {
       const err = error as AxiosError;
@@ -194,13 +243,13 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
     }
   };
 
-  const handleFetch = async (values: CompanyRequestParams): Promise<void> => {
+  const handleFetch = async (values: ContractorRequestParams): Promise<void> => {
     try {
       setState(States.loading);
-      const { data } = await api.post<CompanyResponse>('/contractor/page', values);
+      const { data } = await api.post<ContractorResponse>('/contractor/page', values);
 
       if (data) {
-        setListCompany(data?.list ?? []);
+        setListContractor(data?.list ?? []);
 
         setCurrentPage(currentPageState => ({
           ...currentPageState,
@@ -223,11 +272,11 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
   const handleOnShouldShowModal = ({
     value,
     newTitleModal,
-    company: companySelected,
+    contractor: companySelected,
   }: {
     value: ShouldShowModal;
     newTitleModal: string | React.ReactNode;
-    company?: Company;
+    contractor?: Contractor;
   }): void => {
     setShouldShowModal(value);
     onChangeTitle(newTitleModal);
@@ -240,18 +289,19 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
       (companySelected?.id && value !== ShouldShowModal.filter) ||
       (!companySelected?.id && value !== ShouldShowModal.filter)
     ) {
-      setCompany(companySelected);
+      setContractor(companySelected);
     }
   };
 
-  const handleOnSaveCompany = async (): Promise<void> => {
-    console.log('company :>> ', company);
+  const handleOnSaveContractor = async (): Promise<void> => {
     try {
-      if (isFormValidCompany()) {
-        const activedInput = convertToBoolean(formDataCompany[FormInputNameToSaveCompany.status]);
+      if (isFormValidContractor()) {
+        const activedInput = convertToBoolean(
+          formDataContractor[FormInputNameToSaveContractor.status],
+        );
         const payloadBankAccount = listBankAccount.map(bank => ({
           // id: bank?.bankAccount?.id,
-          contractorId: company?.id,
+          contractorId: contractor?.id,
           agency: bank.agencia,
           account: bank.conta.split('-')[0],
           digit: bank.conta.split('-')[1],
@@ -260,36 +310,36 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
           },
         }));
 
-        const payloadPix = listPixTable.map(pix => ({
-          // id: company?.pix?.id,
-          contractorId: company?.id,
-          key: pix.pix,
-          pixKeyType: +pix.idType,
+        const payloadPix = listPixTable.map(item => ({
+          // id: contractor?.pix?.id,
+          contractorId: contractor?.id,
+          key: item.pix,
+          pixKeyType: +item.idType,
           bank: {
-            id: pix.idInstitution,
+            id: item.idInstitution,
           },
         }));
 
-        const payload: PayloadCompany = {
-          id: company?.id,
-          name: formDataCompany[FormInputNameToSaveCompany.name],
-          document: formDataCompany[FormInputNameToSaveCompany.document],
-          telephone: formDataCompany[FormInputNameToSaveCompany.telephone],
-          email: formDataCompany[FormInputNameToSaveCompany.email],
+        const payload: PayloadContractor = {
+          id: contractor?.id,
+          name: formDataContractor[FormInputNameToSaveContractor.name],
+          document: formDataContractor[FormInputNameToSaveContractor.document],
+          telephone: formDataContractor[FormInputNameToSaveContractor.telephone],
+          email: formDataContractor[FormInputNameToSaveContractor.email],
           address: {
-            id: company?.address?.id,
-            zipCode: formDataCompany[FormInputNameToSaveCompany.zipCode],
-            state: formDataCompany[FormInputNameToSaveCompany.state],
-            city: formDataCompany[FormInputNameToSaveCompany.city],
-            district: formDataCompany[FormInputNameToSaveCompany.district],
-            street: formDataCompany[FormInputNameToSaveCompany.street],
-            complement: formDataCompany[FormInputNameToSaveCompany.complement],
-            number: formDataCompany[FormInputNameToSaveCompany.number],
-            latitude: formDataCompany[FormInputNameToSaveCompany.latitude],
-            longitude: formDataCompany[FormInputNameToSaveCompany.longitude],
+            id: contractor?.address?.id,
+            zipCode: formDataContractor[FormInputNameToSaveContractor.zipCode],
+            state: formDataContractor[FormInputNameToSaveContractor.state],
+            city: formDataContractor[FormInputNameToSaveContractor.city],
+            district: formDataContractor[FormInputNameToSaveContractor.district],
+            street: formDataContractor[FormInputNameToSaveContractor.street],
+            complement: formDataContractor[FormInputNameToSaveContractor.complement],
+            number: formDataContractor[FormInputNameToSaveContractor.number],
+            latitude: formDataContractor[FormInputNameToSaveContractor.latitude],
+            longitude: formDataContractor[FormInputNameToSaveContractor.longitude],
           },
           contractorType: {
-            id: formDataCompany[FormInputNameToSaveCompany.companyType],
+            id: formDataContractor[FormInputNameToSaveContractor.companyType],
           },
           bankAccount: payloadBankAccount,
           pixKey: payloadPix,
@@ -298,16 +348,16 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
         if (!payload.id) {
           delete payload.id;
 
-          const { data: dataContractor } = await api.post<Company>('/contractor', payload);
+          const { data: dataContractor } = await api.post<Contractor>('/contractor', payload);
 
-          await api.patch<Company>(
+          await api.patch<Contractor>(
             `/contractor${activedInput ? '/activate' : '/inactivate'}/${dataContractor.id}`,
           );
           toast.success('Empresa cadastrada com sucesso!');
         } else {
-          await api.put<Company>('/contractor', payload);
-          await api.patch<Company>(
-            `/contractor${activedInput ? '/activate' : '/inactivate'}/${company?.id}`,
+          await api.put<Contractor>('/contractor', payload);
+          await api.patch<Contractor>(
+            `/contractor${activedInput ? '/activate' : '/inactivate'}/${contractor?.id}`,
           );
           toast.success('Empresa atualizada com sucesso!');
         }
@@ -321,7 +371,6 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
     }
   };
 
-
   const handleOnBankAccount = async (): Promise<void> => {
     try {
       // verify if the bank account not exists values empty
@@ -334,9 +383,9 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
       }
       setListBankAccount(bankAccount);
       handleOnShouldShowModal({
-        value: ShouldShowModal.registerCompany,
-        newTitleModal: company?.id ? company.name : 'Cadastrar nova empresa',
-        company,
+        value: ShouldShowModal.registerContractor,
+        newTitleModal: contractor?.id ? contractor.name : 'Cadastrar nova empresa',
+        contractor,
       });
     } catch (error) {
       const err = error as AxiosError;
@@ -348,18 +397,16 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
     try {
       console.log('pix :>> ', pix);
       // verify if the bank account not exists values empty
-      const pixEmpty = pix.find(
-        item => item.idInstitution === '' || item.idType === '' || item.pix === '',
-      );
+      const pixEmpty = pix.find(item => item.idInstitution === '' || item.pix === '');
       if (pixEmpty) {
         toast.warn('Preencha todos os campos ou remova a Chave Pix que contém campos vazios');
         return;
       }
       setListPixTable(pix);
       handleOnShouldShowModal({
-        value: ShouldShowModal.registerCompany,
-        newTitleModal: company?.id ? company.name : 'Cadastrar nova empresa',
-        company,
+        value: ShouldShowModal.registerContractor,
+        newTitleModal: contractor?.id ? contractor.name : 'Cadastrar nova empresa',
+        contractor,
       });
     } catch (error) {
       const err = error as AxiosError;
@@ -369,7 +416,7 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
 
   const handleOnClose = (): void => confirmDelete.hide();
 
-  const handleOnConfirmDeleteToCompany = async (posSelected: Company): Promise<void> => {
+  const handleOnConfirmDeleteToContractor = async (posSelected: Contractor): Promise<void> => {
     try {
       await api.delete(`/contractor/${posSelected?.id}`);
 
@@ -382,7 +429,7 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
     }
   };
 
-  const handleOnShowDeleteCompany = (posSelected: Company): void => {
+  const handleOnShowDeleteContractor = (posSelected: Contractor): void => {
     confirmDelete.show({
       title: '',
       children: <DeleteContent />,
@@ -394,19 +441,19 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
         },
         {
           title: 'Sim, quero excluir',
-          onClick: (): Promise<void> => handleOnConfirmDeleteToCompany(posSelected),
+          onClick: (): Promise<void> => handleOnConfirmDeleteToContractor(posSelected),
         },
       ],
     });
   };
 
-  const handleOnDeleteRowBankAccount = (bankAccount): void => {
-    listBankAccount.splice(listBankAccount.indexOf(bankAccount), 1);
+  const handleOnDeleteRowBankAccount = (values: BanckAccountForm): void => {
+    listBankAccount.splice(listBankAccount.indexOf(values), 1);
     setListBankAccount([...listBankAccount]);
   };
 
-  const handleOnDeleteRowPix = (pix): void => {
-    listPixTable.splice(listPixTable.indexOf(pix), 1);
+  const handleOnDeleteRowPix = (values: PixForm): void => {
+    listPixTable.splice(listPixTable.indexOf(values), 1);
     setListPixTable([...listPixTable]);
   };
 
@@ -453,69 +500,83 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
   };
 
   useEffect(() => {
-    if (company?.id) {
+    if (contractor?.id) {
       const statusBooleanString = {
         0: 'true',
         1: 'false',
-      }[company.status];
+      }[contractor.status];
 
-      onChangeFormInputCompany(FormInputNameToSaveCompany.name)(company.name);
-      onChangeFormInputCompany(FormInputNameToSaveCompany.document)(company.document);
-      onChangeFormInputCompany(FormInputNameToSaveCompany.companyType)(company.contractorType?.id);
-      onChangeFormInputCompany(FormInputNameToSaveCompany.telephone)(company.telephone);
-      onChangeFormInputCompany(FormInputNameToSaveCompany.email)(company.email);
-      onChangeFormInputCompany(FormInputNameToSaveCompany.zipCode)(company.address.zipCode);
-      onChangeFormInputCompany(FormInputNameToSaveCompany.state)(company.address.state);
-      onChangeFormInputCompany(FormInputNameToSaveCompany.city)(company.address.city);
-      onChangeFormInputCompany(FormInputNameToSaveCompany.district)(company.address.district);
-      onChangeFormInputCompany(FormInputNameToSaveCompany.street)(company.address.street);
-      onChangeFormInputCompany(FormInputNameToSaveCompany.number)(company.address.number);
-      onChangeFormInputCompany(FormInputNameToSaveCompany.complement)(company.address.complement);
-      onChangeFormInputCompany(FormInputNameToSaveCompany.latitude)(company.address.latitude);
-      onChangeFormInputCompany(FormInputNameToSaveCompany.longitude)(company.address.longitude);
-      onChangeFormInputCompany(FormInputNameToSaveCompany.status)(statusBooleanString);
-      // onChangeFormInputCompany(FormInputNameToSaveCompany.pix)(company.pix);
+      onChangeFormInputContractor(FormInputNameToSaveContractor.name)(contractor.name);
+      onChangeFormInputContractor(FormInputNameToSaveContractor.document)(contractor.document);
+      onChangeFormInputContractor(FormInputNameToSaveContractor.companyType)(
+        contractor.contractorType?.id,
+      );
+      onChangeFormInputContractor(FormInputNameToSaveContractor.telephone)(contractor.telephone);
+      onChangeFormInputContractor(FormInputNameToSaveContractor.email)(contractor.email);
+      onChangeFormInputContractor(FormInputNameToSaveContractor.zipCode)(
+        contractor.address.zipCode,
+      );
+      onChangeFormInputContractor(FormInputNameToSaveContractor.state)(contractor.address.state);
+      onChangeFormInputContractor(FormInputNameToSaveContractor.city)(contractor.address.city);
+      onChangeFormInputContractor(FormInputNameToSaveContractor.district)(
+        contractor.address.district,
+      );
+      onChangeFormInputContractor(FormInputNameToSaveContractor.street)(contractor.address.street);
+      onChangeFormInputContractor(FormInputNameToSaveContractor.number)(
+        contractor.address.number ?? '',
+      );
+      onChangeFormInputContractor(FormInputNameToSaveContractor.complement)(
+        contractor.address.complement ?? '',
+      );
+      onChangeFormInputContractor(FormInputNameToSaveContractor.latitude)(
+        String(contractor.address.latitude),
+      );
+      onChangeFormInputContractor(FormInputNameToSaveContractor.longitude)(
+        String(contractor.address.longitude),
+      );
+      onChangeFormInputContractor(FormInputNameToSaveContractor.status)(statusBooleanString);
+      // onChangeFormInputContractor(FormInputNameToSaveContractor.pix)(contractor.pix);
       setListBankAccount(
-        company.bankAccount.map(item => ({
+        contractor.bankAccount.map(item => ({
           id: item.bank.id,
           name: item.bank.fullName,
           agencia: item.agency,
           conta: `${item.account}-${item.digit}`,
         })),
       );
-      // setListPixTable(company.pix);
+      // setListPixTable(contractor.pix);
     }
-  }, [company]);
+  }, [contractor]);
 
   useEffect(() => {
     handleFetch(currentPage);
     handleGetbankAccount();
-    handleGetCompanyType();
+    handleGetContractorType();
   }, []);
 
   return (
-    <CompanyContainer
+    <ContractorContainer
       state={state}
-      companyState={company}
+      contractorState={contractor}
       title={title}
       visible={visible}
       onToggle={onToggle}
       onPaginationChange={handleOnPaginationChange}
       shouldShowModal={shouldShowModal}
-      onSaveCompany={handleOnSaveCompany}
+      onSaveContractor={handleOnSaveContractor}
       onSaveBankAccount={handleOnBankAccount}
       onSavePix={handleOnPix}
-      listCompany={listCompany}
+      listContractor={listContractor}
       currentPage={currentPage}
       changeColorColumn={handleOnChangeColorColumn}
       onChangeFormInputFilter={onChangeFormInputFilter}
       onShouldShowModal={handleOnShouldShowModal}
-      formDataCompany={formDataCompany}
-      formErrorsCompany={formErrorsCompany}
-      onChangeFormInputCompany={onChangeFormInputCompany}
+      formDataContractor={formDataContractor}
+      formErrorsContractor={formErrorsContractor}
+      onChangeFormInputContractor={onChangeFormInputContractor}
       formDataFilter={formDataFilter}
       formErrorsFilter={formErrorsFilter}
-      onShowDeleteCompany={handleOnShowDeleteCompany}
+      onShowDeleteContractor={handleOnShowDeleteContractor}
       onFilter={handleOnFilter}
       listBankAccount={listBankAccount}
       listPixTable={listPixTable}
@@ -524,8 +585,7 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
       controllerInputAppendPix={controllerInputAppendPix}
       onDeleteRowBankAccount={handleOnDeleteRowBankAccount}
       onDeleteRowPix={handleOnDeleteRowPix}
-      formErrorsCompany={formErrorsCompany}
-      listCompanyType={listCompanyType}
+      listContractorType={listContractorType}
     />
   );
 };

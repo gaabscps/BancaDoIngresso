@@ -2,7 +2,7 @@ import React from 'react';
 import { Col, Form, FormGroup, Row } from 'reactstrap';
 import { InputText, SelectCustom, Switch } from '@/components';
 import { FormData, FormErrors, OnChangeFormInput } from '@/hooks/useForm';
-import Company from '@/model/Company';
+import Contractor from '@/model/Contractor';
 import { statesUf } from '@/constant/states';
 import { CustomTable } from '@/components/Table';
 import { isValid as isValidCEP } from '@/helpers/masks/cep';
@@ -13,24 +13,28 @@ import { ReactComponent as CloseX } from '@/assets/images/svg/closeX.svg';
 import cep from 'cep-promise';
 import { convertToBoolean } from '@/helpers/common/convertToBoolean';
 import { columnsBankAccount, columnsPix } from '../../screens/List/ui/table';
-import { DataRowBankAccount, ShouldShowModal } from '../../screens/List/ui';
+import { ShouldShowModal } from '../../screens/List/ui';
+import { BanckAccountForm } from '../../types';
 
 interface RegisterContentProps {
   formData: FormData;
   formErrors: FormErrors;
   onChangeFormInput: OnChangeFormInput;
-  listCompanyType: any[];
-  listBankAccount: DataRowBankAccount[];
+  listContractorType: any[];
+  listBankAccount: BanckAccountForm[];
   onShouldShowModal: ({
     value,
     newTitleModal,
-    company,
+    contractor,
   }: {
     value: ShouldShowModal;
     newTitleModal: string | React.ReactNode;
-    company?: Company;
+    contractor?: Contractor;
   }) => void;
   onDeleteRowBankAccount: (bankAccount: any) => void;
+  listPixTable: any[];
+  contractorState: Contractor;
+  onDeleteRowPix: (pix: any) => void;
 }
 
 // eslint-disable-next-line no-shadow
@@ -62,8 +66,8 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
   onShouldShowModal,
   onDeleteRowBankAccount,
   onDeleteRowPix,
-  listCompanyType,
-  companyState,
+  listContractorType,
+  contractorState,
 }) => {
   const dataTableBankAccount = listBankAccount?.map(item => ({
     id: item.id,
@@ -83,9 +87,9 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
                     className="m-auto"
                     onClick={() => {
                       onShouldShowModal({
-                        value: ShouldShowModal.registerCompany,
-                        newTitleModal: companyState?.id ? item.name : 'Cadastrar nova empresa',
-                        company: companyState,
+                        value: ShouldShowModal.registerContractor,
+                        newTitleModal: contractorState?.id ? item.name : 'Cadastrar nova empresa',
+                        // contractor: contractorState,
                       });
                     }}
                   >
@@ -96,7 +100,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
                   </h5>
                 </div>
               ),
-              company: companyState,
+              // contractor: contractorState,
             })
           }
         />
@@ -128,9 +132,9 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
                     className="m-auto"
                     onClick={() => {
                       onShouldShowModal({
-                        value: ShouldShowModal.registerCompany,
-                        newTitleModal: companyState?.id ? item.name : 'Cadastrar nova empresa',
-                        company: companyState,
+                        value: ShouldShowModal.registerContractor,
+                        newTitleModal: contractorState?.id ? item.name : 'Cadastrar nova empresa',
+                        // contractor: contractorState,
                       });
                     }}
                   >
@@ -139,7 +143,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
                   <h5 className="header-title-text modal__title ml-3 mb-0">Adicionar chave pix</h5>
                 </div>
               ),
-              company: companyState,
+              // contractor: contractorState,
             })
           }
         />
@@ -193,7 +197,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
               onChange={e => onChangeFormInput(FormInputName.companyType)(e?.value as string)}
               error={formErrors.companyType && formErrors.companyType[0]}
               value={formData[FormInputName.companyType]}
-              options={listCompanyType.map(item => ({
+              options={listContractorType.map(item => ({
                 value: item.id,
                 label: item.name,
               }))}
@@ -404,11 +408,11 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
                       className="m-auto"
                       onClick={() => {
                         onShouldShowModal({
-                          value: ShouldShowModal.registerCompany,
-                          newTitleModal: companyState?.id
-                            ? companyState.name
+                          value: ShouldShowModal.registerContractor,
+                          newTitleModal: contractorState?.id
+                            ? contractorState.name
                             : 'Cadastrar nova empresa',
-                          company: companyState,
+                          // contractor: contractorState,
                         });
                       }}
                     >
@@ -419,7 +423,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
                     </h5>
                   </div>
                 ),
-                company: companyState,
+                // contractor: contractorState,
               });
             }}
           >
@@ -464,11 +468,11 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
                       className="m-auto"
                       onClick={() => {
                         onShouldShowModal({
-                          value: ShouldShowModal.registerCompany,
-                          newTitleModal: companyState?.id
-                            ? companyState.name
+                          value: ShouldShowModal.registerContractor,
+                          newTitleModal: contractorState?.id
+                            ? contractorState.name
                             : 'Cadastrar nova empresa',
-                          company: companyState,
+                          // contractor: contractorState,
                         });
                       }}
                     >
@@ -479,7 +483,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
                     </h5>
                   </div>
                 ),
-                company: companyState,
+                // contractor: contractorState,
               });
             }}
           >
