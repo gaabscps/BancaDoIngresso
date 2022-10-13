@@ -47,7 +47,7 @@ export type BanckAccountForm = {
 export type PixForm = {
   idInstitution: string;
   nameInstitution: string;
-  idType: PixType;
+  idType: string;
   nameType: string;
   pix: string;
 };

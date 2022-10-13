@@ -73,6 +73,9 @@ export default interface PayloadContractor {
       id: string;
     };
   }[];
+  users: {
+    id: string;
+  }[];
 }
 
 export const ContractorScreen: React.FC = (): JSX.Element => {
@@ -82,6 +85,8 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
   const [listBank, setListBank] = useState<Bank[]>([]);
   const [listBankAccount, setListBankAccount] = useState<BanckAccountForm[]>([]);
   const [listPixTable, setListPixTable] = useState<PixForm[]>([]);
+
+  const [pixTypes, setPixTypes] = useState<PixType>(0);
 
   const [listUsers, setListUsers] = useState<User[]>([]);
   const [usersSelected, setUsersSelected] = useState<User[]>([]);
@@ -113,22 +118,32 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
     initialData: {
       name: '',
       document: '',
+      companyType: '',
       telephone: '',
       email: '',
       zipCode: '',
-      imageUrl: '',
-      facebookUrl: '',
-      instagramUrl: '',
-      twitterUrl: '',
-      linkedinUrl: '',
-      urlApi: '',
-      urlAdmin: '',
-      urlSite: '',
+      state: '',
+      city: '',
+      district: '',
+      street: '',
+      number: '',
+      complement: '',
+      latitude: '',
+      longitude: '',
+      pix: '',
+      status: '',
       user: '',
     },
     validators: {
       name: [validators.required],
-      // serialNumber: [validators.required],
+      document: [validators.required, validators.cpforcnpj],
+      zipCode: [validators.required],
+      state: [validators.required],
+      city: [validators.required],
+      district: [validators.required],
+      street: [validators.required],
+      number: [validators.required],
+      telephone: [validators.required, validators.mobilePhone],
     },
     formatters: {
       document: updateMaskCPFOrCNPJ,
@@ -157,6 +172,7 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
         resetFormFilter();
         setListBankAccount([]);
         setListPixTable([]);
+        setContractor(undefined);
       }, 500);
     }
   }, [visible]);
@@ -189,6 +205,7 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
   };
 
   const controllerInputAppendPix = {
+    pixTypes,
     listPixTable,
     listBank,
     pix,
@@ -258,6 +275,22 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
 
       if (data) {
         setListUsers(data);
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
+  const handleGetPixTypes = async (): Promise<void> => {
+    try {
+      setState(States.loading);
+      const { data } = await api.get<PixType>('/bank/pix/types');
+
+      if (data) {
+        setPixTypes(data);
       }
     } catch (error) {
       const err = error as AxiosError;
@@ -360,6 +393,10 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
           },
         }));
 
+        const payloadUsers = usersSelected.map(item => ({
+          id: item.id,
+        }));
+
         const payload: PayloadContractor = {
           id: contractor?.id,
           name: formDataContractor[FormInputNameToSaveContractor.name],
@@ -383,6 +420,7 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
           },
           bankAccount: payloadBankAccount,
           pixKey: payloadPix,
+          users: payloadUsers,
         };
 
         if (!payload.id) {
@@ -437,7 +475,13 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
     try {
       console.log('pix :>> ', pix);
       // verify if the bank account not exists values empty
-      const pixEmpty = pix.find(item => item.idInstitution === '' || item.pix === '');
+      const pixEmpty = pix.find(
+        item =>
+          item.idInstitution === '' ||
+          item.idType === '' ||
+          item.nameType === '' ||
+          item.pix === '',
+      );
       if (pixEmpty) {
         toast.warn('Preencha todos os campos ou remova a Chave Pix que contém campos vazios');
         return;
@@ -584,7 +628,15 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
           conta: `${item.account}-${item.digit}`,
         })),
       );
-      // setListPixTable(contractor.pix);
+      setListPixTable(
+        contractor.pixKey.map(item => ({
+          idInstitution: item.bank.id,
+          nameInstitution: item.bank.fullName,
+          idType: item.pixKeyType,
+          nameType: pixTypes.find(pixType => pixType.id === item.pixKeyType).type,
+          pix: item.key,
+        })),
+      );
     }
   }, [contractor]);
 
@@ -593,6 +645,7 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
     handleGetbankAccount();
     handleGetContractorType();
     handleGetUsers();
+    handleGetPixTypes();
   }, []);
 
   return (

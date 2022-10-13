@@ -92,7 +92,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
                       onShouldShowModal({
                         value: ShouldShowModal.registerContractor,
                         newTitleModal: contractorState?.id ? item.name : 'Cadastrar nova empresa',
-                        // contractor: contractorState,
+                        contractor: contractorState,
                       });
                     }}
                   >
@@ -103,7 +103,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
                   </h5>
                 </div>
               ),
-              // contractor: contractorState,
+              contractor: contractorState,
             })
           }
         />
@@ -137,7 +137,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
                       onShouldShowModal({
                         value: ShouldShowModal.registerContractor,
                         newTitleModal: contractorState?.id ? item.name : 'Cadastrar nova empresa',
-                        // contractor: contractorState,
+                        contractor: contractorState,
                       });
                     }}
                   >
@@ -146,7 +146,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
                   <h5 className="header-title-text modal__title ml-3 mb-0">Adicionar chave pix</h5>
                 </div>
               ),
-              // contractor: contractorState,
+              contractor: contractorState,
             })
           }
         />
@@ -420,7 +420,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
                           newTitleModal: contractorState?.id
                             ? contractorState.name
                             : 'Cadastrar nova empresa',
-                          // contractor: contractorState,
+                          contractor: contractorState,
                         });
                       }}
                     >
@@ -431,7 +431,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
                     </h5>
                   </div>
                 ),
-                // contractor: contractorState,
+                contractor: contractorState,
               });
             }}
           >
@@ -480,7 +480,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
                           newTitleModal: contractorState?.id
                             ? contractorState.name
                             : 'Cadastrar nova empresa',
-                          // contractor: contractorState,
+                          contractor: contractorState,
                         });
                       }}
                     >
@@ -491,7 +491,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
                     </h5>
                   </div>
                 ),
-                // contractor: contractorState,
+                contractor: contractorState,
               });
             }}
           >
@@ -502,7 +502,11 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
       <Row>
         <Col md={8}>
           <h5 className="mt-5 mb-5 border-bottom-title">Usuários da empresa</h5>
-          <FormGroup className="mb-2 d-flex">
+        </Col>
+      </Row>
+      <Row>
+        <Col md={8}>
+          <FormGroup className="mb-2">
             <SelectCustom
               name="user"
               label="Usuário da empresa"
@@ -515,13 +519,17 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
                 value: itemUser.id,
               }))}
             />
+          </FormGroup>
+        </Col>
+        <Col md={4}>
+          <div style={{ padding: '37px 0' }}>
             <Button
               title="Inserir usuário"
               theme="noneBorder"
               onClick={() => controllerAppendUser.handleAddUser(formData[FormInputName.user])}
               disabled={formData[FormInputName.user] === ''}
             />
-          </FormGroup>
+          </div>
         </Col>
       </Row>
       <Row>

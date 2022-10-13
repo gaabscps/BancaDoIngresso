@@ -62,7 +62,7 @@ export const RegisterPix: React.FC<RegisterContentProps> = ({
           <Col md={3}>
             <FormGroup className="mb-2">
               <SelectCustom
-                name="type"
+                name="nameType"
                 label="Tipo"
                 placeholder="Selecione ou digite a instituição"
                 onChange={e => {
@@ -77,14 +77,12 @@ export const RegisterPix: React.FC<RegisterContentProps> = ({
                     String(e?.label),
                   );
                 }}
-                error={formErrors?.name && formErrors.name[0]}
-                value={item.idType}
-                options={[
-                  { value: '0', label: 'CPF/CNPJ' },
-                  { value: '1', label: 'Telefone' },
-                  { value: '2', label: 'E-mail' },
-                  { value: '3', label: 'Chave aletória' },
-                ]}
+                error={formErrors?.idType && formErrors.idType[0]}
+                value={String(item.idType)}
+                options={controllerInputAppendPix.pixTypes.map(itemType => ({
+                  label: itemType.type,
+                  value: String(itemType.id),
+                }))}
               />
             </FormGroup>
           </Col>
