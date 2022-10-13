@@ -527,7 +527,12 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
               title="Inserir usuário"
               theme="noneBorder"
               onClick={() => controllerAppendUser.handleAddUser(formData[FormInputName.user])}
-              disabled={formData[FormInputName.user] === ''}
+              disabled={
+                formData[FormInputName.user] === '' ||
+                controllerAppendUser.usersSelected.some(
+                  item => item.id === formData[FormInputName.user],
+                )
+              }
             />
           </div>
         </Col>
