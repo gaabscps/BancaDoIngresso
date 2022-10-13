@@ -15,6 +15,7 @@ import {
   BanckAccountForm,
   ContractorControllerBankAccount,
   ContractorControllerPix,
+  ContractorControllerUser,
   ContractorRequestParams,
   PixForm,
 } from '@/features/contractor/types';
@@ -52,6 +53,13 @@ export interface DataRowPix {
   name: string;
   type: string;
   pix: string;
+  actions: string;
+}
+
+export interface DataRowUser {
+  id: number;
+  name: string;
+  login: string;
   actions: string;
 }
 
@@ -102,6 +110,7 @@ interface ContractorContainerProps {
   listPixTable: PixForm[];
   onDeleteRowPix: (pix: PixForm) => void;
   listContractorType: ContractorType[];
+  controllerAppendUser: ContractorControllerUser;
 }
 
 export const ContractorContainer: React.FC<ContractorContainerProps> = ({
@@ -133,6 +142,7 @@ export const ContractorContainer: React.FC<ContractorContainerProps> = ({
   onShowDeleteContractor,
   controllerInputAppendBankAccount,
   controllerInputAppendPix,
+  controllerAppendUser,
   onDeleteRowBankAccount,
   onDeleteRowPix,
 }) => {
@@ -253,6 +263,7 @@ export const ContractorContainer: React.FC<ContractorContainerProps> = ({
                 onShouldShowModal={onShouldShowModal}
                 onDeleteRowBankAccount={onDeleteRowBankAccount}
                 onDeleteRowPix={onDeleteRowPix}
+                controllerAppendUser={controllerAppendUser}
               />
             ),
             [ShouldShowModal.registerBankAccount]: (

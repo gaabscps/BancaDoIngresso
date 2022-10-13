@@ -2,6 +2,7 @@ import Page from '@/model/Page';
 import Contractor from '@/model/Contractor';
 import PixType from '@/model/PixType';
 import Bank from '@/model/Bank';
+import User from '@/model/User';
 
 export type ContractorResponse = Page<Contractor, Contractor>;
 export type BankResponse = Page<Bank, Bank>;
@@ -27,6 +28,13 @@ export type ContractorControllerPix = {
   handleRemovePix(index: number): void;
   pix: any[];
   setPix: React.Dispatch<React.SetStateAction<any[]>>;
+};
+
+export type ContractorControllerUser = {
+  listUsers: User[];
+  usersSelected: User[];
+  handleAddUser(userId: string): void;
+  handleRemoveUser(index: number): void;
 };
 
 export type BanckAccountForm = {

@@ -1,6 +1,6 @@
 import { TableColumn } from '@/components/Table';
 import { formatToCPFOrCNPJ, formatToPhone } from 'brazilian-values';
-import { DataRowBankAccount, DataRowContractor, DataRowPix } from '.';
+import { DataRowBankAccount, DataRowContractor, DataRowPix, DataRowUser } from '.';
 
 export const columnsContractor: TableColumn<DataRowContractor>[] = [
   {
@@ -68,6 +68,24 @@ export const columnsPix: TableColumn<DataRowPix>[] = [
     name: 'Chave Pix',
     selector: row => row.pix,
     minWidth: '5%',
+  },
+  {
+    name: '',
+    selector: row => row.actions,
+    minWidth: '15%',
+  },
+];
+
+export const columnsUser: TableColumn<DataRowUser>[] = [
+  {
+    name: 'Nome do usuário',
+    selector: row => row.name,
+    minWidth: '35%',
+  },
+  {
+    name: 'Login',
+    selector: row => row.login,
+    minWidth: '10%',
   },
   {
     name: '',

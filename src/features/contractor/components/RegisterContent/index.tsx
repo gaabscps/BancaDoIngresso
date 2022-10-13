@@ -1,6 +1,6 @@
 import React from 'react';
 import { Col, Form, FormGroup, Row } from 'reactstrap';
-import { InputText, SelectCustom, Switch } from '@/components';
+import { Button, InputText, SelectCustom, Switch } from '@/components';
 import { FormData, FormErrors, OnChangeFormInput } from '@/hooks/useForm';
 import Contractor from '@/model/Contractor';
 import { statesUf } from '@/constant/states';
@@ -12,9 +12,9 @@ import { ArrowLeft } from 'react-feather';
 import { ReactComponent as CloseX } from '@/assets/images/svg/closeX.svg';
 import cep from 'cep-promise';
 import { convertToBoolean } from '@/helpers/common/convertToBoolean';
-import { columnsBankAccount, columnsPix } from '../../screens/List/ui/table';
+import { columnsBankAccount, columnsPix, columnsUser } from '../../screens/List/ui/table';
 import { ShouldShowModal } from '../../screens/List/ui';
-import { BanckAccountForm } from '../../types';
+import { BanckAccountForm, ContractorControllerUser } from '../../types';
 
 interface RegisterContentProps {
   formData: FormData;
@@ -35,6 +35,7 @@ interface RegisterContentProps {
   listPixTable: any[];
   contractorState: Contractor;
   onDeleteRowPix: (pix: any) => void;
+  controllerAppendUser: ContractorControllerUser;
 }
 
 // eslint-disable-next-line no-shadow
@@ -55,6 +56,7 @@ export enum FormInputName {
   longitude = 'longitude',
   pix = 'pix',
   status = 'status',
+  user = 'user',
 }
 
 export const RegisterContent: React.FC<RegisterContentProps> = ({
@@ -68,6 +70,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
   onDeleteRowPix,
   listContractorType,
   contractorState,
+  controllerAppendUser,
 }) => {
   const dataTableBankAccount = listBankAccount?.map(item => ({
     id: item.id,
@@ -154,6 +157,21 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
           }}
         />
       </React.Fragment>
+    ),
+  }));
+  console.log('controllerAppendUser.usersSelected :>> ', controllerAppendUser.usersSelected);
+
+  const dataTableUser = controllerAppendUser.usersSelected?.map((item, index) => ({
+    id: item.id,
+    name: item.name,
+    login: item.cpf,
+    actions: (
+      <CloseX
+        className="mr-2 svg-icon action-icon"
+        onClick={() => {
+          controllerAppendUser.handleRemoveUser(index);
+        }}
+      />
     ),
   }));
 
@@ -359,16 +377,6 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
       <Row>
         <Col md={8}>
           <h5 className="mb-5 border-bottom-title">Informações financeiras</h5>
-          {/* <FormGroup className="mb-2">
-            <InputText
-              name="pix"
-              label="Chave PIX (opcional)"
-              placeholder="CPF/CNPJ, telefone, e-mail ou chave aleatória"
-              maxLength={18}
-              value={formData[FormInputName.pix]}
-              onChange={e => onChangeFormInput(FormInputName.pix)(e.target.value)}
-            />
-          </FormGroup> */}
         </Col>
       </Row>
       <Row>
@@ -489,6 +497,43 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
           >
             + adicionar conta bancária
           </div>
+        </Col>
+      </Row>
+      <Row>
+        <Col md={8}>
+          <h5 className="mt-5 mb-5 border-bottom-title">Usuários da empresa</h5>
+          <FormGroup className="mb-2 d-flex">
+            <SelectCustom
+              name="user"
+              label="Usuário da empresa"
+              placeholder="Digite ou selecione o usuário da empresa"
+              value={formData[FormInputName.user]}
+              onChange={e => onChangeFormInput(FormInputName.user)(e?.value as string)}
+              error={formErrors.user && formErrors.user[0]}
+              options={controllerAppendUser.listUsers.map(itemUser => ({
+                label: itemUser.name,
+                value: itemUser.id,
+              }))}
+            />
+            <Button
+              title="Inserir usuário"
+              theme="noneBorder"
+              onClick={() => controllerAppendUser.handleAddUser(formData[FormInputName.user])}
+              disabled={formData[FormInputName.user] === ''}
+            />
+          </FormGroup>
+        </Col>
+      </Row>
+      <Row>
+        <Col md={6}>
+          <h5 className="mb-5 border-bottom-title">Usuários inseridos na empresa</h5>
+          <CustomTable
+            columns={columnsUser}
+            data={dataTableUser}
+            theme="secondary"
+            progressPending={false}
+            numberRowsPerPage={1}
+          />
         </Col>
       </Row>
     </Form>

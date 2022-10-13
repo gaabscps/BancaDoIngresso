@@ -30,6 +30,7 @@ import { convertToBoolean } from '@/helpers/common/convertToBoolean';
 import ContractorType from '@/model/ContractorType';
 import Bank from '@/model/Bank';
 import PixType from '@/model/PixType';
+import User from '@/model/User';
 import { DeleteContent } from '../../components/DeleteContent';
 
 export default interface PayloadContractor {
@@ -81,6 +82,10 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
   const [listBank, setListBank] = useState<Bank[]>([]);
   const [listBankAccount, setListBankAccount] = useState<BanckAccountForm[]>([]);
   const [listPixTable, setListPixTable] = useState<PixForm[]>([]);
+
+  const [listUsers, setListUsers] = useState<User[]>([]);
+  const [usersSelected, setUsersSelected] = useState<User[]>([]);
+
   const [pix, setPix] = useState<PixForm[]>([]);
   const [bankAccount, setBankAccount] = useState<BanckAccountForm[]>([]);
   const [contractor, setContractor] = useState<Contractor>();
@@ -119,6 +124,7 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
       urlApi: '',
       urlAdmin: '',
       urlSite: '',
+      user: '',
     },
     validators: {
       name: [validators.required],
@@ -211,6 +217,24 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
     },
   };
 
+  const controllerAppendUser = {
+    listUsers,
+    usersSelected,
+    handleAddUser(userId: string): void {
+      const newUsersSelected = listUsers.filter(item => item.id === userId)[0];
+      // not add user if already exists
+      if (usersSelected.find(item => item.id === newUsersSelected.id)) {
+        return;
+      }
+      setUsersSelected([...usersSelected, newUsersSelected]);
+    },
+    handleRemoveUser(index: number): void {
+      const values = [...usersSelected];
+      values.splice(index, 1);
+      setUsersSelected(values);
+    },
+  };
+
   const handleGetbankAccount = async (): Promise<void> => {
     try {
       setState(States.loading);
@@ -218,6 +242,22 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
 
       if (data) {
         setListBank(data?.list ?? []);
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
+  const handleGetUsers = async (): Promise<void> => {
+    try {
+      setState(States.loading);
+      const { data } = await api.get<User[]>('/user/find');
+
+      if (data) {
+        setListUsers(data);
       }
     } catch (error) {
       const err = error as AxiosError;
@@ -552,6 +592,7 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
     handleFetch(currentPage);
     handleGetbankAccount();
     handleGetContractorType();
+    handleGetUsers();
   }, []);
 
   return (
@@ -583,6 +624,7 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
       clearFilter={clearFilter}
       controllerInputAppendBankAccount={controllerInputAppendBankAccount}
       controllerInputAppendPix={controllerInputAppendPix}
+      controllerAppendUser={controllerAppendUser}
       onDeleteRowBankAccount={handleOnDeleteRowBankAccount}
       onDeleteRowPix={handleOnDeleteRowPix}
       listContractorType={listContractorType}
