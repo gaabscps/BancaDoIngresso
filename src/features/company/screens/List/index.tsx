@@ -37,7 +37,6 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(
     ShouldShowModal.registerCompany,
   );
-
   const [currentPage, setCurrentPage] = useState<CompanyRequestParams>({
     page: 1,
     pageSize: 10,
@@ -94,6 +93,18 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
       inputSearch: '',
     },
   });
+
+  useEffect(() => {
+    if (!visible) {
+      setTimeout(() => {
+        resetFormCompany();
+        resetFormFilter();
+        setCompany(undefined);
+        setListBankAccount([]);
+        setListPixTable([]);
+      }, 500);
+    }
+  }, [visible]);
 
   const controllerInputAppendBankAccount = {
     listBank,
@@ -208,6 +219,7 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
       0: colors.green,
       1: colors.red,
     }[status] || colors.grey);
+
   const handleOnShouldShowModal = ({
     value,
     newTitleModal,
@@ -229,35 +241,32 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
       (!companySelected?.id && value !== ShouldShowModal.filter)
     ) {
       setCompany(companySelected);
-      handleBankAccountList();
-      if (companySelected?.id !== company?.id) {
-        resetFormCompany();
-      }
-    } else {
-      resetFormCompany();
-      setCompany(undefined);
-    }
-    if (
-      (!companySelected?.id && value !== ShouldShowModal.filter) ||
-      (!companySelected?.id && value !== ShouldShowModal.registerCompany)
-    ) {
-      resetFormCompany();
     }
   };
 
   const handleOnSaveCompany = async (): Promise<void> => {
+    console.log('company :>> ', company);
     try {
       if (isFormValidCompany()) {
         const activedInput = convertToBoolean(formDataCompany[FormInputNameToSaveCompany.status]);
         const payloadBankAccount = listBankAccount.map(bank => ({
-          id: company?.bankAccount?.id,
+          // id: bank?.bankAccount?.id,
           contractorId: company?.id,
           agency: bank.agencia,
           account: bank.conta.split('-')[0],
           digit: bank.conta.split('-')[1],
           bank: {
             id: bank.id,
-            fullName: bank.name,
+          },
+        }));
+
+        const payloadPix = listPixTable.map(pix => ({
+          // id: company?.pix?.id,
+          contractorId: company?.id,
+          key: pix.pix,
+          pixKeyType: +pix.idType,
+          bank: {
+            id: pix.idInstitution,
           },
         }));
 
@@ -266,7 +275,7 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
           name: formDataCompany[FormInputNameToSaveCompany.name],
           document: formDataCompany[FormInputNameToSaveCompany.document],
           telephone: formDataCompany[FormInputNameToSaveCompany.telephone],
-          email: 'email@email.com',
+          email: formDataCompany[FormInputNameToSaveCompany.email],
           address: {
             id: company?.address?.id,
             zipCode: formDataCompany[FormInputNameToSaveCompany.zipCode],
@@ -283,6 +292,7 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
             id: formDataCompany[FormInputNameToSaveCompany.companyType],
           },
           bankAccount: payloadBankAccount,
+          pixKey: payloadPix,
         };
 
         if (!payload.id) {
@@ -311,9 +321,6 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
     }
   };
 
-  const handleBankAccountList = async (): Promise<void> => {
-    // TODO: implementar
-  };
 
   const handleOnBankAccount = async (): Promise<void> => {
     try {
@@ -468,7 +475,14 @@ export const CompanyScreen: React.FC = (): JSX.Element => {
       onChangeFormInputCompany(FormInputNameToSaveCompany.longitude)(company.address.longitude);
       onChangeFormInputCompany(FormInputNameToSaveCompany.status)(statusBooleanString);
       // onChangeFormInputCompany(FormInputNameToSaveCompany.pix)(company.pix);
-      setListBankAccount(company.bankAccount);
+      setListBankAccount(
+        company.bankAccount.map(item => ({
+          id: item.bank.id,
+          name: item.bank.fullName,
+          agencia: item.agency,
+          conta: `${item.account}-${item.digit}`,
+        })),
+      );
       // setListPixTable(company.pix);
     }
   }, [company]);
