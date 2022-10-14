@@ -31,11 +31,11 @@ const api = axios.create({
   headers: createHeader(),
 });
 
-api.interceptors.request.use(config => {
-  // eslint-disable-next-line no-param-reassign
-  config.headers = createHeader();
-  return config;
-});
+// api.interceptors.request.use(config => {
+//   // eslint-disable-next-line no-param-reassign
+//   config.headers = createHeader();
+//   return config;
+// });
 
 api.interceptors.response.use(
   response => response,

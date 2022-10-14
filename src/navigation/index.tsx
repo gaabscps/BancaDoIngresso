@@ -10,6 +10,7 @@ import { PaymentMethodsNavigation } from '@/features/paymentMethods/navigation';
 import { PdvProvider } from '@/features/pdv/hook/usePdv';
 import { ProductsCombosNavigation } from '@/features/productsAndCombos/navigation';
 import { ProductNavigation } from '@/features/product/navigation';
+import { ContractorNavigation } from '@/features/contractor/navigation';
 import { ComboNavigation } from '@/features/combo/navigation';
 import { renderRoutes } from './utils';
 import { Route } from './Route';
@@ -25,6 +26,7 @@ const Navigation: React.FC = (): JSX.Element => {
   const productsCombosRoutes = renderRoutes(ProductsCombosNavigation);
   const productRoutes = renderRoutes(ProductNavigation);
   const comboRoutes = renderRoutes(ComboNavigation);
+  const CompanyRoutes = renderRoutes(ContractorNavigation);
 
   return (
     <PdvProvider>
@@ -38,6 +40,7 @@ const Navigation: React.FC = (): JSX.Element => {
         {productsCombosRoutes}
         {productRoutes}
         {comboRoutes}
+        {CompanyRoutes}
         <Route path={path.Initial.All} component={Error404} />
       </Switch>
     </PdvProvider>
