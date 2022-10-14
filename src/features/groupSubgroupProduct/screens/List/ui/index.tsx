@@ -38,6 +38,7 @@ export enum ShouldShowModal {
 interface GroupProductContainerProps {
   state: States;
   groupProductState?: GroupProduct;
+  subGroupProductState?: SubgroupProduct;
   shouldShowModal: ShouldShowModal;
   title: string | React.ReactNode;
   visible: boolean;
@@ -57,10 +58,12 @@ interface GroupProductContainerProps {
     value,
     newTitleModal,
     groupProduct,
+    subgroupProduct,
   }: {
     value: ShouldShowModal;
     newTitleModal: string | React.ReactNode;
     groupProduct?: GroupProduct;
+    subgroupProduct?: SubgroupProduct;
   }) => void;
   listGroupProduct: GroupProduct[];
   formSubgroup: {
@@ -79,6 +82,7 @@ export const GroupProductContainer: React.FC<GroupProductContainerProps> = ({
   shouldShowModal,
   formDataGroupProduct,
   formErrorsGroupProduct,
+  subGroupProductState,
   onChangeFormInputGroupProduct,
   onSaveGroupProduct,
   onSaveGroupSubgroupProduct,
@@ -113,7 +117,7 @@ export const GroupProductContainer: React.FC<GroupProductContainerProps> = ({
               onClick: (): Promise<void> => onSaveGroupProduct(),
             },
             [ShouldShowModal.subgroupProduct]: {
-              title: groupProductState?.id ? 'Salvar' : 'Cadastrar novo Subgrupo',
+              title: subGroupProductState?.id ? 'Salvar' : 'Cadastrar novo Subgrupo',
               onClick: (): Promise<void> => onSaveGroupSubgroupProduct(),
             },
           }[shouldShowModal],
@@ -173,8 +177,8 @@ export const GroupProductContainer: React.FC<GroupProductContainerProps> = ({
                         onClick={(): void =>
                           onShouldShowModal({
                             value: ShouldShowModal.groupProduct,
-                            newTitleModal: `${productGroup.name}`,
-                            // productSubgroup: productSubgroup?.productGroup,
+                            newTitleModal: `${productGroup.productGroup?.name}`,
+                            groupProduct: productGroup?.productGroup,
                           })
                         }
                       />
@@ -212,7 +216,7 @@ export const GroupProductContainer: React.FC<GroupProductContainerProps> = ({
                             onShouldShowModal({
                               value: ShouldShowModal.subgroupProduct,
                               newTitleModal: `${productGroup.name}`,
-                              // subgroupProduct: productSubgroup,
+                              subgroupProduct: productGroup,
                             })
                           }
                         />

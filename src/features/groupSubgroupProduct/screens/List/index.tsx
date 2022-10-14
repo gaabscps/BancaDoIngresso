@@ -13,6 +13,7 @@ import {
 } from '@/features/groupSubgroupProduct/screens/List/ui';
 // import { FormInputName as FormInputNameToFilter } from '@/features/groupSubgroupProduct/components/FilterContent';
 import { FormInputName as FormInputNameToSaveGroupProduct } from '@/features/groupSubgroupProduct/components/RegisterGroupContent';
+import { FormInputName as FormInputNameToSaveSubGroupProduct } from '@/features/groupSubgroupProduct/components/RegisterSubgroupContent';
 import {
   GroupProductResponse,
   // GroupProductRequestParams,
@@ -23,16 +24,27 @@ import GroupProduct from '@/model/GroupProduct';
 import SubgroupProduct from '@/model/SubgroupProduct';
 import { DeleteContent } from '../../components/DeleteContent';
 
-export default interface PayloadGroupProduct {
+export interface PayloadGroupProduct {
   id?: string;
   name: string;
+}
+
+export interface PayloadSubGroupProduct {
+  id?: string;
+  name: string;
+  imageBase64?: string;
+  productGroup?: {
+    id: string;
+    name: string;
+    imageBase64?: string;
+  };
 }
 
 export const GroupProductScreen: React.FC = (): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
   const [listGroupProduct, setListGroupProduct] = useState<SubgroupProduct[]>([]);
   const [groupProduct, setGroupProduct] = useState<GroupProduct>();
-  const [subgroupProduct, setSubgroupProduct] = useState<GroupProduct>();
+  const [subgroupProduct, setSubgroupProduct] = useState<SubgroupProduct>();
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(
     ShouldShowModal.groupProduct,
   );
@@ -132,7 +144,6 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
 
     if (groupProductSelected?.id && value === ShouldShowModal.groupProduct) {
       setGroupProduct(groupProductSelected);
-
       if (groupProductSelected.id !== groupProduct?.id) {
         resetFormGroupProduct();
       }
@@ -181,8 +192,8 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
   const handleOnSaveGroupSubgroupProduct = async (): Promise<void> => {
     try {
       if (isFormValidSubgroupProduct()) {
-        const payload: PayloadGroupProduct = {
-          id: groupProduct?.id,
+        const payload: PayloadSubGroupProduct = {
+          id: subgroupProduct?.productGroup?.id,
           name: formDataSubgroupProduct[FormInputNameToSaveGroupProduct.name],
         };
 
@@ -285,6 +296,14 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
   };
 
   useEffect(() => {
+    if (subgroupProduct?.id) {
+      onChangeFormInputSubgroupProduct(FormInputNameToSaveSubGroupProduct.name)(
+        subgroupProduct.name,
+      );
+    }
+  }, [subgroupProduct]);
+
+  useEffect(() => {
     if (groupProduct?.id) {
       onChangeFormInputGroupProduct(FormInputNameToSaveGroupProduct.name)(groupProduct.name);
     }
@@ -315,6 +334,7 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
       onShowDeleteSubgroupProduct={handleOnShowDeleteSubgroupProduct}
       onFilter={handleOnFilter}
       groupProductState={groupProduct}
+      subGroupProductState={subgroupProduct}
       formSubgroup={formSubgroup}
     />
   );
