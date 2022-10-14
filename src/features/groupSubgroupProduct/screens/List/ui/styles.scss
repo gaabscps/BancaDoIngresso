@@ -18,7 +18,6 @@
     color: #828282;
 
     display: flex;
-    justify-content: space-between;
   }
   ul li::before {
     content: ' ';
@@ -57,7 +56,8 @@
   }
 }
 .tree-card {
-  padding: 30px 15px; 
+  padding: 30px 15px 0 15px;
+  overflow-x: auto;
 }
 .text-success-link {
   font-weight: 300;
@@ -84,4 +84,19 @@
   color: #222222;
 
   min-width: 145px;
+}
+.tree-container {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+.tree-main-text {
+  margin-right: 10px;
+}
+.icon-content {
+  margin: auto 10px;
+  width: 60px;
+  justify-content: space-evenly;
+}
+.tree-item-container {
+  padding-bottom: 30px;
 }
