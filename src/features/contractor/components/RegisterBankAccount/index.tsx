@@ -1,6 +1,6 @@
 import React from 'react';
 import { Col, Form, FormGroup, Row } from 'reactstrap';
-import { InputText, SelectCustom } from '@/components';
+import { Button, InputText, SelectCustom } from '@/components';
 import { FormErrors } from '@/hooks/useForm';
 import { X } from 'react-feather';
 import { updateMask as updateMaskAccountAgency } from '@/helpers/masks/AccountAgency';
@@ -98,18 +98,24 @@ export const RegisterBankAccount: React.FC<RegisterContentProps> = ({
             </FormGroup>
           </Col>
           <Col md={1} className="pt-5">
-            <X onClick={() => controllerInputAppendBankAccount.handleRemoveBanckAccount(index)} />
+            {index !== controllerInputAppendBankAccount.bankAccount.length - 1 ? (
+              <X
+                className="svg-icon action-icon"
+                onClick={() => controllerInputAppendBankAccount.handleRemoveBanckAccount(index)}
+              />
+            ) : null}
           </Col>
         </Row>
       ))}
       <Row>
         <Col md={11}>
-          <div
-            className="d-flex"
-            style={{ justifyContent: 'flex-end' }}
-            onClick={() => controllerInputAppendBankAccount.handleAddBanckAccount()}
-          >
-            adicionar conta bancária
+          <div className="d-flex justify-content-end">
+            <Button
+              className="p-0"
+              title="adicionar conta bancária"
+              theme="noneBorder"
+              onClick={() => controllerInputAppendBankAccount.handleAddBanckAccount()}
+            />
           </div>
         </Col>
       </Row>

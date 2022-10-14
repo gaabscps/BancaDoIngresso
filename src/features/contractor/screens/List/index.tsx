@@ -98,7 +98,15 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
   const [listUsers, setListUsers] = useState<User[]>([]);
   const [usersSelected, setUsersSelected] = useState<User[]>([]);
 
-  const [pix, setPix] = useState<PixForm[]>([]);
+  const [pix, setPix] = useState<PixForm[]>([
+    {
+      idInstitution: '',
+      nameInstitution: '',
+      idType: '',
+      nameType: '',
+      pix: '',
+    },
+  ]);
   const [bankAccount, setBankAccount] = useState<BanckAccountForm[]>([]);
   const [contractor, setContractor] = useState<Contractor>();
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(
@@ -252,6 +260,7 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
         return;
       }
       setUsersSelected([...usersSelected, newUsersSelected]);
+      onChangeFormInputContractor(FormInputNameToSaveContractor.user)('');
     },
     handleRemoveUser(index: number): void {
       const values = [...usersSelected];
@@ -362,8 +371,11 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
     setShouldShowModal(value);
     onChangeTitle(newTitleModal);
     if (value !== ShouldShowModal.filter) {
-      setBankAccount(listBankAccount);
-      setPix(listPixTable);
+      setBankAccount([...listBankAccount, { id: '', name: '', agencia: '', conta: '' }]);
+      setPix([
+        ...listPixTable,
+        { idInstitution: '', nameInstitution: '', idType: '', nameType: '', pix: '' },
+      ]);
     }
 
     if (
