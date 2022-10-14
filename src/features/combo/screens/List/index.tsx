@@ -253,7 +253,7 @@ export const ComboScreen: React.FC = (): JSX.Element => {
           onClick: (): void => handleOnClose(),
         },
         {
-          title: 'Sim, quero remover',
+          title: 'Sim, quero excluir',
           onClick: (): Promise<void> => handleOnConfirmDeleteToCombo(comboSelected),
         },
       ],
