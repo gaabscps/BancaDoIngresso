@@ -244,7 +244,7 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
           onClick: (): void => handleOnClose(),
         },
         {
-          title: 'Sim, quero remover',
+          title: 'Sim, quero excluir',
           onClick: (): Promise<void> => handleOnConfirmDeleteToGroupProduct(groupProductSelected),
         },
       ],
@@ -262,7 +262,7 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
           onClick: (): void => handleOnClose(),
         },
         {
-          title: 'Sim, quero remover',
+          title: 'Sim, quero excluir',
           onClick: (): Promise<void> => handleOnConfirmDeleteToGroupProduct(groupProductSelected),
         },
       ],
