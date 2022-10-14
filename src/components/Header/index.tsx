@@ -30,9 +30,9 @@ export const Header: React.FC = () => {
               <img className="user-img" src={user?.imageUrl ? user?.imageUrl : avatar} alt="" />
               <div className="media-body profile-name">
                 <span>{user?.name}</span>
-                <p className="profile-user">
+                <div className="profile-user">
                   {user?.profile} <i className=""></i>
-                </p>
+                </div>
               </div>
             </div>
           </li>

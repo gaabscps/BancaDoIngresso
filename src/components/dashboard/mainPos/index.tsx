@@ -163,14 +163,14 @@ const Sample = (): JSX.Element => {
                 setShowPos(!showPos);
                 setIdPos(item.id);
               }}
-              className="mr-2 svg-icon action-icon"
+              className="mr-4 svg-icon action-icon"
             />
             <Trash
               onClick={() => {
                 setShowExclude(!showExclude);
                 setIdPos(item.id);
               }}
-              className="mr-2 svg-icon action-icon"
+              className="mr-4 svg-icon action-icon"
             /> */}
           </>
         ),

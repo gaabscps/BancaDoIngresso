@@ -226,7 +226,7 @@
 }
 
 // media query for mobile
-@media (max-width: $media-query-sm) {
+@media (max-width: '990px') {
   .fieldSpacing {
     padding-bottom: 40px !important;
     // padding-right: 30px !important;
@@ -1012,7 +1012,7 @@ input[type='radio']:checked + .label-radio-custom {
 @media (max-width: 425px) {
 }
 
-@media (max-width: 320px) {
+@media (max-width: 480px) {
   .home-text-container {
     margin: 25px 0 0 5%;
   }
@@ -1033,6 +1033,11 @@ input[type='radio']:checked + .label-radio-custom {
     p {
       font-size: 10px !important;
     }
+  }
+}
+@media (max-width: 479px) {
+  .user-img {
+    width: none;
   }
 }
 
@@ -1071,7 +1076,7 @@ figure.partyCard {
 // ----------- Home Responsive ------------
 
 // media query for mobile container
-@media (max-width: $media-query-sm) {
+@media (max-width: '990px') {
   .status-container {
     justify-content: space-around;
     transition: linear 0.3s;
@@ -1128,6 +1133,7 @@ figure.partyCard {
   .path-container .path-flex-container .path-main {
     font-weight: 600;
     font-size: 12px;
+    width: 150px;
   }
 }
 @media (max-width: $media-query-xs) {
@@ -1227,4 +1233,7 @@ input::-ms-clear {
 
 .pointerSvg {
   cursor: pointer;
+}
+.sm-icon {
+  transform: scale(0.8);
 }

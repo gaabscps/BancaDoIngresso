@@ -102,7 +102,7 @@ export const PaymentGatewayContainer: React.FC<PaymentGatewayContainerProps> = (
     actions: (
       <React.Fragment>
         <Pen
-          className="mr-2 svg-icon action-icon"
+          className="mr-4 svg-icon action-icon"
           onClick={(): void =>
             onShouldShowModal({
               value: ShouldShowModal.gateway,
@@ -112,7 +112,7 @@ export const PaymentGatewayContainer: React.FC<PaymentGatewayContainerProps> = (
           }
         />
         <Trash
-          className="mr-2 svg-icon action-icon"
+          className="mr-4 svg-icon action-icon"
           onClick={() => {
             onShowDeletePaymentGateway(item);
           }}
