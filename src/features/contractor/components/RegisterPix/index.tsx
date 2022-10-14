@@ -115,7 +115,6 @@ export const RegisterPix: React.FC<RegisterContentProps> = ({
           <div
             className="d-flex"
             style={{ justifyContent: 'flex-end' }}
-            // onClick={() => addBankData}
             onClick={() => controllerInputAppendPix.handleAddPix()}
           >
             adicionar pix

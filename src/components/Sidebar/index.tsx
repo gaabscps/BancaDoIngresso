@@ -142,6 +142,10 @@ export const Sidebar: React.FC = () => {
                   title: 'POS',
                 },
                 {
+                  route: path.Dashboard.Company.itself,
+                  title: 'Empresas',
+                },
+                {
                   route: path.Dashboard.Gateway.itself,
                   title: 'Gateway de pagamento',
                 },
@@ -152,10 +156,6 @@ export const Sidebar: React.FC = () => {
                 {
                   route: path.Dashboard.ProductsCombos.itself,
                   title: 'Produtos e Combos',
-                },
-                {
-                  route: path.Dashboard.Company.itself,
-                  title: 'Empresas',
                 },
               ]}
             />

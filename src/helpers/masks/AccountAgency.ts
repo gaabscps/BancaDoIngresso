@@ -6,7 +6,7 @@ const formatAgenciaConta = (value: string): string => {
     return value.replace(/\D/g, '').replace(/(\d)(\d{1})$/, '$1-$2');
   }
   return value;
-}
+};
 
 const isValid = (value: string): boolean => {
   const regex = /(\d)(\d{1})$/;
