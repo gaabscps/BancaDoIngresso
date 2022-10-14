@@ -24,8 +24,8 @@ import { FormErrors, OnChangeFormInput, FormData } from '@/hooks/useForm';
 import { RegisterBankAccount } from '@/features/contractor/components/RegisterBankAccount';
 import { RegisterPix } from '@/features/contractor/components/RegisterPix';
 import ContractorType from '@/model/ContractorType';
-import { columnsContractor } from './table';
 import { colors } from '@/styles/colors';
+import { columnsContractor } from './table';
 
 // eslint-disable-next-line no-shadow
 export enum States {
