@@ -203,6 +203,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             <InputText
               name="document"
               label="CPF/CNPJ"
+              maxLength={18}
               placeholder="Digite o CPF ou CNPJ do cliente"
               value={formData[FormInputName.document]}
               onChange={e => onChangeFormInput(FormInputName.document)(e.target.value)}
