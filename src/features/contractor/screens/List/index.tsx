@@ -391,7 +391,6 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
         }));
 
         const payloadPix = listPixTable.map(item => ({
-          // id: contractor?.pix?.id,
           contractorId: contractor?.id,
           key: item.pix,
           pixKeyType: +item.idType,
