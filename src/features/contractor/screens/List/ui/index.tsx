@@ -25,6 +25,7 @@ import { RegisterBankAccount } from '@/features/contractor/components/RegisterBa
 import { RegisterPix } from '@/features/contractor/components/RegisterPix';
 import ContractorType from '@/model/ContractorType';
 import { columnsContractor } from './table';
+import { colors } from '@/styles/colors';
 
 // eslint-disable-next-line no-shadow
 export enum States {
@@ -321,7 +322,7 @@ export const ContractorContainer: React.FC<ContractorContainerProps> = ({
             Empresa ativa
           </div>
           <div className="eventStatus subText">
-            <Status style={{ color: '#E64F49' }} />
+            <Status style={{ color: colors.red }} />
             Empresa inativa
           </div>
         </div>
