@@ -381,7 +381,6 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
           formDataContractor[FormInputNameToSaveContractor.status],
         );
         const payloadBankAccount = listBankAccount.map(bank => ({
-          // id: bank?.bankAccount?.id,
           contractorId: contractor?.id,
           agency: bank.agencia,
           account: bank.conta.split('-')[0],

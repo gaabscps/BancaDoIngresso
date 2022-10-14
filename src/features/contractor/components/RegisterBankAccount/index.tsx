@@ -107,7 +107,6 @@ export const RegisterBankAccount: React.FC<RegisterContentProps> = ({
           <div
             className="d-flex"
             style={{ justifyContent: 'flex-end' }}
-            // onClick={() => addBankData}
             onClick={() => controllerInputAppendBankAccount.handleAddBanckAccount()}
           >
             adicionar conta bancária
