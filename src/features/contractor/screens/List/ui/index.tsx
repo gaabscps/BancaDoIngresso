@@ -73,7 +73,7 @@ export enum ShouldShowModal {
 
 interface ContractorContainerProps {
   state: States;
-  contractorState: Contractor;
+  contractorState: Contractor | undefined;
   listContractor: Contractor[];
   currentPage: ContractorRequestParams;
   shouldShowModal: ShouldShowModal;
@@ -189,7 +189,9 @@ export const ContractorContainer: React.FC<ContractorContainerProps> = ({
     onClick: (): void =>
       onShouldShowModal({
         value: ShouldShowModal.registerContractor,
-        newTitleModal: contractorState?.id ? contractorState.name : 'Cadastrar nova empresa',
+        newTitleModal: contractorState?.id
+          ? contractorState.name
+          : 'Cadastrar nova empresa (contratante)',
         contractor: contractorState,
       }),
     theme: 'noneBorder',
@@ -255,7 +257,6 @@ export const ContractorContainer: React.FC<ContractorContainerProps> = ({
                 formData={formDataContractor}
                 formErrors={formErrorsContractor}
                 onChangeFormInput={onChangeFormInputContractor}
-                // listContractor={listContractor}
                 listPixTable={listPixTable}
                 contractorState={contractorState}
                 listContractorType={listContractorType}
@@ -294,7 +295,7 @@ export const ContractorContainer: React.FC<ContractorContainerProps> = ({
                 onToggle();
                 onShouldShowModal({
                   value: ShouldShowModal.registerContractor,
-                  newTitleModal: 'Cadastrar nova empresa',
+                  newTitleModal: 'Cadastrar nova empresa (contratante)',
                 });
               }}
             />

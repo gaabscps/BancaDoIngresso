@@ -27,6 +27,7 @@ export type ContractorControllerPix = {
   handleChangePix(inputName: string, index: number, event: string): void;
   handleRemovePix(index: number): void;
   pix: any[];
+  pixTypes: any[];
   setPix: React.Dispatch<React.SetStateAction<any[]>>;
 };
 

@@ -18,9 +18,15 @@ import {
   ShouldShowModal,
 } from '@/features/contractor/screens/List/ui';
 import validators from '@/helpers/validators';
-import { updateMask as updateMaskCPFOrCNPJ } from '@/helpers/masks/cpfCnpj';
-import { updateMask as updateMaskCEP } from '@/helpers/masks/cep';
-import { updateMask as updateMaskMobilePhone } from '@/helpers/masks/mobilePhone';
+import {
+  updateMask as updateMaskCPFOrCNPJ,
+  unmask as unMaskCPFOrCNPJ,
+} from '@/helpers/masks/cpfCnpj';
+import { updateMask as updateMaskCEP, unmask as unMaskCEP } from '@/helpers/masks/cep';
+import {
+  updateMask as updateMaskMobilePhone,
+  unmask as unMaskMobilePhone,
+} from '@/helpers/masks/mobilePhone';
 import { FormInputName as FormInputNameToSaveContractor } from '@/features/contractor/components/RegisterContent';
 import { useConfirmDelete } from '@/hooks/useConfirmDelete';
 import { FormInputName as FormInputNameToFilter } from '@/features/contractor/components/FilterContent';
@@ -31,6 +37,7 @@ import ContractorType from '@/model/ContractorType';
 import Bank from '@/model/Bank';
 import PixType from '@/model/PixType';
 import User from '@/model/User';
+import PixTypes from '@/model/PixTypes';
 import { DeleteContent } from '../../components/DeleteContent';
 
 export default interface PayloadContractor {
@@ -55,7 +62,7 @@ export default interface PayloadContractor {
     id: string;
   };
   bankAccount: {
-    // id: string;
+    id?: string;
     contractorId?: string;
     agency: string;
     account: string;
@@ -65,7 +72,7 @@ export default interface PayloadContractor {
     };
   }[];
   pixKey: {
-    // id?: string;
+    id?: string;
     contractorId?: string;
     key: string;
     pixKeyType: PixType;
@@ -86,7 +93,7 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
   const [listBankAccount, setListBankAccount] = useState<BanckAccountForm[]>([]);
   const [listPixTable, setListPixTable] = useState<PixForm[]>([]);
 
-  const [pixTypes, setPixTypes] = useState<PixType>(0);
+  const [pixTypes, setPixTypes] = useState<PixTypes[]>([]);
 
   const [listUsers, setListUsers] = useState<User[]>([]);
   const [usersSelected, setUsersSelected] = useState<User[]>([]);
@@ -172,6 +179,7 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
         resetFormFilter();
         setListBankAccount([]);
         setListPixTable([]);
+        setUsersSelected([]);
         setContractor(undefined);
       }, 500);
     }
@@ -216,7 +224,7 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
         {
           idInstitution: '',
           nameInstitution: '',
-          idType: 0,
+          idType: '',
           nameType: '',
           pix: '',
         },
@@ -287,7 +295,7 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
   const handleGetPixTypes = async (): Promise<void> => {
     try {
       setState(States.loading);
-      const { data } = await api.get<PixType>('/bank/pix/types');
+      const { data } = await api.get<PixTypes[]>('/bank/pix/types');
 
       if (data) {
         setPixTypes(data);
@@ -400,12 +408,12 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
         const payload: PayloadContractor = {
           id: contractor?.id,
           name: formDataContractor[FormInputNameToSaveContractor.name],
-          document: formDataContractor[FormInputNameToSaveContractor.document],
-          telephone: formDataContractor[FormInputNameToSaveContractor.telephone],
+          document: unMaskCPFOrCNPJ(formDataContractor[FormInputNameToSaveContractor.document]),
+          telephone: unMaskMobilePhone(formDataContractor[FormInputNameToSaveContractor.telephone]),
           email: formDataContractor[FormInputNameToSaveContractor.email],
           address: {
             id: contractor?.address?.id,
-            zipCode: formDataContractor[FormInputNameToSaveContractor.zipCode],
+            zipCode: unMaskCEP(formDataContractor[FormInputNameToSaveContractor.zipCode]),
             state: formDataContractor[FormInputNameToSaveContractor.state],
             city: formDataContractor[FormInputNameToSaveContractor.city],
             district: formDataContractor[FormInputNameToSaveContractor.district],
@@ -431,12 +439,22 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
           await api.patch<Contractor>(
             `/contractor${activedInput ? '/activate' : '/inactivate'}/${dataContractor.id}`,
           );
+          // TO DO: A definir se será necessário
+          // await api.post<Contractor>('/contractor/user', {
+          //   contractorId: dataContractor.id,
+          //   ...payloadUsers,
+          // });
           toast.success('Empresa cadastrada com sucesso!');
         } else {
           await api.put<Contractor>('/contractor', payload);
           await api.patch<Contractor>(
             `/contractor${activedInput ? '/activate' : '/inactivate'}/${contractor?.id}`,
           );
+          // TO DO: A definir se será necessário
+          // await api.post<Contractor>('/contractor/user', {
+          //   contractorId: contractor?.id,
+          //   ...payloadUsers,
+          // });
           toast.success('Empresa atualizada com sucesso!');
         }
 
@@ -462,7 +480,7 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
       setListBankAccount(bankAccount);
       handleOnShouldShowModal({
         value: ShouldShowModal.registerContractor,
-        newTitleModal: contractor?.id ? contractor.name : 'Cadastrar nova empresa',
+        newTitleModal: contractor?.id ? contractor.name : 'Cadastrar nova empresa (contratante)',
         contractor,
       });
     } catch (error) {
@@ -473,14 +491,9 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
 
   const handleOnPix = async (): Promise<void> => {
     try {
-      console.log('pix :>> ', pix);
       // verify if the bank account not exists values empty
       const pixEmpty = pix.find(
-        item =>
-          item.idInstitution === '' ||
-          item.idType === '' ||
-          item.nameType === '' ||
-          item.pix === '',
+        item => item.idInstitution === '' || item.nameType === '' || item.pix === '',
       );
       if (pixEmpty) {
         toast.warn('Preencha todos os campos ou remova a Chave Pix que contém campos vazios');
@@ -489,7 +502,7 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
       setListPixTable(pix);
       handleOnShouldShowModal({
         value: ShouldShowModal.registerContractor,
-        newTitleModal: contractor?.id ? contractor.name : 'Cadastrar nova empresa',
+        newTitleModal: contractor?.id ? contractor.name : 'Cadastrar nova empresa (contratante)',
         contractor,
       });
     } catch (error) {
@@ -570,10 +583,13 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
     }
   };
 
-  const clearFilter = (): void => {
+  const clearFilter = async (): Promise<void> => {
     resetFormFilter();
-    formDataFilter[FormInputNameToFilter.inputSearch] = '';
-    handleOnFilter();
+    await handleFetch({
+      ...currentPage,
+      entity: {},
+    } as any);
+    onToggle();
   };
 
   const handleOnPaginationChange = async (page: number): Promise<void> => {
@@ -619,7 +635,6 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
         String(contractor.address.longitude),
       );
       onChangeFormInputContractor(FormInputNameToSaveContractor.status)(statusBooleanString);
-      // onChangeFormInputContractor(FormInputNameToSaveContractor.pix)(contractor.pix);
       setListBankAccount(
         contractor.bankAccount.map(item => ({
           id: item.bank.id,
@@ -628,12 +643,14 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
           conta: `${item.account}-${item.digit}`,
         })),
       );
+
       setListPixTable(
         contractor.pixKey.map(item => ({
           idInstitution: item.bank.id,
           nameInstitution: item.bank.fullName,
-          idType: item.pixKeyType,
-          nameType: pixTypes.find(pixType => pixType.id === item.pixKeyType).type,
+          idType: String(item.pixKeyType),
+          nameType:
+            pixTypes.find(pixType => String(pixType.id) === String(item.pixKeyType))?.type ?? '',
           pix: item.key,
         })),
       );

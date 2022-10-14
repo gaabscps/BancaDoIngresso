@@ -33,7 +33,7 @@ interface RegisterContentProps {
   }) => void;
   onDeleteRowBankAccount: (bankAccount: any) => void;
   listPixTable: any[];
-  contractorState: Contractor;
+  contractorState: Contractor | undefined;
   onDeleteRowPix: (pix: any) => void;
   controllerAppendUser: ContractorControllerUser;
 }
@@ -91,7 +91,9 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
                     onClick={() => {
                       onShouldShowModal({
                         value: ShouldShowModal.registerContractor,
-                        newTitleModal: contractorState?.id ? item.name : 'Cadastrar nova empresa',
+                        newTitleModal: contractorState?.id
+                          ? item.name
+                          : 'Cadastrar nova empresa (contratante)',
                         contractor: contractorState,
                       });
                     }}
@@ -136,7 +138,9 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
                     onClick={() => {
                       onShouldShowModal({
                         value: ShouldShowModal.registerContractor,
-                        newTitleModal: contractorState?.id ? item.name : 'Cadastrar nova empresa',
+                        newTitleModal: contractorState?.id
+                          ? item.name
+                          : 'Cadastrar nova empresa (contratante)',
                         contractor: contractorState,
                       });
                     }}
@@ -159,7 +163,6 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
       </React.Fragment>
     ),
   }));
-  console.log('controllerAppendUser.usersSelected :>> ', controllerAppendUser.usersSelected);
 
   const dataTableUser = controllerAppendUser.usersSelected?.map((item, index) => ({
     id: item.id,
@@ -184,7 +187,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
     >
       <Row>
         <Col md={8}>
-          <h5 className="mb-5 border-bottom-title">Informações gerais e endereço</h5>
+          <h5 className="mb-5 border-bottom-title fw-700">Informações gerais e endereço</h5>
           <FormGroup className="mb-2">
             <InputText
               name="name"
@@ -331,7 +334,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
           <FormGroup className="mb-2">
             <InputText
               name="complement"
-              label="Complemento"
+              label="Complemento (opcional)"
               placeholder="Ex: Apto 12"
               value={formData[FormInputName.complement]}
               onChange={e => onChangeFormInput(FormInputName.complement)(e.target.value)}
@@ -376,7 +379,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
       </Row>
       <Row>
         <Col md={8}>
-          <h5 className="mb-5 border-bottom-title">Informações financeiras</h5>
+          <h5 className="mb-5 border-bottom-title fw-700">Informações financeiras</h5>
         </Col>
       </Row>
       <Row>
@@ -419,7 +422,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
                           value: ShouldShowModal.registerContractor,
                           newTitleModal: contractorState?.id
                             ? contractorState.name
-                            : 'Cadastrar nova empresa',
+                            : 'Cadastrar nova empresa (contratante)',
                           contractor: contractorState,
                         });
                       }}
@@ -479,7 +482,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
                           value: ShouldShowModal.registerContractor,
                           newTitleModal: contractorState?.id
                             ? contractorState.name
-                            : 'Cadastrar nova empresa',
+                            : 'Cadastrar nova empresa (contratante)',
                           contractor: contractorState,
                         });
                       }}
@@ -501,7 +504,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
       </Row>
       <Row>
         <Col md={8}>
-          <h5 className="mt-5 mb-5 border-bottom-title">Usuários da empresa</h5>
+          <h5 className="mt-5 mb-5 border-bottom-title fw-700">Usuários da empresa</h5>
         </Col>
       </Row>
       <Row>
@@ -538,15 +541,26 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
         </Col>
       </Row>
       <Row>
-        <Col md={6}>
-          <h5 className="mb-5 border-bottom-title">Usuários inseridos na empresa</h5>
-          <CustomTable
-            columns={columnsUser}
-            data={dataTableUser}
-            theme="secondary"
-            progressPending={false}
-            numberRowsPerPage={1}
-          />
+        <Col md={7}>
+          <h5 className="mb-4 border-bottom-title fw-400">Usuários inseridos na empresa</h5>
+          {controllerAppendUser.usersSelected.length > 0 ? (
+            <CustomTable
+              columns={columnsUser}
+              data={dataTableUser}
+              theme="secondary"
+              progressPending={false}
+              numberRowsPerPage={1}
+            />
+          ) : (
+            <>
+              <div style={{ padding: '10px 0 20px 0', color: '#A5A5A5' }}>
+                Você ainda não adicionou nenhuma à empresa
+              </div>
+              <div style={{ color: '#A5A5A5', paddingBottom: '30px' }}>
+                Aqui será exibida a lista dos usuários inseridos.
+              </div>
+            </>
+          )}
         </Col>
       </Row>
     </Form>
