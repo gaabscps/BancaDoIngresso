@@ -38,6 +38,7 @@ import Bank from '@/model/Bank';
 import PixType from '@/model/PixType';
 import User from '@/model/User';
 import PixTypes from '@/model/PixTypes';
+import Address from '@/model/Address';
 import { DeleteContent } from '../../components/DeleteContent';
 
 export default interface PayloadContractor {
@@ -46,18 +47,7 @@ export default interface PayloadContractor {
   document: string;
   telephone: string;
   email: string;
-  address: {
-    id?: string;
-    zipCode: string;
-    state: string;
-    city: string;
-    district: string;
-    street: string;
-    complement: string;
-    number: string;
-    latitude: string;
-    longitude: string;
-  };
+  address: Address;
   contractorType: {
     id: string;
   };
@@ -436,8 +426,9 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
             street: formDataContractor[FormInputNameToSaveContractor.street],
             complement: formDataContractor[FormInputNameToSaveContractor.complement],
             number: formDataContractor[FormInputNameToSaveContractor.number],
-            latitude: formDataContractor[FormInputNameToSaveContractor.latitude],
-            longitude: formDataContractor[FormInputNameToSaveContractor.longitude],
+            latitude: parseFloat(formDataContractor[FormInputNameToSaveContractor.latitude]) || 0.0,
+            longitude:
+              parseFloat(formDataContractor[FormInputNameToSaveContractor.longitude]) || 0.0,
           },
           contractorType: {
             id: formDataContractor[FormInputNameToSaveContractor.companyType],
