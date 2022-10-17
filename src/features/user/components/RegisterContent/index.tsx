@@ -118,7 +118,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
       <Col md={4}>
         <Switch
           name="status"
-          label={`Gateway ${
+          label={`Usuário ${
             convertToBoolean(formData[FormInputUser.status]) ? 'ativo' : 'inativo'
           }`}
           onChange={e => onChangeFormInput(FormInputUser.status)(String(e.target.checked))}

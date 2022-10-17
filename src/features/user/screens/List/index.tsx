@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { Button, Dialog, Loading } from '@/components';
 import { ActionProps } from '@/components/Dialog';
 import validators from '@/helpers/validators';
 import { updateMask as updateMaskCPFOrCNPJ } from '@/helpers/masks/cpfCnpj';
@@ -8,19 +6,17 @@ import useForm from '@/hooks/useForm';
 import Profile from '@/model/Profile';
 import User from '@/model/User';
 import api, { AxiosError } from '@/services/api';
-import React, { useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import UserType from '@/model/UserType';
-import {
-  Accordion,
-  AccordionBody,
-  AccordionHeader,
-  AccordionItem,
-  Container,
-  Label,
-  UncontrolledAccordion,
-} from 'reactstrap';
-import { RegisterContent } from '../../components/RegisterContent';
+import { useDialog } from '@/hooks/useDialog';
+import { UserGroupList } from './ui/UserGroupList';
+
+// eslint-disable-next-line no-shadow
+export enum States {
+  default = 'default',
+  loading = 'loading',
+}
 
 // eslint-disable-next-line no-shadow
 export enum FormInputUser {
@@ -35,12 +31,6 @@ export enum FormInputUser {
 }
 
 // eslint-disable-next-line no-shadow
-enum States {
-  default = 'default',
-  loading = 'loading',
-}
-
-// eslint-disable-next-line no-shadow
 export enum ShouldShowModal {
   user = 'user',
   group = 'group',
@@ -48,15 +38,14 @@ export enum ShouldShowModal {
 
 export const UserScreen: React.FC = (): JSX.Element => {
   const [state, setState] = useState(States.default);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [title, setTitle] = useState('Usuários e Grupos');
-  const [visible, setVisible] = useState(false);
-
   const [shouldShowModal, setShouldShowModal] = useState({} as ShouldShowModal);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [users, setUsers] = useState([] as User[]);
+  const [groups, setGroups] = useState([] as Profile[]);
   const [user, setUser] = useState({} as User);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [group, setGroup] = useState({} as Profile);
+
+  const { visible, onToggle } = useDialog();
 
   const {
     formData: formDataUser,
@@ -85,10 +74,35 @@ export const UserScreen: React.FC = (): JSX.Element => {
       password: [validators.required],
     },
     formatters: {
-      document: updateMaskCPFOrCNPJ,
+      cpf: updateMaskCPFOrCNPJ,
       telephone: updateMaskMobilePhone,
     },
   });
+
+  const toUserType = (userType: UserType): string => {
+    let result = '';
+    switch (userType) {
+      case UserType.Employee:
+        result = 'Funcionário';
+        break;
+      case UserType.PDV:
+        result = 'PDV';
+        break;
+
+      case UserType.SUB_PDV:
+        result = 'Sub PDV';
+        break;
+      case UserType.POS:
+        result = 'POS';
+        break;
+      case UserType.CONTRACTOR:
+        result = 'Empresa';
+        break;
+      default:
+        break;
+    }
+    return result;
+  };
 
   const handleOnChangeFileInput =
     (inputName: string) =>
@@ -110,11 +124,6 @@ export const UserScreen: React.FC = (): JSX.Element => {
       }
     };
 
-  const onToggle = (): void => {
-    console.log();
-    resetFormUser();
-  };
-
   const renderActionDialogToCancel: ActionProps = {
     title: 'Cancelar',
     onClick: (): void => onToggle(),
@@ -124,8 +133,28 @@ export const UserScreen: React.FC = (): JSX.Element => {
   const getUsers = async (): Promise<void> => {
     setState(States.loading);
     const response = await api.get<User[]>('/user/find');
+    setUsers(response.data);
+    const profiles = [] as Profile[];
+    response.data.forEach(data => {
+      if (data.profiles && data.profiles.length > 0) {
+        // eslint-disable-next-line no-plusplus
+        for (let p = 0; p < data.profiles.length; p++) {
+          let exists = false;
+          // eslint-disable-next-line no-plusplus
+          for (let i = 0; i < profiles.length; i++) {
+            if (data.profiles[p].id === profiles[i].id) {
+              exists = true;
+              break;
+            }
+          }
+          if (!exists) {
+            profiles.push(data.profiles[p]);
+          }
+        }
+      }
+    });
+    setGroups(profiles);
     setState(States.default);
-    console.log(response.data);
   };
 
   const stringToUserType = (value: string): UserType => {
@@ -153,6 +182,31 @@ export const UserScreen: React.FC = (): JSX.Element => {
     return userType;
   };
 
+  const userTypeToString = (userType: UserType): string => {
+    let result = '0';
+    switch (userType) {
+      case UserType.Employee:
+        result = '0';
+        break;
+      case UserType.PDV:
+        result = '1';
+        break;
+
+      case UserType.SUB_PDV:
+        result = '2';
+        break;
+      case UserType.POS:
+        result = '3';
+        break;
+      case UserType.CONTRACTOR:
+        result = '4';
+        break;
+      default:
+        break;
+    }
+    return result;
+  };
+
   const onSaveUser = async (): Promise<void> => {
     try {
       if (isFormValidUser()) {
@@ -174,6 +228,7 @@ export const UserScreen: React.FC = (): JSX.Element => {
           await api.put<User>('/user', payload);
           toast.success(`PDV "${formDataUser[FormInputUser.name]}" atualizado com sucesso!`);
         }
+        resetFormUser();
         onToggle();
       }
     } catch (error) {
@@ -182,132 +237,78 @@ export const UserScreen: React.FC = (): JSX.Element => {
     }
   };
 
-  const handleOnShouldShowModal = ({
-    value,
-    newTitleModal,
-    user: userSelected,
-    group: groupSelected,
-  }: {
-    value: ShouldShowModal;
-    newTitleModal: string | React.ReactNode;
-    user?: User;
-    group?: Profile;
-  }): void => {
+  const openModal = (
+    value: ShouldShowModal,
+    modalTitle: string,
+    userSelected?: User,
+    groupSelected?: Profile,
+  ): void => {
+    setTitle(modalTitle);
     setShouldShowModal(value);
-    setVisible(true);
+    if (userSelected) {
+      setUser(userSelected);
+    }
+    if (groupSelected) {
+      setGroup(groupSelected);
+    }
+    onToggle();
   };
+
+  const checkAllUserList = (e: ChangeEvent<HTMLInputElement>): void => {
+    console.log(e);
+  };
+
+  const changeUserList = (userList: User): void => {
+    console.log(userList);
+  };
+
+  const checkAllGroupList = (e: ChangeEvent<HTMLInputElement>): void => {
+    console.log(e);
+  };
+
+  const changeGroupList = (groupList: Profile): void => {
+    console.log(groupList);
+  };
+
+  useEffect(() => {
+    if (user?.id) {
+      onChangeFormInputUser(FormInputUser.name)(user.name);
+      onChangeFormInputUser(FormInputUser.cpf)(user.cpf);
+      onChangeFormInputUser(FormInputUser.telephone)(user.telephone);
+      onChangeFormInputUser(FormInputUser.email)(user.email);
+      onChangeFormInputUser(FormInputUser.imageBase64)(user.imageBase64);
+      onChangeFormInputUser(FormInputUser.password)(user.password);
+      onChangeFormInputUser(FormInputUser.userType)(userTypeToString(user.userType));
+      onChangeFormInputUser(FormInputUser.status)('true');
+    }
+  }, [user]);
 
   useEffect(() => {
     getUsers();
   }, []);
   return (
-    <React.Fragment>
-      <Loading isVisible={state === States.loading} />
-      <Dialog
-        title={title}
-        visible={visible}
-        onClose={onToggle}
-        position="center"
-        isContentWithCard={shouldShowModal !== ShouldShowModal.group}
-        actions={[
-          {
-            [ShouldShowModal.user]: renderActionDialogToCancel,
-            [ShouldShowModal.group]: renderActionDialogToCancel,
-          }[shouldShowModal],
-          {
-            [ShouldShowModal.user]: {
-              title: user.id ? 'Editar usuário' : 'Cadastrar usuário',
-              onClick: (): Promise<void> => onSaveUser(),
-            },
-            [ShouldShowModal.group]: {
-              title: group.id ? 'Editar grupo' : 'Cadastrar grupo',
-              onClick: (): Promise<void> => onSaveUser(),
-            },
-          }[shouldShowModal],
-        ]}
-      >
-        {
-          {
-            [ShouldShowModal.user]: (
-              <RegisterContent
-                formData={formDataUser}
-                formErrors={formErrorsUser}
-                onChangeFormInput={onChangeFormInputUser}
-                onChangeFileInput={handleOnChangeFileInput}
-              />
-            ),
-            [ShouldShowModal.group]: (
-              <RegisterContent
-                formData={formDataUser}
-                formErrors={formErrorsUser}
-                onChangeFormInput={onChangeFormInputUser}
-                onChangeFileInput={handleOnChangeFileInput}
-              />
-            ),
-          }[shouldShowModal]
-        }
-      </Dialog>
-      <Container className="mainContainer" fluid={true}>
-        <div className="d-flex justify-content-between" style={{ paddingBottom: '30px' }}>
-          <div className="pageTitle" style={{ display: 'grid' }}>
-            <Label>{title}</Label>
-          </div>
-          <div className="button-filter-container">
-            <Button
-              theme="outlineDark"
-              size="md"
-              title="+ Cadastrar grupo"
-              style={{ marginRight: 25 }}
-              onClick={(): void =>
-                handleOnShouldShowModal({
-                  value: ShouldShowModal.group,
-                  newTitleModal: 'Cadastrar grupo',
-                })
-              }
-            />
-
-            <Button
-              size="md"
-              title="+ Cadastrar usuário "
-              onClick={(): void =>
-                handleOnShouldShowModal({
-                  value: ShouldShowModal.user,
-                  newTitleModal: 'Cadastrar usuário',
-                })
-              }
-            />
-          </div>
-        </div>
-        <div>
-          <UncontrolledAccordion defaultOpen="user" open={'user'} className="card">
-            <AccordionItem>
-              <AccordionHeader targetId="user" className="card-header">
-                Usuários cadastrados (3)
-              </AccordionHeader>
-              <AccordionBody accordionId="user">asdfasdfadsf</AccordionBody>
-            </AccordionItem>
-            <AccordionItem>
-              <AccordionHeader targetId="group">Grupos cadastrados (3)</AccordionHeader>
-              <AccordionBody accordionId="group">asdfasdfadsf</AccordionBody>
-            </AccordionItem>
-          </UncontrolledAccordion>
-        </div>
-        {/*
-        <CustomTable
-          columns={columns}
-          data={dataTablePdv}
-          numberRowsPerPage={currentPage.pageSize}
-          progressPending={state === States.loading}
-        />
-        <Pagination
-          currentPage={currentPage.page}
-          totalCount={currentPage.total}
-          pageSize={currentPage.pageSize}
-          onPageChange={page => onPaginationChange(page)}
-          total={currentPage.total}
-        />
-        */}
-      </Container>
-    </React.Fragment>
+    <UserGroupList
+      state={state}
+      title={title}
+      visible={visible}
+      shouldShowModal={shouldShowModal}
+      renderModalActionProps={renderActionDialogToCancel}
+      formDataUser={formDataUser}
+      formErrorsUser={formErrorsUser}
+      users={users}
+      groups={groups}
+      user={user}
+      group={group}
+      onToggle={onToggle}
+      openModal={openModal}
+      saveUser={onSaveUser}
+      checkAllUserList={checkAllUserList}
+      toUserType={toUserType}
+      changeUserList={changeUserList}
+      checkAllGroupList={checkAllGroupList}
+      changeGroupList={changeGroupList}
+      changeFormInputUser={onChangeFormInputUser}
+      changeFileInputUser={handleOnChangeFileInput}
+    />
   );
 };
