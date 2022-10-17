@@ -8,8 +8,8 @@ export interface ActionProps {
   title?: string;
   theme?: ButtonTheme;
   size?: ButtonSize;
-  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   disabled?: boolean;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 export interface DialogProps {

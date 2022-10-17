@@ -10,6 +10,7 @@ export const primaryTheme = {
       backgroundColor: 'transparent',
       fontSize: '1rem',
       fontWidth: '400',
+      fontWeight: '400',
     },
   },
   rows: {
@@ -22,6 +23,7 @@ export const primaryTheme = {
       marginBottom: '30px',
       fontSize: '0.75rem',
       fontWidth: '300',
+      fontWeight: '300',
     },
   },
   headCells: {

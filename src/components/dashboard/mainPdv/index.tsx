@@ -153,19 +153,19 @@ const Sample = (): JSX.Element => {
               onClick={() => {
                 onClickEditPdv(item.id);
               }}
-              className="mr-2 svg-icon action-icon"
+              className="mr-4 svg-icon action-icon"
             /> */}
             <Trash
               onClick={() => {
                 setShowExclude(!showExclude);
               }}
-              className="mr-2 svg-icon action-icon"
+              className="mr-4 svg-icon action-icon"
             />
             <SubPdvIcon
               onClick={() => {
                 setShowSubPdvList(!showSubPdvList);
               }}
-              className="mr-2 svg-icon action-icon"
+              className="mr-4 svg-icon action-icon"
             />
           </>
         ),

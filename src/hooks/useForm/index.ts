@@ -16,7 +16,7 @@ export interface FormErrors {
 export type OnChangeFormInput = (inputName: string) => (data: FormDataValue) => void;
 type SetFormErrors = (errors: FormErrors) => void;
 type SetFormData = <FormData>(newFormData: FormData) => void;
-type IsFormValid = () => boolean;
+export type IsFormValid = () => boolean;
 type RunAllValidators = () => FormErrors;
 type SetErrors = (dynamicErrors: FormErrors) => void;
 
