@@ -27,9 +27,9 @@ export const LoginScreen: React.FC = (): JSX.Element => {
       document: [validators.required],
       password: [
         validators.required,
-        validators.minLength(8),
+        /*         validators.minLength(8),
         validators.maxLength(15),
-        validators.hasPasswordOnlyNumberCharacteres,
+        validators.hasPasswordOnlyNumberCharacteres, */
       ],
     },
     formatters: {
@@ -66,8 +66,13 @@ export const LoginScreen: React.FC = (): JSX.Element => {
       }
     } catch (error) {
       const err = error as AxiosError;
+      console.log(err.code);
+      const msg =
+        err.code && err.code === 'ERR_BAD_REQUEST'
+          ? 'Credenciais Inválidas'
+          : 'Falha ao realizar login, tentar novamente mais tarde';
       setErrors({
-        document: [err.message],
+        document: [msg],
       });
     } finally {
       setState(States.default);
