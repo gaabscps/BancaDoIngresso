@@ -4,6 +4,7 @@ import { PDV_ROUTES } from '@/features/pdv/navigation';
 import { POS_ROUTES } from '@/features/pos/navigation';
 import { PAYMENTGATEWAY_ROUTES } from '@/features/paymentGateway/navigation';
 import { PRODUTCTSCOMBOS_ROUTES } from '@/features/productsAndCombos/navigation';
+import { USER_ROUTES } from '@/features/user/screens/navigation';
 
 const path = {
   Initial: {
@@ -19,6 +20,9 @@ const path = {
     UsersGroups: {
       itself: '/dashboard/users-groups',
       edit: '/dashboard/users-groups/edit/:id',
+    },
+    User: {
+      ...USER_ROUTES,
     },
     Pdv: {
       ...PDV_ROUTES,

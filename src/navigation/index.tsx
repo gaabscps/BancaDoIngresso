@@ -11,6 +11,7 @@ import { PdvProvider } from '@/features/pdv/hook/usePdv';
 import { ProductsCombosNavigation } from '@/features/productsAndCombos/navigation';
 import { ProductNavigation } from '@/features/product/navigation';
 import { ComboNavigation } from '@/features/combo/navigation';
+import { UserNavigation } from '@/features/user/screens/navigation';
 import { renderRoutes } from './utils';
 import { Route } from './Route';
 import { path } from './path';
@@ -18,6 +19,7 @@ import { path } from './path';
 const Navigation: React.FC = (): JSX.Element => {
   const authRoutes = renderRoutes(AuthNavigation);
   const dashboardRoutes = renderRoutes(DashboardNavigation);
+  const userRoutes = renderRoutes(UserNavigation);
   const pdvRoutes = renderRoutes(PdvNavigation);
   const posRoutes = renderRoutes(PosNavigation);
   const paymentMethodsRoutes = renderRoutes(PaymentMethodsNavigation);
@@ -31,6 +33,7 @@ const Navigation: React.FC = (): JSX.Element => {
       <Switch>
         {authRoutes}
         {dashboardRoutes}
+        {userRoutes}
         {pdvRoutes}
         {posRoutes}
         {paymentMethodsRoutes}

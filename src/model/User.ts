@@ -10,5 +10,5 @@ export default interface User {
   imageBase64: string;
   password: string;
   userType: UserType;
-  profiles: Profile[];
+  profiles?: Profile[];
 }
