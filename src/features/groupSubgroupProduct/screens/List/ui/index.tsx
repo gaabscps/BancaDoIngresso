@@ -44,13 +44,9 @@ interface GroupProductContainerProps {
   visible: boolean;
   formDataGroupProduct: FormData;
   formErrorsGroupProduct: FormErrors;
-  formDataFilter: FormData;
-  formErrorsFilter: FormErrors;
   onSaveGroupProduct: () => Promise<void>;
   onSaveGroupSubgroupProduct: () => Promise<void>;
-  onChangeFormInputFilter: OnChangeFormInput;
   onToggle: () => void;
-  onFilter: () => Promise<void>;
   onChangeFormInputGroupProduct: OnChangeFormInput;
   onShowDeleteGroupProduct: (groupProduct: GroupProduct) => void;
   onShowDeleteSubgroupProduct: (subgroupProduct: SubgroupProduct) => void;
@@ -143,7 +139,7 @@ export const GroupProductContainer: React.FC<GroupProductContainerProps> = ({
         <div className="d-flex justify-content-between" style={{ paddingBottom: '30px' }}>
           <div className="pageTitle d-flex">
             <Link to={`${process.env.PUBLIC_URL}/dashboard/productscombos`}>
-              <ArrowLeft color={colors.black} style={{ position: 'relative', top: '2' }} />
+              <ArrowLeft color={colors.black} className="arrow-left" />
             </Link>
 
             <span className="ml-3 mb-0 mt-2">Grupos de subgrupos de produtos</span>

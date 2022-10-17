@@ -49,14 +49,6 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
     ShouldShowModal.groupProduct,
   );
 
-  // const [currentPage] = useState<GroupProductRequestParams>({
-  //   page: 1,
-  //   pageSize: 10,
-  //   sort: 'name',
-  //   order: 'DESC',
-  //   total: 1,
-  // });
-
   const { title, visible, onChangeTitle, onToggle } = useDialog();
   const confirmDelete = useConfirmDelete();
 
@@ -89,7 +81,6 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
     validators: {
       name: [validators.required],
     },
-    formatters: {},
   });
 
   const formSubgroup = {
@@ -99,18 +90,6 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
     isFormValid: isFormValidSubgroupProduct,
     resetForm: resetFormSubgroupProduct,
   };
-
-  const {
-    formData: formDataFilter,
-    formErrors: formErrorsFilter,
-    onChangeFormInput: onChangeFormInputFilter,
-    isFormValid: isFormValidFilter,
-  } = useForm({
-    initialData: {
-      filterSearch: '',
-      inputSearch: '',
-    },
-  });
 
   const handleFetch = async (): Promise<void> => {
     try {
@@ -269,32 +248,6 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
     });
   };
 
-  const handleOnFilter = async (): Promise<void> => {
-    try {
-      if (isFormValidFilter()) {
-        // const payload =
-        //   {
-        //     name: {
-        //       entity: {
-        //         name: formDataFilter[FormInputNameToFilter.inputSearch],
-        //       },
-        //     },
-        //     serialNumber: {
-        //       entity: {
-        //         serialNumber: formDataFilter[FormInputNameToFilter.inputSearch],
-        //       },
-        //     },
-        //   }[formDataFilter[FormInputNameToFilter.filterSearch]] || {};
-
-        onToggle();
-        await handleFetch();
-      }
-    } catch (error) {
-      const err = error as AxiosError;
-      toast.error(err.message);
-    }
-  };
-
   useEffect(() => {
     if (subgroupProduct?.id) {
       onChangeFormInputSubgroupProduct(FormInputNameToSaveSubGroupProduct.name)(
@@ -322,17 +275,13 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
       shouldShowModal={shouldShowModal}
       onSaveGroupProduct={handleOnSaveGroupProduct}
       listGroupProduct={listGroupProduct}
-      onChangeFormInputFilter={onChangeFormInputFilter}
       onShouldShowModal={handleOnShouldShowModal}
       formDataGroupProduct={formDataGroupProduct}
       formErrorsGroupProduct={formErrorsGroupProduct}
       onChangeFormInputGroupProduct={onChangeFormInputGroupProduct}
-      formDataFilter={formDataFilter}
-      formErrorsFilter={formErrorsFilter}
       onShowDeleteGroupProduct={handleOnShowDeleteGroupProduct}
       onSaveGroupSubgroupProduct={handleOnSaveGroupSubgroupProduct}
       onShowDeleteSubgroupProduct={handleOnShowDeleteSubgroupProduct}
-      onFilter={handleOnFilter}
       groupProductState={groupProduct}
       subGroupProductState={subgroupProduct}
       formSubgroup={formSubgroup}

@@ -854,7 +854,7 @@ input {
 }
 
 .input-disabled {
-    opacity: 0.5;
+  opacity: 0.5;
 }
 
 input[type='radio']:checked + .label-radio-custom {
@@ -1250,4 +1250,8 @@ input::-ms-clear {
 }
 .sm-icon {
   transform: scale(0.8);
+}
+.arrow-left {
+  position: relative;
+  top: 3px;
 }

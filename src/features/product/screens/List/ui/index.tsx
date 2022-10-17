@@ -192,7 +192,7 @@ export const ProductContainer: React.FC<ProductContainerProps> = ({
         <div className="d-flex justify-content-between" style={{ paddingBottom: '30px' }}>
           <div className="pageTitle d-flex">
             <Link to={`${process.env.PUBLIC_URL}/dashboard/productscombos`}>
-              <ArrowLeft color={colors.black} style={{ position: 'relative', top: '3px' }} />
+              <ArrowLeft color={colors.black} className="arrow-left" />
             </Link>
             <h5 className="ml-3 mb-0 mt-2 pageTitle">Produtos</h5>
           </div>

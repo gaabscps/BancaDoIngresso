@@ -66,7 +66,6 @@ export const LoginScreen: React.FC = (): JSX.Element => {
       }
     } catch (error) {
       const err = error as AxiosError;
-      console.log(err.code);
       const msg =
         err.code && err.code === 'ERR_BAD_REQUEST'
           ? 'CPF ou Senha inválida'
