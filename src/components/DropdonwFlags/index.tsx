@@ -9,9 +9,10 @@ interface DropdonwFlagsProps {
     id: string;
     name: string;
   }[];
+  pointerClass?: boolean;
 }
 
-export const DropdonwFlags: React.FC<DropdonwFlagsProps> = ({ dataColumn }) => {
+export const DropdonwFlags: React.FC<DropdonwFlagsProps> = ({ dataColumn, pointerClass }) => {
   const [isOpen, setIsOpen] = useState(false);
   const idRandom = Math.random().toString(36).substr(2, 9);
 
@@ -21,8 +22,10 @@ export const DropdonwFlags: React.FC<DropdonwFlagsProps> = ({ dataColumn }) => {
   return (
     <label className="dropdown">
       <div className="dd-button"></div>
-
-      <label className="d-flex mb-0" htmlFor={idRandom}>
+      <label
+        className={`d-flex mb-0 ${pointerClass === true ? 'pointerSvg' : ''}`}
+        htmlFor={idRandom}
+      >
         <div className="flag-item">{dataColumn[0].name}</div>
         <ChevronDown
           className="icon-chevron ml-2"

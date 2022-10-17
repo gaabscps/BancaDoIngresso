@@ -10,19 +10,22 @@ export const columns: TableColumn<DataRow>[] = [
   {
     name: 'Nome do combo',
     selector: row => row.comboName,
+    minWidth: '150px',
   },
   {
     name: 'Produtos do combo',
     selector: row => row.comboProducts,
     cell: row => row.comboProducts,
+    minWidth: '250px',
   },
   {
     name: 'Grupo e Subgrupo',
     selector: row => row.gruposubgroup,
+    minWidth: '250px',
   },
   {
     name: 'Ações',
     selector: row => row.actions,
-    width: '120px',
+    width: '121px',
   },
 ];
