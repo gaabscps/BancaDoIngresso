@@ -32,17 +32,15 @@ export interface PayloadGroupProduct {
 export interface PayloadSubGroupProduct {
   id?: string;
   name: string;
-  imageBase64?: string;
   productGroup?: {
-    id: string;
-    name: string;
-    imageBase64?: string;
+    id?: string;
+    name?: string;
   };
 }
 
 export const GroupProductScreen: React.FC = (): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
-  const [listGroupProduct, setListGroupProduct] = useState<SubgroupProduct[]>([]);
+  const [listGroupProduct, setListGroupProduct] = useState<GroupProduct[]>([]);
   const [groupProduct, setGroupProduct] = useState<GroupProduct>();
   const [subgroupProduct, setSubgroupProduct] = useState<SubgroupProduct>();
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(
@@ -115,7 +113,7 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
   const handleFetch = async (): Promise<void> => {
     try {
       setState(States.loading);
-      const { data } = await api.get<GroupProductResponse>('/product-subgroup/find');
+      const { data } = await api.get<GroupProductResponse>('/product-group/find');
 
       if (data) {
         setListGroupProduct(data);
@@ -132,35 +130,53 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
     newTitleModal,
     groupProduct: groupProductSelected,
     subgroupProduct: subgroupProductSelected,
+    isEdit,
   }: {
     value: ShouldShowModal;
     newTitleModal: string | React.ReactNode;
     groupProduct?: GroupProduct;
     subgroupProduct?: SubgroupProduct;
+    isEdit?: boolean;
   }): void => {
     setShouldShowModal(value);
     onChangeTitle(newTitleModal);
     onToggle();
 
-    if (groupProductSelected?.id && value === ShouldShowModal.groupProduct) {
+    if (groupProductSelected) {
       setGroupProduct(groupProductSelected);
-      if (groupProductSelected.id !== groupProduct?.id) {
-        resetFormGroupProduct();
-      }
     } else {
-      resetFormGroupProduct();
       setGroupProduct(undefined);
+      resetFormGroupProduct();
+    }
+    if (subgroupProductSelected && isEdit) {
+      setSubgroupProduct(subgroupProductSelected);
+      setGroupProduct(groupProductSelected);
+    }
+    if (isEdit === false) {
+      setGroupProduct(undefined);
+      setSubgroupProduct(undefined);
+      resetFormSubgroupProduct();
     }
 
-    if (subgroupProductSelected?.id && value === ShouldShowModal.subgroupProduct) {
-      setSubgroupProduct(subgroupProductSelected);
-      if (subgroupProductSelected.id !== subgroupProduct?.id) {
-        resetFormSubgroupProduct();
-      }
-    } else {
-      resetFormSubgroupProduct();
-      setSubgroupProduct(undefined);
-    }
+    // if (groupProductSelected?.id) {
+    //   setGroupProduct(groupProductSelected);
+    //   if (groupProductSelected.id !== groupProduct?.id) {
+    //     resetFormGroupProduct();
+    //   }
+    // } else {
+    //   resetFormGroupProduct();
+    //   setGroupProduct(undefined);
+    // }
+
+    // if (subgroupProductSelected?.id && value === ShouldShowModal.subgroupProduct) {
+    //   setSubgroupProduct(subgroupProductSelected);
+    //   if (subgroupProductSelected.id !== subgroupProduct?.id) {
+    //     resetFormSubgroupProduct();
+    //   }
+    // } else {
+    //   resetFormSubgroupProduct();
+    //   setSubgroupProduct(undefined);
+    // }
   };
 
   const handleOnSaveGroupProduct = async (): Promise<void> => {
@@ -193,13 +209,14 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
     try {
       if (isFormValidSubgroupProduct()) {
         const payload: PayloadSubGroupProduct = {
-          id: subgroupProduct?.productGroup?.id,
-          name: formDataSubgroupProduct[FormInputNameToSaveGroupProduct.name],
+          id: subgroupProduct?.id,
+          name: formDataSubgroupProduct[FormInputNameToSaveSubGroupProduct.name],
+          productGroup: {
+            id: subgroupProduct?.productGroup?.id,
+          },
         };
-
         if (!payload.id) {
           delete payload.id;
-
           await api.post<SubgroupProduct>('/product-subgroup', payload);
           toast.success('Subgrupo de produto cadastrado com sucesso!');
         } else {
@@ -219,10 +236,24 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
   const handleOnClose = (): void => confirmDelete.hide();
 
   const handleOnConfirmDeleteToGroupProduct = async (
-    groupProductSelected: GroupProduct,
+    subgroupProductSelected: SubgroupProduct,
   ): Promise<void> => {
     try {
-      await api.delete(`/product-group/${groupProductSelected?.id}`);
+      await api.delete(`/product-group/${subgroupProductSelected?.productGroup?.id}`);
+
+      toast.success('Grupo e subgrupo de produtos excluído com sucesso!');
+      handleOnClose();
+      handleFetch();
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    }
+  };
+  const handleOnConfirmDeleteToSubGroupProduct = async (
+    subgroupProductSelected: SubgroupProduct,
+  ): Promise<void> => {
+    try {
+      await api.delete(`/product-subgroup/${subgroupProductSelected?.id}`);
 
       toast.success('Grupo e subgrupo de produtos excluído com sucesso!');
       handleOnClose();
@@ -263,7 +294,8 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
         },
         {
           title: 'Sim, quero remover',
-          onClick: (): Promise<void> => handleOnConfirmDeleteToGroupProduct(groupProductSelected),
+          onClick: (): Promise<void> =>
+            handleOnConfirmDeleteToSubGroupProduct(groupProductSelected),
         },
       ],
     });

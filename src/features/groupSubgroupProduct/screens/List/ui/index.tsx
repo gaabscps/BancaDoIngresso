@@ -59,11 +59,13 @@ interface GroupProductContainerProps {
     newTitleModal,
     groupProduct,
     subgroupProduct,
+    isEdit,
   }: {
     value: ShouldShowModal;
     newTitleModal: string | React.ReactNode;
     groupProduct?: GroupProduct;
     subgroupProduct?: SubgroupProduct;
+    isEdit?: boolean;
   }) => void;
   listGroupProduct: GroupProduct[];
   formSubgroup: {
@@ -115,10 +117,12 @@ export const GroupProductContainer: React.FC<GroupProductContainerProps> = ({
             [ShouldShowModal.groupProduct]: {
               title: groupProductState?.id ? 'Salvar' : 'Cadastrar novo grupo',
               onClick: (): Promise<void> => onSaveGroupProduct(),
+              disabled: formDataGroupProduct.name === '',
             },
             [ShouldShowModal.subgroupProduct]: {
               title: subGroupProductState?.id ? 'Salvar' : 'Cadastrar novo Subgrupo',
               onClick: (): Promise<void> => onSaveGroupSubgroupProduct(),
+              disabled: formSubgroup.formData.name === '',
             },
           }[shouldShowModal],
         ]}
@@ -166,26 +170,26 @@ export const GroupProductContainer: React.FC<GroupProductContainerProps> = ({
             </Col>
           </Row>
           <Row className="tree-container">
-            {listGroupProduct.map((productGroup: SubgroupProduct) => (
+            {listGroupProduct.map((subGroupProduct: GroupProduct) => (
               <Col className="tree-item-container">
                 <div className="d-flex">
                   <div className="d-flex text-gruop tree-main-text">
-                    <div style={{ margin: 'auto 0' }}>{productGroup.productGroup?.name}</div>
+                    <div style={{ margin: 'auto 0' }}>{subGroupProduct.name}</div>
                     <div className="d-flex icon-content" style={{ margin: 'auto 0' }}>
                       <Pen
                         className="svg-icon action-icon sm-icon"
                         onClick={(): void =>
                           onShouldShowModal({
                             value: ShouldShowModal.groupProduct,
-                            newTitleModal: `${productGroup.productGroup?.name}`,
-                            groupProduct: productGroup?.productGroup,
+                            newTitleModal: `${subGroupProduct.name}`,
+                            groupProduct: subGroupProduct,
                           })
                         }
                       />
                       <Trash
                         className="mr-0 svg-icon sm-icon"
                         onClick={() => {
-                          onShowDeleteGroupProduct(productGroup);
+                          onShowDeleteGroupProduct(subGroupProduct);
                         }}
                       />
                     </div>
@@ -197,7 +201,9 @@ export const GroupProductContainer: React.FC<GroupProductContainerProps> = ({
                       onClick={(): void =>
                         onShouldShowModal({
                           value: ShouldShowModal.subgroupProduct,
-                          newTitleModal: `Cadastrar novo subgrupo - Em ${productGroup.name}`,
+                          newTitleModal: `Cadastrar novo subgrupo - Em ${subGroupProduct.name}`,
+                          subgroupProduct: subGroupProduct,
+                          isEdit: false,
                         })
                       }
                     >
@@ -208,22 +214,23 @@ export const GroupProductContainer: React.FC<GroupProductContainerProps> = ({
                 <div className="tree">
                   <ul>
                     <li>
-                      <div>{productGroup.name}</div>
+                      <div>{subGroupProduct.name}</div>
                       <div className="flex-shrink-0 ml-4">
                         <Pen
                           className="mr-4 svg-icon action-icon sm-icon"
                           onClick={(): void =>
                             onShouldShowModal({
                               value: ShouldShowModal.subgroupProduct,
-                              newTitleModal: `${productGroup.name}`,
-                              subgroupProduct: productGroup,
+                              newTitleModal: `${subGroupProduct.name}`,
+                              subgroupProduct: subGroupProduct,
+                              isEdit: true,
                             })
                           }
                         />
                         <Trash
                           className="mr-4 svg-icon action-icon sm-icon"
                           onClick={() => {
-                            onShowDeleteSubgroupProduct(productGroup);
+                            onShowDeleteSubgroupProduct(subGroupProduct);
                           }}
                         />
                       </div>
