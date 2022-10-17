@@ -226,9 +226,9 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
               onChange={e => onChangeFormInput(FormInputName.companyType)(e?.value as string)}
               error={formErrors.companyType && formErrors.companyType[0]}
               value={formData[FormInputName.companyType]}
-              options={listContractorType.map(item => ({
-                value: item.id,
-                label: item.name,
+              options={listContractorType?.map(item => ({
+                value: item?.id,
+                label: item?.name,
               }))}
             />
           </FormGroup>
@@ -568,7 +568,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
           ) : (
             <>
               <div style={{ padding: '10px 0 20px 0', color: '#A5A5A5' }}>
-                Você ainda não adicionou nenhuma à empresa
+                Você ainda não adicionou nenhum usuário à empresa
               </div>
               <div style={{ color: '#A5A5A5', paddingBottom: '30px' }}>
                 Aqui será exibida a lista dos usuários inseridos.

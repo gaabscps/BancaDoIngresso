@@ -31,7 +31,9 @@ export const InputText: FC<InputProps> = ({
   disabled,
 }) => (
   <div
-    className={`flex-column input-component ${wrapperClass} ${disabled ? 'input-disabled' : ''}`}
+    className={`flex-column input-component ${wrapperClass} ${disabled ? 'input-disabled' : ''} ${
+      error ? 'input-error' : ''
+    }`}
   >
     {label && (
       <label htmlFor={name} className="input-label">

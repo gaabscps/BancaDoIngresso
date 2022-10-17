@@ -2,12 +2,11 @@ import React from 'react';
 import { Col, Form, Container, Row } from 'reactstrap';
 import { UseFormReturn } from '@/hooks/useForm';
 import { Button, InputText, Loading } from '@/components';
+import { ReactComponent as IdCard } from '@/assets/images/svg/idCard.svg';
+import { ReactComponent as LoginLock } from '@/assets/images/svg/loginLock.svg';
 import logoBanca from '@/assets/images/logo/logoBanca.png';
-import idCard from '@/assets/images/svg/idCard.svg';
-import loginLock from '@/assets/images/svg/loginLock.svg';
 import eye from '@/assets/images/login/eye.png';
 import closeEye from '@/assets/images/login/closeEye.png';
-
 // eslint-disable-next-line no-shadow
 export enum States {
   default = 'default',
@@ -68,15 +67,15 @@ export const LoginContainer: React.FC<LoginContainerProps> = ({
                   </div>
                 </Col>
               </Row>
-              <div className="flex-column form-row ">
+              <div className="flex-column">
                 <div style={{ marginBottom: '-10px' }}>
                   <Row>
                     <Col className="loginField" style={{ marginTop: '20px' }}>
                       <InputText
                         name="document"
                         label={
-                          <div>
-                            <img className="mr-2" src={idCard} />
+                          <div className="d-flex align-items-center">
+                            <IdCard className="mr-2 img-fluid for-light" />
                             {'Seu CPF'}
                           </div>
                         }
@@ -95,8 +94,8 @@ export const LoginContainer: React.FC<LoginContainerProps> = ({
                       <InputText
                         name="password"
                         label={
-                          <div>
-                            <img className="mr-2" src={loginLock} />
+                          <div className="d-flex align-items-center">
+                            <LoginLock className="mr-2 img-fluid for-light" />
                             {'Senha'}
                           </div>
                         }
@@ -130,18 +129,21 @@ export const LoginContainer: React.FC<LoginContainerProps> = ({
                   </Row>
                 </div>
               </div>
-
-              <Button
-                title="Entrar"
-                disabled={
-                  !formData[FormInputName.document] ||
-                  !formData[FormInputName.password] ||
-                  state === States.loading
-                }
-                onClick={onSubmit}
-                theme="red"
-                size="xl"
-              />
+              <Row>
+                <Col>
+                  <Button
+                    title="Entrar"
+                    disabled={
+                      !formData[FormInputName.document] ||
+                      !formData[FormInputName.password] ||
+                      state === States.loading
+                    }
+                    onClick={onSubmit}
+                    theme="red"
+                    size="xl"
+                  />
+                </Col>
+              </Row>
               <div className="d-flex justify-content-center align-items-center forgotPassword">
                 <a
                   onClick={onGoToForgotPassword}

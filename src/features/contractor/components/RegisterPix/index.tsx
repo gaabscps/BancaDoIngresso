@@ -64,7 +64,7 @@ export const RegisterPix: React.FC<RegisterContentProps> = ({
               <SelectCustom
                 name="nameType"
                 label="Tipo"
-                placeholder="Selecione ou digite a instituição"
+                placeholder="Selecione ou digite o tipo"
                 onChange={e => {
                   controllerInputAppendPix.handleChangePix(
                     FormInputName.idType,
