@@ -156,7 +156,7 @@ export const ContractorContainer: React.FC<ContractorContainerProps> = ({
     ),
     document: item.document,
     telephone: item.telephone,
-    companyType: item.contractorType.name ?? '----',
+    companyType: item.contractorType?.name ?? '----',
     actions: (
       <React.Fragment>
         <Pen
