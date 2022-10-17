@@ -70,8 +70,8 @@ export const LoginScreen: React.FC = (): JSX.Element => {
       console.log(err.code);
       if (err.code && err.code === 'ERR_BAD_REQUEST') {
         setErrors({
-          document: ['CPF inválido'],
-          password: ['Senha inválida '],
+          document: ['CPF ou Senha inválida'],
+          password: ['CPF ou Senha inválida'],
         });
       } else {
         toast.error('Falha ao realizar login, tentar novamente mais tarde');
