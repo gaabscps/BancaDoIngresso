@@ -568,7 +568,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
           ) : (
             <>
               <div style={{ padding: '10px 0 20px 0', color: '#A5A5A5' }}>
-                Você ainda não adicionou nenhuma à empresa
+                Você ainda não adicionou nenhum usuário à empresa
               </div>
               <div style={{ color: '#A5A5A5', paddingBottom: '30px' }}>
                 Aqui será exibida a lista dos usuários inseridos.
