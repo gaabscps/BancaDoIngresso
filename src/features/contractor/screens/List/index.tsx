@@ -149,6 +149,7 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
       street: [validators.required],
       number: [validators.required],
       telephone: [validators.required, validators.mobilePhone],
+      email: [validators.required, validators.email],
     },
     formatters: {
       document: updateMaskCPFOrCNPJ,
