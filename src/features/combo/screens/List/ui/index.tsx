@@ -176,9 +176,7 @@ export const ComboContainer: React.FC<ComboContainerProps> = ({
             [ShouldShowModal.combo]: {
               title: comboState?.id ? 'Salvar' : 'Cadastrar novo combo',
               onClick: (): Promise<void> => onSaveCombo(),
-              // disabled:
-              //   (formDataCombo.name && formDataCombo.groupCombo && formDataCombo.subgroupCombo) ===
-              //   '',
+              disabled: formDataCombo.name === '',
             },
           }[shouldShowModal],
         ]}

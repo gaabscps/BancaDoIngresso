@@ -156,9 +156,7 @@ export const ProductContainer: React.FC<ProductContainerProps> = ({
             [ShouldShowModal.product]: {
               title: productState?.id ? 'Salvar' : 'Cadastrar novo produto',
               onClick: (): Promise<void> => onSaveProduct(),
-              disabled:
-                Object.keys(formErrorsProduct).length === 0 &&
-                formErrorsProduct.constructor === Object,
+              disabled: formDataProduct.name === '',
             },
           }[shouldShowModal],
         ]}
