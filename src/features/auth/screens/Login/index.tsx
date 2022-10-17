@@ -69,7 +69,7 @@ export const LoginScreen: React.FC = (): JSX.Element => {
       console.log(err.code);
       const msg =
         err.code && err.code === 'ERR_BAD_REQUEST'
-          ? 'Credenciais Inválidas'
+          ? 'CPF ou Senha inválida'
           : 'Falha ao realizar login, tentar novamente mais tarde';
       setErrors({
         document: [msg],

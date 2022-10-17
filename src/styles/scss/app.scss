@@ -25,7 +25,7 @@
 }
 
 .page-body {
-  background-color: #F8F8F8;
+  background-color: #f8f8f8;
   margin-left: 280px;
   transition: linear 0.3s;
 }
@@ -279,6 +279,8 @@
   justify-content: flex-start;
   transition: linear 0.3s;
   .eventStatus {
+    display: flex;
+    align-items: center;
     padding-right: 25px;
     transition: linear 0.3s;
     svg {
@@ -851,6 +853,10 @@ input {
   border-color: #e64f49 !important;
 }
 
+.input-disabled {
+    opacity: 0.5;
+}
+
 input[type='radio']:checked + .label-radio-custom {
   background-color: #222222 !important;
   color: #ffffff !important;
@@ -1205,7 +1211,15 @@ input::-ms-clear {
 }
 
 .border-bottom-title {
-  border-bottom: 2px solid #222222;
+  border-bottom: 1px solid #222222;
+}
+
+.fw-700 {
+  font-weight: 700;
+}
+
+.fw-400 {
+  font-weight: 400;
 }
 
 .circle-notification {
