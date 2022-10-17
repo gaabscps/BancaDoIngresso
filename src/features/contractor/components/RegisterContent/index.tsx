@@ -226,9 +226,9 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
               onChange={e => onChangeFormInput(FormInputName.companyType)(e?.value as string)}
               error={formErrors.companyType && formErrors.companyType[0]}
               value={formData[FormInputName.companyType]}
-              options={listContractorType.map(item => ({
-                value: item.id,
-                label: item.name,
+              options={listContractorType?.map(item => ({
+                value: item?.id,
+                label: item?.name,
               }))}
             />
           </FormGroup>
