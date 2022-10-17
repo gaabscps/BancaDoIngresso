@@ -10,6 +10,7 @@ export interface ActionProps {
   size?: ButtonSize;
   disabled?: boolean;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  disabled?: boolean;
 }
 
 export interface DialogProps {

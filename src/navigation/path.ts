@@ -5,6 +5,7 @@ import { POS_ROUTES } from '@/features/pos/navigation';
 import { PAYMENTGATEWAY_ROUTES } from '@/features/paymentGateway/navigation';
 import { PRODUTCTSCOMBOS_ROUTES } from '@/features/productsAndCombos/navigation';
 import { GROUPSUBGROUPPRODUCT_ROUTES } from '@/features/groupSubgroupProduct/navigation';
+import { COMPANY_ROUTES } from '@/features/contractor/navigation';
 
 const path = {
   Initial: {
@@ -27,9 +28,6 @@ const path = {
     Pos: {
       ...POS_ROUTES,
     },
-    Company: {
-      itself: '/dashboard/company',
-    },
     Gateway: {
       ...PAYMENTGATEWAY_ROUTES,
     },
@@ -41,6 +39,9 @@ const path = {
     },
     ProductsCombos: {
       ...PRODUTCTSCOMBOS_ROUTES,
+    },
+    Company: {
+      ...COMPANY_ROUTES,
     },
   },
 } as const;
