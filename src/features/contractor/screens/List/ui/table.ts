@@ -82,11 +82,11 @@ export const columnsUser: TableColumn<DataRowUser>[] = [
   {
     name: 'Login',
     selector: row => row.login,
-    maxWidth: '130px',
+    maxWidth: '140px',
   },
   {
     name: '',
     selector: row => row.actions,
-    maxWidth: '120px',
+    maxWidth: '85px',
   },
 ];

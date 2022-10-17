@@ -152,7 +152,7 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
     validators: {
       name: [validators.required],
       document: [validators.required, validators.cpforcnpj],
-      zipCode: [validators.required],
+      zipCode: [validators.required, validators.cep],
       state: [validators.required],
       city: [validators.required],
       district: [validators.required],
@@ -260,7 +260,6 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
         return;
       }
       setUsersSelected([...usersSelected, newUsersSelected]);
-      onChangeFormInputContractor(FormInputNameToSaveContractor.user)('');
     },
     handleRemoveUser(index: number): void {
       const values = [...usersSelected];
@@ -363,19 +362,26 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
     value,
     newTitleModal,
     contractor: companySelected,
+    isEdit,
   }: {
     value: ShouldShowModal;
     newTitleModal: string | React.ReactNode;
     contractor?: Contractor;
+    isEdit?: boolean;
   }): void => {
     setShouldShowModal(value);
     onChangeTitle(newTitleModal);
     if (value !== ShouldShowModal.filter) {
-      setBankAccount([...listBankAccount, { id: '', name: '', agencia: '', conta: '' }]);
-      setPix([
-        ...listPixTable,
-        { idInstitution: '', nameInstitution: '', idType: '', nameType: '', pix: '' },
-      ]);
+      if (!isEdit) {
+        setBankAccount([...listBankAccount, { id: '', name: '', agencia: '', conta: '' }]);
+        setPix([
+          ...listPixTable,
+          { idInstitution: '', nameInstitution: '', idType: '', nameType: '', pix: '' },
+        ]);
+      } else {
+        setBankAccount([...listBankAccount]);
+        setPix([...listPixTable]);
+      }
     }
 
     if (

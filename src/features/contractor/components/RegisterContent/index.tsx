@@ -30,6 +30,7 @@ interface RegisterContentProps {
     value: ShouldShowModal;
     newTitleModal: string | React.ReactNode;
     contractor?: Contractor;
+    isEdit?: boolean;
   }) => void;
   onDeleteRowBankAccount: (bankAccount: any) => void;
   listPixTable: any[];
@@ -72,6 +73,10 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
   contractorState,
   controllerAppendUser,
 }) => {
+  const isValidAddresswithCEP = (): boolean => {
+    const { zipCode } = formData;
+    return !(zipCode.length === 9 && isValidCEP(zipCode));
+  };
   const dataTableBankAccount = listBankAccount?.map(item => ({
     id: item.id,
     name: item.name,
@@ -106,6 +111,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
                 </div>
               ),
               contractor: contractorState,
+              isEdit: true,
             })
           }
         />
@@ -151,6 +157,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
                 </div>
               ),
               contractor: contractorState,
+              isEdit: true,
             })
           }
         />
@@ -251,7 +258,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
           <FormGroup className="mb-2">
             <InputText
               name="zipCode"
-              label="CEP (opcional)"
+              label="CEP"
               placeholder="Digite o CEP da empresa"
               maxLength={9}
               value={formData[FormInputName.zipCode]}
@@ -281,6 +288,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
                   onChange={e => onChangeFormInput(FormInputName.state)(e?.target?.value as string)}
                   error={formErrors.state && formErrors.state[0]}
                   options={statesUf}
+                  disabled={isValidAddresswithCEP()}
                 />
               </FormGroup>
             </Col>
@@ -293,6 +301,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
                   value={formData[FormInputName.city]}
                   onChange={e => onChangeFormInput(FormInputName.city)(e?.target.value as string)}
                   error={formErrors.city && formErrors.city[0]}
+                  disabled={isValidAddresswithCEP()}
                 />
               </FormGroup>
             </Col>
@@ -306,6 +315,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
               value={formData[FormInputName.district]}
               onChange={e => onChangeFormInput(FormInputName.district)(e.target.value)}
               error={formErrors.district && formErrors.district[0]}
+              disabled={isValidAddresswithCEP()}
             />
           </FormGroup>
 
@@ -317,6 +327,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
               value={formData[FormInputName.street]}
               onChange={e => onChangeFormInput(FormInputName.street)(e.target.value)}
               error={formErrors.street && formErrors.street[0]}
+              disabled={isValidAddresswithCEP()}
             />
           </FormGroup>
 
@@ -329,6 +340,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
               value={formData[FormInputName.number]}
               onChange={e => onChangeFormInput(FormInputName.number)(e.target.value)}
               error={formErrors.number && formErrors.number[0]}
+              disabled={isValidAddresswithCEP()}
             />
           </FormGroup>
 
@@ -340,6 +352,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
               value={formData[FormInputName.complement]}
               onChange={e => onChangeFormInput(FormInputName.complement)(e.target.value)}
               error={formErrors.complement && formErrors.complement[0]}
+              disabled={isValidAddresswithCEP()}
             />
           </FormGroup>
 
@@ -548,7 +561,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             <CustomTable
               columns={columnsUser}
               data={dataTableUser}
-              theme="secondary"
+              theme="tertiary"
               progressPending={false}
               numberRowsPerPage={1}
             />
