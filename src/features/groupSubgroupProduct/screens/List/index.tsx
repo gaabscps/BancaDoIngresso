@@ -21,10 +21,12 @@ import {
   // SubGroupProductResponse,
   // GroupProductResponse,
 } from '@/features/groupSubgroupProduct/types';
-import GroupProduct from '@/model/GroupProduct';
+import GroupProduct from '@/model/GroupProductSend';
 import SubgroupProduct from '@/model/SubgroupProduct';
 import ProductSubgroup from '@/model/ProductSubgroup';
 import { DeleteContent } from '../../components/DeleteContent';
+import SubGrup from '@/model/SubGrupSend';
+import SubGrupSend from '@/model/SubGrupSend';
 
 export interface PayloadGroupProduct {
   id?: string;
@@ -35,7 +37,7 @@ export interface PayloadSubGroupProduct {
   id?: string;
   name: string;
   productGroup: {
-    id: string;
+    id?: string;
   };
 }
 
@@ -43,7 +45,7 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
   const [listGroupProduct, setListGroupProduct] = useState<GroupProduct[]>([]);
   const [groupProduct, setGroupProduct] = useState<GroupProduct>();
-  const [subgroupProduct, setSubgroupProduct] = useState<ProductSubgroup>();
+  const [subgroupProduct, setSubgroupProduct] = useState<SubGrupSend>();
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(
     ShouldShowModal.groupProduct,
   );
@@ -128,7 +130,7 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
     value: ShouldShowModal;
     newTitleModal: string | React.ReactNode;
     groupProduct?: GroupProduct;
-    subgroupProduct?: SubgroupProduct;
+    subgroupProduct?: SubGrupSend;
     isEdit?: boolean;
   }): void => {
     setShouldShowModal(value);
@@ -323,9 +325,9 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
   };
 
   useEffect(() => {
-    if (subgroupProduct?.id) {
+    if (subgroupProduct?.productSubGroupId) {
       onChangeFormInputSubgroupProduct(FormInputNameToSaveSubGroupProduct.name)(
-        subgroupProduct.name,
+        subgroupProduct.productSubGroupName,
       );
     }
   }, [subgroupProduct]);

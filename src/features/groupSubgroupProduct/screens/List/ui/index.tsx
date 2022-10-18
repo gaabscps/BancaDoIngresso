@@ -7,7 +7,7 @@ import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { ActionProps, Dialog } from '@/components/Dialog';
 import { FormErrors, OnChangeFormInput, FormData } from '@/hooks/useForm';
-import GroupProduct from '@/model/GroupProduct';
+import GroupProduct from '@/model/GroupProductSend';
 import './styles.scss';
 import { RegisterSubgroupContent } from '@/features/groupSubgroupProduct/components/RegisterSubgroupContent';
 import SubgroupProduct from '@/model/SubgroupProduct';

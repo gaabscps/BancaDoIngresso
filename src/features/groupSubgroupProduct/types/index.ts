@@ -1,5 +1,5 @@
 import SubgroupProduct from '@/model/SubgroupProduct';
-import GroupProduct from '@/model/GroupProduct';
+import GroupProduct from '@/model/GroupProductSend';
 import Page from '@/model/Page';
 
 export type GroupProductResponse = Page<GroupProduct, GroupProduct>;
