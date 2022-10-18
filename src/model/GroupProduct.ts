@@ -1,4 +1,10 @@
 export default interface GroupProduct {
-  id?: string;
-  name: string;
+  productGroupId: string;
+  productGroupName: string;
+  subGroups: [
+    {
+      productSubGroupId: string;
+      productSubGroupName: string;
+    },
+  ];
 }

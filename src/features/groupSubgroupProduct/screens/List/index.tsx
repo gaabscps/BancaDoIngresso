@@ -15,6 +15,7 @@ import {
 import { FormInputName as FormInputNameToSaveGroupProduct } from '@/features/groupSubgroupProduct/components/RegisterGroupContent';
 import { FormInputName as FormInputNameToSaveSubGroupProduct } from '@/features/groupSubgroupProduct/components/RegisterSubgroupContent';
 import {
+  GroupProductRequestParams,
   GroupProductResponse,
   // GroupProductRequestParams,
   // SubGroupProductResponse,
@@ -22,6 +23,7 @@ import {
 } from '@/features/groupSubgroupProduct/types';
 import GroupProduct from '@/model/GroupProduct';
 import SubgroupProduct from '@/model/SubgroupProduct';
+import ProductSubgroup from '@/model/ProductSubgroup';
 import { DeleteContent } from '../../components/DeleteContent';
 
 export interface PayloadGroupProduct {
@@ -32,9 +34,8 @@ export interface PayloadGroupProduct {
 export interface PayloadSubGroupProduct {
   id?: string;
   name: string;
-  productGroup?: {
-    id?: string;
-    name?: string;
+  productGroup: {
+    id: string;
   };
 }
 
@@ -42,18 +43,10 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
   const [listGroupProduct, setListGroupProduct] = useState<GroupProduct[]>([]);
   const [groupProduct, setGroupProduct] = useState<GroupProduct>();
-  const [subgroupProduct, setSubgroupProduct] = useState<SubgroupProduct>();
+  const [subgroupProduct, setSubgroupProduct] = useState<ProductSubgroup>();
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(
     ShouldShowModal.groupProduct,
   );
-
-  // const [currentPage] = useState<GroupProductRequestParams>({
-  //   page: 1,
-  //   pageSize: 10,
-  //   sort: 'name',
-  //   order: 'DESC',
-  //   total: 1,
-  // });
 
   const { title, visible, onChangeTitle, onToggle } = useDialog();
   const confirmDelete = useConfirmDelete();
@@ -113,10 +106,10 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
   const handleFetch = async (): Promise<void> => {
     try {
       setState(States.loading);
-      const { data } = await api.get<GroupProductResponse>('/product-group/find');
+      const { data } = await api.post<GroupProductResponse>('/product-group/page/group-sub');
 
       if (data) {
-        setListGroupProduct(data);
+        setListGroupProduct(data?.list ?? []);
       }
     } catch (error) {
       const err = error as AxiosError;
@@ -141,11 +134,12 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
     setShouldShowModal(value);
     onChangeTitle(newTitleModal);
     onToggle();
+    console.log('groupProductSelected', groupProductSelected);
 
     if (groupProductSelected) {
       setGroupProduct(groupProductSelected);
     } else {
-      setGroupProduct(undefined);
+      // setGroupProduct(undefined);
       resetFormGroupProduct();
     }
     if (subgroupProductSelected && isEdit) {
@@ -153,7 +147,7 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
       setGroupProduct(groupProductSelected);
     }
     if (isEdit === false) {
-      setGroupProduct(undefined);
+      // setGroupProduct(undefined);
       setSubgroupProduct(undefined);
       resetFormSubgroupProduct();
     }
@@ -183,7 +177,7 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
     try {
       if (isFormValidGroupProduct()) {
         const payload: PayloadGroupProduct = {
-          id: groupProduct?.id,
+          id: groupProduct?.productGroupId,
           name: formDataGroupProduct[FormInputNameToSaveGroupProduct.name],
         };
 
@@ -205,14 +199,15 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
       toast.error(err.message);
     }
   };
+
   const handleOnSaveGroupSubgroupProduct = async (): Promise<void> => {
     try {
       if (isFormValidSubgroupProduct()) {
         const payload: PayloadSubGroupProduct = {
-          id: subgroupProduct?.id,
+          id: subgroupProduct?.productSubGroupId,
           name: formDataSubgroupProduct[FormInputNameToSaveSubGroupProduct.name],
           productGroup: {
-            id: subgroupProduct?.productGroup?.id,
+            id: groupProduct?.productGroupId,
           },
         };
         if (!payload.id) {
@@ -336,8 +331,10 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
   }, [subgroupProduct]);
 
   useEffect(() => {
-    if (groupProduct?.id) {
-      onChangeFormInputGroupProduct(FormInputNameToSaveGroupProduct.name)(groupProduct.name);
+    if (groupProduct?.productGroupId) {
+      onChangeFormInputGroupProduct(FormInputNameToSaveGroupProduct.name)(
+        groupProduct.productGroupName,
+      );
     }
   }, [groupProduct]);
 

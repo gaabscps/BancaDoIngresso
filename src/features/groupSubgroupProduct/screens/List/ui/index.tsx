@@ -115,7 +115,7 @@ export const GroupProductContainer: React.FC<GroupProductContainerProps> = ({
           }[shouldShowModal],
           {
             [ShouldShowModal.groupProduct]: {
-              title: groupProductState?.id ? 'Salvar' : 'Cadastrar novo grupo',
+              title: groupProductState?.productGroupId ? 'Salvar' : 'Cadastrar novo grupo',
               onClick: (): Promise<void> => onSaveGroupProduct(),
               disabled: formDataGroupProduct.name === '',
             },
@@ -170,26 +170,26 @@ export const GroupProductContainer: React.FC<GroupProductContainerProps> = ({
             </Col>
           </Row>
           <Row className="tree-container">
-            {listGroupProduct.map((subGroupProduct: GroupProduct) => (
+            {listGroupProduct.map((item: GroupProduct) => (
               <Col className="tree-item-container">
                 <div className="d-flex">
                   <div className="d-flex text-gruop tree-main-text">
-                    <div style={{ margin: 'auto 0' }}>{subGroupProduct.name}</div>
+                    <div style={{ margin: 'auto 0' }}>{item.productGroupName}</div>
                     <div className="d-flex icon-content" style={{ margin: 'auto 0' }}>
                       <Pen
                         className="svg-icon action-icon sm-icon"
                         onClick={(): void =>
                           onShouldShowModal({
                             value: ShouldShowModal.groupProduct,
-                            newTitleModal: `${subGroupProduct.name}`,
-                            groupProduct: subGroupProduct,
+                            newTitleModal: `${item.productGroupName}`,
+                            groupProduct: item.productGroupId,
                           })
                         }
                       />
                       <Trash
                         className="mr-0 svg-icon sm-icon"
                         onClick={() => {
-                          onShowDeleteGroupProduct(subGroupProduct);
+                          onShowDeleteGroupProduct(item);
                         }}
                       />
                     </div>
@@ -201,8 +201,8 @@ export const GroupProductContainer: React.FC<GroupProductContainerProps> = ({
                       onClick={(): void =>
                         onShouldShowModal({
                           value: ShouldShowModal.subgroupProduct,
-                          newTitleModal: `Cadastrar novo subgrupo - Em ${subGroupProduct.name}`,
-                          subgroupProduct: subGroupProduct,
+                          newTitleModal: `Cadastrar novo subgrupo - Em ${item.productGroupName}`,
+                          groupProduct: item,
                           isEdit: false,
                         })
                       }
@@ -213,28 +213,30 @@ export const GroupProductContainer: React.FC<GroupProductContainerProps> = ({
                 </div>
                 <div className="tree">
                   <ul>
-                    <li>
-                      <div>{subGroupProduct.name}</div>
-                      <div className="flex-shrink-0 ml-4">
-                        <Pen
-                          className="mr-4 svg-icon action-icon sm-icon"
-                          onClick={(): void =>
-                            onShouldShowModal({
-                              value: ShouldShowModal.subgroupProduct,
-                              newTitleModal: `${subGroupProduct.name}`,
-                              subgroupProduct: subGroupProduct,
-                              isEdit: true,
-                            })
-                          }
-                        />
-                        <Trash
-                          className="mr-4 svg-icon action-icon sm-icon"
-                          onClick={() => {
-                            onShowDeleteSubgroupProduct(subGroupProduct);
-                          }}
-                        />
-                      </div>
-                    </li>
+                    {item.subGroups.map(subItem => (
+                      <li>
+                        <div>{subItem.productSubGroupName}</div>
+                        <div className="flex-shrink-0 ml-4">
+                          <Pen
+                            className="mr-4 svg-icon action-icon sm-icon"
+                            onClick={(): void =>
+                              onShouldShowModal({
+                                value: ShouldShowModal.subgroupProduct,
+                                newTitleModal: `${subItem.productSubGroupName}`,
+                                subgroupProduct: subItem,
+                                isEdit: true,
+                              })
+                            }
+                          />
+                          <Trash
+                            className="mr-4 svg-icon action-icon sm-icon"
+                            onClick={() => {
+                              onShowDeleteSubgroupProduct(subItem);
+                            }}
+                          />
+                        </div>
+                      </li>
+                    ))}
                   </ul>
                 </div>
               </Col>
