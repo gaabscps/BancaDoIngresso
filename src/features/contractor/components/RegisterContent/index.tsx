@@ -297,7 +297,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
                   onChange={e => onChangeFormInput(FormInputName.state)(e?.target?.value as string)}
                   error={formErrors.state && formErrors.state[0]}
                   options={statesUf}
-                  disabled={isValidAddresswithCEP()}
+                  disabled
                 />
               </FormGroup>
             </Col>
@@ -310,7 +310,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
                   value={formData[FormInputName.city]}
                   onChange={e => onChangeFormInput(FormInputName.city)(e?.target.value as string)}
                   error={formErrors.city && formErrors.city[0]}
-                  disabled={isValidAddresswithCEP()}
+                  disabled
                 />
               </FormGroup>
             </Col>
@@ -324,7 +324,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
               value={formData[FormInputName.district]}
               onChange={e => onChangeFormInput(FormInputName.district)(e.target.value)}
               error={formErrors.district && formErrors.district[0]}
-              disabled={isValidAddresswithCEP()}
+              disabled
             />
           </FormGroup>
 
@@ -336,7 +336,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
               value={formData[FormInputName.street]}
               onChange={e => onChangeFormInput(FormInputName.street)(e.target.value)}
               error={formErrors.street && formErrors.street[0]}
-              disabled={isValidAddresswithCEP()}
+              disabled
             />
           </FormGroup>
 
