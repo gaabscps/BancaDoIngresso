@@ -77,6 +77,9 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
     const { zipCode } = formData;
     return !(zipCode.length === 9 && isValidCEP(zipCode));
   };
+
+  const newListContractorType = [{ id: 'empty', name: 'Nenhum' }, ...listContractorType];
+
   const dataTableBankAccount = listBankAccount?.map(item => ({
     id: item.id,
     name: item.name,
@@ -221,12 +224,12 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
           <FormGroup className="mb-2">
             <SelectCustom
               name="companyType"
-              label="Tipo da empresa"
+              label="Tipo da empresa (opcional)"
               placeholder="Selecione ou digite o tipo da empresa"
               onChange={e => onChangeFormInput(FormInputName.companyType)(e?.value as string)}
               error={formErrors.companyType && formErrors.companyType[0]}
               value={formData[FormInputName.companyType]}
-              options={listContractorType?.map(item => ({
+              options={newListContractorType?.map(item => ({
                 value: item?.id,
                 label: item?.name,
               }))}

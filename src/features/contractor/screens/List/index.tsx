@@ -48,8 +48,8 @@ export default interface PayloadContractor {
   telephone: string;
   email: string;
   address: Address;
-  contractorType: {
-    id: string;
+  contractorType?: {
+    id?: string;
   };
   bankAccount: {
     id?: string;
@@ -69,9 +69,6 @@ export default interface PayloadContractor {
     bank: {
       id: string;
     };
-  }[];
-  users: {
-    id: string;
   }[];
 }
 
@@ -389,7 +386,7 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
         const activedInput = convertToBoolean(
           formDataContractor[FormInputNameToSaveContractor.status],
         );
-        const payloadBankAccount = listBankAccount.map(bank => ({
+        const dataBankAccount = listBankAccount.map(bank => ({
           contractorId: contractor?.id,
           agency: bank.agencia,
           account: bank.conta.split('-')[0],
@@ -399,7 +396,7 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
           },
         }));
 
-        const payloadPix = listPixTable.map(item => ({
+        const dataPix = listPixTable.map(item => ({
           contractorId: contractor?.id,
           key: item.pix,
           pixKeyType: +item.idType,
@@ -408,9 +405,7 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
           },
         }));
 
-        const payloadUsers = usersSelected.map(item => ({
-          id: item.id,
-        }));
+        const dataUsers = usersSelected.map(item => item.id);
 
         const payload: PayloadContractor = {
           id: contractor?.id,
@@ -434,35 +429,41 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
           contractorType: {
             id: formDataContractor[FormInputNameToSaveContractor.companyType],
           },
-          bankAccount: payloadBankAccount,
-          pixKey: payloadPix,
-          users: payloadUsers,
+          bankAccount: dataBankAccount,
+          pixKey: dataPix,
         };
+
+        if (payload.contractorType?.id === 'empty' || payload.contractorType?.id === 'undefined') {
+          delete payload.contractorType;
+        }
 
         if (!payload.id) {
           delete payload.id;
 
+          setState(States.loading);
           const { data: dataContractor } = await api.post<Contractor>('/contractor', payload);
+
+          await api.post('/contractor/user', {
+            contractorId: dataContractor.id,
+            users: dataUsers,
+          });
 
           await api.patch<Contractor>(
             `/contractor${activedInput ? '/activate' : '/inactivate'}/${dataContractor.id}`,
           );
-          // TO DO: A definir se será necessário
-          // await api.post<Contractor>('/contractor/user', {
-          //   contractorId: dataContractor.id,
-          //   ...payloadUsers,
-          // });
           toast.success('Empresa cadastrada com sucesso!');
         } else {
+          setState(States.loading);
           await api.put<Contractor>('/contractor', payload);
+
           await api.patch<Contractor>(
             `/contractor${activedInput ? '/activate' : '/inactivate'}/${contractor?.id}`,
           );
-          // TO DO: A definir se será necessário
-          // await api.post<Contractor>('/contractor/user', {
-          //   contractorId: contractor?.id,
-          //   ...payloadUsers,
-          // });
+
+          await api.post('/contractor/user', {
+            contractorId: contractor?.id,
+            users: dataUsers,
+          });
           toast.success('Empresa atualizada com sucesso!');
         }
 
@@ -472,6 +473,8 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
+    } finally {
+      setState(States.default);
     }
   };
 
@@ -662,6 +665,7 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
           pix: item.key,
         })),
       );
+      setUsersSelected(contractor.users);
     }
   }, [contractor]);
 
