@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Col, Form, FormGroup, Row } from 'reactstrap';
 import { Button, InputText, SelectCustom, Switch } from '@/components';
 import { FormData, FormErrors, OnChangeFormInput } from '@/hooks/useForm';
@@ -12,6 +12,7 @@ import { ArrowLeft } from 'react-feather';
 import { ReactComponent as CloseX } from '@/assets/images/svg/closeX.svg';
 import cep from 'cep-promise';
 import { convertToBoolean } from '@/helpers/common/convertToBoolean';
+import User from '@/model/User';
 import { columnsBankAccount, columnsPix, columnsUser } from '../../screens/List/ui/table';
 import { ShouldShowModal } from '../../screens/List/ui';
 import { BanckAccountForm, ContractorControllerUser } from '../../types';
@@ -73,13 +74,18 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
   contractorState,
   controllerAppendUser,
 }) => {
+  const refSelectUser = useRef<any>(null);
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  const onClearSelectUser = () => {
+    if (refSelectUser) {
+      refSelectUser?.current.clearValue();
+    }
+  };
+
   const isValidAddresswithCEP = (): boolean => {
     const { zipCode } = formData;
     return !(zipCode.length === 9 && isValidCEP(zipCode));
   };
-
-  const newListContractorType = [{ id: 'empty', name: 'Nenhum' }, ...listContractorType];
-
   const dataTableBankAccount = listBankAccount?.map(item => ({
     id: item.id,
     name: item.name,
@@ -224,12 +230,12 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
           <FormGroup className="mb-2">
             <SelectCustom
               name="companyType"
-              label="Tipo da empresa (opcional)"
+              label="Tipo da empresa"
               placeholder="Selecione ou digite o tipo da empresa"
               onChange={e => onChangeFormInput(FormInputName.companyType)(e?.value as string)}
               error={formErrors.companyType && formErrors.companyType[0]}
               value={formData[FormInputName.companyType]}
-              options={newListContractorType?.map(item => ({
+              options={listContractorType?.map(item => ({
                 value: item?.id,
                 label: item?.name,
               }))}
@@ -531,13 +537,15 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
               name="user"
               label="Usuário da empresa"
               placeholder="Digite ou selecione o usuário da empresa"
+              refSelect={refSelectUser}
               value={formData[FormInputName.user]}
               onChange={e => onChangeFormInput(FormInputName.user)(e?.value as string)}
               error={formErrors.user && formErrors.user[0]}
-              options={controllerAppendUser.listUsers.map(itemUser => ({
+              options={controllerAppendUser.listUsers.map((itemUser: User) => ({
                 label: itemUser.name,
                 value: itemUser.id,
               }))}
+              isClearable
             />
           </FormGroup>
         </Col>
@@ -546,13 +554,11 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             <Button
               title="Inserir usuário"
               theme="noneBorder"
-              onClick={() => controllerAppendUser.handleAddUser(formData[FormInputName.user])}
-              disabled={
-                formData[FormInputName.user] === '' ||
-                controllerAppendUser.usersSelected.some(
-                  item => item.id === formData[FormInputName.user],
-                )
-              }
+              onClick={() => {
+                controllerAppendUser.handleAddUser(formData[FormInputName.user]);
+                onClearSelectUser();
+              }}
+              disabled={formData[FormInputName.user] === undefined}
             />
           </div>
         </Col>

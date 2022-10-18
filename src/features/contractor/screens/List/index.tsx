@@ -248,11 +248,17 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
         return;
       }
       setUsersSelected([...usersSelected, newUsersSelected]);
+      // remove user selected from list
+      const newListUsers = listUsers.filter(item => item.id !== userId);
+      setListUsers(newListUsers);
     },
     handleRemoveUser(index: number): void {
       const values = [...usersSelected];
       values.splice(index, 1);
       setUsersSelected(values);
+      // add user removed to list
+      const newUser = listUsers.concat(usersSelected[index]);
+      setListUsers(newUser);
     },
   };
 

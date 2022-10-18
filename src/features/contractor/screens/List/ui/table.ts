@@ -81,7 +81,7 @@ export const columnsUser: TableColumn<DataRowUser>[] = [
   },
   {
     name: 'Login',
-    selector: row => row.login,
+    selector: row => formatToCPFOrCNPJ(row.login),
     maxWidth: '140px',
   },
   {
