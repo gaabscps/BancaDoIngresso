@@ -206,8 +206,6 @@ export const ProductScreen: React.FC = (): JSX.Element => {
 
         onToggle();
         handleFetch(currentPage);
-      } else {
-        console.log('ue');
       }
     } catch (error) {
       const err = error as AxiosError;
@@ -298,7 +296,6 @@ export const ProductScreen: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     handleFetch(currentPage);
-    console.log(listProductGroup, listProductSubGroup);
   }, []);
 
   return (
