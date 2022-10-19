@@ -186,6 +186,7 @@ export const ProductScreen: React.FC = (): JSX.Element => {
         const payload: PayloadProduct = {
           id: product?.id,
           name: formDataProduct[FormInputNameToSaveProduct.name],
+          imageBase64: formDataProduct[FormInputNameToSaveProduct.imageBase64],
           productSubGroup: {
             id: formDataProduct[FormInputNameToSaveProduct.subGroupProduct],
             productGroup: {
@@ -291,6 +292,7 @@ export const ProductScreen: React.FC = (): JSX.Element => {
       onChangeFormInputProduct(FormInputNameToSaveProduct.subGroupProduct)(
         product.productSubGroup.id || '',
       );
+      onChangeFormInputProduct(FormInputNameToSaveProduct.imageBase64)(product.imageBase64);
     }
   }, [product]);
 
