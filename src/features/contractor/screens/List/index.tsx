@@ -83,6 +83,7 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
   const [pixTypes, setPixTypes] = useState<PixTypes[]>([]);
 
   const [listUsers, setListUsers] = useState<User[]>([]);
+  const [listUsersDefault, setListUsersDefault] = useState<User[]>([]);
   const [usersSelected, setUsersSelected] = useState<User[]>([]);
 
   const [pix, setPix] = useState<PixForm[]>([
@@ -285,6 +286,7 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
 
       if (data) {
         setListUsers(data);
+        setListUsersDefault(data);
       }
     } catch (error) {
       const err = error as AxiosError;
@@ -365,6 +367,10 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
   }): void => {
     setShouldShowModal(value);
     onChangeTitle(newTitleModal);
+
+    // reset list users
+    setListUsers(listUsersDefault);
+
     if (value !== ShouldShowModal.filter) {
       if (!isEdit) {
         setBankAccount([...listBankAccount, { id: '', name: '', agencia: '', conta: '' }]);
@@ -383,6 +389,13 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
       (!companySelected?.id && value !== ShouldShowModal.filter)
     ) {
       setContractor(companySelected);
+      setListUsers(() => {
+        // remove users selected from list listUsersDefault
+        const newListUsers = listUsersDefault.filter(
+          item => !usersSelected?.find(user => user.id === item.id),
+        );
+        return newListUsers;
+      });
     }
   };
 
@@ -672,6 +685,12 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
         })),
       );
       setUsersSelected(contractor.users);
+      setListUsers(user =>
+        // remove users that are already selected
+        user.filter(
+          userItem => !contractor.users.find(userSelected => userSelected.id === userItem.id),
+        ),
+      );
     }
   }, [contractor]);
 

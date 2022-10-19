@@ -1,6 +1,5 @@
 import Page from '@/model/Page';
 import Contractor from '@/model/Contractor';
-import PixType from '@/model/PixType';
 import Bank from '@/model/Bank';
 import User from '@/model/User';
 
