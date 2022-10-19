@@ -13,6 +13,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   renderForward?: React.ReactNode;
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  disabled?: boolean;
 }
 
 export const InputText: FC<InputProps> = ({
@@ -27,8 +28,13 @@ export const InputText: FC<InputProps> = ({
   onChange,
   wrapperClass,
   renderForward,
+  disabled,
 }) => (
-  <div className={`flex-column input-component ${wrapperClass}`}>
+  <div
+    className={`flex-column input-component ${wrapperClass} ${disabled ? 'input-disabled' : ''} ${
+      error ? 'input-error' : ''
+    }`}
+  >
     {label && (
       <label htmlFor={name} className="input-label">
         {label}
@@ -43,6 +49,7 @@ export const InputText: FC<InputProps> = ({
       onBlur={onBlur}
       onChange={onChange}
       className={` form-control input-default ${error ? 'input-error' : ''}`}
+      disabled={disabled}
     />
     {renderForward}
     {error && (

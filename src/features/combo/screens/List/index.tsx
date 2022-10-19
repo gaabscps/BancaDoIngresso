@@ -185,19 +185,39 @@ export const ComboScreen: React.FC = (): JSX.Element => {
     onChangeTitle(newTitleModal);
     onToggle();
 
-    if (comboSelected?.id && value === ShouldShowModal.combo) {
+    if (
+      (comboSelected?.id && value !== ShouldShowModal.filter) ||
+      (!comboSelected?.id && value !== ShouldShowModal.filter)
+    ) {
       setCombo(comboSelected);
-      if (comboSelected.id !== combo?.id) {
-        handleFecthComboGroupList();
-        handleFecthComboSubGroupList();
+      handleFecthComboSubGroupList();
+      handleFecthComboGroupList();
+      if (comboSelected?.id !== combo?.id) {
         resetFormCombo();
       }
     } else {
       resetFormCombo();
       setCombo(undefined);
-      handleFecthComboGroupList();
-      handleFecthComboSubGroupList();
     }
+    if (
+      (!comboSelected?.id && value !== ShouldShowModal.filter) ||
+      (!comboSelected?.id && value !== ShouldShowModal.combo)
+    ) {
+      resetFormCombo();
+    }
+    // if (comboSelected?.id && value === ShouldShowModal.combo) {
+    //   setCombo(comboSelected);
+    //   if (comboSelected.id !== combo?.id) {
+    //     handleFecthComboGroupList();
+    //     handleFecthComboSubGroupList();
+    //     resetFormCombo();
+    //   }
+    // } else {
+    //   resetFormCombo();
+    //   setCombo(undefined);
+    //   handleFecthComboGroupList();
+    //   handleFecthComboSubGroupList();
+    // }
   };
 
   const handleOnSaveCombo = async (): Promise<void> => {
@@ -253,7 +273,7 @@ export const ComboScreen: React.FC = (): JSX.Element => {
           onClick: (): void => handleOnClose(),
         },
         {
-          title: 'Sim, quero remover',
+          title: 'Sim, quero excluir',
           onClick: (): Promise<void> => handleOnConfirmDeleteToCombo(comboSelected),
         },
       ],

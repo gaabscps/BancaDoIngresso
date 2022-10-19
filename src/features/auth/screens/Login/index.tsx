@@ -10,6 +10,7 @@ import { Auth } from '@/model/Auth';
 import api, { AxiosError } from '@/services/api';
 import { path } from '@/navigation/path';
 
+import { toast } from 'react-toastify';
 import { LoginContainer, States, FormInputName } from './ui';
 
 export const LoginScreen: React.FC = (): JSX.Element => {
@@ -66,14 +67,14 @@ export const LoginScreen: React.FC = (): JSX.Element => {
       }
     } catch (error) {
       const err = error as AxiosError;
-      console.log(err.code);
-      const msg =
-        err.code && err.code === 'ERR_BAD_REQUEST'
-          ? 'Credenciais Inválidas'
-          : 'Falha ao realizar login, tentar novamente mais tarde';
-      setErrors({
-        document: [msg],
-      });
+      if (err.code && err.code === 'ERR_BAD_REQUEST') {
+        setErrors({
+          document: ['CPF ou Senha inválida'],
+          password: ['CPF ou Senha inválida'],
+        });
+      } else {
+        toast.error('Falha ao realizar login, tentar novamente mais tarde');
+      }
     } finally {
       setState(States.default);
     }

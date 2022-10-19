@@ -8,6 +8,7 @@ export interface ActionProps {
   title?: string;
   theme?: ButtonTheme;
   size?: ButtonSize;
+  disabled?: boolean;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
@@ -99,6 +100,7 @@ export const Dialog: React.FC<DialogProps> = ({
                     theme={action.theme}
                     size={action.size}
                     onClick={action.onClick}
+                    disabled={action.disabled}
                   />
                 )}
               </React.Fragment>

@@ -123,20 +123,20 @@ export const ComboContainer: React.FC<ComboContainerProps> = ({
     id: item.id,
     image: <ColumnImage srcImage={item.imageBase64} />,
     comboName: item.name,
-    comboProducts: <DropdonwFlags dataColumn={dataColumnComboProducts} />,
+    comboProducts: <DropdonwFlags pointerClass={true} dataColumn={dataColumnComboProducts} />,
     gruposubgroup: '-',
 
     actions: (
       <React.Fragment>
         <Pen
           className="mr-2 svg-icon action-icon"
-          // onClick={(): void =>
-          //   onShouldShowModal({
-          //     value: ShouldShowModal.combo,
-          //     newTitleModal: `Editar ${item.name}`,
-          //     combo: item,
-          //   })
-          // }
+          onClick={(): void =>
+            onShouldShowModal({
+              value: ShouldShowModal.combo,
+              newTitleModal: `Editar ${item.name}`,
+              combo: item,
+            })
+          }
         />
         <Trash
           className="mr-2 svg-icon action-icon"
@@ -176,6 +176,7 @@ export const ComboContainer: React.FC<ComboContainerProps> = ({
             [ShouldShowModal.combo]: {
               title: comboState?.id ? 'Salvar' : 'Cadastrar novo combo',
               onClick: (): Promise<void> => onSaveCombo(),
+              disabled: formDataCombo.name === '',
             },
           }[shouldShowModal],
         ]}
@@ -208,11 +209,11 @@ export const ComboContainer: React.FC<ComboContainerProps> = ({
 
       <Container className="mainContainer" fluid={true}>
         <div className="d-flex justify-content-between" style={{ paddingBottom: '30px' }}>
-          <div className="d-flex">
-            <Link to={`${process.env.PUBLIC_URL}/dashboard/comboscombos`} className="m-auto">
-              <ArrowLeft color={colors.black} className="m-auto" />
+          <div className="pageTitle d-flex">
+            <Link to={`${process.env.PUBLIC_URL}/dashboard/productscombos`}>
+              <ArrowLeft color={colors.black} className="arrow-left" />
             </Link>
-            <h5 className="ml-3 mb-0 mt-1">Combos</h5>
+            <h5 className="ml-3 mb-0 mt-1 pageTitle">Combos</h5>
           </div>
           <div className="button-filter-container">
             <Button

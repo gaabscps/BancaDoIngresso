@@ -10,6 +10,7 @@ export const primaryTheme = {
       backgroundColor: 'transparent',
       fontSize: '1rem',
       fontWidth: '400',
+      fontWeight: '400',
     },
   },
   rows: {
@@ -22,6 +23,7 @@ export const primaryTheme = {
       marginBottom: '30px',
       fontSize: '0.75rem',
       fontWidth: '300',
+      fontWeight: '300',
     },
   },
   headCells: {
@@ -39,6 +41,11 @@ export const primaryTheme = {
 };
 
 export const secondaryTheme = {
+  table: {
+    style: {
+      backgroundColor: 'transparent',
+    },
+  },
   headRow: {
     style: {
       border: 'none !important',
@@ -51,9 +58,38 @@ export const secondaryTheme = {
   rows: {
     style: {
       border: 'none !important',
+      backgroundColor: 'transparent',
       fontSize: '0.75rem',
       fontWidth: '400',
       overflow: 'hidden',
+    },
+  },
+};
+
+export const tertiaryTheme = {
+  table: {
+    style: {
+      backgroundColor: 'transparent',
+    },
+  },
+  headRow: {
+    style: {
+      border: 'none !important',
+      backgroundColor: 'transparent',
+      fontSize: '0.75rem',
+      fontWidth: '400',
+      color: '#A5A5A5',
+    },
+  },
+  rows: {
+    style: {
+      borderBottom: '1.5px solid #E6E6E6',
+      backgroundColor: 'transparent',
+      fontSize: '0.75rem',
+      fontWidth: '400',
+      overflow: 'hidden',
+      // minWidth: '960px !important',
+      minHeight: '5.188rem !important',
     },
   },
 };

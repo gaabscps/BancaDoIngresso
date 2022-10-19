@@ -25,7 +25,7 @@
 }
 
 .page-body {
-  background-color: #F8F8F8;
+  background-color: #f8f8f8;
   margin-left: 280px;
   transition: linear 0.3s;
 }
@@ -61,7 +61,7 @@
 .pageTitle {
   font-family: 'Poppins', sans-serif;
   font-style: normal;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 28px;
   line-height: 42px;
   margin: 0 10px 20px 0;
@@ -226,7 +226,7 @@
 }
 
 // media query for mobile
-@media (max-width: $media-query-sm) {
+@media (max-width: '990px') {
   .fieldSpacing {
     padding-bottom: 40px !important;
     // padding-right: 30px !important;
@@ -279,6 +279,8 @@
   justify-content: flex-start;
   transition: linear 0.3s;
   .eventStatus {
+    display: flex;
+    align-items: center;
     padding-right: 25px;
     transition: linear 0.3s;
     svg {
@@ -849,6 +851,15 @@ input {
 
 .input-error {
   border-color: #e64f49 !important;
+  margin-bottom: 12px;
+  label {
+    color: #e64f49 !important;
+    fill: #e64f49 !important;
+  }
+}
+
+.input-disabled {
+  opacity: 0.5;
 }
 
 input[type='radio']:checked + .label-radio-custom {
@@ -1012,7 +1023,7 @@ input[type='radio']:checked + .label-radio-custom {
 @media (max-width: 425px) {
 }
 
-@media (max-width: 320px) {
+@media (max-width: 480px) {
   .home-text-container {
     margin: 25px 0 0 5%;
   }
@@ -1033,6 +1044,11 @@ input[type='radio']:checked + .label-radio-custom {
     p {
       font-size: 10px !important;
     }
+  }
+}
+@media (max-width: 479px) {
+  .user-img {
+    width: none;
   }
 }
 
@@ -1071,7 +1087,7 @@ figure.partyCard {
 // ----------- Home Responsive ------------
 
 // media query for mobile container
-@media (max-width: $media-query-sm) {
+@media (max-width: '990px') {
   .status-container {
     justify-content: space-around;
     transition: linear 0.3s;
@@ -1128,6 +1144,7 @@ figure.partyCard {
   .path-container .path-flex-container .path-main {
     font-weight: 600;
     font-size: 12px;
+    width: 150px;
   }
 }
 @media (max-width: $media-query-xs) {
@@ -1158,11 +1175,6 @@ figure.partyCard {
   }
   .grid-card-home {
     justify-content: center;
-  }
-  .pageTitle {
-    font-size: 20px;
-    line-height: 1em;
-    transition: linear 0.3s;
   }
   .verTodos {
     font-size: 14px !important;
@@ -1205,7 +1217,15 @@ input::-ms-clear {
 }
 
 .border-bottom-title {
-  border-bottom: 2px solid #222222;
+  border-bottom: 1px solid #222222;
+}
+
+.fw-700 {
+  font-weight: 700;
+}
+
+.fw-400 {
+  font-weight: 400;
 }
 
 .circle-notification {
@@ -1225,4 +1245,18 @@ input::-ms-clear {
     font-size: 12px;
     color: white;
   }
+}
+.dSSLUg {
+  margin-left: 50px !important;
+}
+
+.pointerSvg {
+  cursor: pointer;
+}
+.sm-icon {
+  transform: scale(0.8);
+}
+.arrow-left {
+  position: relative;
+  top: 3px;
 }

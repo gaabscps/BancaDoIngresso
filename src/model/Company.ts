@@ -1,11 +1,11 @@
 import Address from './Address';
 
 export default interface Company {
-  id: any;
+  status: any;
+  id: string;
   name: string;
   document: string;
   telephone: string;
-  type: string;
   email: string;
   imageUrl: string;
   facebookUrl: string;
@@ -16,4 +16,18 @@ export default interface Company {
   urlAdmin: string;
   urlSite: string;
   address: Address;
+  actived: boolean;
+  companyType: {
+    id: string;
+  };
+  bankAccount: [
+    {
+      agency: string;
+      account: string;
+      digit: string;
+      bank: {
+        id: string;
+      };
+    },
+  ];
 }

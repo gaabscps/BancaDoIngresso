@@ -32,17 +32,19 @@ const api = axios.create({
 });
 
 api.interceptors.request.use(config => {
-  // eslint-disable-next-line no-param-reassign
-  config.headers = createHeader();
+  if (config.url !== '/auth') {
+    // eslint-disable-next-line no-param-reassign
+    config.headers = createHeader();
+  }
+
   return config;
 });
 
 api.interceptors.response.use(
   response => response,
   async error => {
-    const { response, config } = error;
+    const { response } = error;
     const { data } = response;
-    const originalRequest = config;
 
     if (response.status >= 500 && response.status < 600) {
       toast.error('Opss... Erro interno, tente novamente mais tarde!');
@@ -51,7 +53,7 @@ api.interceptors.response.use(
       error.message = error.response.data.message as string;
     }
 
-    if (response.status === 401 && originalRequest.url.includes('/v1/adm/auth/refresh_token')) {
+    if (response.status === 401 && response?.data?.message === 'Token Invalid') {
       removeItem(appAuth);
       handleSweetAlert(
         'warn',
