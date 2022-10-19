@@ -52,6 +52,7 @@ interface ProductContainerProps {
   formErrorsProduct: FormErrors;
   formDataFilter: FormData;
   formErrorsFilter: FormErrors;
+  clearFilter: () => void;
   handleFecthProductSubGroupList: (id: string) => void;
   onSaveProduct: () => Promise<void>;
   onPaginationChange: (page: number) => void;
@@ -90,6 +91,7 @@ export const ProductContainer: React.FC<ProductContainerProps> = ({
   listProductGroup,
   listProductSubGroup,
   nameFiles,
+  clearFilter,
   handleFecthProductSubGroupList,
   onChangeFormInputFilter,
   onChangeFormInputProduct,
@@ -135,6 +137,11 @@ export const ProductContainer: React.FC<ProductContainerProps> = ({
     onClick: (): void => onToggle(),
     theme: 'noneBorder',
   };
+  const renderActionDialogToCancelFilter: ActionProps = {
+    title: 'Limpar',
+    onClick: (): void => clearFilter(),
+    theme: 'noneBorder',
+  };
 
   return (
     <Fragment>
@@ -147,7 +154,7 @@ export const ProductContainer: React.FC<ProductContainerProps> = ({
         isContentWithCard={shouldShowModal !== ShouldShowModal.filter}
         actions={[
           {
-            [ShouldShowModal.filter]: renderActionDialogToCancel,
+            [ShouldShowModal.filter]: renderActionDialogToCancelFilter,
             [ShouldShowModal.product]: renderActionDialogToCancel,
           }[shouldShowModal],
           {

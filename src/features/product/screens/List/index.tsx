@@ -73,6 +73,7 @@ export const ProductScreen: React.FC = (): JSX.Element => {
   const {
     formData: formDataFilter,
     formErrors: formErrorsFilter,
+    resetForm: resetFormFilter,
     onChangeFormInput: onChangeFormInputFilter,
     isFormValid: isFormValidFilter,
   } = useForm({
@@ -257,11 +258,6 @@ export const ProductScreen: React.FC = (): JSX.Element => {
                 name: formDataFilter[FormInputNameToFilter.inputSearch],
               },
             },
-            serialNumber: {
-              entity: {
-                serialNumber: formDataFilter[FormInputNameToFilter.inputSearch],
-              },
-            },
           }[formDataFilter[FormInputNameToFilter.filterSearch]] || {};
 
         onToggle();
@@ -281,6 +277,12 @@ export const ProductScreen: React.FC = (): JSX.Element => {
       ...currentPage,
       page,
     });
+  };
+
+  const clearFilter = (): void => {
+    resetFormFilter();
+    formDataFilter[FormInputNameToFilter.inputSearch] = '';
+    handleOnFilter();
   };
 
   useEffect(() => {
@@ -326,6 +328,7 @@ export const ProductScreen: React.FC = (): JSX.Element => {
       listProductGroup={listProductGroup}
       listProductSubGroup={listProductSubGroup}
       handleFecthProductSubGroupList={handleFecthProductSubGroupList}
+      clearFilter={clearFilter}
     />
   );
 };
