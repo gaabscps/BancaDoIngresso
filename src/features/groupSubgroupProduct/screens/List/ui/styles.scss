@@ -18,6 +18,8 @@
     color: #828282;
 
     display: flex;
+    justify-content: space-between;
+    max-width: 290px;
   }
   ul li::before {
     content: ' ';
@@ -58,6 +60,9 @@
 .tree-card {
   padding: 30px 15px 0 15px;
   overflow-x: auto;
+  border-radius: 0 0 5px 5px !important;
+  border: 0 !important;
+  border-top: 1px solid #E6E6E6 !important;
 }
 .text-success-link {
   font-weight: 300;

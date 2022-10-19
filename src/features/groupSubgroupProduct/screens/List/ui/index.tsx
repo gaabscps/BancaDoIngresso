@@ -209,9 +209,9 @@ export const GroupProductContainer: React.FC<GroupProductContainerProps> = ({
                     {item.subGroups.map(subItem => (
                       <li>
                         <div>{subItem.productSubGroupName}</div>
-                        <div className="flex-shrink-0 ml-4">
+                        <div className="flex-shrink-0 ml-2">
                           <Pen
-                            className="mr-4 svg-icon action-icon sm-icon"
+                            className="mr-3 svg-icon action-icon sm-icon"
                             onClick={(): void =>
                               onShouldShowModal({
                                 value: ShouldShowModal.subgroupProduct,
@@ -221,7 +221,7 @@ export const GroupProductContainer: React.FC<GroupProductContainerProps> = ({
                             }
                           />
                           <Trash
-                            className="mr-4 svg-icon action-icon sm-icon"
+                            className="mr-5 svg-icon action-icon sm-icon"
                             onClick={() => {
                               onShowDeleteSubgroupProduct(subItem);
                             }}
