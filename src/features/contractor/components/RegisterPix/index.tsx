@@ -29,7 +29,7 @@ export const RegisterPix: React.FC<RegisterContentProps> = ({
       e.preventDefault();
     }}
   >
-    <>
+    <div style={{ minHeight: '21rem' }}>
       {controllerInputAppendPix.pix.map((item, index) => (
         <Row key={index}>
           <Col md={5}>
@@ -127,6 +127,6 @@ export const RegisterPix: React.FC<RegisterContentProps> = ({
           </div>
         </Col>
       </Row>
-    </>
+    </div>
   </Form>
 );
