@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { useEffect, useState } from 'react';
 import { useDialog } from '@/hooks/useDialog';
-import Product from '@/model/Product';
+import Product from '@/model/ProductConfig';
 import api, { AxiosError } from '@/services/api';
 import { toast } from 'react-toastify';
 import { ProductResponse, ProductRequestParams, NameFiles } from '@/features/product/types';
@@ -18,6 +18,17 @@ import { DeleteContent } from '../../components/DeleteContent';
 export default interface PayloadProduct {
   id?: string;
   name: string;
+  imageBase64?: string;
+  productSubGroup?: {
+    id?: string;
+    name?: string;
+    imageBase64?: string;
+    productGroup?: {
+      id?: string;
+      name?: string;
+      imageBase64?: string;
+    };
+  };
 }
 
 export const ProductScreen: React.FC = (): JSX.Element => {
@@ -50,18 +61,11 @@ export const ProductScreen: React.FC = (): JSX.Element => {
   } = useForm({
     initialData: {
       name: '',
-      serialNumber: '',
-      status: '',
-      model: '',
-      telephoneOperator: '',
-      cardOperator: '',
-      expirationDate: '',
     },
     validators: {
       name: [validators.required],
-      serialNumber: [validators.required],
-      status: [validators.required],
-      expirationDate: [validators.isDateLessThanCurrentDate],
+      groupProduct: [validators.required],
+      subGroupProduct: [validators.required],
     },
     formatters: {},
   });
@@ -134,10 +138,12 @@ export const ProductScreen: React.FC = (): JSX.Element => {
     }
   };
 
-  const handleFecthProductSubGroupList = async (): Promise<void> => {
+  const handleFecthProductSubGroupList = async (dataSubgGroup: any): Promise<void> => {
     try {
       setState(States.loading);
-      const { data } = await api.get<ProductSubgroup[]>('/product-subgroup/find');
+      const { data } = await api.get<ProductSubgroup[]>(
+        `/product-subgroup/find/group/${dataSubgGroup}`,
+      );
       setListProductSubGroup(data ?? []);
     } catch (error) {
       const err = error as AxiosError;
@@ -164,14 +170,13 @@ export const ProductScreen: React.FC = (): JSX.Element => {
       setProduct(productSelected);
       if (productSelected.id !== product?.id) {
         handleFecthProductGroupList();
-        handleFecthProductSubGroupList();
+        handleFecthProductSubGroupList(productSelected.productSubGroup.productGroup.id);
         resetFormProduct();
       }
     } else {
       resetFormProduct();
       setProduct(undefined);
       handleFecthProductGroupList();
-      handleFecthProductSubGroupList();
     }
   };
 
@@ -181,6 +186,12 @@ export const ProductScreen: React.FC = (): JSX.Element => {
         const payload: PayloadProduct = {
           id: product?.id,
           name: formDataProduct[FormInputNameToSaveProduct.name],
+          productSubGroup: {
+            id: formDataProduct[FormInputNameToSaveProduct.subGroupProduct],
+            productGroup: {
+              id: formDataProduct[FormInputNameToSaveProduct.groupProduct],
+            },
+          },
         };
 
         if (!payload.id) {
@@ -274,6 +285,12 @@ export const ProductScreen: React.FC = (): JSX.Element => {
   useEffect(() => {
     if (product?.id) {
       onChangeFormInputProduct(FormInputNameToSaveProduct.name)(product.name);
+      onChangeFormInputProduct(FormInputNameToSaveProduct.groupProduct)(
+        product.productSubGroup.productGroup?.id || '',
+      );
+      onChangeFormInputProduct(FormInputNameToSaveProduct.subGroupProduct)(
+        product.productSubGroup.id || '',
+      );
     }
   }, [product]);
 
@@ -306,6 +323,7 @@ export const ProductScreen: React.FC = (): JSX.Element => {
       nameFiles={nameFiles}
       listProductGroup={listProductGroup}
       listProductSubGroup={listProductSubGroup}
+      handleFecthProductSubGroupList={handleFecthProductSubGroupList}
     />
   );
 };
