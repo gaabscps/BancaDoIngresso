@@ -11,22 +11,13 @@ import {
   GroupProductContainer,
   ShouldShowModal,
 } from '@/features/groupSubgroupProduct/screens/List/ui';
-// import { FormInputName as FormInputNameToFilter } from '@/features/groupSubgroupProduct/components/FilterContent';
 import { FormInputName as FormInputNameToSaveGroupProduct } from '@/features/groupSubgroupProduct/components/RegisterGroupContent';
 import { FormInputName as FormInputNameToSaveSubGroupProduct } from '@/features/groupSubgroupProduct/components/RegisterSubgroupContent';
-import {
-  GroupProductRequestParams,
-  GroupProductResponse,
-  // GroupProductRequestParams,
-  // SubGroupProductResponse,
-  // GroupProductResponse,
-} from '@/features/groupSubgroupProduct/types';
+import { GroupProductResponse } from '@/features/groupSubgroupProduct/types';
 import GroupProduct from '@/model/GroupProductSend';
 import SubgroupProduct from '@/model/SubgroupProduct';
-import ProductSubgroup from '@/model/ProductSubgroup';
-import { DeleteContent } from '../../components/DeleteContent';
-import SubGrup from '@/model/SubGrupSend';
 import SubGrupSend from '@/model/SubGrupSend';
+import { DeleteContent } from '../../components/DeleteContent';
 
 export interface PayloadGroupProduct {
   id?: string;
@@ -247,7 +238,7 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
     });
   };
 
-  const handleOnShowDeleteSubgroupProduct = (groupProductSelected: GroupProduct): void => {
+  const handleOnShowDeleteSubgroupProduct = (groupProductSelected: SubGrupSend): void => {
     confirmDelete.show({
       title: '',
       children: <DeleteContent />,

@@ -10,10 +10,10 @@ import { FormErrors, OnChangeFormInput, FormData } from '@/hooks/useForm';
 import GroupProduct from '@/model/GroupProductSend';
 import './styles.scss';
 import { RegisterSubgroupContent } from '@/features/groupSubgroupProduct/components/RegisterSubgroupContent';
-import SubgroupProduct from '@/model/SubgroupProduct';
 import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'react-feather';
 import { colors } from '@/styles/colors';
+import SubGrupSend from '@/model/SubGrupSend';
 
 // eslint-disable-next-line no-shadow
 export enum States {
@@ -38,7 +38,7 @@ export enum ShouldShowModal {
 interface GroupProductContainerProps {
   state: States;
   groupProductState?: GroupProduct;
-  subGroupProductState?: SubgroupProduct;
+  subGroupProductState?: SubGrupSend;
   shouldShowModal: ShouldShowModal;
   title: string | React.ReactNode;
   visible: boolean;
@@ -49,19 +49,17 @@ interface GroupProductContainerProps {
   onToggle: () => void;
   onChangeFormInputGroupProduct: OnChangeFormInput;
   onShowDeleteGroupProduct: (groupProduct: GroupProduct) => void;
-  onShowDeleteSubgroupProduct: (subgroupProduct: SubgroupProduct) => void;
+  onShowDeleteSubgroupProduct: (subgroupProduct: SubGrupSend) => void;
   onShouldShowModal: ({
     value,
     newTitleModal,
     groupProduct,
     subgroupProduct,
-    isEdit,
   }: {
     value: ShouldShowModal;
     newTitleModal: string | React.ReactNode;
     groupProduct?: GroupProduct;
-    subgroupProduct?: SubgroupProduct;
-    isEdit?: boolean;
+    subgroupProduct?: SubGrupSend;
   }) => void;
   listGroupProduct: GroupProduct[];
   formSubgroup: {
@@ -116,7 +114,7 @@ export const GroupProductContainer: React.FC<GroupProductContainerProps> = ({
               disabled: formDataGroupProduct.name === '',
             },
             [ShouldShowModal.subgroupProduct]: {
-              title: subGroupProductState?.id ? 'Salvar' : 'Cadastrar novo Subgrupo',
+              title: subGroupProductState?.productSubGroupId ? 'Salvar' : 'Cadastrar novo Subgrupo',
               onClick: (): Promise<void> => onSaveGroupSubgroupProduct(),
               disabled: formSubgroup.formData.name === '',
             },
@@ -199,7 +197,6 @@ export const GroupProductContainer: React.FC<GroupProductContainerProps> = ({
                           value: ShouldShowModal.subgroupProduct,
                           newTitleModal: `Cadastrar novo subgrupo - Em ${item.productGroupName}`,
                           groupProduct: item,
-                          isEdit: false,
                         })
                       }
                     >
@@ -220,7 +217,6 @@ export const GroupProductContainer: React.FC<GroupProductContainerProps> = ({
                                 value: ShouldShowModal.subgroupProduct,
                                 newTitleModal: `${subItem.productSubGroupName}`,
                                 subgroupProduct: subItem,
-                                isEdit: true,
                               })
                             }
                           />

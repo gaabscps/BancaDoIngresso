@@ -33,7 +33,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
   onChangeFileInput,
   nameFiles,
   listProductGroup,
-  listProductSubGroup,
+  // listProductSubGroup,
 }) => (
   <Form
     noValidate={true}
@@ -62,7 +62,8 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             onChange={e => onChangeFormInput(FormInputName.subProupProduct)(e?.value as string)}
             error={formErrors.subProupProduct && formErrors.subProupProduct[0]}
             value={formData[FormInputName.subProupProduct]}
-            options={listProductSubGroup.map(item => ({ value: item.id, label: item.name }))}
+            // options={listProductSubGroup.map(item => ({ value: item.id, label: item.name }))}
+            options={[]}
           />
         </FormGroup>
         <FormGroup className="mb-2">
