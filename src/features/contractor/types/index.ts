@@ -4,7 +4,7 @@ import Bank from '@/model/Bank';
 import User from '@/model/User';
 
 export type ContractorResponse = Page<Contractor, Contractor>;
-export type BankResponse = Page<Bank, Bank>;
+export type BankResponse = Bank;
 
 export type ContractorRequestParams = Pick<
   Page<Contractor, Contractor>,
