@@ -178,7 +178,7 @@ export const GroupProductContainer: React.FC<GroupProductContainerProps> = ({
                           onShouldShowModal({
                             value: ShouldShowModal.groupProduct,
                             newTitleModal: `${item.productGroupName}`,
-                            groupProduct: item.productGroupId,
+                            groupProduct: item,
                           })
                         }
                       />
