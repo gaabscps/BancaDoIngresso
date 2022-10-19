@@ -266,10 +266,10 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
   const handleGetbankAccount = async (): Promise<void> => {
     try {
       setState(States.loading);
-      const { data } = await api.post<BankResponse>('/bank/page', {});
+      const { data } = await api.get<BankResponse[]>('/bank/find');
 
       if (data) {
-        setListBank(data?.list ?? []);
+        setListBank(data);
       }
     } catch (error) {
       const err = error as AxiosError;
