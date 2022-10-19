@@ -97,7 +97,10 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
   const handleFetch = async (): Promise<void> => {
     try {
       setState(States.loading);
-      const { data } = await api.post<GroupProductResponse>('/product-group/page/group-sub');
+      const { data } = await api.post<GroupProductResponse>('/product-group/page/group-sub', {
+        sort: 'name',
+        order: 'ASC',
+      });
 
       if (data) {
         setListGroupProduct(data?.list ?? []);
@@ -124,12 +127,12 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
     onChangeTitle(newTitleModal);
     onToggle();
 
-    // if (value === ShouldShowModal.groupProduct) {
-    setGroupProduct(groupProductSelected);
-    // }
-    // if (value === ShouldShowModal.subgroupProduct) {
-    setSubgroupProduct(subgroupProductSelected);
-    // }
+    if (value === ShouldShowModal.groupProduct) {
+      setGroupProduct(groupProductSelected);
+    }
+    if (value === ShouldShowModal.subgroupProduct) {
+      setSubgroupProduct(subgroupProductSelected);
+    }
   };
 
   const handleOnSaveGroupProduct = async (): Promise<void> => {
