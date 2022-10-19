@@ -51,28 +51,28 @@ const RegisterCompany = (props: Props): JSX.Element => {
   };
 
   const handleSubmit = async (): Promise<void> => {
-    const createCompany: Contractor = {
-      id: undefined,
-      name: form.name,
-      document: form.document,
-      telephone: form.telephone,
-      address: {
-        id: undefined,
-        zipCode: '-',
-        state: '-',
-        city: '-',
-        district: '-',
-        street: '-',
-        complement: '-',
-        number: '-',
-        latitude: 0,
-        longitude: 0,
-      },
-      email: '-',
-      imageBase64: image,
-      users: [],
-    };
-    dispatch(createRequest(createCompany));
+    // const createCompany: Contractor = {
+    //   // id: undefined,
+    //   name: form.name,
+    //   document: form.document,
+    //   telephone: form.telephone,
+    //   address: {
+    //     id: undefined,
+    //     zipCode: '-',
+    //     state: '-',
+    //     city: '-',
+    //     district: '-',
+    //     street: '-',
+    //     complement: '-',
+    //     number: '-',
+    //     latitude: 0,
+    //     longitude: 0,
+    //   },
+    //   email: '-',
+    //   imageBase64: image,
+    //   users: [],
+    // };
+    // dispatch(createRequest(createCompany));
   };
   return (
     <Modal
@@ -133,7 +133,7 @@ const RegisterCompany = (props: Props): JSX.Element => {
                   onChange={onChangeForm()}
                   id="telephone"
                   name="telephone"
-                  placeholder="(00) 0 000-0000"
+                  placeholder="(00) 0 0000-0000"
                 />
               </div>
             </div>

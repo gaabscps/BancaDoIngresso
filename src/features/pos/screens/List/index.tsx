@@ -129,7 +129,6 @@ export const PosScreen: React.FC = (): JSX.Element => {
       (posSelected?.id && value !== ShouldShowModal.filter) ||
       (!posSelected?.id && value !== ShouldShowModal.filter)
     ) {
-      console.log('posSelected', posSelected);
       setPos(posSelected);
       handleFecthPdvList();
       if (posSelected?.id !== pos?.id) {

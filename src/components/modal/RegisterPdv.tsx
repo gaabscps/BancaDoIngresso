@@ -254,7 +254,7 @@ const RegisterPdv = (props: Props): JSX.Element => {
           <Input
             label="Telefone celular"
             type="text"
-            placeholder="(00) 0 000-0000"
+            placeholder="(00) 0 0000-0000"
             register={register}
             name="telephone"
             error={errors?.telephone?.message}

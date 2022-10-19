@@ -26,7 +26,9 @@ interface SelectAutoCompleteProps {
   control?: any;
   defaultValue?: OptionProps;
   onBlur?: () => void;
-  ref?: any;
+  refSelect?: any;
+  disabled?: boolean;
+  isClearable?: boolean;
 }
 
 export const SelectCustom = (props: SelectAutoCompleteProps) => {
@@ -37,7 +39,11 @@ export const SelectCustom = (props: SelectAutoCompleteProps) => {
 
   return (
     <>
-      <div className={`flex-column input-component ${props.wrapperClass}`}>
+      <div
+        className={`flex-column input-component ${props.wrapperClass} ${
+          props.disabled ? 'input-disabled' : ''
+        }`}
+      >
         {props.label && (
           <label htmlFor={props.name} className="input-label">
             {props.label}
@@ -52,7 +58,9 @@ export const SelectCustom = (props: SelectAutoCompleteProps) => {
           noOptionsMessage={() => 'Nenhum resultado encontrado'}
           value={props.options.find((option: OptionProps) => option.value === props.value)}
           defaultValue={props.defaultValue}
-          ref={props.ref}
+          ref={props.refSelect}
+          isDisabled={props.disabled}
+          isClearable={props.isClearable}
         />
         {props.error && (
           <span role="alert" className="alert-error">

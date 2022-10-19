@@ -179,7 +179,7 @@ export const RegisterContentSubPdv: React.FC<RegisterContentProps> = ({
         <InputText
           name="telephone"
           label="Telefone celular"
-          placeholder="(00) 0 000-0000"
+          placeholder="(00) 0 0000-0000"
           maxLength={15}
           value={formData[FormInputName.telephone]}
           onChange={e => onChangeFormInput(FormInputName.telephone)(e.target.value)}
