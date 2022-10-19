@@ -246,7 +246,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             <InputText
               name="telephone"
               label="Telefone celular"
-              placeholder="(00) 0 000-0000"
+              placeholder="(00) 0 0000-0000"
               value={formData[FormInputName.telephone]}
               onChange={e => onChangeFormInput(FormInputName.telephone)(e.target.value)}
               error={formErrors.telephone && formErrors.telephone[0]}

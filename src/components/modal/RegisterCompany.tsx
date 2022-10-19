@@ -133,7 +133,7 @@ const RegisterCompany = (props: Props): JSX.Element => {
                   onChange={onChangeForm()}
                   id="telephone"
                   name="telephone"
-                  placeholder="(00) 0 000-0000"
+                  placeholder="(00) 0 0000-0000"
                 />
               </div>
             </div>
