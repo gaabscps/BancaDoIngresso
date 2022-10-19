@@ -127,12 +127,8 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
     onChangeTitle(newTitleModal);
     onToggle();
 
-    if (value === ShouldShowModal.groupProduct) {
-      setGroupProduct(groupProductSelected);
-    }
-    if (value === ShouldShowModal.subgroupProduct) {
-      setSubgroupProduct(subgroupProductSelected);
-    }
+    setGroupProduct(groupProductSelected);
+    setSubgroupProduct(subgroupProductSelected);
   };
 
   const handleOnSaveGroupProduct = async (): Promise<void> => {
