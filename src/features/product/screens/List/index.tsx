@@ -18,6 +18,17 @@ import { DeleteContent } from '../../components/DeleteContent';
 export default interface PayloadProduct {
   id?: string;
   name: string;
+  imageBase64?: string;
+  productSubgroup?: {
+    id?: string;
+    name?: string;
+    imageBase64?: string;
+    productGroup?: {
+      id?: string;
+      name?: string;
+      imageBase64?: string;
+    };
+  };
 }
 
 export const ProductScreen: React.FC = (): JSX.Element => {
@@ -50,18 +61,11 @@ export const ProductScreen: React.FC = (): JSX.Element => {
   } = useForm({
     initialData: {
       name: '',
-      serialNumber: '',
-      status: '',
-      model: '',
-      telephoneOperator: '',
-      cardOperator: '',
-      expirationDate: '',
     },
     validators: {
       name: [validators.required],
-      serialNumber: [validators.required],
-      status: [validators.required],
-      expirationDate: [validators.isDateLessThanCurrentDate],
+      groupProduct: [validators.required],
+      subGroupProduct: [validators.required],
     },
     formatters: {},
   });
@@ -181,6 +185,12 @@ export const ProductScreen: React.FC = (): JSX.Element => {
         const payload: PayloadProduct = {
           id: product?.id,
           name: formDataProduct[FormInputNameToSaveProduct.name],
+          productSubgroup: {
+            id: formDataProduct[FormInputNameToSaveProduct.subGroupProduct],
+            productGroup: {
+              id: formDataProduct[FormInputNameToSaveProduct.groupProduct],
+            },
+          },
         };
 
         if (!payload.id) {
@@ -195,6 +205,8 @@ export const ProductScreen: React.FC = (): JSX.Element => {
 
         onToggle();
         handleFetch(currentPage);
+      } else {
+        console.log('ue');
       }
     } catch (error) {
       const err = error as AxiosError;

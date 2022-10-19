@@ -21,7 +21,7 @@ interface RegisterContentProps {
 // eslint-disable-next-line no-shadow
 export enum FormInputName {
   groupProduct = 'groupProduct',
-  subProupProduct = 'subProupProduct',
+  subGroupProduct = 'subGroupProduct',
   name = 'name',
   imageBase64 = 'imageBase64',
 }
@@ -59,9 +59,9 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
             name="subProupProduct"
             label="Subgrupo do produto"
             placeholder="Digite ou selecione o subgrupo do produto"
-            onChange={e => onChangeFormInput(FormInputName.subProupProduct)(e?.value as string)}
-            error={formErrors.subProupProduct && formErrors.subProupProduct[0]}
-            value={formData[FormInputName.subProupProduct]}
+            onChange={e => onChangeFormInput(FormInputName.subGroupProduct)(e?.value as string)}
+            error={formErrors.subGroupProduct && formErrors.subGroupProduct[0]}
+            value={formData[FormInputName.subGroupProduct]}
             options={listProductSubGroup.map(item => ({ value: item.id, label: item.name }))}
           />
         </FormGroup>
