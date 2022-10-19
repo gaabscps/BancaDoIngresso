@@ -560,7 +560,11 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
                 controllerAppendUser.handleAddUser(formData[FormInputName.user]);
                 onClearSelectUser();
               }}
-              disabled={formData[FormInputName.user] === undefined}
+              disabled={
+                formData[FormInputName.user] === undefined ||
+                formData[FormInputName.user] === '' ||
+                formData[FormInputName.user] === null
+              }
             />
           </div>
         </Col>
