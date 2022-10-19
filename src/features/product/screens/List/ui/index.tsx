@@ -9,7 +9,7 @@ import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { ActionProps, Dialog } from '@/components/Dialog';
 import { ColumnImage, CustomTable } from '@/components/Table';
 import Pagination from '@/components/Utils/Pagination';
-import Product from '@/model/Product';
+import Product from '@/model/ProductConfig';
 import { NameFiles, ProductRequestParams } from '@/features/product/types';
 import { FilterContent } from '@/features/product/components/FilterContent';
 import { FormErrors, OnChangeFormInput, FormData } from '@/hooks/useForm';
@@ -52,6 +52,7 @@ interface ProductContainerProps {
   formErrorsProduct: FormErrors;
   formDataFilter: FormData;
   formErrorsFilter: FormErrors;
+  handleFecthProductSubGroupList: (id: string) => void;
   onSaveProduct: () => Promise<void>;
   onPaginationChange: (page: number) => void;
   onChangeFormInputFilter: OnChangeFormInput;
@@ -86,6 +87,10 @@ export const ProductContainer: React.FC<ProductContainerProps> = ({
   formErrorsProduct,
   formDataFilter,
   formErrorsFilter,
+  listProductGroup,
+  listProductSubGroup,
+  nameFiles,
+  handleFecthProductSubGroupList,
   onChangeFormInputFilter,
   onChangeFormInputProduct,
   onSaveProduct,
@@ -94,17 +99,14 @@ export const ProductContainer: React.FC<ProductContainerProps> = ({
   onFilter,
   onShouldShowModal,
   onShowDeleteProduct,
-  nameFiles,
   onChangeFileInput,
-  listProductGroup,
-  listProductSubGroup,
 }) => {
   const dataTableProduct = listProduct?.map(item => ({
     id: item.id,
     image: <ColumnImage srcImage={item.imageBase64} />,
     productName: item.name,
-    group: '-',
-    subgroup: '-',
+    group: item.productSubGroup.productGroup.name,
+    subgroup: item.productSubGroup.name,
 
     actions: (
       <React.Fragment>
@@ -180,6 +182,7 @@ export const ProductContainer: React.FC<ProductContainerProps> = ({
                 listProduct={listProduct}
                 listProductGroup={listProductGroup}
                 listProductSubGroup={listProductSubGroup}
+                handleFecthProductSubGroupList={handleFecthProductSubGroupList}
               />
             ),
           }[shouldShowModal]

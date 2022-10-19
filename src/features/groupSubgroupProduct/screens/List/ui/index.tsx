@@ -116,7 +116,7 @@ export const GroupProductContainer: React.FC<GroupProductContainerProps> = ({
             [ShouldShowModal.subgroupProduct]: {
               title: subGroupProductState?.id ? 'Salvar' : 'Cadastrar novo Subgrupo',
               onClick: (): Promise<void> => onSaveGroupSubgroupProduct(),
-              disabled: formDataGroupProduct.name === '',
+              disabled: formSubgroup.formData.name === '',
             },
           }[shouldShowModal],
         ]}
