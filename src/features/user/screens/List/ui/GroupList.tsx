@@ -6,7 +6,7 @@ import { Input } from 'reactstrap';
 import Profile from '@/model/Profile';
 import { DropdonwFlags } from '@/components';
 import User from '@/model/User';
-import { ShouldShowModal } from '..';
+import { CheckBoxGroup, ShouldShowModal } from '..';
 
 interface DataTable {
   checkbox: string;
@@ -22,12 +22,13 @@ interface DataColumn {
 }
 
 interface StateProps {
-  groups: Profile[];
+  groups: CheckBoxGroup[];
+  count: number;
 }
 
 interface DispatchProps {
   checkAll(e: ChangeEvent<HTMLInputElement>): void;
-  change(group: Profile): void;
+  change(e: React.ChangeEvent<HTMLInputElement>, group: CheckBoxGroup): void;
   openModal(value: ShouldShowModal, modalTitle: string, user?: User, group?: Profile): void;
   showDelete(group: Profile): void;
 }
@@ -37,13 +38,22 @@ type Props = StateProps & DispatchProps;
 export const GroupList: React.FC<Props> = (props: Props): JSX.Element => {
   const checkBoxAll = (): React.ReactNode => (
     <div className="checkFieldSpacing">
-      <Input type="checkbox" onChange={e => props.checkAll(e)} />
+      <Input
+        type="checkbox"
+        checked={props.count === props.groups.length}
+        onChange={e => props.checkAll(e)}
+      />
     </div>
   );
 
-  const checkBox = (profile: Profile): React.ReactNode => (
+  const checkBox = (profile: CheckBoxGroup): React.ReactNode => (
     <div className="checkFieldSpacing">
-      <Input type="checkbox" onChange={() => props.change(profile)} />
+      <Input
+        type="checkbox"
+        value={profile.check}
+        checked={profile.check === 'true'}
+        onChange={e => props.change(e, profile)}
+      />
     </div>
   );
 

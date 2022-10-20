@@ -8,12 +8,13 @@ import { RegisterUserContent } from '@/features/user/components/RegisterUserCont
 import { States } from '@/helpers/common/states';
 import { FormData, FormErrors, OnChangeFormInput } from '@/hooks';
 import Module from '@/model/Module';
+import Permission from '@/model/Permission';
 import Profile from '@/model/Profile';
 import User from '@/model/User';
 import UserType from '@/model/UserType';
 import React, { ChangeEvent } from 'react';
 import { Container, Label } from 'reactstrap';
-import { ShouldShowModal } from '..';
+import { CheckBoxData, CheckBoxGroup, CheckBoxUser, ShouldShowModal } from '..';
 import { GroupList } from './GroupList';
 import { UserList } from './UserList';
 
@@ -26,10 +27,13 @@ interface StateProps {
   renderModalActionProps: ActionProps;
   formDataUser: FormData;
   formErrorsUser: FormErrors;
-  users: User[];
+  users: CheckBoxUser[];
   formDataGroup: FormData;
   formErrorsGroup: FormErrors;
-  groups: Profile[];
+  groups: CheckBoxGroup[];
+  userProfileCheckBox: CheckBoxData[];
+  userSelectedCount: number;
+  groupSelectedCount: number;
   user?: User;
   group?: Profile;
   modules?: Module[];
@@ -44,12 +48,16 @@ interface DispatchProps {
   saveGroup(): Promise<void>;
   checkAllUserList(e: ChangeEvent<HTMLInputElement>): void;
   toUserType(userType: UserType): string;
-  changeUserList(user: User): void;
+  changeUserList(e: React.ChangeEvent<HTMLInputElement>, user: CheckBoxUser): void;
   checkAllGroupList(e: ChangeEvent<HTMLInputElement>): void;
-  changeGroupList(profile: Profile): void;
+  removeSelectedUsers(e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void;
+  changeGroupList(e: React.ChangeEvent<HTMLInputElement>, group: CheckBoxGroup): void;
   changeFormInputUser: OnChangeFormInput;
   changeFileInputUser: (inputName: string) => (file: File | undefined) => void;
   changeFormInputGroup: OnChangeFormInput;
+  checkAllModule(e: ChangeEvent<HTMLInputElement>): void;
+  removeSelectedGroups(e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void;
+  checkPermission(permission: Permission): void;
 }
 
 type Props = StateProps & DispatchProps;
@@ -86,6 +94,8 @@ export const UserGroupList: React.FC<Props> = (props: Props): JSX.Element => (
             <RegisterUserContent
               formData={props.formDataUser}
               formErrors={props.formErrorsUser}
+              userProfileCheckBox={props.userProfileCheckBox}
+              modules={props.modules}
               onChangeFormInput={props.changeFormInputUser}
               onChangeFileInput={props.changeFileInputUser}
             />
@@ -96,6 +106,8 @@ export const UserGroupList: React.FC<Props> = (props: Props): JSX.Element => (
               formErrors={props.formErrorsGroup}
               modules={props.modules}
               onChangeFormInput={props.changeFormInputGroup}
+              checkAllModule={props.checkAllModule}
+              checkPermission={props.checkPermission}
             />
           ),
         }[props.shouldShowModal]
@@ -128,6 +140,7 @@ export const UserGroupList: React.FC<Props> = (props: Props): JSX.Element => (
             props.users && props.users.length > 0 ? (
               <UserList
                 users={props.users}
+                count={props.userSelectedCount}
                 change={props.changeUserList}
                 checkAll={props.checkAllUserList}
                 toUserType={props.toUserType}
@@ -140,6 +153,9 @@ export const UserGroupList: React.FC<Props> = (props: Props): JSX.Element => (
           }
           leftIcon={UserIcon}
           count={props.users.length}
+          showButtonOnTitle={!!(props.userSelectedCount && props.userSelectedCount > 0)}
+          buttonTitle="Deletar selecionados"
+          buttonAction={props.removeSelectedUsers}
         />
         <SuperCollapse
           title="Grupos cadastrados"
@@ -147,6 +163,7 @@ export const UserGroupList: React.FC<Props> = (props: Props): JSX.Element => (
             props.groups && props.groups.length > 0 ? (
               <GroupList
                 groups={props.groups}
+                count={props.groupSelectedCount}
                 change={props.changeGroupList}
                 checkAll={props.checkAllGroupList}
                 openModal={props.openModal}
@@ -158,6 +175,9 @@ export const UserGroupList: React.FC<Props> = (props: Props): JSX.Element => (
           }
           leftIcon={UserGroupIcon}
           count={props.groups.length}
+          showButtonOnTitle={!!(props.groupSelectedCount && props.groupSelectedCount > 0)}
+          buttonTitle="Deletar selecionados"
+          buttonAction={props.removeSelectedGroups}
         />
       </div>
     </Container>
