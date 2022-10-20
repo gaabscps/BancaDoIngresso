@@ -12,6 +12,7 @@ import { SelectCustom } from './Select';
 import { Switch } from './Switch';
 import { CollapseCustom } from './CollapseCustom';
 import { Dialog } from './Dialog';
+import { Checkbox } from './Checkbox';
 import { Error400 } from './Errors/error400';
 import { Error401 } from './Errors/error401';
 import { Error403 } from './Errors/error403';
@@ -35,6 +36,7 @@ export {
   DropdonwFlags,
   CollapseCustom,
   Dialog,
+  Checkbox,
   TextArea,
   Error400,
   Error401,
