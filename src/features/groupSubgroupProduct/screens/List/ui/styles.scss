@@ -71,7 +71,10 @@
   /* identical to box height */
 
   /* Cores/Auxiliares/Sucesso */
-
+  &:hover {
+    font-weight: 500;
+    color: #7ad81b !important;
+  }
   color: #7ad81b;
 }
 

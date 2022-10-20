@@ -5,6 +5,7 @@ import { Col, Container, Row } from 'reactstrap';
 import { RegisterGroupContent } from '@/features/groupSubgroupProduct/components/RegisterGroupContent';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
+import { ReactComponent as ProductCombo } from '@/assets/images/svg/ProductCombo.svg';
 import { ActionProps, Dialog } from '@/components/Dialog';
 import { FormErrors, OnChangeFormInput, FormData } from '@/hooks/useForm';
 import GroupProduct from '@/model/GroupProductSend';
@@ -157,7 +158,15 @@ export const GroupProductContainer: React.FC<GroupProductContainerProps> = ({
           />
         </div>
 
-        <CollapseCustom className="tree-card" title="Grupos e subgrupos">
+        <CollapseCustom
+          className="tree-card"
+          title={
+            <>
+              <ProductCombo width={20} className="mr-3" />
+              Grupos e subgrupos
+            </>
+          }
+        >
           {listGroupProduct.length > 0 ? (
             <>
               <Row>
