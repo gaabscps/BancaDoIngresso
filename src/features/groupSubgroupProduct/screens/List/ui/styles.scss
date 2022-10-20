@@ -18,6 +18,8 @@
     color: #828282;
 
     display: flex;
+    justify-content: space-between;
+    max-width: 290px;
   }
   ul li::before {
     content: ' ';
@@ -58,6 +60,9 @@
 .tree-card {
   padding: 30px 15px 0 15px;
   overflow-x: auto;
+  border-radius: 0 0 5px 5px !important;
+  border: 0 !important;
+  border-top: 1px solid #E6E6E6 !important;
 }
 .text-success-link {
   font-weight: 300;
@@ -90,13 +95,26 @@
   grid-template-columns: 1fr 1fr 1fr;
 }
 .tree-main-text {
-  margin-right: 10px;
+  margin-right: 16px;
 }
 .icon-content {
   margin: auto 10px;
-  width: 60px;
-  justify-content: space-evenly;
+  width: 50px;
+  justify-content: space-between;
 }
 .tree-item-container {
   padding-bottom: 30px;
+}
+
+.mv-auto {
+  margin: auto 0px;
+}
+
+.text-success-link {
+  cursor: pointer;
+  width: fit-content;
+}
+
+.text-success-link-widht {
+  width: 200px;
 }
