@@ -158,82 +158,88 @@ export const GroupProductContainer: React.FC<GroupProductContainerProps> = ({
         </div>
 
         <CollapseCustom className="tree-card" title="Grupos e subgrupos">
-          <Row>
-            <Col>
-              <p className="text-title-gruop">Nome do grupo</p>
-            </Col>
-          </Row>
-          <Row className="tree-container">
-            {listGroupProduct.map((item: GroupProduct) => (
-              <Col className="tree-item-container">
-                <div className="d-flex">
-                  <div className="d-flex justify-content-between text-gruop tree-main-text">
-                    <div className="mv-auto">{item.productGroupName}</div>
-                    <div className="d-flex icon-content mv-auto">
-                      <Pen
-                        className="svg-icon action-icon sm-icon"
-                        onClick={(): void =>
-                          onShouldShowModal({
-                            value: ShouldShowModal.groupProduct,
-                            newTitleModal: `${item.productGroupName}`,
-                            groupProduct: item,
-                          })
-                        }
-                      />
-                      <Trash
-                        className="mr-0 svg-icon sm-icon"
-                        onClick={() => {
-                          onShowDeleteGroupProduct(item);
-                        }}
-                      />
-                    </div>
-                  </div>
-                  <div className="text-success-link-widht">
-                    <a
-                      className="text-success-link"
-                      onClick={(): void =>
-                        onShouldShowModal({
-                          value: ShouldShowModal.subgroupProduct,
-                          newTitleModal: `Cadastrar novo subgrupo - Em ${item.productGroupName}`,
-                          groupProduct: item,
-                        })
-                      }
-                    >
-                      + cadastrar novo subgrupo
-                    </a>
-                  </div>
-                </div>
-                <div className="tree">
-                  <ul>
-                    {item.subGroups.map(subItem => (
-                      <li>
-                        <div>{subItem.productSubGroupName}</div>
-                        <div className="flex-shrink-0 ml-2">
+          {listGroupProduct.length > 0 ? (
+            <>
+              <Row>
+                <Col>
+                  <p className="text-title-gruop">Nome do grupo</p>
+                </Col>
+              </Row>
+              <Row className="tree-container">
+                {listGroupProduct.map((item: GroupProduct) => (
+                  <Col className="tree-item-container">
+                    <div className="d-flex">
+                      <div className="d-flex justify-content-between text-gruop tree-main-text">
+                        <div className="mv-auto">{item.productGroupName}</div>
+                        <div className="d-flex icon-content mv-auto">
                           <Pen
-                            className="mr-3 svg-icon action-icon sm-icon"
+                            className="svg-icon action-icon sm-icon"
                             onClick={(): void =>
                               onShouldShowModal({
-                                value: ShouldShowModal.subgroupProduct,
-                                newTitleModal: `${subItem.productSubGroupName}`,
+                                value: ShouldShowModal.groupProduct,
+                                newTitleModal: `${item.productGroupName}`,
                                 groupProduct: item,
-                                subgroupProduct: subItem,
                               })
                             }
                           />
                           <Trash
-                            className="mr-5 svg-icon action-icon sm-icon"
+                            className="mr-0 svg-icon sm-icon"
                             onClick={() => {
-                              onShowDeleteSubgroupProduct(subItem);
+                              onShowDeleteGroupProduct(item);
                             }}
                           />
                         </div>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </Col>
-            ))}
-          </Row>
+                      </div>
+                      <div className="text-success-link-widht">
+                        <a
+                          className="text-success-link"
+                          onClick={(): void =>
+                            onShouldShowModal({
+                              value: ShouldShowModal.subgroupProduct,
+                              newTitleModal: `Cadastrar novo subgrupo - Em ${item.productGroupName}`,
+                              groupProduct: item,
+                            })
+                          }
+                        >
+                          + cadastrar novo subgrupo
+                        </a>
+                      </div>
+                    </div>
+                    <div className="tree">
+                      <ul>
+                        {item.subGroups.map(subItem => (
+                          <li>
+                            <div>{subItem.productSubGroupName}</div>
+                            <div className="flex-shrink-0 ml-2">
+                              <Pen
+                                className="mr-3 svg-icon action-icon sm-icon"
+                                onClick={(): void =>
+                                  onShouldShowModal({
+                                    value: ShouldShowModal.subgroupProduct,
+                                    newTitleModal: `${subItem.productSubGroupName}`,
+                                    groupProduct: item,
+                                    subgroupProduct: subItem,
+                                  })
+                                }
+                              />
+                              <Trash
+                                className="mr-5 svg-icon action-icon sm-icon"
+                                onClick={() => {
+                                  onShowDeleteSubgroupProduct(subItem);
+                                }}
+                              />
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </Col>
+                ))}
+              </Row>
+            </>
+          ) : (
+            <div className="d-flex justify-content-center p-5 pt-lg-3">Nenhum grupo cadastrado</div>
+          )}
         </CollapseCustom>
       </Container>
     </Fragment>

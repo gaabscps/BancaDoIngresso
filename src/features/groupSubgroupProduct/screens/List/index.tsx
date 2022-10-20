@@ -202,13 +202,14 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
       toast.error(err.message);
     }
   };
+
   const handleOnConfirmDeleteToSubGroupProduct = async (
     subgroupProductSelected: SubGrupSend,
   ): Promise<void> => {
     try {
       await api.delete(`/product-subgroup/${subgroupProductSelected?.productSubGroupId}`);
 
-      toast.success('Grupo e subgrupo de produtos excluído com sucesso!');
+      toast.success('Subgrupo excluído com sucesso!');
       handleOnClose();
       handleFetch();
     } catch (error) {
