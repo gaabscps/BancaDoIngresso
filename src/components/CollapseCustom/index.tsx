@@ -24,7 +24,7 @@ export const CollapseCustom: React.FC<CollapseCustomProps> = ({
         <div className="d-flex">{title}</div>
         <div>
           <svg
-            className={`${open ? 'rotateSvg' : ''}`}
+            className={`action-icon ${open ? 'rotateSvg' : ''}`}
             width="16"
             height="10"
             viewBox="0 0 16 10"
