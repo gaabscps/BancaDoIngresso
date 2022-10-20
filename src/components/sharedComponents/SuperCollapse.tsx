@@ -3,7 +3,8 @@ import { Collapse } from 'reactstrap';
 
 interface StateProps {
   title: string;
-  content: string;
+  content: string | React.ReactNode;
+  count?: number;
 }
 
 interface DispatchProps {
@@ -15,6 +16,8 @@ type Props = StateProps & DispatchProps;
 function SuperCollapse(props: Props): JSX.Element {
   const [open, setOpen] = useState(false);
 
+  const getCount = (): string => ` (${props.count})`;
+
   return (
     <>
       <div style={{ marginBottom: '50px' }}>
@@ -24,7 +27,12 @@ function SuperCollapse(props: Props): JSX.Element {
         >
           <div className="d-flex">
             <div className="iconTable">{props.leftIcon()}</div>
-            <div className="normalText ">{props.title}</div>
+            <div className="normalText ">
+              {props.title}{' '}
+              {props.count && props.count >= 0 && (
+                <span style={{ fontWeight: 'bold' }}>{getCount()}</span>
+              )}
+            </div>
           </div>
           <div>
             <svg
@@ -40,7 +48,7 @@ function SuperCollapse(props: Props): JSX.Element {
           </div>
         </div>
 
-        <Collapse in={open}>
+        <Collapse in={open} className={open ? 'show' : ''}>
           <div className="collapseTable">
             <div className="subTitleMain collapseTableText">{props.content}</div>
           </div>

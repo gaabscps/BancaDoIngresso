@@ -57,7 +57,6 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
     validators: {
       name: [validators.required],
     },
-    formatters: {},
   });
 
   const {
