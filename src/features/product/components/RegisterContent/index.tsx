@@ -38,11 +38,11 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
   onChangeFormInput,
   onChangeFileInput,
 }) => {
-  const refSelectUser = useRef<any>(null);
+  const refSelectSubGroup = useRef<any>(null);
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  const onClearSelectUser = () => {
-    if (refSelectUser) {
-      refSelectUser?.current.clearValue();
+  const onClearSelectSubGroup = () => {
+    if (refSelectSubGroup) {
+      refSelectSubGroup?.current.clearValue();
     }
   };
 
@@ -63,7 +63,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
               onChange={e => {
                 onChangeFormInput(FormInputName.groupProduct)(e?.value as string);
                 handleFecthProductSubGroupList(e?.value as string);
-                onClearSelectUser();
+                onClearSelectSubGroup();
               }}
               error={formErrors.groupProduct && formErrors.groupProduct[0]}
               value={formData[FormInputName.groupProduct]}
@@ -75,7 +75,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
               name="subGroupProduct"
               label="Subgrupo do produto"
               placeholder="Digite ou selecione o subgrupo do produto"
-              refSelect={refSelectUser}
+              refSelect={refSelectSubGroup}
               onChange={e => onChangeFormInput(FormInputName.subGroupProduct)(e?.value as string)}
               error={formErrors.subGroupProduct && formErrors.subGroupProduct[0]}
               value={formData[FormInputName.subGroupProduct]}
