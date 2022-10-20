@@ -1,10 +1,8 @@
+import ProductGroup from './ProductGroup';
+
 export default interface ProductSubgroup {
-  productGroupId: string;
-  productGroupName: string;
-  subGroups: [
-    {
-      productSubGroupId: string;
-      productSubGroupName: string;
-    },
-  ];
+  id: string;
+  name: string;
+  productGroup: ProductGroup;
+  imageBase64: string;
 }

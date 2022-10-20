@@ -33,7 +33,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
   formErrors,
   nameFiles,
   listProductGroup,
-  // listProductSubGroup,
+  listProductSubGroup,
   handleFecthProductSubGroupList,
   onChangeFormInput,
   onChangeFileInput,
@@ -79,8 +79,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
               onChange={e => onChangeFormInput(FormInputName.subGroupProduct)(e?.value as string)}
               error={formErrors.subGroupProduct && formErrors.subGroupProduct[0]}
               value={formData[FormInputName.subGroupProduct]}
-              options={[]}
-              // options={listProductSubGroup.map(item => ({ value: item.id, label: item.name }))}
+              options={listProductSubGroup.map(item => ({ value: item.id, label: item.name }))}
             />
           </FormGroup>
           <FormGroup className="mb-2">
