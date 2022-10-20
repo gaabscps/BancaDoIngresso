@@ -18,6 +18,7 @@ import { Error403 } from './Errors/error403';
 import { Error404 } from './Errors/error404';
 import { Error500 } from './Errors/error500';
 import { Error503 } from './Errors/error503';
+import { TextArea } from './TextArea';
 
 export {
   Header,
@@ -34,6 +35,7 @@ export {
   DropdonwFlags,
   CollapseCustom,
   Dialog,
+  TextArea,
   Error400,
   Error401,
   Error403,

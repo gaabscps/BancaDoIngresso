@@ -134,6 +134,10 @@ export const Sidebar: React.FC = () => {
               IconSvg={Settings}
               items={[
                 {
+                  route: path.Dashboard.User.itself,
+                  title: 'Usuários e Grupos',
+                },
+                {
                   route: path.Dashboard.Pdv.itself,
                   title: 'PDV',
                 },

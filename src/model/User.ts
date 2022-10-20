@@ -1,4 +1,5 @@
 import Profile from './Profile';
+import StatusType from './StatusType';
 import UserType from './UserType';
 
 export default interface User {
@@ -10,5 +11,6 @@ export default interface User {
   imageBase64: string;
   password: string;
   userType: UserType;
-  profiles: Profile[];
+  profiles?: Profile[];
+  status?: StatusType;
 }
