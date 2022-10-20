@@ -1,5 +1,5 @@
 import Page from '@/model/Page';
-import Product from '@/model/Product';
+import Product from '@/model/ProductConfig';
 
 export type ProductResponse = Page<Product, Product>;
 
