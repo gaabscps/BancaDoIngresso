@@ -138,13 +138,13 @@ export const GroupProductContainer: React.FC<GroupProductContainerProps> = ({
       </Dialog>
 
       <Container className="mainContainer" fluid={true}>
-        <div className="d-flex justify-content-between" style={{ paddingBottom: '30px' }}>
+        <div className="d-flex justify-content-between mb-5">
           <div className="pageTitle d-flex">
             <Link to={`${process.env.PUBLIC_URL}/dashboard/productscombos`}>
               <ArrowLeft color={colors.black} className="arrow-left" />
             </Link>
 
-            <span className="ml-3 mb-0 mt-2">Grupos de subgrupos de produtos</span>
+            <span className="ml-3 mb-0 mt-2">Grupos e subgrupos de produtos</span>
           </div>
           <Button
             title="+ Cadastrar novo grupo"
@@ -167,9 +167,9 @@ export const GroupProductContainer: React.FC<GroupProductContainerProps> = ({
             {listGroupProduct.map((item: GroupProduct) => (
               <Col className="tree-item-container">
                 <div className="d-flex">
-                  <div className="d-flex text-gruop tree-main-text">
-                    <div style={{ margin: 'auto 0' }}>{item.productGroupName}</div>
-                    <div className="d-flex icon-content" style={{ margin: 'auto 0' }}>
+                  <div className="d-flex justify-content-between text-gruop tree-main-text">
+                    <div className="mv-auto">{item.productGroupName}</div>
+                    <div className="d-flex icon-content mv-auto">
                       <Pen
                         className="svg-icon action-icon sm-icon"
                         onClick={(): void =>
@@ -188,10 +188,9 @@ export const GroupProductContainer: React.FC<GroupProductContainerProps> = ({
                       />
                     </div>
                   </div>
-                  <div style={{ width: '200px' }}>
+                  <div className="text-success-link-widht">
                     <a
-                      className="text-success-link "
-                      style={{ cursor: 'pointer', width: 'fit-content' }}
+                      className="text-success-link"
                       onClick={(): void =>
                         onShouldShowModal({
                           value: ShouldShowModal.subgroupProduct,
@@ -216,6 +215,7 @@ export const GroupProductContainer: React.FC<GroupProductContainerProps> = ({
                               onShouldShowModal({
                                 value: ShouldShowModal.subgroupProduct,
                                 newTitleModal: `${subItem.productSubGroupName}`,
+                                groupProduct: item,
                                 subgroupProduct: subItem,
                               })
                             }
