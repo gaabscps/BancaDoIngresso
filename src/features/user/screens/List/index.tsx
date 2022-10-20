@@ -10,7 +10,11 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import UserType from '@/model/UserType';
 import { useDialog } from '@/hooks/useDialog';
+import { useConfirmDelete } from '@/hooks/useConfirmDelete';
+import StatusType from '@/model/StatusType';
+import Module from '@/model/Module';
 import { UserGroupList } from './ui/UserGroupList';
+import { DeleteContent } from '../../components/DeleteContent';
 
 // eslint-disable-next-line no-shadow
 export enum States {
@@ -31,6 +35,13 @@ export enum FormInputUser {
 }
 
 // eslint-disable-next-line no-shadow
+export enum FormInputGroup {
+  name = 'name',
+  description = 'description',
+  actived = 'actived',
+}
+
+// eslint-disable-next-line no-shadow
 export enum ShouldShowModal {
   user = 'user',
   group = 'group',
@@ -38,14 +49,15 @@ export enum ShouldShowModal {
 
 export const UserScreen: React.FC = (): JSX.Element => {
   const [state, setState] = useState(States.default);
-  const [title, setTitle] = useState('Usuários e Grupos');
+  // const [title, setTitle] = useState('');
   const [shouldShowModal, setShouldShowModal] = useState({} as ShouldShowModal);
   const [users, setUsers] = useState([] as User[]);
   const [groups, setGroups] = useState([] as Profile[]);
   const [user, setUser] = useState({} as User);
   const [group, setGroup] = useState({} as Profile);
-
-  const { visible, onToggle } = useDialog();
+  const [modules, setModules] = useState([] as Module[]);
+  const { visible, title, onChangeTitle, onToggle } = useDialog();
+  const confirmDelete = useConfirmDelete();
 
   const {
     formData: formDataUser,
@@ -76,6 +88,23 @@ export const UserScreen: React.FC = (): JSX.Element => {
     formatters: {
       cpf: updateMaskCPFOrCNPJ,
       telephone: updateMaskMobilePhone,
+    },
+  });
+
+  const {
+    formData: formDataGroup,
+    formErrors: formErrorsGroup,
+    onChangeFormInput: onChangeFormInputGroup,
+    isFormValid: isFormValidGroup,
+    resetForm: resetFormGroup,
+  } = useForm({
+    initialData: {
+      name: '',
+      description: '',
+    },
+    validators: {
+      name: [validators.required],
+      description: [validators.required],
     },
   });
 
@@ -134,26 +163,15 @@ export const UserScreen: React.FC = (): JSX.Element => {
     setState(States.loading);
     const response = await api.get<User[]>('/user/find');
     setUsers(response.data);
-    const profiles = [] as Profile[];
-    response.data.forEach(data => {
-      if (data.profiles && data.profiles.length > 0) {
-        // eslint-disable-next-line no-plusplus
-        for (let p = 0; p < data.profiles.length; p++) {
-          let exists = false;
-          // eslint-disable-next-line no-plusplus
-          for (let i = 0; i < profiles.length; i++) {
-            if (data.profiles[p].id === profiles[i].id) {
-              exists = true;
-              break;
-            }
-          }
-          if (!exists) {
-            profiles.push(data.profiles[p]);
-          }
-        }
-      }
-    });
-    setGroups(profiles);
+    const responseGroup = await api.get<Profile[]>('/profile/find');
+    setGroups(responseGroup.data);
+    setState(States.default);
+  };
+
+  const getModules = async (): Promise<void> => {
+    setState(States.loading);
+    const response = await api.get<Module[]>('module/find');
+    setModules(response.data);
     setState(States.default);
   };
 
@@ -237,21 +255,114 @@ export const UserScreen: React.FC = (): JSX.Element => {
     }
   };
 
-  const openModal = (
+  const onSaveGroup = async (): Promise<void> => {
+    try {
+      if (isFormValidGroup()) {
+        const payload: User = {
+          id: user?.id,
+          name: formDataUser[FormInputUser.name],
+          cpf: formDataUser[FormInputUser.cpf],
+          telephone: formDataUser[FormInputUser.telephone],
+          email: formDataUser[FormInputUser.email],
+          imageBase64: formDataUser[FormInputUser.imageBase64],
+          userType: stringToUserType(formDataUser[FormInputUser.userType]),
+          password: formDataUser[FormInputUser.password],
+        };
+
+        if (!payload.id) {
+          await api.post<User>('/user', payload);
+          toast.success(`PDV "${formDataUser[FormInputUser.name]}" cadastrado com sucesso!`);
+        } else {
+          await api.put<User>('/user', payload);
+          toast.success(`PDV "${formDataUser[FormInputUser.name]}" atualizado com sucesso!`);
+        }
+        resetFormGroup();
+        onToggle();
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    }
+  };
+
+  const openModal = async (
     value: ShouldShowModal,
     modalTitle: string,
     userSelected?: User,
     groupSelected?: Profile,
-  ): void => {
-    setTitle(modalTitle);
+  ): Promise<void> => {
+    onChangeTitle(modalTitle);
     setShouldShowModal(value);
     if (userSelected) {
       setUser(userSelected);
     }
     if (groupSelected) {
+      await getModules();
       setGroup(groupSelected);
     }
     onToggle();
+  };
+
+  const handleOnClose = (): void => confirmDelete.hide();
+
+  const onConfirmDeleteUser = async (userDelete: User): Promise<void> => {
+    try {
+      await api.delete(`/profile/${userDelete.id}`);
+      toast.success('Grupo excluído com sucesso!');
+      handleOnClose();
+      getUsers();
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    }
+  };
+
+  const onShowDeleteUser = (userDelete: User): void => {
+    confirmDelete.show({
+      title: '',
+      children: <DeleteContent />,
+      actions: [
+        {
+          title: 'Não, quero manter',
+          theme: 'noneBorder',
+          onClick: (): void => handleOnClose(),
+        },
+        {
+          title: 'Sim, quero excluir',
+          onClick: (): Promise<void> => onConfirmDeleteUser(userDelete),
+        },
+      ],
+    });
+  };
+
+  const onConfirmDeleteGroup = async (profile: Profile): Promise<void> => {
+    try {
+      await api.delete(`/profile/${profile.id}`);
+      toast.success('Grupo excluído com sucesso!');
+      handleOnClose();
+      getUsers();
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    }
+  };
+
+  const onShowDeleteGroup = (profile: Profile): void => {
+    confirmDelete.show({
+      title: '',
+      children: <DeleteContent />,
+      actions: [
+        {
+          title: 'Não, quero manter',
+          theme: 'noneBorder',
+          onClick: (): void => handleOnClose(),
+        },
+        {
+          title: 'Sim, quero excluir',
+          onClick: (): Promise<void> => onConfirmDeleteGroup(profile),
+        },
+      ],
+    });
   };
 
   const checkAllUserList = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -270,6 +381,22 @@ export const UserScreen: React.FC = (): JSX.Element => {
     console.log(groupList);
   };
 
+  const toUserStatus = (statusType: StatusType): string => {
+    let status = 'false';
+    switch (statusType) {
+      case StatusType.ACTIVE:
+        status = 'true';
+        break;
+      case StatusType.INACTIVE:
+        status = 'false';
+        break;
+      default:
+        status = 'false';
+        break;
+    }
+    return status;
+  };
+
   useEffect(() => {
     if (user?.id) {
       onChangeFormInputUser(FormInputUser.name)(user.name);
@@ -279,9 +406,19 @@ export const UserScreen: React.FC = (): JSX.Element => {
       onChangeFormInputUser(FormInputUser.imageBase64)(user.imageBase64);
       onChangeFormInputUser(FormInputUser.password)(user.password);
       onChangeFormInputUser(FormInputUser.userType)(userTypeToString(user.userType));
-      onChangeFormInputUser(FormInputUser.status)('true');
+      onChangeFormInputUser(FormInputUser.status)(
+        user.status ? toUserStatus(user.status) : 'false',
+      );
     }
   }, [user]);
+
+  useEffect(() => {
+    if (group?.id) {
+      onChangeFormInputGroup(FormInputGroup.name)(group.name);
+      onChangeFormInputGroup(FormInputGroup.description)(group.description);
+      onChangeFormInputGroup(FormInputGroup.actived)(group.actived ? 'true' : 'false');
+    }
+  }, [group]);
 
   useEffect(() => {
     getUsers();
@@ -289,19 +426,26 @@ export const UserScreen: React.FC = (): JSX.Element => {
   return (
     <UserGroupList
       state={state}
-      title={title}
+      title="Usuários e Grupos"
+      modalTitle={title}
       visible={visible}
       shouldShowModal={shouldShowModal}
       renderModalActionProps={renderActionDialogToCancel}
       formDataUser={formDataUser}
       formErrorsUser={formErrorsUser}
       users={users}
+      formDataGroup={formDataGroup}
+      formErrorsGroup={formErrorsGroup}
       groups={groups}
       user={user}
       group={group}
+      modules={modules}
       onToggle={onToggle}
       openModal={openModal}
+      showDeleteUser={onShowDeleteUser}
+      showDeleteGroup={onShowDeleteGroup}
       saveUser={onSaveUser}
+      saveGroup={onSaveGroup}
       checkAllUserList={checkAllUserList}
       toUserType={toUserType}
       changeUserList={changeUserList}
@@ -309,6 +453,7 @@ export const UserScreen: React.FC = (): JSX.Element => {
       changeGroupList={changeGroupList}
       changeFormInputUser={onChangeFormInputUser}
       changeFileInputUser={handleOnChangeFileInput}
+      changeFormInputGroup={onChangeFormInputGroup}
     />
   );
 };

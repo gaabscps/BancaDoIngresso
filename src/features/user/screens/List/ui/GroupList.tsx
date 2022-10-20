@@ -4,21 +4,32 @@ import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { Input } from 'reactstrap';
 import Profile from '@/model/Profile';
+import { DropdonwFlags } from '@/components';
+import User from '@/model/User';
+import { ShouldShowModal } from '..';
 
 interface DataTable {
   checkbox: string;
   name: string;
-  permission: string;
+  permissions: string;
   status: string;
   actions: string;
+}
+
+interface DataColumn {
+  id: string;
+  name: string;
 }
 
 interface StateProps {
   groups: Profile[];
 }
+
 interface DispatchProps {
   checkAll(e: ChangeEvent<HTMLInputElement>): void;
   change(group: Profile): void;
+  openModal(value: ShouldShowModal, modalTitle: string, user?: User, group?: Profile): void;
+  showDelete(group: Profile): void;
 }
 
 type Props = StateProps & DispatchProps;
@@ -36,18 +47,50 @@ export const GroupList: React.FC<Props> = (props: Props): JSX.Element => {
     </div>
   );
 
-  const dataTable = props.groups?.map(group => ({
-    checkbox: checkBox(group),
-    name: group.name,
-    permission: group.permissions ? group.permissions[0] : '',
-    status: 'Ativo',
-    actions: (
-      <div className="d-flex">
-        <Pen onClick={(): void => console.log('asdfa')} className="mr-2 svg-icon action-icon" />
-        <Trash onClick={(): void => console.log('asdfa')} className="mr-2 svg-icon action-icon" />
-      </div>
-    ),
-  }));
+  const dataTable = props.groups?.map(group => {
+    const dataColumnProfiles: DataColumn[] = [];
+    if (group.permissions && group.permissions.length > 0) {
+      group.permissions.forEach(data => {
+        dataColumnProfiles.push({
+          id: data.id,
+          name: data.name,
+        });
+      });
+    }
+    return {
+      checkbox: checkBox(group),
+      name: group.name,
+      permissions:
+        // eslint-disable-next-line no-nested-ternary
+        group.permissions && group.permissions.length > 1 ? (
+          <DropdonwFlags pointerClass={true} dataColumn={dataColumnProfiles} />
+        ) : group.permissions && group.permissions.length === 1 ? (
+          group.permissions[0].name
+        ) : (
+          ''
+        ),
+      status: 'Ativo',
+      actions: (
+        <div className="d-flex">
+          <Pen
+            onClick={(): void =>
+              props.openModal(
+                ShouldShowModal.group,
+                'Editar grupo',
+                undefined as unknown as User,
+                group,
+              )
+            }
+            className="mr-2 svg-icon action-icon"
+          />
+          <Trash
+            onClick={(): void => props.showDelete(group)}
+            className="mr-2 svg-icon action-icon"
+          />
+        </div>
+      ),
+    };
+  });
 
   const columns: TableColumn<DataTable>[] = [
     {
@@ -61,7 +104,8 @@ export const GroupList: React.FC<Props> = (props: Props): JSX.Element => {
     },
     {
       name: 'Permissão',
-      selector: row => row.permission,
+      selector: row => row.permissions,
+      cell: row => row.permissions,
     },
     {
       name: 'Situação',

@@ -3,9 +3,11 @@ import UserGroupIcon from '@/assets/images/svg/UserGroup';
 import { Button, Dialog, Loading } from '@/components';
 import { ActionProps } from '@/components/Dialog';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
-import { RegisterContent } from '@/features/user/components/RegisterContent';
+import { RegisterGroupContent } from '@/features/user/components/RegisterGroupContent';
+import { RegisterUserContent } from '@/features/user/components/RegisterUserContent';
 import { States } from '@/helpers/common/states';
 import { FormData, FormErrors, OnChangeFormInput } from '@/hooks';
+import Module from '@/model/Module';
 import Profile from '@/model/Profile';
 import User from '@/model/User';
 import UserType from '@/model/UserType';
@@ -18,21 +20,28 @@ import { UserList } from './UserList';
 interface StateProps {
   state: States;
   title: string;
+  modalTitle: string | React.ReactNode;
   visible: boolean;
   shouldShowModal: ShouldShowModal;
   renderModalActionProps: ActionProps;
   formDataUser: FormData;
   formErrorsUser: FormErrors;
   users: User[];
+  formDataGroup: FormData;
+  formErrorsGroup: FormErrors;
   groups: Profile[];
   user?: User;
   group?: Profile;
+  modules?: Module[];
 }
 
 interface DispatchProps {
   onToggle(): void;
   openModal(value: ShouldShowModal, modalTitle: string, user?: User, group?: Profile): void;
+  showDeleteUser(user: User): void;
+  showDeleteGroup(profile: Profile): void;
   saveUser(): Promise<void>;
+  saveGroup(): Promise<void>;
   checkAllUserList(e: ChangeEvent<HTMLInputElement>): void;
   toUserType(userType: UserType): string;
   changeUserList(user: User): void;
@@ -40,6 +49,7 @@ interface DispatchProps {
   changeGroupList(profile: Profile): void;
   changeFormInputUser: OnChangeFormInput;
   changeFileInputUser: (inputName: string) => (file: File | undefined) => void;
+  changeFormInputGroup: OnChangeFormInput;
 }
 
 type Props = StateProps & DispatchProps;
@@ -48,7 +58,7 @@ export const UserGroupList: React.FC<Props> = (props: Props): JSX.Element => (
   <React.Fragment>
     <Loading isVisible={props.state === States.loading} />
     <Dialog
-      title={props.title}
+      title={props.modalTitle}
       visible={props.visible}
       onClose={props.onToggle}
       position="center"
@@ -65,7 +75,7 @@ export const UserGroupList: React.FC<Props> = (props: Props): JSX.Element => (
           },
           [ShouldShowModal.group]: {
             title: props.group?.id ? 'Editar grupo' : 'Cadastrar grupo',
-            onClick: (): Promise<void> => props.saveUser(),
+            onClick: (): Promise<void> => props.saveGroup(),
           },
         }[props.shouldShowModal],
       ]}
@@ -73,7 +83,7 @@ export const UserGroupList: React.FC<Props> = (props: Props): JSX.Element => (
       {
         {
           [ShouldShowModal.user]: (
-            <RegisterContent
+            <RegisterUserContent
               formData={props.formDataUser}
               formErrors={props.formErrorsUser}
               onChangeFormInput={props.changeFormInputUser}
@@ -81,11 +91,11 @@ export const UserGroupList: React.FC<Props> = (props: Props): JSX.Element => (
             />
           ),
           [ShouldShowModal.group]: (
-            <RegisterContent
-              formData={props.formDataUser}
-              formErrors={props.formErrorsUser}
-              onChangeFormInput={props.changeFormInputUser}
-              onChangeFileInput={props.changeFileInputUser}
+            <RegisterGroupContent
+              formData={props.formDataGroup}
+              formErrors={props.formErrorsGroup}
+              modules={props.modules}
+              onChangeFormInput={props.changeFormInputGroup}
             />
           ),
         }[props.shouldShowModal]
@@ -122,6 +132,7 @@ export const UserGroupList: React.FC<Props> = (props: Props): JSX.Element => (
                 checkAll={props.checkAllUserList}
                 toUserType={props.toUserType}
                 openModal={props.openModal}
+                showDelete={props.showDeleteUser}
               />
             ) : (
               'Nenhum usuário cadastrado. Aqui será exibida uma lista dos usuários cadastrados'
@@ -138,6 +149,8 @@ export const UserGroupList: React.FC<Props> = (props: Props): JSX.Element => (
                 groups={props.groups}
                 change={props.changeGroupList}
                 checkAll={props.checkAllGroupList}
+                openModal={props.openModal}
+                showDelete={props.showDeleteGroup}
               />
             ) : (
               'Nenhum grupo cadastrado. Aqui será exibida uma lista dos grupos cadastrados'

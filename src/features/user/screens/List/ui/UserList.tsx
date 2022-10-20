@@ -6,6 +6,7 @@ import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { Input } from 'reactstrap';
 import Profile from '@/model/Profile';
+import { DropdonwFlags } from '@/components';
 import { ShouldShowModal } from '..';
 
 interface DataTable {
@@ -13,9 +14,14 @@ interface DataTable {
   name: string;
   cpf: string;
   userType: UserType;
-  profile: string;
+  profiles: string;
   status: string;
   actions: string;
+}
+
+interface DataColumn {
+  id: string;
+  name: string;
 }
 
 interface StateProps {
@@ -26,6 +32,7 @@ interface DispatchProps {
   change(user: User): void;
   toUserType(userType: UserType): string;
   openModal(value: ShouldShowModal, modalTitle: string, user?: User, group?: Profile): void;
+  showDelete(user: User): void;
 }
 
 type Props = StateProps & DispatchProps;
@@ -43,23 +50,45 @@ export const UserList: React.FC<Props> = (props: Props): JSX.Element => {
     </div>
   );
 
-  const dataTable = props.users?.map(user => ({
-    checkbox: checkBox(user),
-    name: user.name,
-    cpf: user.cpf,
-    userType: user.userType,
-    profile: user.profiles ? user.profiles[0].name : '',
-    status: 'Ativo',
-    actions: (
-      <div className="d-flex">
-        <Pen
-          onClick={(): void => props.openModal(ShouldShowModal.user, 'Editar usuário', user)}
-          className="mr-2 svg-icon action-icon"
-        />
-        <Trash onClick={(): void => console.log('asdfa')} className="mr-2 svg-icon action-icon" />
-      </div>
-    ),
-  }));
+  const dataTable = props.users?.map(user => {
+    const dataColumnProfiles: DataColumn[] = [];
+    if (user.profiles && user.profiles.length > 0) {
+      user.profiles.forEach(data => {
+        dataColumnProfiles.push({
+          id: data.id,
+          name: data.name,
+        });
+      });
+    }
+    return {
+      checkbox: checkBox(user),
+      name: user.name,
+      cpf: user.cpf,
+      userType: user.userType,
+      profiles:
+        // eslint-disable-next-line no-nested-ternary
+        user.profiles && user.profiles.length > 1 ? (
+          <DropdonwFlags pointerClass={true} dataColumn={dataColumnProfiles} />
+        ) : user.profiles && user.profiles.length === 1 ? (
+          user.profiles[0].name
+        ) : (
+          ''
+        ),
+      status: 'Ativo',
+      actions: (
+        <div className="d-flex">
+          <Pen
+            onClick={(): void => props.openModal(ShouldShowModal.user, 'Editar usuário', user)}
+            className="mr-2 svg-icon action-icon"
+          />
+          <Trash
+            onClick={(): void => props.showDelete(user)}
+            className="mr-2 svg-icon action-icon"
+          />
+        </div>
+      ),
+    };
+  });
 
   const columns: TableColumn<DataTable>[] = [
     {
@@ -81,7 +110,8 @@ export const UserList: React.FC<Props> = (props: Props): JSX.Element => {
     },
     {
       name: 'Grupo',
-      selector: row => row.profile,
+      selector: row => row.profiles,
+      cell: row => row.profiles,
     },
     {
       name: 'Situação',

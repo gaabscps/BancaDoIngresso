@@ -1,4 +1,5 @@
 import Profile from './Profile';
+import StatusType from './StatusType';
 import UserType from './UserType';
 
 export default interface User {
@@ -11,4 +12,5 @@ export default interface User {
   password: string;
   userType: UserType;
   profiles?: Profile[];
+  status?: StatusType;
 }

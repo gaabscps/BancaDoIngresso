@@ -5,4 +5,5 @@ export default interface Profile {
   name: string;
   description: string;
   permissions: Permission[];
+  actived: boolean;
 }

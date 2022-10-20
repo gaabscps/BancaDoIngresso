@@ -12,7 +12,7 @@ interface RegisterContentProps {
   onChangeFileInput: (inputName: string) => (file: File | undefined) => void;
 }
 
-export const RegisterContent: React.FC<RegisterContentProps> = ({
+export const RegisterUserContent: React.FC<RegisterContentProps> = ({
   formData,
   formErrors,
   onChangeFormInput,
