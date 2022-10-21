@@ -1236,7 +1236,7 @@ input::-ms-clear {
   justify-content: center;
   align-items: center;
   background-color: rgb(34, 34, 34);
-  color: #FFFFFF !important;
+  color: #ffffff !important;
   font-family: 'Poppins';
   font-style: normal;
   font-weight: 300;
@@ -1285,4 +1285,10 @@ input::-ms-clear {
 .arrow-left {
   position: relative;
   top: 3px;
+}
+
+.badge-custom {
+  margin-left: 11px;
+  top: 25px;
+  min-width: 13px;
 }
