@@ -13,6 +13,7 @@ import { useDialog } from '@/hooks/useDialog';
 import { useConfirmDelete } from '@/hooks/useConfirmDelete';
 import StatusType from '@/model/StatusType';
 import Module from '@/model/Module';
+import Permission from '@/model/Permission';
 import { UserGroupList } from './ui/UserGroupList';
 import { DeleteContent } from '../../components/DeleteContent';
 
@@ -20,6 +21,29 @@ import { DeleteContent } from '../../components/DeleteContent';
 export enum States {
   default = 'default',
   loading = 'loading',
+}
+
+export interface CheckBoxUser {
+  check: string;
+  id: string;
+  name: string;
+  cpf: string;
+  telephone: string;
+  email: string;
+  imageBase64: string;
+  password: string;
+  userType: UserType;
+  profiles?: Profile[];
+  status?: StatusType;
+}
+
+export interface CheckBoxGroup {
+  check: string;
+  id: string;
+  name: string;
+  description: string;
+  permissions: Permission[];
+  actived: boolean;
 }
 
 // eslint-disable-next-line no-shadow
@@ -47,15 +71,23 @@ export enum ShouldShowModal {
   group = 'group',
 }
 
+export interface CheckBoxData {
+  checked: boolean;
+  id: string;
+  name: string;
+}
+
 export const UserScreen: React.FC = (): JSX.Element => {
   const [state, setState] = useState(States.default);
   // const [title, setTitle] = useState('');
   const [shouldShowModal, setShouldShowModal] = useState({} as ShouldShowModal);
-  const [users, setUsers] = useState([] as User[]);
-  const [groups, setGroups] = useState([] as Profile[]);
+  const [users, setUsers] = useState([] as CheckBoxUser[]);
+  const [groups, setGroups] = useState([] as CheckBoxGroup[]);
   const [user, setUser] = useState({} as User);
   const [group, setGroup] = useState({} as Profile);
   const [modules, setModules] = useState([] as Module[]);
+  const [userSelectedCount, setUserSelectedCount] = useState(0);
+  const [groupSelectedCount, setGroupSelectedCount] = useState(0);
   const { visible, title, onChangeTitle, onToggle } = useDialog();
   const confirmDelete = useConfirmDelete();
 
@@ -108,18 +140,49 @@ export const UserScreen: React.FC = (): JSX.Element => {
     },
   });
 
+  const userProfileCheckBox: CheckBoxData[] = [];
+  userProfileCheckBox.push({
+    checked: false,
+    id: '0',
+    name: 'Funcionários',
+  });
+
+  userProfileCheckBox.push({
+    checked: false,
+    id: '1',
+    name: 'PDV',
+  });
+
+  userProfileCheckBox.push({
+    checked: false,
+    id: '2',
+    name: 'SubPDV',
+  });
+
+  userProfileCheckBox.push({
+    checked: false,
+    id: '3',
+    name: 'POS',
+  });
+
+  userProfileCheckBox.push({
+    checked: false,
+    id: '4',
+    name: 'Empresa',
+  });
+
   const toUserType = (userType: UserType): string => {
     let result = '';
     switch (userType) {
       case UserType.Employee:
-        result = 'Funcionário';
+        result = 'Funcionários';
         break;
       case UserType.PDV:
         result = 'PDV';
         break;
 
       case UserType.SUB_PDV:
-        result = 'Sub PDV';
+        result = 'SubPDV';
         break;
       case UserType.POS:
         result = 'POS';
@@ -162,9 +225,26 @@ export const UserScreen: React.FC = (): JSX.Element => {
   const getUsers = async (): Promise<void> => {
     setState(States.loading);
     const response = await api.get<User[]>('/user/find');
-    setUsers(response.data);
+    const listCheckBoxUsers: CheckBoxUser[] = [];
+    response.data.forEach(data => {
+      const checkBoxUser: CheckBoxUser = {
+        ...data,
+        check: 'false',
+      };
+      listCheckBoxUsers.push(checkBoxUser);
+    });
+    setUsers(listCheckBoxUsers);
     const responseGroup = await api.get<Profile[]>('/profile/find');
-    setGroups(responseGroup.data);
+    const listCheckBoxGroup: CheckBoxGroup[] = [];
+    responseGroup.data.forEach(data => {
+      const checkBoxGroup: CheckBoxGroup = {
+        ...data,
+        check: 'false',
+      };
+      listCheckBoxGroup.push(checkBoxGroup);
+    });
+
+    setGroups(listCheckBoxGroup);
     setState(States.default);
   };
 
@@ -294,6 +374,7 @@ export const UserScreen: React.FC = (): JSX.Element => {
     onChangeTitle(modalTitle);
     setShouldShowModal(value);
     if (userSelected) {
+      await getModules();
       setUser(userSelected);
     }
     if (groupSelected) {
@@ -366,19 +447,85 @@ export const UserScreen: React.FC = (): JSX.Element => {
   };
 
   const checkAllUserList = (e: ChangeEvent<HTMLInputElement>): void => {
-    console.log(e);
+    const checked = String(e.target.checked);
+    let count = 0;
+    users.forEach(data => {
+      // eslint-disable-next-line no-param-reassign
+      data.check = checked;
+      if (data.check === 'true') {
+        // eslint-disable-next-line no-plusplus
+        count++;
+      }
+    });
+    setUserSelectedCount(count);
   };
 
-  const changeUserList = (userList: User): void => {
-    console.log(userList);
+  const changeUserList = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    checkBoxUser: CheckBoxUser,
+  ): void => {
+    let count = 0;
+    users.forEach(data => {
+      if (data.id === checkBoxUser.id) {
+        // eslint-disable-next-line no-param-reassign
+        data.check = String(e.target.checked);
+      }
+      if (data.check === 'true') {
+        // eslint-disable-next-line no-plusplus
+        count++;
+      }
+    });
+    setUserSelectedCount(count);
+  };
+
+  const removeSelectedUsers = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
+    window.console.log(e);
+    setUserSelectedCount(0);
   };
 
   const checkAllGroupList = (e: ChangeEvent<HTMLInputElement>): void => {
-    console.log(e);
+    const checked = String(e.target.checked);
+    let count = 0;
+    groups.forEach(data => {
+      // eslint-disable-next-line no-param-reassign
+      data.check = checked;
+      if (data.check === 'true') {
+        // eslint-disable-next-line no-plusplus
+        count++;
+      }
+    });
+    setGroupSelectedCount(count);
   };
 
-  const changeGroupList = (groupList: Profile): void => {
-    console.log(groupList);
+  const changeGroupList = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    checkBoxGroup: CheckBoxGroup,
+  ): void => {
+    let count = 0;
+    groups.forEach(data => {
+      if (data.id === checkBoxGroup.id) {
+        // eslint-disable-next-line no-param-reassign
+        data.check = String(e.target.checked);
+      }
+      if (data.check === 'true') {
+        // eslint-disable-next-line no-plusplus
+        count++;
+      }
+    });
+    setGroupSelectedCount(count);
+  };
+
+  const removeSelectedGroups = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
+    window.console.log(e);
+    setGroupSelectedCount(0);
+  };
+
+  const checkAllModule = (e: ChangeEvent<HTMLInputElement>): void => {
+    window.console.log(e);
+  };
+
+  const checkPermission = (permission: Permission): void => {
+    window.console.log(permission);
   };
 
   const toUserStatus = (statusType: StatusType): string => {
@@ -438,8 +585,11 @@ export const UserScreen: React.FC = (): JSX.Element => {
       formErrorsGroup={formErrorsGroup}
       groups={groups}
       user={user}
+      userProfileCheckBox={userProfileCheckBox}
       group={group}
       modules={modules}
+      userSelectedCount={userSelectedCount}
+      groupSelectedCount={groupSelectedCount}
       onToggle={onToggle}
       openModal={openModal}
       showDeleteUser={onShowDeleteUser}
@@ -454,6 +604,10 @@ export const UserScreen: React.FC = (): JSX.Element => {
       changeFormInputUser={onChangeFormInputUser}
       changeFileInputUser={handleOnChangeFileInput}
       changeFormInputGroup={onChangeFormInputGroup}
+      checkAllModule={checkAllModule}
+      checkPermission={checkPermission}
+      removeSelectedUsers={removeSelectedUsers}
+      removeSelectedGroups={removeSelectedGroups}
     />
   );
 };

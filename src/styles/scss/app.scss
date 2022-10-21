@@ -1229,6 +1229,23 @@ input::-ms-clear {
   margin-bottom: 3rem !important;
 }
 
+.collapse-title-button {
+  margin-right: 15px;
+  border: 0;
+  border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(34, 34, 34);
+  color: #ffffff !important;
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 18px;
+  height: 34px;
+  padding: 8px 15px;
+}
+
 .fw-700 {
   font-weight: 700;
 }
@@ -1268,4 +1285,10 @@ input::-ms-clear {
 .arrow-left {
   position: relative;
   top: 3px;
+}
+
+.badge-custom {
+  margin-left: 11px;
+  top: 25px;
+  min-width: 13px;
 }

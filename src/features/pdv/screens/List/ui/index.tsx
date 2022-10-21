@@ -135,10 +135,14 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
     state: pdv.address.state,
     actions: (
       <div className="d-flex">
-        {/* <div style={{ position: 'relative' }}>
-          <div className="circle-notification">
-            <span className="circle-notification__number">1</span>
-          </div> */}
+        {pdv.amountSubPdvs !== undefined && pdv.amountSubPdvs > 0 && (
+          <span
+            className="badge badge-custom position-absolute top-0 start-100 translate-middle rounded-pill bg-danger"
+            style={{ marginLeft: '12px' }}
+          >
+            {pdv.amountSubPdvs}
+          </span>
+        )}
         <SubPdvIcon
           onClick={(): void =>
             onShouldShowModal({
@@ -167,7 +171,6 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
           }
           className="mr-4 svg-icon action-icon"
         />
-        {/* </div> */}
         <Pen
           onClick={(): void =>
             onShouldShowModal({

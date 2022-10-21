@@ -5,10 +5,13 @@ interface StateProps {
   title: string;
   content: string | React.ReactNode;
   count?: number;
+  showButtonOnTitle?: boolean;
+  buttonTitle?: string;
 }
 
 interface DispatchProps {
   leftIcon(): JSX.Element;
+  buttonAction?(e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void;
 }
 
 type Props = StateProps & DispatchProps;
@@ -35,6 +38,19 @@ function SuperCollapse(props: Props): JSX.Element {
             </div>
           </div>
           <div>
+            {props.showButtonOnTitle && props.buttonTitle && props.buttonAction && (
+              <button
+                className="btn button-dark collapse-title-button"
+                type="button"
+                onClick={e =>
+                  props.buttonAction
+                    ? (props.buttonAction(e), e.stopPropagation())
+                    : e.stopPropagation()
+                }
+              >
+                {props.buttonTitle}
+              </button>
+            )}
             <svg
               className={`${open ? 'rotateSvg' : ''}`}
               width="16"
