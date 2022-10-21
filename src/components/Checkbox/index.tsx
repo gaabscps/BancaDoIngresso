@@ -1,38 +1,27 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { FC, InputHTMLAttributes } from 'react';
+import React, { FC } from 'react';
 import './styles.scss';
 
-interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
+interface CheckboxProps {
   name: string;
   label?: string;
-  error?: string;
   wrapperClass?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  checked: boolean;
+  error?: string;
+  disabled?: boolean;
 }
 
 export const Checkbox: FC<CheckboxProps> = ({
-  label,
   name,
+  label,
   wrapperClass,
   onChange,
   checked,
   error,
   disabled,
 }) => (
-  <div className={`mb-4 ${wrapperClass}`}>
-    {label && (
-      <div className="d-flex flex-column-reverse">
-        <label htmlFor={name} className="input-label m-0">
-          {label}
-        </label>
-        {error && (
-          <span role="alert" className="alert-error">
-            {error}
-          </span>
-        )}
-      </div>
-    )}
-    <br />
+  <div className={`mb-4 d-flex ${wrapperClass}`}>
     <label className="checkbox style-d" htmlFor={name}>
       <input
         type="checkbox"
@@ -44,5 +33,17 @@ export const Checkbox: FC<CheckboxProps> = ({
       />
       <div className="checkbox__checkmark" />
     </label>
+    {label && (
+      <div className="d-flex ml-3">
+        <label htmlFor={name} className="input-checkbox-label m-0">
+          {label}
+        </label>
+        {error && (
+          <span role="alert" className="alert-error">
+            {error}
+          </span>
+        )}
+      </div>
+    )}
   </div>
 );
