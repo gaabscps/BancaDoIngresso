@@ -7,14 +7,19 @@ import { RegisterGroupContent } from '@/features/user/components/RegisterGroupCo
 import { RegisterUserContent } from '@/features/user/components/RegisterUserContent';
 import { States } from '@/helpers/common/states';
 import { FormData, FormErrors, OnChangeFormInput } from '@/hooks';
-import Module from '@/model/Module';
-import Permission from '@/model/Permission';
 import Profile from '@/model/Profile';
 import User from '@/model/User';
 import UserType from '@/model/UserType';
 import React, { ChangeEvent } from 'react';
 import { Container, Label } from 'reactstrap';
-import { CheckBoxData, CheckBoxGroup, CheckBoxUser, ShouldShowModal } from '..';
+import {
+  CheckBoxData,
+  CheckBoxGroup,
+  CheckBoxModule,
+  CheckBoxPermission,
+  CheckBoxUser,
+  ShouldShowModal,
+} from '..';
 import { GroupList } from './GroupList';
 import { UserList } from './UserList';
 
@@ -34,9 +39,10 @@ interface StateProps {
   userProfileCheckBox: CheckBoxData[];
   userSelectedCount: number;
   groupSelectedCount: number;
+  showActivateSwitchGroup: boolean;
   user?: User;
   group?: Profile;
-  modules?: Module[];
+  modules?: CheckBoxModule[];
 }
 
 interface DispatchProps {
@@ -54,10 +60,12 @@ interface DispatchProps {
   changeGroupList(e: React.ChangeEvent<HTMLInputElement>, group: CheckBoxGroup): void;
   changeFormInputUser: OnChangeFormInput;
   changeFileInputUser: (inputName: string) => (file: File | undefined) => void;
+  onActivateAndInactivateUser(e: ChangeEvent<HTMLInputElement>): void;
   changeFormInputGroup: OnChangeFormInput;
-  checkAllModule(e: ChangeEvent<HTMLInputElement>): void;
+  onActivateAndInactivateGroup(e: ChangeEvent<HTMLInputElement>): void;
+  checkAllModule(e: ChangeEvent<HTMLInputElement>, module: CheckBoxModule): void;
   removeSelectedGroups(e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void;
-  checkPermission(permission: Permission): void;
+  checkPermission(e: React.ChangeEvent<HTMLInputElement>, permission: CheckBoxPermission): void;
 }
 
 type Props = StateProps & DispatchProps;
@@ -98,6 +106,7 @@ export const UserGroupList: React.FC<Props> = (props: Props): JSX.Element => (
               modules={props.modules}
               onChangeFormInput={props.changeFormInputUser}
               onChangeFileInput={props.changeFileInputUser}
+              onActivateAndInactivate={props.onActivateAndInactivateUser}
             />
           ),
           [ShouldShowModal.group]: (
@@ -105,7 +114,9 @@ export const UserGroupList: React.FC<Props> = (props: Props): JSX.Element => (
               formData={props.formDataGroup}
               formErrors={props.formErrorsGroup}
               modules={props.modules}
+              showActivateSwitch={props.showActivateSwitchGroup}
               onChangeFormInput={props.changeFormInputGroup}
+              onActivateAndInactivate={props.onActivateAndInactivateGroup}
               checkAllModule={props.checkAllModule}
               checkPermission={props.checkPermission}
             />

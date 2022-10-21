@@ -14,6 +14,8 @@ import { useConfirmDelete } from '@/hooks/useConfirmDelete';
 import StatusType from '@/model/StatusType';
 import Module from '@/model/Module';
 import Permission from '@/model/Permission';
+import ProfilePermission from '@/model/ProfilePermission';
+import Page from '@/model/Page';
 import { UserGroupList } from './ui/UserGroupList';
 import { DeleteContent } from '../../components/DeleteContent';
 
@@ -34,7 +36,7 @@ export interface CheckBoxUser {
   password: string;
   userType: UserType;
   profiles?: Profile[];
-  status?: StatusType;
+  status: StatusType;
 }
 
 export interface CheckBoxGroup {
@@ -44,6 +46,24 @@ export interface CheckBoxGroup {
   description: string;
   permissions: Permission[];
   actived: boolean;
+}
+
+export interface CheckBoxPermission {
+  check: string;
+  id: string;
+  name: string;
+  description: string;
+  module: Module;
+  identifier: string;
+}
+
+export interface CheckBoxModule {
+  check: string;
+  id: string;
+  name: string;
+  description: string;
+  count: number;
+  permissions: CheckBoxPermission[];
 }
 
 // eslint-disable-next-line no-shadow
@@ -78,14 +98,49 @@ export interface CheckBoxData {
 }
 
 export const UserScreen: React.FC = (): JSX.Element => {
+  const mountUserProfilesCheckBox = (): CheckBoxData[] => {
+    const userProfileCheckBox: CheckBoxData[] = [];
+    userProfileCheckBox.push({
+      checked: false,
+      id: '0',
+      name: 'Funcionários',
+    });
+
+    userProfileCheckBox.push({
+      checked: false,
+      id: '1',
+      name: 'PDV',
+    });
+
+    userProfileCheckBox.push({
+      checked: false,
+      id: '2',
+      name: 'SubPDV',
+    });
+
+    userProfileCheckBox.push({
+      checked: false,
+      id: '3',
+      name: 'POS',
+    });
+
+    userProfileCheckBox.push({
+      checked: false,
+      id: '4',
+      name: 'Empresa',
+    });
+    return userProfileCheckBox;
+  };
+
   const [state, setState] = useState(States.default);
   // const [title, setTitle] = useState('');
   const [shouldShowModal, setShouldShowModal] = useState({} as ShouldShowModal);
   const [users, setUsers] = useState([] as CheckBoxUser[]);
   const [groups, setGroups] = useState([] as CheckBoxGroup[]);
   const [user, setUser] = useState({} as User);
+  const [userProfileCheckBox, setUserProfileCheckBox] = useState(mountUserProfilesCheckBox());
   const [group, setGroup] = useState({} as Profile);
-  const [modules, setModules] = useState([] as Module[]);
+  const [modules, setModules] = useState([] as CheckBoxModule[]);
   const [userSelectedCount, setUserSelectedCount] = useState(0);
   const [groupSelectedCount, setGroupSelectedCount] = useState(0);
   const { visible, title, onChangeTitle, onToggle } = useDialog();
@@ -140,37 +195,6 @@ export const UserScreen: React.FC = (): JSX.Element => {
     },
   });
 
-  const userProfileCheckBox: CheckBoxData[] = [];
-  userProfileCheckBox.push({
-    checked: false,
-    id: '0',
-    name: 'Funcionários',
-  });
-
-  userProfileCheckBox.push({
-    checked: false,
-    id: '1',
-    name: 'PDV',
-  });
-
-  userProfileCheckBox.push({
-    checked: false,
-    id: '2',
-    name: 'SubPDV',
-  });
-
-  userProfileCheckBox.push({
-    checked: false,
-    id: '3',
-    name: 'POS',
-  });
-
-  userProfileCheckBox.push({
-    checked: false,
-    id: '4',
-    name: 'Empresa',
-  });
-
   const toUserType = (userType: UserType): string => {
     let result = '';
     switch (userType) {
@@ -223,36 +247,94 @@ export const UserScreen: React.FC = (): JSX.Element => {
   };
 
   const getUsers = async (): Promise<void> => {
-    setState(States.loading);
-    const response = await api.get<User[]>('/user/find');
-    const listCheckBoxUsers: CheckBoxUser[] = [];
-    response.data.forEach(data => {
-      const checkBoxUser: CheckBoxUser = {
-        ...data,
-        check: 'false',
+    try {
+      setState(States.loading);
+      const pageUser: Page<User, User> = {
+        page: 1,
+        pageSize: 200,
+        sort: 'name',
+        order: 'ASC',
       };
-      listCheckBoxUsers.push(checkBoxUser);
-    });
-    setUsers(listCheckBoxUsers);
-    const responseGroup = await api.get<Profile[]>('/profile/find');
-    const listCheckBoxGroup: CheckBoxGroup[] = [];
-    responseGroup.data.forEach(data => {
-      const checkBoxGroup: CheckBoxGroup = {
-        ...data,
-        check: 'false',
-      };
-      listCheckBoxGroup.push(checkBoxGroup);
-    });
+      const response = await api.post<Page<User, User>>('/user/page', pageUser);
+      const listCheckBoxUsers: CheckBoxUser[] = [];
+      if (response.data.list) {
+        response.data.list.forEach(data => {
+          const checkBoxUser: CheckBoxUser = {
+            ...data,
+            check: 'false',
+          };
+          listCheckBoxUsers.push(checkBoxUser);
+        });
+        setUsers(listCheckBoxUsers);
+      }
 
-    setGroups(listCheckBoxGroup);
-    setState(States.default);
+      const pageGroup: Page<Profile, Profile> = {
+        page: 1,
+        pageSize: 200,
+        sort: 'name',
+        order: 'ASC',
+      };
+
+      const responseGroup = await api.post<Page<Profile, Profile>>('/profile/page', pageGroup);
+      const listCheckBoxGroup: CheckBoxGroup[] = [];
+      if (responseGroup.data.list) {
+        responseGroup.data.list.forEach(data => {
+          const checkBoxGroup: CheckBoxGroup = {
+            ...data,
+            check: 'false',
+          };
+          listCheckBoxGroup.push(checkBoxGroup);
+        });
+      }
+      setGroups(listCheckBoxGroup);
+      setState(States.default);
+    } catch (error) {
+      setState(States.default);
+    }
   };
 
-  const getModules = async (): Promise<void> => {
-    setState(States.loading);
-    const response = await api.get<Module[]>('module/find');
-    setModules(response.data);
-    setState(States.default);
+  const getModules = async (selectedGroup: Profile | undefined): Promise<void> => {
+    try {
+      setState(States.loading);
+      const response = await api.get<Module[]>('/module/find');
+      const listCheckBoxModule: CheckBoxModule[] = [];
+      response.data.forEach(data => {
+        let count = 0;
+        const listCheckBoxPermission: CheckBoxPermission[] = [];
+        data.permissions.forEach(permission => {
+          let checked = 'false';
+          if (selectedGroup) {
+            // eslint-disable-next-line no-plusplus
+            for (let i = 0; i < selectedGroup.permissions.length; i++) {
+              if (selectedGroup.permissions[i].id === permission.id) {
+                checked = 'true';
+                // eslint-disable-next-line no-plusplus
+                count++;
+                break;
+              }
+            }
+          }
+          const checkBoxPermission: CheckBoxPermission = {
+            ...permission,
+            check: checked,
+          };
+          listCheckBoxPermission.push(checkBoxPermission);
+        });
+
+        const checkBoxModule: CheckBoxModule = {
+          ...data,
+          check: 'false',
+          count,
+          permissions: listCheckBoxPermission,
+        };
+        listCheckBoxModule.push(checkBoxModule);
+      });
+      setModules(listCheckBoxModule);
+      setState(States.default);
+    } catch (error) {
+      setState(States.default);
+      throw error;
+    }
   };
 
   const stringToUserType = (value: string): UserType => {
@@ -289,7 +371,6 @@ export const UserScreen: React.FC = (): JSX.Element => {
       case UserType.PDV:
         result = '1';
         break;
-
       case UserType.SUB_PDV:
         result = '2';
         break;
@@ -308,7 +389,7 @@ export const UserScreen: React.FC = (): JSX.Element => {
   const onSaveUser = async (): Promise<void> => {
     try {
       if (isFormValidUser()) {
-        const payload: User = {
+        const payload = {
           id: user?.id,
           name: formDataUser[FormInputUser.name],
           cpf: formDataUser[FormInputUser.cpf],
@@ -317,7 +398,7 @@ export const UserScreen: React.FC = (): JSX.Element => {
           imageBase64: formDataUser[FormInputUser.imageBase64],
           userType: stringToUserType(formDataUser[FormInputUser.userType]),
           password: formDataUser[FormInputUser.password],
-        };
+        } as User;
 
         if (!payload.id) {
           await api.post<User>('/user', payload);
@@ -335,33 +416,87 @@ export const UserScreen: React.FC = (): JSX.Element => {
     }
   };
 
+  const onActivateAndInactivateUser = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ): Promise<void> => {
+    onChangeFormInputUser(FormInputUser.status)(String(e.target.checked));
+    users.forEach(data => {
+      if (data.id === user.id) {
+        // eslint-disable-next-line no-param-reassign
+        data.status = e.target.checked ? StatusType.ACTIVE : StatusType.INACTIVE;
+      }
+    });
+
+    if (e.target.checked) {
+      await api.patch<Profile>(`/user/activate/${user.id}`);
+      toast.success(`Usuário "${formDataUser[FormInputUser.name]}" ativado com sucesso!`);
+    } else {
+      await api.patch<Profile>(`/user/inactivate/${user.id}`);
+      toast.success(`Usuário "${formDataUser[FormInputUser.name]}" inativado com sucesso!`);
+    }
+  };
+
   const onSaveGroup = async (): Promise<void> => {
     try {
       if (isFormValidGroup()) {
-        const payload: User = {
-          id: user?.id,
-          name: formDataUser[FormInputUser.name],
-          cpf: formDataUser[FormInputUser.cpf],
-          telephone: formDataUser[FormInputUser.telephone],
-          email: formDataUser[FormInputUser.email],
-          imageBase64: formDataUser[FormInputUser.imageBase64],
-          userType: stringToUserType(formDataUser[FormInputUser.userType]),
-          password: formDataUser[FormInputUser.password],
-        };
+        const permissions: string[] = [];
+        modules.forEach(module => {
+          module.permissions.forEach(modulePermission => {
+            if (modulePermission.check === 'true') {
+              permissions.push(modulePermission.id);
+            }
+          });
+        });
+        const payload = {
+          id: group?.id,
+          name: formDataGroup[FormInputGroup.name],
+          description: formDataGroup[FormInputGroup.description],
+        } as Profile;
 
         if (!payload.id) {
-          await api.post<User>('/user', payload);
-          toast.success(`PDV "${formDataUser[FormInputUser.name]}" cadastrado com sucesso!`);
+          const newProfile = await api.post<Profile>('/profile', payload);
+          const profilePermission: ProfilePermission = {
+            profileId: newProfile.data.id,
+            permissions,
+          };
+          await api.post<Profile>('/profile/permission', profilePermission);
+          toast.success(`Grupo "${formDataGroup[FormInputGroup.name]}" cadastrado com sucesso!`);
         } else {
-          await api.put<User>('/user', payload);
-          toast.success(`PDV "${formDataUser[FormInputUser.name]}" atualizado com sucesso!`);
+          await api.put<Profile>('/profile', payload);
+          const profilePermission: ProfilePermission = {
+            profileId: group?.id,
+            permissions,
+          };
+          await api.post<Profile>('/profile/permission', profilePermission);
+          toast.success(`Grupo "${formDataGroup[FormInputGroup.name]}" atualizado com sucesso!`);
         }
+
         resetFormGroup();
         onToggle();
       }
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
+    }
+  };
+
+  const onActivateAndInactivateGroup = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ): Promise<void> => {
+    onChangeFormInputGroup(FormInputGroup.actived)(String(e.target.checked));
+    groups.forEach(data => {
+      if (data.id === group.id) {
+        // eslint-disable-next-line no-param-reassign
+        data.actived = e.target.checked;
+      }
+    });
+
+    if (e.target.checked) {
+      await api.patch<Profile>(`/profile/activate/${group.id}`);
+      toast.success(`Grupo "${formDataGroup[FormInputGroup.name]}" ativado com sucesso!`);
+    } else {
+      await api.patch<Profile>(`/profile/inactivate/${group.id}`);
+      toast.success(`Grupo "${formDataGroup[FormInputGroup.name]}" inativado com sucesso!`);
     }
   };
 
@@ -373,13 +508,30 @@ export const UserScreen: React.FC = (): JSX.Element => {
   ): Promise<void> => {
     onChangeTitle(modalTitle);
     setShouldShowModal(value);
+    await getModules(groupSelected);
     if (userSelected) {
-      await getModules();
+      const userType = userTypeToString(userSelected.userType);
+      const list: CheckBoxData[] = [];
+      userProfileCheckBox.forEach(data => {
+        const newData: CheckBoxData = {
+          ...data,
+        };
+        if (data.id === userType) {
+          newData.checked = true;
+        }
+        list.push(newData);
+      });
       setUser(userSelected);
+      setUserProfileCheckBox(list);
+    } else {
+      setUser(undefined as unknown as User);
+      resetFormUser();
     }
     if (groupSelected) {
-      await getModules();
       setGroup(groupSelected);
+    } else {
+      setGroup(undefined as unknown as Profile);
+      resetFormGroup();
     }
     onToggle();
   };
@@ -520,15 +672,52 @@ export const UserScreen: React.FC = (): JSX.Element => {
     setGroupSelectedCount(0);
   };
 
-  const checkAllModule = (e: ChangeEvent<HTMLInputElement>): void => {
-    window.console.log(e);
+  const checkAllModule = (e: ChangeEvent<HTMLInputElement>, module: CheckBoxModule): void => {
+    const listCheckBoxModule: CheckBoxModule[] = [];
+    // eslint-disable-next-line no-plusplus
+    for (let m = 0; m < modules.length; m++) {
+      let count = 0;
+      // eslint-disable-next-line no-plusplus
+      for (let p = 0; p < modules[m].permissions.length; p++) {
+        if (modules[m].id === module.id) {
+          modules[m].permissions[p].check = String(e.target.checked);
+        }
+        if (modules[m].permissions[p].check === 'true') {
+          // eslint-disable-next-line no-plusplus
+          count++;
+        }
+      }
+      modules[m].count = count;
+      listCheckBoxModule.push(modules[m]);
+    }
+    setModules(listCheckBoxModule);
   };
 
-  const checkPermission = (permission: Permission): void => {
-    window.console.log(permission);
+  const checkPermission = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    permission: CheckBoxPermission,
+  ): void => {
+    const listCheckBoxModule: CheckBoxModule[] = [];
+    // eslint-disable-next-line no-plusplus
+    for (let m = 0; m < modules.length; m++) {
+      let count = 0;
+      // eslint-disable-next-line no-plusplus
+      for (let p = 0; p < modules[m].permissions.length; p++) {
+        if (modules[m].permissions[p].id === permission.id) {
+          modules[m].permissions[p].check = String(e.target.checked);
+        }
+        if (modules[m].permissions[p].check === 'true') {
+          // eslint-disable-next-line no-plusplus
+          count++;
+        }
+      }
+      modules[m].count = count;
+      listCheckBoxModule.push(modules[m]);
+    }
+    setModules(listCheckBoxModule);
   };
 
-  const toUserStatus = (statusType: StatusType): string => {
+  const toUserStatus = (statusType: StatusType | undefined): string => {
     let status = 'false';
     switch (statusType) {
       case StatusType.ACTIVE:
@@ -553,9 +742,7 @@ export const UserScreen: React.FC = (): JSX.Element => {
       onChangeFormInputUser(FormInputUser.imageBase64)(user.imageBase64);
       onChangeFormInputUser(FormInputUser.password)(user.password);
       onChangeFormInputUser(FormInputUser.userType)(userTypeToString(user.userType));
-      onChangeFormInputUser(FormInputUser.status)(
-        user.status ? toUserStatus(user.status) : 'false',
-      );
+      onChangeFormInputUser(FormInputUser.status)(toUserStatus(user.status));
     }
   }, [user]);
 
@@ -590,6 +777,7 @@ export const UserScreen: React.FC = (): JSX.Element => {
       modules={modules}
       userSelectedCount={userSelectedCount}
       groupSelectedCount={groupSelectedCount}
+      showActivateSwitchGroup={!!(group && group.id)}
       onToggle={onToggle}
       openModal={openModal}
       showDeleteUser={onShowDeleteUser}
@@ -603,7 +791,9 @@ export const UserScreen: React.FC = (): JSX.Element => {
       changeGroupList={changeGroupList}
       changeFormInputUser={onChangeFormInputUser}
       changeFileInputUser={handleOnChangeFileInput}
+      onActivateAndInactivateUser={onActivateAndInactivateUser}
       changeFormInputGroup={onChangeFormInputGroup}
+      onActivateAndInactivateGroup={onActivateAndInactivateGroup}
       checkAllModule={checkAllModule}
       checkPermission={checkPermission}
       removeSelectedUsers={removeSelectedUsers}

@@ -79,7 +79,7 @@ export const GroupList: React.FC<Props> = (props: Props): JSX.Element => {
         ) : (
           ''
         ),
-      status: 'Ativo',
+      status: group.actived ? 'Ativo' : 'Inativo',
       actions: (
         <div className="d-flex">
           <Pen

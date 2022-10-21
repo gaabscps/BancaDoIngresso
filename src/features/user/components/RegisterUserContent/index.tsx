@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import { Col, Form, FormGroup, Input, Row } from 'reactstrap';
 import { InputText, InputFile, Switch } from '@/components';
 import { FormData, FormErrors, OnChangeFormInput } from '@/hooks/useForm';
@@ -16,6 +16,7 @@ interface StateProps {
 interface DispatchProps {
   onChangeFormInput: OnChangeFormInput;
   onChangeFileInput: (inputName: string) => (file: File | undefined) => void;
+  onActivateAndInactivate(e: ChangeEvent<HTMLInputElement>): void;
 }
 
 type Props = StateProps & DispatchProps;
@@ -127,13 +128,14 @@ export const RegisterUserContent: React.FC<Props> = (props: Props) => {
               {props.userProfileCheckBox.map(data => (
                 <tr key={data.id}>
                   <td style={{ verticalAlign: 'baseline' }}>
-                    <Input type="checkbox" value={String(data.checked)} />
+                    <Input type="checkbox" value={String(data.checked)} checked={data.checked} />
                   </td>
                   <td
                     style={{
                       fontSize: '16px',
                       fontWeight: '300',
                       lineHeight: '24px',
+                      width: '100%',
                       color: '#828282',
                     }}
                   >
@@ -161,6 +163,7 @@ export const RegisterUserContent: React.FC<Props> = (props: Props) => {
                           fontSize: '16px',
                           fontWeight: '300',
                           lineHeight: '24px',
+                          width: '33%',
                           color: '#828282',
                         }}
                       >
@@ -179,7 +182,7 @@ export const RegisterUserContent: React.FC<Props> = (props: Props) => {
             label={`Usuário ${
               convertToBoolean(props.formData[FormInputUser.status]) ? 'ativo' : 'inativo'
             }`}
-            onChange={e => props.onChangeFormInput(FormInputUser.status)(String(e.target.checked))}
+            onChange={e => props.onActivateAndInactivate(e)}
             checked={convertToBoolean(props.formData[FormInputUser.status])}
           />
         </Col>

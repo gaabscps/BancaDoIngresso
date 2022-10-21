@@ -7,6 +7,7 @@ import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { Input } from 'reactstrap';
 import Profile from '@/model/Profile';
 import { DropdonwFlags } from '@/components';
+import StatusType from '@/model/StatusType';
 import { CheckBoxUser, ShouldShowModal } from '..';
 
 interface DataTable {
@@ -84,7 +85,7 @@ export const UserList: React.FC<Props> = (props: Props): JSX.Element => {
         ) : (
           ''
         ),
-      status: 'Ativo',
+      status: user.status === StatusType.ACTIVE ? 'Ativo' : 'Inativo',
       actions: (
         <div className="d-flex">
           <Pen

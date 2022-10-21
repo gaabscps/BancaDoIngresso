@@ -3,30 +3,39 @@ import { Col, Form, FormGroup, Input, Row } from 'reactstrap';
 import { InputText, Switch, TextArea } from '@/components';
 import { FormData, FormErrors, OnChangeFormInput } from '@/hooks/useForm';
 import { convertToBoolean } from '@/helpers/common/convertToBoolean';
-import Module from '@/model/Module';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
-import Permission from '@/model/Permission';
-import { FormInputGroup } from '../../screens/List';
+import { CheckBoxModule, CheckBoxPermission, FormInputGroup } from '../../screens/List';
 import { ListModule } from './ListModule';
 
 interface StateProps {
   formData: FormData;
   formErrors: FormErrors;
-  modules?: Module[];
+  showActivateSwitch: boolean;
+  modules?: CheckBoxModule[];
 }
 
 interface DispatchProps {
   onChangeFormInput: OnChangeFormInput;
-  checkAllModule(e: ChangeEvent<HTMLInputElement>): void;
-  checkPermission(permission: Permission): void;
+  onActivateAndInactivate(e: ChangeEvent<HTMLInputElement>): void;
+  checkAllModule(e: ChangeEvent<HTMLInputElement>, module: CheckBoxModule): void;
+  checkPermission(e: React.ChangeEvent<HTMLInputElement>, permission: CheckBoxPermission): void;
 }
 
 type Props = StateProps & DispatchProps;
 
 export const RegisterGroupContent: React.FC<Props> = (props: Props) => {
-  const checkBoxAll = (): JSX.Element => (
+  const checkBoxAll = (module: CheckBoxModule): JSX.Element => (
     <div className="checkFieldSpacing">
-      <Input type="checkbox" onChange={e => props.checkAllModule(e)} />
+      <Input
+        type="checkbox"
+        checked={module.count === module.permissions.length}
+        onChange={e =>
+          props.checkAllModule
+            ? (props.checkAllModule(e, module), e.stopPropagation())
+            : e.stopPropagation()
+        }
+        onClick={e => e.stopPropagation()}
+      />
     </div>
   );
   return (
@@ -80,23 +89,23 @@ export const RegisterGroupContent: React.FC<Props> = (props: Props) => {
                     'Nenhuma permissão cadastrada. Aqui será exibida uma lista de permissões'
                   )
                 }
-                leftIcon={checkBoxAll}
+                leftIcon={() => checkBoxAll(data)}
               />
             ))}
           </div>
         </Col>
-        <Col md={4}>
-          <Switch
-            name="status"
-            label={`Grupo ${
-              convertToBoolean(props.formData[FormInputGroup.actived]) ? 'ativo' : 'inativo'
-            }`}
-            onChange={e =>
-              props.onChangeFormInput(FormInputGroup.actived)(String(e.target.checked))
-            }
-            checked={convertToBoolean(props.formData[FormInputGroup.actived])}
-          />
-        </Col>
+        {props.showActivateSwitch && (
+          <Col md={4}>
+            <Switch
+              name="status"
+              label={`Grupo ${
+                convertToBoolean(props.formData[FormInputGroup.actived]) ? 'ativo' : 'inativo'
+              }`}
+              onChange={e => props.onActivateAndInactivate(e)}
+              checked={convertToBoolean(props.formData[FormInputGroup.actived])}
+            />
+          </Col>
+        )}
       </Row>
     </Form>
   );
