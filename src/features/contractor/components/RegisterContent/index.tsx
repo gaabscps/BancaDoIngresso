@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { Col, Form, FormGroup, Row } from 'reactstrap';
-import { Button, Checkbox, InputText, SelectCustom, Switch } from '@/components';
+import { Button, InputText, SelectCustom, Switch } from '@/components';
 import { FormData, FormErrors, OnChangeFormInput } from '@/hooks/useForm';
 import Contractor from '@/model/Contractor';
 import { statesUf } from '@/constant/states';
@@ -388,16 +388,6 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
               value={formData[FormInputName.longitude]}
               onChange={e => onChangeFormInput(FormInputName.longitude)(e.target.value)}
               error={formErrors.longitude && formErrors.longitude[0]}
-            />
-          </FormGroup>
-          <FormGroup className="mb-2">
-            <Checkbox
-              name="isHeadquarter"
-              label="É matriz?"
-              onChange={e =>
-                onChangeFormInput(FormInputName.isHeadquarter)(String(e.target.checked))
-              }
-              checked={convertToBoolean(formData[FormInputName.isHeadquarter])}
             />
           </FormGroup>
         </Col>
