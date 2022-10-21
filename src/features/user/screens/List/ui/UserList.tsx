@@ -7,7 +7,7 @@ import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { Input } from 'reactstrap';
 import Profile from '@/model/Profile';
 import { DropdonwFlags } from '@/components';
-import { ShouldShowModal } from '..';
+import { CheckBoxUser, ShouldShowModal } from '..';
 
 interface DataTable {
   checkbox: string;
@@ -25,11 +25,12 @@ interface DataColumn {
 }
 
 interface StateProps {
-  users: User[];
+  count: number;
+  users: CheckBoxUser[];
 }
 interface DispatchProps {
   checkAll(e: ChangeEvent<HTMLInputElement>): void;
-  change(user: User): void;
+  change(e: React.ChangeEvent<HTMLInputElement>, user: CheckBoxUser): void;
   toUserType(userType: UserType): string;
   openModal(value: ShouldShowModal, modalTitle: string, user?: User, group?: Profile): void;
   showDelete(user: User): void;
@@ -40,13 +41,22 @@ type Props = StateProps & DispatchProps;
 export const UserList: React.FC<Props> = (props: Props): JSX.Element => {
   const checkBoxAll = (): React.ReactNode => (
     <div className="checkFieldSpacing">
-      <Input type="checkbox" onChange={e => props.checkAll(e)} />
+      <Input
+        type="checkbox"
+        checked={props.count === props.users.length}
+        onChange={e => props.checkAll(e)}
+      />
     </div>
   );
 
-  const checkBox = (user: User): React.ReactNode => (
+  const checkBox = (user: CheckBoxUser): React.ReactNode => (
     <div className="checkFieldSpacing">
-      <Input type="checkbox" onChange={() => props.change(user)} />
+      <Input
+        type="checkbox"
+        value={user.check}
+        checked={user.check === 'true'}
+        onChange={e => props.change(e, user)}
+      />
     </div>
   );
 

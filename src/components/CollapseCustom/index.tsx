@@ -3,7 +3,7 @@ import { Card, Collapse } from 'reactstrap';
 // import { ModalConfirmation } from '../../Utils/Modal/ModalConfirmation';
 
 interface CollapseCustomProps {
-  title: string;
+  title: string | React.ReactNode;
   children: React.ReactNode;
   className?: string;
 }
