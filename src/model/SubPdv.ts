@@ -15,5 +15,5 @@ export default interface SubPdv {
   linkedinUrl?: string;
   pdv: Pdv;
   address: Address;
-  users?: User[];
+  users: User[];
 }
