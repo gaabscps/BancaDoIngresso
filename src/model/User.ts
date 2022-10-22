@@ -11,6 +11,6 @@ export default interface User {
   imageBase64: string;
   password: string;
   userType: UserType;
+  status: StatusType;
   profiles?: Profile[];
-  status?: StatusType;
 }

@@ -4,7 +4,7 @@ import { PDV_ROUTES } from '@/features/pdv/navigation';
 import { POS_ROUTES } from '@/features/pos/navigation';
 import { PAYMENTGATEWAY_ROUTES } from '@/features/paymentGateway/navigation';
 import { PRODUTCTSCOMBOS_ROUTES } from '@/features/productsAndCombos/navigation';
-import { USER_ROUTES } from '@/features/user/screens/navigation';
+import { USER_ROUTES } from '@/features/usersAndGroups/screens/navigation';
 import { GROUPSUBGROUPPRODUCT_ROUTES } from '@/features/groupSubgroupProduct/navigation';
 import { COMPANY_ROUTES } from '@/features/contractor/navigation';
 

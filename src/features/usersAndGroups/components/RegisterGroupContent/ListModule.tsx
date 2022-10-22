@@ -1,14 +1,13 @@
 import React from 'react';
-import Module from '@/model/Module';
-import Permission from '@/model/Permission';
 import { Input } from 'reactstrap';
+import { CheckBoxModule, CheckBoxPermission } from '../../screens/List';
 
 interface StateProps {
-  module: Module;
+  module: CheckBoxModule;
 }
 
 interface DispatchProps {
-  check(permission: Permission): void;
+  check(e: React.ChangeEvent<HTMLInputElement>, permission: CheckBoxPermission): void;
 }
 
 type Props = StateProps & DispatchProps;
@@ -19,7 +18,12 @@ export const ListModule: React.FC<Props> = (props: Props): JSX.Element => (
       {props.module.permissions.map(data => (
         <tr key={data.id}>
           <td style={{ verticalAlign: 'baseline' }}>
-            <Input type="checkbox" onChange={() => props.check(data)} />
+            <Input
+              type="checkbox"
+              value={data.check}
+              checked={data.check === 'true'}
+              onChange={e => props.check(e, data)}
+            />
           </td>
           <td
             style={{
