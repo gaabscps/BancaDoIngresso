@@ -13,7 +13,7 @@ import { ProductsCombosNavigation } from '@/features/productsAndCombos/navigatio
 import { ProductNavigation } from '@/features/product/navigation';
 import { ContractorNavigation } from '@/features/contractor/navigation';
 import { ComboNavigation } from '@/features/combo/navigation';
-import { UserNavigation } from '@/features/user/screens/navigation';
+import { UserNavigation } from '@/features/usersAndGroups/screens/navigation';
 import { renderRoutes } from './utils';
 import { Route } from './Route';
 import { path } from './path';

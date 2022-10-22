@@ -21,8 +21,8 @@ export const FilterContent: React.FC<FilterContentProps> = ({
   onChangeFormInput,
 }) => {
   const optionFilter = [
-    { label: 'Nome', value: 'name' },
-    { label: 'Cidade', value: 'city' },
+    { label: 'Usuario', value: 'user' },
+    { label: 'Grupo', value: 'grop' },
   ];
 
   return (

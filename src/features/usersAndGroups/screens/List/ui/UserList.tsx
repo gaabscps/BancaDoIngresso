@@ -85,7 +85,12 @@ export const UserList: React.FC<Props> = (props: Props): JSX.Element => {
         ) : (
           ''
         ),
-      status: user.status === StatusType.ACTIVE ? 'Ativo' : 'Inativo',
+      status:
+        user.status === StatusType.ACTIVE ? (
+          <div className="flag-item text-success">Ativo</div>
+        ) : (
+          <div className="flag-item text-danger">Inativo</div>
+        ),
       actions: (
         <div className="d-flex">
           <Pen

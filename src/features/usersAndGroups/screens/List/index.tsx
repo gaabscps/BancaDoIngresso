@@ -67,6 +67,12 @@ export interface CheckBoxModule {
 }
 
 // eslint-disable-next-line no-shadow
+export enum FormInputFilter {
+  filterSearch = 'filterSearch',
+  inputSearch = 'inputSearch',
+}
+
+// eslint-disable-next-line no-shadow
 export enum FormInputUser {
   name = 'name',
   cpf = 'cpf',
@@ -87,6 +93,7 @@ export enum FormInputGroup {
 
 // eslint-disable-next-line no-shadow
 export enum ShouldShowModal {
+  filter = 'filter',
   user = 'user',
   group = 'group',
 }
@@ -140,6 +147,7 @@ export const UserScreen: React.FC = (): JSX.Element => {
   const [user, setUser] = useState({} as User);
   const [userProfileCheckBox, setUserProfileCheckBox] = useState(mountUserProfilesCheckBox());
   const [group, setGroup] = useState({} as Profile);
+  const [userGroups, setUserGroups] = useState([] as CheckBoxGroup[]);
   const [modules, setModules] = useState([] as CheckBoxModule[]);
   const [userSelectedCount, setUserSelectedCount] = useState(0);
   const [groupSelectedCount, setGroupSelectedCount] = useState(0);
@@ -170,7 +178,6 @@ export const UserScreen: React.FC = (): JSX.Element => {
       telephone: [validators.required, validators.mobilePhone],
       email: [validators.required],
       userType: [validators.required],
-      password: [validators.required],
     },
     formatters: {
       cpf: updateMaskCPFOrCNPJ,
@@ -192,6 +199,19 @@ export const UserScreen: React.FC = (): JSX.Element => {
     validators: {
       name: [validators.required],
       description: [validators.required],
+    },
+  });
+
+  const {
+    formData: formDataFilter,
+    formErrors: formErrorsFilter,
+    resetForm: resetFormFilter,
+    onChangeFormInput: onChangeFormInputFilter,
+    isFormValid: isFormValidFilter,
+  } = useForm({
+    initialData: {
+      filterSearch: '',
+      inputSearch: '',
     },
   });
 
@@ -240,12 +260,6 @@ export const UserScreen: React.FC = (): JSX.Element => {
       }
     };
 
-  const renderActionDialogToCancel: ActionProps = {
-    title: 'Cancelar',
-    onClick: (): void => onToggle(),
-    theme: 'noneBorder',
-  };
-
   const getUsers = async (): Promise<void> => {
     try {
       setState(States.loading);
@@ -255,6 +269,9 @@ export const UserScreen: React.FC = (): JSX.Element => {
         sort: 'name',
         order: 'ASC',
       };
+      if (formDataFilter[FormInputFilter.filterSearch] === 'user') {
+        pageUser.entity = { name: formDataFilter[FormInputFilter.inputSearch] } as User;
+      }
       const response = await api.post<Page<User, User>>('/user/page', pageUser);
       const listCheckBoxUsers: CheckBoxUser[] = [];
       if (response.data.list) {
@@ -274,7 +291,9 @@ export const UserScreen: React.FC = (): JSX.Element => {
         sort: 'name',
         order: 'ASC',
       };
-
+      if (formDataFilter[FormInputFilter.filterSearch] === 'grop') {
+        pageGroup.entity = { name: formDataFilter[FormInputFilter.inputSearch] } as Profile;
+      }
       const responseGroup = await api.post<Page<Profile, Profile>>('/profile/page', pageGroup);
       const listCheckBoxGroup: CheckBoxGroup[] = [];
       if (responseGroup.data.list) {
@@ -291,6 +310,34 @@ export const UserScreen: React.FC = (): JSX.Element => {
     } catch (error) {
       setState(States.default);
     }
+  };
+
+  const onFilter = async (): Promise<void> => {
+    if (isFormValidFilter()) {
+      await getUsers();
+      resetFormFilter();
+      onToggle();
+    }
+  };
+
+  const clearFilter = (): void => {
+    resetFormFilter();
+    formDataFilter[FormInputFilter.inputSearch] = '';
+    onFilter();
+  };
+
+  const renderActionDialogToClearFilter: ActionProps = {
+    title: 'Limpar',
+    onClick: (): void => {
+      clearFilter();
+    },
+    theme: 'noneBorder',
+  };
+
+  const renderActionDialogToCancel: ActionProps = {
+    title: 'Cancelar',
+    onClick: (): void => onToggle(),
+    theme: 'noneBorder',
   };
 
   const getModules = async (selectedGroup: Profile | undefined): Promise<void> => {
@@ -386,9 +433,49 @@ export const UserScreen: React.FC = (): JSX.Element => {
     return result;
   };
 
+  const getGroups = async (selectedUser?: User): Promise<void> => {
+    try {
+      setState(States.loading);
+      const response = await api.get<Profile[]>('/profile/find');
+      const list: CheckBoxGroup[] = [];
+      if (response.data && response.data.length > 0) {
+        response.data.forEach(data => {
+          let checked = 'false';
+          if (selectedUser && selectedUser.profiles && selectedUser.profiles.length > 0) {
+            // eslint-disable-next-line no-plusplus
+            for (let i = 0; i < selectedUser.profiles.length; i++) {
+              if (data.id === selectedUser.profiles[i].id) {
+                checked = 'true';
+              }
+            }
+          }
+          const checkBoxGroup: CheckBoxGroup = {
+            ...data,
+            check: checked,
+          };
+          list.push(checkBoxGroup);
+        });
+      }
+      setUserGroups(list);
+      setState(States.default);
+    } catch (error) {
+      setState(States.default);
+    }
+  };
+
   const onSaveUser = async (): Promise<void> => {
     try {
       if (isFormValidUser()) {
+        setState(States.loading);
+        const profiles: Profile[] = [];
+        userGroups.forEach(data => {
+          if (data.check === 'true') {
+            const profile = {
+              id: data.id,
+            } as Profile;
+            profiles.push(profile);
+          }
+        });
         const payload = {
           id: user?.id,
           name: formDataUser[FormInputUser.name],
@@ -398,19 +485,22 @@ export const UserScreen: React.FC = (): JSX.Element => {
           imageBase64: formDataUser[FormInputUser.imageBase64],
           userType: stringToUserType(formDataUser[FormInputUser.userType]),
           password: formDataUser[FormInputUser.password],
+          profiles,
         } as User;
-
         if (!payload.id) {
           await api.post<User>('/user', payload);
-          toast.success(`PDV "${formDataUser[FormInputUser.name]}" cadastrado com sucesso!`);
+          toast.success(`Usuário "${formDataUser[FormInputUser.name]}" cadastrado com sucesso!`);
         } else {
           await api.put<User>('/user', payload);
-          toast.success(`PDV "${formDataUser[FormInputUser.name]}" atualizado com sucesso!`);
+          toast.success(`Usuário "${formDataUser[FormInputUser.name]}" atualizado com sucesso!`);
         }
         resetFormUser();
+        setState(States.default);
         onToggle();
+        getUsers();
       }
     } catch (error) {
+      setState(States.default);
       const err = error as AxiosError;
       toast.error(err.message);
     }
@@ -419,6 +509,7 @@ export const UserScreen: React.FC = (): JSX.Element => {
   const onActivateAndInactivateUser = async (
     e: React.ChangeEvent<HTMLInputElement>,
   ): Promise<void> => {
+    setState(States.loading);
     onChangeFormInputUser(FormInputUser.status)(String(e.target.checked));
     users.forEach(data => {
       if (data.id === user.id) {
@@ -434,11 +525,49 @@ export const UserScreen: React.FC = (): JSX.Element => {
       await api.patch<Profile>(`/user/inactivate/${user.id}`);
       toast.success(`Usuário "${formDataUser[FormInputUser.name]}" inativado com sucesso!`);
     }
+    setState(States.default);
+  };
+
+  const onChangeUserTypeSelected = (
+    e: ChangeEvent<HTMLInputElement>,
+    userType: CheckBoxData,
+  ): void => {
+    const list: CheckBoxData[] = [];
+    userProfileCheckBox.forEach(data => {
+      const checkBoxData: CheckBoxData = {
+        ...data,
+        checked: false,
+      };
+      if (data.id === userType.id) {
+        checkBoxData.checked = e.target.checked;
+        if (e.target.checked) {
+          onChangeFormInputUser(FormInputUser.userType)(userType.id);
+        }
+      }
+      list.push(checkBoxData);
+    });
+    setUserProfileCheckBox(list);
+  };
+
+  const onChangeUserGroupSelected = (
+    e: ChangeEvent<HTMLInputElement>,
+    groupSelected: CheckBoxGroup,
+  ): void => {
+    const list: CheckBoxGroup[] = [];
+    userGroups.forEach(data => {
+      if (data.id === groupSelected.id) {
+        // eslint-disable-next-line no-param-reassign
+        data.check = String(e.target.checked);
+      }
+      list.push(data);
+    });
+    setUserGroups(list);
   };
 
   const onSaveGroup = async (): Promise<void> => {
     try {
       if (isFormValidGroup()) {
+        setState(States.loading);
         const permissions: string[] = [];
         modules.forEach(module => {
           module.permissions.forEach(modulePermission => {
@@ -470,11 +599,13 @@ export const UserScreen: React.FC = (): JSX.Element => {
           await api.post<Profile>('/profile/permission', profilePermission);
           toast.success(`Grupo "${formDataGroup[FormInputGroup.name]}" atualizado com sucesso!`);
         }
-
+        setState(States.default);
         resetFormGroup();
         onToggle();
+        getUsers();
       }
     } catch (error) {
+      setState(States.default);
       const err = error as AxiosError;
       toast.error(err.message);
     }
@@ -483,6 +614,7 @@ export const UserScreen: React.FC = (): JSX.Element => {
   const onActivateAndInactivateGroup = async (
     e: React.ChangeEvent<HTMLInputElement>,
   ): Promise<void> => {
+    setState(States.loading);
     onChangeFormInputGroup(FormInputGroup.actived)(String(e.target.checked));
     groups.forEach(data => {
       if (data.id === group.id) {
@@ -498,6 +630,7 @@ export const UserScreen: React.FC = (): JSX.Element => {
       await api.patch<Profile>(`/profile/inactivate/${group.id}`);
       toast.success(`Grupo "${formDataGroup[FormInputGroup.name]}" inativado com sucesso!`);
     }
+    setState(States.default);
   };
 
   const openModal = async (
@@ -508,30 +641,34 @@ export const UserScreen: React.FC = (): JSX.Element => {
   ): Promise<void> => {
     onChangeTitle(modalTitle);
     setShouldShowModal(value);
-    await getModules(groupSelected);
-    if (userSelected) {
-      const userType = userTypeToString(userSelected.userType);
-      const list: CheckBoxData[] = [];
-      userProfileCheckBox.forEach(data => {
-        const newData: CheckBoxData = {
-          ...data,
-        };
-        if (data.id === userType) {
-          newData.checked = true;
-        }
-        list.push(newData);
-      });
-      setUser(userSelected);
-      setUserProfileCheckBox(list);
-    } else {
-      setUser(undefined as unknown as User);
-      resetFormUser();
-    }
-    if (groupSelected) {
-      setGroup(groupSelected);
-    } else {
-      setGroup(undefined as unknown as Profile);
-      resetFormGroup();
+    if (value === ShouldShowModal.user) {
+      await getGroups(userSelected);
+      if (userSelected) {
+        const userType = userTypeToString(userSelected.userType);
+        const list: CheckBoxData[] = [];
+        userProfileCheckBox.forEach(data => {
+          const newData: CheckBoxData = {
+            ...data,
+          };
+          if (data.id === userType) {
+            newData.checked = true;
+          }
+          list.push(newData);
+        });
+        setUser(userSelected);
+        setUserProfileCheckBox(list);
+      } else {
+        setUser(undefined as unknown as User);
+        resetFormUser();
+      }
+    } else if (value === ShouldShowModal.group) {
+      await getModules(groupSelected);
+      if (groupSelected) {
+        setGroup(groupSelected);
+      } else {
+        setGroup(undefined as unknown as Profile);
+        resetFormGroup();
+      }
     }
     onToggle();
   };
@@ -540,8 +677,8 @@ export const UserScreen: React.FC = (): JSX.Element => {
 
   const onConfirmDeleteUser = async (userDelete: User): Promise<void> => {
     try {
-      await api.delete(`/profile/${userDelete.id}`);
-      toast.success('Grupo excluído com sucesso!');
+      await api.delete(`/user/${userDelete.id}`);
+      toast.success('Usuário excluído com sucesso!');
       handleOnClose();
       getUsers();
     } catch (error) {
@@ -630,9 +767,38 @@ export const UserScreen: React.FC = (): JSX.Element => {
     setUserSelectedCount(count);
   };
 
-  const removeSelectedUsers = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
-    window.console.log(e);
+  const confirmRemoveSelectedUsers = async (): Promise<void> => {
+    setState(States.loading);
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0; i < users.length; i++) {
+      if (users[i].check === 'true') {
+        // eslint-disable-next-line no-await-in-loop
+        await api.delete(`/user/${users[i].id}`);
+      }
+    }
+    handleOnClose();
+    setState(States.default);
+    toast.success('Usuários excluídos com sucesso!');
     setUserSelectedCount(0);
+    getUsers();
+  };
+
+  const removeSelectedUsers = (): void => {
+    confirmDelete.show({
+      title: '',
+      children: <DeleteContent />,
+      actions: [
+        {
+          title: 'Não, quero manter',
+          theme: 'noneBorder',
+          onClick: (): void => handleOnClose(),
+        },
+        {
+          title: 'Sim, quero excluir',
+          onClick: (): Promise<void> => confirmRemoveSelectedUsers(),
+        },
+      ],
+    });
   };
 
   const checkAllGroupList = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -667,9 +833,38 @@ export const UserScreen: React.FC = (): JSX.Element => {
     setGroupSelectedCount(count);
   };
 
-  const removeSelectedGroups = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
-    window.console.log(e);
+  const confirmRemoveSelectedGroups = async (): Promise<void> => {
+    setState(States.loading);
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0; i < groups.length; i++) {
+      if (groups[i].check === 'true') {
+        // eslint-disable-next-line no-await-in-loop
+        await api.delete(`/profile/${groups[i].id}`);
+      }
+    }
+    handleOnClose();
+    setState(States.default);
+    toast.success('Grupos excluídos com sucesso!');
     setGroupSelectedCount(0);
+    getUsers();
+  };
+
+  const removeSelectedGroups = (): void => {
+    confirmDelete.show({
+      title: '',
+      children: <DeleteContent />,
+      actions: [
+        {
+          title: 'Não, quero manter',
+          theme: 'noneBorder',
+          onClick: (): void => handleOnClose(),
+        },
+        {
+          title: 'Sim, quero excluir',
+          onClick: (): Promise<void> => confirmRemoveSelectedGroups(),
+        },
+      ],
+    });
   };
 
   const checkAllModule = (e: ChangeEvent<HTMLInputElement>, module: CheckBoxModule): void => {
@@ -764,7 +959,10 @@ export const UserScreen: React.FC = (): JSX.Element => {
       modalTitle={title}
       visible={visible}
       shouldShowModal={shouldShowModal}
+      renderActionDialogToClearFilter={renderActionDialogToClearFilter}
       renderModalActionProps={renderActionDialogToCancel}
+      formDataFilter={formDataFilter}
+      formErrorsFilter={formErrorsFilter}
       formDataUser={formDataUser}
       formErrorsUser={formErrorsUser}
       users={users}
@@ -774,7 +972,9 @@ export const UserScreen: React.FC = (): JSX.Element => {
       user={user}
       userProfileCheckBox={userProfileCheckBox}
       group={group}
+      userModules={userGroups}
       modules={modules}
+      showActivateSwitchUser={!!(user && user.id)}
       userSelectedCount={userSelectedCount}
       groupSelectedCount={groupSelectedCount}
       showActivateSwitchGroup={!!(group && group.id)}
@@ -792,12 +992,16 @@ export const UserScreen: React.FC = (): JSX.Element => {
       changeFormInputUser={onChangeFormInputUser}
       changeFileInputUser={handleOnChangeFileInput}
       onActivateAndInactivateUser={onActivateAndInactivateUser}
+      onChangeUserTypeSelected={onChangeUserTypeSelected}
+      onChangeUserGroupSelected={onChangeUserGroupSelected}
       changeFormInputGroup={onChangeFormInputGroup}
       onActivateAndInactivateGroup={onActivateAndInactivateGroup}
       checkAllModule={checkAllModule}
       checkPermission={checkPermission}
       removeSelectedUsers={removeSelectedUsers}
       removeSelectedGroups={removeSelectedGroups}
+      changeFormInputFilter={onChangeFormInputFilter}
+      onFilter={onFilter}
     />
   );
 };
