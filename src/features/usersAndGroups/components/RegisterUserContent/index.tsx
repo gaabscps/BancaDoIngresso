@@ -1,21 +1,25 @@
-import React from 'react';
-import { Col, Form, FormGroup, Input, Row } from 'reactstrap';
-import { InputText, InputFile, Switch } from '@/components';
+import React, { ChangeEvent } from 'react';
+import { Col, Form, FormGroup, Input, Label, Row } from 'reactstrap';
+import { InputText, Switch } from '@/components';
 import { FormData, FormErrors, OnChangeFormInput } from '@/hooks/useForm';
 import { convertToBoolean } from '@/helpers/common/convertToBoolean';
-import Module from '@/model/Module';
-import { CheckBoxData, FormInputUser } from '../../screens/List';
+import SuperInput from '@/components/sharedComponents/SuperInput';
+import { CheckBoxData, CheckBoxGroup, FormInputUser } from '../../screens/List';
 
 interface StateProps {
   formData: FormData;
   formErrors: FormErrors;
+  showActivateSwitch: boolean;
   userProfileCheckBox: CheckBoxData[];
-  modules?: Module[];
+  modules: CheckBoxGroup[];
 }
 
 interface DispatchProps {
   onChangeFormInput: OnChangeFormInput;
   onChangeFileInput: (inputName: string) => (file: File | undefined) => void;
+  onActivateAndInactivate(e: ChangeEvent<HTMLInputElement>): void;
+  onChangeUserTypeSelected(e: ChangeEvent<HTMLInputElement>, userType: CheckBoxData): void;
+  onChangeUserGroupSelected(e: ChangeEvent<HTMLInputElement>, group: CheckBoxGroup): void;
 }
 
 type Props = StateProps & DispatchProps;
@@ -23,7 +27,7 @@ type Props = StateProps & DispatchProps;
 export const RegisterUserContent: React.FC<Props> = (props: Props) => {
   const tableModule = [];
   if (props.modules && props.modules.length > 0) {
-    let modules: Module[] = [];
+    let modules: CheckBoxGroup[] = [];
     props.modules.forEach(data => {
       if (modules.length === 3) {
         tableModule.push(modules);
@@ -54,6 +58,7 @@ export const RegisterUserContent: React.FC<Props> = (props: Props) => {
               value={props.formData[FormInputUser.cpf]}
               onChange={e => props.onChangeFormInput(FormInputUser.cpf)(e.target.value)}
               error={props.formErrors.cpf && props.formErrors.cpf[0]}
+              disabled={props.showActivateSwitch}
             />
           </FormGroup>
 
@@ -63,7 +68,7 @@ export const RegisterUserContent: React.FC<Props> = (props: Props) => {
               type="email"
               label="E-mail"
               placeholder="Ex: josedasilva123@gmail.com"
-              maxLength={18}
+              maxLength={100}
               value={props.formData[FormInputUser.email]}
               onChange={e => props.onChangeFormInput(FormInputUser.email)(e.target.value)}
               error={props.formErrors.email && props.formErrors.email[0]}
@@ -92,32 +97,44 @@ export const RegisterUserContent: React.FC<Props> = (props: Props) => {
               error={props.formErrors.name && props.formErrors.name[0]}
             />
           </FormGroup>
+          {!props.showActivateSwitch && (
+            <FormGroup className="mb-2">
+              <InputText
+                name="password"
+                label="Senha"
+                type="password"
+                placeholder="Ex: 1234abcd"
+                value={props.formData[FormInputUser.password]}
+                onChange={e => props.onChangeFormInput(FormInputUser.password)(e.target.value)}
+                error={props.formErrors.password && props.formErrors.password[0]}
+              />
+            </FormGroup>
+          )}
 
           <FormGroup className="mb-2">
-            <InputText
-              name="password"
-              label="Senha"
-              type="password"
-              placeholder="Ex: 1234abcd"
-              value={props.formData[FormInputUser.password]}
-              onChange={e => props.onChangeFormInput(FormInputUser.password)(e.target.value)}
-              error={props.formErrors.password && props.formErrors.password[0]}
-            />
-          </FormGroup>
-
-          <FormGroup className="mb-2">
-            <InputFile
-              name="imageBase64"
-              label="Imagem do PDV"
-              placeholder=""
-              fileName={FormInputUser.imageBase64}
-              onChange={e =>
-                props.onChangeFileInput(FormInputUser.imageBase64)(
-                  (e.target as HTMLInputElement)?.files?.[0],
-                )
-              }
-              error={props.formErrors.imageBase64 && props.formErrors.imageBase64[0]}
-            />
+            <div className="fieldSpacing">
+              <Label className="fieldLabel" for="printLayoutBase64">
+                Imagem do PDV
+              </Label>
+              <SuperInput
+                id="imageBase64"
+                placeholder="Nenhum arquivo selecionado"
+                name="imageBase64"
+                type="file"
+                onChange={e =>
+                  props.onChangeFileInput(FormInputUser.imageBase64)(
+                    (e.target as HTMLInputElement)?.files?.[0],
+                  )
+                }
+              />
+            </div>
+            {props.formData[FormInputUser.imageBase64] &&
+              props.formData[FormInputUser.imageBase64].length > 0 && (
+                <img
+                  style={{ maxWidth: '100%', marginBottom: '30px' }}
+                  src={props.formData[FormInputUser.imageBase64]}
+                />
+              )}
           </FormGroup>
 
           <h5>Tipo do usuário</h5>
@@ -125,15 +142,21 @@ export const RegisterUserContent: React.FC<Props> = (props: Props) => {
           <table style={{ marginLeft: '20px' }}>
             <tbody>
               {props.userProfileCheckBox.map(data => (
-                <tr key={data.id}>
+                <tr key={data.id} id={data.id}>
                   <td style={{ verticalAlign: 'baseline' }}>
-                    <Input type="checkbox" value={String(data.checked)} />
+                    <Input
+                      type="checkbox"
+                      value={String(data.checked)}
+                      checked={data.checked}
+                      onChange={e => props.onChangeUserTypeSelected(e, data)}
+                    />
                   </td>
                   <td
                     style={{
                       fontSize: '16px',
                       fontWeight: '300',
                       lineHeight: '24px',
+                      width: '100%',
                       color: '#828282',
                     }}
                   >
@@ -150,17 +173,22 @@ export const RegisterUserContent: React.FC<Props> = (props: Props) => {
           <table style={{ marginLeft: '20px' }}>
             <tbody>
               {tableModule.map((data, index) => (
-                <tr key={index}>
+                <tr key={index} id={`${index}`}>
                   {data.map(module => (
                     <>
                       <td key={module.id} style={{ verticalAlign: 'baseline' }}>
-                        <Input type="checkbox" />
+                        <Input
+                          type="checkbox"
+                          checked={module.check === 'true'}
+                          onChange={e => props.onChangeUserGroupSelected(e, module)}
+                        />
                       </td>
                       <td
                         style={{
                           fontSize: '16px',
                           fontWeight: '300',
                           lineHeight: '24px',
+                          width: '33%',
                           color: '#828282',
                         }}
                       >
@@ -173,16 +201,18 @@ export const RegisterUserContent: React.FC<Props> = (props: Props) => {
             </tbody>
           </table>
         </Col>
-        <Col md={4}>
-          <Switch
-            name="status"
-            label={`Usuário ${
-              convertToBoolean(props.formData[FormInputUser.status]) ? 'ativo' : 'inativo'
-            }`}
-            onChange={e => props.onChangeFormInput(FormInputUser.status)(String(e.target.checked))}
-            checked={convertToBoolean(props.formData[FormInputUser.status])}
-          />
-        </Col>
+        {props.showActivateSwitch && (
+          <Col md={4}>
+            <Switch
+              name="status"
+              label={`Usuário ${
+                convertToBoolean(props.formData[FormInputUser.status]) ? 'ativo' : 'inativo'
+              }`}
+              onChange={e => props.onActivateAndInactivate(e)}
+              checked={convertToBoolean(props.formData[FormInputUser.status])}
+            />
+          </Col>
+        )}
       </Row>
     </Form>
   );

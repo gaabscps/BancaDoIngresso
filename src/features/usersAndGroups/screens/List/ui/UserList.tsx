@@ -1,17 +1,21 @@
 import { CustomTable, TableColumn } from '@/components/Table';
+import User from '@/model/User';
+import UserType from '@/model/UserType';
 import React, { ChangeEvent } from 'react';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { Input } from 'reactstrap';
 import Profile from '@/model/Profile';
 import { DropdonwFlags } from '@/components';
-import User from '@/model/User';
-import { CheckBoxGroup, ShouldShowModal } from '..';
+import StatusType from '@/model/StatusType';
+import { CheckBoxUser, ShouldShowModal } from '..';
 
 interface DataTable {
   checkbox: string;
   name: string;
-  permissions: string;
+  cpf: string;
+  userType: UserType;
+  profiles: string;
   status: string;
   actions: string;
 }
@@ -22,45 +26,45 @@ interface DataColumn {
 }
 
 interface StateProps {
-  groups: CheckBoxGroup[];
   count: number;
+  users: CheckBoxUser[];
 }
-
 interface DispatchProps {
   checkAll(e: ChangeEvent<HTMLInputElement>): void;
-  change(e: React.ChangeEvent<HTMLInputElement>, group: CheckBoxGroup): void;
+  change(e: React.ChangeEvent<HTMLInputElement>, user: CheckBoxUser): void;
+  toUserType(userType: UserType): string;
   openModal(value: ShouldShowModal, modalTitle: string, user?: User, group?: Profile): void;
-  showDelete(group: Profile): void;
+  showDelete(user: User): void;
 }
 
 type Props = StateProps & DispatchProps;
 
-export const GroupList: React.FC<Props> = (props: Props): JSX.Element => {
+export const UserList: React.FC<Props> = (props: Props): JSX.Element => {
   const checkBoxAll = (): React.ReactNode => (
     <div className="checkFieldSpacing">
       <Input
         type="checkbox"
-        checked={props.count === props.groups.length}
+        checked={props.count === props.users.length}
         onChange={e => props.checkAll(e)}
       />
     </div>
   );
 
-  const checkBox = (profile: CheckBoxGroup): React.ReactNode => (
+  const checkBox = (user: CheckBoxUser): React.ReactNode => (
     <div className="checkFieldSpacing">
       <Input
         type="checkbox"
-        value={profile.check}
-        checked={profile.check === 'true'}
-        onChange={e => props.change(e, profile)}
+        value={user.check}
+        checked={user.check === 'true'}
+        onChange={e => props.change(e, user)}
       />
     </div>
   );
 
-  const dataTable = props.groups?.map(group => {
+  const dataTable = props.users?.map(user => {
     const dataColumnProfiles: DataColumn[] = [];
-    if (group.permissions && group.permissions.length > 0) {
-      group.permissions.forEach(data => {
+    if (user.profiles && user.profiles.length > 0) {
+      user.profiles.forEach(data => {
         dataColumnProfiles.push({
           id: data.id,
           name: data.name,
@@ -68,33 +72,33 @@ export const GroupList: React.FC<Props> = (props: Props): JSX.Element => {
       });
     }
     return {
-      checkbox: checkBox(group),
-      name: group.name,
-      permissions:
+      checkbox: checkBox(user),
+      name: user.name,
+      cpf: user.cpf,
+      userType: user.userType,
+      profiles:
         // eslint-disable-next-line no-nested-ternary
-        group.permissions && group.permissions.length > 1 ? (
+        user.profiles && user.profiles.length > 1 ? (
           <DropdonwFlags pointerClass={true} dataColumn={dataColumnProfiles} />
-        ) : group.permissions && group.permissions.length === 1 ? (
-          group.permissions[0].name
+        ) : user.profiles && user.profiles.length === 1 ? (
+          user.profiles[0].name
         ) : (
           ''
         ),
-      status: 'Ativo',
+      status:
+        user.status === StatusType.ACTIVE ? (
+          <div className="flag-item text-success">Ativo</div>
+        ) : (
+          <div className="flag-item text-danger">Inativo</div>
+        ),
       actions: (
         <div className="d-flex">
           <Pen
-            onClick={(): void =>
-              props.openModal(
-                ShouldShowModal.group,
-                'Editar grupo',
-                undefined as unknown as User,
-                group,
-              )
-            }
+            onClick={(): void => props.openModal(ShouldShowModal.user, 'Editar usuário', user)}
             className="mr-2 svg-icon action-icon"
           />
           <Trash
-            onClick={(): void => props.showDelete(group)}
+            onClick={(): void => props.showDelete(user)}
             className="mr-2 svg-icon action-icon"
           />
         </div>
@@ -113,9 +117,17 @@ export const GroupList: React.FC<Props> = (props: Props): JSX.Element => {
       selector: row => row.name,
     },
     {
-      name: 'Permissão',
-      selector: row => row.permissions,
-      cell: row => row.permissions,
+      name: 'CPF',
+      selector: row => row.cpf,
+    },
+    {
+      name: 'Tipo do usuário',
+      selector: row => props.toUserType(row.userType),
+    },
+    {
+      name: 'Grupo',
+      selector: row => row.profiles,
+      cell: row => row.profiles,
     },
     {
       name: 'Situação',
@@ -132,7 +144,7 @@ export const GroupList: React.FC<Props> = (props: Props): JSX.Element => {
     <CustomTable
       columns={columns}
       data={dataTable}
-      numberRowsPerPage={props.groups.length}
+      numberRowsPerPage={props.users.length}
       progressPending={false}
     />
   );

@@ -1,7 +1,7 @@
 import SubGrupSend from './SubGrupSend';
 
 export default interface GroupProductSend {
-  productGroupId: string;
-  productGroupName: string;
+  categoryGroupId: string;
+  categoryGroupName: string;
   subGroups: SubGrupSend[];
 }

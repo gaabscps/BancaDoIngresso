@@ -19,11 +19,11 @@ export default interface PayloadProduct {
   id?: string;
   name: string;
   imageBase64?: string;
-  productSubGroup?: {
+  categorySubGroup?: {
     id?: string;
     name?: string;
     imageBase64?: string;
-    productGroup?: {
+    categoryGroup?: {
       id?: string;
       name?: string;
       imageBase64?: string;
@@ -129,7 +129,7 @@ export const ProductScreen: React.FC = (): JSX.Element => {
   const handleFecthProductGroupList = async (): Promise<void> => {
     try {
       setState(States.loading);
-      const { data } = await api.get<ProductGroup[]>('/product-group/find');
+      const { data } = await api.get<ProductGroup[]>('/category-group/find');
       setListProductGroup(data ?? []);
     } catch (error) {
       const err = error as AxiosError;
@@ -143,7 +143,7 @@ export const ProductScreen: React.FC = (): JSX.Element => {
     try {
       setState(States.loading);
       const { data } = await api.get<ProductSubgroup[]>(
-        `/product-subgroup/find/group/${dataSubgGroup}`,
+        `/category-subgroup/find/group/${dataSubgGroup}`,
       );
       setListProductSubGroup(data ?? []);
     } catch (error) {
@@ -171,7 +171,7 @@ export const ProductScreen: React.FC = (): JSX.Element => {
       setProduct(productSelected);
       if (productSelected.id !== product?.id) {
         handleFecthProductGroupList();
-        handleFecthProductSubGroupList(productSelected.productSubGroup.productGroup.id);
+        handleFecthProductSubGroupList(productSelected.categorySubGroup.categoryGroup.id);
         resetFormProduct();
       }
     } else {
@@ -188,9 +188,9 @@ export const ProductScreen: React.FC = (): JSX.Element => {
           id: product?.id,
           name: formDataProduct[FormInputNameToSaveProduct.name],
           imageBase64: formDataProduct[FormInputNameToSaveProduct.imageBase64],
-          productSubGroup: {
+          categorySubGroup: {
             id: formDataProduct[FormInputNameToSaveProduct.subGroupProduct],
-            productGroup: {
+            categoryGroup: {
               id: formDataProduct[FormInputNameToSaveProduct.groupProduct],
             },
           },
@@ -289,10 +289,10 @@ export const ProductScreen: React.FC = (): JSX.Element => {
     if (product?.id) {
       onChangeFormInputProduct(FormInputNameToSaveProduct.name)(product.name);
       onChangeFormInputProduct(FormInputNameToSaveProduct.groupProduct)(
-        product.productSubGroup.productGroup?.id || '',
+        product.categorySubGroup.categoryGroup?.id || '',
       );
       onChangeFormInputProduct(FormInputNameToSaveProduct.subGroupProduct)(
-        product.productSubGroup.id || '',
+        product.categorySubGroup.id || '',
       );
       onChangeFormInputProduct(FormInputNameToSaveProduct.imageBase64)(product.imageBase64);
     }

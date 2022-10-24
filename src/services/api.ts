@@ -65,6 +65,15 @@ api.interceptors.response.use(
       }, 4000);
       return Promise.reject(error);
     }
+    if (response.status === 403) {
+      handleSweetAlert(
+        'warn',
+        'Opss...',
+        null,
+        'Você não possui acesso a essa funcionalidade, contacte o administrador!',
+      );
+      return Promise.reject(error);
+    }
 
     if (response.status !== 401 && response?.data?.errors?.length) {
       return Promise.reject(error);
