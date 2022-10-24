@@ -35,12 +35,13 @@ export enum FormInputName {
   name = 'name',
   imageBase64 = 'imageBase64',
   productId = 'productId',
-  productName = 'product',
+  productName = 'productName',
   quantity = 'quantity',
 }
 
 export type ProductQuantity = {
-  product: string;
+  productId: string;
+  productName: string;
   quantity: string;
 };
 
@@ -133,7 +134,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
                   );
                 }}
                 error={formErrors?.productName && formErrors.productName[0]}
-                value={item.product}
+                value={item.productId}
                 options={controllerInputAppendProduct.listProduct.map(itemProduct => ({
                   label: itemProduct.name,
                   value: itemProduct.id,
@@ -150,7 +151,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
                   controllerInputAppendProduct.handleChangeProduct(
                     FormInputName.quantity,
                     index,
-                    e?.target.value,
+                    e.target.value.replace(/[^0-9]/g, ''),
                   )
                 }
                 error={formErrors.quantity && formErrors.quantity[0] && '*'}

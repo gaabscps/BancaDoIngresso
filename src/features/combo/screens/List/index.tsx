@@ -22,7 +22,7 @@ import Product from '@/model/Product';
 export default interface PayloadCombo {
   id?: string;
   name: string;
-  products: ProductQuantity[];
+  products: { id: string; name: string; amount: number }[];
 }
 
 export const ComboScreen: React.FC = (): JSX.Element => {
@@ -35,7 +35,7 @@ export const ComboScreen: React.FC = (): JSX.Element => {
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(ShouldShowModal.combo);
   const [nameFiles, setNameFiles] = useState<NameFiles>({});
   const [productQuantity, setProductQuantity] = useState<ProductQuantity[]>([
-    { product: '', quantity: '' },
+    { productId: '', productName: '', quantity: '' },
   ]);
 
   const [currentPage, setCurrentPage] = useState<ComboRequestParams>({
@@ -88,7 +88,7 @@ export const ComboScreen: React.FC = (): JSX.Element => {
     productQuantity,
     setProductQuantity,
     handleAddProduct(): void {
-      setProductQuantity([...productQuantity, { product: '', quantity: '' }]);
+      setProductQuantity([...productQuantity, { productId: '', productName: '', quantity: '' }]);
     },
     handleChangeProduct(inputName: string, index: number, value: string): void {
       const newFormValues = [...productQuantity] as any;
@@ -235,10 +235,16 @@ export const ComboScreen: React.FC = (): JSX.Element => {
   const handleOnSaveCombo = async (): Promise<void> => {
     try {
       if (isFormValidCombo()) {
+        const newProduct = productQuantity.map(item => ({
+          id: item.productId,
+          name: item.productName,
+          amount: +item.quantity,
+        }));
+
         const payload: PayloadCombo = {
           id: combo?.id,
           name: formDataCombo[FormInputNameToSaveCombo.name],
-          products: productQuantity,
+          products: newProduct,
         };
         if (!payload.id) {
           delete payload.id;
