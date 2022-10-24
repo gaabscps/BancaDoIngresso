@@ -107,8 +107,8 @@ export const ProductContainer: React.FC<ProductContainerProps> = ({
     id: item.id,
     image: <ColumnImage srcImage={item.imageBase64} />,
     productName: item.name,
-    group: item.productSubGroup.productGroup.name,
-    subgroup: item.productSubGroup.name,
+    group: item.categorySubGroup?.categoryGroup?.name || '',
+    subgroup: item.categorySubGroup?.name || '',
 
     actions: (
       <React.Fragment>

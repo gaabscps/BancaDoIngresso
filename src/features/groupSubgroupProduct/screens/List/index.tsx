@@ -27,7 +27,7 @@ export interface PayloadGroupProduct {
 export interface PayloadSubGroupProduct {
   id?: string;
   name: string;
-  productGroup: {
+  categoryGroup: {
     id?: string;
   };
 }
@@ -96,7 +96,7 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
   const handleFetch = async (): Promise<void> => {
     try {
       setState(States.loading);
-      const { data } = await api.post<GroupProductResponse>('/product-group/page/group-sub', {
+      const { data } = await api.post<GroupProductResponse>('/category-group/page/group-sub', {
         sort: 'name',
         order: 'ASC',
       });
@@ -134,17 +134,17 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
     try {
       if (isFormValidGroupProduct()) {
         const payload: PayloadGroupProduct = {
-          id: groupProduct?.productGroupId,
+          id: groupProduct?.categoryGroupId,
           name: formDataGroupProduct[FormInputNameToSaveGroupProduct.name],
         };
 
         if (!payload.id) {
           delete payload.id;
 
-          await api.post<GroupProduct>('/product-group', payload);
+          await api.post<GroupProduct>('/category-group', payload);
           toast.success('Grupo de produto cadastrado com sucesso!');
         } else {
-          await api.put<GroupProduct>('/product-group', payload);
+          await api.put<GroupProduct>('/category-group', payload);
           toast.success('Grupo de produto atualizado com sucesso!');
         }
 
@@ -163,16 +163,16 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
         const payload: PayloadSubGroupProduct = {
           id: subgroupProduct?.productSubGroupId,
           name: formDataSubgroupProduct[FormInputNameToSaveSubGroupProduct.name],
-          productGroup: {
-            id: groupProduct?.productGroupId,
+          categoryGroup: {
+            id: groupProduct?.categoryGroupId,
           },
         };
         if (!payload.id) {
           delete payload.id;
-          await api.post<SubgroupProduct>('/product-subgroup', payload);
+          await api.post<SubgroupProduct>('/category-subgroup', payload);
           toast.success('Subgrupo de produto cadastrado com sucesso!');
         } else {
-          await api.put<SubgroupProduct>('/product-subgroup', payload);
+          await api.put<SubgroupProduct>('/category-subgroup', payload);
           toast.success('Subgrupo de produto atualizado com sucesso!');
         }
 
@@ -191,7 +191,7 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
     subgroupProductSelected: GroupProduct,
   ): Promise<void> => {
     try {
-      await api.delete(`/product-group/${subgroupProductSelected?.productGroupId}`);
+      await api.delete(`/category-group/${subgroupProductSelected?.categoryGroupId}`);
 
       toast.success('Grupo e subgrupo de produtos excluído com sucesso!');
       handleOnClose();
@@ -206,7 +206,7 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
     subgroupProductSelected: SubGrupSend,
   ): Promise<void> => {
     try {
-      await api.delete(`/product-subgroup/${subgroupProductSelected?.productSubGroupId}`);
+      await api.delete(`/category-subgroup/${subgroupProductSelected?.productSubGroupId}`);
 
       toast.success('Subgrupo excluído com sucesso!');
       handleOnClose();
@@ -263,9 +263,9 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
   }, [subgroupProduct]);
 
   useEffect(() => {
-    if (groupProduct?.productGroupId) {
+    if (groupProduct?.categoryGroupId) {
       onChangeFormInputGroupProduct(FormInputNameToSaveGroupProduct.name)(
-        groupProduct.productGroupName,
+        groupProduct.categoryGroupName,
       );
     }
   }, [groupProduct]);

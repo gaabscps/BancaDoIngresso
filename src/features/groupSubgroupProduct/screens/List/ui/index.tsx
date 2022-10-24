@@ -110,7 +110,7 @@ export const GroupProductContainer: React.FC<GroupProductContainerProps> = ({
           }[shouldShowModal],
           {
             [ShouldShowModal.groupProduct]: {
-              title: groupProductState?.productGroupId ? 'Salvar' : 'Cadastrar novo grupo',
+              title: groupProductState?.categoryGroupId ? 'Salvar' : 'Cadastrar novo grupo',
               onClick: (): Promise<void> => onSaveGroupProduct(),
               disabled: formDataGroupProduct.name === '',
             },
@@ -179,20 +179,20 @@ export const GroupProductContainer: React.FC<GroupProductContainerProps> = ({
                   <Col className="tree-item-container">
                     <div className="d-flex">
                       <div className="d-flex justify-content-between text-gruop tree-main-text">
-                        <div className="mv-auto">{item.productGroupName}</div>
+                        <div className="mv-auto">{item.categoryGroupName}</div>
                         <div className="d-flex icon-content mv-auto">
                           <Pen
                             className="svg-icon action-icon sm-icon"
                             onClick={(): void =>
                               onShouldShowModal({
                                 value: ShouldShowModal.groupProduct,
-                                newTitleModal: `${item.productGroupName}`,
+                                newTitleModal: `${item.categoryGroupName}`,
                                 groupProduct: item,
                               })
                             }
                           />
                           <Trash
-                            className="mr-0 svg-icon sm-icon"
+                            className="mr-0 svg-icon sm-icon action-icon"
                             onClick={() => {
                               onShowDeleteGroupProduct(item);
                             }}
@@ -205,7 +205,7 @@ export const GroupProductContainer: React.FC<GroupProductContainerProps> = ({
                           onClick={(): void =>
                             onShouldShowModal({
                               value: ShouldShowModal.subgroupProduct,
-                              newTitleModal: `Cadastrar novo subgrupo - Em ${item.productGroupName}`,
+                              newTitleModal: `Cadastrar novo subgrupo - Em ${item.categoryGroupName}`,
                               groupProduct: item,
                             })
                           }
