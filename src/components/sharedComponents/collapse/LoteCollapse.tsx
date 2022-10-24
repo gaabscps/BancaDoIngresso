@@ -66,7 +66,7 @@ const LoteCollapse: React.FC<LoteCollapseProps> = ({
                 {item.users.length > 0 ? (
                   item.users.map((user: any) => user.name).join(', ')
                 ) : (
-                  <div>Nenhum usuário vinculado</div>
+                  <div className="m-0">Nenhum usuário vinculado</div>
                 )}
               </span>
             </div>
