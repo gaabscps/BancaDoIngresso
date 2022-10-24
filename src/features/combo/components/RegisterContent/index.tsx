@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React from 'react';
 import { Col, Form, FormGroup, Row } from 'reactstrap';
 import { Button, InputFile, InputText, SelectCustom } from '@/components';
 import { FormData, FormErrors, OnChangeFormInput } from '@/hooks/useForm';
@@ -7,6 +7,7 @@ import { NameFiles } from '@/features/combo/types';
 import { X } from 'react-feather';
 import ComboGroup from '@/model/ComboGroup';
 import ComboSubgroup from '@/model/ComboSubgroup';
+import Product from '@/model/Product';
 
 interface RegisterContentProps {
   formData: FormData;
@@ -19,13 +20,10 @@ interface RegisterContentProps {
   listComboSubGroup: ComboSubgroup[];
   controllerInputAppendProduct: {
     handleAddProduct(): void;
-    handleChangeProduct(
-      inputName: string,
-      index: number,
-      event: ChangeEvent<HTMLInputElement>,
-    ): void;
+    handleChangeProduct(inputName: string, index: number, value: string): void;
     handleRemoveProduct(index: number): void;
     productQuantity: ProductQuantity[];
+    listProduct: Product[];
     setProductQuantity: React.Dispatch<React.SetStateAction<ProductQuantity[]>>;
   };
 }
@@ -36,7 +34,8 @@ export enum FormInputName {
   subProupCombo = 'subProupCombo',
   name = 'name',
   imageBase64 = 'imageBase64',
-  product = 'product',
+  productId = 'productId',
+  productName = 'product',
   quantity = 'quantity',
 }
 
@@ -142,15 +141,28 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
         {controllerInputAppendProduct.productQuantity.map((item, index) => (
           <Row key={index}>
             <Col md={6} className="pl-0">
-              <InputText
+              <SelectCustom
                 name={`product-${index}`}
                 label="Produto"
                 placeholder="Digite ou selecione o produto"
+                onChange={e => {
+                  controllerInputAppendProduct.handleChangeProduct(
+                    FormInputName.productId,
+                    index,
+                    String(e?.value),
+                  );
+                  controllerInputAppendProduct.handleChangeProduct(
+                    FormInputName.productName,
+                    index,
+                    String(e?.label),
+                  );
+                }}
+                error={formErrors?.productName && formErrors.productName[0]}
                 value={item.product}
-                onChange={e =>
-                  controllerInputAppendProduct.handleChangeProduct(FormInputName.product, index, e)
-                }
-                error={formErrors.name && formErrors.name[0]}
+                options={controllerInputAppendProduct.listProduct.map(itemBank => ({
+                  label: itemBank.name,
+                  value: itemBank.id,
+                }))}
               />
             </Col>
             <Col md={2}>
@@ -160,7 +172,11 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
                 placeholder="Ex: 100"
                 value={item.quantity}
                 onChange={e =>
-                  controllerInputAppendProduct.handleChangeProduct(FormInputName.quantity, index, e)
+                  controllerInputAppendProduct.handleChangeProduct(
+                    FormInputName.quantity,
+                    index,
+                    e?.target.value,
+                  )
                 }
                 error={formErrors.quantity && formErrors.quantity[0] && '*'}
               />

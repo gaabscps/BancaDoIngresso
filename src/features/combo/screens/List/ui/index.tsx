@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-key */
-import React, { ChangeEvent, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import FilterVector from '@/assets/images/svg/FilterVector';
 import { Button, Loading, DropdonwFlags } from '@/components';
 import { Container } from 'reactstrap';
@@ -18,6 +18,7 @@ import { Link } from 'react-router-dom';
 import { colors } from '@/styles/colors';
 import ComboGroup from '@/model/ComboGroup';
 import ComboSubgroup from '@/model/ComboSubgroup';
+import Product from '@/model/Product';
 import { columns } from './table';
 
 // eslint-disable-next-line no-shadow
@@ -74,13 +75,10 @@ interface ComboContainerProps {
   listComboSubGroup: ComboSubgroup[];
   controllerInputAppendProduct: {
     handleAddProduct(): void;
-    handleChangeProduct(
-      inputName: string,
-      index: number,
-      event: ChangeEvent<HTMLInputElement>,
-    ): void;
+    handleChangeProduct(inputName: string, index: number, value: string): void;
     handleRemoveProduct(index: number): void;
     productQuantity: ProductQuantity[];
+    listProduct: Product[];
     setProductQuantity: React.Dispatch<React.SetStateAction<ProductQuantity[]>>;
   };
 }
