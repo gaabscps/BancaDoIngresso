@@ -134,9 +134,9 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
                 }}
                 error={formErrors?.productName && formErrors.productName[0]}
                 value={item.product}
-                options={controllerInputAppendProduct.listProduct.map(itemBank => ({
-                  label: itemBank.name,
-                  value: itemBank.id,
+                options={controllerInputAppendProduct.listProduct.map(itemProduct => ({
+                  label: itemProduct.name,
+                  value: itemProduct.id,
                 }))}
               />
             </Col>
