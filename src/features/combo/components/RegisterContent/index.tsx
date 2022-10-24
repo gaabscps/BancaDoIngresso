@@ -54,31 +54,6 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
   listComboSubGroup,
   controllerInputAppendProduct,
 }) => (
-  // const [productQuantity, setProductQuantity] = useState<ProductQuantity[]>([
-  //   { product: '', quantity: '' },
-  // ]);
-
-  // const controllerInputAppendProduct = {
-  //   handleAddProduct(): void {
-  //     setProductQuantity([...productQuantity, { product: '', quantity: '' }]);
-  //   },
-
-  //   handleChangeProduct(
-  //     inputName: string,
-  //     index: number,
-  //     event: ChangeEvent<HTMLInputElement>,
-  //   ): void {
-  //     const newFormValues = [...productQuantity] as any;
-  //     newFormValues[index][inputName] = event.target.value;
-  //     setProductQuantity(newFormValues);
-  //   },
-  //   handleRemoveProduct(index: number): void {
-  //     const values = [...productQuantity];
-  //     values.splice(index, 1);
-  //     setProductQuantity(values);
-  //   },
-  // };
-
   <Form
     noValidate={true}
     onSubmit={(e): void => {
