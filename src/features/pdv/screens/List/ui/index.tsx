@@ -266,12 +266,12 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
               onClick: (): Promise<void> => onFilter(),
             },
             [ShouldShowModal.pdv]: {
-              title: pdvState?.id ? 'Editar PDV' : 'Cadastrar novo PDV',
+              title: pdvState?.id ? 'Salvar' : 'Cadastrar novo PDV',
               onClick: (): Promise<void> => onSavePdv(),
             },
             [ShouldShowModal.subpdv]: {},
             [ShouldShowModal.subpdvRegister]: {
-              title: subPdvState?.id ? 'Editar SubPDV' : 'Cadastrar novo SubPDV',
+              title: subPdvState?.id ? 'Salvar' : 'Cadastrar novo SubPDV',
               onClick: (): Promise<void> => onSaveSubPdv(),
             },
           }[shouldShowModal],
