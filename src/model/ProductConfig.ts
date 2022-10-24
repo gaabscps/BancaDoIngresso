@@ -2,11 +2,11 @@ export default interface Product {
   id?: string;
   name: string;
   imageBase64: string;
-  productSubGroup: {
+  categorySubGroup: {
     id?: string;
     name: string;
     imageBase64?: string;
-    productGroup: {
+    categoryGroup: {
       id?: string;
       name: string;
       imageBase64: string;
