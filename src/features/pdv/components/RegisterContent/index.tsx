@@ -348,7 +348,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
               onChange={e => onChangeFormInput(FormInputName.batchClosed)(e.target.value)}
               options={[
                 { value: true, label: 'Sim' },
-                { value: false, label: 'não' },
+                { value: false, label: 'Não' },
               ]}
               error={formErrors.batchClosed && formErrors.batchClosed[0]}
             />
@@ -366,7 +366,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
                   }
                   options={[
                     { value: true, label: 'Sim' },
-                    { value: false, label: 'não' },
+                    { value: false, label: 'Não' },
                   ]}
                   error={formErrors.askPasswordInactivity && formErrors.askPasswordInactivity[0]}
                 />
