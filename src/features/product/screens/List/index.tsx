@@ -289,10 +289,10 @@ export const ProductScreen: React.FC = (): JSX.Element => {
     if (product?.id) {
       onChangeFormInputProduct(FormInputNameToSaveProduct.name)(product.name);
       onChangeFormInputProduct(FormInputNameToSaveProduct.groupProduct)(
-        product.categorySubGroup.categoryGroup?.id || '',
+        product.categorySubGroup?.categoryGroup?.id || '',
       );
       onChangeFormInputProduct(FormInputNameToSaveProduct.subGroupProduct)(
-        product.categorySubGroup.id || '',
+        product.categorySubGroup?.id || '',
       );
       onChangeFormInputProduct(FormInputNameToSaveProduct.imageBase64)(product.imageBase64);
     }
