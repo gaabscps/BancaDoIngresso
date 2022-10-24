@@ -202,6 +202,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
         resetFormSubPdv();
         resetFormFilter();
         setUsersSelected([]);
+        setListUsers([]);
         setPdv(undefined);
         setSubPdv(undefined);
       }, 500);
@@ -322,24 +323,23 @@ export const PdvScreen: React.FC = (): JSX.Element => {
 
     // reset list users
     setListUsers(listUsersDefault);
+    setUsersSelected([]);
 
     if (pdvSelected && value === ShouldShowModal.subpdv) {
       handleOnShowListSubPdv(pdvSelected);
     }
-
-    if (pdvSelected?.id && value !== ShouldShowModal.subpdv) {
+    if (value !== ShouldShowModal.filter) {
       setPdv(pdvSelected);
-      setListUsers(() => {
-        // remove users selected from list listUsersDefault
-        const newListUsers = listUsersDefault.filter(
-          item => !usersSelected?.find(user => user.id === item.id),
-        );
-        return newListUsers;
-      });
-    }
-    if (subPdvSelected?.id && value !== ShouldShowModal.subpdv) {
       setSubPdv(subPdvSelected);
     }
+
+    setListUsers(() => {
+      // remove users selected from list listUsersDefault
+      const newListUsers = listUsersDefault.filter(
+        item => !usersSelected?.find(user => user.id === item.id),
+      );
+      return newListUsers;
+    });
   };
 
   const handleOnSavePdv = async (): Promise<void> => {
@@ -517,6 +517,8 @@ export const PdvScreen: React.FC = (): JSX.Element => {
 
   const handleOnSaveSubPdv = async (): Promise<void> => {
     if (isFormValidSubPdv()) {
+      const dataUsers = usersSelected.map(item => item.id);
+      console.log('subPdv :>> ', subPdv);
       // TODO: change type to sub-Pdv
       const payload: PayloadSubPdv = {
         id: subPdv?.id ?? undefined,
@@ -529,7 +531,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
         twitterUrl: formDataSubPdv[FormInputNameToSaveSubPdv.twitterUrl],
         linkedinUrl: formDataSubPdv[FormInputNameToSaveSubPdv.linkedinUrl],
         address: {
-          id: subPdv?.address.id ?? undefined,
+          id: subPdv?.address?.id ?? undefined,
           zipCode: formDataSubPdv[FormInputNameToSaveSubPdv.zipCode],
           state: formDataSubPdv[FormInputNameToSaveSubPdv.state],
           city: formDataSubPdv[FormInputNameToSaveSubPdv.city],
@@ -548,12 +550,22 @@ export const PdvScreen: React.FC = (): JSX.Element => {
         delete payload.id;
         delete payload.address.id;
 
-        await api.post<Pdv>('/sub-pdv', payload);
+        const { data: dataSubPdv } = await api.post<Pdv>('/sub-pdv', payload);
+
+        await api.post('/sub-pdv/user', {
+          subPdvId: dataSubPdv.id,
+          users: dataUsers,
+        });
         toast.success(
           `Sub PDV "${formDataSubPdv[FormInputNameToSaveSubPdv.name]}" cadastrado com sucesso!`,
         );
       } else {
         await api.put<Pdv>('/sub-pdv', payload);
+
+        await api.post('/sub-pdv/user', {
+          subPdvId: subPdv?.id,
+          users: dataUsers,
+        });
         toast.success(
           `Sub PDV "${formDataSubPdv[FormInputNameToSaveSubPdv.name]}" atualizado com sucesso!`,
         );
@@ -570,7 +582,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
     setSubPdv(subPdvSelectedFetch);
     handleOnShouldShowModal({
       value: ShouldShowModal.subpdvRegister,
-      newTitleModal: 'Editar Sub-PDV',
+      newTitleModal: 'Editar Sub PDV',
       subPdv: subPdvSelectedFetch,
     });
   };
@@ -611,6 +623,8 @@ export const PdvScreen: React.FC = (): JSX.Element => {
         // remove users that are already selected
         user.filter(userItem => !pdv.users.find(userSelected => userSelected.id === userItem.id)),
       );
+    } else {
+      setUsersSelected([]);
     }
   }, [pdv]);
 
@@ -637,6 +651,14 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       onChangeFormInputSubPdv(FormInputNameToSaveSubPdv.longitude)(
         String(subPdv.address?.longitude),
       );
+
+      setUsersSelected(subPdv.users);
+      setListUsers(user =>
+        // remove users that are already selected
+        user.filter(
+          userItem => !subPdv.users.find(userSelected => userSelected.id === userItem.id),
+        ),
+      );
     }
   }, [subPdv]);
 
@@ -649,6 +671,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
     <PdvContainer
       state={state}
       pdvState={pdv}
+      subPdvState={subPdv}
       listPdv={listPdv}
       listSubPdv={listSubPdv}
       nameFiles={nameFiles}
