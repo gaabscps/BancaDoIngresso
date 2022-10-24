@@ -173,8 +173,10 @@ export const ProductScreen: React.FC = (): JSX.Element => {
         handleFecthProductGroupList();
         handleFecthProductSubGroupList(productSelected.categorySubGroup.categoryGroup.id);
         resetFormProduct();
+        setNameFiles({});
       }
     } else {
+      setNameFiles({});
       resetFormProduct();
       setProduct(undefined);
       handleFecthProductGroupList();
