@@ -86,8 +86,8 @@ export const ProductScreen: React.FC = (): JSX.Element => {
   const handleOnChangeFileInput =
     (inputName: string) =>
     (file: File | undefined): void => {
-      // validate if file is image
-      if (file && file.type.includes('image')) {
+      // validate if file is image and format .jpg, .jpeg ou .png
+      if (file && file.type.match(/image\/(jpg|jpeg|png)/)) {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = () => {

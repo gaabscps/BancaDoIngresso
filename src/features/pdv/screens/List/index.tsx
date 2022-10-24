@@ -178,7 +178,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
     (inputName: string) =>
     (file: File | undefined): void => {
       // validate if file is image
-      if (file && file.type.includes('image')) {
+      if (file && file.type.match(/image\/(jpg|jpeg|png)/)) {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = () => {
