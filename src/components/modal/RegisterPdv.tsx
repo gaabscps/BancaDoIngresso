@@ -65,7 +65,7 @@ const RegisterPdv = (props: Props): JSX.Element => {
     handleSubmit,
     formState: { errors },
     control,
-    watch,
+    // watch,
     reset,
   } = useForm<Pdv>({
     // resolver: yupResolver(schema),
@@ -295,7 +295,7 @@ const RegisterPdv = (props: Props): JSX.Element => {
             label="Imagem"
             register={register}
             name="imageBase64"
-            fileName={watch('imageBase64') && watch('imageBase64')[0]}
+            // fileName={watch('imageBase64') && watch('imageBase64')[0]}
             accept="image/png, image/jpeg"
             //   error={errors?.name?.message}
           />

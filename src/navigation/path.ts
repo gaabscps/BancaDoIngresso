@@ -7,6 +7,8 @@ import { PRODUTCTSCOMBOS_ROUTES } from '@/features/productsAndCombos/navigation'
 import { USER_ROUTES } from '@/features/usersAndGroups/screens/navigation';
 import { GROUPSUBGROUPPRODUCT_ROUTES } from '@/features/groupSubgroupProduct/navigation';
 import { COMPANY_ROUTES } from '@/features/contractor/navigation';
+import { MODULE_ROUTES } from '@/features/module/screens/navigation';
+import { PERMISSION_ROUTES } from '@/features/permission/screens/navigation';
 
 const path = {
   Initial: {
@@ -22,6 +24,12 @@ const path = {
     UsersGroups: {
       itself: '/dashboard/users-groups',
       edit: '/dashboard/users-groups/edit/:id',
+    },
+    Module: {
+      ...MODULE_ROUTES,
+    },
+    Permission: {
+      ...PERMISSION_ROUTES,
     },
     User: {
       ...USER_ROUTES,

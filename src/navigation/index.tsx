@@ -14,6 +14,8 @@ import { ProductNavigation } from '@/features/product/navigation';
 import { ContractorNavigation } from '@/features/contractor/navigation';
 import { ComboNavigation } from '@/features/combo/navigation';
 import { UserNavigation } from '@/features/usersAndGroups/screens/navigation';
+import { ModuleNavigation } from '@/features/module/screens/navigation';
+import { PermissionNavigation } from '@/features/permission/screens/navigation';
 import { renderRoutes } from './utils';
 import { Route } from './Route';
 import { path } from './path';
@@ -21,6 +23,8 @@ import { path } from './path';
 const Navigation: React.FC = (): JSX.Element => {
   const authRoutes = renderRoutes(AuthNavigation);
   const dashboardRoutes = renderRoutes(DashboardNavigation);
+  const moduleRoutes = renderRoutes(ModuleNavigation);
+  const PermissionRoutes = renderRoutes(PermissionNavigation);
   const userRoutes = renderRoutes(UserNavigation);
   const pdvRoutes = renderRoutes(PdvNavigation);
   const posRoutes = renderRoutes(PosNavigation);
@@ -37,6 +41,8 @@ const Navigation: React.FC = (): JSX.Element => {
       <Switch>
         {authRoutes}
         {dashboardRoutes}
+        {moduleRoutes}
+        {PermissionRoutes}
         {userRoutes}
         {pdvRoutes}
         {posRoutes}

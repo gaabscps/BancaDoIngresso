@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDialog } from '@/hooks/useDialog';
 import Combo from '@/model/Combo';
 import api, { AxiosError } from '@/services/api';
@@ -17,6 +17,7 @@ import { FormInputName as FormInputNameToFilter } from '@/features/combo/compone
 import { DeleteContent } from '@/features/combo/components/DeleteContent';
 import ComboGroup from '@/model/ComboGroup';
 import ComboSubGroup from '@/model/ComboSubgroup';
+import Product from '@/model/Product';
 
 export default interface PayloadCombo {
   id?: string;
@@ -30,6 +31,7 @@ export const ComboScreen: React.FC = (): JSX.Element => {
   const [listComboGroup, setListComboGroup] = useState<ComboGroup[]>([]);
   const [listComboSubGroup, setListComboSubGroup] = useState<ComboSubGroup[]>([]);
   const [combo, setCombo] = useState<Combo>();
+  const [listProduct, setListProduct] = useState<Product[]>([]);
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(ShouldShowModal.combo);
   const [nameFiles, setNameFiles] = useState<NameFiles>({});
   const [productQuantity, setProductQuantity] = useState<ProductQuantity[]>([
@@ -82,18 +84,15 @@ export const ComboScreen: React.FC = (): JSX.Element => {
   });
 
   const controllerInputAppendProduct = {
+    listProduct,
     productQuantity,
     setProductQuantity,
     handleAddProduct(): void {
       setProductQuantity([...productQuantity, { product: '', quantity: '' }]);
     },
-    handleChangeProduct(
-      inputName: string,
-      index: number,
-      event: ChangeEvent<HTMLInputElement>,
-    ): void {
+    handleChangeProduct(inputName: string, index: number, value: string): void {
       const newFormValues = [...productQuantity] as any;
-      newFormValues[index][inputName] = event.target.value;
+      newFormValues[index][inputName] = value;
       setProductQuantity(newFormValues);
     },
     handleRemoveProduct(index: number): void {
@@ -107,7 +106,7 @@ export const ComboScreen: React.FC = (): JSX.Element => {
     (inputName: string) =>
     (file: File | undefined): void => {
       // validate if file is image
-      if (file && file.type.includes('image')) {
+      if (file && file.type.match(/image\/(jpg|jpeg|png)/)) {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = () => {
@@ -138,6 +137,19 @@ export const ComboScreen: React.FC = (): JSX.Element => {
           ...data,
         }));
       }
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
+  const handleFecthProductList = async (): Promise<void> => {
+    try {
+      setState(States.loading);
+      const { data } = await api.get<Product[]>('/product/find');
+      setListProduct(data ?? []);
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
@@ -324,6 +336,7 @@ export const ComboScreen: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     handleFetch(currentPage);
+    handleFecthProductList();
   }, []);
 
   return (

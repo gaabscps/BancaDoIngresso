@@ -134,6 +134,14 @@ export const Sidebar: React.FC = () => {
               IconSvg={Settings}
               items={[
                 {
+                  route: path.Dashboard.Module.itself,
+                  title: 'Módulos',
+                },
+                {
+                  route: path.Dashboard.Permission.itself,
+                  title: 'Permissões',
+                },
+                {
                   route: path.Dashboard.User.itself,
                   title: 'Usuários e Grupos',
                 },
