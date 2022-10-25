@@ -115,7 +115,7 @@ export const PaymentMethodsContainer: React.FC<PaymentMethodsContainerProps> = (
           }
         />
         <Trash
-          className="mr-4 svg-icon action-icon"
+          className="mr-4 svg-icon action-icon svg-icon-trash"
           onClick={() => {
             onShowDeletePaymentMethods(paymentMethods);
           }}

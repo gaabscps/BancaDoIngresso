@@ -13,3 +13,10 @@ svg.svg-icon {
 svg.last-child-icon {
   margin-right: 0px !important;
 }
+
+svg.svg-icon-trash {
+  &:hover {
+    color: #d8231b;
+    fill: #d8231b;
+  }
+}

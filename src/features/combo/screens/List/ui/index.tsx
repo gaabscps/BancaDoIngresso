@@ -146,7 +146,7 @@ export const ComboContainer: React.FC<ComboContainerProps> = ({
           }
         />
         <Trash
-          className="mr-2 svg-icon action-icon"
+          className="mr-2 svg-icon action-icon svg-icon-trash"
           onClick={() => {
             onShowDeleteCombo(item);
           }}

@@ -171,7 +171,7 @@ export const ContractorContainer: React.FC<ContractorContainerProps> = ({
           }}
         />
         <Trash
-          className="mr-2 svg-icon action-icon"
+          className="mr-2 svg-icon action-icon svg-icon-trash"
           onClick={() => {
             onShowDeleteContractor(item);
           }}

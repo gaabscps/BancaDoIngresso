@@ -112,7 +112,7 @@ export const PaymentGatewayContainer: React.FC<PaymentGatewayContainerProps> = (
           }
         />
         <Trash
-          className="mr-4 svg-icon action-icon"
+          className="mr-4 svg-icon action-icon svg-icon-trash"
           onClick={() => {
             onShowDeletePaymentGateway(item);
           }}

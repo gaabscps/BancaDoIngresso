@@ -99,7 +99,7 @@ export const UserList: React.FC<Props> = (props: Props): JSX.Element => {
           />
           <Trash
             onClick={(): void => props.showDelete(user)}
-            className="mr-2 svg-icon action-icon"
+            className="mr-2 svg-icon action-icon svg-icon-trash"
           />
         </div>
       ),

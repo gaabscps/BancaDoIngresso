@@ -97,7 +97,7 @@ export const ListMenu: React.FC<Props> = (props: Props): JSX.Element => {
           />
           <Trash
             onClick={(): void => props.showDelete(menu)}
-            className="mr-2 svg-icon action-icon"
+            className="mr-2 svg-icon action-icon svg-icon-trash"
           />
         </div>
       ),
