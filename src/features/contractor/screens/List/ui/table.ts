@@ -75,7 +75,7 @@ export const columnsPix: TableColumn<DataRowPix>[] = [
 
 export const columnsUser: TableColumn<DataRowUser>[] = [
   {
-    name: 'Nome do usuário',
+    name: 'Nome do PDV',
     selector: row => row.name,
     maxWidth: '325px',
   },

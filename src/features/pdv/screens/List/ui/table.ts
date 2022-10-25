@@ -1,4 +1,6 @@
 import { TableColumn } from '@/components/Table';
+import { DataRowUser } from '@/features/contractor/screens/List/ui';
+import { formatToCPFOrCNPJ } from 'brazilian-values';
 import { DataRow } from '.';
 
 export const columns: TableColumn<DataRow>[] = [
@@ -27,5 +29,23 @@ export const columns: TableColumn<DataRow>[] = [
     name: 'Ações',
     selector: row => row.actions,
     width: '160px',
+  },
+];
+
+export const columnsUser: TableColumn<DataRowUser>[] = [
+  {
+    name: 'Nome do usuário',
+    selector: row => row.name,
+    maxWidth: '325px',
+  },
+  {
+    name: 'Login',
+    selector: row => formatToCPFOrCNPJ(row.login),
+    maxWidth: '140px',
+  },
+  {
+    name: '',
+    selector: row => row.actions,
+    maxWidth: '85px',
   },
 ];

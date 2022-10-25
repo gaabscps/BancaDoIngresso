@@ -87,6 +87,7 @@
     color: #d8413a;
     font-size: 16px;
     margin-right: 3px;
+    margin-bottom: 25px;
   }
   .subpdv-title-index {
     font-weight: 300;
@@ -104,6 +105,21 @@
 .subpdv-icon-container {
   display: flex;
   margin-left: 10px;
+}
+
+.subpdv-content-container {
+  font-weight: 400;
+  font-size: 12px !important;
+  line-height: 18px !important;
+  display: flex;
+  flex-direction: column;
+  :nth-child(1) {
+    color: #a5a5a5;
+    margin-bottom: 7px;
+  }
+  :nth-child(2) {
+    color: #222222;
+  }
 }
 
 @media screen and (max-width: 990px) {

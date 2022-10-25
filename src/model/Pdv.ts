@@ -1,4 +1,5 @@
 import Address from './Address';
+import User from './User';
 
 export default interface Pdv {
   id?: string;
@@ -17,5 +18,5 @@ export default interface Pdv {
   batchClosed: boolean;
   askPasswordInactivity: boolean;
   inactivityTimeout: string;
-  users?: string[];
+  users: User[];
 }
