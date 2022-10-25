@@ -1,5 +1,15 @@
 import React, { useState } from 'react';
-import { AlignJustify, Calendar, ChevronDown, Home, Settings, X, Power, Icon } from 'react-feather';
+import {
+  AlignJustify,
+  Calendar,
+  ChevronDown,
+  Home,
+  Settings,
+  X,
+  Power,
+  Icon,
+  Tool,
+} from 'react-feather';
 import { NavLink, useHistory, useLocation } from 'react-router-dom';
 import { REACT_APP_USER, REACT_APP_AUTH } from '@/utils/config';
 import { removeItem } from '@/helpers/common/localStorage';
@@ -13,11 +23,12 @@ interface MenuItem {
 }
 
 interface SubMenuProps {
+  name: string;
   IconSvg: Icon;
   items: MenuItem[];
 }
 
-export const NavLinkWithSubMenu = ({ items, IconSvg }: SubMenuProps): React.ReactElement => {
+export const NavLinkWithSubMenu = ({ name, items, IconSvg }: SubMenuProps): React.ReactElement => {
   const [isOpen, setIsOpen] = useState(false);
   const { pathname } = useLocation();
 
@@ -36,7 +47,7 @@ export const NavLinkWithSubMenu = ({ items, IconSvg }: SubMenuProps): React.Reac
         activeClassName={pathname === items[0].route ? 'active' : ''}
       >
         <IconSvg />
-        <span className="adm-span">Administração</span>
+        <span className="adm-span">{name}</span>
         <ChevronDown
           className="icon-chevron"
           style={{
@@ -131,7 +142,8 @@ export const Sidebar: React.FC = () => {
 
           <li className="sidebar-list">
             <NavLinkWithSubMenu
-              IconSvg={Settings}
+              name="Parâmetros"
+              IconSvg={Tool}
               items={[
                 {
                   route: path.Dashboard.Module.itself,
@@ -145,6 +157,15 @@ export const Sidebar: React.FC = () => {
                   route: path.Dashboard.Menu.itself,
                   title: 'Menu',
                 },
+              ]}
+            />
+          </li>
+
+          <li className="sidebar-list">
+            <NavLinkWithSubMenu
+              name="Administração"
+              IconSvg={Settings}
+              items={[
                 {
                   route: path.Dashboard.User.itself,
                   title: 'Usuários e Grupos',
