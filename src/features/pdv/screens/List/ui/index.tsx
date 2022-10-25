@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Container } from 'reactstrap';
 import { Button, Loading, Dialog } from '@/components';
 import { ColumnImage, CustomTable } from '@/components/Table';
@@ -6,7 +6,7 @@ import { ActionProps } from '@/components/Dialog';
 import Pdv from '@/model/Pdv';
 import SubPdv from '@/model/SubPdv';
 import { FormData, FormErrors, OnChangeFormInput } from '@/hooks/useForm';
-import { PdvRequestParams } from '@/features/pdv/types';
+import { ContractorControllerUser, PdvRequestParams } from '@/features/pdv/types';
 import Pagination from '@/components/Utils/Pagination';
 import { RegisterContent } from '@/features/pdv/components/RegisterContent';
 import { FilterContent } from '@/features/pdv/components/FilterContent';
@@ -38,6 +38,7 @@ export enum ShouldShowModal {
 interface PdvContainerProps {
   state: States;
   pdvState?: Pdv;
+  subPdvState?: SubPdv;
   listPdv: Pdv[];
   listSubPdv: SubPdv[];
   nameFiles: NameFiles;
@@ -62,10 +63,12 @@ interface PdvContainerProps {
     value,
     newTitleModal,
     pdv,
+    subPdv,
   }: {
     value: ShouldShowModal;
     newTitleModal: string | React.ReactNode;
     pdv?: Pdv;
+    subPdv?: SubPdv;
   }) => void;
   onSavePdv: () => Promise<void>;
   onSaveSubPdv: () => Promise<void>;
@@ -77,6 +80,7 @@ interface PdvContainerProps {
   onChangeFileInput: (inputName: string) => (file: File | undefined) => void;
   // onShowListSub: (id: string, name: string) => Promise<void>;
   // onShowFilter: () => void;
+  controllerAppendUser: ContractorControllerUser;
 }
 
 export interface DataRow {
@@ -93,6 +97,7 @@ export interface DataRow {
 export const PdvContainer: React.FC<PdvContainerProps> = ({
   state,
   pdvState,
+  subPdvState,
   listPdv,
   listSubPdv,
   nameFiles,
@@ -114,18 +119,23 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
   onPaginationChange,
   onShouldShowModal,
   clearFilter,
-  // handleRenderListPdv,
-  // onShowListSub,
-  // onShowFilter,
   onSavePdv,
   onSaveSubPdv,
   onFilter,
-  // onShowEdit,
   onShowDelete,
   onShowDeleteSubPdv,
   onShowEditSubPdv,
   onChangeFileInput,
+  controllerAppendUser,
 }) => {
+  useEffect(() => {
+    console.log('subPdvState :>> ', subPdvState);
+  }, [subPdvState]);
+
+  useEffect(() => {
+    console.log('pdvState :>> ', pdvState);
+  }, [pdvState]);
+
   const dataTablePdv = listPdv?.map(pdv => ({
     id: pdv.id,
     imageBase64: <ColumnImage srcImage={pdv.imageBase64} />,
@@ -144,7 +154,8 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
           </span>
         )}
         <SubPdvIcon
-          onClick={(): void =>
+          onClick={(): void => {
+            onToggle();
             onShouldShowModal({
               value: ShouldShowModal.subpdv,
               newTitleModal: (
@@ -157,7 +168,7 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
                         onShouldShowModal({
                           newTitleModal: 'Cadastrar Sub PDV',
                           value: ShouldShowModal.subpdvRegister,
-                          pdv,
+                          subPdv: { pdv: { ...pdv } } as any,
                         })
                       }
                     >
@@ -167,18 +178,19 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
                 </div>
               ),
               pdv,
-            })
-          }
+            });
+          }}
           className="mr-4 svg-icon action-icon"
         />
         <Pen
-          onClick={(): void =>
+          onClick={(): void => {
+            onToggle();
             onShouldShowModal({
               value: ShouldShowModal.pdv,
-              newTitleModal: `Editar ${pdv.name}`,
+              newTitleModal: pdv.name,
               pdv,
-            })
-          }
+            });
+          }}
           className="mr-4 svg-icon action-icon"
         />
         <Trash onClick={(): void => onShowDelete(pdv)} className="mr-4 svg-icon action-icon" />
@@ -201,7 +213,8 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
 
   const renderActionDialogToReturnListSubPdv: ActionProps = {
     title: 'Cancelar',
-    onClick: (): void =>
+    onClick: (): void => {
+      // onToggle();
       onShouldShowModal({
         value: ShouldShowModal.subpdv,
         newTitleModal: (
@@ -223,7 +236,8 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
           </div>
         ),
         pdv: pdvState,
-      }),
+      });
+    },
     theme: 'noneBorder',
   };
 
@@ -252,12 +266,12 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
               onClick: (): Promise<void> => onFilter(),
             },
             [ShouldShowModal.pdv]: {
-              title: pdvState?.id ? 'Editar PDV' : 'Cadastrar novo PDV',
+              title: pdvState?.id ? 'Salvar' : 'Cadastrar novo PDV',
               onClick: (): Promise<void> => onSavePdv(),
             },
             [ShouldShowModal.subpdv]: {},
             [ShouldShowModal.subpdvRegister]: {
-              title: !pdvState?.id ? 'Editar SubPDV' : 'Cadastrar novo SubPDV',
+              title: subPdvState?.id ? 'Salvar' : 'Cadastrar novo SubPDV',
               onClick: (): Promise<void> => onSaveSubPdv(),
             },
           }[shouldShowModal],
@@ -280,6 +294,7 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
                 onChangeFileInput={onChangeFileInput}
                 nameFiles={nameFiles}
                 setErrorsPdv={setErrorsPdv}
+                controllerAppendUser={controllerAppendUser}
               />
             ),
             [ShouldShowModal.subpdv]: (
@@ -290,17 +305,12 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
               />
             ),
             [ShouldShowModal.subpdvRegister]: (
-              // <ListContentSub
-              //   dataList={listSubPdv}
-              //   onShowDeleteSubPdv={onShowDeleteSubPdv}
-              //   onShowEditSubPdv={(): void => onToggle()}
-              //   onShowRegisterSubPdv={(): void => onToggle()}
-              // />
               <RegisterContentSubPdv
                 formData={formDataSubPdv}
                 formErrors={formErrorsSubPdv}
                 onChangeFormInput={onChangeFormInputSubPdv}
                 setErrorsPdv={setErrorsPdv}
+                controllerAppendUser={controllerAppendUser}
               />
             ),
           }[shouldShowModal]
@@ -314,22 +324,24 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
             <Button
               size="md"
               title="+ Cadastrar novo PDV"
-              onClick={(): void =>
+              onClick={(): void => {
+                onToggle();
                 onShouldShowModal({
                   value: ShouldShowModal.pdv,
                   newTitleModal: 'Cadastrar novo PDV',
-                })
-              }
+                });
+              }}
             />
             <div className="filter-container">
               <div
                 className="filter-content"
-                onClick={(): void =>
+                onClick={(): void => {
+                  onToggle();
                   onShouldShowModal({
                     value: ShouldShowModal.filter,
                     newTitleModal: '',
-                  })
-                }
+                  });
+                }}
               >
                 <FilterVector />
               </div>

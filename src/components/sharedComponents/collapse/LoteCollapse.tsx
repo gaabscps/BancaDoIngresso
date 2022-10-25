@@ -56,9 +56,19 @@ const LoteCollapse: React.FC<LoteCollapseProps> = ({
                 <p className="subpdv-title subpvd-title-name">• {item.name}</p>
               </div>
               <div className="subpdv-icon-container">
-                <Pen onClick={() => onShowEditSubPdv(item)} className="mr-2 svg-icon" />
-                <Trash onClick={() => onShowDeleteSubPdv(item)} className="mr-2 svg-icon" />
+                <Pen onClick={() => onShowEditSubPdv(item)} className="mr-4 svg-icon" />
+                <Trash onClick={() => onShowDeleteSubPdv(item)} className="svg-icon" />
               </div>
+            </div>
+            <div className="subpdv-content-container">
+              <span>Usuário</span>
+              <span>
+                {item.users.length > 0 ? (
+                  item.users.map((user: any) => user.name).join(', ')
+                ) : (
+                  <div className="m-0">Nenhum usuário vinculado</div>
+                )}
+              </span>
             </div>
           </Card>
         ))}
