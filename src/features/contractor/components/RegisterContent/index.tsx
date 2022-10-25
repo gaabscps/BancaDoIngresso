@@ -96,7 +96,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
     actions: (
       <React.Fragment>
         <Pen
-          className="mr-2 svg-icon action-icon"
+          className="mr-4 svg-icon action-icon"
           onClick={(): void =>
             onShouldShowModal({
               value: ShouldShowModal.registerBankAccount,
@@ -144,7 +144,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
     actions: (
       <React.Fragment>
         <Pen
-          className="mr-2 svg-icon action-icon"
+          className="mr-4 svg-icon action-icon"
           onClick={(): void =>
             onShouldShowModal({
               value: ShouldShowModal.registerPix,

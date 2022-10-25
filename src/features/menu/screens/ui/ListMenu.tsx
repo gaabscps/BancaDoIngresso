@@ -93,7 +93,7 @@ export const ListMenu: React.FC<Props> = (props: Props): JSX.Element => {
         <div className="d-flex">
           <Pen
             onClick={(): void => props.openModal(ShouldShowModal.menu, 'Editar Menu', menu)}
-            className="mr-2 svg-icon action-icon"
+            className="mr-4 svg-icon action-icon"
           />
           <Trash
             onClick={(): void => props.showDelete(menu)}
