@@ -114,7 +114,7 @@ export const RegisterUserContent: React.FC<Props> = (props: Props) => {
           <FormGroup className="mb-2">
             <div className="fieldSpacing">
               <Label className="fieldLabel" for="printLayoutBase64">
-                Imagem do PDV
+                Imagem do Usuário
               </Label>
               <SuperInput
                 id="imageBase64"

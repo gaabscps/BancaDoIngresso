@@ -114,9 +114,10 @@ export const MenuScreen: React.FC = (): JSX.Element => {
       const payload: Page<Menu, Menu> = {
         page,
         pageSize: 10,
-        sort: 'name',
+        sort: 'position',
         order: 'ASC',
       };
+
       if (menus && menus.page) {
         payload.pageSize = menus.pageSize;
         payload.entity = menus.entity;
