@@ -96,6 +96,7 @@ export const ComboScreen: React.FC = (): JSX.Element => {
   const resetInput = (): void => {
     resetFormCombo();
     setProductQuantity([{ productId: '', productName: '', quantity: '' }]);
+    onChangeFormInputCombo(FormInputNameToSaveCombo.name)('');
   };
 
   const controllerInputAppendProduct = {
@@ -220,10 +221,12 @@ export const ComboScreen: React.FC = (): JSX.Element => {
         handleFecthComboGroupList();
         handleFecthComboSubGroupList(comboSelected.categorySubGroup.categoryGroup.id);
         resetInput();
+        setNameFiles({});
       }
     }
     if (!comboSelected?.id && value === ShouldShowModal.combo) {
       resetInput();
+      setNameFiles({});
       setCombo(undefined);
       handleFecthComboGroupList();
     }
