@@ -93,6 +93,11 @@ export const ComboScreen: React.FC = (): JSX.Element => {
     },
   });
 
+  const resetInput = (): void => {
+    resetFormCombo();
+    setProductQuantity([{ productId: '', productName: '', quantity: '' }]);
+  };
+
   const controllerInputAppendProduct = {
     listProduct,
     productQuantity,
@@ -214,27 +219,15 @@ export const ComboScreen: React.FC = (): JSX.Element => {
       if (comboSelected.id !== combo?.id) {
         handleFecthComboGroupList();
         handleFecthComboSubGroupList(comboSelected.categorySubGroup?.categoryGroup?.id);
-        resetFormCombo();
+        resetInput();
       }
-    } else {
-      resetFormCombo();
+    }
+    if (!comboSelected?.id && value === ShouldShowModal.combo) {
+      resetInput();
       setCombo(undefined);
       handleFecthComboGroupList();
     }
   };
-  // if (comboSelected?.id && value === ShouldShowModal.combo) {
-  //   setCombo(comboSelected);
-  //   if (comboSelected.id !== combo?.id) {
-  //     handleFecthComboGroupList();
-  //     handleFecthComboSubGroupList();
-  //     resetFormCombo();
-  //   }
-  // } else {
-  //   resetFormCombo();
-  //   setCombo(undefined);
-  //   handleFecthComboGroupList();
-  //   handleFecthComboSubGroupList();
-  // }
 
   const handleOnSaveCombo = async (): Promise<void> => {
     try {
@@ -244,6 +237,7 @@ export const ComboScreen: React.FC = (): JSX.Element => {
           name: item.productName,
           amount: +item.quantity,
         }));
+        const validateProducts = newProduct.filter(item => item.id !== '');
 
         const payload: PayloadCombo = {
           id: combo?.id,
@@ -256,15 +250,23 @@ export const ComboScreen: React.FC = (): JSX.Element => {
             },
           },
 
-          products: newProduct,
+          products: validateProducts,
         };
         if (!payload.id) {
           delete payload.id;
 
-          await api.post<Combo>('/combo', payload);
+          const { data: dataCombo } = await api.post<Combo>('/combo', payload);
+          await api.post('/combo/product', {
+            comboId: dataCombo.id,
+            products: validateProducts,
+          });
           toast.success('Combo cadastrado com sucesso!');
         } else {
           await api.put<Combo>('/combo', payload);
+          await api.post('/combo/product', {
+            comboId: combo?.id,
+            products: validateProducts,
+          });
           toast.success('Combo atualizado com sucesso!');
         }
 

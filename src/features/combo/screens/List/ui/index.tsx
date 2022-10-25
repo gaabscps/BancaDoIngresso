@@ -125,7 +125,12 @@ export const ComboContainer: React.FC<ComboContainerProps> = ({
     id: item.id,
     image: <ColumnImage srcImage={item.imageBase64} />,
     comboName: item.name,
-    comboProducts: <DropdonwFlags pointerClass={true} dataColumn={item.products || []} />,
+    comboProducts:
+      item.products.length > 0 ? (
+        <DropdonwFlags pointerClass={true} dataColumn={item.products} />
+      ) : (
+        '-----'
+      ),
     gruposubgroup: `${item.categorySubGroup.categoryGroup.name} / ${item.categorySubGroup.name}`,
 
     actions: (
