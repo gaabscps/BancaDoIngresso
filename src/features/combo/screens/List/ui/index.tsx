@@ -131,7 +131,7 @@ export const ComboContainer: React.FC<ComboContainerProps> = ({
       ) : (
         '-----'
       ),
-    gruposubgroup: `${item.categorySubGroup.categoryGroup.name} / ${item.categorySubGroup.name}`,
+    gruposubgroup: `${item.categorySubGroup?.categoryGroup?.name} / ${item.categorySubGroup?.name}`,
 
     actions: (
       <React.Fragment>
