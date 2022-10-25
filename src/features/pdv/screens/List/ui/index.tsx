@@ -128,14 +128,6 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
   onChangeFileInput,
   controllerAppendUser,
 }) => {
-  useEffect(() => {
-    console.log('subPdvState :>> ', subPdvState);
-  }, [subPdvState]);
-
-  useEffect(() => {
-    console.log('pdvState :>> ', pdvState);
-  }, [pdvState]);
-
   const dataTablePdv = listPdv?.map(pdv => ({
     id: pdv.id,
     imageBase64: <ColumnImage srcImage={pdv.imageBase64} />,
