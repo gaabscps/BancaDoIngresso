@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Container } from 'reactstrap';
 import { Button, Loading, Dialog } from '@/components';
 import { ColumnImage, CustomTable } from '@/components/Table';
@@ -128,14 +128,6 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
   onChangeFileInput,
   controllerAppendUser,
 }) => {
-  useEffect(() => {
-    console.log('subPdvState :>> ', subPdvState);
-  }, [subPdvState]);
-
-  useEffect(() => {
-    console.log('pdvState :>> ', pdvState);
-  }, [pdvState]);
-
   const dataTablePdv = listPdv?.map(pdv => ({
     id: pdv.id,
     imageBase64: <ColumnImage srcImage={pdv.imageBase64} />,
@@ -193,7 +185,10 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
           }}
           className="mr-4 svg-icon action-icon"
         />
-        <Trash onClick={(): void => onShowDelete(pdv)} className="mr-4 svg-icon action-icon" />
+        <Trash
+          onClick={(): void => onShowDelete(pdv)}
+          className="mr-4 svg-icon action-icon svg-icon-trash"
+        />
       </div>
     ),
   }));

@@ -113,7 +113,7 @@ export const ProductContainer: React.FC<ProductContainerProps> = ({
     actions: (
       <React.Fragment>
         <Pen
-          className="mr-2 svg-icon action-icon"
+          className="mr-4 svg-icon action-icon"
           onClick={(): void =>
             onShouldShowModal({
               value: ShouldShowModal.product,
@@ -123,7 +123,7 @@ export const ProductContainer: React.FC<ProductContainerProps> = ({
           }
         />
         <Trash
-          className="mr-2 svg-icon action-icon"
+          className="mr-2 svg-icon action-icon svg-icon-trash"
           onClick={() => {
             onShowDeleteProduct(item);
           }}

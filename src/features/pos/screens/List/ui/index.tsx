@@ -122,7 +122,7 @@ export const PosContainer: React.FC<PosContainerProps> = ({
           }
         />
         <Trash
-          className="mr-4 svg-icon action-icon"
+          className="mr-4 svg-icon action-icon svg-icon-trash"
           onClick={() => {
             onShowDeletePos(item);
           }}

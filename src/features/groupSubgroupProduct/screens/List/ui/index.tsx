@@ -192,7 +192,7 @@ export const GroupProductContainer: React.FC<GroupProductContainerProps> = ({
                             }
                           />
                           <Trash
-                            className="mr-0 svg-icon sm-icon action-icon"
+                            className="mr-0 svg-icon sm-icon action-icon svg-icon-trash"
                             onClick={() => {
                               onShowDeleteGroupProduct(item);
                             }}
@@ -232,7 +232,7 @@ export const GroupProductContainer: React.FC<GroupProductContainerProps> = ({
                                 }
                               />
                               <Trash
-                                className="mr-5 svg-icon action-icon sm-icon"
+                                className="mr-5 svg-icon action-icon sm-icon svg-icon-trash"
                                 onClick={() => {
                                   onShowDeleteSubgroupProduct(subItem);
                                 }}

@@ -6,10 +6,17 @@ svg.svg-icon {
     fill: #222222;
   }
   &--active {
-    color: #d8231b;
-    fill: #d8231b;
+    color: #D8413A;
+    fill: #D8413A;
   }
 }
 svg.last-child-icon {
   margin-right: 0px !important;
+}
+
+svg.svg-icon-trash {
+  &:hover {
+    color: #D8413A;
+    fill: #D8413A;
+  }
 }

@@ -160,7 +160,7 @@ export const ContractorContainer: React.FC<ContractorContainerProps> = ({
     actions: (
       <React.Fragment>
         <Pen
-          className="mr-2 svg-icon action-icon"
+          className="mr-4 svg-icon action-icon"
           onClick={(): void => {
             onToggle();
             onShouldShowModal({
@@ -171,7 +171,7 @@ export const ContractorContainer: React.FC<ContractorContainerProps> = ({
           }}
         />
         <Trash
-          className="mr-2 svg-icon action-icon"
+          className="mr-2 svg-icon action-icon svg-icon-trash"
           onClick={() => {
             onShowDeleteContractor(item);
           }}

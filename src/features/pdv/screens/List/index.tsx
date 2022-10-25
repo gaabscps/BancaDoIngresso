@@ -518,7 +518,6 @@ export const PdvScreen: React.FC = (): JSX.Element => {
   const handleOnSaveSubPdv = async (): Promise<void> => {
     if (isFormValidSubPdv()) {
       const dataUsers = usersSelected.map(item => item.id);
-      console.log('subPdv :>> ', subPdv);
       // TODO: change type to sub-Pdv
       const payload: PayloadSubPdv = {
         id: subPdv?.id ?? undefined,

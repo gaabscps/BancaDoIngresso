@@ -65,9 +65,12 @@ export const ListPermission: React.FC<Props> = (props: Props): JSX.Element => {
           onClick={(): void =>
             props.openModal(ShouldShowModal.permission, 'Editar permissão', data)
           }
-          className="mr-2 svg-icon action-icon"
+          className="mr-4 svg-icon action-icon"
         />
-        <Trash onClick={(): void => props.showDelete(data)} className="mr-2 svg-icon action-icon" />
+        <Trash
+          onClick={(): void => props.showDelete(data)}
+          className="mr-2 svg-icon action-icon svg-icon-trash"
+        />
       </div>
     ),
   }));

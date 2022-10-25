@@ -25,7 +25,7 @@ export default interface PayloadCombo {
   imageBase64: string;
   categorySubGroup: {
     id: string;
-    categoryGroup: {
+    categoryGroup?: {
       id: string;
     };
   };
@@ -96,6 +96,7 @@ export const ComboScreen: React.FC = (): JSX.Element => {
   const resetInput = (): void => {
     resetFormCombo();
     setProductQuantity([{ productId: '', productName: '', quantity: '' }]);
+    onChangeFormInputCombo(FormInputNameToSaveCombo.name)('');
   };
 
   const controllerInputAppendProduct = {
@@ -218,12 +219,14 @@ export const ComboScreen: React.FC = (): JSX.Element => {
       setCombo(comboSelected);
       if (comboSelected.id !== combo?.id) {
         handleFecthComboGroupList();
-        handleFecthComboSubGroupList(comboSelected.categorySubGroup?.categoryGroup?.id);
+        handleFecthComboSubGroupList(comboSelected.categorySubGroup.categoryGroup.id);
         resetInput();
+        setNameFiles({});
       }
     }
     if (!comboSelected?.id && value === ShouldShowModal.combo) {
       resetInput();
+      setNameFiles({});
       setCombo(undefined);
       handleFecthComboGroupList();
     }

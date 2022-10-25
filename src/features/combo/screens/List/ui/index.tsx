@@ -131,12 +131,12 @@ export const ComboContainer: React.FC<ComboContainerProps> = ({
       ) : (
         '-----'
       ),
-    gruposubgroup: `${item.categorySubGroup.categoryGroup.name} / ${item.categorySubGroup.name}`,
+    gruposubgroup: `${item.categorySubGroup?.categoryGroup?.name} / ${item.categorySubGroup?.name}`,
 
     actions: (
       <React.Fragment>
         <Pen
-          className="mr-2 svg-icon action-icon"
+          className="mr-4 svg-icon action-icon"
           onClick={(): void =>
             onShouldShowModal({
               value: ShouldShowModal.combo,
@@ -146,7 +146,7 @@ export const ComboContainer: React.FC<ComboContainerProps> = ({
           }
         />
         <Trash
-          className="mr-2 svg-icon action-icon"
+          className="mr-2 svg-icon action-icon svg-icon-trash"
           onClick={() => {
             onShowDeleteCombo(item);
           }}

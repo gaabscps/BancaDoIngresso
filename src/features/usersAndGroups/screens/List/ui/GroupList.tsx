@@ -95,11 +95,11 @@ export const GroupList: React.FC<Props> = (props: Props): JSX.Element => {
                 group,
               )
             }
-            className="mr-2 svg-icon action-icon"
+            className="mr-4 svg-icon action-icon"
           />
           <Trash
             onClick={(): void => props.showDelete(group)}
-            className="mr-2 svg-icon action-icon"
+            className="mr-2 svg-icon action-icon svg-icon-trash"
           />
         </div>
       ),

@@ -2,6 +2,7 @@ export const primaryTheme = {
   table: {
     style: {
       backgroundColor: 'transparent',
+      overflow: 'auto',
     },
   },
   headRow: {
@@ -44,6 +45,7 @@ export const secondaryTheme = {
   table: {
     style: {
       backgroundColor: 'transparent',
+      overflow: 'auto',
     },
   },
   headRow: {
@@ -70,6 +72,7 @@ export const tertiaryTheme = {
   table: {
     style: {
       backgroundColor: 'transparent',
+      overflow: 'auto',
     },
   },
   headRow: {
