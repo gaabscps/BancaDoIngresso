@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Container } from 'reactstrap';
 import { Button, Loading, Dialog } from '@/components';
 import { ColumnImage, CustomTable } from '@/components/Table';
