@@ -66,7 +66,7 @@ export const ComboScreen: React.FC = (): JSX.Element => {
   } = useForm({
     initialData: {
       groupCombo: '',
-      subProupCombo: '',
+      subGroupCombo: '',
       name: '',
       imageBase64: '',
       product: '',
@@ -74,6 +74,8 @@ export const ComboScreen: React.FC = (): JSX.Element => {
     },
     validators: {
       name: [validators.required],
+      groupCombo: [validators.required],
+      subGroupCombo: [validators.required],
     },
     formatters: {},
   });
@@ -355,6 +357,16 @@ export const ComboScreen: React.FC = (): JSX.Element => {
         combo.categorySubGroup?.id || '',
       );
       onChangeFormInputCombo(FormInputNameToSaveCombo.imageBase64)(combo.imageBase64);
+      setProductQuantity((): ProductQuantity[] => {
+        if (combo.products.length !== 0) {
+          return combo.products.map((item): any => ({
+            productId: item.id,
+            productName: item.name,
+            quantity: item.amount,
+          }));
+        }
+        return [{ productId: '', productName: '', quantity: '' }];
+      });
     }
   }, [combo]);
 

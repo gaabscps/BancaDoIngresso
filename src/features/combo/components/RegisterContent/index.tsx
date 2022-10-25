@@ -98,6 +98,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
               value={formData[FormInputName.subGroupCombo]}
               refSelect={refSelectSubGroup}
               options={listComboSubGroup.map(item => ({ value: item.id, label: item.name }))}
+              disabled={formData[FormInputName.groupCombo] === ''}
             />
           </FormGroup>
           <FormGroup className="mb-2">

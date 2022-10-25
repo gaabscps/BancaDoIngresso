@@ -113,19 +113,19 @@ export const ComboContainer: React.FC<ComboContainerProps> = ({
   onShowDeleteCombo,
   onChangeFileInput,
 }) => {
-  const dataColumnComboProducts = [
-    { id: '1', name: 'Exclusão de eventos' },
-    { id: '2', name: 'Edição de PDV’s' },
-    { id: '4', name: 'Exclusão de PDV’s' },
-    { id: '5', name: 'Edição de produtos' },
-    { id: '6', name: 'Exclusão de produtos' },
-  ];
+  // const dataColumnComboProducts = [
+  //   { id: '1', name: 'Exclusão de eventos' },
+  //   { id: '2', name: 'Edição de PDV’s' },
+  //   { id: '4', name: 'Exclusão de PDV’s' },
+  //   { id: '5', name: 'Edição de produtos' },
+  //   { id: '6', name: 'Exclusão de produtos' },
+  // ];
 
   const dataTableCombo = listCombo?.map(item => ({
     id: item.id,
     image: <ColumnImage srcImage={item.imageBase64} />,
     comboName: item.name,
-    comboProducts: <DropdonwFlags pointerClass={true} dataColumn={dataColumnComboProducts} />,
+    comboProducts: <DropdonwFlags pointerClass={true} dataColumn={item.products || []} />,
     gruposubgroup: `${item.categorySubGroup.categoryGroup.name} / ${item.categorySubGroup.name}`,
 
     actions: (
@@ -183,7 +183,10 @@ export const ComboContainer: React.FC<ComboContainerProps> = ({
             [ShouldShowModal.combo]: {
               title: comboState?.id ? 'Salvar' : 'Cadastrar novo combo',
               onClick: (): Promise<void> => onSaveCombo(),
-              disabled: formDataCombo.name === '',
+              disabled:
+                formDataCombo.name === '' ||
+                formDataCombo.groupCombo === '' ||
+                formDataCombo.subGroupCombo === '',
             },
           }[shouldShowModal],
         ]}
