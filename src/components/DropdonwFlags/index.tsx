@@ -26,7 +26,9 @@ export const DropdonwFlags: React.FC<DropdonwFlagsProps> = ({ dataColumn, pointe
         className={`d-flex mb-0 ${pointerClass === true ? 'pointerSvg' : ''}`}
         htmlFor={idRandom}
       >
-        <div className="flag-item">{dataColumn[0]?.name}</div>
+        <div className="flag-item" title={dataColumn[0]?.name}>
+          {dataColumn[0]?.name}
+        </div>
         {dataColumn.length > 1 ? (
           <ChevronDown
             className="icon-chevron ml-2"
@@ -43,7 +45,7 @@ export const DropdonwFlags: React.FC<DropdonwFlagsProps> = ({ dataColumn, pointe
             {dataColumn?.map((item, index) => {
               if (index !== 0)
                 return (
-                  <span className="flag-item flag-item-list" key={item.id}>
+                  <span key={item.id} className="flag-item flag-item-list" title={item.name}>
                     {item.name}
                   </span>
                 );
