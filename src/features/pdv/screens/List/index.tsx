@@ -21,6 +21,25 @@ import User from '@/model/User';
 import { convertToBoolean } from '@/helpers/common/convertToBoolean';
 import { PdvContainer, States, ShouldShowModal } from './ui';
 
+interface PayloadPdv {
+  id?: string;
+  name: string;
+  document: string;
+  telephone: string;
+  email: string;
+  imageBase64: string;
+  mapBase64: string;
+  facebookUrl: string;
+  instagramUrl: string;
+  twitterUrl: string;
+  linkedinUrl: string;
+  address: Address;
+  amountSubPdvs?: number;
+  batchClosed: boolean;
+  askPasswordInactivity: boolean;
+  inactivityTimeout: string;
+}
+
 interface PayloadSubPdv {
   id?: string;
   name: string;
@@ -32,11 +51,10 @@ interface PayloadSubPdv {
   instagramUrl?: string;
   twitterUrl?: string;
   linkedinUrl?: string;
-  pdv: {
+  address: Address;
+  pdv?: {
     id?: string;
   };
-  address: Address;
-  users?: User[];
 }
 export interface NameFiles {
   [key: string]: string;
@@ -59,9 +77,12 @@ export const PdvScreen: React.FC = (): JSX.Element => {
     total: 1,
   });
 
-  // const { pdvState, onChange } = usePdv();
   const { title, visible, onChangeTitle, onToggle } = useDialog();
   const confirmDelete = useConfirmDelete();
+
+  const [listUsers, setListUsers] = useState<User[]>([]);
+  const [listUsersDefault, setListUsersDefault] = useState<User[]>([]);
+  const [usersSelected, setUsersSelected] = useState<User[]>([]);
 
   const {
     formData: formDataPdv,
@@ -174,6 +195,61 @@ export const PdvScreen: React.FC = (): JSX.Element => {
     },
   });
 
+  useEffect(() => {
+    if (!visible) {
+      setTimeout(() => {
+        resetFormPdv();
+        resetFormSubPdv();
+        resetFormFilter();
+        setUsersSelected([]);
+        setListUsers([]);
+        setPdv(undefined);
+        setSubPdv(undefined);
+      }, 500);
+    }
+  }, [visible]);
+
+  const handleGetUsers = async (): Promise<void> => {
+    try {
+      setState(States.loading);
+      const { data } = await api.get<User[]>('/user/find');
+
+      if (data) {
+        setListUsers(data);
+        setListUsersDefault(data);
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
+  const controllerAppendUser = {
+    listUsers,
+    usersSelected,
+    handleAddUser(userId: string): void {
+      const newUsersSelected = listUsers.filter(item => item.id === userId)[0];
+      // not add user if already exists
+      if (usersSelected.find(item => item.id === newUsersSelected.id)) {
+        return;
+      }
+      setUsersSelected([...usersSelected, newUsersSelected]);
+      // remove user selected from list
+      const newListUsers = listUsers.filter(item => item.id !== userId);
+      setListUsers(newListUsers);
+    },
+    handleRemoveUser(index: number): void {
+      const values = [...usersSelected];
+      values.splice(index, 1);
+      setUsersSelected(values);
+      // add user removed to list
+      const newUser = listUsers.concat(usersSelected[index]);
+      setListUsers(newUser);
+    },
+  };
+
   const handleOnChangeFileInput =
     (inputName: string) =>
     (file: File | undefined): void => {
@@ -244,46 +320,34 @@ export const PdvScreen: React.FC = (): JSX.Element => {
   }): void => {
     setShouldShowModal(value);
     onChangeTitle(newTitleModal);
-    if (ShouldShowModal.subpdvRegister !== value) {
-      onToggle();
-    }
-    if (
-      (!subPdvSelected?.id && value === ShouldShowModal.subpdvRegister) ||
-      value !== ShouldShowModal.subpdv
-    ) {
-      resetFormSubPdv();
-    }
-    if ((!pdvSelected?.id && value === ShouldShowModal.pdv) || value !== ShouldShowModal.subpdv) {
-      if (pdvSelected?.id !== pdv?.id) {
-        resetFormPdv();
-      }
-    }
+
+    // reset list users
+    setListUsers(listUsersDefault);
+    setUsersSelected([]);
 
     if (pdvSelected && value === ShouldShowModal.subpdv) {
       handleOnShowListSubPdv(pdvSelected);
     }
-
-    if (pdvSelected?.id && value !== ShouldShowModal.subpdv) {
-      if (pdvSelected?.id !== pdv?.id) {
-        resetFormPdv();
-      }
+    if (value !== ShouldShowModal.filter) {
       setPdv(pdvSelected);
-    } else {
-      setPdv(undefined);
-      resetFormPdv();
-    }
-    if (subPdvSelected?.id && value !== ShouldShowModal.subpdv) {
-      resetFormSubPdv();
       setSubPdv(subPdvSelected);
-    } else {
-      setSubPdv(undefined);
     }
+
+    setListUsers(() => {
+      // remove users selected from list listUsersDefault
+      const newListUsers = listUsersDefault.filter(
+        item => !usersSelected?.find(user => user.id === item.id),
+      );
+      return newListUsers;
+    });
   };
 
   const handleOnSavePdv = async (): Promise<void> => {
     try {
       if (isFormValidPdv()) {
-        const payload: Pdv = {
+        const dataUsers = usersSelected.map(item => item.id);
+
+        const payload: PayloadPdv = {
           id: pdv?.id,
           name: formDataPdv[FormInputNameToSavePdv.name],
           document: formDataPdv[FormInputNameToSavePdv.document],
@@ -318,12 +382,22 @@ export const PdvScreen: React.FC = (): JSX.Element => {
           delete payload.id;
           delete payload.address.id;
 
-          await api.post<Pdv>('/pdv', payload);
+          const { data: dataPdv } = await api.post<Pdv>('/pdv', payload);
+
+          await api.post('/pdv/user', {
+            pdvId: dataPdv.id,
+            users: dataUsers,
+          });
           toast.success(
             `PDV "${formDataPdv[FormInputNameToSavePdv.name]}" cadastrado com sucesso!`,
           );
         } else {
           await api.put<Pdv>('/pdv', payload);
+
+          await api.post('/pdv/user', {
+            pdvId: pdv?.id,
+            users: dataUsers,
+          });
           toast.success(
             `PDV "${formDataPdv[FormInputNameToSavePdv.name]}" atualizado com sucesso!`,
           );
@@ -443,6 +517,8 @@ export const PdvScreen: React.FC = (): JSX.Element => {
 
   const handleOnSaveSubPdv = async (): Promise<void> => {
     if (isFormValidSubPdv()) {
+      const dataUsers = usersSelected.map(item => item.id);
+      console.log('subPdv :>> ', subPdv);
       // TODO: change type to sub-Pdv
       const payload: PayloadSubPdv = {
         id: subPdv?.id ?? undefined,
@@ -455,7 +531,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
         twitterUrl: formDataSubPdv[FormInputNameToSaveSubPdv.twitterUrl],
         linkedinUrl: formDataSubPdv[FormInputNameToSaveSubPdv.linkedinUrl],
         address: {
-          id: subPdv?.address.id ?? undefined,
+          id: subPdv?.address?.id ?? undefined,
           zipCode: formDataSubPdv[FormInputNameToSaveSubPdv.zipCode],
           state: formDataSubPdv[FormInputNameToSaveSubPdv.state],
           city: formDataSubPdv[FormInputNameToSaveSubPdv.city],
@@ -469,18 +545,27 @@ export const PdvScreen: React.FC = (): JSX.Element => {
         pdv: {
           id: subPdv?.pdv.id ?? pdv?.id,
         },
-        // users: [], TO-DO Adicionar usuarios
       };
       if (!payload.id) {
         delete payload.id;
         delete payload.address.id;
 
-        await api.post<Pdv>('/sub-pdv', payload);
+        const { data: dataSubPdv } = await api.post<Pdv>('/sub-pdv', payload);
+
+        await api.post('/sub-pdv/user', {
+          subPdvId: dataSubPdv.id,
+          users: dataUsers,
+        });
         toast.success(
           `Sub PDV "${formDataSubPdv[FormInputNameToSaveSubPdv.name]}" cadastrado com sucesso!`,
         );
       } else {
         await api.put<Pdv>('/sub-pdv', payload);
+
+        await api.post('/sub-pdv/user', {
+          subPdvId: subPdv?.id,
+          users: dataUsers,
+        });
         toast.success(
           `Sub PDV "${formDataSubPdv[FormInputNameToSaveSubPdv.name]}" atualizado com sucesso!`,
         );
@@ -497,7 +582,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
     setSubPdv(subPdvSelectedFetch);
     handleOnShouldShowModal({
       value: ShouldShowModal.subpdvRegister,
-      newTitleModal: 'Editar Sub-PDV',
+      newTitleModal: 'Editar Sub PDV',
       subPdv: subPdvSelectedFetch,
     });
   };
@@ -532,6 +617,14 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       onChangeFormInputPdv(FormInputNameToSavePdv.inactivityTimeout)(pdv.inactivityTimeout);
       onChangeFormInputPdv(FormInputNameToSavePdv.mapBase64)(pdv.mapBase64);
       onChangeFormInputPdv(FormInputNameToSavePdv.imageBase64)(pdv.imageBase64);
+
+      setUsersSelected(pdv.users);
+      setListUsers(user =>
+        // remove users that are already selected
+        user.filter(userItem => !pdv.users.find(userSelected => userSelected.id === userItem.id)),
+      );
+    } else {
+      setUsersSelected([]);
     }
   }, [pdv]);
 
@@ -558,17 +651,27 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       onChangeFormInputSubPdv(FormInputNameToSaveSubPdv.longitude)(
         String(subPdv.address?.longitude),
       );
+
+      setUsersSelected(subPdv.users);
+      setListUsers(user =>
+        // remove users that are already selected
+        user.filter(
+          userItem => !subPdv.users.find(userSelected => userSelected.id === userItem.id),
+        ),
+      );
     }
   }, [subPdv]);
 
   useEffect(() => {
     handleFetch(currentPage);
+    handleGetUsers();
   }, []);
 
   return (
     <PdvContainer
       state={state}
       pdvState={pdv}
+      subPdvState={subPdv}
       listPdv={listPdv}
       listSubPdv={listSubPdv}
       nameFiles={nameFiles}
@@ -599,6 +702,7 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       // onShowListSub={handleOnShowListSubPdv}
       clearFilter={clearFilter}
       setErrorsPdv={setErrorsPdv}
+      controllerAppendUser={controllerAppendUser}
     />
   );
 };

@@ -142,6 +142,10 @@ export const Sidebar: React.FC = () => {
                   title: 'Permissões',
                 },
                 {
+                  route: path.Dashboard.Menu.itself,
+                  title: 'Menu',
+                },
+                {
                   route: path.Dashboard.User.itself,
                   title: 'Usuários e Grupos',
                 },

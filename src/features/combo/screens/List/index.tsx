@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { useEffect, useState } from 'react';
 import { useDialog } from '@/hooks/useDialog';
-import Combo from '@/model/Combo';
+import Combo from '@/model/ComboConfig';
 import api, { AxiosError } from '@/services/api';
 import { toast } from 'react-toastify';
 import { ComboResponse, ComboRequestParams, NameFiles } from '@/features/combo/types';
@@ -15,27 +15,34 @@ import {
 import { useConfirmDelete } from '@/hooks/useConfirmDelete';
 import { FormInputName as FormInputNameToFilter } from '@/features/combo/components/FilterContent';
 import { DeleteContent } from '@/features/combo/components/DeleteContent';
-import ComboGroup from '@/model/ComboGroup';
-import ComboSubGroup from '@/model/ComboSubgroup';
+import ProductSubgroup from '@/model/ProductSubgroup';
+import ProductGroup from '@/model/ProductGroup';
 import Product from '@/model/Product';
 
 export default interface PayloadCombo {
   id?: string;
   name: string;
-  products: ProductQuantity[];
+  imageBase64: string;
+  categorySubGroup: {
+    id: string;
+    categoryGroup: {
+      id: string;
+    };
+  };
+  products: { id: string; name: string; amount: number }[];
 }
 
 export const ComboScreen: React.FC = (): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
   const [listCombo, setListCombo] = useState<Combo[]>([]);
-  const [listComboGroup, setListComboGroup] = useState<ComboGroup[]>([]);
-  const [listComboSubGroup, setListComboSubGroup] = useState<ComboSubGroup[]>([]);
+  const [listComboGroup, setListComboGroup] = useState<ProductGroup[]>([]);
+  const [listComboSubGroup, setListComboSubGroup] = useState<ProductSubgroup[]>([]);
   const [combo, setCombo] = useState<Combo>();
   const [listProduct, setListProduct] = useState<Product[]>([]);
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(ShouldShowModal.combo);
   const [nameFiles, setNameFiles] = useState<NameFiles>({});
   const [productQuantity, setProductQuantity] = useState<ProductQuantity[]>([
-    { product: '', quantity: '' },
+    { productId: '', productName: '', quantity: '' },
   ]);
 
   const [currentPage, setCurrentPage] = useState<ComboRequestParams>({
@@ -59,7 +66,7 @@ export const ComboScreen: React.FC = (): JSX.Element => {
   } = useForm({
     initialData: {
       groupCombo: '',
-      subProupCombo: '',
+      subGroupCombo: '',
       name: '',
       imageBase64: '',
       product: '',
@@ -67,6 +74,8 @@ export const ComboScreen: React.FC = (): JSX.Element => {
     },
     validators: {
       name: [validators.required],
+      groupCombo: [validators.required],
+      subGroupCombo: [validators.required],
     },
     formatters: {},
   });
@@ -76,6 +85,7 @@ export const ComboScreen: React.FC = (): JSX.Element => {
     formErrors: formErrorsFilter,
     onChangeFormInput: onChangeFormInputFilter,
     isFormValid: isFormValidFilter,
+    resetForm: resetFormFilter,
   } = useForm({
     initialData: {
       filterSearch: '',
@@ -88,7 +98,7 @@ export const ComboScreen: React.FC = (): JSX.Element => {
     productQuantity,
     setProductQuantity,
     handleAddProduct(): void {
-      setProductQuantity([...productQuantity, { product: '', quantity: '' }]);
+      setProductQuantity([...productQuantity, { productId: '', productName: '', quantity: '' }]);
     },
     handleChangeProduct(inputName: string, index: number, value: string): void {
       const newFormValues = [...productQuantity] as any;
@@ -161,7 +171,7 @@ export const ComboScreen: React.FC = (): JSX.Element => {
   const handleFecthComboGroupList = async (): Promise<void> => {
     try {
       setState(States.loading);
-      const { data } = await api.get<ComboGroup[]>('/combo-group/find');
+      const { data } = await api.get<ProductGroup[]>('/category-group/find');
       setListComboGroup(data ?? []);
     } catch (error) {
       const err = error as AxiosError;
@@ -171,10 +181,12 @@ export const ComboScreen: React.FC = (): JSX.Element => {
     }
   };
 
-  const handleFecthComboSubGroupList = async (): Promise<void> => {
+  const handleFecthComboSubGroupList = async (dataSubgGroup: any): Promise<void> => {
     try {
       setState(States.loading);
-      const { data } = await api.get<ComboGroup[]>('/combo-subgroup/find');
+      const { data } = await api.get<ProductSubgroup[]>(
+        `/category-subgroup/find/group/${dataSubgGroup}`,
+      );
       setListComboSubGroup(data ?? []);
     } catch (error) {
       const err = error as AxiosError;
@@ -197,48 +209,54 @@ export const ComboScreen: React.FC = (): JSX.Element => {
     onChangeTitle(newTitleModal);
     onToggle();
 
-    if (
-      (comboSelected?.id && value !== ShouldShowModal.filter) ||
-      (!comboSelected?.id && value !== ShouldShowModal.filter)
-    ) {
+    if (comboSelected?.id && value === ShouldShowModal.combo) {
       setCombo(comboSelected);
-      handleFecthComboSubGroupList();
-      handleFecthComboGroupList();
-      if (comboSelected?.id !== combo?.id) {
+      if (comboSelected.id !== combo?.id) {
+        handleFecthComboGroupList();
+        handleFecthComboSubGroupList(comboSelected.categorySubGroup?.categoryGroup?.id);
         resetFormCombo();
       }
     } else {
       resetFormCombo();
       setCombo(undefined);
+      handleFecthComboGroupList();
     }
-    if (
-      (!comboSelected?.id && value !== ShouldShowModal.filter) ||
-      (!comboSelected?.id && value !== ShouldShowModal.combo)
-    ) {
-      resetFormCombo();
-    }
-    // if (comboSelected?.id && value === ShouldShowModal.combo) {
-    //   setCombo(comboSelected);
-    //   if (comboSelected.id !== combo?.id) {
-    //     handleFecthComboGroupList();
-    //     handleFecthComboSubGroupList();
-    //     resetFormCombo();
-    //   }
-    // } else {
-    //   resetFormCombo();
-    //   setCombo(undefined);
-    //   handleFecthComboGroupList();
-    //   handleFecthComboSubGroupList();
-    // }
   };
+  // if (comboSelected?.id && value === ShouldShowModal.combo) {
+  //   setCombo(comboSelected);
+  //   if (comboSelected.id !== combo?.id) {
+  //     handleFecthComboGroupList();
+  //     handleFecthComboSubGroupList();
+  //     resetFormCombo();
+  //   }
+  // } else {
+  //   resetFormCombo();
+  //   setCombo(undefined);
+  //   handleFecthComboGroupList();
+  //   handleFecthComboSubGroupList();
+  // }
 
   const handleOnSaveCombo = async (): Promise<void> => {
     try {
       if (isFormValidCombo()) {
+        const newProduct = productQuantity.map(item => ({
+          id: item.productId,
+          name: item.productName,
+          amount: +item.quantity,
+        }));
+
         const payload: PayloadCombo = {
           id: combo?.id,
           name: formDataCombo[FormInputNameToSaveCombo.name],
-          products: productQuantity,
+          imageBase64: formDataCombo[FormInputNameToSaveCombo.imageBase64],
+          categorySubGroup: {
+            id: formDataCombo[FormInputNameToSaveCombo.subGroupCombo],
+            categoryGroup: {
+              id: formDataCombo[FormInputNameToSaveCombo.groupCombo],
+            },
+          },
+
+          products: newProduct,
         };
         if (!payload.id) {
           delete payload.id;
@@ -302,11 +320,6 @@ export const ComboScreen: React.FC = (): JSX.Element => {
                 name: formDataFilter[FormInputNameToFilter.inputSearch],
               },
             },
-            serialNumber: {
-              entity: {
-                serialNumber: formDataFilter[FormInputNameToFilter.inputSearch],
-              },
-            },
           }[formDataFilter[FormInputNameToFilter.filterSearch]] || {};
 
         onToggle();
@@ -328,9 +341,32 @@ export const ComboScreen: React.FC = (): JSX.Element => {
     });
   };
 
+  const clearFilter = (): void => {
+    resetFormFilter();
+    formDataFilter[FormInputNameToFilter.inputSearch] = '';
+    handleOnFilter();
+  };
+
   useEffect(() => {
     if (combo?.id) {
       onChangeFormInputCombo(FormInputNameToSaveCombo.name)(combo.name);
+      onChangeFormInputCombo(FormInputNameToSaveCombo.groupCombo)(
+        combo.categorySubGroup?.categoryGroup?.id || '',
+      );
+      onChangeFormInputCombo(FormInputNameToSaveCombo.subGroupCombo)(
+        combo.categorySubGroup?.id || '',
+      );
+      onChangeFormInputCombo(FormInputNameToSaveCombo.imageBase64)(combo.imageBase64);
+      setProductQuantity((): ProductQuantity[] => {
+        if (combo.products.length !== 0) {
+          return combo.products.map((item): any => ({
+            productId: item.id,
+            productName: item.name,
+            quantity: item.amount,
+          }));
+        }
+        return [{ productId: '', productName: '', quantity: '' }];
+      });
     }
   }, [combo]);
 
@@ -365,6 +401,8 @@ export const ComboScreen: React.FC = (): JSX.Element => {
       listComboGroup={listComboGroup}
       listComboSubGroup={listComboSubGroup}
       controllerInputAppendProduct={controllerInputAppendProduct}
+      handleFecthComboSubGroupList={handleFecthComboSubGroupList}
+      clearFilter={clearFilter}
     />
   );
 };

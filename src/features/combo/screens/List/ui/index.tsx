@@ -9,7 +9,7 @@ import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { ActionProps, Dialog } from '@/components/Dialog';
 import { ColumnImage, CustomTable } from '@/components/Table';
 import Pagination from '@/components/Utils/Pagination';
-import Combo from '@/model/Combo';
+import Combo from '@/model/ComboConfig';
 import { NameFiles, ComboRequestParams } from '@/features/combo/types';
 import { FilterContent } from '@/features/combo/components/FilterContent';
 import { FormErrors, OnChangeFormInput, FormData } from '@/hooks/useForm';
@@ -53,6 +53,8 @@ interface ComboContainerProps {
   formErrorsCombo: FormErrors;
   formDataFilter: FormData;
   formErrorsFilter: FormErrors;
+  clearFilter: () => void;
+  handleFecthComboSubGroupList(id: string): void;
   onSaveCombo: () => Promise<void>;
   onPaginationChange: (page: number) => void;
   onChangeFormInputFilter: OnChangeFormInput;
@@ -95,6 +97,12 @@ export const ComboContainer: React.FC<ComboContainerProps> = ({
   formErrorsCombo,
   formDataFilter,
   formErrorsFilter,
+  listComboGroup,
+  listComboSubGroup,
+  controllerInputAppendProduct,
+  nameFiles,
+  clearFilter,
+  handleFecthComboSubGroupList,
   onChangeFormInputFilter,
   onChangeFormInputCombo,
   onSaveCombo,
@@ -103,26 +111,22 @@ export const ComboContainer: React.FC<ComboContainerProps> = ({
   onFilter,
   onShouldShowModal,
   onShowDeleteCombo,
-  nameFiles,
   onChangeFileInput,
-  listComboGroup,
-  listComboSubGroup,
-  controllerInputAppendProduct,
 }) => {
-  const dataColumnComboProducts = [
-    { id: '1', name: 'Exclusão de eventos' },
-    { id: '2', name: 'Edição de PDV’s' },
-    { id: '4', name: 'Exclusão de PDV’s' },
-    { id: '5', name: 'Edição de produtos' },
-    { id: '6', name: 'Exclusão de produtos' },
-  ];
+  // const dataColumnComboProducts = [
+  //   { id: '1', name: 'Exclusão de eventos' },
+  //   { id: '2', name: 'Edição de PDV’s' },
+  //   { id: '4', name: 'Exclusão de PDV’s' },
+  //   { id: '5', name: 'Edição de produtos' },
+  //   { id: '6', name: 'Exclusão de produtos' },
+  // ];
 
   const dataTableCombo = listCombo?.map(item => ({
     id: item.id,
     image: <ColumnImage srcImage={item.imageBase64} />,
     comboName: item.name,
-    comboProducts: <DropdonwFlags pointerClass={true} dataColumn={dataColumnComboProducts} />,
-    gruposubgroup: '-',
+    comboProducts: <DropdonwFlags pointerClass={true} dataColumn={item.products || []} />,
+    gruposubgroup: `${item.categorySubGroup.categoryGroup.name} / ${item.categorySubGroup.name}`,
 
     actions: (
       <React.Fragment>
@@ -151,6 +155,11 @@ export const ComboContainer: React.FC<ComboContainerProps> = ({
     onClick: (): void => onToggle(),
     theme: 'noneBorder',
   };
+  const renderActionDialogToFilter: ActionProps = {
+    title: 'Limpar',
+    onClick: (): void => clearFilter(),
+    theme: 'noneBorder',
+  };
 
   return (
     <Fragment>
@@ -163,7 +172,7 @@ export const ComboContainer: React.FC<ComboContainerProps> = ({
         isContentWithCard={shouldShowModal !== ShouldShowModal.filter}
         actions={[
           {
-            [ShouldShowModal.filter]: renderActionDialogToCancel,
+            [ShouldShowModal.filter]: renderActionDialogToFilter,
             [ShouldShowModal.combo]: renderActionDialogToCancel,
           }[shouldShowModal],
           {
@@ -174,7 +183,10 @@ export const ComboContainer: React.FC<ComboContainerProps> = ({
             [ShouldShowModal.combo]: {
               title: comboState?.id ? 'Salvar' : 'Cadastrar novo combo',
               onClick: (): Promise<void> => onSaveCombo(),
-              disabled: formDataCombo.name === '',
+              disabled:
+                formDataCombo.name === '' ||
+                formDataCombo.groupCombo === '' ||
+                formDataCombo.subGroupCombo === '',
             },
           }[shouldShowModal],
         ]}
@@ -199,6 +211,7 @@ export const ComboContainer: React.FC<ComboContainerProps> = ({
                 listComboGroup={listComboGroup}
                 listComboSubGroup={listComboSubGroup}
                 controllerInputAppendProduct={controllerInputAppendProduct}
+                handleFecthComboSubGroupList={handleFecthComboSubGroupList}
               />
             ),
           }[shouldShowModal]

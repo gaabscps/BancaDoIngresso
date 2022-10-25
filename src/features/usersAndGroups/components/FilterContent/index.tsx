@@ -21,7 +21,7 @@ export const FilterContent: React.FC<FilterContentProps> = ({
   onChangeFormInput,
 }) => {
   const optionFilter = [
-    { label: 'Usuario', value: 'user' },
+    { label: 'Usuário', value: 'user' },
     { label: 'Grupo', value: 'grop' },
   ];
 
@@ -45,7 +45,7 @@ export const FilterContent: React.FC<FilterContentProps> = ({
                 ?.label ?? ''
             }
             placeholder={
-              formData[FormInputName.filterSearch] === 'name' ? 'Nome do PDV' : 'Nome da Cidade'
+              formData[FormInputName.filterSearch] === 'user' ? 'Nome do usuário' : 'Nome do Grupo'
             }
             maxLength={30}
             value={formData[FormInputName.inputSearch]}

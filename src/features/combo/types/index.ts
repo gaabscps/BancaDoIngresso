@@ -1,5 +1,5 @@
 import Page from '@/model/Page';
-import Combo from '@/model/Combo';
+import Combo from '@/model/ComboConfig';
 
 export type ComboResponse = Page<Combo, Combo>;
 
