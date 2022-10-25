@@ -136,7 +136,7 @@ export const ComboContainer: React.FC<ComboContainerProps> = ({
     actions: (
       <React.Fragment>
         <Pen
-          className="mr-2 svg-icon action-icon"
+          className="mr-4 svg-icon action-icon"
           onClick={(): void =>
             onShouldShowModal({
               value: ShouldShowModal.combo,

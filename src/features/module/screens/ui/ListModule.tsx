@@ -57,7 +57,7 @@ export const ModuleList: React.FC<Props> = (props: Props): JSX.Element => {
       <div className="d-flex">
         <Pen
           onClick={(): void => props.openModal(ShouldShowModal.module, 'Editar módulo', data)}
-          className="mr-2 svg-icon action-icon"
+          className="mr-4 svg-icon action-icon"
         />
         <Trash
           onClick={(): void => props.showDelete(data)}
