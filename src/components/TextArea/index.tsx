@@ -41,7 +41,6 @@ export const TextArea: FC<TextAreaProps> = ({
       </label>
     )}
     <textarea
-      style={{ height: '260px' }}
       aria-invalid={error ? 'true' : 'false'}
       value={value}
       placeholder={placeholder ?? 'Digite aqui'}
@@ -49,7 +48,7 @@ export const TextArea: FC<TextAreaProps> = ({
       rows={rows}
       onBlur={onBlur}
       onChange={onChange}
-      className={` form-control input-default ${error ? 'input-error' : ''}`}
+      className={` form-control text-area-component ${error ? 'input-error' : ''}`}
       disabled={disabled}
     />
     {renderForward}
