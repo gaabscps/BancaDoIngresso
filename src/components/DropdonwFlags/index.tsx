@@ -27,27 +27,30 @@ export const DropdonwFlags: React.FC<DropdonwFlagsProps> = ({ dataColumn, pointe
         htmlFor={idRandom}
       >
         <div className="flag-item">{dataColumn[0].name}</div>
-        <ChevronDown
-          className="icon-chevron ml-2"
-          style={{
-            transform: isOpen ? 'rotate(-180deg)' : 'rotate(0deg)',
-          }}
-        />
+        {dataColumn.length > 1 ? (
+          <ChevronDown
+            className="icon-chevron ml-2"
+            style={{
+              transform: isOpen ? 'rotate(-180deg)' : 'rotate(0deg)',
+            }}
+          />
+        ) : null}
       </label>
       <input type="checkbox" className="dd-input" id={idRandom} onClick={handleOnToggle} />
-
-      <div className="dd-menu">
-        <div className="d-flex">
-          {dataColumn?.map((item, index) => {
-            if (index !== 0)
-              return (
-                <span className="flag-item flag-item-list" key={item.id}>
-                  {item.name}
-                </span>
-              );
-          })}
+      {dataColumn.length > 1 ? (
+        <div className="dd-menu">
+          <div className="d-flex">
+            {dataColumn?.map((item, index) => {
+              if (index !== 0)
+                return (
+                  <span className="flag-item flag-item-list" key={item.id}>
+                    {item.name}
+                  </span>
+                );
+            })}
+          </div>
         </div>
-      </div>
+      ) : null}
     </label>
   );
 };
