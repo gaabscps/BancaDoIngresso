@@ -12,7 +12,7 @@ interface OptionProps {
   target?: HTMLInputElement;
 }
 
-interface SelectAutoCompleteProps {
+export interface SelectAutoCompleteProps {
   name: string;
   label?: any;
   error?: any;
@@ -54,7 +54,7 @@ export const SelectCustom = (props: SelectAutoCompleteProps) => {
           placeholder={props.placeholder}
           onChange={props.onChange}
           onBlur={props.onBlur}
-          styles={customStyles()}
+          styles={customStyles(props)}
           noOptionsMessage={() => 'Nenhum resultado encontrado'}
           value={props.options.find((option: OptionProps) => option.value === props.value)}
           defaultValue={props.defaultValue}

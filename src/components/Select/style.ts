@@ -1,35 +1,45 @@
+import { SelectAutoCompleteProps } from '.';
+
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-export const customStyles = () => ({
-  control: (provided: any, state: any) => ({
-    ...provided,
-    // width: '546px',
-    height: '62px',
-    borderRadius: '5px',
-    backgroundColor: '#E6E6E6',
-    border: state.isFocused ? '1px solid #000' : 'none', // TODO: refactor this
-    boxShadow: state.isFocused && 'none',
+export const customStyles = (props: SelectAutoCompleteProps) => {
+  const { error } = props;
+  const isError = error && error !== '';
 
-    '&:hover': {
-      backgroundColor: '#D9D9D9',
-    },
-  }),
+  const borderCustom = {
+    default: 'none',
+    error: '1px solid #D8413A',
+  }[isError ? 'error' : 'default'];
 
-  valueContainer: (provided: any) => ({
-    ...provided,
-    height: '2.625rem',
-    padding: '1px 12px',
-  }),
+  return {
+    control: (provided: any, state: any) => ({
+      ...provided,
+      height: '62px',
+      borderRadius: '5px',
+      backgroundColor: '#E6E6E6',
+      border: state.isFocused ? '1px solid #000' : borderCustom,
+      boxShadow: state.isFocused && 'none',
+      '&:hover': {
+        backgroundColor: '#D9D9D9',
+      },
+    }),
 
-  input: (provided: any) => ({
-    ...provided,
-    margin: '0px',
-  }),
-  indicatorSeparator: () => ({
-    display: 'none',
-  }),
-  indicatorsContainer: (provided: any) => ({
-    ...provided,
-    height: '30px',
-    margin: 'auto 0',
-  }),
-});
+    valueContainer: (provided: any) => ({
+      ...provided,
+      height: '2.625rem',
+      padding: '1px 12px',
+    }),
+
+    input: (provided: any) => ({
+      ...provided,
+      margin: '0px',
+    }),
+    indicatorSeparator: () => ({
+      display: 'none',
+    }),
+    indicatorsContainer: (provided: any) => ({
+      ...provided,
+      height: '30px',
+      margin: 'auto 0',
+    }),
+  };
+};
