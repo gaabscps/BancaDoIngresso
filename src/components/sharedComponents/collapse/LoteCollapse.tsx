@@ -57,7 +57,10 @@ const LoteCollapse: React.FC<LoteCollapseProps> = ({
               </div>
               <div className="subpdv-icon-container">
                 <Pen onClick={() => onShowEditSubPdv(item)} className="mr-4 svg-icon" />
-                <Trash onClick={() => onShowDeleteSubPdv(item)} className="svg-icon" />
+                <Trash
+                  onClick={() => onShowDeleteSubPdv(item)}
+                  className="svg-icon svg-icon-trash"
+                />
               </div>
             </div>
             <div className="subpdv-content-container">

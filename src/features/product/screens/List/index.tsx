@@ -61,6 +61,8 @@ export const ProductScreen: React.FC = (): JSX.Element => {
   } = useForm({
     initialData: {
       name: '',
+      groupProduct: '',
+      subGroupProduct: '',
     },
     validators: {
       name: [validators.required],
@@ -170,7 +172,6 @@ export const ProductScreen: React.FC = (): JSX.Element => {
     if (productSelected?.id && value === ShouldShowModal.product) {
       setProduct(productSelected);
       if (productSelected.id !== product?.id) {
-        handleFecthProductGroupList();
         handleFecthProductSubGroupList(productSelected.categorySubGroup.categoryGroup.id);
       }
     }
@@ -285,8 +286,6 @@ export const ProductScreen: React.FC = (): JSX.Element => {
       setTimeout(() => {
         resetFormProduct();
         resetFormFilter();
-        setListProductGroup([]);
-        setListProductSubGroup([]);
         setProduct(undefined);
         setNameFiles({});
       }, 500);
@@ -308,6 +307,7 @@ export const ProductScreen: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     handleFetch(currentPage);
+    handleFecthProductGroupList();
   }, []);
 
   return (

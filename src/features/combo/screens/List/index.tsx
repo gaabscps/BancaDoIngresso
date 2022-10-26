@@ -346,8 +346,6 @@ export const ComboScreen: React.FC = (): JSX.Element => {
       setTimeout(() => {
         resetFormCombo();
         resetFormFilter();
-        setListComboGroup([]);
-        setListComboSubGroup([]);
         setCombo(undefined);
         setNameFiles({});
       }, 500);
@@ -380,6 +378,7 @@ export const ComboScreen: React.FC = (): JSX.Element => {
   useEffect(() => {
     handleFetch(currentPage);
     handleFecthProductList();
+    handleFecthComboGroupList();
   }, []);
 
   return (
