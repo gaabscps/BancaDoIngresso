@@ -172,14 +172,7 @@ export const ProductScreen: React.FC = (): JSX.Element => {
       if (productSelected.id !== product?.id) {
         handleFecthProductGroupList();
         handleFecthProductSubGroupList(productSelected.categorySubGroup.categoryGroup.id);
-        resetFormProduct();
-        setNameFiles({});
       }
-    } else {
-      setNameFiles({});
-      resetFormProduct();
-      setProduct(undefined);
-      handleFecthProductGroupList();
     }
   };
 
@@ -286,6 +279,19 @@ export const ProductScreen: React.FC = (): JSX.Element => {
     formDataFilter[FormInputNameToFilter.inputSearch] = '';
     handleOnFilter();
   };
+
+  useEffect(() => {
+    if (!visible) {
+      setTimeout(() => {
+        resetFormProduct();
+        resetFormFilter();
+        setListProductGroup([]);
+        setListProductSubGroup([]);
+        setProduct(undefined);
+        setNameFiles({});
+      }, 500);
+    }
+  }, [visible]);
 
   useEffect(() => {
     if (product?.id) {
