@@ -30,7 +30,7 @@ export const customStyles = () => ({
   }),
   indicatorsContainer: (provided: any) => ({
     ...provided,
-    height: '50px',
+    height: '30px',
     margin: 'auto 0',
   }),
   dropdownIndicator: (provided: any) => ({
