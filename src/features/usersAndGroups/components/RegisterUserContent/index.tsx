@@ -25,6 +25,10 @@ interface DispatchProps {
 type Props = StateProps & DispatchProps;
 
 export const RegisterUserContent: React.FC<Props> = (props: Props) => {
+  const callGetFileButton = (): void => {
+    document.getElementById('imageBase64')?.click();
+  };
+
   const tableModule = [];
   if (props.modules && props.modules.length > 0) {
     let modules: CheckBoxGroup[] = [];
@@ -112,15 +116,57 @@ export const RegisterUserContent: React.FC<Props> = (props: Props) => {
           )}
 
           <FormGroup className="mb-2">
-            <div className="fieldSpacing">
-              <Label className="fieldLabel" for="printLayoutBase64">
+            <div className="">
+              <Label
+                className="fieldLabel"
+                for="printLayoutBase64"
+                style={{ paddingBottom: '0px !important;' }}
+              >
                 Imagem do Usuário
               </Label>
+
+              <label
+                style={{
+                  // width: '546px',
+                  height: '62px',
+                  borderRadius: '5px',
+                  backgroundColor: '#E6E6E6',
+                  border: 'none',
+                  width: '100%',
+                }}
+              >
+                <button
+                  onClick={() => callGetFileButton()}
+                  style={{
+                    marginLeft: '10px',
+                    marginTop: '6px',
+                    marginRight: '4px',
+                    border: '0.1em solid',
+                    borderRadius: '3px',
+                  }}
+                >
+                  Escolher arquivo
+                </button>
+                {props.formData[FormInputUser.imageName]
+                  ? props.formData[FormInputUser.imageName]
+                  : 'Nenhum arquivo escolhido'}
+              </label>
+
               <SuperInput
                 id="imageBase64"
-                placeholder="Nenhum arquivo selecionado"
+                placeholder={
+                  props.formData[FormInputUser.imageName]
+                    ? props.formData[FormInputUser.imageName]
+                    : 'Nenhum arquivo escolhido'
+                }
+                title={
+                  props.formData[FormInputUser.imageName]
+                    ? props.formData[FormInputUser.imageName]
+                    : 'Nenhum arquivo selecionado'
+                }
                 name="imageBase64"
                 type="file"
+                style={{ display: 'none' }}
                 onChange={e =>
                   props.onChangeFileInput(FormInputUser.imageBase64)(
                     (e.target as HTMLInputElement)?.files?.[0],

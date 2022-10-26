@@ -24,6 +24,7 @@ import {
 } from '..';
 import { GroupList } from './GroupList';
 import { UserList } from './UserList';
+import '../style/table.scss';
 
 interface StateProps {
   state: States;
