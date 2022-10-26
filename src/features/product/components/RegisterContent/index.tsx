@@ -80,6 +80,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
               error={formErrors.subGroupProduct && formErrors.subGroupProduct[0]}
               value={formData[FormInputName.subGroupProduct]}
               options={listProductSubGroup.map(item => ({ value: item.id, label: item.name }))}
+              disabled={formData[FormInputName.groupProduct] === ''}
             />
           </FormGroup>
           <FormGroup className="mb-2">
