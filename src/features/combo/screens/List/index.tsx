@@ -93,12 +93,6 @@ export const ComboScreen: React.FC = (): JSX.Element => {
     },
   });
 
-  const resetInput = (): void => {
-    resetFormCombo();
-    setProductQuantity([{ productId: '', productName: '', quantity: '' }]);
-    onChangeFormInputCombo(FormInputNameToSaveCombo.name)('');
-  };
-
   const controllerInputAppendProduct = {
     listProduct,
     productQuantity,
@@ -220,14 +214,9 @@ export const ComboScreen: React.FC = (): JSX.Element => {
       if (comboSelected.id !== combo?.id) {
         handleFecthComboGroupList();
         handleFecthComboSubGroupList(comboSelected.categorySubGroup.categoryGroup.id);
-        resetInput();
-        setNameFiles({});
       }
     }
     if (!comboSelected?.id && value === ShouldShowModal.combo) {
-      resetInput();
-      setNameFiles({});
-      setCombo(undefined);
       handleFecthComboGroupList();
     }
   };
@@ -351,6 +340,19 @@ export const ComboScreen: React.FC = (): JSX.Element => {
     formDataFilter[FormInputNameToFilter.inputSearch] = '';
     handleOnFilter();
   };
+
+  useEffect(() => {
+    if (!visible) {
+      setTimeout(() => {
+        resetFormCombo();
+        resetFormFilter();
+        setListComboGroup([]);
+        setListComboSubGroup([]);
+        setCombo(undefined);
+        setNameFiles({});
+      }, 500);
+    }
+  }, [visible]);
 
   useEffect(() => {
     if (combo?.id) {
