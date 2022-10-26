@@ -42,7 +42,7 @@ export const SelectCustom = (props: SelectAutoCompleteProps) => {
       <div
         className={`flex-column input-component ${props.wrapperClass} ${
           props.disabled ? 'input-disabled' : ''
-        }`}
+        } ${props.error ? 'input-error' : ''}`}
       >
         {props.label && (
           <label htmlFor={props.name} className="input-label">
