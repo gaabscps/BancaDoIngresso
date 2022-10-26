@@ -9,6 +9,7 @@ export default interface User {
   telephone: string;
   email: string;
   imageBase64: string;
+  imageName: string;
   password: string;
   userType: UserType;
   status: StatusType;

@@ -33,6 +33,7 @@ export interface CheckBoxUser {
   telephone: string;
   email: string;
   imageBase64: string;
+  imageName: string;
   password: string;
   userType: UserType;
   profiles?: Profile[];
@@ -79,6 +80,7 @@ export enum FormInputUser {
   telephone = 'telephone',
   email = 'email',
   imageBase64 = 'imageBase64',
+  imageName = 'imageName',
   password = 'password',
   userType = 'userType',
   status = 'status',
@@ -251,6 +253,7 @@ export const UserScreen: React.FC = (): JSX.Element => {
           const base64 = reader.result?.toString();
           if (base64) {
             onChangeFormInputUser(inputName)(base64);
+            onChangeFormInputUser(FormInputUser.imageName)(file.name);
           }
         };
       } else {
@@ -483,6 +486,7 @@ export const UserScreen: React.FC = (): JSX.Element => {
           telephone: formDataUser[FormInputUser.telephone],
           email: formDataUser[FormInputUser.email],
           imageBase64: formDataUser[FormInputUser.imageBase64],
+          imageName: formDataUser[FormInputUser.imageName],
           userType: stringToUserType(formDataUser[FormInputUser.userType]),
           password: formDataUser[FormInputUser.password],
           profiles,
@@ -935,6 +939,7 @@ export const UserScreen: React.FC = (): JSX.Element => {
       onChangeFormInputUser(FormInputUser.telephone)(user.telephone);
       onChangeFormInputUser(FormInputUser.email)(user.email);
       onChangeFormInputUser(FormInputUser.imageBase64)(user.imageBase64);
+      onChangeFormInputUser(FormInputUser.imageName)(user.imageName);
       onChangeFormInputUser(FormInputUser.password)(user.password);
       onChangeFormInputUser(FormInputUser.userType)(userTypeToString(user.userType));
       onChangeFormInputUser(FormInputUser.status)(toUserStatus(user.status));
