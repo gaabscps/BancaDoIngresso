@@ -10,6 +10,7 @@ import { COMPANY_ROUTES } from '@/features/contractor/navigation';
 import { MODULE_ROUTES } from '@/features/module/screens/navigation';
 import { PERMISSION_ROUTES } from '@/features/permission/screens/navigation';
 import { MENU_ROUTES } from '@/features/menu/screens/navigation';
+import { SUB_MENU_ROUTES } from '@/features/submenu/screens/navigation';
 
 const path = {
   Initial: {
@@ -34,6 +35,9 @@ const path = {
     },
     Menu: {
       ...MENU_ROUTES,
+    },
+    SubMenu: {
+      ...SUB_MENU_ROUTES,
     },
     User: {
       ...USER_ROUTES,

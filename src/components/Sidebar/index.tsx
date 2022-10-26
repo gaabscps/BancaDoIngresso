@@ -12,10 +12,12 @@ import {
 } from 'react-feather';
 import { NavLink, useHistory, useLocation } from 'react-router-dom';
 import { REACT_APP_USER, REACT_APP_AUTH } from '@/utils/config';
-import { removeItem } from '@/helpers/common/localStorage';
+import { getItem, removeItem } from '@/helpers/common/localStorage';
 
 import logoBanca from '@/assets/images/logo/logoBanca.png';
 import { path } from '@/navigation/path';
+import { AuthUser } from '@/model/AuthUser';
+import SubMenu from '@/model/SubMenu';
 
 interface MenuItem {
   route: string;
@@ -26,6 +28,14 @@ interface SubMenuProps {
   name: string;
   IconSvg: Icon;
   items: MenuItem[];
+}
+
+interface MenuItens {
+  name: string;
+  MenuIcon: Icon;
+  link: string;
+  pathname: string;
+  subMenus: SubMenu[];
 }
 
 export const NavLinkWithSubMenu = ({ name, items, IconSvg }: SubMenuProps): React.ReactElement => {
@@ -75,6 +85,34 @@ export const NavLinkWithSubMenu = ({ name, items, IconSvg }: SubMenuProps): Reac
   );
 };
 
+const MenuList: React.FC<MenuItens> = ({
+  name,
+  link,
+  pathname,
+  MenuIcon,
+  subMenus,
+}): JSX.Element => {
+  const subItens: MenuItem[] = [];
+  if (subMenus && subMenus.length > 0) {
+    subMenus.forEach(data => {
+      subItens.push({ route: data.link, title: data.name });
+    });
+  }
+  return (
+    <>
+      {subItens.length === 0 && (
+        <NavLink to={link} activeClassName={link === pathname ? 'active' : ''}>
+          <MenuIcon />
+          <span className="adm-span">{name}</span>
+        </NavLink>
+      )}
+      {subItens.length > 0 && (
+        <NavLinkWithSubMenu name={name} IconSvg={MenuIcon} items={subItens} />
+      )}
+    </>
+  );
+};
+
 export const Sidebar: React.FC = () => {
   const [isMobile, setIsMobile] = useState(true);
   const history = useHistory();
@@ -109,6 +147,32 @@ export const Sidebar: React.FC = () => {
     history.push(path.Initial.itself);
   };
 
+  const jsonAuthUser = getItem(String(REACT_APP_USER));
+  const user = jsonAuthUser as AuthUser;
+  const { menus } = user;
+
+  const getIcon = (icon: string): Icon => {
+    let ico: Icon = undefined as unknown as Icon;
+    switch (icon) {
+      case 'Home':
+        ico = Home;
+        break;
+      case 'Calendar':
+        ico = Calendar;
+        break;
+      case 'Settings':
+        ico = Settings;
+        break;
+      case 'Tool':
+        ico = Tool;
+        break;
+      default:
+        ico = Home;
+        break;
+    }
+    return ico;
+  };
+
   return (
     <React.Fragment>
       <button className="border-0 bg-white" onClick={(): void => toggleMobile()}>
@@ -123,80 +187,19 @@ export const Sidebar: React.FC = () => {
         </div>
         <img src={logoBanca} />
         <div className="list-container">
-          <li className="sidebar-list">
-            <NavLink
-              to={path.Dashboard.itself}
-              activeClassName={path.Dashboard.itself === pathname ? 'active' : ''}
-            >
-              <Home />
-              <span className="adm-span">Home</span>
-            </NavLink>
-          </li>
-
-          <li className="sidebar-list">
-            <NavLink to={path.Dashboard.Events.itself}>
-              <Calendar />
-              <span className="adm-span">Eventos</span>
-            </NavLink>
-          </li>
-
-          <li className="sidebar-list">
-            <NavLinkWithSubMenu
-              name="Parâmetros"
-              IconSvg={Tool}
-              items={[
-                {
-                  route: path.Dashboard.Module.itself,
-                  title: 'Módulos',
-                },
-                {
-                  route: path.Dashboard.Permission.itself,
-                  title: 'Permissões',
-                },
-                {
-                  route: path.Dashboard.Menu.itself,
-                  title: 'Menu',
-                },
-              ]}
-            />
-          </li>
-
-          <li className="sidebar-list">
-            <NavLinkWithSubMenu
-              name="Administração"
-              IconSvg={Settings}
-              items={[
-                {
-                  route: path.Dashboard.User.itself,
-                  title: 'Usuários e Grupos',
-                },
-                {
-                  route: path.Dashboard.Pdv.itself,
-                  title: 'PDV',
-                },
-                {
-                  route: path.Dashboard.Pos.itself,
-                  title: 'POS',
-                },
-                {
-                  route: path.Dashboard.ProductsCombos.itself,
-                  title: 'Produtos e Combos',
-                },
-                {
-                  route: path.Dashboard.Company.itself,
-                  title: 'Empresas',
-                },
-                {
-                  route: path.Dashboard.Gateway.itself,
-                  title: 'Gateway de pagamento',
-                },
-                {
-                  route: path.Dashboard.Payment.itself,
-                  title: 'Formas de Pagamento',
-                },
-              ]}
-            />
-          </li>
+          {menus &&
+            menus.length > 0 &&
+            menus.map(data => (
+              <li key={data.name} className="sidebar-list">
+                <MenuList
+                  name={data.name}
+                  pathname={pathname}
+                  link={data.link}
+                  MenuIcon={getIcon(data.icon)}
+                  subMenus={data.subMenus}
+                />
+              </li>
+            ))}
         </div>
 
         <div className="logout-container">

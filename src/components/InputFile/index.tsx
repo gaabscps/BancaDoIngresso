@@ -24,7 +24,7 @@ export const InputFile: React.FC<InputFileProps> = ({
   accept,
   onChange,
 }: InputFileProps) => (
-  <div className={`flex-column input-component ${wrapperClass}`}>
+  <div className={`flex-column input-component ${wrapperClass} ${error ? 'input-error' : ''}`}>
     {label && (
       <label htmlFor={name} className="input-label">
         {label}
@@ -38,11 +38,12 @@ export const InputFile: React.FC<InputFileProps> = ({
         background: '#E6E6E6',
         borderRadius: '5px',
         height: '62px',
+        border: error ? '1px solid #D8413A' : 'none',
       }}
     >
       <label
         htmlFor={name}
-        className="input-label button-label-file"
+        className="button-label-file"
         style={{
           fontSize: '12px',
           padding: '15px',
@@ -54,6 +55,9 @@ export const InputFile: React.FC<InputFileProps> = ({
           borderRadius: '5px',
           display: 'block',
           cursor: 'pointer',
+          fontStyle: 'normal',
+          fontWeight: '500',
+          lineHeight: '1',
         }}
       >
         Escolher arquivo

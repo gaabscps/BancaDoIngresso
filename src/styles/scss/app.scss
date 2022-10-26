@@ -851,8 +851,7 @@ input {
 
 .input-error {
   border-color: #e64f49 !important;
-  margin-bottom: 12px;
-  label {
+  .input-label {
     color: #e64f49 !important;
     fill: #e64f49 !important;
   }
@@ -1279,10 +1278,6 @@ input::-ms-clear {
     color: white;
   }
 }
-.dSSLUg {
-  margin-left: 50px !important;
-}
-
 .pointerSvg {
   cursor: pointer;
 }
