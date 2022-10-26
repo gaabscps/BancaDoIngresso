@@ -1,3 +1,4 @@
+import { ReactComponent as ArrowDown } from '@/assets/images/svg/ArrowDown.svg';
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 export const customStyles = () => ({
   control: (provided: any, state: any) => ({
@@ -29,7 +30,14 @@ export const customStyles = () => ({
   }),
   indicatorsContainer: (provided: any) => ({
     ...provided,
-    height: '30px',
+    height: '50px',
     margin: 'auto 0',
+  }),
+  dropdownIndicator: (provided: any) => ({
+    ...provided,
+    color: '#A5A5A5',
+    content: `url(${ArrowDown})`,
+    marginRight: '15px',
+    transform: 'scale(1.5)',
   }),
 });

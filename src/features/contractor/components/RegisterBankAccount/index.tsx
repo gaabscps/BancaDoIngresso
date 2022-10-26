@@ -29,7 +29,7 @@ export const RegisterBankAccount: React.FC<RegisterContentProps> = ({
       e.preventDefault();
     }}
   >
-    <div style={{ minHeight: '21rem' }}>
+    <div style={{ maxHeight: '300px' }}>
       {controllerInputAppendBankAccount.bankAccount.map((item, index) => (
         <Row key={index}>
           <Col md={5}>
