@@ -198,11 +198,9 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
     onClick: (): void => onToggle(),
     theme: 'noneBorder',
   };
-  const renderActionDialogToClearFilter: ActionProps = {
+  const renderActionDialogToCancelFilter: ActionProps = {
     title: 'Limpar',
-    onClick: (): void => {
-      clearFilter();
-    },
+    onClick: (): void => clearFilter(),
     theme: 'noneBorder',
   };
 
@@ -250,7 +248,7 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
         }
         actions={[
           {
-            [ShouldShowModal.filter]: renderActionDialogToClearFilter,
+            [ShouldShowModal.filter]: renderActionDialogToCancelFilter,
             [ShouldShowModal.pdv]: renderActionDialogToCancel,
             [ShouldShowModal.subpdv]: {},
             [ShouldShowModal.subpdvRegister]: renderActionDialogToReturnListSubPdv,
