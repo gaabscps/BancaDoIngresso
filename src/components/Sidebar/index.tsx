@@ -117,7 +117,7 @@ export const Sidebar: React.FC = () => {
   const [isMobile, setIsMobile] = useState(true);
   const stateClassSidebar = isMobile ? 'sidebar-container' : 'sidebar-container mobile';
 
-  // when the screen is larger than 990px ​​open set mobile value to true
+  // when the screen is larger
   const handleResize = (): void => {
     if (window.innerWidth > 990) {
       return setIsMobile(true);
