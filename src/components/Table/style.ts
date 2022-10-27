@@ -41,6 +41,49 @@ export const primaryTheme = {
   },
 };
 
+export const primaryThemeWithMargin = {
+  table: {
+    style: {
+      backgroundColor: 'transparent',
+      overflow: 'auto',
+    },
+  },
+  headRow: {
+    style: {
+      border: 'none !important',
+      backgroundColor: 'transparent',
+      fontSize: '1rem',
+      fontWidth: '400',
+      fontWeight: '400',
+    },
+  },
+  rows: {
+    style: {
+      minWidth: '960px !important',
+      minHeight: '5.188rem !important',
+      border: 'none !important',
+      borderRadius: '10px',
+      backgroundColor: '#FFF',
+      marginBottom: '30px',
+      fontSize: '0.75rem',
+      fontWidth: '300',
+      fontWeight: '300',
+    },
+  },
+  headCells: {
+    style: {
+      paddingLeft: '20px',
+      marginRight: '50px',
+    },
+  },
+  cells: {
+    style: {
+      paddingLeft: '20px',
+      marginRight: '50px',
+    },
+  },
+};
+
 export const secondaryTheme = {
   table: {
     style: {

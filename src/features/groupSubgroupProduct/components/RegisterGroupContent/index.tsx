@@ -30,8 +30,8 @@ export const RegisterGroupContent: React.FC<RegisterGroupContentProps> = ({
         <FormGroup>
           <InputText
             name="name"
-            label="Nome do Grupo"
-            placeholder="Digite o nome do Grupo do produto"
+            label="Nome do grupo"
+            placeholder="Digite o nome do grupo do produto"
             value={formData[FormInputName.name]}
             onChange={e => onChangeFormInput(FormInputName.name)(e.target.value)}
             error={formErrors.name && formErrors.name[0]}

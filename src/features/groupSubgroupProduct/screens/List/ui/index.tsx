@@ -115,7 +115,7 @@ export const GroupProductContainer: React.FC<GroupProductContainerProps> = ({
               disabled: formDataGroupProduct.name === '',
             },
             [ShouldShowModal.subgroupProduct]: {
-              title: subGroupProductState?.productSubGroupId ? 'Salvar' : 'Cadastrar novo Subgrupo',
+              title: subGroupProductState?.productSubGroupId ? 'Salvar' : 'Cadastrar novo subgrupo',
               onClick: (): Promise<void> => onSaveGroupSubgroupProduct(),
               disabled: formSubgroup.formData.name === '',
             },
@@ -145,7 +145,7 @@ export const GroupProductContainer: React.FC<GroupProductContainerProps> = ({
               <ArrowLeft color={colors.black} className="arrow-left" />
             </Link>
 
-            <span className="ml-3 mb-0 mt-2">Grupos e subgrupos de produtos</span>
+            <span className="ml-3 mb-0 mt-2">Grupos e Subgrupos de produtos</span>
           </div>
           <Button
             title="+ Cadastrar novo grupo"
@@ -163,7 +163,7 @@ export const GroupProductContainer: React.FC<GroupProductContainerProps> = ({
           title={
             <>
               <ProductCombo width={20} className="mr-3" />
-              Grupos e subgrupos
+              Grupos e Subgrupos
             </>
           }
         >

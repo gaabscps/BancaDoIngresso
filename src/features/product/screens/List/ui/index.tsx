@@ -235,7 +235,7 @@ export const ProductContainer: React.FC<ProductContainerProps> = ({
           data={dataTableProduct}
           numberRowsPerPage={currentPage.pageSize}
           progressPending={state === States.loading}
-          theme="primary"
+          theme="primaryWithMargin"
         />
         <Pagination
           currentPage={currentPage.page}
