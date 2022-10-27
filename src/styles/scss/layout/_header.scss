@@ -77,6 +77,9 @@
       color: #828282;
       font-weight: 400;
       font-size: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .path-main {
       font-weight: 600;

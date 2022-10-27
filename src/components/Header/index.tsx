@@ -57,6 +57,21 @@ export const Header: React.FC = () => {
       subTitle: 'Administração / Produtos e Combos',
     },
     {
+      route: path.Dashboard.Product.itself,
+      title: 'Produtos',
+      subTitle: 'Administração / Produtos e Combos / Produtos',
+    },
+    {
+      route: path.Dashboard.Combo.itself,
+      title: 'Combos',
+      subTitle: 'Administração / Produtos e Combos / Combos',
+    },
+    {
+      route: path.Dashboard.GroupSubgroupProduct.itself,
+      title: 'Grupos e Subgrupos de produtos',
+      subTitle: 'Administração / Produtos e Combos / Grupos e Subgrupos de produtos',
+    },
+    {
       route: path.Dashboard.Company.itself,
       title: 'Empresas',
       subTitle: 'Administração / Empresas',

@@ -11,6 +11,9 @@ import { MODULE_ROUTES } from '@/features/module/screens/navigation';
 import { PERMISSION_ROUTES } from '@/features/permission/screens/navigation';
 import { MENU_ROUTES } from '@/features/menu/screens/navigation';
 import { SUB_MENU_ROUTES } from '@/features/submenu/screens/navigation';
+import { PAYMENT_ROUTES } from '@/features/paymentMethods/navigation';
+import { PRODUTCT_ROUTES } from '@/features/product/navigation';
+import { COMBO_ROUTES } from '@/features/combo/navigation';
 
 const path = {
   Initial: {
@@ -54,8 +57,14 @@ const path = {
     GroupSubgroupProduct: {
       ...GROUPSUBGROUPPRODUCT_ROUTES,
     },
+    Product: {
+      ...COMBO_ROUTES,
+    },
+    Combo: {
+      ...PRODUTCT_ROUTES,
+    },
     Payment: {
-      itself: '/dashboard/payment',
+      ...PAYMENT_ROUTES,
     },
     ProductsCombos: {
       ...PRODUTCTSCOMBOS_ROUTES,
