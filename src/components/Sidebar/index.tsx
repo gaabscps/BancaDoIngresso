@@ -115,29 +115,24 @@ const MenuList: React.FC<MenuItens> = ({
 
 export const Sidebar: React.FC = () => {
   const [isMobile, setIsMobile] = useState(true);
+  const stateClassSidebar = isMobile ? 'sidebar-container' : 'sidebar-container mobile';
+
+  // when the screen is larger than 990px ​​open set mobile value to true
+  const handleResize = (): void => {
+    if (window.innerWidth > 990) {
+      return setIsMobile(true);
+    }
+    return setIsMobile(false);
+  };
+
+  // execute the function handleResize when the screen is resized
+  window.addEventListener('resize', handleResize);
+
   const history = useHistory();
   const { pathname } = useLocation();
 
   const toggleMobile = (): void => {
     setIsMobile(!isMobile);
-
-    const y = document.getElementById('body');
-    const x = document.getElementById('navMenu');
-
-    if (x !== null) {
-      // eslint-disable-next-line no-unused-expressions
-      x.className === 'sidebar-container'
-        ? (x.className += ' mobile')
-        : (x.className = 'sidebar-container');
-    }
-
-    if (y != null) {
-      if (y?.className === 'page-body') {
-        y.className += 'mobile';
-      } else {
-        y.className = 'page-body';
-      }
-    }
   };
 
   const handleOnSignOut = (): void => {
@@ -175,13 +170,13 @@ export const Sidebar: React.FC = () => {
 
   return (
     <React.Fragment>
-      <button className="border-0 bg-white" onClick={(): void => toggleMobile()}>
+      <button className="border-0 bg-white p-absolute" onClick={(): void => toggleMobile()}>
         <AlignJustify className={isMobile ? 'header-sandwich' : 'header-sandwichactive'} />
       </button>
 
-      <div className="sidebar-container" id="navMenu">
+      <div className={stateClassSidebar} id="navMenu">
         <div className="sandwich-container">
-          <button className="border-0 bg-white" onClick={(): void => toggleMobile()}>
+          <button className="border-0 bg-white p-absolute" onClick={(): void => toggleMobile()}>
             <X className="sandwich-menu" />
           </button>
         </div>
