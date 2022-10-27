@@ -34,7 +34,7 @@
   transition: linear 0.3s;
 }
 .profile-media {
-  margin-top: 18px;
+  // margin-top: 18px;
   margin-right: 48px;
   transition: linear 0.3s;
 }
@@ -77,13 +77,11 @@
       color: #828282;
       font-weight: 400;
       font-size: 12px;
-      text-transform: capitalize;
     }
     .path-main {
       font-weight: 600;
       font-size: 21px;
       color: #222222;
-      text-transform: capitalize;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
