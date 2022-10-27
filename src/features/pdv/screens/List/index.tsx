@@ -200,7 +200,6 @@ export const PdvScreen: React.FC = (): JSX.Element => {
       setTimeout(() => {
         resetFormPdv();
         resetFormSubPdv();
-        resetFormFilter();
         setUsersSelected([]);
         setListUsers([]);
         setPdv(undefined);

@@ -288,7 +288,6 @@ export const ProductScreen: React.FC = (): JSX.Element => {
     if (!visible) {
       setTimeout(() => {
         resetFormProduct();
-        resetFormFilter();
         setProduct(undefined);
         setNameFiles({});
       }, 500);

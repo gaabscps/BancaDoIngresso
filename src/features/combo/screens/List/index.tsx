@@ -348,7 +348,6 @@ export const ComboScreen: React.FC = (): JSX.Element => {
     if (!visible) {
       setTimeout(() => {
         resetFormCombo();
-        resetFormFilter();
         setCombo(undefined);
         setNameFiles({});
       }, 500);

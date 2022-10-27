@@ -25,6 +25,7 @@ export const Radio: FC<RadioProps> = ({
   icon,
   options,
   onChange,
+  value,
 }) => (
   <div className={`mb-4 flex-column ${wrapperClass}`}>
     {label && (
@@ -52,6 +53,7 @@ export const Radio: FC<RadioProps> = ({
               value={option.value}
               onChange={onChange}
               className="form-check-input"
+              checked={String(option.value) === value}
             />
             <label
               key={option.value}

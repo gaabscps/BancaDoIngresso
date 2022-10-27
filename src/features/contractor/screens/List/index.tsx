@@ -173,7 +173,6 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
     if (!visible) {
       setTimeout(() => {
         resetFormContractor();
-        resetFormFilter();
         setListBankAccount([]);
         setListPixTable([]);
         setUsersSelected([]);
