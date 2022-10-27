@@ -193,7 +193,7 @@ export const GroupProductScreen: React.FC = (): JSX.Element => {
     try {
       await api.delete(`/category-group/${subgroupProductSelected?.categoryGroupId}`);
 
-      toast.success('Grupo e subgrupo de produtos excluído com sucesso!');
+      toast.success('Grupo e Subgrupo de produtos excluído com sucesso!');
       handleOnClose();
       handleFetch();
     } catch (error) {

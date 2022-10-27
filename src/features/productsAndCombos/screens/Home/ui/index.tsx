@@ -43,7 +43,7 @@ export const HomeContainer: React.FC<HomeContainerProps> = ({ state }) => (
         </Link>
         <Link to={`${process.env.PUBLIC_URL}/dashboard/productscombos/groupsubgroupproduct`}>
           <ProductCombo width={20} />
-          Grupos e subgrupos de produtos
+          Grupos e Subgrupos de produtos
         </Link>
       </div>
     </Container>

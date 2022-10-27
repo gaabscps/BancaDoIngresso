@@ -2,9 +2,9 @@ import React from 'react';
 import DataTable, { TableProps, TableColumn } from 'react-data-table-component';
 import { ColumnStatus, ColumnImage, CustomLoader } from './Components';
 
-import { primaryTheme, secondaryTheme, tertiaryTheme } from './style';
+import { primaryTheme, secondaryTheme, tertiaryTheme, primaryThemeWithMargin } from './style';
 
-type themeProps = 'primary' | 'secondary' | 'tertiary';
+type themeProps = 'primary' | 'secondary' | 'tertiary' | 'primaryWithMargin';
 
 interface TablePropsCustom {
   theme?: themeProps;
@@ -20,6 +20,7 @@ const schemeTheme = {
   primary: primaryTheme,
   secondary: secondaryTheme,
   tertiary: tertiaryTheme,
+  primaryWithMargin: primaryThemeWithMargin,
 };
 
 export const CustomTable: React.FC<TableCustomProps> = ({
