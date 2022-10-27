@@ -263,10 +263,13 @@ export const PaymentMethodsScreen: React.FC = (): JSX.Element => {
     }
   };
 
-  const clearFilter = (): void => {
+  const clearFilter = async (): Promise<void> => {
     resetFormFilter();
-    formDataFilter[FormInputNameToFilter.inputSearch] = '';
-    handleOnFilter();
+    await handleFetch({
+      ...currentPage,
+      entity: {},
+    } as any);
+    onToggle();
   };
 
   const handleOnPaginationChange = async (page: number): Promise<void> => {

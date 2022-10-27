@@ -11,9 +11,6 @@ export const columns: TableColumn<DataRow>[] = [
     name: 'Nome do produto',
     selector: row => row.productName,
     minWidth: '150px',
-    style: {
-      marginLeft: '50px',
-    },
   },
   {
     name: 'Grupo',

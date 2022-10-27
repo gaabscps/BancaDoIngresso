@@ -261,7 +261,7 @@ export const ComboContainer: React.FC<ComboContainerProps> = ({
           data={dataTableCombo}
           numberRowsPerPage={currentPage.pageSize}
           progressPending={state === States.loading}
-          theme="primary"
+          theme="primaryWithMargin"
         />
         <Pagination
           currentPage={currentPage.page}

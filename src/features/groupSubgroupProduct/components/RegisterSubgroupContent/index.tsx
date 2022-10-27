@@ -34,7 +34,7 @@ export const RegisterSubgroupContent: React.FC<RegisterSubgroupContentProps> = (
           <FormGroup>
             <InputText
               name="name"
-              label="Nome do Subgrupo"
+              label="Nome do subgrupo"
               placeholder="Digite o nome do subgrupo"
               value={formData[FormInputName.name]}
               onChange={e => onChangeFormInput(FormInputName.name)(e.target.value)}
