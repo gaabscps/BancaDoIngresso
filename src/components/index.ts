@@ -1,4 +1,3 @@
-import { DropdonwFlags } from './DropdonwFlags';
 import { Header } from './Header';
 import { Sidebar } from './Sidebar';
 import { Footer } from './Footer';
@@ -11,6 +10,8 @@ import { Radio } from './Radio';
 import { SelectCustom } from './Select';
 import { Switch } from './Switch';
 import { CollapseCustom } from './CollapseCustom';
+import { DropdonwFlags } from './DropdonwFlags';
+import { DropdownMenu } from './DropdownMenu';
 import { Dialog } from './Dialog';
 import { Error400 } from './Errors/error400';
 import { Error401 } from './Errors/error401';
@@ -33,6 +34,7 @@ export {
   SelectCustom,
   Switch,
   DropdonwFlags,
+  DropdownMenu,
   CollapseCustom,
   Dialog,
   TextArea,
