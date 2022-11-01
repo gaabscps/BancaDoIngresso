@@ -2,7 +2,7 @@
 /* eslint-disable consistent-return */
 import React, { useState } from 'react';
 import { ChevronDown } from 'react-feather';
-import './styles.scss';
+import '@/components/DropdonwFlags/styles.scss';
 
 interface DropdonwFlagsProps {
   dataColumn: {
@@ -20,7 +20,7 @@ export const DropdonwFlags: React.FC<DropdonwFlagsProps> = ({ dataColumn, pointe
     setIsOpen(!isOpen);
   };
   return (
-    <label className="dropdown">
+    <label className="dropdown-flags-custom">
       <div className="dd-button"></div>
       <label
         className={`d-flex mb-0 ${pointerClass === true ? 'pointerSvg' : ''}`}

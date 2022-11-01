@@ -1,24 +1,12 @@
-.flag-item {
-  padding: 4px 12px;
-  gap: 10px;
-  margin: 0;
-  background: rgba(34, 34, 34, 0.05);
-  border-radius: 20px;
-  max-width: 200px;
-  
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
+
 
 /* Dropdown */
 
-.dropdown {
+.dropdown-flags-custom {
   display: inline-block;
   position: relative;
   overflow: visible;
   margin: 0;
-}
 
 .dd-button {
   cursor: pointer;
@@ -72,4 +60,18 @@
 
 .dd-menu li:hover {
   background-color: #f6f6f6;
+}
+
+.flag-item {
+  padding: 4px 12px;
+  gap: 10px;
+  margin: 0;
+  background: rgba(34, 34, 34, 0.05);
+  border-radius: 20px;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 }
