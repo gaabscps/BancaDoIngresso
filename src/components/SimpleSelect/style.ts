@@ -58,7 +58,7 @@ export const customStyles = () => ({
       transform: 'translateX(-50%)',
       borderLeft: '10px solid transparent',
       borderRight: '10px solid transparent',
-      borderBottom: '10px solid rgba(1, 2, 1, 0.2)',
+      borderBottom: '10px solid rgba(12, 2, 1, 0.08)',
     },
     '&:hover:before': {
       borderBottom: '10px solid #E6E6E6',

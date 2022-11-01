@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import React, { useState } from 'react';
+import './styles.scss';
 
 // react-select with props typescript types
 import Select, { SingleValue, ActionMeta } from 'react-select';
