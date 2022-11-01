@@ -318,7 +318,7 @@ export const UserScreen: React.FC = (): JSX.Element => {
   const onFilter = async (): Promise<void> => {
     if (isFormValidFilter()) {
       await getUsers();
-      resetFormFilter();
+      // resetFormFilter();
       onToggle();
     }
   };

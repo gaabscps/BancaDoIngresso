@@ -1,5 +1,7 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { Col, Form, FormGroup, Input, Label, Row } from 'reactstrap';
+import eye from '@/assets/images/login/eye.png';
+import closeEye from '@/assets/images/login/closeEye.png';
 import { InputText, Switch } from '@/components';
 import { FormData, FormErrors, OnChangeFormInput } from '@/hooks/useForm';
 import { convertToBoolean } from '@/helpers/common/convertToBoolean';
@@ -25,6 +27,7 @@ interface DispatchProps {
 type Props = StateProps & DispatchProps;
 
 export const RegisterUserContent: React.FC<Props> = (props: Props) => {
+  const [togglePassword, setTogglePassword] = useState(false);
   const callGetFileButton = (): void => {
     document.getElementById('imageBase64')?.click();
   };
@@ -65,7 +68,10 @@ export const RegisterUserContent: React.FC<Props> = (props: Props) => {
               disabled={props.showActivateSwitch}
             />
           </FormGroup>
-
+        </Col>
+      </Row>
+      <Row>
+        <Col md={8}>
           <FormGroup className="mb-2">
             <InputText
               name="email"
@@ -78,7 +84,10 @@ export const RegisterUserContent: React.FC<Props> = (props: Props) => {
               error={props.formErrors.email && props.formErrors.email[0]}
             />
           </FormGroup>
-
+        </Col>
+      </Row>
+      <Row>
+        <Col md={8}>
           <FormGroup className="mb-2">
             <InputText
               name="telephone"
@@ -90,7 +99,10 @@ export const RegisterUserContent: React.FC<Props> = (props: Props) => {
               error={props.formErrors.telephone && props.formErrors.telephone[0]}
             />
           </FormGroup>
-
+        </Col>
+      </Row>
+      <Row>
+        <Col md={8}>
           <FormGroup className="mb-2">
             <InputText
               name="name"
@@ -101,16 +113,39 @@ export const RegisterUserContent: React.FC<Props> = (props: Props) => {
               error={props.formErrors.name && props.formErrors.name[0]}
             />
           </FormGroup>
+        </Col>
+      </Row>
+      <Row>
+        <Col md={8}>
           {!props.showActivateSwitch && (
             <FormGroup className="mb-2">
               <InputText
                 name="password"
                 label="Senha"
-                type="password"
+                type={togglePassword ? 'text' : 'password'}
                 placeholder="Ex: 1234abcd"
                 value={props.formData[FormInputUser.password]}
                 onChange={e => props.onChangeFormInput(FormInputUser.password)(e.target.value)}
                 error={props.formErrors.password && props.formErrors.password[0]}
+                renderForward={
+                  <div
+                    className="show-hide"
+                    onClick={() => setTogglePassword(!togglePassword)}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    {togglePassword ? (
+                      <img
+                        className="d-flex justify-content-center align-items-center passwordIcon"
+                        src={eye}
+                      />
+                    ) : (
+                      <img
+                        className="d-flex justify-content-center align-items-center passwordIcon"
+                        src={closeEye}
+                      />
+                    )}
+                  </div>
+                }
               />
             </FormGroup>
           )}
