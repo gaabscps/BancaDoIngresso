@@ -1,13 +1,14 @@
 import React, { Fragment } from 'react';
-import { Button, DropdonwFlags } from '@/components';
+import { Button, DropdonwFlags, DropdownMenu } from '@/components';
 import { Container } from 'reactstrap';
 import FilterVector from '@/assets/images/svg/FilterVector';
-import { ReactComponent as Status } from '@/assets/images/svg/status.svg';
+
 import { colors } from '@/styles/colors';
 import { SimpleSelect } from '@/components/SimpleSelect';
 import { CustomTable, ColumnStatus, ColumnImage } from '@/components/Table';
-import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import Pagination from '@/components/Utils/Pagination';
+import { ReactComponent as EventAction } from '@/assets/images/svg/eventAction.svg';
+import { StatusFilter } from '@/components/StatusFilter';
 import { columns } from './table';
 
 export interface DataRow {
@@ -55,175 +56,10 @@ export const EventContainer: React.FC<EventContainerProps> = ({
       endDate: '01/04/2022 às 22:30',
       actions: (
         <React.Fragment>
-          <Pen />
-        </React.Fragment>
-      ),
-    },
-    {
-      id: 1,
-      image: (
-        <>
-          <ColumnImage srcImage="https://images.pexels.com/photos/976866/pexels-photo-976866.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" />
-          <ColumnStatus justify="right" statusColor={String(changeColorColumn(1))} />
-        </>
-      ),
-      name: (
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        >
-          <div style={{}}>Revoada do Tatu</div>
-          {<DropdonwFlags dataColumn={[{ id: '1', name: 'evento Pai' }]} />}
-        </div>
-      ),
-      city: 'Campinas/SP',
-      startDate: '01/04/2022 às 15:30',
-      endDate: '01/04/2022 às 22:30',
-      actions: (
-        <React.Fragment>
-          <Pen />
-        </React.Fragment>
-      ),
-    },
-    {
-      id: 1,
-      image: (
-        <>
-          <ColumnImage srcImage="https://images.pexels.com/photos/976866/pexels-photo-976866.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" />
-          <ColumnStatus justify="right" statusColor={String(changeColorColumn(1))} />
-        </>
-      ),
-      name: (
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        >
-          <div style={{}}>Revoada do Tatu</div>
-          {<DropdonwFlags dataColumn={[{ id: '1', name: 'evento Pai' }]} />}
-        </div>
-      ),
-      city: 'Campinas/SP',
-      startDate: '01/04/2022 às 15:30',
-      endDate: '01/04/2022 às 22:30',
-      actions: (
-        <React.Fragment>
-          <Pen />
-        </React.Fragment>
-      ),
-    },
-    {
-      id: 1,
-      image: (
-        <>
-          <ColumnImage srcImage="https://images.pexels.com/photos/976866/pexels-photo-976866.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" />
-          <ColumnStatus justify="right" statusColor={String(changeColorColumn(1))} />
-        </>
-      ),
-      name: (
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        >
-          <div style={{}}>Revoada do Tatu</div>
-          {<DropdonwFlags dataColumn={[{ id: '1', name: 'evento Pai' }]} />}
-        </div>
-      ),
-      city: 'Campinas/SP',
-      startDate: '01/04/2022 às 15:30',
-      endDate: '01/04/2022 às 22:30',
-      actions: (
-        <React.Fragment>
-          <Pen />
-        </React.Fragment>
-      ),
-    },
-    {
-      id: 1,
-      image: (
-        <>
-          <ColumnImage srcImage="https://images.pexels.com/photos/976866/pexels-photo-976866.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" />
-          <ColumnStatus justify="right" statusColor={String(changeColorColumn(1))} />
-        </>
-      ),
-      name: (
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        >
-          <div style={{}}>Revoada do Tatu</div>
-          {<DropdonwFlags dataColumn={[{ id: '1', name: 'evento Pai' }]} />}
-        </div>
-      ),
-      city: 'Campinas/SP',
-      startDate: '01/04/2022 às 15:30',
-      endDate: '01/04/2022 às 22:30',
-      actions: (
-        <React.Fragment>
-          <Pen />
-        </React.Fragment>
-      ),
-    },
-    {
-      id: 1,
-      image: (
-        <>
-          <ColumnImage srcImage="https://images.pexels.com/photos/976866/pexels-photo-976866.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" />
-          <ColumnStatus justify="right" statusColor={String(changeColorColumn(1))} />
-        </>
-      ),
-      name: (
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        >
-          <div style={{}}>Revoada do Tatu</div>
-          {<DropdonwFlags dataColumn={[{ id: '1', name: 'evento Pai' }]} />}
-        </div>
-      ),
-      city: 'Campinas/SP',
-      startDate: '01/04/2022 às 15:30',
-      endDate: '01/04/2022 às 22:30',
-      actions: (
-        <React.Fragment>
-          <Pen />
-        </React.Fragment>
-      ),
-    },
-    {
-      id: 1,
-      image: (
-        <>
-          <ColumnImage srcImage="https://images.pexels.com/photos/976866/pexels-photo-976866.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" />
-          <ColumnStatus justify="right" statusColor={String(changeColorColumn(1))} />
-        </>
-      ),
-      name: (
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        >
-          <div style={{}}>Revoada do Tatu</div>
-          {<DropdonwFlags dataColumn={[{ id: '1', name: 'evento Pai' }]} />}
-        </div>
-      ),
-      city: 'Campinas/SP',
-      startDate: '01/04/2022 às 15:30',
-      endDate: '01/04/2022 às 22:30',
-      actions: (
-        <React.Fragment>
-          <Pen />
+          <EventAction
+            className="action-icon"
+            onClick={() => <DropdownMenu title="teste" actions={[{ title: 'Editar' }]} />}
+          />
         </React.Fragment>
       ),
     },
@@ -261,35 +97,13 @@ export const EventContainer: React.FC<EventContainerProps> = ({
           </div>
         </div>
         <div className="d-flex pb-2 status-container">
-          <div className="eventStatus subText">
-            <Status style={{ color: colors.lightBlue }} />
-            Rascunho
-          </div>
-          <div className="eventStatus subText">
-            <Status style={{ color: colors.darkRed }} />
-            Liberação pendente
-          </div>
-
-          <div className="eventStatus subText">
-            <Status style={{ color: colors.green }} />
-            Liberado
-          </div>
-          <div className="eventStatus subText">
-            <Status style={{ color: colors.yellow }} />
-            Recusado
-          </div>
-          <div className="eventStatus subText">
-            <Status style={{ color: colors.red }} />
-            Bloqueado
-          </div>
-          <div className="eventStatus subText">
-            <Status style={{ color: colors.lightLightBlue }} />
-            Encerrado
-          </div>
-          <div className="eventStatus subText">
-            <Status style={{ color: colors.orange }} />
-            Finalizado
-          </div>
+          <StatusFilter statusColor={colors.lightBlue} status="Rascunho" />
+          <StatusFilter statusColor={colors.darkRed} status="Liberação pendente" />
+          <StatusFilter statusColor={colors.green} status="Liberado" />
+          <StatusFilter statusColor={colors.yellow} status="Recusado" />
+          <StatusFilter statusColor={colors.red} status="Bloqueado" />
+          <StatusFilter statusColor={colors.lightLightBlue} status="Encerrado" />
+          <StatusFilter statusColor={colors.orange} status="Finalizado" />
         </div>
         <CustomTable
           columns={columns}
