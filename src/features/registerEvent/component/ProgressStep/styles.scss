@@ -10,6 +10,7 @@
       margin-bottom: 5px;
       margin-left: 13px;
       color: #c4c4c4;
+      white-space: nowrap;
       &__current {
         color: #d8413a;
       }
@@ -74,7 +75,8 @@
     margin: auto 12.66px;
     margin-bottom: 15px;
     height: 2.2561px;
-    width: 44px;
+    width: 100%;
+    min-width: 10px;
     background-color: #c4c4c4;
     &__done {
       background: #d8413a;
