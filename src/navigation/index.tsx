@@ -18,6 +18,8 @@ import { ModuleNavigation } from '@/features/module/screens/navigation';
 import { PermissionNavigation } from '@/features/permission/screens/navigation';
 import { MenuNavigation } from '@/features/menu/screens/navigation';
 import { SubMenuNavigation } from '@/features/submenu/screens/navigation';
+import { EventProvider } from '@/features/registerEvent/hook/useEvent';
+import { RegisterEventNavigation } from '@/features/registerEvent/navigation';
 import { renderRoutes } from './utils';
 import { Route } from './Route';
 import { path } from './path';
@@ -39,29 +41,33 @@ const Navigation: React.FC = (): JSX.Element => {
   const comboRoutes = renderRoutes(ComboNavigation);
   const GroupSubgroupProductRoutes = renderRoutes(GroupSubgroupProductNavigation);
   const CompanyRoutes = renderRoutes(ContractorNavigation);
+  const RegisterEventRoutes = renderRoutes(RegisterEventNavigation);
 
   return (
-    <PdvProvider>
-      <Switch>
-        {authRoutes}
-        {dashboardRoutes}
-        {moduleRoutes}
-        {permissionRoutes}
-        {menuRoutes}
-        {subMenuRoutes}
-        {userRoutes}
-        {pdvRoutes}
-        {posRoutes}
-        {paymentMethodsRoutes}
-        {paymentGatewayRoutes}
-        {productsCombosRoutes}
-        {productRoutes}
-        {comboRoutes}
-        {GroupSubgroupProductRoutes}
-        {CompanyRoutes}
-        <Route path={path.Initial.All} component={Error404} />
-      </Switch>
-    </PdvProvider>
+    <EventProvider>
+      <PdvProvider>
+        <Switch>
+          {authRoutes}
+          {dashboardRoutes}
+          {moduleRoutes}
+          {permissionRoutes}
+          {menuRoutes}
+          {subMenuRoutes}
+          {userRoutes}
+          {pdvRoutes}
+          {posRoutes}
+          {paymentMethodsRoutes}
+          {paymentGatewayRoutes}
+          {productsCombosRoutes}
+          {productRoutes}
+          {comboRoutes}
+          {GroupSubgroupProductRoutes}
+          {CompanyRoutes}
+          {RegisterEventRoutes}
+          <Route path={path.Initial.All} component={Error404} />
+        </Switch>
+      </PdvProvider>
+    </EventProvider>
   );
 };
 

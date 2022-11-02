@@ -14,6 +14,7 @@ import { SUB_MENU_ROUTES } from '@/features/submenu/screens/navigation';
 import { PAYMENT_ROUTES } from '@/features/paymentMethods/navigation';
 import { PRODUTCT_ROUTES } from '@/features/product/navigation';
 import { COMBO_ROUTES } from '@/features/combo/navigation';
+import { REGISTEREVENT_ROUTES } from '@/features/registerEvent/navigation';
 
 const path = {
   Initial: {
@@ -25,6 +26,9 @@ const path = {
     Events: {
       itself: '/dashboard/events',
       edit: '/dashboard/events/edit/:id',
+    },
+    Event: {
+      ...REGISTEREVENT_ROUTES,
     },
     UsersGroups: {
       itself: '/dashboard/users-groups',
