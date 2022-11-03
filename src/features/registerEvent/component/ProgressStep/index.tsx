@@ -40,12 +40,8 @@ export const ProgressStep = ({ currentStep, steps }: ProgressStepProps): JSX.Ele
         {newSteps.map((step, index) => {
           const { status } = step;
           return (
-            <>
-              <div
-                className="progress-step__item"
-                key={index}
-                onClick={() => handleClickStep(index)}
-              >
+            <React.Fragment key={index}>
+              <div className="progress-step__item" onClick={() => handleClickStep(index)}>
                 <div className="progress-step__item__status">
                   <div className={`progress-step__item__status__${status}`}>
                     {status === 'current' && (
@@ -70,7 +66,7 @@ export const ProgressStep = ({ currentStep, steps }: ProgressStepProps): JSX.Ele
                   <div className={`progress-step__line__${status}`} />
                 </div>
               )}
-            </>
+            </React.Fragment>
           );
         })}
       </div>

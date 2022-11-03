@@ -8,7 +8,7 @@ interface InputFileProps {
   placeholder?: string;
   ref?: React.Ref<HTMLInputElement>;
   error?: any;
-  label?: string;
+  label?: string | React.ReactNode;
   wrapperClass?: string;
   accept?: string;
   onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
