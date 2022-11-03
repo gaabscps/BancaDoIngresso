@@ -52,6 +52,7 @@ interface EventContainerProps {
   formDataFilter: FormData;
   formErrorsFilter: FormErrors;
   pagination: { pageSize: number };
+  fullListEvent: Event[];
   handleOnFilterStatus: (status: number) => void;
   clearFilter: () => void;
   onFilter: () => Promise<void>;
@@ -82,6 +83,7 @@ export const EventContainer: React.FC<EventContainerProps> = ({
   title,
   visible,
   pagination,
+  fullListEvent,
   handleOnFilterStatus,
   clearFilter,
   onFilter,
@@ -233,13 +235,15 @@ export const EventContainer: React.FC<EventContainerProps> = ({
               <h5 className="pageTitle" style={{ marginBottom: '1px' }}>
                 Todos os eventos cadastrados
               </h5>
+              {/* {listEvent?.filter(event => event.eventStatus === 0).length > 0 ? ( */}
               <p className="eventDraftCounter">
                 Você tem{' '}
                 <span style={{ color: '#222222', fontWeight: '500' }}>
-                  {listEvent?.filter(event => event.eventStatus === 0).length} eventos
-                </span>{' '}
+                  {fullListEvent?.map(event => event.eventStatus === 0).length} eventos
+                </span>
                 em rascunho
               </p>
+              {/* ) : null} */}
             </div>
             <div className="button-filter-container">
               <Button title="+ Cadastrar novo evento" onClick={() => undefined} />

@@ -17,6 +17,7 @@ export const EventScreen: React.FC = () => {
 
   const [state, setState] = useState<States>(States.default);
   const [listEvent, setListEvent] = useState<Event[]>([]);
+  const [fullListEvent, setFullListEvent] = useState<Event[]>([]);
   const [pagination, setPagination] = useState({
     pageSize: 10,
   });
@@ -75,6 +76,19 @@ export const EventScreen: React.FC = () => {
           ...data,
         }));
       }
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
+  const handleFetchAll = async (): Promise<void> => {
+    try {
+      setState(States.loading);
+      const { data } = await api.get<Event[]>('/event/find');
+      setFullListEvent(data ?? []);
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
@@ -157,6 +171,7 @@ export const EventScreen: React.FC = () => {
 
   useEffect(() => {
     handleFetch({ ...currentPage, ...pagination });
+    handleFetchAll();
   }, [pagination]);
 
   return (
@@ -180,6 +195,7 @@ export const EventScreen: React.FC = () => {
       onFilter={handleOnFilter}
       handleOnFilterStatus={handleOnFilterStatus}
       clearFilter={clearFilter}
+      fullListEvent={fullListEvent}
     />
   );
 };
