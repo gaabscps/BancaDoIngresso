@@ -1,10 +1,31 @@
-import React from 'react';
-import { EventContainer } from '@/features/events/screens/list/ui';
+import React, { useEffect, useState } from 'react';
+import { EventContainer, States, ShouldShowModal } from '@/features/events/screens/list/ui';
 import EventStatus from '@/model/EventStatus';
 import { colors } from '@/styles/colors';
+import { useDialog } from '@/hooks/useDialog';
+import useForm from '@/hooks/useForm';
+import { AxiosError } from 'axios';
+import { toast } from 'react-toastify';
+import api from '@/services/api';
+import Event from '@/model/Event';
+import { EventRequestParams, EventResponse } from '../../types';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const EventScreen: React.FC = () => {
+  const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(ShouldShowModal.filter);
+
+  const [state, setState] = useState<States>(States.default);
+  const [listEvent, setListEvent] = useState<Event[]>([]);
+  const [currentPage, setCurrentPage] = useState<EventRequestParams>({
+    page: 1,
+    pageSize: 10,
+    sort: 'name',
+    order: 'DESC',
+    total: 1,
+  });
+
+  const { title, visible, onChangeTitle, onToggle } = useDialog();
+
   const paginationSelect = [
     { value: 10, label: '10 por página' },
     { value: 20, label: '20 por página' },
@@ -20,7 +41,70 @@ export const EventScreen: React.FC = () => {
       3: colors.red,
     }[status] || colors.grey);
 
+  const {
+    formData: formDataFilter,
+    formErrors: formErrorsFilter,
+    onChangeFormInput: onChangeFormInputFilter,
+    // isFormValid: isFormValidFilter,
+    // resetForm: resetFormFilter,
+  } = useForm({
+    initialData: {
+      filterSearch: '',
+      inputSearch: '',
+    },
+  });
+
+  const handleFetch = async (values: EventRequestParams): Promise<void> => {
+    try {
+      setState(States.loading);
+      const { data } = await api.post<EventResponse>('/event/page', values);
+
+      if (data) {
+        setListEvent(data?.list ?? []);
+
+        setCurrentPage(currentPageState => ({
+          ...currentPageState,
+          ...data,
+        }));
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
+  const handleOnShouldShowModal = ({
+    value,
+    newTitleModal,
+  }: {
+    value: ShouldShowModal;
+    newTitleModal: string | React.ReactNode;
+  }): void => {
+    setShouldShowModal(value);
+    onChangeTitle(newTitleModal);
+    onToggle();
+  };
+
+  useEffect(() => {
+    handleFetch(currentPage);
+  }, []);
+
   return (
-    <EventContainer paginationSelect={paginationSelect} changeColorColumn={changeColorColumn} />
+    <EventContainer
+      state={state}
+      listEvent={listEvent}
+      paginationSelect={paginationSelect}
+      changeColorColumn={changeColorColumn}
+      shouldShowModal={shouldShowModal}
+      title={title}
+      visible={visible}
+      onToggle={onToggle}
+      formDataFilter={formDataFilter}
+      formErrorsFilter={formErrorsFilter}
+      onChangeFormInputFilter={onChangeFormInputFilter}
+      OnShouldShowModal={handleOnShouldShowModal}
+    />
   );
 };

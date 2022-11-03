@@ -6,7 +6,7 @@ import '@/components/DropdonwFlags/styles.scss';
 
 interface DropdonwFlagsProps {
   dataColumn: {
-    id: string;
+    id: string | number;
     name: string;
   }[];
   pointerClass?: boolean;
