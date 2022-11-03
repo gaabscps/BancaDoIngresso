@@ -8,6 +8,7 @@ export interface ActionProps {
   onClick?: MouseEventHandler<HTMLLIElement>;
   icon?: React.ReactNode;
   divider?: boolean;
+  hidden?: boolean;
 }
 
 interface DropdownMenuProps {
@@ -23,7 +24,8 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({ title, actions }) =>
     <ul className="dd-menu">
       {actions?.map((action, index) => (
         <React.Fragment key={index}>
-          <li onClick={action.onClick}>
+          {action.divider ? <hr /> : null}
+          <li onClick={action.onClick} className={action.hidden === true ? 'hiddenDisplay' : ''}>
             <div className="d-flex">
               {action.icon ? (
                 <div className="my-auto menu-icon-container">{action.icon}</div>
@@ -31,7 +33,6 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({ title, actions }) =>
               <div>{action.title}</div>
             </div>
           </li>
-          {action.divider ? <hr /> : null}
         </React.Fragment>
       ))}
     </ul>

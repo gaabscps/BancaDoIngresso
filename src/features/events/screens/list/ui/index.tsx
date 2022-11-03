@@ -146,31 +146,41 @@ export const EventContainer: React.FC<EventContainerProps> = ({
           {
             title: 'Relatórios',
             icon: <Report />,
-            divider: true,
           },
-          {
-            title: (
-              <div className="d-flex">
-                <Button
-                  style={{ minWidth: '164px' }}
-                  size="sm"
-                  title="Liberar evento"
-                  onClick={(): void => undefined}
-                />
-              </div>
-            ),
-          },
-          {
-            title: (
-              <Button
-                style={{ minWidth: '164px' }}
-                size="sm"
-                theme="outlineDark"
-                title="Recusar evento"
-                onClick={(): void => undefined}
-              />
-            ),
-          },
+          event.eventStatus === 0
+            ? {
+                divider: true,
+                title: (
+                  <div className="d-flex">
+                    <Button
+                      style={{ minWidth: '164px' }}
+                      size="sm"
+                      title="Liberar evento"
+                      onClick={(): void => undefined}
+                    />
+                  </div>
+                ),
+              }
+            : {
+                title: '',
+                hidden: true,
+              },
+          event.eventStatus === 0
+            ? {
+                title: (
+                  <Button
+                    style={{ minWidth: '164px' }}
+                    size="sm"
+                    theme="outlineDark"
+                    title="Recusar evento"
+                    onClick={(): void => undefined}
+                  />
+                ),
+              }
+            : {
+                title: '',
+                hidden: true,
+              },
         ]}
       />
     ),
