@@ -95,7 +95,7 @@ export const StatusFilter: React.FC<StatusFilterProps> = ({ handleOnFilterStatus
           }
           style={
             item.status
-              ? { backgroundColor: `${item.backgroundColor}` }
+              ? { backgroundColor: `${item.backgroundColor}`, color: `${item.color}` }
               : { backgroundColor: 'transparent' }
           }
         >

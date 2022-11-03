@@ -234,8 +234,11 @@ export const EventContainer: React.FC<EventContainerProps> = ({
                 Todos os eventos cadastrados
               </h5>
               <p className="eventDraftCounter">
-                Você tem <span style={{ color: '#222222', fontWeight: '500' }}>0 eventos</span> em
-                rascunho
+                Você tem{' '}
+                <span style={{ color: '#222222', fontWeight: '500' }}>
+                  {listEvent?.filter(event => event.eventStatus === 0).length} eventos
+                </span>{' '}
+                em rascunho
               </p>
             </div>
             <div className="button-filter-container">
