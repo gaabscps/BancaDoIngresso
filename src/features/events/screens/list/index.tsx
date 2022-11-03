@@ -16,9 +16,12 @@ export const EventScreen: React.FC = () => {
 
   const [state, setState] = useState<States>(States.default);
   const [listEvent, setListEvent] = useState<Event[]>([]);
+  const [pagination, setPagination] = useState({
+    pageSize: 10,
+  });
   const [currentPage, setCurrentPage] = useState<EventRequestParams>({
     page: 1,
-    pageSize: 10,
+    pageSize: +pagination,
     sort: 'name',
     order: 'DESC',
     total: 1,
@@ -75,6 +78,13 @@ export const EventScreen: React.FC = () => {
     }
   };
 
+  const handleOnPaginationChange = async (page: number): Promise<void> => {
+    handleFetch({
+      ...currentPage,
+      page,
+    });
+  };
+
   const handleOnShouldShowModal = ({
     value,
     newTitleModal,
@@ -88,8 +98,8 @@ export const EventScreen: React.FC = () => {
   };
 
   useEffect(() => {
-    handleFetch(currentPage);
-  }, []);
+    handleFetch({ ...currentPage, ...pagination });
+  }, [pagination]);
 
   return (
     <EventContainer
@@ -105,6 +115,10 @@ export const EventScreen: React.FC = () => {
       formErrorsFilter={formErrorsFilter}
       onChangeFormInputFilter={onChangeFormInputFilter}
       OnShouldShowModal={handleOnShouldShowModal}
+      onPaginationChange={handleOnPaginationChange}
+      currentPage={currentPage}
+      pagination={pagination}
+      setPagination={setPagination}
     />
   );
 };

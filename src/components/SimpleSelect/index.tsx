@@ -18,7 +18,7 @@ interface SimpleSelectProps {
   label?: string;
   error?: string;
   onChange?: (newValue: SingleValue<OptionProps>, actionMeta: ActionMeta<OptionProps>) => void;
-  value: number;
+  value: number | { pageSize: number };
   options: OptionProps[];
   placeholder?: string;
   id?: string;

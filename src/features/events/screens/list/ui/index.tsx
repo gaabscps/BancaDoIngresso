@@ -1,5 +1,5 @@
-import React, { Fragment } from 'react';
-import { Button, DropdonwFlags, DropdownMenu } from '@/components';
+import React, { Dispatch, Fragment, SetStateAction } from 'react';
+import { Button, DropdonwFlags, DropdownMenu, Loading } from '@/components';
 import { Container } from 'reactstrap';
 import FilterVector from '@/assets/images/svg/FilterVector';
 import { SimpleSelect } from '@/components/SimpleSelect';
@@ -17,6 +17,7 @@ import { ActionProps, Dialog } from '@/components/Dialog';
 import { FormErrors, OnChangeFormInput, FormData } from '@/hooks/useForm';
 import { FilterContent } from '@/features/events/components/FilterContent';
 import Event from '@/model/Event';
+import { EventRequestParams } from '@/features/events/types';
 import { columns } from './table';
 
 // eslint-disable-next-line no-shadow
@@ -42,15 +43,19 @@ export interface DataRow {
 
 interface EventContainerProps {
   paginationSelect: { value: number; label: string }[];
-  changeColorColumn: (status: number) => string;
   shouldShowModal: ShouldShowModal;
+  currentPage: EventRequestParams;
   title: string | React.ReactNode;
   listEvent: Event[];
   state: States;
   visible: boolean;
-  onToggle: () => void;
   formDataFilter: FormData;
   formErrorsFilter: FormErrors;
+  pagination: { pageSize: number };
+  setPagination: Dispatch<SetStateAction<{ pageSize: number }>>;
+  changeColorColumn: (status: number) => string;
+  onPaginationChange: (page: number) => void;
+  onToggle: () => void;
   onChangeFormInputFilter: OnChangeFormInput;
   OnShouldShowModal: ({
     value,
@@ -69,15 +74,23 @@ export const EventContainer: React.FC<EventContainerProps> = ({
   formDataFilter,
   formErrorsFilter,
   listEvent,
-  // state,
-  changeColorColumn,
-  onChangeFormInputFilter,
+  currentPage,
+  state,
   title,
   visible,
+  pagination,
+  setPagination,
+  onPaginationChange,
+  changeColorColumn,
+  onChangeFormInputFilter,
   onToggle,
   OnShouldShowModal,
 }) => {
-  const dataEventType = [{ id: 0, name: 'Evento pai' }];
+  const dataEventType = [
+    { id: 0, name: 'Evento pai' },
+    { id: 1, name: 'Evento filho' },
+    { id: 2, name: 'Evento único' },
+  ];
 
   const renderActionDialogToCancelFilter: ActionProps = {
     title: 'Limpar',
@@ -165,6 +178,7 @@ export const EventContainer: React.FC<EventContainerProps> = ({
 
   return (
     <>
+      <Loading isVisible={state === States.loading} />
       <Dialog
         title={title}
         visible={visible}
@@ -213,10 +227,14 @@ export const EventContainer: React.FC<EventContainerProps> = ({
               <div style={{ marginLeft: '15px' }}>
                 <SimpleSelect
                   name={'Exibir'}
-                  value={0}
+                  value={pagination}
                   options={paginationSelect}
                   placeholder="10 por página"
                   label="Exibir"
+                  onChange={e => {
+                    // eslint-disable-next-line no-unsafe-optional-chaining
+                    setPagination({ pageSize: Number(e?.value) });
+                  }}
                 />
               </div>
               <div className="filter-container">
@@ -245,11 +263,11 @@ export const EventContainer: React.FC<EventContainerProps> = ({
             progressPending={false}
           />
           <Pagination
-            currentPage={1}
-            totalCount={5}
-            pageSize={1}
-            onPageChange={() => undefined}
-            total={5}
+            currentPage={currentPage.page}
+            totalCount={currentPage.total}
+            pageSize={currentPage.pageSize}
+            onPageChange={page => onPaginationChange(page)}
+            total={currentPage.total}
           />
         </Container>
       </Fragment>
