@@ -171,7 +171,7 @@ export const EventContainer: React.FC<EventContainerProps> = ({
                   <Button
                     style={{ minWidth: '164px' }}
                     size="sm"
-                    theme="outlineDark"
+                    theme="outlineGray"
                     title="Recusar evento"
                     onClick={(): void => undefined}
                   />

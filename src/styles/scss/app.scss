@@ -287,7 +287,8 @@
   .eventStatus {
     display: flex;
     align-items: center;
-    padding-right: 25px;
+    padding: 2px 10px;
+    margin: 0 7px;
     transition: linear 0.3s;
     svg {
       margin-right: 10px;

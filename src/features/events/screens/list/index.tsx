@@ -39,9 +39,13 @@ export const EventScreen: React.FC = () => {
   const changeColorColumn = (status: EventStatus): string =>
     ({
       0: colors.lightBlue,
-      1: colors.green,
-      2: colors.yellow,
-      3: colors.red,
+      1: colors.darkRed,
+      2: colors.green,
+      3: colors.yellow,
+      4: colors.red,
+      5: colors.lightGreen,
+      6: colors.orange,
+      7: colors.grey,
     }[status] || colors.grey);
 
   const {

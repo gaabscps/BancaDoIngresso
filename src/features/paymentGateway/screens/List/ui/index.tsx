@@ -179,7 +179,7 @@ export const PaymentGatewayContainer: React.FC<PaymentGatewayContainerProps> = (
       </Dialog>
 
       <Container className="mainContainer" fluid={true}>
-        <div className="d-flex justify-content-between">
+        <div className="d-flex justify-content-between" style={{ paddingBottom: '30px' }}>
           <h5 className="pageTitle">Gateway de pagamento</h5>
           <div className="button-filter-container">
             <Button
