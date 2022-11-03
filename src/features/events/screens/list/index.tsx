@@ -5,6 +5,7 @@ import { colors } from '@/styles/colors';
 import { useDialog } from '@/hooks/useDialog';
 import useForm from '@/hooks/useForm';
 import { AxiosError } from 'axios';
+import { FormInputName as FormInputNameToFilter } from '@/features/contractor/components/FilterContent';
 import { toast } from 'react-toastify';
 import api from '@/services/api';
 import Event from '@/model/Event';
@@ -52,8 +53,8 @@ export const EventScreen: React.FC = () => {
     formData: formDataFilter,
     formErrors: formErrorsFilter,
     onChangeFormInput: onChangeFormInputFilter,
-    // isFormValid: isFormValidFilter,
-    // resetForm: resetFormFilter,
+    isFormValid: isFormValidFilter,
+    resetForm: resetFormFilter,
   } = useForm({
     initialData: {
       filterSearch: '',
@@ -101,6 +102,59 @@ export const EventScreen: React.FC = () => {
     onToggle();
   };
 
+  const clearFilter = async (): Promise<void> => {
+    resetFormFilter();
+    await handleFetch({
+      ...currentPage,
+      entity: {},
+    } as any);
+    onToggle();
+  };
+
+  const handleOnFilter = async (): Promise<void> => {
+    try {
+      if (isFormValidFilter()) {
+        const payload =
+          {
+            name: {
+              entity: {
+                name: formDataFilter[FormInputNameToFilter.inputSearch],
+              },
+            },
+          }[formDataFilter[FormInputNameToFilter.filterSearch]] || {};
+
+        onToggle();
+        await handleFetch({
+          ...currentPage,
+          ...payload,
+        });
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    }
+  };
+
+  const handleOnFilterStatus = async (status: number): Promise<void> => {
+    try {
+      if (isFormValidFilter()) {
+        const payload = {
+          entity: {
+            eventStatus: status,
+          },
+        };
+
+        await handleFetch({
+          ...currentPage,
+          ...payload,
+        });
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    }
+  };
+
   useEffect(() => {
     handleFetch({ ...currentPage, ...pagination });
   }, [pagination]);
@@ -123,6 +177,9 @@ export const EventScreen: React.FC = () => {
       currentPage={currentPage}
       pagination={pagination}
       setPagination={setPagination}
+      onFilter={handleOnFilter}
+      handleOnFilterStatus={handleOnFilterStatus}
+      clearFilter={clearFilter}
     />
   );
 };

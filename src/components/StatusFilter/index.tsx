@@ -4,15 +4,16 @@ import './styles.scss';
 import { colors } from '@/styles/colors';
 
 interface StatusFilterProps {
-  name: string;
-  value: string;
-  color: string;
-  backgroundColor: string;
-  status: boolean;
+  name?: string;
+  value?: string;
+  color?: string;
+  backgroundColor?: string;
+  status?: boolean;
+  handleOnFilterStatus: (status: number) => void;
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export const StatusFilter = () => {
+export const StatusFilter: React.FC<StatusFilterProps> = ({ handleOnFilterStatus }) => {
   const initialState = [
     {
       name: 'Rascunho',
@@ -65,7 +66,7 @@ export const StatusFilter = () => {
     },
   ];
 
-  const [itemList, setItemList] = useState<StatusFilterProps[]>(initialState);
+  const [itemList, setItemList] = useState(initialState);
 
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   const handleStatus = (item: StatusFilterProps) => {
@@ -85,6 +86,7 @@ export const StatusFilter = () => {
         <div
           onClick={() => {
             handleStatus(item);
+            handleOnFilterStatus(item.value);
           }}
           className={
             item.status

@@ -52,6 +52,9 @@ interface EventContainerProps {
   formDataFilter: FormData;
   formErrorsFilter: FormErrors;
   pagination: { pageSize: number };
+  handleOnFilterStatus: (status: number) => void;
+  clearFilter: () => void;
+  onFilter: () => Promise<void>;
   setPagination: Dispatch<SetStateAction<{ pageSize: number }>>;
   changeColorColumn: (status: number) => string;
   onPaginationChange: (page: number) => void;
@@ -79,6 +82,9 @@ export const EventContainer: React.FC<EventContainerProps> = ({
   title,
   visible,
   pagination,
+  handleOnFilterStatus,
+  clearFilter,
+  onFilter,
   setPagination,
   onPaginationChange,
   changeColorColumn,
@@ -94,7 +100,7 @@ export const EventContainer: React.FC<EventContainerProps> = ({
 
   const renderActionDialogToCancelFilter: ActionProps = {
     title: 'Limpar',
-    onClick: (): void => undefined,
+    onClick: (): void => clearFilter(),
     theme: 'noneBorder',
   };
 
@@ -202,7 +208,7 @@ export const EventContainer: React.FC<EventContainerProps> = ({
           {
             [ShouldShowModal.filter]: {
               title: 'Aplicar',
-              onClick: () => undefined,
+              onClick: (): Promise<void> => onFilter(),
             },
           }[shouldShowModal],
         ]}
@@ -263,7 +269,7 @@ export const EventContainer: React.FC<EventContainerProps> = ({
             </div>
           </div>
           <div className="d-flex pb-2 status-container">
-            <StatusFilter />
+            <StatusFilter handleOnFilterStatus={handleOnFilterStatus} />
           </div>
           <CustomTable
             columns={columns}
