@@ -17,7 +17,7 @@ interface EventProviderValue {
 
 const initialState: EventState = {
   id: '',
-  currentStep: 2,
+  currentStep: 0,
 };
 
 const EventContext = createContext<EventProviderValue>({

@@ -3,7 +3,7 @@ import { Route } from '@/navigation/Route';
 import { EventScreen } from './screens';
 
 export const REGISTEREVENT_ROUTES = {
-  itself: '/dashboard/event',
+  itself: '/dashboard/event/create',
   edit: '/dashboard/event/edit/:id',
 };
 

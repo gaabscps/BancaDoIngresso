@@ -4,8 +4,16 @@ import { ReactComponent as TriagingFaceDown } from '@/assets/images/svg/Triaging
 import { ReactComponent as CheckStep } from '@/assets/images/svg/CheckStep.svg';
 import { useEvent } from '../../hook/useEvent';
 
-export const ProgressStep = ({ currentStep, steps }): JSX.Element => {
-  const { onChange: onChangeStep } = useEvent();
+interface ProgressStepProps {
+  steps: {
+    Component: JSX.Element;
+    title: string;
+  }[];
+  currentStep: number;
+}
+
+export const ProgressStep = ({ currentStep, steps }: ProgressStepProps): JSX.Element => {
+  const { eventState, onChange: onChangeEvent } = useEvent();
   // gerate steps with status todo, done and current
   const newSteps =
     steps &&
@@ -19,10 +27,10 @@ export const ProgressStep = ({ currentStep, steps }): JSX.Element => {
       return { ...step, status: 'todo' };
     });
 
-  const handleClickStep = index => {
+  const handleClickStep = (step: number): void => {
     // TODO: add validation to change step
-    // if (index < currentStep) {
-    onChangeStep({ currentStep: index });
+    // if (step < currentStep) {
+    onChangeEvent({ ...eventState, currentStep: step });
     // }
   };
 
