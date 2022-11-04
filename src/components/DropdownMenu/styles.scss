@@ -3,6 +3,15 @@
 .dropdown-menu-custom {
   display: inline-block;
 
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    cursor: pointer;
+  }
   .dd-input {
     display: none;
   }

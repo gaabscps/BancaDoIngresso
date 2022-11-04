@@ -6,6 +6,7 @@ import { Container } from 'reactstrap';
 import { ProductQuantity, RegisterContent } from '@/features/combo/components/RegisterContent';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
+import empty from '@/assets/images/other-images/imgvazio.svg';
 import { ActionProps, Dialog } from '@/components/Dialog';
 import { ColumnImage, CustomTable } from '@/components/Table';
 import Pagination from '@/components/Utils/Pagination';
@@ -123,15 +124,7 @@ export const ComboContainer: React.FC<ComboContainerProps> = ({
 
   const dataTableCombo = listCombo?.map(item => ({
     id: item.id,
-    image: (
-      <ColumnImage
-        srcImage={
-          item.imageBase64
-            ? item.imageBase64
-            : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGMAAABTCAYAAACLQbk4AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAOhSURBVHgB7d1dT9pQHMfx01PLLKmCQEmJknCxbEuWaIzxgsQlS3zrJrtzV2oyL4iJAS8UGcEiFGHnmB2DhAdh7elv9f+5EKVo9Hw5feDBGmy6tVwu51mWlRWfO4ZhrDMSOWPyilKpVBgMBl9M01xjRKtXMVzX/Sgi7DASi5d7v+d5FXFBIWLE5QcxIzxxUWEkVs8xOOcVRmLH5aygvSUMYlLwAiMQ5GrKYQQCp1UUDs4IDIoBhGIAoRhAKAYQigGEYgChGEAoBhCKAYRiAKEYQCgGEIoBhGIAoRhAKAYQigEE/iWc6XR6bW9v7/PW1tYO59zq9/u/b29vr09PT2ssYUzHcSoMVC6Xs6vV6jfxO7riuXpTXmea5vrGxkaxXC7na7XaNUsQ6NXU7u7uV8uy7GnLbNvOHxwcfGIJAhtDDLYlZoQ37zaFQqHMEgQ2RrFY3Fx0m1mzZlypVNo8Pj6uym0PAwcbo91udxfdptfrtectlyH29/ercpV2dHQEHwQ2xv39vd/tdu/m3ebh4WFmDBVC7oHJr1OpVAY9CPQG/Pz8/Gw4HAbTlgVB0L24uPg1bdlkCAU9CPSubafT6YljiobrunmxffigrhersJufgpw9k98zK4Qid423t7fdRqNRF0GHDIjhed539h+Qe1fZbNZutVpi7dWdOlsWhRgnDx5PTk5++L4/YCCgZ8a4wWAwlDNFXk5bvkwICXGGQGwz5EAeHh6ufAC3bAgFbRsS+8xQAykf4shkMqxer9+t8v3LhlCQZkisMSYHUvwu+WWC/GsIBSVIbDFmDeRbg4QVQkEIEkuMRQO5KEjYIZS4g2iP8daBnBUkqhBKnEG0xlh2ICeDRB1CiSuIthirDqQKMhqNAh0hlDiCaDkCD+MeLR+j0hVinM4j9chnRlirFvW0q246Z0ikR+C61vFR03WkHlmMpIRQdASJJEbSQihRBwk9RlJDKFEGCTVG0kMoUQUJ9YeJPbP01dXVGXsnxDOQGfH3LvUo8zyhxri8vLxhZGX0wmcgFAMIxQBCMYBQDCAUAwjFAEIxgFAMIBQDCMUAQjGAUAwgFAMIxQBCMYBQDCAUAwgfjUaPjECQM6PDCAQeBEGLEQi82WzePD09wbwX+j2Tr+wemqbpp1KpIiOxen6Zfb/f923bXuOcL/y3QiQ6L+958H2/6TjPp+zLMhKLV29A6XQ6LTFDHg3DkCdkp/OBa2bMWiDP+fr3VKMOnVhRjz9v7Ub81CuWZAAAAABJRU5ErkJggg=='
-        }
-      />
-    ),
+    image: <ColumnImage srcImage={item.imageBase64 ? item.imageBase64 : empty} />,
     comboName: item.name,
     comboProducts:
       item.products.length > 0 ? (
