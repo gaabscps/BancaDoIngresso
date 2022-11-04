@@ -10,7 +10,7 @@ export const columns: TableColumn<DataRow>[] = [
   {
     name: 'Nome do evento',
     selector: row => row.name,
-    minWidth: '400px',
+    minWidth: '280px',
   },
   {
     name: 'Cidade',
@@ -30,6 +30,6 @@ export const columns: TableColumn<DataRow>[] = [
   {
     name: '',
     selector: row => row.actions,
-    width: '60px',
+    width: '70px',
   },
 ];

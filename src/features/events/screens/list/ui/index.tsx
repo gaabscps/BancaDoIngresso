@@ -53,6 +53,8 @@ interface EventContainerProps {
   formErrorsFilter: FormErrors;
   pagination: { pageSize: number };
   fullListEvent: Event[];
+  onRefuseEvent: (event: Event) => void;
+  onReleaseEvent: (event: Event) => void;
   handleOnFilterStatus: (status: number) => void;
   clearFilter: () => void;
   onFilter: () => Promise<void>;
@@ -84,6 +86,8 @@ export const EventContainer: React.FC<EventContainerProps> = ({
   visible,
   pagination,
   fullListEvent,
+  onRefuseEvent,
+  onReleaseEvent,
   handleOnFilterStatus,
   clearFilter,
   onFilter,
@@ -170,7 +174,9 @@ export const EventContainer: React.FC<EventContainerProps> = ({
                       style={{ minWidth: '164px' }}
                       size="sm"
                       title="Liberar evento"
-                      onClick={(): void => undefined}
+                      onClick={(): void => {
+                        onReleaseEvent(event);
+                      }}
                     />
                   </div>
                 ),
@@ -187,7 +193,7 @@ export const EventContainer: React.FC<EventContainerProps> = ({
                     size="sm"
                     theme="outlineGray"
                     title="Recusar evento"
-                    onClick={(): void => undefined}
+                    onClick={(): void => onRefuseEvent(event)}
                   />
                 ),
               }

@@ -11,6 +11,11 @@ import api from '@/services/api';
 import Event from '@/model/Event';
 import { EventRequestParams, EventResponse } from '../../types';
 
+export default interface PayloadEvent {
+  id?: string;
+  eventStatus?: EventStatus;
+}
+
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const EventScreen: React.FC = () => {
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(ShouldShowModal.filter);
@@ -94,6 +99,38 @@ export const EventScreen: React.FC = () => {
       toast.error(err.message);
     } finally {
       setState(States.default);
+    }
+  };
+
+  const handleOnReleaseEvent = async (eventSelected: Event): Promise<void> => {
+    try {
+      const payload: PayloadEvent = {
+        id: eventSelected.id,
+        eventStatus: 2,
+      };
+      await api.post<Event>('/event/general-information', payload);
+
+      toast.success('Evento Liberado!');
+      handleFetch(currentPage);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    }
+  };
+
+  const handleOnRefuseEvent = async (eventSelected: Event): Promise<void> => {
+    try {
+      const payload: PayloadEvent = {
+        id: eventSelected.id,
+        eventStatus: 3,
+      };
+      await api.post<Event>('/event/general-information', payload);
+
+      toast.success('Evento Liberado!');
+      handleFetch(currentPage);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
     }
   };
 
@@ -196,6 +233,8 @@ export const EventScreen: React.FC = () => {
       handleOnFilterStatus={handleOnFilterStatus}
       clearFilter={clearFilter}
       fullListEvent={fullListEvent}
+      onReleaseEvent={handleOnReleaseEvent}
+      onRefuseEvent={handleOnRefuseEvent}
     />
   );
 };
