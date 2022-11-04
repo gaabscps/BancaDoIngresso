@@ -15,6 +15,9 @@ import api from '@/services/api';
 import EventCategory from '@/model/EventCategory';
 import {
   categoryStatesProps,
+  fatherEventStatesProps,
+  formCategoryProps,
+  formFatherEventProps,
   modalConfigProps,
   NameFiles,
   onShouldShowModalProps,
@@ -27,6 +30,9 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
 
   const [category, setCategory] = useState<EventCategory>();
   const [categoryList, setCategoryList] = useState<EventCategory[]>([]);
+
+  const [fatherEvent, setFatherEvent] = useState<any>();
+  const [fatherEventList, setFatherEventList] = useState<any[]>([]);
 
   const { title, visible, onChangeTitle, onToggle } = useDialog();
 
@@ -92,6 +98,22 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
     formatters: {},
   });
 
+  const {
+    formData: formDataFatherEvent,
+    formErrors: formErrorsFatherEvent,
+    onChangeFormInput: onChangeFormInputFatherEvent,
+    isFormValid: isFormValidFatherEvent,
+    resetForm: resetFormFatherEvent,
+  } = useForm({
+    initialData: {
+      name: '',
+    },
+    validators: {
+      name: [validators.required],
+    },
+    formatters: {},
+  });
+
   const handleOnChangeFileInput =
     (inputName: string) =>
     (file: File | undefined): void => {
@@ -122,10 +144,16 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
     formNameFiles,
   };
 
-  const controllerFormCategory = {
+  const controllerFormCategory: formCategoryProps = {
     formData: formDataCategory,
     formErrors: formErrorsCategory,
     onChangeFormInput: onChangeFormInputCategory,
+  };
+
+  const controllerFormFatherEvent: formFatherEventProps = {
+    formData: formDataFatherEvent,
+    formErrors: formErrorsFatherEvent,
+    onChangeFormInput: onChangeFormInputFatherEvent,
   };
 
   const handleOnShouldShowModal = ({
@@ -174,6 +202,19 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
     }
   };
 
+  const handleFecthFatherEventList = async (): Promise<void> => {
+    try {
+      // setState(States.loading);
+      const { data } = await api.get<any[]>(`/event/find`);
+      setFatherEventList(data ?? []);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      // setState(States.default);
+    }
+  };
+
   const controllerCategoryState: categoryStatesProps = {
     category,
     setCategory,
@@ -181,7 +222,14 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
     setCategoryList,
   };
 
-  const handleOnSaveGroupProduct = async (): Promise<void> => {
+  const controllerFatherEventState: fatherEventStatesProps = {
+    fatherEvent,
+    setFatherEvent,
+    fatherEventList,
+    setFatherEventList,
+  };
+
+  const handleOnSaveCategory = async (): Promise<void> => {
     try {
       if (isFormValidCategory()) {
         const payload: any = {
@@ -209,12 +257,45 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
     }
   };
 
+  const handleOnSaveFatherEvent = async (): Promise<void> => {
+    try {
+      if (isFormValidCategory()) {
+        const payload: any = {
+          id: category,
+          name: formDataCategory[FormInputNameToSaveCategory.name],
+          description: 'Campo não existe',
+        };
+
+        if (!payload.id) {
+          delete payload.id;
+
+          await api.post<any>('/event', payload);
+          toast.success('Categoria cadastrado com sucesso!');
+        } else {
+          await api.put<any>('/event', payload);
+          toast.success('Categoria atualizada com sucesso!');
+        }
+
+        onToggle();
+        handleFecthFatherEventList();
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    }
+  };
+
   const controllerCategoryActions = {
-    onSaveGroupProduct: handleOnSaveGroupProduct,
+    onSave: handleOnSaveCategory,
+  };
+
+  const controllerFatherEventActions = {
+    onSave: handleOnSaveFatherEvent,
   };
 
   useEffect(() => {
     handleFecthCategoryList();
+    handleFecthFatherEventList();
   }, []);
 
   useEffect(() => {
@@ -230,9 +311,12 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
       state={state}
       formGeneralInformation={controllerFormGeneralInformation}
       formCategory={controllerFormCategory}
+      formFatherEvent={controllerFormFatherEvent}
       modalConfig={controllerModalConfig}
       categoryStates={controllerCategoryState}
       categoryActions={controllerCategoryActions}
+      fatherEventStates={controllerFatherEventState}
+      fatherEventActions={controllerFatherEventActions}
     />
   );
 };

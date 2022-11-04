@@ -21,10 +21,17 @@ export interface formCategoryProps {
   onChangeFormInput: OnChangeFormInput;
 }
 
+export interface formFatherEventProps {
+  formData: FormData;
+  formErrors: FormErrors;
+  onChangeFormInput: OnChangeFormInput;
+}
+
 export interface onShouldShowModalProps {
   value: ShouldShowModal;
   newTitleModal: string | React.ReactNode;
   category?: EventCategory;
+  eventFather?: any;
 }
 
 export interface modalConfigProps {
@@ -43,6 +50,16 @@ export interface categoryStatesProps {
   setCategoryList: Dispatch<SetStateAction<EventCategory[]>>;
 }
 
+export interface fatherEventStatesProps {
+  fatherEvent: EventCategory | undefined;
+  setFatherEvent: React.Dispatch<React.SetStateAction<EventCategory | undefined>>;
+  fatherEventList: EventCategory[];
+  setFatherEventList: Dispatch<SetStateAction<EventCategory[]>>;
+}
+
 export interface categoryActionProps {
-  onSaveGroupProduct: () => Promise<void>;
+  onSave: () => Promise<void>;
+}
+export interface fatherEventActionProps {
+  onSave: () => Promise<void>;
 }

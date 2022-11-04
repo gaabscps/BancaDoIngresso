@@ -5,7 +5,10 @@ import { Container } from 'reactstrap';
 import {
   categoryActionProps,
   categoryStatesProps,
+  fatherEventActionProps,
+  fatherEventStatesProps,
   formCategoryProps,
+  formFatherEventProps,
   formGeneralInformationProps,
   modalConfigProps,
 } from '@/features/registerEvent/types';
@@ -13,6 +16,7 @@ import './styles.scss';
 import { GeneralInformationContent } from '@/features/registerEvent/component/GeneralInformationContent';
 import { ActionProps } from '@/components/Dialog';
 import { RegisterCategoryContent } from '@/features/registerEvent/component/RegisterCategoryContent';
+import { RegisterFatherEventContent } from '@/features/registerEvent/component/RegisterFatherEvent';
 
 // eslint-disable-next-line no-shadow
 export enum States {
@@ -22,24 +26,31 @@ export enum States {
 
 export enum ShouldShowModal {
   category = 'category',
+  fatherEvent = 'fatherEvent',
 }
 
 export interface GeneralInformationContainerProps {
   state: States;
   formGeneralInformation: formGeneralInformationProps;
   formCategory: formCategoryProps;
+  formFatherEvent: formFatherEventProps;
   modalConfig: modalConfigProps;
   categoryStates: categoryStatesProps;
   categoryActions: categoryActionProps;
+  fatherEventStates: fatherEventStatesProps;
+  fatherEventActions: fatherEventActionProps;
 }
 
 export const GeneralInformationContainer: React.FC<GeneralInformationContainerProps> = ({
   state,
   formGeneralInformation,
   formCategory,
+  formFatherEvent,
   modalConfig,
   categoryStates,
   categoryActions,
+  fatherEventStates,
+  fatherEventActions,
 }) => {
   const renderActionDialogToCancel: ActionProps = {
     title: 'Cancelar',
@@ -58,12 +69,18 @@ export const GeneralInformationContainer: React.FC<GeneralInformationContainerPr
         actions={[
           {
             [ShouldShowModal.category]: renderActionDialogToCancel,
+            [ShouldShowModal.fatherEvent]: renderActionDialogToCancel,
           }[modalConfig.shouldShowModal],
           {
             [ShouldShowModal.category]: {
               title: categoryStates?.category ? 'Salvar' : 'Cadastrar nova empresa',
               // title: 'Cadastrar nova empresa',
-              onClick: (): Promise<void> => categoryActions.onSaveGroupProduct(),
+              onClick: (): Promise<void> => categoryActions.onSave(),
+            },
+            [ShouldShowModal.fatherEvent]: {
+              title: fatherEventStates?.fatherEvent ? 'Salvar' : 'Vincular evento Pai',
+              // title: 'Cadastrar nova empresa',
+              onClick: (): Promise<void> => fatherEventActions.onSave(),
             },
           }[modalConfig.shouldShowModal],
         ]}
@@ -71,6 +88,12 @@ export const GeneralInformationContainer: React.FC<GeneralInformationContainerPr
         {
           {
             [ShouldShowModal.category]: <RegisterCategoryContent formCategory={formCategory} />,
+            [ShouldShowModal.fatherEvent]: (
+              <RegisterFatherEventContent
+                formFatherEvent={formFatherEvent}
+                fatherEventStates={fatherEventStates}
+              />
+            ),
           }[modalConfig.shouldShowModal]
         }
       </Dialog>
@@ -82,6 +105,8 @@ export const GeneralInformationContainer: React.FC<GeneralInformationContainerPr
           modalConfig={modalConfig}
           categoryStates={categoryStates}
           categoryActions={categoryActions}
+          fatherEventStates={fatherEventStates}
+          fatherEventActions={fatherEventActions}
         />
       </Container>
     </Fragment>

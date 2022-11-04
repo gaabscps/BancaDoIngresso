@@ -42,8 +42,14 @@ export enum FormInputName {
 
 // remove type formCategory of GeneralInformationContainerProps
 export const GeneralInformationContent: React.FC<
-  Omit<GeneralInformationContainerProps, 'formCategory'>
-> = ({ formGeneralInformation, modalConfig, categoryStates }) => {
+  Omit<GeneralInformationContainerProps, 'formCategory' | 'formFatherEvent'>
+> = ({
+  formGeneralInformation,
+  formFatherEvent,
+  modalConfig,
+  categoryStates,
+  fatherEventStates,
+}) => {
   const TypeEventsOptions = [
     { value: '0', label: 'Mono' },
     { value: '1', label: 'Pai' },
@@ -76,7 +82,15 @@ export const GeneralInformationContent: React.FC<
           />
           {formGeneralInformation.formData[FormInputName.eventType] === '2' && (
             <div className="d-flex flex-column mb-5" style={{ marginTop: '-20px' }}>
-              <span className="link-event-father d-flex">
+              <span
+                className="link-event-father d-flex"
+                onClick={() => {
+                  modalConfig.onShouldShowModal({
+                    value: ShouldShowModal.fatherEvent,
+                    newTitleModal: 'Vincular evento Pai',
+                  });
+                }}
+              >
                 <div className="mt-1 mr-2">
                   <LinkIcon />
                 </div>
