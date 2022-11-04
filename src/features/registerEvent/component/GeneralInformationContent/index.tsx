@@ -7,7 +7,11 @@ import { ReactComponent as LinkIcon } from '@/assets/images/svg/Link.svg';
 import { ReactComponent as Unlink } from '@/assets/images/svg/Unlink.svg';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import '../../screens/GeneralInformation/ui/styles.scss';
-import { GeneralInformationContainerProps } from '../../screens/GeneralInformation/ui';
+import {
+  ShouldShowModal,
+  GeneralInformationContainerProps,
+} from '@/features/registerEvent/screens/GeneralInformation/ui';
+import { toast } from 'react-toastify';
 
 // eslint-disable-next-line no-shadow
 export enum FormInputName {
@@ -36,9 +40,10 @@ export enum FormInputName {
   websiteDescription = 'websiteDescription',
 }
 
-export const GeneralInformationContent: React.FC<GeneralInformationContainerProps> = ({
-  formGeneralInformation,
-}) => {
+// remove type formCategory of GeneralInformationContainerProps
+export const GeneralInformationContent: React.FC<
+  Omit<GeneralInformationContainerProps, 'formCategory'>
+> = ({ formGeneralInformation, modalConfig, categoryStates }) => {
   const TypeEventsOptions = [
     { value: '0', label: 'Mono' },
     { value: '1', label: 'Pai' },
@@ -294,12 +299,45 @@ export const GeneralInformationContent: React.FC<GeneralInformationContainerProp
               formGeneralInformation.formErrors.eventCategory[0]
             }
             value={formGeneralInformation.formData[FormInputName.eventCategory]}
-            options={TypeEventsOptions}
+            options={
+              categoryStates?.categoryList?.map(optionCategory => ({
+                value: optionCategory.id,
+                label: optionCategory.name,
+              })) || []
+            }
           />
           <div className="d-flex flex-column mb-5" style={{ marginTop: '-20px' }}>
             <span className="d-flex">
-              <div className="mr-5 link-green">+ cadastrar nova categoria de evento</div>
-              <div className="link-grey">
+              <div
+                className="mr-5 link-green"
+                onClick={() => {
+                  modalConfig.onShouldShowModal({
+                    value: ShouldShowModal.category,
+                    newTitleModal: 'Cadastrar nova categoria',
+                  });
+                }}
+              >
+                + cadastrar nova categoria de evento
+              </div>
+              <div
+                className="link-grey"
+                onClick={() => {
+                  if (formGeneralInformation.formData[FormInputName.eventCategory] !== '') {
+                    const categorySelected = categoryStates.categoryList.find(
+                      category =>
+                        category.id ===
+                        formGeneralInformation.formData[FormInputName.eventCategory],
+                    );
+                    modalConfig.onShouldShowModal({
+                      value: ShouldShowModal.category,
+                      newTitleModal: 'Editar categoria de evento',
+                      category: categorySelected,
+                    });
+                  } else {
+                    toast.warn('Selecione uma categoria para editar');
+                  }
+                }}
+              >
                 <Pen height={12} width={12} /> editar
               </div>
             </span>
