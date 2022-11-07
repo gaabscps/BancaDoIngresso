@@ -11,7 +11,6 @@ import Pagination from '@/components/Utils/Pagination';
 import { RegisterContent } from '@/features/pdv/components/RegisterContent';
 import { FilterContent } from '@/features/pdv/components/FilterContent';
 import { ListContentSub } from '@/features/pdv/components/ListContentSub';
-import empty from '@/assets/images/other-images/imgvazio.svg';
 import FilterVector from '@/assets/images/svg/FilterVector';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
@@ -130,7 +129,7 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
 }) => {
   const dataTablePdv = listPdv?.map(pdv => ({
     id: pdv.id,
-    imageBase64: <ColumnImage srcImage={pdv.imageBase64 ? pdv.imageBase64 : empty} />,
+    imageBase64: <ColumnImage srcImage={pdv.imageBase64} />,
     name: pdv.name,
     street: pdv.address.street,
     city: pdv.address.city,

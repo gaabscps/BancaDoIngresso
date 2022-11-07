@@ -12,13 +12,13 @@ import { ReactComponent as TicketManagement } from '@/assets/images/svg/TicketMa
 import { ReactComponent as EventDeal } from '@/assets/images/svg/eventDeal.svg';
 import { ReactComponent as Block } from '@/assets/images/svg/block.svg';
 import { ReactComponent as Report } from '@/assets/images/svg/report.svg';
-import empty from '@/assets/images/other-images/imgvazio.svg';
 import { StatusFilter } from '@/components/StatusFilter';
 import { ActionProps, Dialog } from '@/components/Dialog';
 import { FormErrors, OnChangeFormInput, FormData } from '@/hooks/useForm';
 import { FilterContent } from '@/features/events/components/FilterContent';
 import Event from '@/model/Event';
 import { EventRequestParams } from '@/features/events/types';
+import { useHistory } from 'react-router-dom';
 import { columns } from './table';
 
 // eslint-disable-next-line no-shadow
@@ -111,11 +111,13 @@ export const EventContainer: React.FC<EventContainerProps> = ({
     theme: 'noneBorder',
   };
 
+  const history = useHistory();
+
   const dataTablePos = listEvent?.map(event => ({
     id: event.id,
     image: (
       <ColumnStatus justify="right" statusColor={String(changeColorColumn(event.eventStatus))}>
-        <ColumnImage srcImage={event.imageBase64 ? event.imageBase64 : empty} />
+        <ColumnImage srcImage={event.imageBase64} />
       </ColumnStatus>
     ),
     name: (
@@ -139,7 +141,7 @@ export const EventContainer: React.FC<EventContainerProps> = ({
           {
             icon: <Pen />,
             title: 'Editar',
-            action: () => console.log(event),
+            action: () => history.push(`/dashboard/event/edit/${event.id}`),
           },
           {
             title: 'Gestão de ingressos',
@@ -293,7 +295,7 @@ export const EventContainer: React.FC<EventContainerProps> = ({
             theme="primary"
             progressPending={false}
             getRowId={e => {
-              console.log(e);
+              history.push(`/dashboard/event/edit/${e.id}`);
             }}
           />
           <Pagination

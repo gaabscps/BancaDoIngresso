@@ -6,7 +6,6 @@ import { Container } from 'reactstrap';
 import { RegisterContent } from '@/features/product/components/RegisterContent';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
-import empty from '@/assets/images/other-images/imgvazio.svg';
 import { ActionProps, Dialog } from '@/components/Dialog';
 import { ColumnImage, CustomTable } from '@/components/Table';
 import Pagination from '@/components/Utils/Pagination';
@@ -106,7 +105,7 @@ export const ProductContainer: React.FC<ProductContainerProps> = ({
 }) => {
   const dataTableProduct = listProduct?.map(item => ({
     id: item.id,
-    image: <ColumnImage srcImage={item.imageBase64 ? item.imageBase64 : empty} />,
+    image: <ColumnImage srcImage={item.imageBase64} />,
     productName: item.name,
     group: item.categorySubGroup?.categoryGroup?.name || '',
     subgroup: item.categorySubGroup?.name || '',
