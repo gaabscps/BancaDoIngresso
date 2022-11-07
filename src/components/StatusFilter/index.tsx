@@ -21,6 +21,7 @@ export const StatusFilter: React.FC<StatusFilterProps> = ({ handleOnFilterStatus
       color: colors.lightBlue,
       status: false,
       backgroundColor: colors.lightBlueBG,
+      title: 'Eventos sendo criados',
     },
     {
       name: 'Liberação pendente',
@@ -28,6 +29,7 @@ export const StatusFilter: React.FC<StatusFilterProps> = ({ handleOnFilterStatus
       color: colors.darkRed,
       status: false,
       backgroundColor: colors.darkRedBG,
+      title: 'Aguardando aprovação da Diretoria',
     },
     {
       name: 'Liberado',
@@ -35,6 +37,7 @@ export const StatusFilter: React.FC<StatusFilterProps> = ({ handleOnFilterStatus
       color: colors.green,
       status: false,
       backgroundColor: colors.greenBG,
+      title: 'Evento Ativo',
     },
     {
       name: 'Recusado',
@@ -42,6 +45,7 @@ export const StatusFilter: React.FC<StatusFilterProps> = ({ handleOnFilterStatus
       color: colors.yellow,
       status: false,
       backgroundColor: colors.yellowBG,
+      title: 'Evento aguardando correção',
     },
     {
       name: 'Bloqueado',
@@ -49,6 +53,7 @@ export const StatusFilter: React.FC<StatusFilterProps> = ({ handleOnFilterStatus
       color: colors.red,
       status: false,
       backgroundColor: colors.redBG,
+      title: 'Evento Pausado',
     },
     {
       name: 'Encerrado',
@@ -56,6 +61,7 @@ export const StatusFilter: React.FC<StatusFilterProps> = ({ handleOnFilterStatus
       color: colors.lightGreen,
       status: false,
       backgroundColor: colors.lightGreenBG,
+      title: 'Evento acabou, aguardando fechamento',
     },
     {
       name: 'Finalizado',
@@ -63,6 +69,7 @@ export const StatusFilter: React.FC<StatusFilterProps> = ({ handleOnFilterStatus
       color: colors.orange,
       status: false,
       backgroundColor: colors.orangeBG,
+      title: 'Evento finalizado sem pendências',
     },
   ];
 
@@ -84,6 +91,7 @@ export const StatusFilter: React.FC<StatusFilterProps> = ({ handleOnFilterStatus
       {itemList.map((item: any) => (
         // eslint-disable-next-line react/jsx-key
         <div
+          title={item.title}
           onClick={() => {
             handleStatus(item);
             handleOnFilterStatus(item.value);

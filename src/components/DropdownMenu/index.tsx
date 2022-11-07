@@ -44,8 +44,11 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({ title, actions }) =>
         {actions?.map((action, index) => (
           <React.Fragment key={index}>
             {action.divider ? <hr /> : null}
-            <li onClick={action.onClick} className={action.hidden === true ? 'hiddenDisplay' : ''}>
-              <div className="d-flex" onClick={action.action}>
+            <li
+              onClick={(action.onClick, action.action)}
+              className={action.hidden === true ? 'hiddenDisplay' : ''}
+            >
+              <div className="d-flex">
                 {action.icon ? (
                   <div className="my-auto menu-icon-container">{action.icon}</div>
                 ) : null}

@@ -19,6 +19,8 @@ import { FilterContent } from '@/features/events/components/FilterContent';
 import Event from '@/model/Event';
 import { EventRequestParams } from '@/features/events/types';
 import { useHistory } from 'react-router-dom';
+import Voucher from '@/model/Voucher';
+import { RegisterVoucher } from '@/features/events/components/RegisterVoucher';
 import { columns } from './table';
 
 // eslint-disable-next-line no-shadow
@@ -30,6 +32,7 @@ export enum States {
 // eslint-disable-next-line no-shadow
 export enum ShouldShowModal {
   filter = 'filter',
+  voucher = 'voucher',
 }
 export interface DataRow {
   id: string;
@@ -54,6 +57,7 @@ interface EventContainerProps {
   formErrorsFilter: FormErrors;
   pagination: { pageSize: number };
   fullListEvent: Event[];
+  voucher: Voucher | undefined;
   onRefuseEvent: (event: Event) => void;
   onReleaseEvent: (event: Event) => void;
   handleOnFilterStatus: (status: number) => void;
@@ -64,7 +68,7 @@ interface EventContainerProps {
   onPaginationChange: (page: number) => void;
   onToggle: () => void;
   onChangeFormInputFilter: OnChangeFormInput;
-  OnShouldShowModal: ({
+  onShouldShowModal: ({
     value,
     newTitleModal,
     event,
@@ -72,6 +76,7 @@ interface EventContainerProps {
     value: ShouldShowModal;
     newTitleModal: string | React.ReactNode;
     event?: Event;
+    voucher?: Voucher;
   }) => void;
 }
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -87,6 +92,7 @@ export const EventContainer: React.FC<EventContainerProps> = ({
   visible,
   pagination,
   fullListEvent,
+  voucher,
   onRefuseEvent,
   onReleaseEvent,
   handleOnFilterStatus,
@@ -97,13 +103,19 @@ export const EventContainer: React.FC<EventContainerProps> = ({
   changeColorColumn,
   onChangeFormInputFilter,
   onToggle,
-  OnShouldShowModal,
+  onShouldShowModal,
 }) => {
   const dataEventType = [
     { id: 0, name: 'Evento único' },
     { id: 1, name: 'Evento pai' },
     { id: 2, name: 'Evento filho' },
   ];
+
+  // const renderActionDialogToCancel: ActionProps = {
+  //   title: 'Cancelar',
+  //   onClick: (): void => onToggle(),
+  //   theme: 'noneBorder',
+  // };
 
   const renderActionDialogToCancelFilter: ActionProps = {
     title: 'Limpar',
@@ -150,6 +162,12 @@ export const EventContainer: React.FC<EventContainerProps> = ({
           {
             title: 'Voucher de desconto',
             icon: <Ticket />,
+            action: () =>
+              onShouldShowModal({
+                newTitleModal: 'Cadastrar voucher de desconto',
+                value: ShouldShowModal.voucher,
+                voucher,
+              }),
           },
           {
             title: 'Fechamento do evento',
@@ -211,17 +229,20 @@ export const EventContainer: React.FC<EventContainerProps> = ({
         title={title}
         visible={visible}
         onClose={onToggle}
+        footerBorder={shouldShowModal === ShouldShowModal.voucher ? 'none' : 'top'}
         position={shouldShowModal === ShouldShowModal.filter ? 'right' : 'center'}
         isContentWithCard={shouldShowModal !== ShouldShowModal.filter}
         actions={[
           {
             [ShouldShowModal.filter]: renderActionDialogToCancelFilter,
+            [ShouldShowModal.voucher]: {},
           }[shouldShowModal],
           {
             [ShouldShowModal.filter]: {
               title: 'Aplicar',
               onClick: (): Promise<void> => onFilter(),
             },
+            [ShouldShowModal.voucher]: {},
           }[shouldShowModal],
         ]}
       >
@@ -234,6 +255,7 @@ export const EventContainer: React.FC<EventContainerProps> = ({
                 onChangeFormInput={onChangeFormInputFilter}
               />
             ),
+            [ShouldShowModal.voucher]: <RegisterVoucher />,
           }[shouldShowModal]
         }
       </Dialog>
@@ -256,7 +278,10 @@ export const EventContainer: React.FC<EventContainerProps> = ({
               {/* ) : null} */}
             </div>
             <div className="button-filter-container">
-              <Button title="+ Cadastrar novo evento" onClick={() => undefined} />
+              <Button
+                title="+ Cadastrar novo evento"
+                onClick={() => history.push('/dashboard/event/create')}
+              />
               <div style={{ marginLeft: '15px' }}>
                 <SimpleSelect
                   name={'Exibir'}
@@ -274,7 +299,7 @@ export const EventContainer: React.FC<EventContainerProps> = ({
                 <div
                   className="filter-content"
                   onClick={(): void =>
-                    OnShouldShowModal({
+                    onShouldShowModal({
                       value: ShouldShowModal.filter,
                       newTitleModal: '',
                     })

@@ -9,6 +9,7 @@ import { FormInputName as FormInputNameToFilter } from '@/features/contractor/co
 import { toast } from 'react-toastify';
 import api from '@/services/api';
 import Event from '@/model/Event';
+import Voucher from '@/model/Voucher';
 import { EventRequestParams, EventResponse } from '../../types';
 
 export default interface PayloadEvent {
@@ -23,6 +24,7 @@ export const EventScreen: React.FC = () => {
   const [state, setState] = useState<States>(States.default);
   const [listEvent, setListEvent] = useState<Event[]>([]);
   const [fullListEvent, setFullListEvent] = useState<Event[]>([]);
+  const [voucher, setVoucher] = useState<Voucher>();
   const [pagination, setPagination] = useState({
     pageSize: 10,
   });
@@ -144,13 +146,19 @@ export const EventScreen: React.FC = () => {
   const handleOnShouldShowModal = ({
     value,
     newTitleModal,
+    voucher: voucherSelected,
   }: {
     value: ShouldShowModal;
     newTitleModal: string | React.ReactNode;
+    voucher?: Voucher;
   }): void => {
     setShouldShowModal(value);
     onChangeTitle(newTitleModal);
     onToggle();
+
+    if (voucherSelected) {
+      setVoucher(voucherSelected);
+    }
   };
 
   const clearFilter = async (): Promise<void> => {
@@ -213,6 +221,7 @@ export const EventScreen: React.FC = () => {
 
   return (
     <EventContainer
+      voucher={voucher}
       state={state}
       listEvent={listEvent}
       paginationSelect={paginationSelect}
@@ -224,7 +233,7 @@ export const EventScreen: React.FC = () => {
       formDataFilter={formDataFilter}
       formErrorsFilter={formErrorsFilter}
       onChangeFormInputFilter={onChangeFormInputFilter}
-      OnShouldShowModal={handleOnShouldShowModal}
+      onShouldShowModal={handleOnShouldShowModal}
       onPaginationChange={handleOnPaginationChange}
       currentPage={currentPage}
       pagination={pagination}
