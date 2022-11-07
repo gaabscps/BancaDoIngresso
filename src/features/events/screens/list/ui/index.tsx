@@ -100,9 +100,9 @@ export const EventContainer: React.FC<EventContainerProps> = ({
   OnShouldShowModal,
 }) => {
   const dataEventType = [
-    { id: 0, name: 'Evento pai' },
-    { id: 1, name: 'Evento filho' },
-    { id: 2, name: 'Evento único' },
+    { id: 0, name: 'Evento único' },
+    { id: 1, name: 'Evento pai' },
+    { id: 2, name: 'Evento filho' },
   ];
 
   const renderActionDialogToCancelFilter: ActionProps = {
@@ -139,6 +139,7 @@ export const EventContainer: React.FC<EventContainerProps> = ({
           {
             icon: <Pen />,
             title: 'Editar',
+            action: () => console.log(event),
           },
           {
             title: 'Gestão de ingressos',
