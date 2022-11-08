@@ -160,7 +160,7 @@ export const EventContainer: React.FC<EventContainerProps> = ({
           },
           {
             title: 'Gestão de ingressos',
-            icon: <TicketManagement width={18} height={17} />,
+            icon: <TicketManagement width={17} height={17} />,
           },
           {
             title: 'Voucher de desconto',
@@ -174,7 +174,7 @@ export const EventContainer: React.FC<EventContainerProps> = ({
           },
           {
             title: 'Fechamento do evento',
-            icon: <EventDeal width={18} height={17} />,
+            icon: <EventDeal width={16} height={17} />,
           },
           {
             title: 'Bloquear',
