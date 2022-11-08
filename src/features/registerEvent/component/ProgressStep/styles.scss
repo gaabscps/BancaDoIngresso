@@ -84,3 +84,18 @@
     }
   }
 }
+
+@media screen and (max-width: 1300px) {
+  .progress-step {
+    flex-direction: column;
+    &__item {
+      margin-bottom: 20px;
+      &__status {
+        margin-top: 0;
+      }
+    }
+    &__line {
+      display: none;
+    }
+  }
+}
