@@ -103,8 +103,8 @@ export const StatusFilter: React.FC<StatusFilterProps> = ({
           }}
           className={
             item.status
-              ? 'd-flex action-icon eventStatus subText filterActive'
-              : 'd-flex eventStatus subText action-icon'
+              ? 'd-flex action-icon eventStatus subText filterActive filterStatus'
+              : 'd-flex eventStatus subText action-icon filterStatus'
           }
           style={
             item.status
@@ -113,9 +113,9 @@ export const StatusFilter: React.FC<StatusFilterProps> = ({
           }
         >
           <div>
-            <Status style={{ color: item.color, margin: '15px 7px' }} />
+            <Status style={{ color: item.color, display: 'flex', alignItems: 'center' }} />
           </div>
-          {item.name}
+          <span style={{ whiteSpace: 'nowrap' }}>{item.name}</span>
         </div>
       ))}
     </>

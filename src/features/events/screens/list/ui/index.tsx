@@ -154,17 +154,17 @@ export const EventContainer: React.FC<EventContainerProps> = ({
         title={<EventAction />}
         actions={[
           {
-            icon: <Pen />,
+            icon: <Pen style={{ transform: 'scale(0.9)' }} />,
             title: 'Editar',
             action: () => history.push(`/dashboard/event/edit/${event.id}`),
           },
           {
             title: 'Gestão de ingressos',
-            icon: <TicketManagement width={17} height={17} />,
+            icon: <TicketManagement />,
           },
           {
             title: 'Voucher de desconto',
-            icon: <Ticket />,
+            icon: <Ticket style={{ transform: 'scale(0.9)' }} />,
             action: () =>
               onShouldShowModal({
                 newTitleModal: 'Cadastrar voucher de desconto',
@@ -174,7 +174,7 @@ export const EventContainer: React.FC<EventContainerProps> = ({
           },
           {
             title: 'Fechamento do evento',
-            icon: <EventDeal width={16} height={17} />,
+            icon: <EventDeal />,
           },
           {
             title: 'Bloquear',
