@@ -21,9 +21,9 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({ title, actions }) =>
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <label className="dropdown-menu-custom">
+    <label className="dropdown-menu-custom svg-icon">
       <div
-        className="dd-button action-icon"
+        className={isOpen ? 'dd-button action-icon checked' : 'dd-button action-icon'}
         style={{
           transform: isOpen ? 'rotate(0deg)' : 'rotate(-90deg)',
           transition: 'transform 0.2s ease-in-out',

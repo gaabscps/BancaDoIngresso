@@ -69,6 +69,7 @@ interface EventContainerProps {
   onPaginationChange: (page: number) => void;
   onToggle: () => void;
   onChangeFormInputFilter: OnChangeFormInput;
+  clearFilterStatus: () => void;
   onShouldShowModal: ({
     value,
     newTitleModal,
@@ -104,6 +105,7 @@ export const EventContainer: React.FC<EventContainerProps> = ({
   changeColorColumn,
   onChangeFormInputFilter,
   onToggle,
+  clearFilterStatus,
   onShouldShowModal,
 }) => {
   const dataEventType = [
@@ -309,8 +311,11 @@ export const EventContainer: React.FC<EventContainerProps> = ({
               </div>
             </div>
           </div>
-          <div className="d-flex pb-2 status-container">
-            <StatusFilter handleOnFilterStatus={handleOnFilterStatus} />
+          <div className="d-flex pb-2 status-container statusFilter">
+            <StatusFilter
+              handleOnFilterStatus={handleOnFilterStatus}
+              clearFilter={clearFilterStatus}
+            />
           </div>
           <CustomTable
             columns={columns}

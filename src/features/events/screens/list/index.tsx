@@ -167,6 +167,13 @@ export const EventScreen: React.FC = () => {
     } as any);
     onToggle();
   };
+  const clearFilterStatus = async (): Promise<void> => {
+    resetFormFilter();
+    await handleFetch({
+      ...currentPage,
+      entity: {},
+    } as any);
+  };
 
   const handleOnFilter = async (): Promise<void> => {
     try {
@@ -242,6 +249,7 @@ export const EventScreen: React.FC = () => {
       fullListEvent={fullListEvent}
       onReleaseEvent={handleOnReleaseEvent}
       onRefuseEvent={handleOnRefuseEvent}
+      clearFilterStatus={clearFilterStatus}
     />
   );
 };

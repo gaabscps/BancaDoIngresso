@@ -2,6 +2,13 @@
   padding: 2px 5px;
   border-radius: 20px;
 }
-.statusFilter {
-  width: 120px;
+@media (max-width: '1200px') {
+  .status-container {
+    justify-content: flex-start !important;
+    transition: all 0.3s ease;
+  }
+  .statusFilter {
+    display: flex;
+    flex-wrap: wrap;
+  }
 }

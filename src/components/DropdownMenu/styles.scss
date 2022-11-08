@@ -78,3 +78,16 @@
 .hiddenDisplay {
   display: none;
 }
+
+.svg-icon {
+  color: #828282;
+  fill: #828282;
+  &:hover {
+    color: #222222;
+    fill: #222222;
+  }
+}
+.checked {
+  color: #222222;
+  fill: #222222;
+}

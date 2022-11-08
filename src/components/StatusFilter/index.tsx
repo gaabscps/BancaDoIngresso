@@ -10,10 +10,14 @@ interface StatusFilterProps {
   backgroundColor?: string;
   status?: boolean;
   handleOnFilterStatus: (status: number) => void;
+  clearFilter: () => void;
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export const StatusFilter: React.FC<StatusFilterProps> = ({ handleOnFilterStatus }) => {
+export const StatusFilter: React.FC<StatusFilterProps> = ({
+  handleOnFilterStatus,
+  clearFilter,
+}) => {
   const initialState = [
     {
       name: 'Rascunho',
@@ -94,12 +98,13 @@ export const StatusFilter: React.FC<StatusFilterProps> = ({ handleOnFilterStatus
           title={item.title}
           onClick={() => {
             handleStatus(item);
-            handleOnFilterStatus(item.value);
+            // eslint-disable-next-line no-unused-expressions
+            item.status ? clearFilter() : handleOnFilterStatus(item.value);
           }}
           className={
             item.status
-              ? 'd-flex action-icon eventStatus subText filterActive statusFilter'
-              : 'd-flex eventStatus subText action-icon statusFilter'
+              ? 'd-flex action-icon eventStatus subText filterActive'
+              : 'd-flex eventStatus subText action-icon'
           }
           style={
             item.status
@@ -108,7 +113,7 @@ export const StatusFilter: React.FC<StatusFilterProps> = ({ handleOnFilterStatus
           }
         >
           <div>
-            <Status style={{ color: item.color }} />
+            <Status style={{ color: item.color, margin: '15px 7px' }} />
           </div>
           {item.name}
         </div>
