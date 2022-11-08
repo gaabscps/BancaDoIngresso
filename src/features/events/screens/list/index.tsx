@@ -126,7 +126,7 @@ export const EventScreen: React.FC = () => {
       };
       await api.patch<Event>(`/event/${eventSelected.id}/refused`, payload);
 
-      toast.success('Evento Liberado!');
+      toast.success('Evento Recusado!');
       handleFetch(currentPage);
     } catch (error) {
       const err = error as AxiosError;
