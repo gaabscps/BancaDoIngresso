@@ -9,10 +9,15 @@ import useForm from '@/hooks/useForm';
 import validators from '@/helpers/validators';
 import { useDialog } from '@/hooks/useDialog';
 import { FormInputName as FormInputNameToSaveCategory } from '@/features/registerEvent/component/RegisterCategoryContent';
+import { FormInputName as FormInputNameToSaveFatherEvent } from '@/features/registerEvent/component/RegisterFatherEvent';
+import { FormInputName as FormInputNameToSaveGeneralInformation } from '@/features/registerEvent/component/GeneralInformationContent';
+import { updateMask as updateMaskCEP } from '@/helpers/masks/cep';
 import { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import api from '@/services/api';
 import EventCategory from '@/model/EventCategory';
+import Contractor from '@/model/Contractor';
+import { convertToBoolean } from '@/helpers/common/convertToBoolean';
 import {
   categoryStatesProps,
   fatherEventStatesProps,
@@ -21,7 +26,9 @@ import {
   modalConfigProps,
   NameFiles,
   onShouldShowModalProps,
+  contractorStatesProps,
 } from '../../types';
+import { useEvent } from '../../hook/useEvent';
 
 export const GeneralInformationScreen: React.FC = (): JSX.Element => {
   const [state] = useState<States>(States.default);
@@ -34,7 +41,11 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
   const [fatherEvent, setFatherEvent] = useState<any>();
   const [fatherEventList, setFatherEventList] = useState<any[]>([]);
 
+  const [contractorList, setContractorList] = useState<Contractor[]>([]);
+
   const { title, visible, onChangeTitle, onToggle } = useDialog();
+
+  const { eventState, onChange: onChangeEvent } = useEvent();
 
   useEffect(() => {
     if (!visible) {
@@ -49,6 +60,7 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
     formData: formDataGeneralInformation,
     formErrors: formErrorsGeneralInformation,
     onChangeFormInput: onChangeFormInputGeneralInformation,
+    isFormValid: isFormValidGeneralInformation,
     setErrors: setErrorsGeneralInformation,
   } = useForm({
     initialData: {
@@ -56,9 +68,13 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
       namePos: '',
       establishmentName: '',
       eventPlace: '',
+      zipCode: updateMaskCEP(''),
       state: '',
       city: '',
-      expirationDate: '',
+      district: '',
+      street: '',
+      complement: '',
+      number: '',
       eventType: '',
       startDate: '',
       endDate: '',
@@ -78,8 +94,29 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
     },
     validators: {
       name: [validators.required],
+      namePos: [validators.required],
+      establishmentName: [validators.required],
+      eventPlace: [validators.required],
+      zipCode: [validators.required],
+      state: [validators.required],
+      city: [validators.required],
+      district: [validators.required],
+      street: [validators.required],
+      number: [validators.required],
+      eventType: [validators.required],
+      startDate: [validators.required],
+      endDate: [validators.required],
+      startTime: [validators.required],
+      endTime: [validators.required],
+      eventCategory: [validators.required],
+      censure: [validators.required],
+      publishWebsite: [validators.required],
+      textSize: [validators.required],
+      contractor: [validators.required],
     },
-    formatters: {},
+    formatters: {
+      zipCode: updateMaskCEP,
+    },
   });
 
   const {
@@ -103,7 +140,7 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
     formErrors: formErrorsFatherEvent,
     onChangeFormInput: onChangeFormInputFatherEvent,
     isFormValid: isFormValidFatherEvent,
-    resetForm: resetFormFatherEvent,
+    // resetForm: resetFormFatherEvent,
   } = useForm({
     initialData: {
       name: '',
@@ -189,6 +226,19 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
     shouldShowModal,
   };
 
+  const handleFecthContractorList = async (): Promise<void> => {
+    try {
+      // setState(States.loading);
+      const { data } = await api.get<Contractor[]>(`/contractor/find`);
+      setContractorList(data ?? []);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      // setState(States.default);
+    }
+  };
+
   const handleFecthCategoryList = async (): Promise<void> => {
     try {
       // setState(States.loading);
@@ -213,6 +263,11 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
     } finally {
       // setState(States.default);
     }
+  };
+
+  const controllerContractorState: contractorStatesProps = {
+    contractorList,
+    setContractorList,
   };
 
   const controllerCategoryState: categoryStatesProps = {
@@ -257,32 +312,106 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
     }
   };
 
-  const handleOnSaveFatherEvent = async (): Promise<void> => {
+  const handleOnSaveGeneralInformation = async (): Promise<void> => {
     try {
-      if (isFormValidCategory()) {
+      console.log(
+        'Submit Informações Gerais :>> ',
+        isFormValidGeneralInformation(),
+        formErrorsGeneralInformation,
+        formDataGeneralInformation,
+      );
+      if (isFormValidGeneralInformation()) {
         const payload: any = {
-          id: category,
-          name: formDataCategory[FormInputNameToSaveCategory.name],
-          description: 'Campo não existe',
+          // id: '',
+          fatherEvent:
+            formDataGeneralInformation[FormInputNameToSaveGeneralInformation.eventType] === '2'
+              ? fatherEvent
+              : '',
+          name: formDataGeneralInformation[FormInputNameToSaveGeneralInformation.name],
+          posName: formDataGeneralInformation[FormInputNameToSaveGeneralInformation.namePos],
+          establishmentName:
+            formDataGeneralInformation[FormInputNameToSaveGeneralInformation.establishmentName],
+          eventType: +formDataGeneralInformation[FormInputNameToSaveGeneralInformation.eventType],
+          address: {
+            // id: 'string',
+            zipCode: formDataGeneralInformation[FormInputNameToSaveGeneralInformation.zipCode],
+            state: formDataGeneralInformation[FormInputNameToSaveGeneralInformation.state],
+            city: formDataGeneralInformation[FormInputNameToSaveGeneralInformation.city],
+            district: formDataGeneralInformation[FormInputNameToSaveGeneralInformation.district],
+            street: formDataGeneralInformation[FormInputNameToSaveGeneralInformation.street],
+            complement:
+              formDataGeneralInformation[FormInputNameToSaveGeneralInformation.complement],
+            number: formDataGeneralInformation[FormInputNameToSaveGeneralInformation.number],
+            latitude:
+              parseFloat(
+                formDataGeneralInformation[FormInputNameToSaveGeneralInformation.latitude],
+              ) || 0.0,
+            longitude:
+              parseFloat(
+                formDataGeneralInformation[FormInputNameToSaveGeneralInformation.longitude],
+              ) || 0.0,
+          },
+          startDate: formDataGeneralInformation[FormInputNameToSaveGeneralInformation.startDate],
+          endDate: formDataGeneralInformation[FormInputNameToSaveGeneralInformation.endDate],
+          eventCategory: {
+            id: formDataGeneralInformation[FormInputNameToSaveGeneralInformation.eventCategory],
+          },
+          contractor: {
+            id: formDataGeneralInformation[FormInputNameToSaveGeneralInformation.contractor],
+          },
+          censure: +formDataGeneralInformation[FormInputNameToSaveGeneralInformation.censure],
+          facebookUrl:
+            formDataGeneralInformation[FormInputNameToSaveGeneralInformation.facebookUrl],
+          instagramUrl:
+            formDataGeneralInformation[FormInputNameToSaveGeneralInformation.instagramUrl],
+          imageBase64:
+            formDataGeneralInformation[FormInputNameToSaveGeneralInformation.imageBase64],
+          imagePosBase64:
+            formDataGeneralInformation[FormInputNameToSaveGeneralInformation.imagePosBase64],
+          publishWebsite: convertToBoolean(
+            formDataGeneralInformation[FormInputNameToSaveGeneralInformation.publishWebsite],
+          ),
+          textSize: +formDataGeneralInformation[FormInputNameToSaveGeneralInformation.textSize],
+          ticketPhrase:
+            formDataGeneralInformation[FormInputNameToSaveGeneralInformation.ticketPhrase],
+          websiteDescription:
+            formDataGeneralInformation[FormInputNameToSaveGeneralInformation.websiteDescription],
         };
 
         if (!payload.id) {
           delete payload.id;
 
-          await api.post<any>('/event', payload);
-          toast.success('Categoria cadastrado com sucesso!');
+          await api.post<any>('/event/general-information', payload);
+          // toast.success('Categoria cadastrado com sucesso!');
         } else {
-          await api.put<any>('/event', payload);
-          toast.success('Categoria atualizada com sucesso!');
+          await api.put<any>('/event/general-information', payload);
+          // toast.success('Categoria atualizada com sucesso!');
         }
 
         onToggle();
-        handleFecthFatherEventList();
+        onChangeEvent({ ...eventState, currentStep: eventState.currentStep + 1 });
       }
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
     }
+  };
+
+  const handleOnSaveFatherEvent = async (): Promise<void> => {
+    try {
+      if (isFormValidFatherEvent()) {
+        setFatherEvent(formDataFatherEvent[FormInputNameToSaveFatherEvent.name]);
+
+        onToggle();
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    }
+  };
+
+  const controllerGeneralInformationActions = {
+    onSave: handleOnSaveGeneralInformation,
   };
 
   const controllerCategoryActions = {
@@ -296,6 +425,7 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
   useEffect(() => {
     handleFecthCategoryList();
     handleFecthFatherEventList();
+    handleFecthContractorList();
   }, []);
 
   useEffect(() => {
@@ -313,10 +443,12 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
       formCategory={controllerFormCategory}
       formFatherEvent={controllerFormFatherEvent}
       modalConfig={controllerModalConfig}
+      GeneralInformationActions={controllerGeneralInformationActions}
       categoryStates={controllerCategoryState}
       categoryActions={controllerCategoryActions}
       fatherEventStates={controllerFatherEventState}
       fatherEventActions={controllerFatherEventActions}
+      contractorState={controllerContractorState}
     />
   );
 };

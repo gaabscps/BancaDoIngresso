@@ -1,5 +1,6 @@
 import { ShouldShowModal } from '@/features/registerEvent/screens/GeneralInformation/ui';
 import { FormData, FormErrors, OnChangeFormInput } from '@/hooks/useForm';
+import Contractor from '@/model/Contractor';
 import EventCategory from '@/model/EventCategory';
 import { Dispatch, SetStateAction } from 'react';
 
@@ -51,10 +52,19 @@ export interface categoryStatesProps {
 }
 
 export interface fatherEventStatesProps {
-  fatherEvent: EventCategory | undefined;
-  setFatherEvent: React.Dispatch<React.SetStateAction<EventCategory | undefined>>;
-  fatherEventList: EventCategory[];
-  setFatherEventList: Dispatch<SetStateAction<EventCategory[]>>;
+  fatherEvent: any | undefined;
+  setFatherEvent: React.Dispatch<React.SetStateAction<any | undefined>>;
+  fatherEventList: any[];
+  setFatherEventList: Dispatch<SetStateAction<any[]>>;
+}
+
+export interface contractorStatesProps {
+  contractorList: Contractor[];
+  setContractorList: Dispatch<SetStateAction<Contractor[]>>;
+}
+
+export interface GeneralInformaitionActionProps {
+  onSave: () => Promise<void>;
 }
 
 export interface categoryActionProps {

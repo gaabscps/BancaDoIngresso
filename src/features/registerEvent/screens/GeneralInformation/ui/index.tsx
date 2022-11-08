@@ -5,11 +5,13 @@ import { Container } from 'reactstrap';
 import {
   categoryActionProps,
   categoryStatesProps,
+  contractorStatesProps,
   fatherEventActionProps,
   fatherEventStatesProps,
   formCategoryProps,
   formFatherEventProps,
   formGeneralInformationProps,
+  GeneralInformaitionActionProps,
   modalConfigProps,
 } from '@/features/registerEvent/types';
 import './styles.scss';
@@ -35,10 +37,12 @@ export interface GeneralInformationContainerProps {
   formCategory: formCategoryProps;
   formFatherEvent: formFatherEventProps;
   modalConfig: modalConfigProps;
+  GeneralInformationActions: GeneralInformaitionActionProps;
   categoryStates: categoryStatesProps;
   categoryActions: categoryActionProps;
   fatherEventStates: fatherEventStatesProps;
   fatherEventActions: fatherEventActionProps;
+  contractorState: contractorStatesProps;
 }
 
 export const GeneralInformationContainer: React.FC<GeneralInformationContainerProps> = ({
@@ -47,10 +51,12 @@ export const GeneralInformationContainer: React.FC<GeneralInformationContainerPr
   formCategory,
   formFatherEvent,
   modalConfig,
+  GeneralInformationActions,
   categoryStates,
   categoryActions,
   fatherEventStates,
   fatherEventActions,
+  contractorState,
 }) => {
   const renderActionDialogToCancel: ActionProps = {
     title: 'Cancelar',
@@ -64,7 +70,6 @@ export const GeneralInformationContainer: React.FC<GeneralInformationContainerPr
         title={modalConfig.title}
         visible={modalConfig.visible}
         onClose={modalConfig.onToggle}
-        position={'center'}
         isContentWithCard
         actions={[
           {
@@ -103,10 +108,12 @@ export const GeneralInformationContainer: React.FC<GeneralInformationContainerPr
           state={state}
           formGeneralInformation={formGeneralInformation}
           modalConfig={modalConfig}
+          GeneralInformationActions={GeneralInformationActions}
           categoryStates={categoryStates}
           categoryActions={categoryActions}
           fatherEventStates={fatherEventStates}
           fatherEventActions={fatherEventActions}
+          contractorState={contractorState}
         />
       </Container>
     </Fragment>

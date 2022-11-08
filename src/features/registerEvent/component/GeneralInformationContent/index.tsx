@@ -1,6 +1,6 @@
 /* eslint-disable import/no-unresolved */
 import React from 'react';
-import { ButtonGroup, InputFile, InputText, SelectCustom, TextArea } from '@/components';
+import { Button, ButtonGroup, InputFile, InputText, SelectCustom, TextArea } from '@/components';
 import { Col, Form, FormGroup, Row } from 'reactstrap';
 import { statesUf } from '@/constant/states';
 import { ReactComponent as LinkIcon } from '@/assets/images/svg/Link.svg';
@@ -12,6 +12,8 @@ import {
   GeneralInformationContainerProps,
 } from '@/features/registerEvent/screens/GeneralInformation/ui';
 import { toast } from 'react-toastify';
+import { isValid as isValidCEP } from '@/helpers/masks/cep';
+import cep from 'cep-promise';
 
 // eslint-disable-next-line no-shadow
 export enum FormInputName {
@@ -19,9 +21,13 @@ export enum FormInputName {
   namePos = 'namePos',
   establishmentName = 'establishmentName',
   eventPlace = 'eventPlace',
+  zipCode = 'zipCode',
+  district = 'district',
   state = 'state',
   city = 'city',
-  expirationDate = 'expirationDate',
+  number = 'number',
+  street = 'street',
+  complement = 'complement',
   eventType = 'eventType',
   startDate = 'startDate',
   endDate = 'endDate',
@@ -38,6 +44,8 @@ export enum FormInputName {
   textSize = 'textSize',
   ticketPhrase = 'ticketPhrase',
   websiteDescription = 'websiteDescription',
+  latitude = 'latitude',
+  longitude = 'longitude',
 }
 
 // remove type formCategory of GeneralInformationContainerProps
@@ -45,10 +53,11 @@ export const GeneralInformationContent: React.FC<
   Omit<GeneralInformationContainerProps, 'formCategory' | 'formFatherEvent'>
 > = ({
   formGeneralInformation,
-  formFatherEvent,
   modalConfig,
+  GeneralInformationActions,
   categoryStates,
   fatherEventStates,
+  contractorState,
 }) => {
   const TypeEventsOptions = [
     { value: '0', label: 'Mono' },
@@ -56,11 +65,18 @@ export const GeneralInformationContent: React.FC<
     { value: '2', label: 'Filho' },
   ];
 
+  const isValidAddresswithCEP = (): boolean => {
+    const { zipCode } = formGeneralInformation.formData;
+    return !(zipCode?.length === 9 && isValidCEP(zipCode));
+  };
+
   return (
     <Form
       noValidate={true}
       onSubmit={(e): void => {
         e.preventDefault();
+
+        GeneralInformationActions.onSave();
       }}
     >
       <div className="container-event">
@@ -96,15 +112,37 @@ export const GeneralInformationContent: React.FC<
                 </div>
                 <div>vincular evento Pai</div>
               </span>
-              <span className="descrition-event-vinculation">
-                Evento Pai vinculado &gt;&gt; <b className="linked-event">Lollapalooza</b>
-                <div className="ml-4 link-black">
-                  <Pen />
-                </div>
-                <div className="ml-3 link-black">
-                  <Unlink title="Descincular" />
-                </div>
-              </span>
+              {fatherEventStates?.fatherEvent ? (
+                <span className="descrition-event-vinculation">
+                  Evento Pai vinculado &gt;&gt;{' '}
+                  <b className="linked-event">
+                    {
+                      fatherEventStates.fatherEventList.find(
+                        valueFatherEvent => valueFatherEvent.id === fatherEventStates.fatherEvent,
+                      ).name
+                    }
+                  </b>
+                  <div
+                    className="ml-4 link-black"
+                    onClick={() => {
+                      modalConfig.onShouldShowModal({
+                        value: ShouldShowModal.fatherEvent,
+                        newTitleModal: 'Alterar evento Pai',
+                      });
+                    }}
+                  >
+                    <Pen />
+                  </div>
+                  <div
+                    className="ml-3 link-black"
+                    onClick={() => {
+                      fatherEventStates.setFatherEvent(null);
+                    }}
+                  >
+                    <Unlink title="Descincular" />
+                  </div>
+                </span>
+              ) : null}
             </div>
           )}
         </FormGroup>
@@ -179,6 +217,33 @@ export const GeneralInformationContent: React.FC<
             }
           />
         </FormGroup>
+        <FormGroup className="mb-2">
+          <InputText
+            name="zipCode"
+            label="CEP"
+            placeholder="Digite o CEP da empresa"
+            maxLength={9}
+            value={formGeneralInformation.formData[FormInputName.zipCode]}
+            onChange={e => {
+              formGeneralInformation.onChangeFormInput(FormInputName.zipCode)(e.target.value);
+              if (e.target.value.length === 9 && isValidCEP(e.target.value)) {
+                cep(e.target.value).then(data => {
+                  formGeneralInformation.onChangeFormInput(FormInputName.state)(data.state);
+                  formGeneralInformation.onChangeFormInput(FormInputName.city)(data.city);
+                  formGeneralInformation.onChangeFormInput(FormInputName.district)(
+                    data.neighborhood,
+                  );
+                  formGeneralInformation.onChangeFormInput(FormInputName.street)(data.street);
+                });
+              }
+            }}
+            error={
+              formGeneralInformation.formErrors.zipCode &&
+              formGeneralInformation.formErrors.zipCode[0]
+            }
+          />
+        </FormGroup>
+
         <Row>
           <Col md={4} className="pl-0">
             <FormGroup className="mb-2">
@@ -197,7 +262,7 @@ export const GeneralInformationContent: React.FC<
                   formGeneralInformation.formErrors.state[0]
                 }
                 options={statesUf}
-                // disabled
+                disabled
               />
             </FormGroup>
           </Col>
@@ -217,11 +282,113 @@ export const GeneralInformationContent: React.FC<
                   formGeneralInformation.formErrors.city &&
                   formGeneralInformation.formErrors.city[0]
                 }
-                // disabled
+                disabled
               />
             </FormGroup>
           </Col>
         </Row>
+
+        <FormGroup className="mb-2">
+          <InputText
+            name="district"
+            label="Bairro"
+            placeholder="Centro"
+            value={formGeneralInformation.formData[FormInputName.district]}
+            onChange={e =>
+              formGeneralInformation.onChangeFormInput(FormInputName.district)(e.target.value)
+            }
+            error={
+              formGeneralInformation.formErrors.district &&
+              formGeneralInformation.formErrors.district[0]
+            }
+            disabled
+          />
+        </FormGroup>
+
+        <FormGroup className="mb-2">
+          <InputText
+            name="street"
+            label="Logradouro"
+            placeholder="Rua 123 da Costa"
+            value={formGeneralInformation.formData[FormInputName.street]}
+            onChange={e =>
+              formGeneralInformation.onChangeFormInput(FormInputName.street)(e.target.value)
+            }
+            error={
+              formGeneralInformation.formErrors.street &&
+              formGeneralInformation.formErrors.street[0]
+            }
+            disabled
+          />
+        </FormGroup>
+
+        <FormGroup className="mb-2">
+          <InputText
+            name="number"
+            label="Número"
+            placeholder="Ex: 789"
+            maxLength={6}
+            value={formGeneralInformation.formData[FormInputName.number]}
+            onChange={e =>
+              formGeneralInformation.onChangeFormInput(FormInputName.number)(e.target.value)
+            }
+            error={
+              formGeneralInformation.formErrors.number &&
+              formGeneralInformation.formErrors.number[0]
+            }
+            disabled={isValidAddresswithCEP()}
+          />
+        </FormGroup>
+
+        <FormGroup className="mb-2">
+          <InputText
+            name="complement"
+            label="Complemento (opcional)"
+            placeholder="Ex: Apto 12"
+            value={formGeneralInformation.formData[FormInputName.complement]}
+            onChange={e =>
+              formGeneralInformation.onChangeFormInput(FormInputName.complement)(e.target.value)
+            }
+            error={
+              formGeneralInformation.formErrors.complement &&
+              formGeneralInformation.formErrors.complement[0]
+            }
+            disabled={isValidAddresswithCEP()}
+          />
+        </FormGroup>
+        <FormGroup className="mb-2">
+          <InputText
+            name="latitude"
+            label="Latitude (opcional)"
+            placeholder="Ex: 0º"
+            maxLength={9}
+            value={formGeneralInformation.formData[FormInputName.latitude]}
+            onChange={e =>
+              formGeneralInformation.onChangeFormInput(FormInputName.latitude)(e.target.value)
+            }
+            error={
+              formGeneralInformation.formErrors.latitude &&
+              formGeneralInformation.formErrors.latitude[0]
+            }
+          />
+        </FormGroup>
+
+        <FormGroup className="mb-2">
+          <InputText
+            name="longitude"
+            label="Longitude (opcional)"
+            placeholder="Ex: 0º"
+            maxLength={9}
+            value={formGeneralInformation.formData[FormInputName.longitude]}
+            onChange={e =>
+              formGeneralInformation.onChangeFormInput(FormInputName.longitude)(e.target.value)
+            }
+            error={
+              formGeneralInformation.formErrors.longitude &&
+              formGeneralInformation.formErrors.longitude[0]
+            }
+          />
+        </FormGroup>
         <Row>
           <Col md={6} className="pl-0">
             <FormGroup className="mb-2">
@@ -372,7 +539,10 @@ export const GeneralInformationContent: React.FC<
               formGeneralInformation.formErrors.contractor[0]
             }
             value={formGeneralInformation.formData[FormInputName.contractor]}
-            options={TypeEventsOptions}
+            options={contractorState.contractorList?.map(optionContractor => ({
+              value: optionContractor.id,
+              label: optionContractor.name,
+            }))}
           />
           <div className="d-flex flex-column mb-5" style={{ marginTop: '-20px' }}>
             <span className="d-flex">
@@ -388,9 +558,12 @@ export const GeneralInformationContent: React.FC<
             name="censure"
             label="Censura do evento"
             placeholder="Digite a idade de censura. Ex: 16"
+            maxLength={2}
             value={formGeneralInformation.formData[FormInputName.censure]}
             onChange={e =>
-              formGeneralInformation.onChangeFormInput(FormInputName.censure)(e.target.value)
+              formGeneralInformation.onChangeFormInput(FormInputName.censure)(
+                e.target.value.replace(/\D/g, ''),
+              )
             }
             error={
               formGeneralInformation.formErrors.censure &&
@@ -550,6 +723,11 @@ export const GeneralInformationContent: React.FC<
             }
           />
         </FormGroup>
+      </div>
+      <hr />
+      <div className="footer-register-event">
+        <Button title="Voltar" theme="noneBorder" onClick={() => {}} />
+        <Button type="submit" title="Avançar para Setor e ingresso" onClick={() => {}} />
       </div>
     </Form>
   );
