@@ -18,6 +18,7 @@ import { ModuleNavigation } from '@/features/module/screens/navigation';
 import { PermissionNavigation } from '@/features/permission/screens/navigation';
 import { MenuNavigation } from '@/features/menu/screens/navigation';
 import { SubMenuNavigation } from '@/features/submenu/screens/navigation';
+import { EventsNavigation } from '@/features/events/navigation';
 import { renderRoutes } from './utils';
 import { Route } from './Route';
 import { path } from './path';
@@ -25,6 +26,7 @@ import { path } from './path';
 const Navigation: React.FC = (): JSX.Element => {
   const authRoutes = renderRoutes(AuthNavigation);
   const dashboardRoutes = renderRoutes(DashboardNavigation);
+  const eventsRoutes = renderRoutes(EventsNavigation);
   const moduleRoutes = renderRoutes(ModuleNavigation);
   const permissionRoutes = renderRoutes(PermissionNavigation);
   const menuRoutes = renderRoutes(MenuNavigation);
@@ -45,6 +47,7 @@ const Navigation: React.FC = (): JSX.Element => {
       <Switch>
         {authRoutes}
         {dashboardRoutes}
+        {eventsRoutes}
         {moduleRoutes}
         {permissionRoutes}
         {menuRoutes}

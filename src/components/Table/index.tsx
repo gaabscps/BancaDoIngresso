@@ -14,6 +14,7 @@ interface TablePropsCustom {
 interface TableCustomProps extends TableProps<TablePropsCustom | any> {
   numberRowsPerPage: number;
   progressPending: boolean;
+  getRowId?: (row: any) => void;
 }
 
 const schemeTheme = {
@@ -29,6 +30,7 @@ export const CustomTable: React.FC<TableCustomProps> = ({
   progressPending,
   numberRowsPerPage,
   columns,
+  getRowId,
 }: TableCustomProps) => (
   <DataTable
     columns={columns}
@@ -37,6 +39,10 @@ export const CustomTable: React.FC<TableCustomProps> = ({
     progressPending={progressPending}
     progressComponent={<CustomLoader numberRowsPerPage={numberRowsPerPage} />}
     customStyles={schemeTheme[theme as themeProps] ?? schemeTheme.primary}
+    onRowClicked={row => {
+      // eslint-disable-next-line no-unused-expressions
+      getRowId ? getRowId(row) : null;
+    }}
   />
 );
 

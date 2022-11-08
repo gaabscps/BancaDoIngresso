@@ -1,8 +1,18 @@
 export const colors = {
   lightBlue: '#3CAFC8',
+  lightBlueBG: 'rgba(60, 175, 200, 0.1)',
+  lightGreen: '#3CC8C0',
+  lightGreenBG: 'rgba(60, 200, 192, 0.1)',
+  darkRed: '#C83C66',
+  darkRedBG: 'rgba(200, 60, 102, 0.1)',
   green: '#7AD81B',
+  greenBG: 'rgba(122, 216, 27, 0.1)',
   yellow: '#FFE249',
+  yellowBG: 'rgba(246, 217, 62, 0.1)',
   red: '#E64F49',
+  redBG: 'rgba(229, 79, 73, 0.1)',
+  orange: '#E88B1E',
+  orangeBG: 'rgba(232, 139, 30, 0.1)',
   grey: '#808080',
   black: '#222222',
 };

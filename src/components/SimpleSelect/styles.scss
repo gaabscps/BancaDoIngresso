@@ -1,0 +1,15 @@
+.pagination-change-label {
+  position: absolute;
+  top: 110px;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: #222222;
+}
+
+@media screen and (max-width: 990px) {
+  .pagination-change-label {
+    top: 85px;
+    font-size: 12px;
+  }
+}
