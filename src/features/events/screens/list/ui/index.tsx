@@ -21,6 +21,7 @@ import { EventRequestParams } from '@/features/events/types';
 import { useHistory } from 'react-router-dom';
 import Voucher from '@/model/Voucher';
 import { RegisterVoucher } from '@/features/events/components/RegisterVoucher';
+import dayjs from 'dayjs';
 import { columns } from './table';
 
 // eslint-disable-next-line no-shadow
@@ -144,8 +145,8 @@ export const EventContainer: React.FC<EventContainerProps> = ({
       </div>
     ),
     city: event.address.city,
-    startDate: event.startDate,
-    endDate: event.endDate,
+    startDate: event.startDate === null ? '-----' : dayjs(event.startDate).format('DD/MM/YYYY'),
+    endDate: event.endDate === null ? '-----' : dayjs(event.startDate).format('DD/MM/YYYY'),
     actions: (
       <DropdownMenu
         title={<EventAction />}
@@ -181,7 +182,7 @@ export const EventContainer: React.FC<EventContainerProps> = ({
             title: 'Relatórios',
             icon: <Report />,
           },
-          event.eventStatus === 0
+          event.eventStatus === 1
             ? {
                 divider: true,
                 title: (
@@ -201,7 +202,7 @@ export const EventContainer: React.FC<EventContainerProps> = ({
                 title: '',
                 hidden: true,
               },
-          event.eventStatus === 0
+          event.eventStatus === 1
             ? {
                 title: (
                   <Button
@@ -267,15 +268,13 @@ export const EventContainer: React.FC<EventContainerProps> = ({
               <h5 className="pageTitle" style={{ marginBottom: '1px' }}>
                 Todos os eventos cadastrados
               </h5>
-              {/* {listEvent?.filter(event => event.eventStatus === 0).length > 0 ? ( */}
               <p className="eventDraftCounter">
                 Você tem{' '}
                 <span style={{ color: '#222222', fontWeight: '500' }}>
-                  {fullListEvent?.map(event => event.eventStatus === 0).length} eventos
+                  {fullListEvent?.filter(event => event.eventStatus === 0).length} eventos{' '}
                 </span>
                 em rascunho
               </p>
-              {/* ) : null} */}
             </div>
             <div className="button-filter-container">
               <Button

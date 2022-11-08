@@ -13,7 +13,7 @@ import Voucher from '@/model/Voucher';
 import { EventRequestParams, EventResponse } from '../../types';
 
 export default interface PayloadEvent {
-  id?: string;
+  name: string;
   eventStatus?: EventStatus;
 }
 
@@ -107,10 +107,9 @@ export const EventScreen: React.FC = () => {
   const handleOnReleaseEvent = async (eventSelected: Event): Promise<void> => {
     try {
       const payload: PayloadEvent = {
-        id: eventSelected.id,
-        eventStatus: 2,
+        name: eventSelected.name,
       };
-      await api.post<Event>('/event/general-information', payload);
+      await api.patch<Event>(`/event/${eventSelected.id}/active`, payload);
 
       toast.success('Evento Liberado!');
       handleFetch(currentPage);
@@ -123,10 +122,9 @@ export const EventScreen: React.FC = () => {
   const handleOnRefuseEvent = async (eventSelected: Event): Promise<void> => {
     try {
       const payload: PayloadEvent = {
-        id: eventSelected.id,
-        eventStatus: 3,
+        name: eventSelected.name,
       };
-      await api.post<Event>('/event/general-information', payload);
+      await api.patch<Event>(`/event/${eventSelected.id}/refused`, payload);
 
       toast.success('Evento Liberado!');
       handleFetch(currentPage);

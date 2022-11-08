@@ -98,8 +98,8 @@ export const StatusFilter: React.FC<StatusFilterProps> = ({ handleOnFilterStatus
           }}
           className={
             item.status
-              ? 'd-flex action-icon eventStatus subText filterActive'
-              : 'd-flex eventStatus subText action-icon'
+              ? 'd-flex action-icon eventStatus subText filterActive statusFilter'
+              : 'd-flex eventStatus subText action-icon statusFilter'
           }
           style={
             item.status
@@ -107,7 +107,9 @@ export const StatusFilter: React.FC<StatusFilterProps> = ({ handleOnFilterStatus
               : { backgroundColor: 'transparent' }
           }
         >
-          <Status style={{ color: item.color }} />
+          <div>
+            <Status style={{ color: item.color }} />
+          </div>
           {item.name}
         </div>
       ))}
