@@ -5,6 +5,7 @@ import { Container } from 'reactstrap';
 import {
   categoryActionProps,
   categoryStatesProps,
+  contractorActionProps,
   contractorStatesProps,
   fatherEventActionProps,
   fatherEventStatesProps,
@@ -43,6 +44,7 @@ export interface GeneralInformationContainerProps {
   fatherEventStates: fatherEventStatesProps;
   fatherEventActions: fatherEventActionProps;
   contractorState: contractorStatesProps;
+  contractorActions: contractorActionProps;
 }
 
 export const GeneralInformationContainer: React.FC<GeneralInformationContainerProps> = ({
@@ -57,6 +59,7 @@ export const GeneralInformationContainer: React.FC<GeneralInformationContainerPr
   fatherEventStates,
   fatherEventActions,
   contractorState,
+  contractorActions,
 }) => {
   const renderActionDialogToCancel: ActionProps = {
     title: 'Cancelar',
@@ -114,6 +117,7 @@ export const GeneralInformationContainer: React.FC<GeneralInformationContainerPr
           fatherEventStates={fatherEventStates}
           fatherEventActions={fatherEventActions}
           contractorState={contractorState}
+          contractorActions={contractorActions}
         />
       </Container>
     </Fragment>

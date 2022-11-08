@@ -205,16 +205,6 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
     if (categorySelected?.id && value === ShouldShowModal.category) {
       setCategory(categorySelected);
     }
-    // if (comboSelected?.id && value === ShouldShowModal.combo) {
-    //   setCombo(comboSelected);
-    //   if (comboSelected.id !== combo?.id) {
-    //     handleFecthComboGroupList();
-    //     handleFecthComboSubGroupList(comboSelected.categorySubGroup.categoryGroup.id);
-    //   }
-    // }
-    // if (!comboSelected?.id && value === ShouldShowModal.combo) {
-    //   handleFecthComboGroupList();
-    // }
   };
 
   const controllerModalConfig: modalConfigProps = {
@@ -422,6 +412,10 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
     onSave: handleOnSaveFatherEvent,
   };
 
+  const controllerContractorActions = {
+    onGetList: handleFecthContractorList,
+  };
+
   useEffect(() => {
     handleFecthCategoryList();
     handleFecthFatherEventList();
@@ -449,6 +443,7 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
       fatherEventStates={controllerFatherEventState}
       fatherEventActions={controllerFatherEventActions}
       contractorState={controllerContractorState}
+      contractorActions={controllerContractorActions}
     />
   );
 };

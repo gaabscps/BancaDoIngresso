@@ -5,18 +5,19 @@ import Contractor from '@/model/Contractor';
 import api, { AxiosError } from '@/services/api';
 import { toast } from 'react-toastify';
 import {
-  ContractorResponse,
-  ContractorRequestParams,
+  ContractorTypeResponse,
   PixForm,
   BanckAccountForm,
   BankResponse,
-} from '@/features/contractor/types';
+  ContractorSelectedProps,
+  onShouldShowModalProps,
+} from '@/features/registerEvent/component/ContractorScreen/types';
 import useForm from '@/hooks/useForm';
 import {
   States,
   ContractorContainer,
   ShouldShowModal,
-} from '@/features/contractor/screens/List/ui';
+} from '@/features/registerEvent/component/ContractorScreen/ui';
 import validators from '@/helpers/validators';
 import {
   updateMask as updateMaskCPFOrCNPJ,
@@ -27,11 +28,7 @@ import {
   updateMask as updateMaskMobilePhone,
   unmask as unMaskMobilePhone,
 } from '@/helpers/masks/mobilePhone';
-import { FormInputName as FormInputNameToSaveContractor } from '@/features/contractor/components/RegisterContent';
-import { useConfirmDelete } from '@/hooks/useConfirmDelete';
-import { FormInputName as FormInputNameToFilter } from '@/features/contractor/components/FilterContent';
-import { colors } from '@/styles/colors';
-import StatusType from '@/model/StatusType';
+import { FormInputName as FormInputNameToSaveContractor } from '@/features/registerEvent/component/ContractorScreen/component/RegisterContent';
 import { convertToBoolean } from '@/helpers/common/convertToBoolean';
 import ContractorType from '@/model/ContractorType';
 import Bank from '@/model/Bank';
@@ -39,7 +36,6 @@ import PixType from '@/model/PixType';
 import User from '@/model/User';
 import PixTypes from '@/model/PixTypes';
 import Address from '@/model/Address';
-import { DeleteContent } from '@/features/contractor/components/DeleteContent';
 
 export default interface PayloadContractor {
   id?: string;
@@ -72,9 +68,11 @@ export default interface PayloadContractor {
   }[];
 }
 
-export const ContractorScreen: React.FC = (): JSX.Element => {
+export const ContractorScreen: React.FC<ContractorSelectedProps> = ({
+  contractorSelected,
+  contractorActions,
+}): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
-  const [listContractor, setListContractor] = useState<Contractor[]>([]);
   const [listContractorType, setListContractorType] = useState<ContractorType[]>([]);
   const [listBank, setListBank] = useState<Bank[]>([]);
   const [listBankAccount, setListBankAccount] = useState<BanckAccountForm[]>([]);
@@ -100,16 +98,8 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(
     ShouldShowModal.registerContractor,
   );
-  const [currentPage, setCurrentPage] = useState<ContractorRequestParams>({
-    page: 1,
-    pageSize: 10,
-    sort: 'name',
-    order: 'DESC',
-    total: 1,
-  });
 
   const { title, visible, onChangeTitle, onToggle } = useDialog();
-  const confirmDelete = useConfirmDelete();
 
   const {
     formData: formDataContractor,
@@ -153,19 +143,6 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
       document: updateMaskCPFOrCNPJ,
       telephone: updateMaskMobilePhone,
       zipCode: updateMaskCEP,
-    },
-  });
-
-  const {
-    formData: formDataFilter,
-    formErrors: formErrorsFilter,
-    onChangeFormInput: onChangeFormInputFilter,
-    isFormValid: isFormValidFilter,
-    resetForm: resetFormFilter,
-  } = useForm({
-    initialData: {
-      filterSearch: '',
-      inputSearch: '',
     },
   });
 
@@ -314,7 +291,7 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
   const handleGetContractorType = async (): Promise<void> => {
     try {
       setState(States.loading);
-      const { data } = await api.post<ContractorResponse>('/contractor/type/page', {});
+      const { data } = await api.post<ContractorTypeResponse>('/contractor/type/page', {});
 
       if (data) {
         setListContractorType(data?.list ?? []);
@@ -327,75 +304,37 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
     }
   };
 
-  const handleFetch = async (values: ContractorRequestParams): Promise<void> => {
-    try {
-      setState(States.loading);
-      const { data } = await api.post<ContractorResponse>('/contractor/page', values);
-
-      if (data) {
-        setListContractor(data?.list ?? []);
-
-        setCurrentPage(currentPageState => ({
-          ...currentPageState,
-          ...data,
-        }));
-      }
-    } catch (error) {
-      const err = error as AxiosError;
-      toast.error(err.message);
-    } finally {
-      setState(States.default);
-    }
-  };
-  const handleOnChangeColorColumn = (status: StatusType): string =>
-    ({
-      0: colors.green,
-      1: colors.red,
-    }[status] || colors.grey);
-
   const handleOnShouldShowModal = ({
     value,
     newTitleModal,
     contractor: companySelected,
     isEdit,
-  }: {
-    value: ShouldShowModal;
-    newTitleModal: string | React.ReactNode;
-    contractor?: Contractor;
-    isEdit?: boolean;
-  }): void => {
+  }: onShouldShowModalProps): void => {
     setShouldShowModal(value);
     onChangeTitle(newTitleModal);
 
     // reset list users
     setListUsers(listUsersDefault);
 
-    if (value !== ShouldShowModal.filter) {
-      if (!isEdit) {
-        setBankAccount([...listBankAccount, { id: '', name: '', agencia: '', conta: '' }]);
-        setPix([
-          ...listPixTable,
-          { idInstitution: '', nameInstitution: '', idType: '', nameType: '', pix: '' },
-        ]);
-      } else {
-        setBankAccount([...listBankAccount]);
-        setPix([...listPixTable]);
-      }
+    if (!isEdit) {
+      setBankAccount([...listBankAccount, { id: '', name: '', agencia: '', conta: '' }]);
+      setPix([
+        ...listPixTable,
+        { idInstitution: '', nameInstitution: '', idType: '', nameType: '', pix: '' },
+      ]);
+    } else {
+      setBankAccount([...listBankAccount]);
+      setPix([...listPixTable]);
     }
 
-    if (
-      (companySelected?.id && value !== ShouldShowModal.filter) ||
-      (!companySelected?.id && value !== ShouldShowModal.filter)
-    ) {
-      setContractor(companySelected);
-      setListUsers(() => {
-        // remove users selected from list listUsersDefault
-        const newListUsers = listUsersDefault.filter(
-          item => !usersSelected?.find(user => user.id === item.id),
-        );
-        return newListUsers;
-      });
-    }
+    setContractor(companySelected);
+    setListUsers(() => {
+      // remove users selected from list listUsersDefault
+      const newListUsers = listUsersDefault.filter(
+        item => !usersSelected?.find(user => user.id === item.id),
+      );
+      return newListUsers;
+    });
   };
 
   const handleOnSaveContractor = async (): Promise<void> => {
@@ -485,8 +424,8 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
           toast.success('Empresa atualizada com sucesso!');
         }
 
+        contractorActions.onGetList();
         onToggle();
-        handleFetch(currentPage);
       }
     } catch (error) {
       const err = error as AxiosError;
@@ -540,39 +479,6 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
     }
   };
 
-  const handleOnClose = (): void => confirmDelete.hide();
-
-  const handleOnConfirmDeleteToContractor = async (posSelected: Contractor): Promise<void> => {
-    try {
-      await api.delete(`/contractor/${posSelected?.id}`);
-
-      toast.success('empresa excluída com sucesso!');
-      handleOnClose();
-      handleFetch(currentPage);
-    } catch (error) {
-      const err = error as AxiosError;
-      toast.error(err.message);
-    }
-  };
-
-  const handleOnShowDeleteContractor = (posSelected: Contractor): void => {
-    confirmDelete.show({
-      title: '',
-      children: <DeleteContent />,
-      actions: [
-        {
-          title: 'Não, quero manter',
-          theme: 'noneBorder',
-          onClick: (): void => handleOnClose(),
-        },
-        {
-          title: 'Sim, quero excluir',
-          onClick: (): Promise<void> => handleOnConfirmDeleteToContractor(posSelected),
-        },
-      ],
-    });
-  };
-
   const handleOnDeleteRowBankAccount = (values: BanckAccountForm): void => {
     listBankAccount.splice(listBankAccount.indexOf(values), 1);
     setListBankAccount([...listBankAccount]);
@@ -581,51 +487,6 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
   const handleOnDeleteRowPix = (values: PixForm): void => {
     listPixTable.splice(listPixTable.indexOf(values), 1);
     setListPixTable([...listPixTable]);
-  };
-
-  const handleOnFilter = async (): Promise<void> => {
-    try {
-      if (isFormValidFilter()) {
-        const payload =
-          {
-            name: {
-              entity: {
-                name: formDataFilter[FormInputNameToFilter.inputSearch],
-              },
-            },
-            serialNumber: {
-              entity: {
-                serialNumber: formDataFilter[FormInputNameToFilter.inputSearch],
-              },
-            },
-          }[formDataFilter[FormInputNameToFilter.filterSearch]] || {};
-
-        onToggle();
-        await handleFetch({
-          ...currentPage,
-          ...payload,
-        });
-      }
-    } catch (error) {
-      const err = error as AxiosError;
-      toast.error(err.message);
-    }
-  };
-
-  const clearFilter = async (): Promise<void> => {
-    resetFormFilter();
-    await handleFetch({
-      ...currentPage,
-      entity: {},
-    } as any);
-    onToggle();
-  };
-
-  const handleOnPaginationChange = async (page: number): Promise<void> => {
-    handleFetch({
-      ...currentPage,
-      page,
-    });
   };
 
   useEffect(() => {
@@ -694,7 +555,6 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
   }, [contractor]);
 
   useEffect(() => {
-    handleFetch(currentPage);
     handleGetbankAccount();
     handleGetContractorType();
     handleGetUsers();
@@ -703,31 +563,22 @@ export const ContractorScreen: React.FC = (): JSX.Element => {
 
   return (
     <ContractorContainer
+      contractorSelected={contractorSelected}
       state={state}
       contractorState={contractor}
       title={title}
       visible={visible}
       onToggle={onToggle}
-      onPaginationChange={handleOnPaginationChange}
       shouldShowModal={shouldShowModal}
       onSaveContractor={handleOnSaveContractor}
       onSaveBankAccount={handleOnBankAccount}
       onSavePix={handleOnPix}
-      listContractor={listContractor}
-      currentPage={currentPage}
-      changeColorColumn={handleOnChangeColorColumn}
-      onChangeFormInputFilter={onChangeFormInputFilter}
       onShouldShowModal={handleOnShouldShowModal}
       formDataContractor={formDataContractor}
       formErrorsContractor={formErrorsContractor}
       onChangeFormInputContractor={onChangeFormInputContractor}
-      formDataFilter={formDataFilter}
-      formErrorsFilter={formErrorsFilter}
-      onShowDeleteContractor={handleOnShowDeleteContractor}
-      onFilter={handleOnFilter}
       listBankAccount={listBankAccount}
       listPixTable={listPixTable}
-      clearFilter={clearFilter}
       controllerInputAppendBankAccount={controllerInputAppendBankAccount}
       controllerInputAppendPix={controllerInputAppendPix}
       controllerAppendUser={controllerAppendUser}

@@ -70,6 +70,11 @@ export interface GeneralInformaitionActionProps {
 export interface categoryActionProps {
   onSave: () => Promise<void>;
 }
+
 export interface fatherEventActionProps {
   onSave: () => Promise<void>;
+}
+
+export interface contractorActionProps {
+  onGetList: () => Promise<void>;
 }

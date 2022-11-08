@@ -14,6 +14,7 @@ import {
 import { toast } from 'react-toastify';
 import { isValid as isValidCEP } from '@/helpers/masks/cep';
 import cep from 'cep-promise';
+import { ContractorScreen } from '@/features/registerEvent/component/ContractorScreen';
 
 // eslint-disable-next-line no-shadow
 export enum FormInputName {
@@ -58,6 +59,7 @@ export const GeneralInformationContent: React.FC<
   categoryStates,
   fatherEventStates,
   contractorState,
+  contractorActions,
 }) => {
   const TypeEventsOptions = [
     { value: '0', label: 'Mono' },
@@ -69,6 +71,10 @@ export const GeneralInformationContent: React.FC<
     const { zipCode } = formGeneralInformation.formData;
     return !(zipCode?.length === 9 && isValidCEP(zipCode));
   };
+
+  const contratorDataSelected = contractorState.contractorList.find(
+    item => item.id === formGeneralInformation.formData.contractor,
+  );
 
   return (
     <Form
@@ -544,14 +550,18 @@ export const GeneralInformationContent: React.FC<
               label: optionContractor.name,
             }))}
           />
-          <div className="d-flex flex-column mb-5" style={{ marginTop: '-20px' }}>
+          <ContractorScreen
+            contractorSelected={contratorDataSelected}
+            contractorActions={contractorActions}
+          />
+          {/* <div className="d-flex flex-column mb-5" style={{ marginTop: '-20px' }}>
             <span className="d-flex">
               <div className="mr-5 link-green">+ cadastrar nova empresa ou contratante</div>
               <div className="link-grey">
                 <Pen height={12} width={12} /> editar
               </div>
             </span>
-          </div>
+          </div> */}
         </FormGroup>
         <FormGroup className="mb-2">
           <InputText
