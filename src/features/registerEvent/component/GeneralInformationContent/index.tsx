@@ -402,7 +402,6 @@ export const GeneralInformationContent: React.FC<
                 type="date"
                 name="startDate"
                 label="Data Início do Evento"
-                placeholder="DD/MM/AAAA"
                 value={formGeneralInformation.formData[FormInputName.startDate]}
                 onChange={e =>
                   formGeneralInformation.onChangeFormInput(FormInputName.startDate)(e.target.value)
@@ -420,7 +419,6 @@ export const GeneralInformationContent: React.FC<
                 type="date"
                 name="endDate"
                 label="Data Fim do Evento"
-                placeholder="DD/MM/AAAA"
                 value={formGeneralInformation.formData[FormInputName.endDate]}
                 onChange={e =>
                   formGeneralInformation.onChangeFormInput(FormInputName.endDate)(e.target.value)
@@ -440,7 +438,6 @@ export const GeneralInformationContent: React.FC<
                 type="time"
                 name="startTime"
                 label="Hora Início do Evento"
-                placeholder="DD/MM/AAAA"
                 value={formGeneralInformation.formData[FormInputName.startTime]}
                 onChange={e =>
                   formGeneralInformation.onChangeFormInput(FormInputName.startTime)(e.target.value)
@@ -458,7 +455,6 @@ export const GeneralInformationContent: React.FC<
                 type="time"
                 name="endTime"
                 label="Hora Fim do Evento"
-                placeholder="DD/MM/AAAA"
                 value={formGeneralInformation.formData[FormInputName.endTime]}
                 onChange={e =>
                   formGeneralInformation.onChangeFormInput(FormInputName.endTime)(e.target.value)
@@ -736,8 +732,8 @@ export const GeneralInformationContent: React.FC<
       </div>
       <hr />
       <div className="footer-register-event">
-        <Button title="Voltar" theme="noneBorder" onClick={() => {}} />
-        <Button type="submit" title="Avançar para Setor e ingresso" onClick={() => {}} />
+        <Button title="Voltar" theme="noneBorder" onClick={() => undefined} />
+        <Button type="submit" title="Avançar para Setor e ingresso" onClick={() => undefined} />
       </div>
     </Form>
   );
