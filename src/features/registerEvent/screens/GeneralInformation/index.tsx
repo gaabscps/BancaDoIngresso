@@ -18,6 +18,8 @@ import api from '@/services/api';
 import EventCategory from '@/model/EventCategory';
 import Contractor from '@/model/Contractor';
 import { convertToBoolean } from '@/helpers/common/convertToBoolean';
+import { useHistory, useParams } from 'react-router-dom';
+import dayjs from 'dayjs';
 import {
   categoryStatesProps,
   fatherEventStatesProps,
@@ -30,8 +32,13 @@ import {
 } from '../../types';
 import { useEvent } from '../../hook/useEvent';
 
+type UrlParams = {
+  id: string;
+};
+
 export const GeneralInformationScreen: React.FC = (): JSX.Element => {
-  const [state] = useState<States>(States.default);
+  const [state, setState] = useState<States>(States.default);
+  const history = useHistory();
   const [formNameFiles, setFormNameFiles] = useState<NameFiles>({});
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(ShouldShowModal.category);
 
@@ -44,8 +51,19 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
   const [contractorList, setContractorList] = useState<Contractor[]>([]);
 
   const { title, visible, onChangeTitle, onToggle } = useDialog();
-
   const { eventState, onChange: onChangeEvent } = useEvent();
+  const params = useParams<UrlParams>();
+
+  const [dataCurrentStep, setDataCurrentStep] = useState<any>({});
+
+  useEffect(() => {
+    if (!visible) {
+      setTimeout(() => {
+        resetFormCategory();
+        setCategory(undefined);
+      }, 500);
+    }
+  }, [visible]);
 
   useEffect(() => {
     if (!visible) {
@@ -216,42 +234,55 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
     shouldShowModal,
   };
 
+  const handleGetEvetById = async (id: string): Promise<void> => {
+    try {
+      setState(States.loading);
+      const { data } = await api.get<any[]>(`/event/general-information/${id}`);
+      setDataCurrentStep(data);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
   const handleFecthContractorList = async (): Promise<void> => {
     try {
-      // setState(States.loading);
+      setState(States.loading);
       const { data } = await api.get<Contractor[]>(`/contractor/find`);
       setContractorList(data ?? []);
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
     } finally {
-      // setState(States.default);
+      setState(States.default);
     }
   };
 
   const handleFecthCategoryList = async (): Promise<void> => {
     try {
-      // setState(States.loading);
+      setState(States.loading);
       const { data } = await api.get<any[]>(`/event-category/find`);
       setCategoryList(data ?? []);
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
     } finally {
-      // setState(States.default);
+      setState(States.default);
     }
   };
 
   const handleFecthFatherEventList = async (): Promise<void> => {
     try {
-      // setState(States.loading);
+      setState(States.loading);
       const { data } = await api.get<any[]>(`/event/find`);
       setFatherEventList(data ?? []);
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
     } finally {
-      // setState(States.default);
+      setState(States.default);
     }
   };
 
@@ -304,15 +335,9 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
 
   const handleOnSaveGeneralInformation = async (): Promise<void> => {
     try {
-      console.log(
-        'Submit Informações Gerais :>> ',
-        isFormValidGeneralInformation(),
-        formErrorsGeneralInformation,
-        formDataGeneralInformation,
-      );
       if (isFormValidGeneralInformation()) {
         const payload: any = {
-          // id: '',
+          id: dataCurrentStep?.id,
           fatherEvent:
             formDataGeneralInformation[FormInputNameToSaveGeneralInformation.eventType] === '2'
               ? fatherEvent
@@ -323,7 +348,7 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
             formDataGeneralInformation[FormInputNameToSaveGeneralInformation.establishmentName],
           eventType: +formDataGeneralInformation[FormInputNameToSaveGeneralInformation.eventType],
           address: {
-            // id: 'string',
+            id: dataCurrentStep.address?.id,
             zipCode: formDataGeneralInformation[FormInputNameToSaveGeneralInformation.zipCode],
             state: formDataGeneralInformation[FormInputNameToSaveGeneralInformation.state],
             city: formDataGeneralInformation[FormInputNameToSaveGeneralInformation.city],
@@ -370,16 +395,13 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
 
         if (!payload.id) {
           delete payload.id;
-
-          await api.post<any>('/event/general-information', payload);
-          // toast.success('Categoria cadastrado com sucesso!');
-        } else {
-          await api.put<any>('/event/general-information', payload);
-          // toast.success('Categoria atualizada com sucesso!');
+          delete payload.address.id;
         }
+        const { data } = await api.post<any>('/event/general-information', payload);
 
         onToggle();
         onChangeEvent({ ...eventState, currentStep: eventState.currentStep + 1 });
+        history.push(`/dashboard/event/edit/${data.id}`);
       }
     } catch (error) {
       const err = error as AxiosError;
@@ -421,6 +443,106 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
     handleFecthFatherEventList();
     handleFecthContractorList();
   }, []);
+
+  useEffect(() => {
+    handleGetEvetById(params.id);
+  }, [params]);
+
+  useEffect(() => {
+    if (dataCurrentStep?.id) {
+      onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.name)(
+        dataCurrentStep?.name ?? '',
+      );
+      onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.namePos)(
+        dataCurrentStep?.posName ?? '',
+      );
+      onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.establishmentName)(
+        dataCurrentStep?.establishmentName ?? '',
+      );
+      onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.eventType)(
+        String(dataCurrentStep?.eventType) ?? '',
+      );
+      onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.zipCode)(
+        dataCurrentStep?.address?.zipCode ?? '',
+      );
+      onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.state)(
+        dataCurrentStep?.address?.state ?? '',
+      );
+      onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.city)(
+        dataCurrentStep?.address?.city ?? '',
+      );
+      onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.district)(
+        dataCurrentStep?.address?.district ?? '',
+      );
+      onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.street)(
+        dataCurrentStep?.address?.street ?? '',
+      );
+      onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.complement)(
+        dataCurrentStep?.address?.complement ?? '',
+      );
+      onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.number)(
+        dataCurrentStep?.address?.number ?? '',
+      );
+      onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.latitude)(
+        dataCurrentStep?.address?.latitude ?? '',
+      );
+      onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.longitude)(
+        dataCurrentStep?.address?.longitude ?? '',
+      );
+      onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.startDate)(
+        dayjs(dataCurrentStep?.startDate).format('YYYY-MM-DD') ?? '',
+      );
+
+      onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.endDate)(
+        dayjs(dataCurrentStep?.endDate).format('YYYY-MM-DD') ?? '',
+      );
+      onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.startTime)(
+        dayjs(dataCurrentStep?.startDate, 'YYYY-MM-DDTHH:mm:ssZ[Z]').format('HH:mm') ?? '',
+      );
+      onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.endTime)(
+        dayjs(dataCurrentStep?.endDate, 'YYYY-MM-DDTHH:mm:ssZ[Z]').format('HH:mm') ?? '',
+      );
+      onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.eventCategory)(
+        dataCurrentStep?.eventCategory?.id ?? '',
+      );
+      onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.contractor)(
+        dataCurrentStep?.contractor?.id ?? '',
+      );
+      onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.censure)(
+        String(dataCurrentStep?.censure) ?? '',
+      );
+      onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.facebookUrl)(
+        dataCurrentStep?.facebookUrl ?? '',
+      );
+      onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.instagramUrl)(
+        dataCurrentStep?.instagramUrl ?? '',
+      );
+      onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.publishWebsite)(
+        String(dataCurrentStep.publishWebsite),
+      );
+      onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.textSize)(
+        String(dataCurrentStep?.textSize) ?? '',
+      );
+      onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.ticketPhrase)(
+        dataCurrentStep?.ticketPhrase ?? '',
+      );
+      onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.websiteDescription)(
+        String(dataCurrentStep?.websiteDescription) ?? '',
+      );
+      // onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.imageBase64)(
+      //   dataCurrentStep?.imageBase64 ?? '',
+      // );
+      // onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.imagePosBase64)(
+      //   dataCurrentStep?.imagePosBase64 ?? '',
+      // );
+      setFormNameFiles(filesValues => ({
+        ...filesValues,
+        imageBase64: dataCurrentStep?.imageBase64?.split('/').pop(),
+        imagePosBase64: dataCurrentStep?.imagePosBase64?.split('/').pop(),
+      }));
+      setFatherEvent(dataCurrentStep?.fatherEvent ?? '');
+    }
+  }, [dataCurrentStep]);
 
   useEffect(() => {
     if (category?.id) {
