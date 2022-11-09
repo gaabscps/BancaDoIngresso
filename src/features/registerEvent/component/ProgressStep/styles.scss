@@ -1,0 +1,108 @@
+.progress-step {
+  display: flex;
+  justify-content: center;
+  user-select: none;
+  &__item {
+    display: flex;
+    cursor: pointer;
+    &__title {
+      margin: auto 0;
+      margin-bottom: 5px;
+      margin-left: 13px;
+      color: #c4c4c4;
+      white-space: nowrap;
+      &__current {
+        color: #d8413a;
+      }
+    }
+    &__status {
+      margin-top: auto;
+      &__current {
+        display: flex;
+        flex-direction: column;
+        & > *:first-child {
+          margin: auto;
+          margin-bottom: 5px;
+        }
+        span {
+          height: 32px;
+          width: 32px;
+          border-radius: 50%;
+          border: 1.50407px solid #d8413a;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 16px;
+          font-weight: 600;
+          color: #d8413a;
+          line-height: 24px;
+          line-height: 0;
+        }
+      }
+      &__todo {
+        span {
+          height: 32px;
+          width: 32px;
+          border-radius: 50%;
+          border: 1.5px solid #c4c4c4;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 16px;
+          font-weight: 600;
+          color: #c4c4c4;
+          line-height: 24px;
+        }
+      }
+      &__done {
+        span {
+          height: 32px;
+          width: 32px;
+          border-radius: 50%;
+          border: 1.5px solid #d8413a;
+          background: #d8413a;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 16px;
+          font-weight: 600;
+          line-height: 24px;
+        }
+      }
+    }
+  }
+
+  &__line {
+    margin: auto 12.66px;
+    margin-bottom: 15px;
+    height: 2.2561px;
+    width: 100%;
+    min-width: 10px;
+    background-color: #c4c4c4;
+    &__done {
+      background: #d8413a;
+      border: 1.5px solid #d8413a;
+    }
+  }
+}
+
+.cursor {
+  &__todo {
+    cursor: not-allowed;
+  }
+}
+
+@media screen and (max-width: 1300px) {
+  .progress-step {
+    flex-direction: column;
+    &__item {
+      margin-bottom: 20px;
+      &__status {
+        margin-top: 0;
+      }
+    }
+    &__line {
+      display: none;
+    }
+  }
+}
