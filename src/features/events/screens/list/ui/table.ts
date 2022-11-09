@@ -24,7 +24,7 @@ export const columns: TableColumn<DataRow>[] = [
     },
   },
   {
-    name: 'Inicio evento',
+    name: 'Início evento',
     selector: row => row.startDate,
     minWidth: '200px',
     style: {

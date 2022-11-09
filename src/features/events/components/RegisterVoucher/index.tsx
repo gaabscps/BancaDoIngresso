@@ -3,6 +3,8 @@
 import { Button, InputText } from '@/components';
 import { CustomTable } from '@/components/Table';
 import Voucher from '@/model/Voucher';
+import { OnChangeFormInput, FormData } from '@/hooks/useForm';
+import { ReactComponent as Copy } from '@/assets/images/svg/copy.svg';
 import React from 'react';
 import { X } from 'react-feather';
 import { Col, Form, FormGroup, Row } from 'reactstrap';
@@ -18,25 +20,45 @@ export interface DataRow {
   actions: string;
 }
 
+// eslint-disable-next-line no-shadow
+export enum FormInputName {
+  description = 'description',
+  value = 'value',
+}
+
 interface RegisterContentProps {
   voucherState: Voucher[];
-  handleOnSaveVoucher: (event: Event) => void;
-  handleFetchVoucher: (event: Event) => void;
+  handleOnSaveVoucher: (event: Event) => Promise<void>;
+  handleFetchVoucher: (event: Event) => Promise<void>;
+  onChangeFormInputVoucher: OnChangeFormInput;
+  copyToClipboard: (code: string) => void;
   eventState: Event | any;
+  formDataVoucher: FormData;
 }
 export const RegisterVoucher: React.FC<RegisterContentProps> = ({
   voucherState,
   eventState,
+  formDataVoucher,
+  copyToClipboard,
   handleOnSaveVoucher,
   handleFetchVoucher,
+  onChangeFormInputVoucher,
 }) => {
   const dataTableVoucher = voucherState?.map(voucher => ({
     id: voucher.id,
     description: voucher.description,
     user: '-',
     value: voucher.value,
-    code: voucher.code,
-    actions: <X />,
+    code: (
+      <div className="voucher-code-row">
+        {voucher.code}{' '}
+        <Copy
+          onClick={() => copyToClipboard(voucher.code)}
+          className="copy-icon svg-icon action-icon"
+        />
+      </div>
+    ),
+    actions: <X className="svg-icon action-icon" />,
   }));
   return (
     <>
@@ -48,19 +70,15 @@ export const RegisterVoucher: React.FC<RegisterContentProps> = ({
                 label="Descrição do voucher"
                 placeholder="Digite a descrição do voucher de desconto"
                 name="description"
-                value={''}
-                onChange={function (): void {
-                  throw new Error('Function not implemented.');
-                }}
+                value={formDataVoucher[FormInputName.description]}
+                onChange={e => onChangeFormInputVoucher(FormInputName.description)(e.target.value)}
               />
               <InputText
                 label="Valor do voucher"
                 placeholder="Ex: 200 ,00  "
                 name="value"
-                value={''}
-                onChange={function (): void {
-                  throw new Error('Function not implemented.');
-                }}
+                value={String(formDataVoucher[FormInputName.value])}
+                onChange={e => onChangeFormInputVoucher(FormInputName.value)(e.target.value)}
                 after={true}
               />
             </FormGroup>
@@ -72,11 +90,9 @@ export const RegisterVoucher: React.FC<RegisterContentProps> = ({
               <Button
                 className="mb-4"
                 title="Gerar voucher"
-                onClick={() => {
-                  handleOnSaveVoucher(eventState);
-                  setTimeout(() => {
-                    handleFetchVoucher(eventState);
-                  }, 500);
+                onClick={async () => {
+                  await handleOnSaveVoucher(eventState);
+                  await handleFetchVoucher(eventState);
                 }}
               />
             </div>
@@ -85,7 +101,7 @@ export const RegisterVoucher: React.FC<RegisterContentProps> = ({
         </Row>
       </Form>
       <Row>
-        <Col md={7}>
+        <Col md={6}>
           <h5 className="mb-4 border-bottom-title fw-400 mt-5">Vouchers gerados</h5>
         </Col>
       </Row>
@@ -95,7 +111,7 @@ export const RegisterVoucher: React.FC<RegisterContentProps> = ({
             columns={columns}
             data={dataTableVoucher}
             numberRowsPerPage={10}
-            theme="secondary"
+            theme="secondaryThemeVoucher"
             progressPending={false}
           />
         </Col>

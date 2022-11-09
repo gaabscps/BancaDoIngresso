@@ -111,6 +111,34 @@ export const secondaryTheme = {
   },
 };
 
+export const secondaryThemeVoucher = {
+  table: {
+    style: {
+      backgroundColor: 'transparent',
+      overflow: 'auto',
+    },
+  },
+  headRow: {
+    style: {
+      border: 'none !important',
+      backgroundColor: 'transparent',
+      fontSize: '1rem',
+      fontWidth: '400',
+      fontWeight: '400',
+      color: '#A5A5A5',
+    },
+  },
+  rows: {
+    style: {
+      border: 'none !important',
+      backgroundColor: 'transparent',
+      fontSize: '1rem',
+      fontWidth: '400',
+      overflow: 'hidden',
+    },
+  },
+};
+
 export const tertiaryTheme = {
   table: {
     style: {

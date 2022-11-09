@@ -1,15 +1,18 @@
 .pagination-change-label {
-  position: absolute;
-  top: 110px;
   font-weight: 400;
   font-size: 12px;
   line-height: 18px;
   color: #222222;
 }
-
+.select-label-container {
+  margin-top: -30px;
+}
 @media screen and (max-width: 990px) {
-  .pagination-change-label {
-    top: 85px;
+  .select-label-container {
+    margin-top: -18px;
     font-size: 12px;
+    label {
+      margin-bottom: 0;
+    }
   }
 }

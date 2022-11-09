@@ -60,6 +60,9 @@ interface EventContainerProps {
   fullListEvent: Event[];
   voucherState: Voucher[];
   eventState: Event | undefined;
+  formDataVoucher: FormData;
+  copyToClipboard: (text: string) => void;
+  onChangeFormInputVoucher: OnChangeFormInput;
   onRefuseEvent: (event: Event) => void;
   onReleaseEvent: (event: Event) => void;
   handleOnFilterStatus: (status: number) => void;
@@ -71,8 +74,8 @@ interface EventContainerProps {
   onToggle: () => void;
   onChangeFormInputFilter: OnChangeFormInput;
   clearFilterStatus: () => void;
-  handleOnSaveVoucher: (event: Event) => void;
-  handleFetchVoucher: (event: Event) => void;
+  handleOnSaveVoucher: (event: Event) => Promise<void>;
+  handleFetchVoucher: (event: Event) => Promise<void>;
   onShouldShowModal: ({
     value,
     newTitleModal,
@@ -97,6 +100,9 @@ export const EventContainer: React.FC<EventContainerProps> = ({
   fullListEvent,
   voucherState,
   eventState,
+  formDataVoucher,
+  copyToClipboard,
+  onChangeFormInputVoucher,
   handleFetchVoucher,
   onRefuseEvent,
   onReleaseEvent,
@@ -113,7 +119,7 @@ export const EventContainer: React.FC<EventContainerProps> = ({
   onShouldShowModal,
 }) => {
   const dataEventType = [
-    { id: 0, name: 'Evento único' },
+    { id: 0, name: 'Evento mono' },
     { id: 1, name: 'Evento pai' },
     { id: 2, name: 'Evento filho' },
   ];
@@ -269,6 +275,9 @@ export const EventContainer: React.FC<EventContainerProps> = ({
                 voucherState={voucherState}
                 handleFetchVoucher={handleFetchVoucher}
                 eventState={eventState}
+                onChangeFormInputVoucher={onChangeFormInputVoucher}
+                formDataVoucher={formDataVoucher}
+                copyToClipboard={copyToClipboard}
               />
             ),
           }[shouldShowModal]
@@ -295,13 +304,13 @@ export const EventContainer: React.FC<EventContainerProps> = ({
                 title="+ Cadastrar novo evento"
                 onClick={() => history.push('/dashboard/event/create')}
               />
-              <div style={{ marginLeft: '15px' }}>
+              <div className="select-label-container" style={{ marginLeft: '15px' }}>
                 <SimpleSelect
                   name={'Exibir'}
                   value={pagination}
                   options={paginationSelect}
                   placeholder="10 por página"
-                  label="Exibir"
+                  label="Exibir:"
                   onChange={e => {
                     // eslint-disable-next-line no-unsafe-optional-chaining
                     setPagination({ pageSize: Number(e?.value) });

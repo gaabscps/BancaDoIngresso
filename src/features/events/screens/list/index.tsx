@@ -11,6 +11,7 @@ import api from '@/services/api';
 import Event from '@/model/Event';
 import Voucher from '@/model/Voucher';
 import { EventRequestParams, EventResponse } from '../../types';
+import { FormInputName } from '../../components/RegisterVoucher';
 
 export interface PayloadEvent {
   name: string;
@@ -62,18 +63,19 @@ export const EventScreen: React.FC = () => {
       7: colors.grey,
     }[status] || colors.grey);
 
-  // const {
-  //   formData: formDataVoucher,
-  //   formErrors: formErrorsVoucher,
-  //   onChangeFormInput: onChangeFormInputVoucher,
-  //   isFormValid: isFormValidVoucher,
-  //   resetForm: resetFormVoucher,
-  // } = useForm({
-  //   initialData: {
-  //     description: '',
-  //     value: '',
-  //   },
-  // });
+  const {
+    formData: formDataVoucher,
+    // formErrors: formErrorsVoucher,
+    onChangeFormInput: onChangeFormInputVoucher,
+    // isFormValid: isFormValidVoucher,
+    // resetForm: resetFormVoucher,
+  } = useForm({
+    initialData: {
+      description: '',
+      value: '',
+    },
+  });
+
   const {
     formData: formDataFilter,
     formErrors: formErrorsFilter,
@@ -191,9 +193,8 @@ export const EventScreen: React.FC = () => {
   const handleOnSaveVoucher = async (eventSelected: Event): Promise<void> => {
     try {
       await api.post(`/event/${eventSelected?.id}/voucher`, {
-        description: 'voucher teste2',
-        value: 1001,
-        code: '12dfg',
+        description: formDataVoucher[FormInputName.description],
+        value: formDataVoucher[FormInputName.value],
       });
     } catch (error) {
       const err = error as AxiosError;
@@ -261,6 +262,11 @@ export const EventScreen: React.FC = () => {
     }
   };
 
+  const copyToClipboard = (text: string): void => {
+    navigator.clipboard.writeText(text);
+    toast.success('Copiado!');
+  };
+
   useEffect(() => {
     handleFetch({ ...currentPage, ...pagination });
     handleFetchAll();
@@ -295,6 +301,9 @@ export const EventScreen: React.FC = () => {
       handleOnSaveVoucher={handleOnSaveVoucher}
       eventState={event}
       handleFetchVoucher={handleFetchVoucher}
+      onChangeFormInputVoucher={onChangeFormInputVoucher}
+      formDataVoucher={formDataVoucher}
+      copyToClipboard={copyToClipboard}
     />
   );
 };
