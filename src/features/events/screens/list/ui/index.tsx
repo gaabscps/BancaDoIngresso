@@ -19,9 +19,9 @@ import { FilterContent } from '@/features/events/components/FilterContent';
 import Event from '@/model/Event';
 import { EventRequestParams } from '@/features/events/types';
 import { useHistory } from 'react-router-dom';
-import Voucher from '@/model/Voucher';
 import { RegisterVoucher } from '@/features/events/components/RegisterVoucher';
 import dayjs from 'dayjs';
+import Voucher from '@/model/Voucher';
 import { columns } from './table';
 
 // eslint-disable-next-line no-shadow
@@ -58,7 +58,8 @@ interface EventContainerProps {
   formErrorsFilter: FormErrors;
   pagination: { pageSize: number };
   fullListEvent: Event[];
-  voucher: Voucher | undefined;
+  voucherState: Voucher[];
+  eventState: Event | undefined;
   onRefuseEvent: (event: Event) => void;
   onReleaseEvent: (event: Event) => void;
   handleOnFilterStatus: (status: number) => void;
@@ -70,15 +71,15 @@ interface EventContainerProps {
   onToggle: () => void;
   onChangeFormInputFilter: OnChangeFormInput;
   clearFilterStatus: () => void;
+  handleOnSaveVoucher: (event: Event) => void;
+  handleFetchVoucher: (event: Event) => void;
   onShouldShowModal: ({
     value,
     newTitleModal,
-    event,
   }: {
     value: ShouldShowModal;
     newTitleModal: string | React.ReactNode;
     event?: Event;
-    voucher?: Voucher;
   }) => void;
 }
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -94,7 +95,9 @@ export const EventContainer: React.FC<EventContainerProps> = ({
   visible,
   pagination,
   fullListEvent,
-  voucher,
+  voucherState,
+  eventState,
+  handleFetchVoucher,
   onRefuseEvent,
   onReleaseEvent,
   handleOnFilterStatus,
@@ -106,6 +109,7 @@ export const EventContainer: React.FC<EventContainerProps> = ({
   onChangeFormInputFilter,
   onToggle,
   clearFilterStatus,
+  handleOnSaveVoucher,
   onShouldShowModal,
 }) => {
   const dataEventType = [
@@ -165,12 +169,13 @@ export const EventContainer: React.FC<EventContainerProps> = ({
           {
             title: 'Voucher de desconto',
             icon: <Ticket style={{ transform: 'scale(0.9)' }} />,
-            action: () =>
+            action: () => {
               onShouldShowModal({
                 newTitleModal: 'Cadastrar voucher de desconto',
                 value: ShouldShowModal.voucher,
-                voucher,
-              }),
+                event,
+              });
+            },
           },
           {
             title: 'Fechamento do evento',
@@ -258,7 +263,14 @@ export const EventContainer: React.FC<EventContainerProps> = ({
                 onChangeFormInput={onChangeFormInputFilter}
               />
             ),
-            [ShouldShowModal.voucher]: <RegisterVoucher />,
+            [ShouldShowModal.voucher]: (
+              <RegisterVoucher
+                handleOnSaveVoucher={handleOnSaveVoucher}
+                voucherState={voucherState}
+                handleFetchVoucher={handleFetchVoucher}
+                eventState={eventState}
+              />
+            ),
           }[shouldShowModal]
         }
       </Dialog>

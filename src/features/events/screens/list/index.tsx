@@ -12,9 +12,13 @@ import Event from '@/model/Event';
 import Voucher from '@/model/Voucher';
 import { EventRequestParams, EventResponse } from '../../types';
 
-export default interface PayloadEvent {
+export interface PayloadEvent {
   name: string;
   eventStatus?: EventStatus;
+}
+export interface PayloadVoucher {
+  description: string;
+  value: number;
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -23,8 +27,9 @@ export const EventScreen: React.FC = () => {
 
   const [state, setState] = useState<States>(States.default);
   const [listEvent, setListEvent] = useState<Event[]>([]);
+  const [voucher, setVoucher] = useState<Voucher[]>([]);
+  const [event, setEvent] = useState<Event>();
   const [fullListEvent, setFullListEvent] = useState<Event[]>([]);
-  const [voucher, setVoucher] = useState<Voucher>();
   const [pagination, setPagination] = useState({
     pageSize: 10,
   });
@@ -57,6 +62,18 @@ export const EventScreen: React.FC = () => {
       7: colors.grey,
     }[status] || colors.grey);
 
+  // const {
+  //   formData: formDataVoucher,
+  //   formErrors: formErrorsVoucher,
+  //   onChangeFormInput: onChangeFormInputVoucher,
+  //   isFormValid: isFormValidVoucher,
+  //   resetForm: resetFormVoucher,
+  // } = useForm({
+  //   initialData: {
+  //     description: '',
+  //     value: '',
+  //   },
+  // });
   const {
     formData: formDataFilter,
     formErrors: formErrorsFilter,
@@ -96,6 +113,18 @@ export const EventScreen: React.FC = () => {
       setState(States.loading);
       const { data } = await api.get<Event[]>('/event/find');
       setFullListEvent(data ?? []);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+  const handleFetchVoucher = async (eventSelected: Event): Promise<void> => {
+    try {
+      setState(States.loading);
+      const { data } = await api.get<Voucher[]>(`/event/${eventSelected?.id}/voucher`);
+      setVoucher(data ?? []);
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
@@ -144,18 +173,31 @@ export const EventScreen: React.FC = () => {
   const handleOnShouldShowModal = ({
     value,
     newTitleModal,
-    voucher: voucherSelected,
+    event: eventSelected,
   }: {
     value: ShouldShowModal;
     newTitleModal: string | React.ReactNode;
-    voucher?: Voucher;
+    event?: Event | any;
   }): void => {
     setShouldShowModal(value);
     onChangeTitle(newTitleModal);
     onToggle();
+    if (value !== ShouldShowModal.filter) {
+      handleFetchVoucher(eventSelected);
+      setEvent(eventSelected);
+    }
+  };
 
-    if (voucherSelected) {
-      setVoucher(voucherSelected);
+  const handleOnSaveVoucher = async (eventSelected: Event): Promise<void> => {
+    try {
+      await api.post(`/event/${eventSelected?.id}/voucher`, {
+        description: 'voucher teste2',
+        value: 1001,
+        code: '12dfg',
+      });
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
     }
   };
 
@@ -226,8 +268,8 @@ export const EventScreen: React.FC = () => {
 
   return (
     <EventContainer
-      voucher={voucher}
       state={state}
+      voucherState={voucher}
       listEvent={listEvent}
       paginationSelect={paginationSelect}
       changeColorColumn={changeColorColumn}
@@ -250,6 +292,9 @@ export const EventScreen: React.FC = () => {
       onReleaseEvent={handleOnReleaseEvent}
       onRefuseEvent={handleOnRefuseEvent}
       clearFilterStatus={clearFilterStatus}
+      handleOnSaveVoucher={handleOnSaveVoucher}
+      eventState={event}
+      handleFetchVoucher={handleFetchVoucher}
     />
   );
 };

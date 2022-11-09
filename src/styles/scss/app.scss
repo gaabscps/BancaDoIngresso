@@ -8,7 +8,17 @@
 .warning-icon {
   color: #e54f49;
 }
-
+.pseudo-input {
+  &::after {
+    content: 'R$';
+    position: absolute;
+    top: 195px;
+    right: 30px;
+    color: #828282;
+    font-weight: 400;
+    font-size: 16px;
+  }
+}
 .exclude-button {
   display: flex;
   justify-content: center;
