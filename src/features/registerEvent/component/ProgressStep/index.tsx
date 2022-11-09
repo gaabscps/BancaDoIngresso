@@ -28,10 +28,9 @@ export const ProgressStep = ({ currentStep, steps }: ProgressStepProps): JSX.Ele
     });
 
   const handleClickStep = (step: number): void => {
-    // TODO: add validation to change step
-    // if (step < currentStep) {
-    onChangeEvent({ ...eventState, currentStep: step });
-    // }
+    if (step < currentStep) {
+      onChangeEvent({ ...eventState, currentStep: step });
+    }
   };
 
   return (
@@ -41,7 +40,10 @@ export const ProgressStep = ({ currentStep, steps }: ProgressStepProps): JSX.Ele
           const { status } = step;
           return (
             <React.Fragment key={index}>
-              <div className="progress-step__item" onClick={() => handleClickStep(index)}>
+              <div
+                className={`progress-step__item cursor__${status}`}
+                onClick={() => handleClickStep(index)}
+              >
                 <div className="progress-step__item__status">
                   <div className={`progress-step__item__status__${status}`}>
                     {status === 'current' && (

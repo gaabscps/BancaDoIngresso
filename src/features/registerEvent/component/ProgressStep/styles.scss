@@ -7,7 +7,7 @@
     cursor: pointer;
     &__title {
       margin: auto 0;
-      margin-bottom: 3px;
+      margin-bottom: 5px;
       margin-left: 13px;
       color: #c4c4c4;
       white-space: nowrap;
@@ -17,9 +17,6 @@
     }
     &__status {
       margin-top: auto;
-      * {
-        line-height: 0 !important;
-      }
       &__current {
         display: flex;
         flex-direction: column;
@@ -39,6 +36,7 @@
           font-weight: 600;
           color: #d8413a;
           line-height: 24px;
+          line-height: 0;
         }
       }
       &__todo {
@@ -85,6 +83,12 @@
       background: #d8413a;
       border: 1.5px solid #d8413a;
     }
+  }
+}
+
+.cursor {
+  &__todo {
+    cursor: not-allowed;
   }
 }
 
