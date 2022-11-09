@@ -1,6 +1,6 @@
 import React from 'react';
 import { Col, Form, FormGroup, Row } from 'reactstrap';
-import { InputText, SelectCustom } from '@/components';
+import { SelectCustom } from '@/components';
 import { fatherEventStatesProps, formFatherEventProps } from '../../types';
 
 interface RegisterFatherEventContentProps {

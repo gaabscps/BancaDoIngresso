@@ -66,6 +66,7 @@ const Navigation: React.FC = (): JSX.Element => {
           {GroupSubgroupProductRoutes}
           {CompanyRoutes}
           {RegisterEventRoutes}
+          {eventsRoutes}
           <Route path={path.Initial.All} component={Error404} />
         </Switch>
       </PdvProvider>
