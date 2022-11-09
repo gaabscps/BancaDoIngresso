@@ -7,7 +7,7 @@
     cursor: pointer;
     &__title {
       margin: auto 0;
-      margin-bottom: 5px;
+      margin-bottom: 3px;
       margin-left: 13px;
       color: #c4c4c4;
       white-space: nowrap;
@@ -17,6 +17,9 @@
     }
     &__status {
       margin-top: auto;
+      * {
+        line-height: 0 !important;
+      }
       &__current {
         display: flex;
         flex-direction: column;

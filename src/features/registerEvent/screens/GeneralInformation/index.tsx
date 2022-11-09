@@ -65,15 +65,6 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
     }
   }, [visible]);
 
-  useEffect(() => {
-    if (!visible) {
-      setTimeout(() => {
-        resetFormCategory();
-        setCategory(undefined);
-      }, 500);
-    }
-  }, [visible]);
-
   const {
     formData: formDataGeneralInformation,
     formErrors: formErrorsGeneralInformation,
@@ -169,48 +160,7 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
     formatters: {},
   });
 
-  const handleOnChangeFileInput =
-    (inputName: string) =>
-    (file: File | undefined): void => {
-      // validate if file is image
-      if (file && file.type.match(/image\/(jpg|jpeg|png)/)) {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => {
-          const base64 = reader.result?.toString();
-          if (base64) {
-            setFormNameFiles({ ...formNameFiles, [inputName]: file.name });
-            onChangeFormInputGeneralInformation(inputName)('');
-            onChangeFormInputGeneralInformation(inputName)(base64);
-          }
-        };
-      } else {
-        setErrorsGeneralInformation({
-          [inputName]: ['O formato deve ser .jpg, .jpeg ou .png'],
-        });
-      }
-    };
-
-  const controllerFormGeneralInformation = {
-    formData: formDataGeneralInformation,
-    formErrors: formErrorsGeneralInformation,
-    onChangeFormInput: onChangeFormInputGeneralInformation,
-    onChanfeFormFileInput: handleOnChangeFileInput,
-    formNameFiles,
-  };
-
-  const controllerFormCategory: formCategoryProps = {
-    formData: formDataCategory,
-    formErrors: formErrorsCategory,
-    onChangeFormInput: onChangeFormInputCategory,
-  };
-
-  const controllerFormFatherEvent: formFatherEventProps = {
-    formData: formDataFatherEvent,
-    formErrors: formErrorsFatherEvent,
-    onChangeFormInput: onChangeFormInputFatherEvent,
-  };
-
+  // Config Modal --------------------------------------------------------------
   const handleOnShouldShowModal = ({
     value,
     newTitleModal,
@@ -233,7 +183,76 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
     onShouldShowModal: handleOnShouldShowModal,
     shouldShowModal,
   };
+  // Config Modal --------------------------------------------------------------
 
+  // Change file input ---------------------------------------------------------
+  const handleOnChangeFileInput =
+    (inputName: string) =>
+    (file: File | undefined): void => {
+      // validate if file is image
+      if (file && file.type.match(/image\/(jpg|jpeg|png)/)) {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          const base64 = reader.result?.toString();
+          if (base64) {
+            setFormNameFiles({ ...formNameFiles, [inputName]: file.name });
+            onChangeFormInputGeneralInformation(inputName)('');
+            onChangeFormInputGeneralInformation(inputName)(base64);
+          }
+        };
+      } else {
+        setErrorsGeneralInformation({
+          [inputName]: ['O formato deve ser .jpg, .jpeg ou .png'],
+        });
+      }
+    };
+  // Change file input ---------------------------------------------------------
+
+  // Controller Forms ----------------------------------------------------------
+  const controllerFormGeneralInformation = {
+    formData: formDataGeneralInformation,
+    formErrors: formErrorsGeneralInformation,
+    onChangeFormInput: onChangeFormInputGeneralInformation,
+    onChanfeFormFileInput: handleOnChangeFileInput,
+    formNameFiles,
+  };
+
+  const controllerFormCategory: formCategoryProps = {
+    formData: formDataCategory,
+    formErrors: formErrorsCategory,
+    onChangeFormInput: onChangeFormInputCategory,
+  };
+
+  const controllerFormFatherEvent: formFatherEventProps = {
+    formData: formDataFatherEvent,
+    formErrors: formErrorsFatherEvent,
+    onChangeFormInput: onChangeFormInputFatherEvent,
+  };
+  // Controller Forms ----------------------------------------------------------
+
+  // Controller States ----------------------------------------------------------
+  const controllerContractorState: contractorStatesProps = {
+    contractorList,
+    setContractorList,
+  };
+
+  const controllerCategoryState: categoryStatesProps = {
+    category,
+    setCategory,
+    categoryList,
+    setCategoryList,
+  };
+
+  const controllerFatherEventState: fatherEventStatesProps = {
+    fatherEvent,
+    setFatherEvent,
+    fatherEventList,
+    setFatherEventList,
+  };
+  // Controller States ----------------------------------------------------------
+
+  // Fetch Data -----------------------------------------------------------------
   const handleGetEvetById = async (id: string): Promise<void> => {
     try {
       setState(States.loading);
@@ -285,26 +304,6 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
       setState(States.default);
     }
   };
-
-  const controllerContractorState: contractorStatesProps = {
-    contractorList,
-    setContractorList,
-  };
-
-  const controllerCategoryState: categoryStatesProps = {
-    category,
-    setCategory,
-    categoryList,
-    setCategoryList,
-  };
-
-  const controllerFatherEventState: fatherEventStatesProps = {
-    fatherEvent,
-    setFatherEvent,
-    fatherEventList,
-    setFatherEventList,
-  };
-
   const handleOnSaveCategory = async (): Promise<void> => {
     try {
       if (isFormValidCategory()) {
@@ -336,6 +335,18 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
   const handleOnSaveGeneralInformation = async (): Promise<void> => {
     try {
       if (isFormValidGeneralInformation()) {
+        const payloadStartData = dayjs(
+          `${formDataGeneralInformation[FormInputNameToSaveGeneralInformation.startDate]}T${
+            formDataGeneralInformation[FormInputNameToSaveGeneralInformation.startTime]
+          }`,
+        ).format('YYYY-MM-DDTHH:mm');
+
+        const payloadEndData = dayjs(
+          `${formDataGeneralInformation[FormInputNameToSaveGeneralInformation.endDate]}T${
+            formDataGeneralInformation[FormInputNameToSaveGeneralInformation.endTime]
+          }`,
+        ).format('YYYY-MM-DDTHH:mm');
+
         const payload: any = {
           id: dataCurrentStep?.id,
           fatherEvent:
@@ -346,6 +357,7 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
           posName: formDataGeneralInformation[FormInputNameToSaveGeneralInformation.namePos],
           establishmentName:
             formDataGeneralInformation[FormInputNameToSaveGeneralInformation.establishmentName],
+          eventPlace: formDataGeneralInformation[FormInputNameToSaveGeneralInformation.eventPlace],
           eventType: +formDataGeneralInformation[FormInputNameToSaveGeneralInformation.eventType],
           address: {
             id: dataCurrentStep.address?.id,
@@ -366,8 +378,8 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
                 formDataGeneralInformation[FormInputNameToSaveGeneralInformation.longitude],
               ) || 0.0,
           },
-          startDate: formDataGeneralInformation[FormInputNameToSaveGeneralInformation.startDate],
-          endDate: formDataGeneralInformation[FormInputNameToSaveGeneralInformation.endDate],
+          startDate: payloadStartData,
+          endDate: payloadEndData,
           eventCategory: {
             id: formDataGeneralInformation[FormInputNameToSaveGeneralInformation.eventCategory],
           },
@@ -421,7 +433,9 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
       toast.error(err.message);
     }
   };
+  // Fetch Data -----------------------------------------------------------------
 
+  // Controllers Actions --------------------------------------------------------
   const controllerGeneralInformationActions = {
     onSave: handleOnSaveGeneralInformation,
   };
@@ -437,7 +451,9 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
   const controllerContractorActions = {
     onGetList: handleFecthContractorList,
   };
+  // Controllers Actions --------------------------------------------------------
 
+  // Execute Actions ------------------------------------------------------------
   useEffect(() => {
     handleFecthCategoryList();
     handleFecthFatherEventList();
@@ -445,8 +461,11 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
   }, []);
 
   useEffect(() => {
-    handleGetEvetById(params.id);
+    if (params.id) {
+      handleGetEvetById(params.id);
+    }
   }, [params]);
+  // Execute Actions ------------------------------------------------------------
 
   useEffect(() => {
     if (dataCurrentStep?.id) {
@@ -458,6 +477,9 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
       );
       onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.establishmentName)(
         dataCurrentStep?.establishmentName ?? '',
+      );
+      onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.eventPlace)(
+        dataCurrentStep?.eventPlace ?? '',
       );
       onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.eventType)(
         String(dataCurrentStep?.eventType) ?? '',
@@ -497,10 +519,10 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
         dayjs(dataCurrentStep?.endDate).format('YYYY-MM-DD') ?? '',
       );
       onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.startTime)(
-        dayjs(dataCurrentStep?.startDate, 'YYYY-MM-DDTHH:mm:ssZ[Z]').format('HH:mm') ?? '',
+        dataCurrentStep?.startDate.split('T')[1].slice(0, 5) ?? '',
       );
       onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.endTime)(
-        dayjs(dataCurrentStep?.endDate, 'YYYY-MM-DDTHH:mm:ssZ[Z]').format('HH:mm') ?? '',
+        dataCurrentStep?.endDate.split('T')[1].slice(0, 5) ?? '',
       );
       onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.eventCategory)(
         dataCurrentStep?.eventCategory?.id ?? '',

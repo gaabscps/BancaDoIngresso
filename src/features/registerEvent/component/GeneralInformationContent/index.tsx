@@ -211,7 +211,7 @@ export const GeneralInformationContent: React.FC<
           <InputText
             name="eventPlace"
             label="Local do evento"
-            placeholder="Digite o nome do estabelecimento evento. Ex: Folk Valley"
+            placeholder="Digite o local do evento. Ex: Rua Perimetral Leste, 123"
             maxLength={18}
             value={formGeneralInformation.formData[FormInputName.eventPlace]}
             onChange={e =>
@@ -685,7 +685,7 @@ export const GeneralInformationContent: React.FC<
             options={[
               { value: '0', label: 'Pequeno' },
               { value: '1', label: 'Médio' },
-              { value: '2', label: 'Grange' },
+              { value: '2', label: 'Grande' },
             ]}
             error={
               formGeneralInformation.formErrors.textSize &&
