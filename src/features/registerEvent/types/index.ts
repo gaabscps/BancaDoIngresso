@@ -1,5 +1,5 @@
 import { ShouldShowModal } from '@/features/registerEvent/screens/GeneralInformation/ui';
-import { FormData, FormErrors, OnChangeFormInput } from '@/hooks/useForm';
+import { FormData, FormErrors, OnChangeFormInput, SetFormErrors } from '@/hooks/useForm';
 import Contractor from '@/model/Contractor';
 import EventCategory from '@/model/EventCategory';
 import { Dispatch, SetStateAction } from 'react';
@@ -12,6 +12,7 @@ export interface formGeneralInformationProps {
   formData: FormData;
   formErrors: FormErrors;
   onChangeFormInput: OnChangeFormInput;
+  setFormErrors: SetFormErrors;
   onChanfeFormFileInput: (inputName: string) => (file: File | undefined) => void;
   formNameFiles: NameFiles;
 }

@@ -71,6 +71,7 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
     onChangeFormInput: onChangeFormInputGeneralInformation,
     isFormValid: isFormValidGeneralInformation,
     setErrors: setErrorsGeneralInformation,
+    setFormErrors: setFormErrorsGeneralInformation,
   } = useForm({
     initialData: {
       name: '',
@@ -214,6 +215,7 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
     formData: formDataGeneralInformation,
     formErrors: formErrorsGeneralInformation,
     onChangeFormInput: onChangeFormInputGeneralInformation,
+    setFormErrors: setFormErrorsGeneralInformation,
     onChanfeFormFileInput: handleOnChangeFileInput,
     formNameFiles,
   };
@@ -334,7 +336,19 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
 
   const handleOnSaveGeneralInformation = async (): Promise<void> => {
     try {
+      const childrenType =
+        formDataGeneralInformation[FormInputNameToSaveGeneralInformation.eventType] === '2';
+
       if (isFormValidGeneralInformation()) {
+        if (childrenType && !fatherEvent) {
+          setFormErrorsGeneralInformation({
+            [FormInputNameToSaveGeneralInformation.eventType]: [
+              'É necessário vincular o evento pai',
+            ],
+          });
+          return;
+        }
+
         const payloadStartData = dayjs(
           `${formDataGeneralInformation[FormInputNameToSaveGeneralInformation.startDate]}T${
             formDataGeneralInformation[FormInputNameToSaveGeneralInformation.startTime]
@@ -349,10 +363,7 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
 
         const payload: any = {
           id: dataCurrentStep?.id,
-          fatherEvent:
-            formDataGeneralInformation[FormInputNameToSaveGeneralInformation.eventType] === '2'
-              ? fatherEvent
-              : '',
+          fatherEvent: childrenType ? fatherEvent : '',
           name: formDataGeneralInformation[FormInputNameToSaveGeneralInformation.name],
           posName: formDataGeneralInformation[FormInputNameToSaveGeneralInformation.namePos],
           establishmentName:
@@ -425,7 +436,9 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
     try {
       if (isFormValidFatherEvent()) {
         setFatherEvent(formDataFatherEvent[FormInputNameToSaveFatherEvent.name]);
-
+        setFormErrorsGeneralInformation({
+          [FormInputNameToSaveGeneralInformation.eventType]: [''],
+        });
         onToggle();
       }
     } catch (error) {

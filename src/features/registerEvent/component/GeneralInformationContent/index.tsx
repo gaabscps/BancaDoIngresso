@@ -15,6 +15,7 @@ import { toast } from 'react-toastify';
 import { isValid as isValidCEP } from '@/helpers/masks/cep';
 import cep from 'cep-promise';
 import { ContractorScreen } from '@/features/registerEvent/component/ContractorScreen';
+import { useHistory } from 'react-router-dom';
 
 // eslint-disable-next-line no-shadow
 export enum FormInputName {
@@ -61,6 +62,8 @@ export const GeneralInformationContent: React.FC<
   contractorState,
   contractorActions,
 }) => {
+  const history = useHistory();
+
   const TypeEventsOptions = [
     { value: '0', label: 'Mono' },
     { value: '1', label: 'Pai' },
@@ -143,6 +146,9 @@ export const GeneralInformationContent: React.FC<
                     className="ml-3 link-black"
                     onClick={() => {
                       fatherEventStates.setFatherEvent(null);
+                      formGeneralInformation.setFormErrors({
+                        [FormInputName.eventType]: ['É necessário vincular o evento pai'],
+                      });
                     }}
                   >
                     <Unlink title="Descincular" />
@@ -732,7 +738,11 @@ export const GeneralInformationContent: React.FC<
       </div>
       <hr />
       <div className="footer-register-event">
-        <Button title="Voltar" theme="noneBorder" onClick={() => undefined} />
+        <Button
+          title="Voltar"
+          theme="noneBorder"
+          onClick={() => history.push('/dashboard/event')}
+        />
         <Button type="submit" title="Avançar para Setor e ingresso" onClick={() => undefined} />
       </div>
     </Form>
