@@ -1,0 +1,17 @@
+.filterActive {
+  padding: 2px 5px;
+  border-radius: 20px;
+}
+@media (max-width: '1230px') {
+  .status-container {
+    justify-content: flex-start !important;
+    transition: all 0.3s ease;
+  }
+  .statusFilter {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .filterStatus {
+    margin: 15px 0px !important;
+  }
+}

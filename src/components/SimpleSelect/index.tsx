@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import React, { useState } from 'react';
+import './styles.scss';
 
 // react-select with props typescript types
 import Select, { SingleValue, ActionMeta } from 'react-select';
@@ -17,7 +18,7 @@ interface SimpleSelectProps {
   label?: string;
   error?: string;
   onChange?: (newValue: SingleValue<OptionProps>, actionMeta: ActionMeta<OptionProps>) => void;
-  value: number;
+  value: number | { pageSize: number };
   options: OptionProps[];
   placeholder?: string;
   id?: string;

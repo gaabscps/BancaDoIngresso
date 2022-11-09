@@ -1,4 +1,5 @@
 import React from 'react';
+import empty from '@/assets/images/other-images/imgvazio.svg';
 import { imageStyle } from './styles';
 
 interface ColumnImageProps {
@@ -7,6 +8,6 @@ interface ColumnImageProps {
 
 export const ColumnImage: React.FC<ColumnImageProps> = ({ srcImage }) => (
   <div style={{ maxHeight: '5.188rem', padding: 0 }}>
-    <img style={imageStyle} src={srcImage} />
+    {srcImage ? <img style={imageStyle} src={srcImage} /> : <img style={imageStyle} src={empty} />}
   </div>
 );

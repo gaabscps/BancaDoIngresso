@@ -1,5 +1,6 @@
 import { AUTH_ROUTES } from '@/features/auth/navigation';
 import { DASHBOARD_ROUTES } from '@/features/dashboard/navigation';
+import { EVENTS_ROUTES } from '@/features/events/navigation';
 import { PDV_ROUTES } from '@/features/pdv/navigation';
 import { POS_ROUTES } from '@/features/pos/navigation';
 import { PAYMENTGATEWAY_ROUTES } from '@/features/paymentGateway/navigation';
@@ -24,8 +25,7 @@ const path = {
   Dashboard: {
     ...DASHBOARD_ROUTES,
     Events: {
-      itself: '/dashboard/events',
-      edit: '/dashboard/events/edit/:id',
+      ...EVENTS_ROUTES,
     },
     Event: {
       ...REGISTEREVENT_ROUTES,
