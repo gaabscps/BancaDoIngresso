@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, LegacyRef } from 'react';
 
 interface RadioProps {
   name: string;
@@ -10,6 +10,8 @@ interface RadioProps {
   options?: any;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   value: string;
+  disabled?: boolean;
+  refButton?: LegacyRef<HTMLInputElement>;
 }
 
 interface OptionProps {
@@ -26,47 +28,55 @@ export const ButtonGroup: FC<RadioProps> = ({
   options,
   onChange,
   value,
-}) => (
-  <div className={`flex-column mb-4 ${wrapperClass}`}>
-    {label && (
-      <div className="d-flex flex-column-reverse">
-        <label htmlFor={name} className="input-label">
-          {label}
-        </label>
-      </div>
-    )}
-    <div>
-      <div className="btn-group" role="group">
-        {options.map((option: OptionProps) => {
-          const idRandom = Math.random().toString(36).substr(2, 9);
-          return (
-            <React.Fragment key={option.value}>
-              <input
-                type="radio"
-                className="btn-check radio-button-gruop"
-                value={String(option.value)}
-                checked={String(option.value) === value}
-                onChange={onChange}
-                name={name}
-                id={`${option.value}-${idRandom}`}
-              />
-              <label
-                className="btn button-group label-radio-custom"
-                htmlFor={`${option.value}-${idRandom}`}
-              >
-                {option.label}
-              </label>
-            </React.Fragment>
-          );
-        })}
-      </div>
-    </div>
-    {icon}
+  disabled,
+  refButton,
+}) => {
+  const isDisabled = disabled ? 'input-disabled' : '';
+  const isError = error ? 'input-error' : '';
 
-    {error && (
-      <span role="alert" className="alert-error position-relative">
-        {error}
-      </span>
-    )}
-  </div>
-);
+  return (
+    <div className={`flex-column mb-4 ${wrapperClass} ${isDisabled} ${isError}`}>
+      {label && (
+        <div className="d-flex flex-column-reverse">
+          <label htmlFor={name} className="input-label">
+            {label}
+          </label>
+        </div>
+      )}
+      <div>
+        <div className={`btn-group ${isError}`} role="group">
+          {options.map((option: OptionProps) => {
+            const idRandom = Math.random().toString(36).substr(2, 9);
+            return (
+              <React.Fragment key={option.value}>
+                <input
+                  type="radio"
+                  className="btn-check radio-button-gruop"
+                  value={String(option.value)}
+                  checked={String(option.value) === value}
+                  onChange={onChange}
+                  name={name}
+                  id={`${option.value}-${idRandom}`}
+                  ref={refButton}
+                />
+                <label
+                  className="btn button-group label-radio-custom"
+                  htmlFor={`${option.value}-${idRandom}`}
+                >
+                  {option.label}
+                </label>
+              </React.Fragment>
+            );
+          })}
+        </div>
+      </div>
+      {icon}
+
+      {error && (
+        <span role="alert" className="alert-error position-relative">
+          {error}
+        </span>
+      )}
+    </div>
+  );
+};

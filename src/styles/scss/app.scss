@@ -844,7 +844,8 @@ hr.lineText {
   text-overflow: ellipsis;
 }
 
-input {
+input,
+textarea {
   color: black !important;
   box-shadow: none !important;
   &:focus {
@@ -879,12 +880,18 @@ input[type='radio']:checked + .label-radio-custom {
   display: none;
 }
 
-.button-group {
-  border-color: #a5a5a5;
-  color: #a5a5a5;
-  background-color: transparent;
-  padding: 18px 25px;
+.btn-group {
+  .button-group {
+    border-color: #a5a5a5;
+    color: #a5a5a5;
+    background-color: transparent;
+    padding: 18px 25px;
+  }
+  &.input-error * {
+    border-color: #e64f49 !important;
+  }
 }
+
 .button-filter-container {
   display: flex;
   height: fit-content;
@@ -1290,6 +1297,9 @@ input::-ms-clear {
   border-radius: 5px !important;
   background-color: #e6e6e6 !important;
   border-color: #e6e6e6 !important;
+  &.input-error {
+    border-color: #e64f49 !important;
+  }
 }
 
 .fw-700 {
@@ -1334,6 +1344,7 @@ input::-ms-clear {
   top: 25px;
   min-width: 13px;
 }
+
 .copy-icon {
   margin-left: 10px;
   transform: scale(0.8);
@@ -1363,4 +1374,18 @@ body
   > div {
   font-weight: 700;
   color: #222;
+
+
+.container-event {
+  max-width: 550px;
+}
+
+.footer-register-event {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 50px;
+  :first-child {
+    margin-right: 27px;
+  }
+
 }

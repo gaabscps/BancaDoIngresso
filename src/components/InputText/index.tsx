@@ -1,4 +1,4 @@
-import React, { FC, InputHTMLAttributes } from 'react';
+import React, { FC, InputHTMLAttributes, LegacyRef } from 'react';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string;
@@ -12,8 +12,10 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   maxLength?: number;
   renderForward?: React.ReactNode;
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
+  onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   disabled?: boolean;
+  refInput?: LegacyRef<HTMLInputElement>;
 }
 
 export const InputText: FC<InputProps> = ({
@@ -25,10 +27,13 @@ export const InputText: FC<InputProps> = ({
   label,
   maxLength,
   onBlur,
+  onFocus,
   onChange,
   wrapperClass,
+  className,
   renderForward,
   disabled,
+  refInput,
 }) => {
   const isDisabled = disabled ? 'input-disabled' : '';
   const isError = error ? 'input-error' : '';
@@ -46,9 +51,13 @@ export const InputText: FC<InputProps> = ({
         value={value}
         placeholder={placeholder ?? 'Digite aqui'}
         maxLength={maxLength}
+        ref={refInput}
         onBlur={onBlur}
+        onFocus={onFocus}
         onChange={onChange}
-        className={` form-control input-default ${isError}`}
+        className={`form-control input-default ${isError} ${className} ${
+          type === 'date' ? 'text-uppercase' : ''
+        } ${value === '' ? 'text-black-50' : ''}`}
         disabled={disabled}
       />
       {renderForward}

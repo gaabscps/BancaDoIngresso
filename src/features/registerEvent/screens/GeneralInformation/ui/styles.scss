@@ -1,0 +1,56 @@
+.link-event-father {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #7ad81b;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.linked-event {
+  font-weight: 500;
+}
+
+.descrition-event-vinculation {
+  font-style: italic;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #a5a5a5;
+  display: flex;
+}
+
+.link-green {
+  color: #7ad81b;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  cursor: pointer;
+}
+
+.link-black {
+  color: #222222;
+  cursor: pointer;
+  &:hover {
+    color: #000;
+  }
+}
+
+.link-grey {
+  color: #a5a5a5;
+  cursor: pointer;
+  &:hover {
+    color: #222222;
+  }
+}
+
+.description-input {
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 24px;
+  /* identical to box height */
+
+  /* Cores/Branco/+5 */
+
+  color: #a5a5a5;
+}

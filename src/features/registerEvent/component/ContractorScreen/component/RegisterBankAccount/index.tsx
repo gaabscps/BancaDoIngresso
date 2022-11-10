@@ -4,7 +4,7 @@ import { Button, InputText, SelectCustom } from '@/components';
 import { FormErrors } from '@/hooks/useForm';
 import { X } from 'react-feather';
 import { updateMask as updateMaskAccountAgency } from '@/helpers/masks/AccountAgency';
-import { ContractorControllerBankAccount } from '@/features/contractor/types';
+import { ContractorControllerBankAccount } from '@/features/registerEvent/component/ContractorScreen/types';
 
 interface RegisterContentProps {
   formErrors?: FormErrors;
