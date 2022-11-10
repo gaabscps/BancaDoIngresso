@@ -294,7 +294,11 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
     try {
       setState(States.loading);
       const { data } = await api.get<any[]>(`/event/find`);
-      setFatherEventList(data ?? []);
+      // filter father event when event type is father
+      const fatherEventListFiltered = data.filter(
+        fatherEventValue => fatherEventValue.eventType === 1,
+      );
+      setFatherEventList(fatherEventListFiltered ?? []);
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
