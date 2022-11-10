@@ -5,7 +5,7 @@ export const columns: TableColumn<DataRow>[] = [
   {
     name: 'Descrição do voucher',
     selector: row => row.description,
-    minWidth: '200px',
+    width: '300px',
     style: {
       fontSize: '16px',
       paddingTop: '15px',
@@ -14,7 +14,7 @@ export const columns: TableColumn<DataRow>[] = [
     },
   },
   {
-    name: 'Usuário',
+    name: 'Usuário (CPF)',
     selector: row => row.user,
     width: '200px',
     style: {

@@ -63,6 +63,7 @@ interface EventContainerProps {
   eventState: Event | undefined;
   formDataVoucher: FormData;
   formErrorsVoucher: FormErrors;
+  handleOnShowDeleteProduct: (eventSelected: string, VoucherSelected: string) => void;
   isFormValidVoucher: IsFormValid;
   copyToClipboard: (text: string) => void;
   onChangeFormInputVoucher: OnChangeFormInput;
@@ -105,6 +106,7 @@ export const EventContainer: React.FC<EventContainerProps> = ({
   eventState,
   formDataVoucher,
   formErrorsVoucher,
+  handleOnShowDeleteProduct,
   isFormValidVoucher,
   copyToClipboard,
   onChangeFormInputVoucher,
@@ -162,8 +164,19 @@ export const EventContainer: React.FC<EventContainerProps> = ({
       </div>
     ),
     city: event.address.city,
-    startDate: event.startDate === null ? '-----' : dayjs(event.startDate).format('DD/MM/YYYY'),
-    endDate: event.endDate === null ? '-----' : dayjs(event.startDate).format('DD/MM/YYYY'),
+    startDate:
+      event.startDate === null
+        ? '-----'
+        : // eslint-disable-next-line no-useless-concat
+          `${dayjs(event.startDate).format('DD/MM/YYYY')} às ${dayjs(event.startDate).format(
+            'HH:mm',
+          )}`,
+    endDate:
+      event.endDate === null
+        ? '-----'
+        : `${dayjs(event.startDate).format('DD/MM/YYYY')} às ${dayjs(event.startDate).format(
+            'HH:mm',
+          )}`,
     actions: (
       <DropdownMenu
         title={<EventAction />}
@@ -285,6 +298,7 @@ export const EventContainer: React.FC<EventContainerProps> = ({
                 formErrorsVoucher={formErrorsVoucher}
                 isFormValidVoucher={isFormValidVoucher}
                 copyToClipboard={copyToClipboard}
+                handleOnShowDeleteProduct={handleOnShowDeleteProduct}
               />
             ),
           }[shouldShowModal]
@@ -302,7 +316,9 @@ export const EventContainer: React.FC<EventContainerProps> = ({
                 Todos os eventos cadastrados
               </h5>
               <div className="d-flex">
-                <BlackAlert style={{ marginRight: '10px' }} />
+                <div style={{ width: 'fit-content' }}>
+                  <BlackAlert style={{ marginRight: '10px', marginBottom: '10px' }} />
+                </div>
                 <p className="eventDraftCounter">
                   Você tem{' '}
                   <span style={{ color: '#222222', fontWeight: '500' }}>

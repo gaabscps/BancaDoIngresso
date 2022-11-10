@@ -5,7 +5,8 @@ import { CustomTable } from '@/components/Table';
 import Voucher from '@/model/Voucher';
 import { OnChangeFormInput, FormData, FormErrors, IsFormValid } from '@/hooks/useForm';
 import { ReactComponent as Copy } from '@/assets/images/svg/copy.svg';
-import { updateMask } from '@/helpers/masks/decimalNumber';
+import { updateMask as updateMaskDecimal } from '@/helpers/masks/decimalNumber';
+import { updateMask as updatemaskCpf } from '@/helpers/masks/cpf';
 import React from 'react';
 import { X } from 'react-feather';
 import { Col, Form, FormGroup, Row } from 'reactstrap';
@@ -34,6 +35,7 @@ interface RegisterContentProps {
   onChangeFormInputVoucher: OnChangeFormInput;
   copyToClipboard: (code: string) => void;
   isFormValidVoucher: IsFormValid;
+  handleOnShowDeleteProduct: (eventSelected: string, voucherSelected: string) => void;
   eventState: Event | any;
   formDataVoucher: FormData;
   formErrorsVoucher: FormErrors;
@@ -43,6 +45,7 @@ export const RegisterVoucher: React.FC<RegisterContentProps> = ({
   eventState,
   formDataVoucher,
   formErrorsVoucher,
+  handleOnShowDeleteProduct,
   isFormValidVoucher,
   copyToClipboard,
   handleOnSaveVoucher,
@@ -52,7 +55,7 @@ export const RegisterVoucher: React.FC<RegisterContentProps> = ({
   const dataTableVoucher = voucherState?.map(voucher => ({
     id: voucher.id,
     description: voucher.description,
-    user: voucher.user || '-----',
+    user: updatemaskCpf(voucher.user),
     value: `R$ ${voucher.value}`,
     code: (
       <div className="voucher-code-row">
@@ -63,7 +66,14 @@ export const RegisterVoucher: React.FC<RegisterContentProps> = ({
         />
       </div>
     ),
-    actions: <X className="svg-icon action-icon" />,
+    actions: (
+      <X
+        className="svg-icon action-icon"
+        onClick={async () => {
+          handleOnShowDeleteProduct(eventState.id, voucher.id);
+        }}
+      />
+    ),
   }));
 
   return (
@@ -86,7 +96,7 @@ export const RegisterVoucher: React.FC<RegisterContentProps> = ({
                 name="value"
                 value={String(formDataVoucher[FormInputName.value])}
                 onChange={e =>
-                  onChangeFormInputVoucher(FormInputName.value)(updateMask(e.target.value))
+                  onChangeFormInputVoucher(FormInputName.value)(updateMaskDecimal(e.target.value))
                 }
                 error={formErrorsVoucher.value && formErrorsVoucher.value[0]}
               />

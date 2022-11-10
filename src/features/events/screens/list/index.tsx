@@ -12,8 +12,10 @@ import api from '@/services/api';
 import Event from '@/model/Event';
 import Voucher from '@/model/Voucher';
 import validators from '@/helpers/validators';
+import { useConfirmDelete } from '@/hooks/useConfirmDelete';
 import { EventRequestParams, EventResponse } from '../../types';
 import { FormInputName } from '../../components/RegisterVoucher';
+import { DeleteContent } from '../../components/DeleteContent';
 
 export interface PayloadEvent {
   name: string;
@@ -43,6 +45,7 @@ export const EventScreen: React.FC = () => {
     order: 'DESC',
     total: 1,
   });
+  const confirmDelete = useConfirmDelete();
 
   const { title, visible, onChangeTitle, onToggle } = useDialog();
 
@@ -134,6 +137,20 @@ export const EventScreen: React.FC = () => {
       setState(States.loading);
       const { data } = await api.get<Voucher[]>(`/event/${eventSelected?.id}/voucher`);
       setVoucher(data ?? []);
+      resetFormVoucher();
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+  const handleFetchVoucherModal = async (eventSelected: string): Promise<void> => {
+    try {
+      setState(States.loading);
+      const { data } = await api.get<Voucher[]>(`/event/${eventSelected}/voucher`);
+      setVoucher(data ?? []);
+      resetFormVoucher();
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
@@ -190,8 +207,8 @@ export const EventScreen: React.FC = () => {
   }): void => {
     setShouldShowModal(value);
     onChangeTitle(newTitleModal);
-    onToggle();
     resetFormVoucher();
+    onToggle();
     if (value !== ShouldShowModal.filter) {
       handleFetchVoucher(eventSelected);
       setEvent(eventSelected);
@@ -210,6 +227,45 @@ export const EventScreen: React.FC = () => {
       const err = error as AxiosError;
       toast.error(err.message);
     }
+  };
+
+  const handleOnClose = (): void => confirmDelete.hide();
+
+  const handleOnConfirmDeleteVoucher = async (
+    eventSelected: string,
+    voucherSelected: string,
+  ): Promise<void> => {
+    try {
+      await api.put(`/event/${eventSelected}/voucher/${voucherSelected}/disable`);
+      toast.success('Voucher excluído com sucesso!');
+      handleOnClose();
+      handleFetch(currentPage);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    }
+  };
+
+  // eslint-disable-next-line no-shadow
+  const handleOnShowDeleteProduct = (eventState: string, voucher: string): void => {
+    confirmDelete.show({
+      title: '',
+      children: <DeleteContent />,
+      actions: [
+        {
+          title: 'Não, quero manter',
+          theme: 'noneBorder',
+          onClick: (): void => handleOnClose(),
+        },
+        {
+          title: 'Sim, quero excluir',
+          onClick: async (): Promise<void> => {
+            await handleOnConfirmDeleteVoucher(eventState, voucher);
+            await handleFetchVoucherModal(eventState);
+          },
+        },
+      ],
+    });
   };
 
   const clearFilter = async (): Promise<void> => {
@@ -316,6 +372,7 @@ export const EventScreen: React.FC = () => {
       formErrorsVoucher={formErrorsVoucher}
       copyToClipboard={copyToClipboard}
       isFormValidVoucher={isFormValidVoucher}
+      handleOnShowDeleteProduct={handleOnShowDeleteProduct}
     />
   );
 };
