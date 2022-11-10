@@ -12,6 +12,7 @@ import { ReactComponent as TicketManagement } from '@/assets/images/svg/TicketMa
 import { ReactComponent as EventDeal } from '@/assets/images/svg/eventDeal.svg';
 import { ReactComponent as Block } from '@/assets/images/svg/block.svg';
 import { ReactComponent as Report } from '@/assets/images/svg/report.svg';
+import { ReactComponent as BlackAlert } from '@/assets/images/svg/blackAlert.svg';
 import { StatusFilter } from '@/components/StatusFilter';
 import { ActionProps, Dialog } from '@/components/Dialog';
 import { FormErrors, OnChangeFormInput, FormData } from '@/hooks/useForm';
@@ -286,48 +287,56 @@ export const EventContainer: React.FC<EventContainerProps> = ({
       <Fragment>
         {/* <Loading isVisible={state === States.loading} /> */}
         <Container className="mainContainer" fluid={true}>
-          <div className="d-flex justify-content-between" style={{ paddingBottom: '30px' }}>
+          <div
+            className="d-flex justify-content-between event-page-title"
+            style={{ paddingBottom: '30px' }}
+          >
             <div className="pageTitle" style={{ display: 'grid' }}>
               <h5 className="pageTitle" style={{ marginBottom: '1px' }}>
                 Todos os eventos cadastrados
               </h5>
-              <p className="eventDraftCounter">
-                Você tem{' '}
-                <span style={{ color: '#222222', fontWeight: '500' }}>
-                  {fullListEvent?.filter(event => event.eventStatus === 0).length} eventos{' '}
-                </span>
-                em rascunho
-              </p>
+              <div className="d-flex">
+                <BlackAlert style={{ marginRight: '10px' }} />
+                <p className="eventDraftCounter">
+                  Você tem{' '}
+                  <span style={{ color: '#222222', fontWeight: '500' }}>
+                    {fullListEvent?.filter(event => event.eventStatus === 0).length} eventos{' '}
+                  </span>
+                  em rascunho
+                </p>
+              </div>
             </div>
-            <div className="button-filter-container">
+            <div className="button-filter-container event-button-filter">
               <Button
                 title="+ Cadastrar novo evento"
                 onClick={() => history.push('/dashboard/event/create')}
               />
-              <div className="select-label-container" style={{ marginLeft: '15px' }}>
-                <SimpleSelect
-                  name={'Exibir'}
-                  value={pagination}
-                  options={paginationSelect}
-                  placeholder="10 por página"
-                  label="Exibir:"
-                  onChange={e => {
-                    // eslint-disable-next-line no-unsafe-optional-chaining
-                    setPagination({ pageSize: Number(e?.value) });
-                  }}
-                />
-              </div>
-              <div className="filter-container">
-                <div
-                  className="filter-content"
-                  onClick={(): void =>
-                    onShouldShowModal({
-                      value: ShouldShowModal.filter,
-                      newTitleModal: '',
-                    })
-                  }
-                >
-                  <FilterVector />
+              <div className="d-flex event-filter-container">
+                <div className="select-label-container" style={{ marginLeft: '15px' }}>
+                  <SimpleSelect
+                    name={'Exibir'}
+                    value={pagination}
+                    options={paginationSelect}
+                    placeholder="10 por página"
+                    label="Exibir:"
+                    onChange={e => {
+                      // eslint-disable-next-line no-unsafe-optional-chaining
+                      setPagination({ pageSize: Number(e?.value) });
+                    }}
+                  />
+                </div>
+                <div className="filter-container">
+                  <div
+                    className="filter-content"
+                    onClick={(): void =>
+                      onShouldShowModal({
+                        value: ShouldShowModal.filter,
+                        newTitleModal: '',
+                      })
+                    }
+                  >
+                    <FilterVector />
+                  </div>
                 </div>
               </div>
             </div>
