@@ -25,7 +25,9 @@ function SuperCollapse(props: Props): JSX.Element {
     <>
       <div style={{ marginBottom: '50px' }}>
         <div
-          className="collapseTable d-flex justify-content-between collapseTableText"
+          className={`collapseTable d-flex justify-content-between collapseTableText ${
+            open ? ' border-bottom-collapse' : ''
+          }`}
           onClick={() => setOpen(!open)}
         >
           <div className="d-flex">

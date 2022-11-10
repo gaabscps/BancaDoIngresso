@@ -635,7 +635,7 @@ export const UserScreen: React.FC = (): JSX.Element => {
           id: group?.id,
           name: formDataGroup[FormInputGroup.name],
           description: formDataGroup[FormInputGroup.description],
-          actived: convertToBoolean(formDataGroup[FormInputGroup.description]),
+          actived: convertToBoolean(formDataGroup[FormInputGroup.actived]),
         } as Profile;
 
         if (!payload.id) {
