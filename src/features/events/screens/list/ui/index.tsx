@@ -15,7 +15,7 @@ import { ReactComponent as Report } from '@/assets/images/svg/report.svg';
 import { ReactComponent as BlackAlert } from '@/assets/images/svg/blackAlert.svg';
 import { StatusFilter } from '@/components/StatusFilter';
 import { ActionProps, Dialog } from '@/components/Dialog';
-import { FormErrors, OnChangeFormInput, FormData } from '@/hooks/useForm';
+import { FormErrors, OnChangeFormInput, FormData, IsFormValid } from '@/hooks/useForm';
 import { FilterContent } from '@/features/events/components/FilterContent';
 import Event from '@/model/Event';
 import { EventRequestParams } from '@/features/events/types';
@@ -62,6 +62,8 @@ interface EventContainerProps {
   voucherState: Voucher[];
   eventState: Event | undefined;
   formDataVoucher: FormData;
+  formErrorsVoucher: FormErrors;
+  isFormValidVoucher: IsFormValid;
   copyToClipboard: (text: string) => void;
   onChangeFormInputVoucher: OnChangeFormInput;
   onRefuseEvent: (event: Event) => void;
@@ -102,6 +104,8 @@ export const EventContainer: React.FC<EventContainerProps> = ({
   voucherState,
   eventState,
   formDataVoucher,
+  formErrorsVoucher,
+  isFormValidVoucher,
   copyToClipboard,
   onChangeFormInputVoucher,
   handleFetchVoucher,
@@ -278,6 +282,8 @@ export const EventContainer: React.FC<EventContainerProps> = ({
                 eventState={eventState}
                 onChangeFormInputVoucher={onChangeFormInputVoucher}
                 formDataVoucher={formDataVoucher}
+                formErrorsVoucher={formErrorsVoucher}
+                isFormValidVoucher={isFormValidVoucher}
                 copyToClipboard={copyToClipboard}
               />
             ),
@@ -288,10 +294,10 @@ export const EventContainer: React.FC<EventContainerProps> = ({
         {/* <Loading isVisible={state === States.loading} /> */}
         <Container className="mainContainer" fluid={true}>
           <div
-            className="d-flex justify-content-between event-page-title"
+            className="d-flex justify-content-between event-page-title-container"
             style={{ paddingBottom: '30px' }}
           >
-            <div className="pageTitle" style={{ display: 'grid' }}>
+            <div className="pageTitle event-page-title" style={{ display: 'grid' }}>
               <h5 className="pageTitle" style={{ marginBottom: '1px' }}>
                 Todos os eventos cadastrados
               </h5>

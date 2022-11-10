@@ -3,8 +3,9 @@
 import { Button, InputText } from '@/components';
 import { CustomTable } from '@/components/Table';
 import Voucher from '@/model/Voucher';
-import { OnChangeFormInput, FormData } from '@/hooks/useForm';
+import { OnChangeFormInput, FormData, FormErrors, IsFormValid } from '@/hooks/useForm';
 import { ReactComponent as Copy } from '@/assets/images/svg/copy.svg';
+import { updateMask } from '@/helpers/masks/decimalNumber';
 import React from 'react';
 import { X } from 'react-feather';
 import { Col, Form, FormGroup, Row } from 'reactstrap';
@@ -32,13 +33,17 @@ interface RegisterContentProps {
   handleFetchVoucher: (event: Event) => Promise<void>;
   onChangeFormInputVoucher: OnChangeFormInput;
   copyToClipboard: (code: string) => void;
+  isFormValidVoucher: IsFormValid;
   eventState: Event | any;
   formDataVoucher: FormData;
+  formErrorsVoucher: FormErrors;
 }
 export const RegisterVoucher: React.FC<RegisterContentProps> = ({
   voucherState,
   eventState,
   formDataVoucher,
+  formErrorsVoucher,
+  isFormValidVoucher,
   copyToClipboard,
   handleOnSaveVoucher,
   handleFetchVoucher,
@@ -47,8 +52,8 @@ export const RegisterVoucher: React.FC<RegisterContentProps> = ({
   const dataTableVoucher = voucherState?.map(voucher => ({
     id: voucher.id,
     description: voucher.description,
-    user: '-',
-    value: voucher.value,
+    user: voucher.user || '-----',
+    value: `R$ ${voucher.value}`,
     code: (
       <div className="voucher-code-row">
         {voucher.code}{' '}
@@ -60,6 +65,7 @@ export const RegisterVoucher: React.FC<RegisterContentProps> = ({
     ),
     actions: <X className="svg-icon action-icon" />,
   }));
+
   return (
     <>
       <Form>
@@ -72,14 +78,17 @@ export const RegisterVoucher: React.FC<RegisterContentProps> = ({
                 name="description"
                 value={formDataVoucher[FormInputName.description]}
                 onChange={e => onChangeFormInputVoucher(FormInputName.description)(e.target.value)}
+                error={formErrorsVoucher.description && formErrorsVoucher.description[0]}
               />
               <InputText
                 label="Valor do voucher"
                 placeholder="Ex: 200 ,00  "
                 name="value"
                 value={String(formDataVoucher[FormInputName.value])}
-                onChange={e => onChangeFormInputVoucher(FormInputName.value)(e.target.value)}
-                after={true}
+                onChange={e =>
+                  onChangeFormInputVoucher(FormInputName.value)(updateMask(e.target.value))
+                }
+                error={formErrorsVoucher.value && formErrorsVoucher.value[0]}
               />
             </FormGroup>
           </Col>
@@ -91,8 +100,10 @@ export const RegisterVoucher: React.FC<RegisterContentProps> = ({
                 className="mb-4"
                 title="Gerar voucher"
                 onClick={async () => {
-                  await handleOnSaveVoucher(eventState);
-                  await handleFetchVoucher(eventState);
+                  if (isFormValidVoucher()) {
+                    await handleOnSaveVoucher(eventState);
+                    await handleFetchVoucher(eventState);
+                  }
                 }}
               />
             </div>

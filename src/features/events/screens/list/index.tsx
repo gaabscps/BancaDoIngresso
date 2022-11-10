@@ -6,10 +6,12 @@ import { useDialog } from '@/hooks/useDialog';
 import useForm from '@/hooks/useForm';
 import { AxiosError } from 'axios';
 import { FormInputName as FormInputNameToFilter } from '@/features/contractor/components/FilterContent';
+import { unmask } from '@/helpers/masks/decimalNumber';
 import { toast } from 'react-toastify';
 import api from '@/services/api';
 import Event from '@/model/Event';
 import Voucher from '@/model/Voucher';
+import validators from '@/helpers/validators';
 import { EventRequestParams, EventResponse } from '../../types';
 import { FormInputName } from '../../components/RegisterVoucher';
 
@@ -65,14 +67,18 @@ export const EventScreen: React.FC = () => {
 
   const {
     formData: formDataVoucher,
-    // formErrors: formErrorsVoucher,
+    formErrors: formErrorsVoucher,
     onChangeFormInput: onChangeFormInputVoucher,
-    // isFormValid: isFormValidVoucher,
-    // resetForm: resetFormVoucher,
+    isFormValid: isFormValidVoucher,
+    resetForm: resetFormVoucher,
   } = useForm({
     initialData: {
       description: '',
       value: '',
+    },
+    validators: {
+      description: [validators.required],
+      value: [validators.required],
     },
   });
 
@@ -87,6 +93,7 @@ export const EventScreen: React.FC = () => {
       filterSearch: '',
       inputSearch: '',
     },
+    formatters: {},
   });
 
   const handleFetch = async (values: EventRequestParams): Promise<void> => {
@@ -184,6 +191,7 @@ export const EventScreen: React.FC = () => {
     setShouldShowModal(value);
     onChangeTitle(newTitleModal);
     onToggle();
+    resetFormVoucher();
     if (value !== ShouldShowModal.filter) {
       handleFetchVoucher(eventSelected);
       setEvent(eventSelected);
@@ -192,10 +200,12 @@ export const EventScreen: React.FC = () => {
 
   const handleOnSaveVoucher = async (eventSelected: Event): Promise<void> => {
     try {
-      await api.post(`/event/${eventSelected?.id}/voucher`, {
-        description: formDataVoucher[FormInputName.description],
-        value: formDataVoucher[FormInputName.value],
-      });
+      if (isFormValidVoucher()) {
+        await api.post(`/event/${eventSelected?.id}/voucher`, {
+          description: formDataVoucher[FormInputName.description],
+          value: unmask(formDataVoucher[FormInputName.value]),
+        });
+      }
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
@@ -303,7 +313,9 @@ export const EventScreen: React.FC = () => {
       handleFetchVoucher={handleFetchVoucher}
       onChangeFormInputVoucher={onChangeFormInputVoucher}
       formDataVoucher={formDataVoucher}
+      formErrorsVoucher={formErrorsVoucher}
       copyToClipboard={copyToClipboard}
+      isFormValidVoucher={isFormValidVoucher}
     />
   );
 };

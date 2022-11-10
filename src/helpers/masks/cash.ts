@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 // unmasked (api view): 7654321
 // masked (user view): 7.654.321,00
 import { toString } from '../common/amount';

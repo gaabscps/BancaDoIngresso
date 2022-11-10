@@ -14,7 +14,6 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   disabled?: boolean;
-  after?: boolean;
 }
 
 export const InputText: FC<InputProps> = ({
@@ -30,7 +29,6 @@ export const InputText: FC<InputProps> = ({
   wrapperClass,
   renderForward,
   disabled,
-  after,
 }) => {
   const isDisabled = disabled ? 'input-disabled' : '';
   const isError = error ? 'input-error' : '';
@@ -38,7 +36,7 @@ export const InputText: FC<InputProps> = ({
   return (
     <div className={`flex-column input-component ${wrapperClass} ${isDisabled} ${isError}`}>
       {label && (
-        <label htmlFor={name} className={after ? 'input-label pseudo-input' : 'input-label'}>
+        <label htmlFor={name} className="input-label">
           {label}
         </label>
       )}
