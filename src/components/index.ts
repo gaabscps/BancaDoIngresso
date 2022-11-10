@@ -20,6 +20,7 @@ import { Error404 } from './Errors/error404';
 import { Error500 } from './Errors/error500';
 import { Error503 } from './Errors/error503';
 import { TextArea } from './TextArea';
+import { Tab } from './Tab';
 
 export {
   Header,
@@ -38,6 +39,7 @@ export {
   CollapseCustom,
   Dialog,
   TextArea,
+  Tab,
   Error400,
   Error401,
   Error403,
