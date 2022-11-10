@@ -10,7 +10,6 @@ import { ListModule } from './ListModule';
 interface StateProps {
   formData: FormData;
   formErrors: FormErrors;
-  showActivateSwitch: boolean;
   modules?: CheckBoxModule[];
 }
 
@@ -94,18 +93,17 @@ export const RegisterGroupContent: React.FC<Props> = (props: Props) => {
             ))}
           </div>
         </Col>
-        {props.showActivateSwitch && (
-          <Col md={4}>
-            <Switch
-              name="status"
-              label={`Grupo ${
-                convertToBoolean(props.formData[FormInputGroup.actived]) ? 'ativo' : 'inativo'
-              }`}
-              onChange={e => props.onActivateAndInactivate(e)}
-              checked={convertToBoolean(props.formData[FormInputGroup.actived])}
-            />
-          </Col>
-        )}
+
+        <Col md={4}>
+          <Switch
+            name="status"
+            label={`Grupo ${
+              convertToBoolean(props.formData[FormInputGroup.actived]) ? 'ativo' : 'inativo'
+            }`}
+            onChange={e => props.onActivateAndInactivate(e)}
+            checked={convertToBoolean(props.formData[FormInputGroup.actived])}
+          />
+        </Col>
       </Row>
     </Form>
   );
