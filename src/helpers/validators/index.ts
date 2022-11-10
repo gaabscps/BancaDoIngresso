@@ -53,8 +53,12 @@ const email = (value: ValidatorInputType): string | false => {
   return isValid ? false : 'Email inválido';
 };
 
-const required = (value = ''): string | false =>
-  value.replace(/[^0-9a-zA-Z]/g, '') ? false : 'Campo obrigatório';
+const required = (value = ''): string | false => {
+  if (value === '******') {
+    return false;
+  }
+  return value.replace(/[^0-9a-zA-Z]/g, '') ? false : 'Campo obrigatório';
+};
 
 const minLength =
   (length: number) =>
@@ -201,6 +205,9 @@ const hasDuplicateNames = (value: ValidatorInputType): ValidatorReturnType => {
 };
 
 const hasPasswordOnlyNumberCharacteres = (value: ValidatorInputType): ValidatorReturnType => {
+  if (value === '******') {
+    return false;
+  }
   const rawValue = value.replace(/[^0-9a-zA-Z]/g, '');
   const onlyMixOfAlphaNumeric = /^([0-9]+[a-zA-Z]+|[a-zA-Z]+[0-9]+)[0-9a-zA-Z]*$/;
 

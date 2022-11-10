@@ -43,10 +43,8 @@ interface StateProps {
   formErrorsGroup: FormErrors;
   groups: CheckBoxGroup[];
   userProfileCheckBox: CheckBoxData[];
-  showActivateSwitchUser: boolean;
   userSelectedCount: number;
   groupSelectedCount: number;
-  showActivateSwitchGroup: boolean;
   userModules: CheckBoxGroup[];
   user?: User;
   group?: Profile;
@@ -69,6 +67,7 @@ interface DispatchProps {
   changeFormInputFilter: OnChangeFormInput;
   onFilter(): Promise<void>;
   changeFormInputUser: OnChangeFormInput;
+  onBlurCPF: () => void;
   changeFileInputUser: (inputName: string) => (file: File | undefined) => void;
   onActivateAndInactivateUser(e: ChangeEvent<HTMLInputElement>): void;
   onChangeUserTypeSelected(e: ChangeEvent<HTMLInputElement>, userType: CheckBoxData): void;
@@ -126,10 +125,10 @@ export const UserGroupList: React.FC<Props> = (props: Props): JSX.Element => (
             <RegisterUserContent
               formData={props.formDataUser}
               formErrors={props.formErrorsUser}
-              showActivateSwitch={props.showActivateSwitchUser}
               userProfileCheckBox={props.userProfileCheckBox}
               modules={props.userModules}
               onChangeFormInput={props.changeFormInputUser}
+              onBlurCPF={props.onBlurCPF}
               onChangeFileInput={props.changeFileInputUser}
               onActivateAndInactivate={props.onActivateAndInactivateUser}
               onChangeUserTypeSelected={props.onChangeUserTypeSelected}
@@ -141,7 +140,6 @@ export const UserGroupList: React.FC<Props> = (props: Props): JSX.Element => (
               formData={props.formDataGroup}
               formErrors={props.formErrorsGroup}
               modules={props.modules}
-              showActivateSwitch={props.showActivateSwitchGroup}
               onChangeFormInput={props.changeFormInputGroup}
               onActivateAndInactivate={props.onActivateAndInactivateGroup}
               checkAllModule={props.checkAllModule}

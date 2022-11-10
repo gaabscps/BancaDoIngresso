@@ -16,6 +16,8 @@ import Module from '@/model/Module';
 import Permission from '@/model/Permission';
 import ProfilePermission from '@/model/ProfilePermission';
 import Page from '@/model/Page';
+import CustomError from '@/model/CustomError';
+import { convertToBoolean } from '@/helpers/common/convertToBoolean';
 import { UserGroupList } from './ui/UserGroupList';
 import { DeleteContent } from '../../components/DeleteContent';
 
@@ -172,7 +174,7 @@ export const UserScreen: React.FC = (): JSX.Element => {
       imageBase64: '',
       usertype: '0',
       password: '',
-      status: '',
+      status: 'true',
     },
     validators: {
       name: [validators.required],
@@ -180,6 +182,8 @@ export const UserScreen: React.FC = (): JSX.Element => {
       telephone: [validators.required, validators.mobilePhone],
       email: [validators.required],
       userType: [validators.required],
+      password: [validators.required, validators.hasPasswordOnlyNumberCharacteres],
+      status: [validators.required],
     },
     formatters: {
       cpf: updateMaskCPFOrCNPJ,
@@ -195,6 +199,7 @@ export const UserScreen: React.FC = (): JSX.Element => {
     resetForm: resetFormGroup,
   } = useForm({
     initialData: {
+      actived: 'true',
       name: '',
       description: '',
     },
@@ -240,6 +245,47 @@ export const UserScreen: React.FC = (): JSX.Element => {
         break;
     }
     return result;
+  };
+
+  const onlyNumbers = (value: string): string => {
+    if (value) {
+      const s = value.replace(/\D/g, '');
+      return s;
+    }
+    return value;
+  };
+
+  const onBlurCPF = async (): Promise<void> => {
+    const pageUser: Page<User, User> = {
+      page: 1,
+      pageSize: 1,
+      sort: 'name',
+      order: 'ASC',
+    };
+    if (formDataUser[FormInputUser.cpf]) {
+      pageUser.entity = { cpf: onlyNumbers(formDataUser[FormInputUser.cpf]) } as User;
+      const response = await api.post<Page<User, User>>('/user/page', pageUser);
+      if (response.data.total && response.data.total > 0) {
+        window.console.log(response.data.list);
+        setErrorsUser({
+          cpf: ['CPF já existente'],
+          name: [undefined as unknown as string],
+          telephone: [undefined as unknown as string],
+          email: [undefined as unknown as string],
+          userType: [undefined as unknown as string],
+          password: [undefined as unknown as string],
+        });
+      } else {
+        setErrorsUser({
+          cpf: [undefined as unknown as string],
+          name: [undefined as unknown as string],
+          telephone: [undefined as unknown as string],
+          email: [undefined as unknown as string],
+          userType: [undefined as unknown as string],
+          password: [undefined as unknown as string],
+        });
+      }
+    }
   };
 
   const handleOnChangeFileInput =
@@ -468,68 +514,73 @@ export const UserScreen: React.FC = (): JSX.Element => {
 
   const onSaveUser = async (): Promise<void> => {
     try {
-      if (isFormValidUser()) {
-        setState(States.loading);
-        const profiles: Profile[] = [];
-        userGroups.forEach(data => {
-          if (data.check === 'true') {
-            const profile = {
-              id: data.id,
-            } as Profile;
-            profiles.push(profile);
+      if (formDataUser[FormInputUser.userType]) {
+        if (isFormValidUser()) {
+          setState(States.loading);
+          const profiles: Profile[] = [];
+          userGroups.forEach(data => {
+            if (data.check === 'true') {
+              const profile = {
+                id: data.id,
+              } as Profile;
+              profiles.push(profile);
+            }
+          });
+          const payload: User = {
+            id: user?.id,
+            name: formDataUser[FormInputUser.name],
+            cpf: formDataUser[FormInputUser.cpf],
+            telephone: formDataUser[FormInputUser.telephone],
+            email: formDataUser[FormInputUser.email],
+            imageBase64: formDataUser[FormInputUser.imageBase64],
+            imageName: formDataUser[FormInputUser.imageName],
+            userType: stringToUserType(formDataUser[FormInputUser.userType]),
+            password: formDataUser[FormInputUser.password],
+            status:
+              formDataUser[FormInputUser.status] === 'true'
+                ? StatusType.ACTIVE
+                : StatusType.INACTIVE,
+            profiles,
+          };
+          if (!payload.id) {
+            await api.post<User>('/user', payload);
+            toast.success(`Usuário "${formDataUser[FormInputUser.name]}" cadastrado com sucesso!`);
+          } else {
+            await api.put<User>('/user', payload);
+            toast.success(`Usuário "${formDataUser[FormInputUser.name]}" atualizado com sucesso!`);
           }
-        });
-        const payload = {
-          id: user?.id,
-          name: formDataUser[FormInputUser.name],
-          cpf: formDataUser[FormInputUser.cpf],
-          telephone: formDataUser[FormInputUser.telephone],
-          email: formDataUser[FormInputUser.email],
-          imageBase64: formDataUser[FormInputUser.imageBase64],
-          imageName: formDataUser[FormInputUser.imageName],
-          userType: stringToUserType(formDataUser[FormInputUser.userType]),
-          password: formDataUser[FormInputUser.password],
-          profiles,
-        } as User;
-        if (!payload.id) {
-          await api.post<User>('/user', payload);
-          toast.success(`Usuário "${formDataUser[FormInputUser.name]}" cadastrado com sucesso!`);
-        } else {
-          await api.put<User>('/user', payload);
-          toast.success(`Usuário "${formDataUser[FormInputUser.name]}" atualizado com sucesso!`);
+          resetFormUser();
+          setState(States.default);
+          onToggle();
+          getUsers();
         }
-        resetFormUser();
-        setState(States.default);
-        onToggle();
-        getUsers();
+      } else {
+        toast.warn('Informar tipo do Usuário!');
       }
     } catch (error) {
       setState(States.default);
       const err = error as AxiosError;
-      toast.error(err.message);
+      if (err.response && err.response.data && err.response.data) {
+        const customError = err.response.data as CustomError;
+        if (customError.details && customError.details.length > 0) {
+          customError.details.forEach(data => {
+            if (err.response?.status === 400) {
+              toast.warn(data);
+            } else {
+              toast.error(data);
+            }
+          });
+        }
+      } else {
+        toast.error(err.message);
+      }
     }
   };
 
   const onActivateAndInactivateUser = async (
     e: React.ChangeEvent<HTMLInputElement>,
   ): Promise<void> => {
-    setState(States.loading);
     onChangeFormInputUser(FormInputUser.status)(String(e.target.checked));
-    users.forEach(data => {
-      if (data.id === user.id) {
-        // eslint-disable-next-line no-param-reassign
-        data.status = e.target.checked ? StatusType.ACTIVE : StatusType.INACTIVE;
-      }
-    });
-
-    if (e.target.checked) {
-      await api.patch<Profile>(`/user/activate/${user.id}`);
-      toast.success(`Usuário "${formDataUser[FormInputUser.name]}" ativado com sucesso!`);
-    } else {
-      await api.patch<Profile>(`/user/inactivate/${user.id}`);
-      toast.success(`Usuário "${formDataUser[FormInputUser.name]}" inativado com sucesso!`);
-    }
-    setState(States.default);
   };
 
   const onChangeUserTypeSelected = (
@@ -584,6 +635,7 @@ export const UserScreen: React.FC = (): JSX.Element => {
           id: group?.id,
           name: formDataGroup[FormInputGroup.name],
           description: formDataGroup[FormInputGroup.description],
+          actived: convertToBoolean(formDataGroup[FormInputGroup.description]),
         } as Profile;
 
         if (!payload.id) {
@@ -618,23 +670,7 @@ export const UserScreen: React.FC = (): JSX.Element => {
   const onActivateAndInactivateGroup = async (
     e: React.ChangeEvent<HTMLInputElement>,
   ): Promise<void> => {
-    setState(States.loading);
     onChangeFormInputGroup(FormInputGroup.actived)(String(e.target.checked));
-    groups.forEach(data => {
-      if (data.id === group.id) {
-        // eslint-disable-next-line no-param-reassign
-        data.actived = e.target.checked;
-      }
-    });
-
-    if (e.target.checked) {
-      await api.patch<Profile>(`/profile/activate/${group.id}`);
-      toast.success(`Grupo "${formDataGroup[FormInputGroup.name]}" ativado com sucesso!`);
-    } else {
-      await api.patch<Profile>(`/profile/inactivate/${group.id}`);
-      toast.success(`Grupo "${formDataGroup[FormInputGroup.name]}" inativado com sucesso!`);
-    }
-    setState(States.default);
   };
 
   const openModal = async (
@@ -979,10 +1015,8 @@ export const UserScreen: React.FC = (): JSX.Element => {
       group={group}
       userModules={userGroups}
       modules={modules}
-      showActivateSwitchUser={!!(user && user.id)}
       userSelectedCount={userSelectedCount}
       groupSelectedCount={groupSelectedCount}
-      showActivateSwitchGroup={!!(group && group.id)}
       onToggle={onToggle}
       openModal={openModal}
       showDeleteUser={onShowDeleteUser}
@@ -995,6 +1029,7 @@ export const UserScreen: React.FC = (): JSX.Element => {
       checkAllGroupList={checkAllGroupList}
       changeGroupList={changeGroupList}
       changeFormInputUser={onChangeFormInputUser}
+      onBlurCPF={onBlurCPF}
       changeFileInputUser={handleOnChangeFileInput}
       onActivateAndInactivateUser={onActivateAndInactivateUser}
       onChangeUserTypeSelected={onChangeUserTypeSelected}

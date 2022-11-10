@@ -11,13 +11,13 @@ import { CheckBoxData, CheckBoxGroup, FormInputUser } from '../../screens/List';
 interface StateProps {
   formData: FormData;
   formErrors: FormErrors;
-  showActivateSwitch: boolean;
   userProfileCheckBox: CheckBoxData[];
   modules: CheckBoxGroup[];
 }
 
 interface DispatchProps {
   onChangeFormInput: OnChangeFormInput;
+  onBlurCPF: () => void;
   onChangeFileInput: (inputName: string) => (file: File | undefined) => void;
   onActivateAndInactivate(e: ChangeEvent<HTMLInputElement>): void;
   onChangeUserTypeSelected(e: ChangeEvent<HTMLInputElement>, userType: CheckBoxData): void;
@@ -64,10 +64,20 @@ export const RegisterUserContent: React.FC<Props> = (props: Props) => {
               maxLength={14}
               value={props.formData[FormInputUser.cpf]}
               onChange={e => props.onChangeFormInput(FormInputUser.cpf)(e.target.value)}
+              onBlur={() => props.onBlurCPF()}
               error={props.formErrors.cpf && props.formErrors.cpf[0]}
-              disabled={props.showActivateSwitch}
             />
           </FormGroup>
+        </Col>
+        <Col md={4}>
+          <Switch
+            name="status"
+            label={`Usuário ${
+              convertToBoolean(props.formData[FormInputUser.status]) ? 'ativo' : 'inativo'
+            }`}
+            onChange={e => props.onActivateAndInactivate(e)}
+            checked={convertToBoolean(props.formData[FormInputUser.status])}
+          />
         </Col>
       </Row>
       <Row>
@@ -117,38 +127,36 @@ export const RegisterUserContent: React.FC<Props> = (props: Props) => {
       </Row>
       <Row>
         <Col md={8}>
-          {!props.showActivateSwitch && (
-            <FormGroup className="mb-2">
-              <InputText
-                name="password"
-                label="Senha"
-                type={togglePassword ? 'text' : 'password'}
-                placeholder="Ex: 1234abcd"
-                value={props.formData[FormInputUser.password]}
-                onChange={e => props.onChangeFormInput(FormInputUser.password)(e.target.value)}
-                error={props.formErrors.password && props.formErrors.password[0]}
-                renderForward={
-                  <div
-                    className="show-hide"
-                    onClick={() => setTogglePassword(!togglePassword)}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    {togglePassword ? (
-                      <img
-                        className="d-flex justify-content-center align-items-center passwordIcon"
-                        src={eye}
-                      />
-                    ) : (
-                      <img
-                        className="d-flex justify-content-center align-items-center passwordIcon"
-                        src={closeEye}
-                      />
-                    )}
-                  </div>
-                }
-              />
-            </FormGroup>
-          )}
+          <FormGroup className="mb-2">
+            <InputText
+              name="password"
+              label="Senha"
+              type={togglePassword ? 'text' : 'password'}
+              placeholder="Ex: 1234abcd"
+              value={props.formData[FormInputUser.password]}
+              onChange={e => props.onChangeFormInput(FormInputUser.password)(e.target.value)}
+              error={props.formErrors.password && props.formErrors.password[0]}
+              renderForward={
+                <div
+                  className="show-hide"
+                  onClick={() => setTogglePassword(!togglePassword)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  {togglePassword ? (
+                    <img
+                      className="d-flex justify-content-center align-items-center passwordIcon"
+                      src={eye}
+                    />
+                  ) : (
+                    <img
+                      className="d-flex justify-content-center align-items-center passwordIcon"
+                      src={closeEye}
+                    />
+                  )}
+                </div>
+              }
+            />
+          </FormGroup>
 
           <FormGroup className="mb-2">
             <div className="">
@@ -157,7 +165,7 @@ export const RegisterUserContent: React.FC<Props> = (props: Props) => {
                 for="printLayoutBase64"
                 style={{ paddingBottom: '0px !important;' }}
               >
-                Imagem do Usuário
+                Imagem do Usuário (Opcional)
               </Label>
 
               <label
@@ -282,18 +290,6 @@ export const RegisterUserContent: React.FC<Props> = (props: Props) => {
             </tbody>
           </table>
         </Col>
-        {props.showActivateSwitch && (
-          <Col md={4}>
-            <Switch
-              name="status"
-              label={`Usuário ${
-                convertToBoolean(props.formData[FormInputUser.status]) ? 'ativo' : 'inativo'
-              }`}
-              onChange={e => props.onActivateAndInactivate(e)}
-              checked={convertToBoolean(props.formData[FormInputUser.status])}
-            />
-          </Col>
-        )}
       </Row>
     </Form>
   );
