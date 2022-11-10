@@ -115,13 +115,10 @@ export const GeneralInformationContent: React.FC<
   );
 
   const handleFocus = (): void => {
-    const firstInputError =
-      // verify if Object formErrors is not null
-      formErrors && Object.keys(formErrors).find(key => formErrors[key]);
+    const firstInputError = formErrors && Object.keys(formErrors).find(key => formErrors[key]);
 
     if (firstInputError) {
       const input = eval(`${firstInputError}Ref?.current`);
-
       // verify if return is element
       if (input instanceof Element) {
         input?.scrollIntoView({ behavior: 'smooth', block: 'center' });
