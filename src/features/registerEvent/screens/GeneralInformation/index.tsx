@@ -560,12 +560,12 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
       onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.websiteDescription)(
         String(dataCurrentStep?.websiteDescription) ?? '',
       );
-      // onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.imageBase64)(
-      //   dataCurrentStep?.imageBase64 ?? '',
-      // );
-      // onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.imagePosBase64)(
-      //   dataCurrentStep?.imagePosBase64 ?? '',
-      // );
+      onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.imageBase64)(
+        dataCurrentStep?.imageBase64 ?? '',
+      );
+      onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.imagePosBase64)(
+        dataCurrentStep?.imagePosBase64 ?? '',
+      );
       setFormNameFiles(filesValues => ({
         ...filesValues,
         imageBase64: dataCurrentStep?.imageBase64?.split('/').pop(),
