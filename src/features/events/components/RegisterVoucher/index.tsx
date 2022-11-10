@@ -92,7 +92,7 @@ export const RegisterVoucher: React.FC<RegisterContentProps> = ({
               />
               <InputText
                 label="Valor do voucher"
-                placeholder="Ex: 200 ,00  "
+                placeholder="Ex: 200,00"
                 name="value"
                 value={String(formDataVoucher[FormInputName.value])}
                 onChange={e =>
