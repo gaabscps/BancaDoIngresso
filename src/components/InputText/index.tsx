@@ -1,4 +1,4 @@
-import React, { FC, InputHTMLAttributes } from 'react';
+import React, { FC, InputHTMLAttributes, LegacyRef } from 'react';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string;
@@ -15,7 +15,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   disabled?: boolean;
-  refInput?: React.Ref<HTMLInputElement>;
+  refInput?: LegacyRef<HTMLInputElement>;
 }
 
 export const InputText: FC<InputProps> = ({

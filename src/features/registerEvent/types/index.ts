@@ -13,7 +13,7 @@ export interface formGeneralInformationProps {
   formErrors: FormErrors;
   onChangeFormInput: OnChangeFormInput;
   setFormErrors: SetFormErrors;
-  onChanfeFormFileInput: (inputName: string) => (file: File | undefined) => void;
+  onChangeFormFileInput: (inputName: string) => (file: File | undefined) => void;
   formNameFiles: NameFiles;
 }
 

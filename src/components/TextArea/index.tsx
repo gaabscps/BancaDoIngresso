@@ -1,4 +1,4 @@
-import React, { FC, InputHTMLAttributes } from 'react';
+import React, { FC, InputHTMLAttributes, LegacyRef } from 'react';
 
 interface TextAreaProps extends InputHTMLAttributes<HTMLTextAreaElement> {
   name: string;
@@ -14,6 +14,7 @@ interface TextAreaProps extends InputHTMLAttributes<HTMLTextAreaElement> {
   onBlur?: (e: React.FocusEvent<HTMLTextAreaElement>) => void;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   disabled?: boolean;
+  refTextArea?: LegacyRef<HTMLTextAreaElement>;
 }
 
 export const TextArea: FC<TextAreaProps> = ({
@@ -29,6 +30,7 @@ export const TextArea: FC<TextAreaProps> = ({
   wrapperClass,
   renderForward,
   disabled,
+  refTextArea,
 }) => (
   <div
     className={`flex-column input-component ${wrapperClass} ${disabled ? 'input-disabled' : ''} ${
@@ -50,6 +52,7 @@ export const TextArea: FC<TextAreaProps> = ({
       onChange={onChange}
       className={` form-control input-default text-area-component ${error ? 'input-error' : ''}`}
       disabled={disabled}
+      ref={refTextArea}
     />
     {renderForward}
     {error && (

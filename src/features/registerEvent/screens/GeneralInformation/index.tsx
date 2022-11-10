@@ -107,11 +107,7 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
       namePos: [validators.required],
       establishmentName: [validators.required],
       eventPlace: [validators.required],
-      zipCode: [validators.required],
-      state: [validators.required],
-      city: [validators.required],
-      district: [validators.required],
-      street: [validators.required],
+      zipCode: [validators.required, validators.cep],
       number: [validators.required],
       eventType: [validators.required],
       startDate: [validators.required],
@@ -216,7 +212,7 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
     formErrors: formErrorsGeneralInformation,
     onChangeFormInput: onChangeFormInputGeneralInformation,
     setFormErrors: setFormErrorsGeneralInformation,
-    onChanfeFormFileInput: handleOnChangeFileInput,
+    onChangeFormFileInput: handleOnChangeFileInput,
     formNameFiles,
   };
 

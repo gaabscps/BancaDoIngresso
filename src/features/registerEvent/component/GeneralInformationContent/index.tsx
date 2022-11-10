@@ -1,5 +1,6 @@
+/* eslint-disable no-eval */
 /* eslint-disable import/no-unresolved */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, ButtonGroup, InputFile, InputText, SelectCustom, TextArea } from '@/components';
 import { Col, Form, FormGroup, Row } from 'reactstrap';
 import { statesUf } from '@/constant/states';
@@ -63,6 +64,40 @@ export const GeneralInformationContent: React.FC<
   contractorActions,
 }) => {
   const history = useHistory();
+  const {
+    formData,
+    onChangeFormFileInput,
+    onChangeFormInput,
+    setFormErrors,
+    formErrors,
+    formNameFiles,
+  } = formGeneralInformation;
+
+  const nameRef = React.useRef<HTMLInputElement>(null);
+  const namePosRef = React.useRef<HTMLInputElement>(null);
+  const establishmentNameRef = React.useRef<HTMLInputElement>(null);
+  const eventPlaceRef = React.useRef<HTMLInputElement>(null);
+  const zipCodeRef = React.useRef<HTMLInputElement>(null);
+  const districtRef = React.useRef<HTMLInputElement>(null);
+  const stateRef = React.useRef<HTMLSelectElement>(null);
+  const cityRef = React.useRef<HTMLInputElement>(null);
+  const numberRef = React.useRef<HTMLInputElement>(null);
+  const streetRef = React.useRef<HTMLInputElement>(null);
+  const complementRef = React.useRef<HTMLInputElement>(null);
+  const eventTypeRef = React.useRef<HTMLSelectElement>(null);
+  const startDateRef = React.useRef<HTMLInputElement>(null);
+  const endDateRef = React.useRef<HTMLInputElement>(null);
+  const startTimeRef = React.useRef<HTMLInputElement>(null);
+  const endTimeRef = React.useRef<HTMLInputElement>(null);
+  const eventCategoryRef = React.useRef<HTMLSelectElement>(null);
+  const contractorRef = React.useRef<HTMLSelectElement>(null);
+  const censureRef = React.useRef<HTMLInputElement>(null);
+  const facebookUrlRef = React.useRef<HTMLInputElement>(null);
+  const instagramUrlRef = React.useRef<HTMLInputElement>(null);
+  const publishWebsiteRef = React.useRef<HTMLInputElement>(null);
+  const textSizeRef = React.useRef<HTMLInputElement>(null);
+  const latitudeRef = React.useRef<HTMLInputElement>(null);
+  const longitudeRef = React.useRef<HTMLInputElement>(null);
 
   const TypeEventsOptions = [
     { value: '0', label: 'Mono' },
@@ -71,13 +106,34 @@ export const GeneralInformationContent: React.FC<
   ];
 
   const isValidAddresswithCEP = (): boolean => {
-    const { zipCode } = formGeneralInformation.formData;
+    const { zipCode } = formData;
     return !(zipCode?.length === 9 && isValidCEP(zipCode));
   };
 
   const contratorDataSelected = contractorState.contractorList.find(
-    item => item.id === formGeneralInformation.formData.contractor,
+    item => item.id === formData.contractor,
   );
+
+  const handleFocus = (): void => {
+    const firstInputError =
+      // verify if Object formErrors is not null
+      formErrors && Object.keys(formErrors).find(key => formErrors[key]);
+
+    if (firstInputError) {
+      const input = eval(`${firstInputError}Ref?.current`);
+
+      // verify if return is element
+      if (input instanceof Element) {
+        input?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else {
+        input?.inputRef?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+  };
+
+  useEffect(() => {
+    handleFocus();
+  }, [formErrors]);
 
   return (
     <Form
@@ -92,20 +148,19 @@ export const GeneralInformationContent: React.FC<
         <h5 className="mb-2 border-bottom-title mb-5">Informações gerais</h5>
         <FormGroup className="mb-2">
           <SelectCustom
+            // eslint-disable-next-line no-return-assign
+            refSelect={eventTypeRef}
             name="eventType"
             label="Tipo de evento"
             placeholder="Digite ou selecione o tipo do evento"
             onChange={e => {
-              formGeneralInformation.onChangeFormInput(FormInputName.eventType)(e?.value as string);
+              onChangeFormInput(FormInputName.eventType)(e?.value as string);
             }}
-            error={
-              formGeneralInformation.formErrors.eventType &&
-              formGeneralInformation.formErrors.eventType[0]
-            }
-            value={formGeneralInformation.formData[FormInputName.eventType]}
+            error={formErrors.eventType && formErrors.eventType[0]}
+            value={formData[FormInputName.eventType]}
             options={TypeEventsOptions}
           />
-          {formGeneralInformation.formData[FormInputName.eventType] === '2' && (
+          {formData[FormInputName.eventType] === '2' && (
             <div className="d-flex flex-column mb-5" style={{ marginTop: '-20px' }}>
               <span
                 className="link-event-father d-flex"
@@ -146,7 +201,7 @@ export const GeneralInformationContent: React.FC<
                     className="ml-3 link-black"
                     onClick={() => {
                       fatherEventStates.setFatherEvent(null);
-                      formGeneralInformation.setFormErrors({
+                      setFormErrors({
                         [FormInputName.eventType]: ['É necessário vincular o evento pai'],
                       });
                     }}
@@ -161,98 +216,78 @@ export const GeneralInformationContent: React.FC<
 
         <FormGroup className="mb-2">
           <InputText
+            refInput={nameRef}
             name="name"
             label="Nome do Evento"
             placeholder="Digite o nome do evento. Ex: Baile do Dennis DJ"
             maxLength={18}
-            value={formGeneralInformation.formData[FormInputName.name]}
-            onChange={e =>
-              formGeneralInformation.onChangeFormInput(FormInputName.name)(e.target.value)
-            }
-            error={
-              formGeneralInformation.formErrors.name && formGeneralInformation.formErrors.name[0]
-            }
+            value={formData[FormInputName.name]}
+            onChange={e => onChangeFormInput(FormInputName.name)(e.target.value)}
+            error={formErrors.name && formErrors.name[0]}
           />
         </FormGroup>
         <FormGroup className="mb-2">
           <InputText
+            refInput={namePosRef}
             name="namePos"
             label="Nome do Evento (POS)"
             placeholder="Digite o nome do evento na POS. Ex: Baile do DN.DJ"
             maxLength={12}
-            value={formGeneralInformation.formData[FormInputName.namePos]}
-            onChange={e =>
-              formGeneralInformation.onChangeFormInput(FormInputName.namePos)(e.target.value)
-            }
-            error={
-              formGeneralInformation.formErrors.namePos &&
-              formGeneralInformation.formErrors.namePos[0]
-            }
+            value={formData[FormInputName.namePos]}
+            onChange={e => onChangeFormInput(FormInputName.namePos)(e.target.value)}
+            error={formErrors.namePos && formErrors.namePos[0]}
           />
           <div className="d-flex flex-column d-relative" style={{ marginTop: '-40px' }}>
             <span className="d-flex flex-end justify-content-end link-grey d-absolute">
-              {formGeneralInformation.formData[FormInputName.namePos]?.length || 0}/12
+              {formData[FormInputName.namePos]?.length || 0}/12
             </span>
           </div>
         </FormGroup>
         <FormGroup className="mb-2">
           <InputText
+            refInput={establishmentNameRef}
             name="establishmentName"
             label="Nome do estabelecimento"
             placeholder="Digite o nome do estabelecimento evento. Ex: Folk Valley"
             maxLength={18}
-            value={formGeneralInformation.formData[FormInputName.establishmentName]}
-            onChange={e =>
-              formGeneralInformation.onChangeFormInput(FormInputName.establishmentName)(
-                e.target.value,
-              )
-            }
-            error={
-              formGeneralInformation.formErrors.establishmentName &&
-              formGeneralInformation.formErrors.establishmentName[0]
-            }
+            value={formData[FormInputName.establishmentName]}
+            onChange={e => onChangeFormInput(FormInputName.establishmentName)(e.target.value)}
+            error={formErrors.establishmentName && formErrors.establishmentName[0]}
           />
         </FormGroup>
         <FormGroup className="mb-2">
           <InputText
+            // eslint-disable-next-line no-return-assign
+            refInput={eventPlaceRef}
             name="eventPlace"
             label="Local do evento"
             placeholder="Digite o local do evento. Ex: Rua Perimetral Leste, 123"
             maxLength={18}
-            value={formGeneralInformation.formData[FormInputName.eventPlace]}
-            onChange={e =>
-              formGeneralInformation.onChangeFormInput(FormInputName.eventPlace)(e.target.value)
-            }
-            error={
-              formGeneralInformation.formErrors.eventPlace &&
-              formGeneralInformation.formErrors.eventPlace[0]
-            }
+            value={formData[FormInputName.eventPlace]}
+            onChange={e => onChangeFormInput(FormInputName.eventPlace)(e.target.value)}
+            error={formErrors.eventPlace && formErrors.eventPlace[0]}
           />
         </FormGroup>
         <FormGroup className="mb-2">
           <InputText
+            refInput={zipCodeRef}
             name="zipCode"
             label="CEP"
             placeholder="Digite o CEP da empresa"
             maxLength={9}
-            value={formGeneralInformation.formData[FormInputName.zipCode]}
+            value={formData[FormInputName.zipCode]}
             onChange={e => {
-              formGeneralInformation.onChangeFormInput(FormInputName.zipCode)(e.target.value);
+              onChangeFormInput(FormInputName.zipCode)(e.target.value);
               if (e.target.value.length === 9 && isValidCEP(e.target.value)) {
                 cep(e.target.value).then(data => {
-                  formGeneralInformation.onChangeFormInput(FormInputName.state)(data.state);
-                  formGeneralInformation.onChangeFormInput(FormInputName.city)(data.city);
-                  formGeneralInformation.onChangeFormInput(FormInputName.district)(
-                    data.neighborhood,
-                  );
-                  formGeneralInformation.onChangeFormInput(FormInputName.street)(data.street);
+                  onChangeFormInput(FormInputName.state)(data.state);
+                  onChangeFormInput(FormInputName.city)(data.city);
+                  onChangeFormInput(FormInputName.district)(data.neighborhood);
+                  onChangeFormInput(FormInputName.street)(data.street);
                 });
               }
             }}
-            error={
-              formGeneralInformation.formErrors.zipCode &&
-              formGeneralInformation.formErrors.zipCode[0]
-            }
+            error={formErrors.zipCode && formErrors.zipCode[0]}
           />
         </FormGroup>
 
@@ -260,19 +295,13 @@ export const GeneralInformationContent: React.FC<
           <Col md={4} className="pl-0">
             <FormGroup className="mb-2">
               <SelectCustom
+                refSelect={stateRef}
                 name="state"
                 label="Estado"
                 placeholder="SP"
-                value={formGeneralInformation.formData[FormInputName.state]}
-                onChange={e =>
-                  formGeneralInformation.onChangeFormInput(FormInputName.state)(
-                    e?.target?.value as string,
-                  )
-                }
-                error={
-                  formGeneralInformation.formErrors.state &&
-                  formGeneralInformation.formErrors.state[0]
-                }
+                value={formData[FormInputName.state]}
+                onChange={e => onChangeFormInput(FormInputName.state)(e?.target?.value as string)}
+                error={formErrors.state && formErrors.state[0]}
                 options={statesUf}
                 disabled
               />
@@ -281,19 +310,13 @@ export const GeneralInformationContent: React.FC<
           <Col md={8} className="pr-0">
             <FormGroup className="mb-2">
               <InputText
+                refInput={cityRef}
                 name="city"
                 label="Cidade"
                 placeholder="Campinas"
-                value={formGeneralInformation.formData[FormInputName.city]}
-                onChange={e =>
-                  formGeneralInformation.onChangeFormInput(FormInputName.city)(
-                    e?.target.value as string,
-                  )
-                }
-                error={
-                  formGeneralInformation.formErrors.city &&
-                  formGeneralInformation.formErrors.city[0]
-                }
+                value={formData[FormInputName.city]}
+                onChange={e => onChangeFormInput(FormInputName.city)(e?.target.value as string)}
+                error={formErrors.city && formErrors.city[0]}
                 disabled
               />
             </FormGroup>
@@ -302,137 +325,105 @@ export const GeneralInformationContent: React.FC<
 
         <FormGroup className="mb-2">
           <InputText
+            refInput={districtRef}
             name="district"
             label="Bairro"
             placeholder="Centro"
-            value={formGeneralInformation.formData[FormInputName.district]}
-            onChange={e =>
-              formGeneralInformation.onChangeFormInput(FormInputName.district)(e.target.value)
-            }
-            error={
-              formGeneralInformation.formErrors.district &&
-              formGeneralInformation.formErrors.district[0]
-            }
+            value={formData[FormInputName.district]}
+            onChange={e => onChangeFormInput(FormInputName.district)(e.target.value)}
+            error={formErrors.district && formErrors.district[0]}
             disabled
           />
         </FormGroup>
 
         <FormGroup className="mb-2">
           <InputText
+            refInput={streetRef}
             name="street"
             label="Logradouro"
             placeholder="Rua 123 da Costa"
-            value={formGeneralInformation.formData[FormInputName.street]}
-            onChange={e =>
-              formGeneralInformation.onChangeFormInput(FormInputName.street)(e.target.value)
-            }
-            error={
-              formGeneralInformation.formErrors.street &&
-              formGeneralInformation.formErrors.street[0]
-            }
+            value={formData[FormInputName.street]}
+            onChange={e => onChangeFormInput(FormInputName.street)(e.target.value)}
+            error={formErrors.street && formErrors.street[0]}
             disabled
           />
         </FormGroup>
 
         <FormGroup className="mb-2">
           <InputText
+            refInput={numberRef}
             name="number"
             label="Número"
             placeholder="Ex: 789"
             maxLength={6}
-            value={formGeneralInformation.formData[FormInputName.number]}
-            onChange={e =>
-              formGeneralInformation.onChangeFormInput(FormInputName.number)(e.target.value)
-            }
-            error={
-              formGeneralInformation.formErrors.number &&
-              formGeneralInformation.formErrors.number[0]
-            }
+            value={formData[FormInputName.number]}
+            onChange={e => onChangeFormInput(FormInputName.number)(e.target.value)}
+            error={formErrors.number && formErrors.number[0]}
             disabled={isValidAddresswithCEP()}
           />
         </FormGroup>
 
         <FormGroup className="mb-2">
           <InputText
+            refInput={complementRef}
             name="complement"
             label="Complemento (opcional)"
             placeholder="Ex: Apto 12"
-            value={formGeneralInformation.formData[FormInputName.complement]}
-            onChange={e =>
-              formGeneralInformation.onChangeFormInput(FormInputName.complement)(e.target.value)
-            }
-            error={
-              formGeneralInformation.formErrors.complement &&
-              formGeneralInformation.formErrors.complement[0]
-            }
+            value={formData[FormInputName.complement]}
+            onChange={e => onChangeFormInput(FormInputName.complement)(e.target.value)}
+            error={formErrors.complement && formErrors.complement[0]}
             disabled={isValidAddresswithCEP()}
           />
         </FormGroup>
         <FormGroup className="mb-2">
           <InputText
+            refInput={latitudeRef}
             name="latitude"
             label="Latitude (opcional)"
             placeholder="Ex: 0º"
             maxLength={9}
-            value={formGeneralInformation.formData[FormInputName.latitude]}
-            onChange={e =>
-              formGeneralInformation.onChangeFormInput(FormInputName.latitude)(e.target.value)
-            }
-            error={
-              formGeneralInformation.formErrors.latitude &&
-              formGeneralInformation.formErrors.latitude[0]
-            }
+            value={formData[FormInputName.latitude]}
+            onChange={e => onChangeFormInput(FormInputName.latitude)(e.target.value)}
+            error={formErrors.latitude && formErrors.latitude[0]}
           />
         </FormGroup>
 
         <FormGroup className="mb-2">
           <InputText
+            refInput={longitudeRef}
             name="longitude"
             label="Longitude (opcional)"
             placeholder="Ex: 0º"
             maxLength={9}
-            value={formGeneralInformation.formData[FormInputName.longitude]}
-            onChange={e =>
-              formGeneralInformation.onChangeFormInput(FormInputName.longitude)(e.target.value)
-            }
-            error={
-              formGeneralInformation.formErrors.longitude &&
-              formGeneralInformation.formErrors.longitude[0]
-            }
+            value={formData[FormInputName.longitude]}
+            onChange={e => onChangeFormInput(FormInputName.longitude)(e.target.value)}
+            error={formErrors.longitude && formErrors.longitude[0]}
           />
         </FormGroup>
         <Row>
           <Col md={6} className="pl-0">
             <FormGroup className="mb-2">
               <InputText
+                refInput={startDateRef}
                 type="date"
                 name="startDate"
                 label="Data Início do Evento"
-                value={formGeneralInformation.formData[FormInputName.startDate]}
-                onChange={e =>
-                  formGeneralInformation.onChangeFormInput(FormInputName.startDate)(e.target.value)
-                }
-                error={
-                  formGeneralInformation.formErrors.startDate &&
-                  formGeneralInformation.formErrors.startDate[0]
-                }
+                value={formData[FormInputName.startDate]}
+                onChange={e => onChangeFormInput(FormInputName.startDate)(e.target.value)}
+                error={formErrors.startDate && formErrors.startDate[0]}
               />
             </FormGroup>
           </Col>
           <Col md={6} className="pr-0">
             <FormGroup className="mb-2">
               <InputText
+                refInput={endDateRef}
                 type="date"
                 name="endDate"
                 label="Data Fim do Evento"
-                value={formGeneralInformation.formData[FormInputName.endDate]}
-                onChange={e =>
-                  formGeneralInformation.onChangeFormInput(FormInputName.endDate)(e.target.value)
-                }
-                error={
-                  formGeneralInformation.formErrors.endDate &&
-                  formGeneralInformation.formErrors.endDate[0]
-                }
+                value={formData[FormInputName.endDate]}
+                onChange={e => onChangeFormInput(FormInputName.endDate)(e.target.value)}
+                error={formErrors.endDate && formErrors.endDate[0]}
               />
             </FormGroup>
           </Col>
@@ -441,53 +432,41 @@ export const GeneralInformationContent: React.FC<
           <Col md={6} className="pl-0">
             <FormGroup className="mb-2">
               <InputText
+                refInput={startTimeRef}
                 type="time"
                 name="startTime"
                 label="Hora Início do Evento"
-                value={formGeneralInformation.formData[FormInputName.startTime]}
-                onChange={e =>
-                  formGeneralInformation.onChangeFormInput(FormInputName.startTime)(e.target.value)
-                }
-                error={
-                  formGeneralInformation.formErrors.startTime &&
-                  formGeneralInformation.formErrors.startTime[0]
-                }
+                value={formData[FormInputName.startTime]}
+                onChange={e => onChangeFormInput(FormInputName.startTime)(e.target.value)}
+                error={formErrors.startTime && formErrors.startTime[0]}
               />
             </FormGroup>
           </Col>
           <Col md={6} className="pr-0">
             <FormGroup className="mb-2">
               <InputText
+                refInput={endTimeRef}
                 type="time"
                 name="endTime"
                 label="Hora Fim do Evento"
-                value={formGeneralInformation.formData[FormInputName.endTime]}
-                onChange={e =>
-                  formGeneralInformation.onChangeFormInput(FormInputName.endTime)(e.target.value)
-                }
-                error={
-                  formGeneralInformation.formErrors.endTime &&
-                  formGeneralInformation.formErrors.endTime[0]
-                }
+                value={formData[FormInputName.endTime]}
+                onChange={e => onChangeFormInput(FormInputName.endTime)(e.target.value)}
+                error={formErrors.endTime && formErrors.endTime[0]}
               />
             </FormGroup>
           </Col>
         </Row>
         <FormGroup className="mb-2">
           <SelectCustom
+            refSelect={eventCategoryRef}
             name="eventCategory"
             label="Categoria do evento"
             placeholder="Digite ou selecione a categoria do evento"
             onChange={e => {
-              formGeneralInformation.onChangeFormInput(FormInputName.eventCategory)(
-                e?.value as string,
-              );
+              onChangeFormInput(FormInputName.eventCategory)(e?.value as string);
             }}
-            error={
-              formGeneralInformation.formErrors.eventCategory &&
-              formGeneralInformation.formErrors.eventCategory[0]
-            }
-            value={formGeneralInformation.formData[FormInputName.eventCategory]}
+            error={formErrors.eventCategory && formErrors.eventCategory[0]}
+            value={formData[FormInputName.eventCategory]}
             options={
               categoryStates?.categoryList?.map(optionCategory => ({
                 value: optionCategory.id,
@@ -511,11 +490,9 @@ export const GeneralInformationContent: React.FC<
               <div
                 className="link-grey"
                 onClick={() => {
-                  if (formGeneralInformation.formData[FormInputName.eventCategory] !== '') {
+                  if (formData[FormInputName.eventCategory] !== '') {
                     const categorySelected = categoryStates.categoryList.find(
-                      category =>
-                        category.id ===
-                        formGeneralInformation.formData[FormInputName.eventCategory],
+                      category => category.id === formData[FormInputName.eventCategory],
                     );
                     modalConfig.onShouldShowModal({
                       value: ShouldShowModal.category,
@@ -534,19 +511,15 @@ export const GeneralInformationContent: React.FC<
         </FormGroup>
         <FormGroup className="mb-2">
           <SelectCustom
+            refSelect={contractorRef}
             name="contractor"
             label="Empresa ou contratante"
             placeholder="Digite ou selecione a empresa/contratante"
             onChange={e => {
-              formGeneralInformation.onChangeFormInput(FormInputName.contractor)(
-                e?.value as string,
-              );
+              onChangeFormInput(FormInputName.contractor)(e?.value as string);
             }}
-            error={
-              formGeneralInformation.formErrors.contractor &&
-              formGeneralInformation.formErrors.contractor[0]
-            }
-            value={formGeneralInformation.formData[FormInputName.contractor]}
+            error={formErrors.contractor && formErrors.contractor[0]}
+            value={formData[FormInputName.contractor]}
             options={contractorState.contractorList?.map(optionContractor => ({
               value: optionContractor.id,
               label: optionContractor.name,
@@ -567,52 +540,40 @@ export const GeneralInformationContent: React.FC<
         </FormGroup>
         <FormGroup className="mb-2">
           <InputText
+            refInput={censureRef}
             name="censure"
             label="Censura do evento"
             placeholder="Digite a idade de censura. Ex: 16"
             maxLength={2}
-            value={formGeneralInformation.formData[FormInputName.censure]}
+            value={formData[FormInputName.censure]}
             onChange={e =>
-              formGeneralInformation.onChangeFormInput(FormInputName.censure)(
-                e.target.value.replace(/\D/g, ''),
-              )
+              onChangeFormInput(FormInputName.censure)(e.target.value.replace(/\D/g, ''))
             }
-            error={
-              formGeneralInformation.formErrors.censure &&
-              formGeneralInformation.formErrors.censure[0]
-            }
+            error={formErrors.censure && formErrors.censure[0]}
           />
         </FormGroup>
 
         <h5 className="mb-2 border-bottom-title mb-5">Informações complementares</h5>
         <FormGroup className="mb-2">
           <InputText
+            refInput={facebookUrlRef}
             name="facebookUrl"
             label="Facebook do evento (opcional)"
             placeholder="Copie e cole o link do Facebook do evento"
-            value={formGeneralInformation.formData[FormInputName.facebookUrl]}
-            onChange={e =>
-              formGeneralInformation.onChangeFormInput(FormInputName.facebookUrl)(e.target.value)
-            }
-            error={
-              formGeneralInformation.formErrors.facebookUrl &&
-              formGeneralInformation.formErrors.facebookUrl[0]
-            }
+            value={formData[FormInputName.facebookUrl]}
+            onChange={e => onChangeFormInput(FormInputName.facebookUrl)(e.target.value)}
+            error={formErrors.facebookUrl && formErrors.facebookUrl[0]}
           />
         </FormGroup>
         <FormGroup className="mb-2">
           <InputText
+            refInput={instagramUrlRef}
             name="instagramUrl"
             label="Instagram do evento (opcional)"
             placeholder="Copie e cole o link do Instagram do evento"
-            value={formGeneralInformation.formData[FormInputName.instagramUrl]}
-            onChange={e =>
-              formGeneralInformation.onChangeFormInput(FormInputName.instagramUrl)(e.target.value)
-            }
-            error={
-              formGeneralInformation.formErrors.instagramUrl &&
-              formGeneralInformation.formErrors.instagramUrl[0]
-            }
+            value={formData[FormInputName.instagramUrl]}
+            onChange={e => onChangeFormInput(FormInputName.instagramUrl)(e.target.value)}
+            error={formErrors.instagramUrl && formErrors.instagramUrl[0]}
           />
         </FormGroup>
         <FormGroup className="mb-2">
@@ -626,16 +587,13 @@ export const GeneralInformationContent: React.FC<
                 <span className="description-input">Resolução: 500x500</span>
               </>
             }
-            fileName={formGeneralInformation.formNameFiles?.imageBase64}
+            fileName={formNameFiles?.imageBase64}
             onChange={e =>
-              formGeneralInformation.onChanfeFormFileInput(FormInputName.imageBase64)(
+              onChangeFormFileInput(FormInputName.imageBase64)(
                 (e.target as HTMLInputElement)?.files?.[0],
               )
             }
-            error={
-              formGeneralInformation.formErrors.imageBase64 &&
-              formGeneralInformation.formErrors.imageBase64[0]
-            }
+            error={formErrors.imageBase64 && formErrors.imageBase64[0]}
           />
         </FormGroup>
         <FormGroup className="mb-2">
@@ -650,53 +608,42 @@ export const GeneralInformationContent: React.FC<
                 <br />
               </>
             }
-            fileName={formGeneralInformation.formNameFiles?.imagePosBase64}
+            fileName={formNameFiles?.imagePosBase64}
             onChange={e =>
-              formGeneralInformation.onChanfeFormFileInput(FormInputName.imagePosBase64)(
+              onChangeFormFileInput(FormInputName.imagePosBase64)(
                 (e.target as HTMLInputElement)?.files?.[0],
               )
             }
-            error={
-              formGeneralInformation.formErrors.imagePosBase64 &&
-              formGeneralInformation.formErrors.imagePosBase64[0]
-            }
+            error={formErrors.imagePosBase64 && formErrors.imagePosBase64[0]}
           />
         </FormGroup>
         <FormGroup className="mb-2">
           <ButtonGroup
+            refButton={publishWebsiteRef}
             label="Publicar evento no site?"
             name="publishWebsite"
-            value={formGeneralInformation.formData[FormInputName.publishWebsite]}
-            onChange={e =>
-              formGeneralInformation.onChangeFormInput(FormInputName.publishWebsite)(e.target.value)
-            }
+            value={formData[FormInputName.publishWebsite]}
+            onChange={e => onChangeFormInput(FormInputName.publishWebsite)(e.target.value)}
             options={[
               { value: true, label: 'Sim' },
               { value: false, label: 'Não' },
             ]}
-            error={
-              formGeneralInformation.formErrors.publishWebsite &&
-              formGeneralInformation.formErrors.publishWebsite[0]
-            }
+            error={formErrors.publishWebsite && formErrors.publishWebsite[0]}
           />
         </FormGroup>
         <FormGroup className="mb-2">
           <ButtonGroup
+            refButton={textSizeRef}
             label="Tamanho do texto"
             name="textSize"
-            value={formGeneralInformation.formData[FormInputName.textSize]}
-            onChange={e =>
-              formGeneralInformation.onChangeFormInput(FormInputName.textSize)(e.target.value)
-            }
+            value={formData[FormInputName.textSize]}
+            onChange={e => onChangeFormInput(FormInputName.textSize)(e.target.value)}
             options={[
               { value: '0', label: 'Pequeno' },
               { value: '1', label: 'Médio' },
               { value: '2', label: 'Grande' },
             ]}
-            error={
-              formGeneralInformation.formErrors.textSize &&
-              formGeneralInformation.formErrors.textSize[0]
-            }
+            error={formErrors.textSize && formErrors.textSize[0]}
           />
         </FormGroup>
         <FormGroup className="mb-2">
@@ -706,14 +653,9 @@ export const GeneralInformationContent: React.FC<
             placeholder="Digite a frase que irá aparecer no ingresso"
             maxLength={250}
             rows={3}
-            value={formGeneralInformation.formData[FormInputName.ticketPhrase]}
-            onChange={e =>
-              formGeneralInformation.onChangeFormInput(FormInputName.ticketPhrase)(e.target.value)
-            }
-            error={
-              formGeneralInformation.formErrors.ticketPhrase &&
-              formGeneralInformation.formErrors.ticketPhrase[0]
-            }
+            value={formData[FormInputName.ticketPhrase]}
+            onChange={e => onChangeFormInput(FormInputName.ticketPhrase)(e.target.value)}
+            error={formErrors.ticketPhrase && formErrors.ticketPhrase[0]}
           />
         </FormGroup>
         <FormGroup className="mb-2">
@@ -723,16 +665,9 @@ export const GeneralInformationContent: React.FC<
             placeholder="Digite aqui a descrição que irá aparecer no site"
             maxLength={250}
             rows={4}
-            value={formGeneralInformation.formData[FormInputName.websiteDescription]}
-            onChange={e =>
-              formGeneralInformation.onChangeFormInput(FormInputName.websiteDescription)(
-                e.target.value,
-              )
-            }
-            error={
-              formGeneralInformation.formErrors.websiteDescription &&
-              formGeneralInformation.formErrors.websiteDescription[0]
-            }
+            value={formData[FormInputName.websiteDescription]}
+            onChange={e => onChangeFormInput(FormInputName.websiteDescription)(e.target.value)}
+            error={formErrors.websiteDescription && formErrors.websiteDescription[0]}
           />
         </FormGroup>
       </div>

@@ -23,27 +23,29 @@ export const RegisterFatherEventContent: React.FC<RegisterFatherEventContentProp
       e.preventDefault();
     }}
   >
-    <Row>
-      <Col md={8}>
-        <FormGroup>
-          <SelectCustom
-            name="eventType"
-            label="Tipo de evento"
-            placeholder="Digite ou selecione o tipo do evento"
-            onChange={e => {
-              formFatherEvent.onChangeFormInput(FormInputName.name)(e?.value as string);
-            }}
-            error={formFatherEvent.formErrors.name && formFatherEvent.formErrors.name[0]}
-            value={formFatherEvent.formData[FormInputName.name]}
-            options={
-              fatherEventStates.fatherEventList.map(fatherEvent => ({
-                value: fatherEvent.id,
-                label: fatherEvent.name,
-              })) || []
-            }
-          />
-        </FormGroup>
-      </Col>
-    </Row>
+    <div style={{ minHeight: '21rem' }}>
+      <Row>
+        <Col md={8}>
+          <FormGroup>
+            <SelectCustom
+              name="eventType"
+              label="Evento pai"
+              placeholder="Digite ou selecione o evento Pai"
+              onChange={e => {
+                formFatherEvent.onChangeFormInput(FormInputName.name)(e?.value as string);
+              }}
+              error={formFatherEvent.formErrors.name && formFatherEvent.formErrors.name[0]}
+              value={formFatherEvent.formData[FormInputName.name]}
+              options={
+                fatherEventStates.fatherEventList.map(fatherEvent => ({
+                  value: fatherEvent.id,
+                  label: fatherEvent.name,
+                })) || []
+              }
+            />
+          </FormGroup>
+        </Col>
+      </Row>
+    </div>
   </Form>
 );

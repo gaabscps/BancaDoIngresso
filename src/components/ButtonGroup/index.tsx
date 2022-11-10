@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, LegacyRef } from 'react';
 
 interface RadioProps {
   name: string;
@@ -11,6 +11,7 @@ interface RadioProps {
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   value: string;
   disabled?: boolean;
+  refButton?: LegacyRef<HTMLInputElement>;
 }
 
 interface OptionProps {
@@ -28,6 +29,7 @@ export const ButtonGroup: FC<RadioProps> = ({
   onChange,
   value,
   disabled,
+  refButton,
 }) => {
   const isDisabled = disabled ? 'input-disabled' : '';
   const isError = error ? 'input-error' : '';
@@ -55,6 +57,7 @@ export const ButtonGroup: FC<RadioProps> = ({
                   onChange={onChange}
                   name={name}
                   id={`${option.value}-${idRandom}`}
+                  ref={refButton}
                 />
                 <label
                   className="btn button-group label-radio-custom"
