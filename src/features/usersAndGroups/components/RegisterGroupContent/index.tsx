@@ -73,7 +73,7 @@ export const RegisterGroupContent: React.FC<Props> = (props: Props) => {
           </FormGroup>
 
           <h5>Permissões do grupo</h5>
-          <h4 className="subtitle border-bottom-title">
+          <h4 className="subtitle border-bottom-title mb-4">
             Seções e ações que este grupo poderá acessar e realizar
           </h4>
           <div>
