@@ -16,10 +16,10 @@ import {
   modalConfigProps,
 } from '@/features/registerEvent/types';
 import './styles.scss';
-import { GeneralInformationContent } from '@/features/registerEvent/component/GeneralInformationContent';
+import { GeneralInformationContent } from '@/features/registerEvent/components/GeneralInformationContent';
 import { ActionProps } from '@/components/Dialog';
-import { RegisterCategoryContent } from '@/features/registerEvent/component/RegisterCategoryContent';
-import { RegisterFatherEventContent } from '@/features/registerEvent/component/RegisterFatherEvent';
+import { RegisterCategoryContent } from '@/features/registerEvent/components/RegisterCategoryContent';
+import { RegisterFatherEventContent } from '@/features/registerEvent/components/RegisterFatherEvent';
 
 // eslint-disable-next-line no-shadow
 export enum States {

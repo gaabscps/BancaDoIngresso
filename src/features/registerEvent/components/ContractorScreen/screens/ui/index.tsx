@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-key */
 import React, { Fragment } from 'react';
 import { Loading } from '@/components';
-import { RegisterContent } from '@/features/registerEvent/component/ContractorScreen/component/RegisterContent';
+import { RegisterContent } from '@/features/registerEvent/components/ContractorScreen/components/RegisterContent';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ActionProps, Dialog } from '@/components/Dialog';
 import Contractor from '@/model/Contractor';
@@ -11,10 +11,10 @@ import {
   ContractorControllerPix,
   ContractorControllerUser,
   PixForm,
-} from '@/features/registerEvent/component/ContractorScreen/types';
+} from '@/features/registerEvent/components/ContractorScreen/types';
 import { FormErrors, OnChangeFormInput, FormData } from '@/hooks/useForm';
-import { RegisterBankAccount } from '@/features/registerEvent/component/ContractorScreen/component/RegisterBankAccount';
-import { RegisterPix } from '@/features/registerEvent/component/ContractorScreen/component/RegisterPix';
+import { RegisterBankAccount } from '@/features/registerEvent/components/ContractorScreen/components/RegisterBankAccount';
+import { RegisterPix } from '@/features/registerEvent/components/ContractorScreen/components/RegisterPix';
 import ContractorType from '@/model/ContractorType';
 import { toast } from 'react-toastify';
 
