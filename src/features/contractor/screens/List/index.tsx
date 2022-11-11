@@ -39,7 +39,7 @@ import PixType from '@/model/PixType';
 import User from '@/model/User';
 import PixTypes from '@/model/PixTypes';
 import Address from '@/model/Address';
-import { DeleteContent } from '../../components/DeleteContent';
+import { DeleteContent } from '@/features/contractor/components/DeleteContent';
 
 export default interface PayloadContractor {
   id?: string;

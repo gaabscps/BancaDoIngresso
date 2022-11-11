@@ -12,6 +12,7 @@ interface StateProps {
 interface DispatchProps {
   leftIcon(): JSX.Element;
   buttonAction?(e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void;
+  className?: string;
 }
 
 type Props = StateProps & DispatchProps;
@@ -25,7 +26,9 @@ function SuperCollapse(props: Props): JSX.Element {
     <>
       <div style={{ marginBottom: '50px' }}>
         <div
-          className="collapseTable d-flex justify-content-between collapseTableText"
+          className={`collapseTable d-flex justify-content-between collapseTableText ${
+            props.className
+          } ${open ? ' border-bottom-collapse' : ''}`}
           onClick={() => setOpen(!open)}
         >
           <div className="d-flex">

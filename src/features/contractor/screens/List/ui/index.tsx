@@ -100,10 +100,12 @@ interface ContractorContainerProps {
     value,
     newTitleModal,
     contractor,
+    isEdit,
   }: {
     value: ShouldShowModal;
     newTitleModal: string | React.ReactNode;
     contractor?: Contractor;
+    isEdit?: boolean;
   }) => void;
   controllerInputAppendBankAccount: ContractorControllerBankAccount;
   controllerInputAppendPix: ContractorControllerPix;

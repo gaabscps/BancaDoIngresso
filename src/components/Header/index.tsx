@@ -86,6 +86,16 @@ export const Header: React.FC = () => {
       title: 'Formas de Pagamento',
       subTitle: 'Administração / Formas de pagamento',
     },
+    {
+      route: path.Dashboard.Event.itself,
+      title: 'Cadastrar evento',
+      subTitle: 'Eventos / Cadastrar evento',
+    },
+    {
+      route: path.Dashboard.Event.edit,
+      title: 'Cadastrar evento',
+      subTitle: 'Eventos / Editar evento',
+    },
   ];
 
   return (

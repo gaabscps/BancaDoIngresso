@@ -62,7 +62,7 @@
   overflow-x: auto;
   border-radius: 0 0 5px 5px !important;
   border: 0 !important;
-  border-top: 1px solid #E6E6E6 !important;
+  border-top: 1px solid #e6e6e6 !important;
 }
 .text-success-link {
   font-weight: 300;
@@ -120,4 +120,19 @@
 
 .text-success-link-widht {
   width: 200px;
+}
+.text-active {
+  background-color: rgba(122, 216, 27, 0.1);
+  padding: 3px 12px;
+  border-radius: 20px;
+  color: #7ad81b;
+}
+.text-inactive {
+  background-color: rgba(216, 35, 27, 0.05);
+  padding: 3px 12px;
+  border-radius: 20px;
+  color: #d8231b;
+}
+.border-bottom-collapse {
+  border-bottom: 1px solid #e6e6e6;
 }
