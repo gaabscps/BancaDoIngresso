@@ -14,6 +14,11 @@
       &__current {
         color: #d8413a;
       }
+      &__done {
+        &:hover {
+          color: #222222;
+        }
+      }
     }
     &__status {
       margin-top: auto;
