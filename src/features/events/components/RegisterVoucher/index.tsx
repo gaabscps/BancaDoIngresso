@@ -117,7 +117,7 @@ export const RegisterVoucher: React.FC<RegisterContentProps> = ({
                 }}
               />
             </div>
-            <div style={{ borderBottom: 'solid 1px #D9D9D9', width: '100%' }}></div>
+            <div className="border-bottom-divider"></div>
           </Col>
         </Row>
       </Form>

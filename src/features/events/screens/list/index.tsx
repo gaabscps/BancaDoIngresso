@@ -222,6 +222,7 @@ export const EventScreen: React.FC = () => {
           description: formDataVoucher[FormInputName.description],
           value: unmask(formDataVoucher[FormInputName.value]),
         });
+        toast.success('Voucher gerado');
       }
     } catch (error) {
       const err = error as AxiosError;
@@ -237,7 +238,7 @@ export const EventScreen: React.FC = () => {
   ): Promise<void> => {
     try {
       await api.put(`/event/${eventSelected}/voucher/${voucherSelected}/disable`);
-      toast.success('Voucher excluído com sucesso!');
+      toast.success('Voucher excluído');
       handleOnClose();
       handleFetch(currentPage);
     } catch (error) {
@@ -330,7 +331,7 @@ export const EventScreen: React.FC = () => {
 
   const copyToClipboard = (text: string): void => {
     navigator.clipboard.writeText(text);
-    toast.success('Copiado!');
+    toast.success('Código copiado');
   };
 
   useEffect(() => {

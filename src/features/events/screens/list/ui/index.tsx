@@ -23,6 +23,7 @@ import { useHistory } from 'react-router-dom';
 import { RegisterVoucher } from '@/features/events/components/RegisterVoucher';
 import dayjs from 'dayjs';
 import Voucher from '@/model/Voucher';
+import { colors } from '@/styles/colors';
 import { columns } from './table';
 
 // eslint-disable-next-line no-shadow
@@ -160,7 +161,12 @@ export const EventContainer: React.FC<EventContainerProps> = ({
         }}
       >
         <div>{event.name}</div>
-        {<DropdonwFlags dataColumn={dataEventType.filter(value => value.id === event.eventType)} />}
+        {
+          <DropdonwFlags
+            className="mt-2"
+            dataColumn={dataEventType.filter(value => value.id === event.eventType)}
+          />
+        }
       </div>
     ),
     city: event.address.city,
@@ -321,7 +327,7 @@ export const EventContainer: React.FC<EventContainerProps> = ({
                 </div>
                 <p className="eventDraftCounter">
                   Você tem{' '}
-                  <span style={{ color: '#222222', fontWeight: '500' }}>
+                  <span style={{ color: colors.black, fontWeight: '500' }}>
                     {fullListEvent?.filter(event => event.eventStatus === 0).length} eventos{' '}
                   </span>
                   em rascunho
@@ -347,7 +353,7 @@ export const EventContainer: React.FC<EventContainerProps> = ({
                     }}
                   />
                 </div>
-                <div className="filter-container">
+                <div className="filter-container m-filter">
                   <div
                     className="filter-content"
                     onClick={(): void =>

@@ -5,7 +5,7 @@ export const columns: TableColumn<DataRow>[] = [
   {
     name: 'Descrição do voucher',
     selector: row => row.description,
-    width: '300px',
+    minWidth: '300px',
     style: {
       fontSize: '16px',
       paddingTop: '15px',
@@ -16,7 +16,7 @@ export const columns: TableColumn<DataRow>[] = [
   {
     name: 'Usuário (CPF)',
     selector: row => row.user,
-    width: '200px',
+    minWidth: '200px',
     style: {
       fontSize: '16px',
       paddingTop: '15px',
@@ -27,7 +27,7 @@ export const columns: TableColumn<DataRow>[] = [
   {
     name: 'Valor',
     selector: row => row.value,
-    width: '150px',
+    minWidth: '150px',
     style: {
       fontSize: '16px',
       paddingTop: '15px',
@@ -38,7 +38,7 @@ export const columns: TableColumn<DataRow>[] = [
   {
     name: 'Código',
     selector: row => row.code,
-    width: '150px',
+    minWidth: '150px',
     style: {
       fontSize: '16px',
       paddingTop: '15px',
@@ -49,12 +49,15 @@ export const columns: TableColumn<DataRow>[] = [
   {
     name: '',
     selector: row => row.actions,
-    maxWidth: '100px',
+    width: '100px',
     style: {
       fontSize: '16px',
       paddingTop: '15px',
       paddingBottom: '15px',
+      paddingRight: '0px',
       borderBottom: '1.5px solid #E6E6E6',
+      display: 'flex',
+      justifyContent: 'flex-end',
     },
   },
 ];

@@ -1,7 +1,86 @@
+.filterStatus {
+  &__orange {
+    &:hover {
+      transition: all 0.2s ease;
+      color: #e88b1e !important;
+    }
+  }
+  &__lightBlue {
+    &:hover {
+      transition: all 0.2s ease;
+      color: #3cafc8 !important;
+    }
+  }
+  &__lightGreen {
+    &:hover {
+      transition: all 0.2s ease;
+      color: #3cc8c0 !important;
+    }
+  }
+  &__darkRed {
+    &:hover {
+      transition: all 0.2s ease;
+      color: #c83c66 !important;
+    }
+  }
+  &__green {
+    &:hover {
+      transition: all 0.2s ease;
+      color: #7ad81b !important;
+    }
+  }
+  &__yellow {
+    &:hover {
+      transition: all 0.2s ease;
+      color: #ffe249 !important;
+    }
+  }
+  &__red {
+    &:hover {
+      transition: all 0.2s ease;
+      color: #e64f49 !important;
+    }
+  }
+  span {
+    user-select: none;
+  }
+}
+
 .filterActive {
+  &.filterStatus {
+    &__orange {
+      background-color: rgba(232, 139, 30, 0.1);
+      color: #e88b1e !important;
+    }
+    &__lightBlue {
+      background-color: rgba(60, 175, 200, 0.1);
+      color: #3cafc8 !important;
+    }
+    &__lightGreen {
+      background-color: rgba(60, 175, 200, 0.1);
+      color: #3cc8c0 !important;
+    }
+    &__darkRed {
+      background-color: rgba(200, 60, 102, 0.1);
+      color: #c83c66 !important;
+    }
+    &__green {
+      background-color: rgba(122, 216, 27, 0.1);
+      color: #7ad81b !important;
+    }
+    &__yellow {
+      background-color: rgba(255, 226, 73, 0.1);
+      color: #ffe249 !important;
+    }
+    &__red {
+      background-color: rgba(230, 79, 73, 0.1);
+      color: #e64f49 !important;
+    }
+  }
   padding: 2px 5px;
   border-radius: 20px;
 }
+
 @media (max-width: '1230px') {
   .status-container {
     justify-content: flex-start !important;
