@@ -14,27 +14,19 @@ type Props = StateProps & DispatchProps;
 
 export const ListModule: React.FC<Props> = (props: Props): JSX.Element => (
   <table>
-    <tbody>
+    <tbody style={{ width: '100%' }}>
       {props.module.permissions.map(data => (
-        <tr key={data.id}>
-          <td style={{ verticalAlign: 'baseline' }}>
-            <Input
-              type="checkbox"
-              value={data.check}
-              checked={data.check === 'true'}
-              onChange={e => props.check(e, data)}
-            />
-          </td>
-          <td
-            style={{
-              fontSize: '0.75rem',
-              fontWeight: '300',
-              color: 'rgba(0,0,0,0.87)',
-            }}
-          >
+        <div className="checkbox-list" key={data.id}>
+          <Input
+            type="checkbox"
+            value={data.check}
+            checked={data.check === 'true'}
+            onChange={e => props.check(e, data)}
+          />
+          <span title={data.name} className="checkbox-list-name">
             {data.name}
-          </td>
-        </tr>
+          </span>
+        </div>
       ))}
     </tbody>
   </table>

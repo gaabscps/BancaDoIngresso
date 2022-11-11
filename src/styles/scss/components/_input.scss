@@ -1,3 +1,54 @@
 .input-component {
   margin-bottom: 50px;
 }
+
+input[type='checkbox'] {
+  box-sizing: border-box;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  border: 1.32692px solid #c4c4c4;
+  accent-color: rgba(216, 65, 58, 1);
+  border-radius: 10px;
+}
+
+.checkbox-list-label {
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 24px;
+  width: 200px;
+  color: #828282;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: 15px;
+}
+.checkbox-list-name {
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 24px;
+  width: 100%;
+  color: #828282;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: 15px;
+}
+.checkbox-list {
+  display: flex;
+  align-items: center;
+  vertical-align: baseline;
+  margin-right: 30px;
+  margin-top: 15px;
+}
+
+@media screen and (max-width: 1200px) {
+  .tbody-container {
+    flex-direction: column;
+  }
+}
+@media screen and (max-width: 990px) {
+  .checkbox-list-name {
+    width: 150px;
+  }
+}

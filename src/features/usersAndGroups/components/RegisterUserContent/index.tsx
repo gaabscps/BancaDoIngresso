@@ -69,16 +69,14 @@ export const RegisterUserContent: React.FC<Props> = (props: Props) => {
             />
           </FormGroup>
         </Col>
-        <Col md={4}>
-          <Switch
-            name="status"
-            label={`Usuário ${
-              convertToBoolean(props.formData[FormInputUser.status]) ? 'ativo' : 'inativo'
-            }`}
-            onChange={e => props.onActivateAndInactivate(e)}
-            checked={convertToBoolean(props.formData[FormInputUser.status])}
-          />
-        </Col>
+        <Switch
+          name="status"
+          label={`Usuário ${
+            convertToBoolean(props.formData[FormInputUser.status]) ? 'ativo' : 'inativo'
+          }`}
+          onChange={e => props.onActivateAndInactivate(e)}
+          checked={convertToBoolean(props.formData[FormInputUser.status])}
+        />
       </Row>
       <Row>
         <Col md={8}>
@@ -231,27 +229,17 @@ export const RegisterUserContent: React.FC<Props> = (props: Props) => {
           <table style={{ marginLeft: '20px' }}>
             <tbody>
               {props.userProfileCheckBox.map(data => (
-                <tr key={data.id} id={data.id}>
-                  <td style={{ verticalAlign: 'baseline' }}>
+                <>
+                  <div className="checkbox-list">
                     <Input
                       type="checkbox"
                       value={String(data.checked)}
                       checked={data.checked}
                       onChange={e => props.onChangeUserTypeSelected(e, data)}
                     />
-                  </td>
-                  <td
-                    style={{
-                      fontSize: '16px',
-                      fontWeight: '300',
-                      lineHeight: '24px',
-                      width: '100%',
-                      color: '#828282',
-                    }}
-                  >
-                    {data.name}
-                  </td>
-                </tr>
+                    <span className="checkbox-list-label">{data.name}</span>
+                  </div>
+                </>
               ))}
             </tbody>
           </table>
@@ -262,30 +250,23 @@ export const RegisterUserContent: React.FC<Props> = (props: Props) => {
           <table style={{ marginLeft: '20px' }}>
             <tbody>
               {tableModule.map((data, index) => (
-                <tr key={index} id={`${index}`}>
+                <div
+                  className="tbody-container"
+                  style={{ display: 'flex' }}
+                  key={index}
+                  id={`${index}`}
+                >
                   {data.map(module => (
-                    <>
-                      <td key={module.id} style={{ verticalAlign: 'baseline' }}>
-                        <Input
-                          type="checkbox"
-                          checked={module.check === 'true'}
-                          onChange={e => props.onChangeUserGroupSelected(e, module)}
-                        />
-                      </td>
-                      <td
-                        style={{
-                          fontSize: '16px',
-                          fontWeight: '300',
-                          lineHeight: '24px',
-                          width: '33%',
-                          color: '#828282',
-                        }}
-                      >
-                        {module.name}
-                      </td>
-                    </>
+                    <div key={index} id={`${index}`} className="checkbox-list">
+                      <Input
+                        type="checkbox"
+                        checked={module.check === 'true'}
+                        onChange={e => props.onChangeUserGroupSelected(e, module)}
+                      />
+                      <span className="checkbox-list-label">{module.name}</span>
+                    </div>
                   ))}
-                </tr>
+                </div>
               ))}
             </tbody>
           </table>
