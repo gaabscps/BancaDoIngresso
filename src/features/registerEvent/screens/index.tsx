@@ -24,15 +24,15 @@ export const EventScreen: React.FC = (): JSX.Element => {
   const steps = [
     {
       Component: <GeneralInformationScreen />,
-      title: 'Informação Gerais',
+      title: 'Informações gerais',
     },
     {
       Component: <SectorTicketContainer state={state} />,
-      title: 'Setor e ingresso',
+      title: 'Setor e Ingresso',
     },
     {
       Component: <SectorProductContainer state={state} />,
-      title: 'Setor e produto',
+      title: 'Setor e Produto',
     },
     {
       Component: <PdvEventContainer state={state} />,
