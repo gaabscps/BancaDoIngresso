@@ -160,7 +160,7 @@ export const GeneralInformationContent: React.FC<
           {formData[FormInputName.eventType] === '2' && (
             <div className="d-flex flex-column mb-5" style={{ marginTop: '-20px' }}>
               <span
-                className="link-event-father d-flex"
+                className="link-event-father text-success-link d-flex"
                 onClick={() => {
                   modalConfig.onShouldShowModal({
                     value: ShouldShowModal.fatherEvent,
@@ -215,9 +215,8 @@ export const GeneralInformationContent: React.FC<
           <InputText
             refInput={nameRef}
             name="name"
-            label="Nome do Evento"
+            label="Nome do evento"
             placeholder="Digite o nome do evento. Ex: Baile do Dennis DJ"
-            maxLength={18}
             value={formData[FormInputName.name]}
             onChange={e => onChangeFormInput(FormInputName.name)(e.target.value)}
             error={formErrors.name && formErrors.name[0]}
@@ -227,7 +226,7 @@ export const GeneralInformationContent: React.FC<
           <InputText
             refInput={namePosRef}
             name="namePos"
-            label="Nome do Evento (POS)"
+            label="Nome do evento (POS)"
             placeholder="Digite o nome do evento na POS. Ex: Baile do DN.DJ"
             maxLength={12}
             value={formData[FormInputName.namePos]}
@@ -246,7 +245,6 @@ export const GeneralInformationContent: React.FC<
             name="establishmentName"
             label="Nome do estabelecimento"
             placeholder="Digite o nome do estabelecimento evento. Ex: Folk Valley"
-            maxLength={18}
             value={formData[FormInputName.establishmentName]}
             onChange={e => onChangeFormInput(FormInputName.establishmentName)(e.target.value)}
             error={formErrors.establishmentName && formErrors.establishmentName[0]}
@@ -254,12 +252,10 @@ export const GeneralInformationContent: React.FC<
         </FormGroup>
         <FormGroup className="mb-2">
           <InputText
-            // eslint-disable-next-line no-return-assign
             refInput={eventPlaceRef}
             name="eventPlace"
             label="Local do evento"
             placeholder="Digite o local do evento. Ex: Rua Perimetral Leste, 123"
-            maxLength={18}
             value={formData[FormInputName.eventPlace]}
             onChange={e => onChangeFormInput(FormInputName.eventPlace)(e.target.value)}
             error={formErrors.eventPlace && formErrors.eventPlace[0]}
@@ -404,7 +400,7 @@ export const GeneralInformationContent: React.FC<
                 refInput={startDateRef}
                 type="date"
                 name="startDate"
-                label="Data Início do Evento"
+                label="Data início do Evento"
                 value={formData[FormInputName.startDate]}
                 onChange={e => onChangeFormInput(FormInputName.startDate)(e.target.value)}
                 error={formErrors.startDate && formErrors.startDate[0]}
@@ -417,7 +413,7 @@ export const GeneralInformationContent: React.FC<
                 refInput={endDateRef}
                 type="date"
                 name="endDate"
-                label="Data Fim do Evento"
+                label="Data fim do Evento"
                 value={formData[FormInputName.endDate]}
                 onChange={e => onChangeFormInput(FormInputName.endDate)(e.target.value)}
                 error={formErrors.endDate && formErrors.endDate[0]}
@@ -432,7 +428,7 @@ export const GeneralInformationContent: React.FC<
                 refInput={startTimeRef}
                 type="time"
                 name="startTime"
-                label="Hora Início do Evento"
+                label="Hora início do Evento"
                 value={formData[FormInputName.startTime]}
                 onChange={e => onChangeFormInput(FormInputName.startTime)(e.target.value)}
                 error={formErrors.startTime && formErrors.startTime[0]}
@@ -445,7 +441,7 @@ export const GeneralInformationContent: React.FC<
                 refInput={endTimeRef}
                 type="time"
                 name="endTime"
-                label="Hora Fim do Evento"
+                label="Hora fim do Evento"
                 value={formData[FormInputName.endTime]}
                 onChange={e => onChangeFormInput(FormInputName.endTime)(e.target.value)}
                 error={formErrors.endTime && formErrors.endTime[0]}
@@ -526,14 +522,6 @@ export const GeneralInformationContent: React.FC<
             contractorSelected={contratorDataSelected}
             contractorActions={contractorActions}
           />
-          {/* <div className="d-flex flex-column mb-5" style={{ marginTop: '-20px' }}>
-            <span className="d-flex">
-              <div className="mr-5 link-green">+ cadastrar nova empresa ou contratante</div>
-              <div className="link-grey">
-                <Pen height={12} width={12} /> editar
-              </div>
-            </span>
-          </div> */}
         </FormGroup>
         <FormGroup className="mb-2">
           <InputText

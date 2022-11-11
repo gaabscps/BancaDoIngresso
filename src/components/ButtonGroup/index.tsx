@@ -35,7 +35,7 @@ export const ButtonGroup: FC<RadioProps> = ({
   const isError = error ? 'input-error' : '';
 
   return (
-    <div className={`flex-column mb-4 ${wrapperClass} ${isDisabled} ${isError}`}>
+    <div className={`${isDisabled} flex-column mb-4 ${wrapperClass}  ${isError}`}>
       {label && (
         <div className="d-flex flex-column-reverse">
           <label htmlFor={name} className="input-label">

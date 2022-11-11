@@ -104,6 +104,12 @@ export const UserGroupList: React.FC<Props> = (props: Props): JSX.Element => (
           [ShouldShowModal.user]: {
             title: props.user?.id ? 'Editar usuário' : 'Cadastrar usuário',
             onClick: (): Promise<void> => props.saveUser(),
+            disabled:
+              props.formDataUser.cpf === '' ||
+              props.formDataUser.email === '' ||
+              props.formDataUser.telephone === '' ||
+              props.formDataUser.name === '' ||
+              props.formDataUser.password === '',
           },
           [ShouldShowModal.group]: {
             title: props.group?.id ? 'Editar grupo' : 'Cadastrar grupo',
@@ -180,6 +186,7 @@ export const UserGroupList: React.FC<Props> = (props: Props): JSX.Element => (
       <div>
         <SuperCollapse
           title="Usuários cadastrados"
+          className="action-icon"
           content={
             props.users && props.users.length > 0 ? (
               <UserList
@@ -203,6 +210,7 @@ export const UserGroupList: React.FC<Props> = (props: Props): JSX.Element => (
         />
         <SuperCollapse
           title="Grupos cadastrados"
+          className="action-icon"
           content={
             props.groups && props.groups.length > 0 ? (
               <GroupList
