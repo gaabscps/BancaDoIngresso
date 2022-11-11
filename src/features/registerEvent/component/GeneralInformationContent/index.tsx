@@ -217,7 +217,6 @@ export const GeneralInformationContent: React.FC<
             name="name"
             label="Nome do evento"
             placeholder="Digite o nome do evento. Ex: Baile do Dennis DJ"
-            maxLength={18}
             value={formData[FormInputName.name]}
             onChange={e => onChangeFormInput(FormInputName.name)(e.target.value)}
             error={formErrors.name && formErrors.name[0]}
@@ -246,7 +245,6 @@ export const GeneralInformationContent: React.FC<
             name="establishmentName"
             label="Nome do estabelecimento"
             placeholder="Digite o nome do estabelecimento evento. Ex: Folk Valley"
-            maxLength={18}
             value={formData[FormInputName.establishmentName]}
             onChange={e => onChangeFormInput(FormInputName.establishmentName)(e.target.value)}
             error={formErrors.establishmentName && formErrors.establishmentName[0]}
@@ -254,12 +252,10 @@ export const GeneralInformationContent: React.FC<
         </FormGroup>
         <FormGroup className="mb-2">
           <InputText
-            // eslint-disable-next-line no-return-assign
             refInput={eventPlaceRef}
             name="eventPlace"
             label="Local do evento"
             placeholder="Digite o local do evento. Ex: Rua Perimetral Leste, 123"
-            maxLength={18}
             value={formData[FormInputName.eventPlace]}
             onChange={e => onChangeFormInput(FormInputName.eventPlace)(e.target.value)}
             error={formErrors.eventPlace && formErrors.eventPlace[0]}
