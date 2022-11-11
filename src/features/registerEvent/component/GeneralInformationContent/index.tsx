@@ -526,14 +526,6 @@ export const GeneralInformationContent: React.FC<
             contractorSelected={contratorDataSelected}
             contractorActions={contractorActions}
           />
-          {/* <div className="d-flex flex-column mb-5" style={{ marginTop: '-20px' }}>
-            <span className="d-flex">
-              <div className="mr-5 link-green">+ cadastrar nova empresa ou contratante</div>
-              <div className="link-grey">
-                <Pen height={12} width={12} /> editar
-              </div>
-            </span>
-          </div> */}
         </FormGroup>
         <FormGroup className="mb-2">
           <InputText
