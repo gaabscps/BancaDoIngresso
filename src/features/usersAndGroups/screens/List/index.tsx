@@ -180,8 +180,7 @@ export const UserScreen: React.FC = (): JSX.Element => {
       name: [validators.required],
       cpf: [validators.required, validators.cpforcnpj],
       telephone: [validators.required, validators.mobilePhone],
-      email: [validators.required],
-      userType: [validators.required],
+      email: [validators.required, validators.email],
       password: [validators.required, validators.hasPasswordOnlyNumberCharacteres],
       status: [validators.required],
     },
@@ -514,8 +513,15 @@ export const UserScreen: React.FC = (): JSX.Element => {
 
   const onSaveUser = async (): Promise<void> => {
     try {
-      if (formDataUser[FormInputUser.userType]) {
-        if (isFormValidUser()) {
+      if (isFormValidUser()) {
+        console.log(formDataUser[FormInputUser.userType]);
+        if (
+          formDataUser[FormInputUser.userType] === '0' ||
+          formDataUser[FormInputUser.userType] === '1' ||
+          formDataUser[FormInputUser.userType] === '2' ||
+          formDataUser[FormInputUser.userType] === '3' ||
+          formDataUser[FormInputUser.userType] === '4'
+        ) {
           setState(States.loading);
           const profiles: Profile[] = [];
           userGroups.forEach(data => {
@@ -553,9 +559,9 @@ export const UserScreen: React.FC = (): JSX.Element => {
           setState(States.default);
           onToggle();
           getUsers();
+        } else {
+          toast.warn('Informar tipo do Usuário!');
         }
-      } else {
-        toast.warn('Informar tipo do Usuário!');
       }
     } catch (error) {
       setState(States.default);

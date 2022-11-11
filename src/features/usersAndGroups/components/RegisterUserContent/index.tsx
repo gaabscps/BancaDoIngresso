@@ -228,12 +228,13 @@ export const RegisterUserContent: React.FC<Props> = (props: Props) => {
           <h4 className="subtitle border-bottom-title">Papel do usuário dentro do sistema</h4>
           <table style={{ marginLeft: '20px' }}>
             <tbody>
-              {props.userProfileCheckBox.map(data => (
+              {props.userProfileCheckBox.map((data, index) => (
                 <>
-                  <div className="checkbox-list">
+                  <div key={index} className="checkbox-list">
                     <Input
+                      name="userType"
                       type="checkbox"
-                      value={String(data.checked)}
+                      value={String(data.checked) || ''}
                       checked={data.checked}
                       onChange={e => props.onChangeUserTypeSelected(e, data)}
                     />
@@ -259,6 +260,7 @@ export const RegisterUserContent: React.FC<Props> = (props: Props) => {
                   {data.map(module => (
                     <div key={index} id={`${index}`} className="checkbox-list">
                       <Input
+                        name="group"
                         type="checkbox"
                         checked={module.check === 'true'}
                         onChange={e => props.onChangeUserGroupSelected(e, module)}

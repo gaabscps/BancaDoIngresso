@@ -104,6 +104,12 @@ export const UserGroupList: React.FC<Props> = (props: Props): JSX.Element => (
           [ShouldShowModal.user]: {
             title: props.user?.id ? 'Editar usuário' : 'Cadastrar usuário',
             onClick: (): Promise<void> => props.saveUser(),
+            disabled:
+              props.formDataUser.cpf === '' ||
+              props.formDataUser.email === '' ||
+              props.formDataUser.telephone === '' ||
+              props.formDataUser.name === '' ||
+              props.formDataUser.password === '',
           },
           [ShouldShowModal.group]: {
             title: props.group?.id ? 'Editar grupo' : 'Cadastrar grupo',
