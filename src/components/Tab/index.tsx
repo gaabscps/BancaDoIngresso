@@ -1,14 +1,20 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import './styles.scss';
 
-export const Tab = ({ titles, contents }) => {
+interface TabProps {
+  titles: string[];
+  contents: string[] | React.ReactNode[];
+}
+
+export const Tab: FC<TabProps> = ({ titles, contents }) => {
   const [ToggleState, setToggleState] = useState(1);
 
-  const toggleTab = index => {
+  const toggleTab = (index: number): void => {
     setToggleState(index);
   };
 
-  const getActiveClass = (index, className) => (ToggleState === index ? className : '');
+  const getActiveClass = (index: number, className: string): string =>
+    ToggleState === index ? className : '';
 
   return (
     <div className="tab-component">
@@ -27,13 +33,7 @@ export const Tab = ({ titles, contents }) => {
         </div>
         <div className="content-container">
           {contents.map((content, index) => (
-            <div
-              key={index}
-              className={`content mainContainer container-fluid ${getActiveClass(
-                index,
-                'active-content',
-              )}`}
-            >
+            <div key={index} className={`content ${getActiveClass(index, 'active-content')}`}>
               {content}
             </div>
           ))}
