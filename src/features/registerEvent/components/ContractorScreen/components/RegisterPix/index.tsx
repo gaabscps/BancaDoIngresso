@@ -3,7 +3,7 @@ import { Col, Form, FormGroup, Row } from 'reactstrap';
 import { Button, InputText, SelectCustom } from '@/components';
 import { FormErrors } from '@/hooks/useForm';
 import { X } from 'react-feather';
-import { ContractorControllerPix } from '@/features/registerEvent/component/ContractorScreen/types';
+import { ContractorControllerPix } from '@/features/registerEvent/components/ContractorScreen/types';
 
 interface RegisterContentProps {
   formErrors?: FormErrors;

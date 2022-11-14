@@ -15,7 +15,7 @@ import {
 import { toast } from 'react-toastify';
 import { isValid as isValidCEP } from '@/helpers/masks/cep';
 import cep from 'cep-promise';
-import { ContractorScreen } from '@/features/registerEvent/component/ContractorScreen';
+import { ContractorScreen } from '@/features/registerEvent/components/ContractorScreen/screens';
 import { useHistory } from 'react-router-dom';
 
 // eslint-disable-next-line no-shadow

@@ -17,12 +17,12 @@ import {
   columnsBankAccount,
   columnsPix,
   columnsUser,
-} from '@/features/registerEvent/component/ContractorScreen/ui/table';
-import { ShouldShowModal } from '@/features/registerEvent/component/ContractorScreen/ui';
+} from '@/features/registerEvent/components/ContractorScreen/screens/ui/table';
+import { ShouldShowModal } from '@/features/registerEvent/components/ContractorScreen/screens/ui';
 import {
   BanckAccountForm,
   ContractorControllerUser,
-} from '@/features/registerEvent/component/ContractorScreen/types';
+} from '@/features/registerEvent/components/ContractorScreen/types';
 
 interface RegisterContentProps {
   formData: FormData;

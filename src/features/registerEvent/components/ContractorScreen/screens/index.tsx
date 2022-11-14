@@ -11,13 +11,13 @@ import {
   BankResponse,
   ContractorSelectedProps,
   onShouldShowModalProps,
-} from '@/features/registerEvent/component/ContractorScreen/types';
+} from '@/features/registerEvent/components/ContractorScreen/types';
 import useForm from '@/hooks/useForm';
 import {
   States,
   ContractorContainer,
   ShouldShowModal,
-} from '@/features/registerEvent/component/ContractorScreen/ui';
+} from '@/features/registerEvent/components/ContractorScreen/screens/ui';
 import validators from '@/helpers/validators';
 import {
   updateMask as updateMaskCPFOrCNPJ,
@@ -28,7 +28,7 @@ import {
   updateMask as updateMaskMobilePhone,
   unmask as unMaskMobilePhone,
 } from '@/helpers/masks/mobilePhone';
-import { FormInputName as FormInputNameToSaveContractor } from '@/features/registerEvent/component/ContractorScreen/component/RegisterContent';
+import { FormInputName as FormInputNameToSaveContractor } from '@/features/registerEvent/components/ContractorScreen/components/RegisterContent';
 import { convertToBoolean } from '@/helpers/common/convertToBoolean';
 import ContractorType from '@/model/ContractorType';
 import Bank from '@/model/Bank';

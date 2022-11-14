@@ -8,9 +8,9 @@ import {
 import useForm from '@/hooks/useForm';
 import validators from '@/helpers/validators';
 import { useDialog } from '@/hooks/useDialog';
-import { FormInputName as FormInputNameToSaveCategory } from '@/features/registerEvent/component/RegisterCategoryContent';
-import { FormInputName as FormInputNameToSaveFatherEvent } from '@/features/registerEvent/component/RegisterFatherEvent';
-import { FormInputName as FormInputNameToSaveGeneralInformation } from '@/features/registerEvent/component/GeneralInformationContent';
+import { FormInputName as FormInputNameToSaveCategory } from '@/features/registerEvent/components/RegisterCategoryContent';
+import { FormInputName as FormInputNameToSaveFatherEvent } from '@/features/registerEvent/components/RegisterFatherEvent';
+import { FormInputName as FormInputNameToSaveGeneralInformation } from '@/features/registerEvent/components/GeneralInformationContent';
 import { updateMask as updateMaskCEP } from '@/helpers/masks/cep';
 import { AxiosError } from 'axios';
 import { toast } from 'react-toastify';

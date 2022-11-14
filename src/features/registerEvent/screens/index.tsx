@@ -1,14 +1,14 @@
 /* eslint-disable import/no-unresolved */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { useState } from 'react';
-import { ProgressStep } from '../component/ProgressStep';
+import { ProgressStep } from '../components/ProgressStep';
 
 import { useEvent } from '../hook/useEvent';
 import { ConfirmationEventContainer } from './Confirmation/ui';
 import { PdvEventContainer } from './Pdv/ui';
 import { SectorProductContainer } from './SectorProduct/ui';
 import { SectorTicketContainer } from './SectorTicket/ui';
-import '@/features/registerEvent/component/ProgressStep/styles.scss';
+import '@/features/registerEvent/components/ProgressStep/styles.scss';
 import { GeneralInformationScreen } from './GeneralInformation';
 
 // eslint-disable-next-line no-shadow

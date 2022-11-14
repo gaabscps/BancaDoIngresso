@@ -2,7 +2,7 @@ import Page from '@/model/Page';
 import Contractor from '@/model/Contractor';
 import Bank from '@/model/Bank';
 import User from '@/model/User';
-import { ShouldShowModal } from '@/features/registerEvent/component/ContractorScreen/ui';
+import { ShouldShowModal } from '@/features/registerEvent/components/ContractorScreen/screens/ui';
 import ContractorType from '@/model/ContractorType';
 import { contractorActionProps } from '@/features/registerEvent/types';
 
