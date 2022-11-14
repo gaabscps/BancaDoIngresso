@@ -7,7 +7,6 @@ import { useEvent } from '../hook/useEvent';
 import { ConfirmationEventContainer } from './Confirmation/ui';
 import { PdvEventContainer } from './Pdv/ui';
 import { SectorProductContainer } from './SectorProduct/ui';
-import { SectorTicketContainer } from './SectorTicket/ui';
 import '@/features/registerEvent/components/ProgressStep/styles.scss';
 import { GeneralInformationScreen } from './GeneralInformation';
 import { SectorTicketScreen } from './SectorTicket';

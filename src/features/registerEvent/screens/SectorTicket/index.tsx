@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { SectorTicketContainer, States } from '@/features/registerEvent/screens/SectorTicket/ui';
 import useForm from '@/hooks/useForm';
 import validators from '@/helpers/validators';
+import { formSectorTicketProps } from './types';
 
 export const SectorTicketScreen: React.FC = (): JSX.Element => {
   const [state] = useState<States>(States.default);
@@ -11,8 +12,6 @@ export const SectorTicketScreen: React.FC = (): JSX.Element => {
     formData: formDataSectorTicket,
     formErrors: formErrorsSectorTicket,
     onChangeFormInput: onChangeFormInputSectorTicket,
-    isFormValid: isFormValidSectorTicket,
-    resetForm: resetFormSectorTicket,
   } = useForm({
     initialData: {
       isTicket: '',
@@ -23,7 +22,7 @@ export const SectorTicketScreen: React.FC = (): JSX.Element => {
     formatters: {},
   });
 
-  const controllerFormSectorTicket: any = {
+  const controllerFormSectorTicket: formSectorTicketProps = {
     formData: formDataSectorTicket,
     formErrors: formErrorsSectorTicket,
     onChangeFormInput: onChangeFormInputSectorTicket,
