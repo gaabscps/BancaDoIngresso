@@ -2,6 +2,8 @@
 import React, { Fragment } from 'react';
 import { ButtonGroup, Checkbox, InputText, Loading, Radio, SelectCustom } from '@/components';
 import { Col, Container, Form, FormGroup, Row } from 'reactstrap';
+import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
+import TicketIcon from '@/assets/images/svg/Ticket';
 import { formPaymentSettingsProps } from '../../types';
 
 // eslint-disable-next-line no-shadow
@@ -17,21 +19,35 @@ interface SectorTicketMainSettingsContainerProps {
 
 // eslint-disable-next-line no-shadow
 export enum FormInputName {
-  name = 'name',
-  paymentGateway = 'paymentGateway',
-  hasHalfPrice = 'hasHalfPrice',
-  percentageHalfPrice = 'percentageHalfPrice',
-  amountHalfPrice = 'amountHalfPrice',
-  hasCourtesy = 'hasCourtesy',
-  amountCourtesy = 'amountCourtesy',
-  numberTickets = 'numberTickets',
-  printLayoutBase64 = 'printLayoutBase64',
-  printImageBase64 = 'printImageBase64',
-  printer = 'printer',
-  copies = 'copies',
-  reprint = 'reprint',
-  printBatchNumber = 'printBatchNumber',
-  observation = 'observation',
+  posGateway = 'posGateway',
+  websiteGateway = 'websiteGateway',
+  websiteInstallmentLimit = 'websiteInstallmentLimit',
+  posInstallmentLimit = 'posInstallmentLimit',
+  allowFractionalPayment = 'allowFractionalPayment',
+  allowVariableRate = 'allowVariableRate',
+  allowVariableValue = 'allowVariableValue',
+  allowPaymentBankSlip = 'allowPaymentBankSlip',
+  allowPaymentPIX = 'allowPaymentPIX',
+  allowContactlessPayment = 'allowContactlessPayment',
+  allowSellingWebsite = 'allowSellingWebsite',
+  allowSellingPos = 'allowSellingPos',
+  printReceipt = 'printReceipt',
+  physicalSaleAllowCreditCardPayment = 'physicalSaleAllowCreditCardPayment',
+  physicalSaleDebit = 'physicalSaleDebit',
+  physicalSaleCredit = 'physicalSaleCredit',
+  physicalSalePix = 'physicalSalePix',
+  physicalSaleAdministrateTax = 'physicalSaleAdministrateTax',
+  physicalSaleInstallments = 'physicalSaleInstallments',
+  physicalSaleFee = 'physicalSaleFee',
+  websiteSaleAllowCreditCardPaymen = 'websiteSaleAllowCreditCardPaymen',
+  websiteSaleDebit = 'websiteSaleDebit',
+  websiteSaleCredit = 'websiteSaleCredit',
+  websiteSalePix = 'websiteSalePix',
+  websiteSaleAdministrateTax = 'websiteSaleAdministrateTax',
+  websiteSaleInstallments = 'websiteSaleInstallments',
+  websiteSaleFee = 'websiteSaleFee',
+  allowDiscount = 'allowDiscount',
+  allowDiscountCoupon = 'allowDiscountCoupon',
 }
 
 // eslint-disable-next-line no-shadow
@@ -76,14 +92,14 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               <Row>
                 <FormGroup className="mb-2">
                   <Radio
-                    name="paymentGateway"
+                    name="posGateway"
                     label="Gateway de pagamento POS"
                     placeholder="Gateway de pagamento POS"
-                    value={formData[FormInputName.paymentGateway]}
+                    value={formData[FormInputName.posGateway]}
                     onChange={e =>
-                      onChangeFormInput(FormInputName.paymentGateway)(e?.target?.value as string)
+                      onChangeFormInput(FormInputName.posGateway)(e?.target?.value as string)
                     }
-                    error={formErrors.paymentGateway && formErrors.paymentGateway[0]}
+                    error={formErrors.posGateway && formErrors.posGateway[0]}
                     options={paymentGatewayOptions}
                   />
                 </FormGroup>
@@ -92,44 +108,44 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
                 <FormGroup className="mb-2">
                   <label className="input-label mb-4">Gateway de pagamento SITE</label>
                   <Checkbox
-                    name="sitePaymentGateway"
+                    name="websiteGateway"
                     label="Paypal"
                     onChange={e =>
-                      onChangeFormInput(FormInputName.paymentGateway)(e?.target?.value as string)
+                      onChangeFormInput(FormInputName.websiteGateway)(e?.target?.value as string)
                     }
-                    checked={formData[FormInputName.paymentGateway] === 'true'}
+                    checked={formData[FormInputName.websiteGateway] === 'true'}
                   />
                   <Checkbox
-                    name="sitePaymentGateway"
+                    name="websiteGateway"
                     label="Pagseguro"
                     onChange={e =>
-                      onChangeFormInput(FormInputName.paymentGateway)(e?.target?.value as string)
+                      onChangeFormInput(FormInputName.websiteGateway)(e?.target?.value as string)
                     }
-                    checked={formData[FormInputName.paymentGateway] === 'true'}
+                    checked={formData[FormInputName.websiteGateway] === 'true'}
                   />
                   <Checkbox
-                    name="sitePaymentGateway"
+                    name="websiteGateway"
                     label="Picpay"
                     onChange={e =>
-                      onChangeFormInput(FormInputName.paymentGateway)(e?.target?.value as string)
+                      onChangeFormInput(FormInputName.websiteGateway)(e?.target?.value as string)
                     }
-                    checked={formData[FormInputName.paymentGateway] === 'true'}
+                    checked={formData[FormInputName.websiteGateway] === 'true'}
                   />
                   <Checkbox
-                    name="sitePaymentGateway"
+                    name="websiteGateway"
                     label="Rico"
                     onChange={e =>
-                      onChangeFormInput(FormInputName.paymentGateway)(e?.target?.value as string)
+                      onChangeFormInput(FormInputName.websiteGateway)(e?.target?.value as string)
                     }
-                    checked={formData[FormInputName.paymentGateway] === 'true'}
+                    checked={formData[FormInputName.websiteGateway] === 'true'}
                   />
                   <Checkbox
-                    name="sitePaymentGateway"
+                    name="websiteGateway"
                     label="Ricopay"
                     onChange={e =>
-                      onChangeFormInput(FormInputName.paymentGateway)(e?.target?.value as string)
+                      onChangeFormInput(FormInputName.websiteGateway)(e?.target?.value as string)
                     }
-                    checked={formData[FormInputName.paymentGateway] === 'true'}
+                    checked={formData[FormInputName.websiteGateway] === 'true'}
                   />
                 </FormGroup>
               </Row>
@@ -141,14 +157,18 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               <Row>
                 <FormGroup>
                   <SelectCustom
-                    name="name"
+                    name="websiteInstallmentLimit"
                     label=""
                     placeholder="0"
-                    value={formData[FormInputName.name]}
+                    value={formData[FormInputName.websiteInstallmentLimit]}
                     onChange={e =>
-                      onChangeFormInput(FormInputName.name)(e?.target?.value as string)
+                      onChangeFormInput(FormInputName.websiteInstallmentLimit)(
+                        e?.target?.value as string,
+                      )
                     }
-                    error={formErrors.name && formErrors.name[0]}
+                    error={
+                      formErrors.websiteInstallmentLimit && formErrors.websiteInstallmentLimit[0]
+                    }
                     options={[]}
                   />
                 </FormGroup>
@@ -161,14 +181,16 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               <Row>
                 <FormGroup>
                   <SelectCustom
-                    name="name"
+                    name="posInstallmentLimit"
                     label=""
                     placeholder="0"
-                    value={formData[FormInputName.name]}
+                    value={formData[FormInputName.posInstallmentLimit]}
                     onChange={e =>
-                      onChangeFormInput(FormInputName.name)(e?.target?.value as string)
+                      onChangeFormInput(FormInputName.posInstallmentLimit)(
+                        e?.target?.value as string,
+                      )
                     }
-                    error={formErrors.name && formErrors.name[0]}
+                    error={formErrors.posInstallmentLimit && formErrors.posInstallmentLimit[0]}
                     options={[]}
                   />
                 </FormGroup>
@@ -179,91 +201,105 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
                 <FormGroup className="mb-2">
                   <ButtonGroup
                     label="Permitir pagamento fracionado?"
-                    name="hasHalfPrice"
-                    value={formData[FormInputName.hasHalfPrice]}
-                    onChange={e => onChangeFormInput(FormInputName.hasHalfPrice)(e.target.value)}
+                    name="allowFractionalPayment"
+                    value={formData[FormInputName.allowFractionalPayment]}
+                    onChange={e =>
+                      onChangeFormInput(FormInputName.allowFractionalPayment)(e.target.value)
+                    }
                     options={[
                       { value: true, label: 'Sim' },
                       { value: false, label: 'Não' },
                     ]}
-                    error={formErrors.hasHalfPrice && formErrors.hasHalfPrice[0]}
+                    error={
+                      formErrors.allowFractionalPayment && formErrors.allowFractionalPayment[0]
+                    }
                   />
                   <ButtonGroup
                     label="Permitir taxa variavel?"
-                    name="hasHalfPrice"
-                    value={formData[FormInputName.hasHalfPrice]}
-                    onChange={e => onChangeFormInput(FormInputName.hasHalfPrice)(e.target.value)}
+                    name="allowVariableRate"
+                    value={formData[FormInputName.allowVariableRate]}
+                    onChange={e =>
+                      onChangeFormInput(FormInputName.allowVariableRate)(e.target.value)
+                    }
                     options={[
                       { value: true, label: 'Sim' },
                       { value: false, label: 'Não' },
                     ]}
-                    error={formErrors.hasHalfPrice && formErrors.hasHalfPrice[0]}
+                    error={formErrors.allowVariableRate && formErrors.allowVariableRate[0]}
                   />
                   <ButtonGroup
                     label="Permitir valor variavel?"
-                    name="hasHalfPrice"
-                    value={formData[FormInputName.hasHalfPrice]}
-                    onChange={e => onChangeFormInput(FormInputName.hasHalfPrice)(e.target.value)}
+                    name="allowVariableValue"
+                    value={formData[FormInputName.allowVariableValue]}
+                    onChange={e =>
+                      onChangeFormInput(FormInputName.allowVariableValue)(e.target.value)
+                    }
                     options={[
                       { value: true, label: 'Sim' },
                       { value: false, label: 'Não' },
                     ]}
-                    error={formErrors.hasHalfPrice && formErrors.hasHalfPrice[0]}
+                    error={formErrors.allowVariableValue && formErrors.allowVariableValue[0]}
                   />
                   <ButtonGroup
                     label="Permitir pagamento com PIX?"
-                    name="hasHalfPrice"
-                    value={formData[FormInputName.hasHalfPrice]}
-                    onChange={e => onChangeFormInput(FormInputName.hasHalfPrice)(e.target.value)}
+                    name="allowPaymentPIX"
+                    value={formData[FormInputName.allowPaymentPIX]}
+                    onChange={e => onChangeFormInput(FormInputName.allowPaymentPIX)(e.target.value)}
                     options={[
                       { value: true, label: 'Sim' },
                       { value: false, label: 'Não' },
                     ]}
-                    error={formErrors.hasHalfPrice && formErrors.hasHalfPrice[0]}
+                    error={formErrors.allowPaymentPIX && formErrors.allowPaymentPIX[0]}
                   />
                   <ButtonGroup
                     label="Permitir pagamento por aproximação?"
-                    name="hasHalfPrice"
-                    value={formData[FormInputName.hasHalfPrice]}
-                    onChange={e => onChangeFormInput(FormInputName.hasHalfPrice)(e.target.value)}
+                    name="allowContactlessPayment"
+                    value={formData[FormInputName.allowContactlessPayment]}
+                    onChange={e =>
+                      onChangeFormInput(FormInputName.allowContactlessPayment)(e.target.value)
+                    }
                     options={[
                       { value: true, label: 'Sim' },
                       { value: false, label: 'Não' },
                     ]}
-                    error={formErrors.hasHalfPrice && formErrors.hasHalfPrice[0]}
+                    error={
+                      formErrors.allowContactlessPayment && formErrors.allowContactlessPayment[0]
+                    }
                   />
                   <ButtonGroup
                     label="Permitir vender online?"
-                    name="hasHalfPrice"
-                    value={formData[FormInputName.hasHalfPrice]}
-                    onChange={e => onChangeFormInput(FormInputName.hasHalfPrice)(e.target.value)}
+                    name="allowSellingWebsite"
+                    value={formData[FormInputName.allowSellingWebsite]}
+                    onChange={e =>
+                      onChangeFormInput(FormInputName.allowSellingWebsite)(e.target.value)
+                    }
                     options={[
                       { value: true, label: 'Sim' },
                       { value: false, label: 'Não' },
                     ]}
-                    error={formErrors.hasHalfPrice && formErrors.hasHalfPrice[0]}
+                    error={formErrors.allowSellingWebsite && formErrors.allowSellingWebsite[0]}
                   />
                   <ButtonGroup
                     label="Permitir vender na POS?"
-                    name="hasHalfPrice"
-                    value={formData[FormInputName.hasHalfPrice]}
-                    onChange={e => onChangeFormInput(FormInputName.hasHalfPrice)(e.target.value)}
+                    name="allowSellingPos"
+                    value={formData[FormInputName.allowSellingPos]}
+                    onChange={e => onChangeFormInput(FormInputName.allowSellingPos)(e.target.value)}
                     options={[
                       { value: true, label: 'Sim' },
                       { value: false, label: 'Não' },
                     ]}
-                    error={formErrors.hasHalfPrice && formErrors.hasHalfPrice[0]}
+                    error={formErrors.allowSellingPos && formErrors.allowSellingPos[0]}
                   />
                   <ButtonGroup
                     label="Imprimir recibo (POS)?"
-                    name="hasHalfPrice"
-                    value={formData[FormInputName.hasHalfPrice]}
-                    onChange={e => onChangeFormInput(FormInputName.hasHalfPrice)(e.target.value)}
+                    name="printReceipt"
+                    value={formData[FormInputName.printReceipt]}
+                    onChange={e => onChangeFormInput(FormInputName.printReceipt)(e.target.value)}
                     options={[
                       { value: true, label: 'Sim' },
                       { value: false, label: 'Não' },
                     ]}
-                    error={formErrors.hasHalfPrice && formErrors.hasHalfPrice[0]}
+                    error={formErrors.printReceipt && formErrors.printReceipt[0]}
                   />
                 </FormGroup>
               </Row>
@@ -279,14 +315,18 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
             <FormGroup className="mb-2">
               <ButtonGroup
                 label="Permitir venda com cartão?"
-                name="hasHalfPrice"
-                value={formData[FormInputName.hasHalfPrice]}
-                onChange={e => onChangeFormInput(FormInputName.hasHalfPrice)(e.target.value)}
+                name="physicalSaleAllowCreditCardPayment"
+                value={formData[FormInputName.physicalSaleAllowCreditCardPayment]}
+                onChange={e =>
+                  onChangeFormInput(FormInputName.physicalSaleAllowCreditCardPayment)(
+                    e.target.value,
+                  )
+                }
                 options={[
                   { value: true, label: 'Sim' },
                   { value: false, label: 'Não' },
                 ]}
-                error={formErrors.hasHalfPrice && formErrors.hasHalfPrice[0]}
+                error={formErrors.allowCreditCardPayment && formErrors.allowCreditCardPayment[0]}
               />
             </FormGroup>
           </Row>
@@ -295,32 +335,38 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
           <Row>
             <FormGroup>
               <InputText
-                name="debit"
+                name="physicalSaleDebit"
                 label="Débito"
                 value={''}
                 placeholder="0"
-                onChange={e => onChangeFormInput(FormInputName.hasHalfPrice)(e.target.value)}
+                onChange={e => onChangeFormInput(FormInputName.physicalSaleDebit)(e.target.value)}
+                disabled={formData[FormInputName.physicalSaleAllowCreditCardPayment] !== 'true'}
               />
               <InputText
-                name="credit"
+                name="physicalSaleCredit"
                 label="Crédito"
                 value={''}
                 placeholder="0"
-                onChange={e => onChangeFormInput(FormInputName.hasHalfPrice)(e.target.value)}
+                onChange={e => onChangeFormInput(FormInputName.physicalSaleCredit)(e.target.value)}
+                disabled={formData[FormInputName.physicalSaleAllowCreditCardPayment] !== 'true'}
               />
               <InputText
-                name="pix"
+                name="physicalSalePix"
                 label="PIX"
                 value={''}
                 placeholder="0"
-                onChange={e => onChangeFormInput(FormInputName.hasHalfPrice)(e.target.value)}
+                onChange={e => onChangeFormInput(FormInputName.physicalSalePix)(e.target.value)}
+                disabled={formData[FormInputName.physicalSaleAllowCreditCardPayment] !== 'true'}
               />
               <InputText
-                name="admFees"
+                name="physicalSaleAdministrateTax"
                 label="Taxa administrativa"
                 value={''}
                 placeholder="0"
-                onChange={e => onChangeFormInput(FormInputName.hasHalfPrice)(e.target.value)}
+                onChange={e =>
+                  onChangeFormInput(FormInputName.physicalSaleAdministrateTax)(e.target.value)
+                }
+                disabled={formData[FormInputName.physicalSaleAllowCreditCardPayment] !== 'true'}
               />
             </FormGroup>
           </Row>
@@ -328,23 +374,31 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
         <Col md={6}>
           <Row>
             <SelectCustom
-              name="name"
+              name="physicalSaleInstallments"
               label="Qtd parcelas"
               placeholder="Ex: 2"
-              value={formData[FormInputName.name]}
-              onChange={e => onChangeFormInput(FormInputName.name)(e?.target?.value as string)}
-              error={formErrors.name && formErrors.name[0]}
+              value={formData[FormInputName.physicalSaleInstallments]}
+              onChange={e =>
+                onChangeFormInput(FormInputName.physicalSaleInstallments)(
+                  e?.target?.value as string,
+                )
+              }
+              error={formErrors.physicalSaleInstallments && formErrors.physicalSaleInstallments[0]}
               options={[]}
+              disabled={formData[FormInputName.physicalSaleAllowCreditCardPayment] !== 'true'}
             />
             <span className="mt-5 mr-3 ml-3 input-label"> + </span>
             <SelectCustom
-              name="name"
+              name="physicalSaleFee"
               label="Juros ao mês"
               placeholder="Ex: 4"
-              value={formData[FormInputName.name]}
-              onChange={e => onChangeFormInput(FormInputName.name)(e?.target?.value as string)}
-              error={formErrors.name && formErrors.name[0]}
+              value={formData[FormInputName.physicalSaleFee]}
+              onChange={e =>
+                onChangeFormInput(FormInputName.physicalSaleFee)(e?.target?.value as string)
+              }
+              error={formErrors.physicalSaleFee && formErrors.physicalSaleFee[0]}
               options={[]}
+              disabled={formData[FormInputName.physicalSaleAllowCreditCardPayment] !== 'true'}
             />
           </Row>
         </Col>
@@ -356,14 +410,19 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
             <FormGroup className="mb-2">
               <ButtonGroup
                 label="Permitir venda com cartão?"
-                name="hasHalfPrice"
-                value={formData[FormInputName.hasHalfPrice]}
-                onChange={e => onChangeFormInput(FormInputName.hasHalfPrice)(e.target.value)}
+                name="websiteSaleAllowCreditCardPaymen"
+                value={formData[FormInputName.websiteSaleAllowCreditCardPaymen]}
+                onChange={e =>
+                  onChangeFormInput(FormInputName.websiteSaleAllowCreditCardPaymen)(e.target.value)
+                }
                 options={[
                   { value: true, label: 'Sim' },
                   { value: false, label: 'Não' },
                 ]}
-                error={formErrors.hasHalfPrice && formErrors.hasHalfPrice[0]}
+                error={
+                  formErrors.websiteSaleAllowCreditCardPaymen &&
+                  formErrors.websiteSaleAllowCreditCardPaymen[0]
+                }
               />
             </FormGroup>
           </Row>
@@ -372,32 +431,38 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
           <Row>
             <FormGroup>
               <InputText
-                name="debit"
+                name="websiteSaleDebit"
                 label="Débito"
                 value={''}
                 placeholder="0"
-                onChange={e => onChangeFormInput(FormInputName.hasHalfPrice)(e.target.value)}
+                onChange={e => onChangeFormInput(FormInputName.websiteSaleDebit)(e.target.value)}
+                disabled={formData[FormInputName.websiteSaleAllowCreditCardPaymen] !== 'true'}
               />
               <InputText
-                name="credit"
+                name="websiteSaleCredit"
                 label="Crédito"
                 value={''}
                 placeholder="0"
-                onChange={e => onChangeFormInput(FormInputName.hasHalfPrice)(e.target.value)}
+                onChange={e => onChangeFormInput(FormInputName.websiteSaleCredit)(e.target.value)}
+                disabled={formData[FormInputName.websiteSaleAllowCreditCardPaymen] !== 'true'}
               />
               <InputText
-                name="pix"
+                name="websiteSalePix"
                 label="PIX"
                 value={''}
                 placeholder="0"
-                onChange={e => onChangeFormInput(FormInputName.hasHalfPrice)(e.target.value)}
+                onChange={e => onChangeFormInput(FormInputName.websiteSalePix)(e.target.value)}
+                disabled={formData[FormInputName.websiteSaleAllowCreditCardPaymen] !== 'true'}
               />
               <InputText
-                name="admFees"
+                name="websiteSaleAdministrateTax"
                 label="Taxa administrativa"
                 value={''}
                 placeholder="0"
-                onChange={e => onChangeFormInput(FormInputName.hasHalfPrice)(e.target.value)}
+                onChange={e =>
+                  onChangeFormInput(FormInputName.websiteSaleAdministrateTax)(e.target.value)
+                }
+                disabled={formData[FormInputName.websiteSaleAllowCreditCardPaymen] !== 'true'}
               />
             </FormGroup>
           </Row>
@@ -405,23 +470,29 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
         <Col md={6}>
           <Row>
             <SelectCustom
-              name="name"
+              name="websiteSaleInstallments"
               label="Qtd parcelas"
               placeholder="Ex: 2"
-              value={formData[FormInputName.name]}
-              onChange={e => onChangeFormInput(FormInputName.name)(e?.target?.value as string)}
-              error={formErrors.name && formErrors.name[0]}
+              value={formData[FormInputName.websiteSaleInstallments]}
+              onChange={e =>
+                onChangeFormInput(FormInputName.websiteSaleInstallments)(e?.target?.value as string)
+              }
+              error={formErrors.websiteSaleInstallments && formErrors.websiteSaleInstallments[0]}
               options={[]}
+              disabled={formData[FormInputName.websiteSaleAllowCreditCardPaymen] !== 'true'}
             />
             <span className="mt-5 mr-3 ml-3 input-label"> + </span>
             <SelectCustom
-              name="name"
+              name="websiteSaleFee"
               label="Juros ao mês"
               placeholder="Ex: 4"
-              value={formData[FormInputName.name]}
-              onChange={e => onChangeFormInput(FormInputName.name)(e?.target?.value as string)}
-              error={formErrors.name && formErrors.name[0]}
+              value={formData[FormInputName.websiteSaleFee]}
+              onChange={e =>
+                onChangeFormInput(FormInputName.websiteSaleFee)(e?.target?.value as string)
+              }
+              error={formErrors.websiteSaleFee && formErrors.websiteSaleFee[0]}
               options={[]}
+              disabled={formData[FormInputName.websiteSaleAllowCreditCardPaymen] !== 'true'}
             />
           </Row>
         </Col>
@@ -433,28 +504,35 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
             <FormGroup>
               <ButtonGroup
                 label="Permitir desconto?"
-                name="hasHalfPrice"
-                value={formData[FormInputName.hasHalfPrice]}
-                onChange={e => onChangeFormInput(FormInputName.hasHalfPrice)(e.target.value)}
+                name="allowDiscount"
+                value={formData[FormInputName.allowDiscount]}
+                onChange={e => onChangeFormInput(FormInputName.allowDiscount)(e.target.value)}
                 options={[
                   { value: true, label: 'Sim' },
                   { value: false, label: 'Não' },
                 ]}
-                error={formErrors.hasHalfPrice && formErrors.hasHalfPrice[0]}
+                error={formErrors.allowDiscount && formErrors.allowDiscount[0]}
               />
               <ButtonGroup
                 label="Permitir cupom de desconto??"
-                name="hasHalfPrice"
-                value={formData[FormInputName.hasHalfPrice]}
-                onChange={e => onChangeFormInput(FormInputName.hasHalfPrice)(e.target.value)}
+                name="allowDiscountCoupon"
+                value={formData[FormInputName.allowDiscountCoupon]}
+                onChange={e => onChangeFormInput(FormInputName.allowDiscountCoupon)(e.target.value)}
                 options={[
                   { value: true, label: 'Sim' },
                   { value: false, label: 'Não' },
                 ]}
-                error={formErrors.hasHalfPrice && formErrors.hasHalfPrice[0]}
+                error={formErrors.allowDiscountCoupon && formErrors.allowDiscountCoupon[0]}
               />
             </FormGroup>
           </Row>
+        </Col>
+        <Col md={12}>
+          <SuperCollapse
+            title="Cupons de desconto adicionados (0)"
+            content="Nenhum cupom de desconto foi adicionado. Aqui será exibida uma lista dos seus cupons de desconto adicionados"
+            leftIcon={TicketIcon}
+          />
         </Col>
       </Container>
     </Fragment>
