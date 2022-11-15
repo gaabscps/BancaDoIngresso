@@ -3,6 +3,7 @@ import React, { Fragment } from 'react';
 import { ButtonGroup, Loading, Tab } from '@/components';
 import { Container, FormGroup } from 'reactstrap';
 import { SectorTicketMainSettingsScreen } from '@/features/registerEvent/components/SectorTicketMainSettingsSreen/screens';
+import { SectorTicketPaymentSettingsScreen } from '@/features/registerEvent/components/SectorTicketPaymentSettingScreen/screens/';
 import { formSectorTicketProps } from '../types';
 
 // eslint-disable-next-line no-shadow
@@ -64,7 +65,8 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
                 <>
                   <SectorTicketMainSettingsScreen />
                 </>,
-                'Conteudo 2',
+                // eslint-disable-next-line react/jsx-key
+                <SectorTicketPaymentSettingsScreen />,
                 'Conteudo 3',
               ]}
             />
