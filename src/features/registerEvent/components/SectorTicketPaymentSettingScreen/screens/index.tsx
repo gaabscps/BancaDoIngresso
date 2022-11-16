@@ -4,11 +4,11 @@ import api, { AxiosError } from '@/services/api';
 import { States } from '@/features/registerEvent/components/SectorTicketMainSettingsSreen/screens/ui';
 import PaymentGateway from '@/model/PaymentGateway';
 import useForm from '@/hooks/useForm';
-import Event from '@/model/Event';
 import validators from '@/helpers/validators';
 import { toast } from 'react-toastify';
+import { useDialog } from '@/hooks/useDialog';
 import { formPaymentSettingsProps } from '../types';
-import { SectorTicketPaymentSettingsContainer } from './ui';
+import { SectorTicketPaymentSettingsContainer, ShouldShowModal } from './ui';
 
 export default interface PayloadSectorTicketPaymentSettings {
   posGateway: string;
@@ -50,15 +50,22 @@ export default interface PayloadSectorTicketPaymentSettings {
     },
   ];
 }
+
 export const SectorTicketPaymentSettingsScreen: React.FC = (): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
   const [paymentGatewayList, setPaymentGatewayList] = useState<PaymentGateway[]>([]);
+  const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(
+    ShouldShowModal.discountCoupons,
+  );
+
+  const eventId = window.location.pathname.split('/')[4];
+  const { title, visible, onChangeTitle, onToggle } = useDialog();
 
   const {
     formData: formDataMainSettings,
     formErrors: formErrorsMainSettings,
     onChangeFormInput: onChangeFormInputMainSettings,
-    isFormValid: isFormValidMainSettings,
+    // isFormValid: isFormValidMainSettings,
   } = useForm({
     initialData: {
       posGateway: 'pagseguro',
@@ -144,60 +151,73 @@ export const SectorTicketPaymentSettingsScreen: React.FC = (): JSX.Element => {
     }
   };
 
-  const handleOnSaveSectorTicketPayment = async (eventSelected: Event): Promise<void> => {
+  const handleOnSaveSectorTicketPayment = async (): Promise<void> => {
     try {
-      if (isFormValidMainSettings()) {
-        const payload: PayloadSectorTicketPaymentSettings = {
-          posGateway: '',
-          websiteGateway: '',
-          websiteInstallmentLimit: 0,
-          posInstallmentLimit: 0,
-          allowFractionalPayment: true,
-          allowVariableRate: true,
-          allowVariableValue: true,
-          allowPaymentBankSlip: true,
-          allowPaymentPIX: true,
-          allowContactlessPayment: true,
-          allowSellingWebsite: true,
-          allowSellingPos: true,
-          printReceipt: true,
-          physicalSale: {
-            allowCreditCardPayment: true,
-            debit: 0,
-            credit: 0,
-            pix: 0,
-            administrateTax: 0,
-            installments: 0,
-            fee: 0,
+      // if (isFormValidMainSettings()) {
+      const payload: PayloadSectorTicketPaymentSettings = {
+        posGateway: '',
+        websiteGateway: '',
+        websiteInstallmentLimit: 0,
+        posInstallmentLimit: 0,
+        allowFractionalPayment: true,
+        allowVariableRate: true,
+        allowVariableValue: true,
+        allowPaymentBankSlip: true,
+        allowPaymentPIX: true,
+        allowContactlessPayment: true,
+        allowSellingWebsite: true,
+        allowSellingPos: true,
+        printReceipt: true,
+        physicalSale: {
+          allowCreditCardPayment: true,
+          debit: 0,
+          credit: 0,
+          pix: 0,
+          administrateTax: 0,
+          installments: 0,
+          fee: 0,
+        },
+        websiteSale: {
+          allowCreditCardPaymen: true,
+          debit: 0,
+          credit: 0,
+          pix: 0,
+          administrateTax: 0,
+          installments: 0,
+          fee: 0,
+        },
+        allowDiscount: true,
+        allowDiscountCoupon: true,
+        discountCoupons: [
+          {
+            id: '',
           },
-          websiteSale: {
-            allowCreditCardPaymen: true,
-            debit: 0,
-            credit: 0,
-            pix: 0,
-            administrateTax: 0,
-            installments: 0,
-            fee: 0,
-          },
-          allowDiscount: true,
-          allowDiscountCoupon: true,
-          discountCoupons: [
-            {
-              id: '',
-            },
-          ],
-        };
+        ],
+      };
 
-        await api.put<PayloadSectorTicketPaymentSettings>(
-          `/event/ticket/${eventSelected.id}/payment`,
-          payload,
-        );
-        toast.success('POS atualizado com sucesso!');
-      }
+      await api.put<PayloadSectorTicketPaymentSettings>(
+        `/event/ticket/${eventId}/payment`,
+        payload,
+      );
+      toast.success('POS atualizado com sucesso!');
+      // }
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
     }
+  };
+
+  const handleOnShouldShowModal = ({
+    value,
+    newTitleModal,
+  }: {
+    value: ShouldShowModal;
+    newTitleModal: string | React.ReactNode;
+    event?: Event | any;
+  }): void => {
+    setShouldShowModal(value);
+    onChangeTitle(newTitleModal);
+    onToggle();
   };
 
   useEffect(() => {
@@ -210,6 +230,11 @@ export const SectorTicketPaymentSettingsScreen: React.FC = (): JSX.Element => {
       formMainSettings={controllerFormMainSettings}
       paymentGatewayList={paymentGatewayList}
       handleOnSaveSectorTicketPayment={handleOnSaveSectorTicketPayment}
+      onShouldShowModal={handleOnShouldShowModal}
+      title={title}
+      shouldShowModal={shouldShowModal}
+      visible={visible}
+      onToggle={onToggle}
     />
   );
 };

@@ -1,8 +1,16 @@
 /* eslint-disable import/no-unresolved */
 import React, { Fragment } from 'react';
-import { ButtonGroup, Checkbox, InputText, Loading, Radio, SelectCustom } from '@/components';
+import {
+  Button,
+  ButtonGroup,
+  Checkbox,
+  Dialog,
+  InputText,
+  Loading,
+  Radio,
+  SelectCustom,
+} from '@/components';
 import { Col, Container, Form, FormGroup, Row } from 'reactstrap';
-import Event from '@/model/Event';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
 import TicketIcon from '@/assets/images/svg/Ticket';
 import PaymentGateway from '@/model/PaymentGateway';
@@ -18,7 +26,19 @@ interface SectorTicketMainSettingsContainerProps {
   state: States;
   formMainSettings: formPaymentSettingsProps;
   paymentGatewayList: PaymentGateway[] | undefined;
-  handleOnSaveSectorTicketPayment: (eventSelecte: Event) => Promise<void>;
+  title: string | React.ReactNode;
+  visible: boolean;
+  onToggle: () => void;
+  handleOnSaveSectorTicketPayment: () => Promise<void>;
+  onShouldShowModal: ({
+    value,
+    newTitleModal,
+  }: {
+    value: ShouldShowModal;
+    newTitleModal: string | React.ReactNode;
+    event?: Event;
+  }) => void;
+  shouldShowModal: ShouldShowModal;
 }
 
 // eslint-disable-next-line no-shadow
@@ -68,9 +88,24 @@ export enum FormInputNameBatchs {
   imageUrl = 'imageUrl',
 }
 
+// eslint-disable-next-line no-shadow
+export enum ShouldShowModal {
+  discountCoupons = 'discountCoupons',
+}
+
 export const SectorTicketPaymentSettingsContainer: React.FC<
   SectorTicketMainSettingsContainerProps
-> = ({ state, formMainSettings, paymentGatewayList }) => {
+> = ({
+  state,
+  formMainSettings,
+  paymentGatewayList,
+  shouldShowModal,
+  title,
+  visible,
+  onToggle,
+  onShouldShowModal,
+  handleOnSaveSectorTicketPayment,
+}) => {
   const { formData, formErrors, onChangeFormInput } = formMainSettings;
 
   const paymentGatewayOptions = paymentGatewayList?.map(item => ({
@@ -94,6 +129,26 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
   return (
     <Fragment>
       <Loading isVisible={state === States.loading} />
+      <Dialog
+        title={title}
+        visible={visible}
+        onClose={onToggle}
+        actions={[
+          {
+            [ShouldShowModal.discountCoupons]: {
+              title: 'Aplicar',
+              onClick: () => undefined,
+            },
+            [ShouldShowModal.discountCoupons]: {},
+          }[shouldShowModal],
+        ]}
+      >
+        {
+          {
+            [ShouldShowModal.discountCoupons]: ' ola',
+          }[shouldShowModal]
+        }
+      </Dialog>
       <Container className="mainContainer" fluid={true}>
         <div className="container-event">
           <Form
@@ -523,6 +578,17 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
             leftIcon={TicketIcon}
           />
         </Col>
+        <div
+          onClick={() =>
+            onShouldShowModal({
+              newTitleModal: 'Cadastrar voucher de desconto',
+              value: ShouldShowModal.discountCoupons,
+            })
+          }
+        >
+          + cadastrar
+        </div>
+        <Button title="teste" onClick={() => handleOnSaveSectorTicketPayment()} />
       </Container>
     </Fragment>
   );
