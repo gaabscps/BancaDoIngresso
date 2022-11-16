@@ -3,7 +3,7 @@ export const customStyles = () => ({
   control: (provided: any, state: any) => ({
     ...provided,
     // width: '546px',
-    width: '200px',
+    width: '100%',
     borderRadius: '5px',
     backgroundColor: state.isFocused ? 'rgba(12, 2, 1, 0.2)' : 'transparent',
     border: '2px solid #222222;',

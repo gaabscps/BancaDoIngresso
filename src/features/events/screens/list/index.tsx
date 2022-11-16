@@ -6,15 +6,24 @@ import { useDialog } from '@/hooks/useDialog';
 import useForm from '@/hooks/useForm';
 import { AxiosError } from 'axios';
 import { FormInputName as FormInputNameToFilter } from '@/features/contractor/components/FilterContent';
+import { unmask } from '@/helpers/masks/decimalNumber';
 import { toast } from 'react-toastify';
 import api from '@/services/api';
 import Event from '@/model/Event';
 import Voucher from '@/model/Voucher';
+import validators from '@/helpers/validators';
+import { useConfirmDelete } from '@/hooks/useConfirmDelete';
 import { EventRequestParams, EventResponse } from '../../types';
+import { FormInputName } from '../../components/RegisterVoucher';
+import { DeleteContent } from '../../components/DeleteContent';
 
-export default interface PayloadEvent {
+export interface PayloadEvent {
   name: string;
   eventStatus?: EventStatus;
+}
+export interface PayloadVoucher {
+  description: string;
+  value: number;
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -23,8 +32,9 @@ export const EventScreen: React.FC = () => {
 
   const [state, setState] = useState<States>(States.default);
   const [listEvent, setListEvent] = useState<Event[]>([]);
+  const [voucher, setVoucher] = useState<Voucher[]>([]);
+  const [event, setEvent] = useState<Event>();
   const [fullListEvent, setFullListEvent] = useState<Event[]>([]);
-  const [voucher, setVoucher] = useState<Voucher>();
   const [pagination, setPagination] = useState({
     pageSize: 10,
   });
@@ -35,6 +45,7 @@ export const EventScreen: React.FC = () => {
     order: 'DESC',
     total: 1,
   });
+  const confirmDelete = useConfirmDelete();
 
   const { title, visible, onChangeTitle, onToggle } = useDialog();
 
@@ -58,6 +69,23 @@ export const EventScreen: React.FC = () => {
     }[status] || colors.grey);
 
   const {
+    formData: formDataVoucher,
+    formErrors: formErrorsVoucher,
+    onChangeFormInput: onChangeFormInputVoucher,
+    isFormValid: isFormValidVoucher,
+    resetForm: resetFormVoucher,
+  } = useForm({
+    initialData: {
+      description: '',
+      value: '',
+    },
+    validators: {
+      description: [validators.required],
+      value: [validators.required],
+    },
+  });
+
+  const {
     formData: formDataFilter,
     formErrors: formErrorsFilter,
     onChangeFormInput: onChangeFormInputFilter,
@@ -68,6 +96,7 @@ export const EventScreen: React.FC = () => {
       filterSearch: '',
       inputSearch: '',
     },
+    formatters: {},
   });
 
   const handleFetch = async (values: EventRequestParams): Promise<void> => {
@@ -96,6 +125,32 @@ export const EventScreen: React.FC = () => {
       setState(States.loading);
       const { data } = await api.get<Event[]>('/event/find');
       setFullListEvent(data ?? []);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+  const handleFetchVoucher = async (eventSelected: Event): Promise<void> => {
+    try {
+      setState(States.loading);
+      const { data } = await api.get<Voucher[]>(`/event/${eventSelected?.id}/voucher`);
+      setVoucher(data ?? []);
+      resetFormVoucher();
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+  const handleFetchVoucherModal = async (eventSelected: string): Promise<void> => {
+    try {
+      setState(States.loading);
+      const { data } = await api.get<Voucher[]>(`/event/${eventSelected}/voucher`);
+      setVoucher(data ?? []);
+      resetFormVoucher();
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
@@ -144,19 +199,74 @@ export const EventScreen: React.FC = () => {
   const handleOnShouldShowModal = ({
     value,
     newTitleModal,
-    voucher: voucherSelected,
+    event: eventSelected,
   }: {
     value: ShouldShowModal;
     newTitleModal: string | React.ReactNode;
-    voucher?: Voucher;
+    event?: Event | any;
   }): void => {
     setShouldShowModal(value);
     onChangeTitle(newTitleModal);
+    resetFormVoucher();
     onToggle();
-
-    if (voucherSelected) {
-      setVoucher(voucherSelected);
+    if (value !== ShouldShowModal.filter) {
+      handleFetchVoucher(eventSelected);
+      setEvent(eventSelected);
     }
+  };
+
+  const handleOnSaveVoucher = async (eventSelected: Event): Promise<void> => {
+    try {
+      if (isFormValidVoucher()) {
+        await api.post(`/event/${eventSelected?.id}/voucher`, {
+          description: formDataVoucher[FormInputName.description],
+          value: unmask(formDataVoucher[FormInputName.value]),
+        });
+        toast.success('Voucher gerado');
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    }
+  };
+
+  const handleOnClose = (): void => confirmDelete.hide();
+
+  const handleOnConfirmDeleteVoucher = async (
+    eventSelected: string,
+    voucherSelected: string,
+  ): Promise<void> => {
+    try {
+      await api.put(`/event/${eventSelected}/voucher/${voucherSelected}/disable`);
+      toast.success('Voucher excluído');
+      handleOnClose();
+      handleFetch(currentPage);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    }
+  };
+
+  // eslint-disable-next-line no-shadow
+  const handleOnShowDeleteProduct = (eventState: string, voucher: string): void => {
+    confirmDelete.show({
+      title: '',
+      children: <DeleteContent />,
+      actions: [
+        {
+          title: 'Não, quero manter',
+          theme: 'noneBorder',
+          onClick: (): void => handleOnClose(),
+        },
+        {
+          title: 'Sim, quero excluir',
+          onClick: async (): Promise<void> => {
+            await handleOnConfirmDeleteVoucher(eventState, voucher);
+            await handleFetchVoucherModal(eventState);
+          },
+        },
+      ],
+    });
   };
 
   const clearFilter = async (): Promise<void> => {
@@ -219,6 +329,11 @@ export const EventScreen: React.FC = () => {
     }
   };
 
+  const copyToClipboard = (text: string): void => {
+    navigator.clipboard.writeText(text);
+    toast.success('Código copiado');
+  };
+
   useEffect(() => {
     handleFetch({ ...currentPage, ...pagination });
     handleFetchAll();
@@ -226,8 +341,8 @@ export const EventScreen: React.FC = () => {
 
   return (
     <EventContainer
-      voucher={voucher}
       state={state}
+      voucherState={voucher}
       listEvent={listEvent}
       paginationSelect={paginationSelect}
       changeColorColumn={changeColorColumn}
@@ -250,6 +365,15 @@ export const EventScreen: React.FC = () => {
       onReleaseEvent={handleOnReleaseEvent}
       onRefuseEvent={handleOnRefuseEvent}
       clearFilterStatus={clearFilterStatus}
+      handleOnSaveVoucher={handleOnSaveVoucher}
+      eventState={event}
+      handleFetchVoucher={handleFetchVoucher}
+      onChangeFormInputVoucher={onChangeFormInputVoucher}
+      formDataVoucher={formDataVoucher}
+      formErrorsVoucher={formErrorsVoucher}
+      copyToClipboard={copyToClipboard}
+      isFormValidVoucher={isFormValidVoucher}
+      handleOnShowDeleteProduct={handleOnShowDeleteProduct}
     />
   );
 };

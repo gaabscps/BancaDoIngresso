@@ -10,9 +10,14 @@ interface DropdonwFlagsProps {
     name: string;
   }[];
   pointerClass?: boolean;
+  className?: string;
 }
 
-export const DropdonwFlags: React.FC<DropdonwFlagsProps> = ({ dataColumn, pointerClass }) => {
+export const DropdonwFlags: React.FC<DropdonwFlagsProps> = ({
+  dataColumn,
+  pointerClass,
+  className,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const idRandom = Math.random().toString(36).substr(2, 9);
 
@@ -20,7 +25,7 @@ export const DropdonwFlags: React.FC<DropdonwFlagsProps> = ({ dataColumn, pointe
     setIsOpen(!isOpen);
   };
   return (
-    <label className="dropdown-flags-custom">
+    <label className={`dropdown-flags-custom ${className}`}>
       <div className="dd-button"></div>
       <label
         className={`d-flex mb-0 ${pointerClass === true ? 'pointerSvg' : ''}`}
