@@ -11,11 +11,17 @@ import { NameFiles } from '@/features/registerEvent/types';
 import { useDialog } from '@/hooks/useDialog';
 import { toast } from 'react-toastify';
 import api, { AxiosError } from '@/services/api';
+import { FormInputName as FormInputNameToMainSettings } from '@/features/registerEvent/components/SectorTicketMainSettingsSreen/components/SectorTicketMainSettingsContent';
 import { FormInputName as FormInputNameToSector } from '@/features/registerEvent/components/SectorTicketMainSettingsSreen/components/RegisterSectorContent';
+import { FormInputName as FormInputNameToBatch } from '@/features/registerEvent/components/SectorTicketMainSettingsSreen/components/BatchContent';
+import dayjs from 'dayjs';
 import {
+  batchActionsProps,
+  batchStatesProps,
   formBatchsProps,
   formMainSettingsProps,
   formSectorProps,
+  mainSettingsProps,
   modalConfigTicketMainSettingsProps,
   onShouldShowModalTicketMainSettingsProps,
   sectorActionsProps,
@@ -31,6 +37,9 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
   const [sector, setSector] = useState<any>();
   const [sectorList, setSectorList] = useState<any>([]);
 
+  const [batch, setBatch] = useState<any>();
+  const [batchList, setBatchList] = useState<any>([]);
+
   const { title, visible, onChangeTitle, onToggle } = useDialog();
 
   const {
@@ -38,6 +47,7 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
     formErrors: formErrorsMainSettings,
     onChangeFormInput: onChangeFormInputMainSettings,
     setErrors: setErrorsMainSettings,
+    isFormValid: isFormValidMainSettings,
   } = useForm({
     initialData: {
       name: '',
@@ -57,7 +67,11 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
       observation: '',
     },
     validators: {
-      name: [validators.required],
+      // name: [validators.required],
+      // eventSection: [validators.required],
+      // hasHalfPrice: [validators.required],
+      // hasCourtesy: [validators.required],
+      // numberTickets: [validators.required],
     },
     formatters: {},
   });
@@ -67,6 +81,8 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
     formErrors: formErrorsBatchs,
     onChangeFormInput: onChangeFormInputBatchs,
     setErrors: setErrorsBatchs,
+    isFormValid: isFormValidBatchs,
+    resetForm: resetFormBatchs,
   } = useForm({
     initialData: {
       name: '',
@@ -81,7 +97,14 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
       imageUrl: '',
     },
     validators: {
-      name: [validators.required],
+      // name: [validators.required],
+      // startDate: [validators.required],
+      // endDate: [validators.required],
+      // startTime: [validators.required],
+      // endTime: [validators.required],
+      // commission: [validators.required],
+      // amount: [validators.required],
+      // unitValue: [validators.required],
     },
     formatters: {},
   });
@@ -191,6 +214,161 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
     }
   };
 
+  const handleOnSaveMainSettings = async (): Promise<void> => {
+    try {
+      if (isFormValidMainSettings()) {
+        const payload: any = {
+          id: sector?.id,
+          eventSection: {
+            id: formDataMainSettings[FormInputNameToMainSettings.eventSection],
+          },
+          name: formDataMainSettings[FormInputNameToMainSettings.name],
+          hasHalfPrice: formDataMainSettings[FormInputNameToMainSettings.hasHalfPrice],
+          percentageHalfPrice:
+            formDataMainSettings[FormInputNameToMainSettings.percentageHalfPrice],
+          amountHalfPrice: formDataMainSettings[FormInputNameToMainSettings.amountHalfPrice],
+          hasCourtesy: formDataMainSettings[FormInputNameToMainSettings.hasCourtesy],
+          amountCourtesy: formDataMainSettings[FormInputNameToMainSettings.amountCourtesy],
+          numberTickets: formDataMainSettings[FormInputNameToMainSettings.numberTickets],
+          printLayoutBase64: formDataMainSettings[FormInputNameToMainSettings.printLayoutBase64],
+          printImageBase64: formDataMainSettings[FormInputNameToMainSettings.printImageBase64],
+          printer: {
+            id: formDataMainSettings[FormInputNameToMainSettings.printer],
+          },
+          copies: formDataMainSettings[FormInputNameToMainSettings.copies],
+          reprint: formDataMainSettings[FormInputNameToMainSettings.reprint],
+          printBatchNumber: formDataMainSettings[FormInputNameToMainSettings.printBatchNumber],
+          observation: formDataMainSettings[FormInputNameToMainSettings.observation],
+          batchs: batchList,
+        };
+
+        console.log('payload :>> ', payload);
+
+        // if (!payload.id) {
+        //   delete payload.id;
+
+        //   await api.post<any>('/section', payload);
+        //   toast.success('Setor cadastrado com sucesso!');
+        // } else {
+        //   await api.put<any>('/section', payload);
+        //   toast.success('Setor atualizado com sucesso!');
+        // }
+
+        // onToggle();
+        // handleFecthSectorList();
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    }
+  };
+
+  const handleOnAddBatch = async (): Promise<void> => {
+    try {
+      if (isFormValidBatchs()) {
+        const payloadStartData = dayjs(
+          `${formDataBatchs[FormInputNameToBatch.startDate]}T${
+            formDataBatchs[FormInputNameToBatch.startTime]
+          }`,
+        ).format('YYYY-MM-DDTHH:mm');
+
+        const payloadEndData = dayjs(
+          `${formDataBatchs[FormInputNameToBatch.endDate]}T${
+            formDataBatchs[FormInputNameToBatch.endTime]
+          }`,
+        ).format('YYYY-MM-DDTHH:mm');
+
+        const payload: any = {
+          id: sector,
+          name: formDataBatchs[FormInputNameToBatch.name],
+          startDate: payloadStartData,
+          endDate: payloadEndData,
+          commission: formDataBatchs[FormInputNameToBatch.commission],
+          amount: formDataBatchs[FormInputNameToBatch.amount],
+          unitValue: formDataBatchs[FormInputNameToBatch.unitValue],
+          totalValue: formDataBatchs[FormInputNameToBatch.totalValue],
+          imageUrl: formDataBatchs[FormInputNameToBatch.imageUrl],
+        };
+
+        // dont add batch if already exists
+        const batchExists = batchList.find(batch => batch.name === payload.name);
+
+        if (!batchExists) {
+          setBatchList([...batchList, payload]);
+        } else {
+          toast.error('Lote com o mesmo nome já existe');
+        }
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    }
+  };
+
+  const handleOnDeleteBatch = async (batchSelected): Promise<void> => {
+    try {
+      // delete batch from list
+      const newBatchList = batchList.filter(batch => batch.name !== batchSelected?.name);
+
+      setBatchList(newBatchList);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    }
+  };
+
+  const handleOnGetBatch = async (batchSelected): Promise<void> => {
+    try {
+      if (batchSelected) {
+        setBatch(batchSelected);
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    }
+  };
+
+  const handleOnEditBatch = async (batchSelected): Promise<void> => {
+    try {
+      // edit batch from list
+      const newBatchList = batchList.map(batch => {
+        if (batch.name === batchSelected?.name) {
+          return {
+            ...batch,
+            name: formDataBatchs[FormInputNameToBatch.name],
+            startDate: formDataBatchs[FormInputNameToBatch.startDate],
+            endDate: formDataBatchs[FormInputNameToBatch.endDate],
+            commission: formDataBatchs[FormInputNameToBatch.commission],
+            amount: formDataBatchs[FormInputNameToBatch.amount],
+            unitValue: formDataBatchs[FormInputNameToBatch.unitValue],
+            totalValue: formDataBatchs[FormInputNameToBatch.totalValue],
+            imageUrl: formDataBatchs[FormInputNameToBatch.imageUrl],
+          };
+        }
+
+        return batch;
+      });
+
+      setBatchList(newBatchList);
+      setBatch(undefined);
+      resetFormBatchs();
+      toast.success('Lote editado com sucesso.');
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    }
+  };
+
+  const handleOnCancelEditBatch = async (): Promise<void> => {
+    try {
+      setBatch(undefined);
+      resetFormBatchs();
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    }
+  };
+
   // Config Modal --------------------------------------------------------------
   const handleOnShouldShowModal = ({
     value,
@@ -245,13 +423,55 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
     setSectorList,
   };
 
+  const controllerBatchsStates: batchStatesProps = {
+    batch,
+    setBatch,
+    batchList,
+    setBatchList,
+  };
+
+  const controllerMainSettingsActions: mainSettingsProps = {
+    onSave: handleOnSaveMainSettings,
+  };
+
   const controllerSectorActions: sectorActionsProps = {
     onSave: handleOnSaveSector,
+  };
+
+  const controllerBatchActions: batchActionsProps = {
+    onAdd: handleOnAddBatch,
+    onEdit: handleOnEditBatch,
+    onCancelEdit: handleOnCancelEditBatch,
+    onGet: handleOnGetBatch,
+    onDelete: handleOnDeleteBatch,
   };
 
   useEffect(() => {
     handleFecthSectorList();
   }, []);
+
+  useEffect(() => {
+    if (batch) {
+      onChangeFormInputBatchs(FormInputNameToBatch.name)(batch.name);
+      // onChangeFormInputBatchs(FormInputNameToBatch.startDate)(
+      //   dayjs(batch?.startDate).format('YYYY-MM-DD') ?? '',
+      // );
+      // onChangeFormInputBatchs(FormInputNameToBatch.endDate)(
+      //   dayjs(batch?.endDate).format('YYYY-MM-DD') ?? '',
+      // );
+      // onChangeFormInputBatchs(FormInputNameToBatch.startTime)(
+      //   batch?.startDate.split('T')[1].slice(0, 5) ?? '',
+      // );
+      // onChangeFormInputBatchs(FormInputNameToBatch.endTime)(
+      //   batch?.endDate.split('T')[1].slice(0, 5) ?? '',
+      // );
+      onChangeFormInputBatchs(FormInputNameToBatch.commission)(batch.commission);
+      onChangeFormInputBatchs(FormInputNameToBatch.amount)(batch.amount);
+      onChangeFormInputBatchs(FormInputNameToBatch.unitValue)(batch.unitValue);
+      onChangeFormInputBatchs(FormInputNameToBatch.totalValue)(batch.totalValue);
+      onChangeFormInputBatchs(FormInputNameToBatch.imageUrl)(batch.imageUrl);
+    }
+  }, [batch]);
 
   return (
     <SectorTicketMainSettingsContainer
@@ -261,6 +481,9 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
       formSector={controllerFormSector}
       sectorStates={controllerSectorStates}
       sectorActions={controllerSectorActions}
+      mainSettingsActions={controllerMainSettingsActions}
+      batchStates={controllerBatchsStates}
+      batchActions={controllerBatchActions}
       modalConfig={controllerModalConfig}
     />
   );

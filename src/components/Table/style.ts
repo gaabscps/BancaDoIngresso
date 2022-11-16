@@ -139,3 +139,36 @@ export const tertiaryTheme = {
     },
   },
 };
+
+export const secondaryWhithoutBorderTheme = {
+  table: {
+    style: {
+      backgroundColor: 'transparent',
+      overflow: 'auto',
+    },
+  },
+  tableHead: {
+    style: {
+      backgroundColor: 'transparent',
+      border: '0px solid',
+    },
+  },
+  headRow: {
+    style: {
+      border: 'none !important',
+      backgroundColor: 'transparent',
+      fontSize: '0.75rem',
+      fontWidth: '400',
+      color: '#A5A5A5',
+    },
+  },
+  rows: {
+    style: {
+      border: 'none !important',
+      backgroundColor: 'transparent',
+      fontSize: '0.75rem',
+      fontWidth: '400',
+      overflow: 'hidden',
+    },
+  },
+};

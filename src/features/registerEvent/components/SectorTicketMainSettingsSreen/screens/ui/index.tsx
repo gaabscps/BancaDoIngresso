@@ -7,16 +7,26 @@ import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
 import UserIcon from '@/assets/images/svg/User';
 import { SectorTicketMainSettingsContent } from '@/features/registerEvent/components/SectorTicketMainSettingsSreen/components/SectorTicketMainSettingsContent';
 import { ActionProps } from '@/components/Dialog';
+// import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
+import { CustomTable } from '@/components/Table';
+import { ReactComponent as CloseX } from '@/assets/images/svg/closeX.svg';
+import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
+import dayjs from 'dayjs';
+import { unmask as unMaskCash } from '@/helpers/masks/cash';
 import {
+  batchActionsProps,
+  batchStatesProps,
   formBatchsProps,
   formMainSettingsProps,
   formSectorProps,
+  mainSettingsProps,
   modalConfigTicketMainSettingsProps,
   sectorActionsProps,
   sectorStatesProps,
 } from '../../types';
 import { BatchContent } from '../../components/BatchContent';
 import { RegisterSectorContent } from '../../components/RegisterSectorContent';
+import { columnsBatch } from './table';
 
 // eslint-disable-next-line no-shadow
 export enum States {
@@ -35,6 +45,9 @@ export interface SectorTicketMainSettingsContainerProps {
   formSector: formSectorProps;
   sectorStates: sectorStatesProps;
   sectorActions: sectorActionsProps;
+  batchStates: batchStatesProps;
+  batchActions: batchActionsProps;
+  mainSettingsActions: mainSettingsProps;
   modalConfig: modalConfigTicketMainSettingsProps;
 }
 
@@ -47,6 +60,9 @@ export const SectorTicketMainSettingsContainer: React.FC<
   formSector,
   sectorStates,
   sectorActions,
+  batchStates,
+  batchActions,
+  mainSettingsActions,
   modalConfig,
 }) => {
   const renderActionDialogToCancel: ActionProps = {
@@ -91,7 +107,7 @@ export const SectorTicketMainSettingsContainer: React.FC<
 
         <div className="container-event mb-4">
           <h5 className="mb-2 border-bottom-title mb-5">Lotes</h5>
-          <p>Cadastrar lote</p>
+          <p>{batchStates.batch ? 'Editar lote' : 'Cadastrar lote'}</p>
         </div>
 
         <div style={{ background: '#FFF', borderRadius: '5px', padding: '50px 30px' }}>
@@ -99,20 +115,95 @@ export const SectorTicketMainSettingsContainer: React.FC<
             <BatchContent formBatchs={formBatchs} />
           </div>
           <div className="d-flex justify-content-end">
-            <div className="link-green">+ cadastrar lote</div>
+            <div
+              className="mr-3"
+              onClick={() => {
+                batchActions.onCancelEdit();
+              }}
+            >
+              {batchStates.batch ? 'Cancelar edição do lote' : null}
+            </div>
+            <div
+              className="link-green"
+              onClick={() => {
+                if (batchStates.batch) {
+                  batchActions.onEdit(batchStates.batch);
+                } else {
+                  batchActions.onAdd();
+                }
+              }}
+            >
+              {batchStates.batch ? 'Salvar lote' : '+ cadastrar lote'}
+            </div>
           </div>
         </div>
 
         <div className="mt-5">
           <SuperCollapse
             title="Lotes cadastrados"
-            content="Nenhum lote cadastrado. Aqui será exibida uma lista dos lotes cadastrados."
+            content={
+              batchStates?.batchList?.length > 0
+                ? batchStates?.batchList?.map((batch, index) => (
+                    <React.Fragment key={index}>
+                      <div className="supdv-title-flex">
+                        <div className="subpdv-title-container">
+                          <p className="subpdv-title subpdv-title-index">
+                            Lote #{String(index + 1)}{' '}
+                          </p>
+                          <p className="subpdv-title subpvd-title-name">• {batch.name}</p>
+                        </div>
+                      </div>
+                      <CustomTable
+                        columns={columnsBatch}
+                        data={[
+                          {
+                            amount: `${batch.amount} ${
+                              +batch.amount <= 1 ? 'unidade' : 'unidades'
+                            }`,
+                            startDate: dayjs(batch.startDate).format('DD/MM/YYYY'),
+                            endDate: dayjs(batch.endDate).format('DD/MM/YYYY'),
+                            totalValue: (
+                              +batch.amount * +unMaskCash(batch.unitValue)
+                            ).toLocaleString('pt-br', {
+                              style: 'currency',
+                              currency: 'BRL',
+                            }),
+                            unitValue: batch.unitValue,
+
+                            actions: (
+                              <div className={`${batchStates.batch ? 'disabled-content' : null}`}>
+                                <Pen
+                                  className="mr-4 svg-icon action-icon"
+                                  onClick={(): Promise<void> => batchActions.onGet(batch)}
+                                />
+                                <CloseX
+                                  className="mr-2 svg-icon action-icon svg-icon-trash"
+                                  onClick={() => {
+                                    batchActions.onDelete(batch);
+                                  }}
+                                />
+                              </div>
+                            ),
+                          },
+                        ]}
+                        theme="secondaryWithoutBorder"
+                        progressPending={false}
+                        numberRowsPerPage={1000}
+                      />
+                    </React.Fragment>
+                  ))
+                : 'Nenhum lote cadastrado. Aqui será exibida uma lista dos lotes cadastrados.'
+            }
             leftIcon={UserIcon}
-            count={1}
+            count={batchStates?.batchList?.length}
           />
         </div>
         <div className="d-flex justify-content-end">
-          <Button title="Próximo" theme="outlineDark" onClick={() => undefined} disabled />
+          <Button
+            title="Próximo"
+            theme="outlineDark"
+            onClick={() => mainSettingsActions.onSave()}
+          />
         </div>
       </Container>
     </Fragment>

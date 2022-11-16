@@ -49,9 +49,7 @@ export const SectorTicketMainSettingsContent: React.FC<
             label="Nome do setor"
             placeholder="Digite ou selecione o nome do setor"
             value={formData[FormInputName.eventSection]}
-            onChange={e =>
-              onChangeFormInput(FormInputName.eventSection)(e?.target?.value as string)
-            }
+            onChange={e => onChangeFormInput(FormInputName.eventSection)(e?.value as string)}
             error={formErrors.eventSection && formErrors.eventSection[0]}
             options={sectorStates.sectorList.map(sector => ({
               value: sector.id,
@@ -244,7 +242,7 @@ export const SectorTicketMainSettingsContent: React.FC<
             label="Impressora (opcional)"
             placeholder="Selecione a impressora para impressão"
             value={formData[FormInputName.printer]}
-            onChange={e => onChangeFormInput(FormInputName.printer)(e?.target?.value as string)}
+            onChange={e => onChangeFormInput(FormInputName.printer)(e?.value as string)}
             error={formErrors.printer && formErrors.printer[0]}
             options={[]}
           />
@@ -255,7 +253,7 @@ export const SectorTicketMainSettingsContent: React.FC<
             label="Número de vias (opcional)"
             placeholder="1"
             value={formData[FormInputName.copies]}
-            onChange={e => onChangeFormInput(FormInputName.copies)(e?.target?.value as string)}
+            onChange={e => onChangeFormInput(FormInputName.copies)(e?.value as string)}
             error={formErrors.copies && formErrors.copies[0]}
             options={[]}
           />

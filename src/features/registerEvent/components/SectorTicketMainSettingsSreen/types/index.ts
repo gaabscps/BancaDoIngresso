@@ -39,8 +39,20 @@ export interface modalConfigTicketMainSettingsProps {
   shouldShowModal: ShouldShowModal;
 }
 
+export interface mainSettingsProps {
+  onSave: () => Promise<void>;
+}
+
 export interface sectorActionsProps {
   onSave: () => Promise<void>;
+}
+
+export interface batchActionsProps {
+  onAdd: () => Promise<void>;
+  onGet: (batch: any) => Promise<void>;
+  onEdit: (batch: any) => Promise<void>;
+  onCancelEdit: () => Promise<void>;
+  onDelete: (batch: any) => Promise<void>;
 }
 
 export interface sectorStatesProps {
@@ -48,4 +60,11 @@ export interface sectorStatesProps {
   setSector: React.Dispatch<React.SetStateAction<any | undefined>>;
   sectorList: any[];
   setSectorList: React.Dispatch<React.SetStateAction<any[]>>;
+}
+
+export interface batchStatesProps {
+  batch: any | undefined;
+  setBatch: React.Dispatch<React.SetStateAction<any | undefined>>;
+  batchList: any[];
+  setBatchList: React.Dispatch<React.SetStateAction<any[]>>;
 }
