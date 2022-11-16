@@ -3,6 +3,8 @@ import React, { Fragment } from 'react';
 import { ButtonGroup, Loading, Tab } from '@/components';
 import { Container, FormGroup } from 'reactstrap';
 import { SectorTicketMainSettingsScreen } from '@/features/registerEvent/components/SectorTicketMainSettingsSreen/screens';
+import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
+import UserIcon from '@/assets/images/svg/User';
 import { formSectorTicketProps } from '../types';
 
 // eslint-disable-next-line no-shadow
@@ -49,10 +51,20 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
         <hr />
         {formData[FormInputName.isTicket] === 'true' && (
           <>
-            <p className="secondPageTitle m-0">Adicionando setor e ingresso</p>
-            <span className="infoSubTitle mb-3">
-              Preencha as 3 (TRÊS) etapas abaixo para adicionar um setor e ingresso
-            </span>
+            <div className="mt-5">
+              <SuperCollapse
+                title="Setores e ingressos adicionados"
+                content="Nenhum setor e ingresso foi adicionado. Aqui será exibida uma lista dos seus setores e ingressos adicionados."
+                leftIcon={UserIcon}
+                count={1}
+              />
+            </div>
+            <div className="mb-4">
+              <p className="secondPageTitle m-0">Adicionando setor e ingresso</p>
+              <span className="infoSubTitle">
+                Preencha as 3 (TRÊS) etapas abaixo para adicionar um setor e ingresso
+              </span>
+            </div>
 
             <Tab
               titles={[
