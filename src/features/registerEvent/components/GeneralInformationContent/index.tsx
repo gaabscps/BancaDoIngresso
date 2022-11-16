@@ -192,7 +192,7 @@ export const GeneralInformationContent: React.FC<
                       });
                     }}
                   >
-                    <Pen />
+                    <Pen title="Editar" />
                   </div>
                   <div
                     className="ml-3 link-black"
@@ -203,7 +203,7 @@ export const GeneralInformationContent: React.FC<
                       });
                     }}
                   >
-                    <Unlink title="Descincular" />
+                    <Unlink title="Desvincular" />
                   </div>
                 </span>
               ) : null}
