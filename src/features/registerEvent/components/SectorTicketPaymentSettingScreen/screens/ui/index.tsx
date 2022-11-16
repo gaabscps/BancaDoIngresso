@@ -2,8 +2,10 @@
 import React, { Fragment } from 'react';
 import { ButtonGroup, Checkbox, InputText, Loading, Radio, SelectCustom } from '@/components';
 import { Col, Container, Form, FormGroup, Row } from 'reactstrap';
+import Event from '@/model/Event';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
 import TicketIcon from '@/assets/images/svg/Ticket';
+import PaymentGateway from '@/model/PaymentGateway';
 import { formPaymentSettingsProps } from '../../types';
 
 // eslint-disable-next-line no-shadow
@@ -15,6 +17,8 @@ export enum States {
 interface SectorTicketMainSettingsContainerProps {
   state: States;
   formMainSettings: formPaymentSettingsProps;
+  paymentGatewayList: PaymentGateway[] | undefined;
+  handleOnSaveSectorTicketPayment: (eventSelecte: Event) => Promise<void>;
 }
 
 // eslint-disable-next-line no-shadow
@@ -66,15 +70,25 @@ export enum FormInputNameBatchs {
 
 export const SectorTicketPaymentSettingsContainer: React.FC<
   SectorTicketMainSettingsContainerProps
-> = ({ state, formMainSettings }) => {
+> = ({ state, formMainSettings, paymentGatewayList }) => {
   const { formData, formErrors, onChangeFormInput } = formMainSettings;
 
-  const paymentGatewayOptions = [
-    { label: 'Paypal', value: 0 },
-    { label: 'Pagseguro', value: 1 },
-    { label: 'Picpay', value: 2 },
-    { label: 'Rico', value: 3 },
-    { label: 'Ricopay', value: 4 },
+  const paymentGatewayOptions = paymentGatewayList?.map(item => ({
+    label: item.name,
+    value: item.id,
+  }));
+
+  const optionCount = [
+    { label: '1', value: 1 },
+    { label: '2', value: 2 },
+    { label: '3', value: 3 },
+    { label: '4', value: 4 },
+    { label: '5', value: 5 },
+    { label: '6', value: 6 },
+    { label: '7', value: 7 },
+    { label: '8', value: 8 },
+    { label: '9', value: 9 },
+    { label: '10', value: 10 },
   ];
 
   return (
@@ -107,50 +121,25 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               <Row>
                 <FormGroup className="mb-2">
                   <label className="input-label mb-4">Gateway de pagamento SITE</label>
-                  <Checkbox
-                    name="websiteGateway"
-                    label="Paypal"
-                    onChange={e =>
-                      onChangeFormInput(FormInputName.websiteGateway)(e?.target?.value as string)
-                    }
-                    checked={formData[FormInputName.websiteGateway] === 'true'}
-                  />
-                  <Checkbox
-                    name="websiteGateway"
-                    label="Pagseguro"
-                    onChange={e =>
-                      onChangeFormInput(FormInputName.websiteGateway)(e?.target?.value as string)
-                    }
-                    checked={formData[FormInputName.websiteGateway] === 'true'}
-                  />
-                  <Checkbox
-                    name="websiteGateway"
-                    label="Picpay"
-                    onChange={e =>
-                      onChangeFormInput(FormInputName.websiteGateway)(e?.target?.value as string)
-                    }
-                    checked={formData[FormInputName.websiteGateway] === 'true'}
-                  />
-                  <Checkbox
-                    name="websiteGateway"
-                    label="Rico"
-                    onChange={e =>
-                      onChangeFormInput(FormInputName.websiteGateway)(e?.target?.value as string)
-                    }
-                    checked={formData[FormInputName.websiteGateway] === 'true'}
-                  />
-                  <Checkbox
-                    name="websiteGateway"
-                    label="Ricopay"
-                    onChange={e =>
-                      onChangeFormInput(FormInputName.websiteGateway)(e?.target?.value as string)
-                    }
-                    checked={formData[FormInputName.websiteGateway] === 'true'}
-                  />
+                  {paymentGatewayList?.map(item => (
+                    // eslint-disable-next-line react/jsx-key
+                    <Checkbox
+                      name={item.name}
+                      label={item.name}
+                      onChange={e => {
+                        if (e.target.value === item.id) {
+                          e.target.checked = true;
+                          onChangeFormInput(item.name)(e.target.value);
+                        } else {
+                          onChangeFormInput(item.name)('');
+                        }
+                      }}
+                    />
+                  ))}
                 </FormGroup>
               </Row>
             </Col>
-            <label htmlFor="" className="ml-3 input-label">
+            <label htmlFor="websiteInstallmentLimit" className="ml-3 input-label">
               Limite de parcelamento online
             </label>
             <Col md={4}>
@@ -169,7 +158,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
                     error={
                       formErrors.websiteInstallmentLimit && formErrors.websiteInstallmentLimit[0]
                     }
-                    options={[]}
+                    options={optionCount}
                   />
                 </FormGroup>
               </Row>
@@ -191,7 +180,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
                       )
                     }
                     error={formErrors.posInstallmentLimit && formErrors.posInstallmentLimit[0]}
-                    options={[]}
+                    options={optionCount}
                   />
                 </FormGroup>
               </Row>
@@ -384,7 +373,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
                 )
               }
               error={formErrors.physicalSaleInstallments && formErrors.physicalSaleInstallments[0]}
-              options={[]}
+              options={optionCount}
               disabled={formData[FormInputName.physicalSaleAllowCreditCardPayment] !== 'true'}
             />
             <span className="mt-5 mr-3 ml-3 input-label"> + </span>
@@ -397,7 +386,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
                 onChangeFormInput(FormInputName.physicalSaleFee)(e?.target?.value as string)
               }
               error={formErrors.physicalSaleFee && formErrors.physicalSaleFee[0]}
-              options={[]}
+              options={optionCount}
               disabled={formData[FormInputName.physicalSaleAllowCreditCardPayment] !== 'true'}
             />
           </Row>
@@ -478,7 +467,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
                 onChangeFormInput(FormInputName.websiteSaleInstallments)(e?.target?.value as string)
               }
               error={formErrors.websiteSaleInstallments && formErrors.websiteSaleInstallments[0]}
-              options={[]}
+              options={optionCount}
               disabled={formData[FormInputName.websiteSaleAllowCreditCardPaymen] !== 'true'}
             />
             <span className="mt-5 mr-3 ml-3 input-label"> + </span>
@@ -491,7 +480,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
                 onChangeFormInput(FormInputName.websiteSaleFee)(e?.target?.value as string)
               }
               error={formErrors.websiteSaleFee && formErrors.websiteSaleFee[0]}
-              options={[]}
+              options={optionCount}
               disabled={formData[FormInputName.websiteSaleAllowCreditCardPaymen] !== 'true'}
             />
           </Row>

@@ -65,8 +65,9 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
                 <>
                   <SectorTicketMainSettingsScreen />
                 </>,
-                // eslint-disable-next-line react/jsx-key
-                <SectorTicketPaymentSettingsScreen />,
+                <>
+                  <SectorTicketPaymentSettingsScreen />,
+                </>,
                 'Conteudo 3',
               ]}
             />
