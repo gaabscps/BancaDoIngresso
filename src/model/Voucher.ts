@@ -3,4 +3,5 @@ export default interface Voucher {
   description: string;
   value: number;
   code: string;
+  user: string;
 }
