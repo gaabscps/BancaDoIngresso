@@ -151,12 +151,14 @@ export const SectorTicketMainSettingsContainer: React.FC<
                       {index > 0 ? <hr style={{ margin: '25px -30px 30px -50px' }} /> : null}
 
                       <div>
-                        <div className="supdv-title-flex">
-                          <div className="subpdv-title-container">
-                            <p className="subpdv-title subpdv-title-index">
+                        <div className="content-collapse-title-flex">
+                          <div className="content-collapse-title-container">
+                            <p className="content-collapse-title content-collapse-title-index">
                               Lote #{String(index + 1)}{' '}
                             </p>
-                            <p className="subpdv-title subpvd-title-name">• {batch.name}</p>
+                            <p className="content-collapse-title subpvd-title-name">
+                              • {batch.name}
+                            </p>
                           </div>
                         </div>
                         <CustomTable
