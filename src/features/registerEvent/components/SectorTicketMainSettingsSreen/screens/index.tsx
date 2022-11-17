@@ -384,7 +384,6 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
   const handleOnGetBatch = async (batchSelected: any): Promise<void> => {
     try {
       if (batchSelected) {
-        console.log('batchSelected :>> ', batchSelected);
         setBatch(batchSelected);
       }
     } catch (error) {
