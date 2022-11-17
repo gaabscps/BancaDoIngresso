@@ -59,6 +59,7 @@ export const InputText: FC<InputProps> = ({
           type === 'date' ? 'text-uppercase' : ''
         } ${value === '' ? 'text-black-50' : ''}`}
         disabled={disabled}
+        {...(type === 'date' ? { max: '9999-12-31' } : {})}
       />
       {renderForward}
       {error && (

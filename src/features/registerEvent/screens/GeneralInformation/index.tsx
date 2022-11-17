@@ -310,7 +310,7 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
     try {
       if (isFormValidCategory()) {
         const payload: any = {
-          id: category,
+          id: category?.id,
           name: formDataCategory[FormInputNameToSaveCategory.name],
           description: 'Campo não existe',
         };

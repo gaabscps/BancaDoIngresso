@@ -1,4 +1,5 @@
 import { TableStyles } from 'react-data-table-component';
+import { colors } from '@/styles/colors';
 
 export const primaryTheme: TableStyles = {
   table: {
@@ -99,7 +100,7 @@ export const secondaryTheme: TableStyles = {
       backgroundColor: 'transparent',
       fontSize: '0.75rem',
       fontWidth: '400',
-      color: '#A5A5A5',
+      color: colors.a5grey,
     },
   },
   rows: {
@@ -113,7 +114,35 @@ export const secondaryTheme: TableStyles = {
   },
 };
 
-export const tertiaryTheme: TableStyles = {
+export const secondaryThemeVoucher = {
+  table: {
+    style: {
+      backgroundColor: 'transparent',
+      overflow: 'auto',
+    },
+  },
+  headRow: {
+    style: {
+      border: 'none !important',
+      backgroundColor: 'transparent',
+      fontSize: '1rem',
+      fontWidth: '400',
+      fontWeight: '400',
+      color: '#A5A5A5',
+    },
+  },
+  rows: {
+    style: {
+      border: 'none !important',
+      backgroundColor: 'transparent',
+      fontSize: '1rem',
+      fontWidth: '400',
+      overflow: 'hidden',
+    },
+  },
+};
+
+export const tertiaryTheme = {
   table: {
     style: {
       backgroundColor: 'transparent',

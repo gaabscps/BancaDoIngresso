@@ -8,9 +8,15 @@ import {
   tertiaryTheme,
   primaryThemeWithMargin,
   secondaryWhithoutBorderTheme,
+  secondaryThemeVoucher,
 } from './style';
 
-type themeProps = 'primary' | 'secondary' | 'tertiary' | 'primaryWithMargin';
+type themeProps =
+  | 'primary'
+  | 'secondary'
+  | 'tertiary'
+  | 'primaryWithMargin'
+  | 'secondaryThemeVoucher';
 
 interface TablePropsCustom {
   theme?: themeProps;
@@ -29,6 +35,7 @@ const schemeTheme = {
   tertiary: tertiaryTheme,
   primaryWithMargin: primaryThemeWithMargin,
   secondaryWithoutBorder: secondaryWhithoutBorderTheme,
+  secondaryThemeVoucher,
 };
 
 export const CustomTable: React.FC<TableCustomProps> = ({

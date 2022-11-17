@@ -12,16 +12,18 @@ import { ReactComponent as TicketManagement } from '@/assets/images/svg/TicketMa
 import { ReactComponent as EventDeal } from '@/assets/images/svg/eventDeal.svg';
 import { ReactComponent as Block } from '@/assets/images/svg/block.svg';
 import { ReactComponent as Report } from '@/assets/images/svg/report.svg';
+import { ReactComponent as BlackAlert } from '@/assets/images/svg/blackAlert.svg';
 import { StatusFilter } from '@/components/StatusFilter';
 import { ActionProps, Dialog } from '@/components/Dialog';
-import { FormErrors, OnChangeFormInput, FormData } from '@/hooks/useForm';
+import { FormErrors, OnChangeFormInput, FormData, IsFormValid } from '@/hooks/useForm';
 import { FilterContent } from '@/features/events/components/FilterContent';
 import Event from '@/model/Event';
 import { EventRequestParams } from '@/features/events/types';
 import { useHistory } from 'react-router-dom';
-import Voucher from '@/model/Voucher';
 import { RegisterVoucher } from '@/features/events/components/RegisterVoucher';
 import dayjs from 'dayjs';
+import Voucher from '@/model/Voucher';
+import { colors } from '@/styles/colors';
 import { columns } from './table';
 
 // eslint-disable-next-line no-shadow
@@ -58,7 +60,14 @@ interface EventContainerProps {
   formErrorsFilter: FormErrors;
   pagination: { pageSize: number };
   fullListEvent: Event[];
-  voucher: Voucher | undefined;
+  voucherState: Voucher[];
+  eventState: Event | undefined;
+  formDataVoucher: FormData;
+  formErrorsVoucher: FormErrors;
+  handleOnShowDeleteProduct: (eventSelected: string, VoucherSelected: string) => void;
+  isFormValidVoucher: IsFormValid;
+  copyToClipboard: (text: string) => void;
+  onChangeFormInputVoucher: OnChangeFormInput;
   onRefuseEvent: (event: Event) => void;
   onReleaseEvent: (event: Event) => void;
   handleOnFilterStatus: (status: number) => void;
@@ -70,15 +79,15 @@ interface EventContainerProps {
   onToggle: () => void;
   onChangeFormInputFilter: OnChangeFormInput;
   clearFilterStatus: () => void;
+  handleOnSaveVoucher: (event: Event) => Promise<void>;
+  handleFetchVoucher: (event: Event) => Promise<void>;
   onShouldShowModal: ({
     value,
     newTitleModal,
-    event,
   }: {
     value: ShouldShowModal;
     newTitleModal: string | React.ReactNode;
     event?: Event;
-    voucher?: Voucher;
   }) => void;
 }
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -94,7 +103,15 @@ export const EventContainer: React.FC<EventContainerProps> = ({
   visible,
   pagination,
   fullListEvent,
-  voucher,
+  voucherState,
+  eventState,
+  formDataVoucher,
+  formErrorsVoucher,
+  handleOnShowDeleteProduct,
+  isFormValidVoucher,
+  copyToClipboard,
+  onChangeFormInputVoucher,
+  handleFetchVoucher,
   onRefuseEvent,
   onReleaseEvent,
   handleOnFilterStatus,
@@ -106,10 +123,11 @@ export const EventContainer: React.FC<EventContainerProps> = ({
   onChangeFormInputFilter,
   onToggle,
   clearFilterStatus,
+  handleOnSaveVoucher,
   onShouldShowModal,
 }) => {
   const dataEventType = [
-    { id: 0, name: 'Evento único' },
+    { id: 0, name: 'Evento mono' },
     { id: 1, name: 'Evento pai' },
     { id: 2, name: 'Evento filho' },
   ];
@@ -143,12 +161,28 @@ export const EventContainer: React.FC<EventContainerProps> = ({
         }}
       >
         <div>{event.name}</div>
-        {<DropdonwFlags dataColumn={dataEventType.filter(value => value.id === event.eventType)} />}
+        {
+          <DropdonwFlags
+            className="mt-2"
+            dataColumn={dataEventType.filter(value => value.id === event.eventType)}
+          />
+        }
       </div>
     ),
     city: event.address.city,
-    startDate: event.startDate === null ? '-----' : dayjs(event.startDate).format('DD/MM/YYYY'),
-    endDate: event.endDate === null ? '-----' : dayjs(event.startDate).format('DD/MM/YYYY'),
+    startDate:
+      event.startDate === null
+        ? '-----'
+        : // eslint-disable-next-line no-useless-concat
+          `${dayjs(event.startDate).format('DD/MM/YYYY')} às ${dayjs(event.startDate).format(
+            'HH:mm',
+          )}`,
+    endDate:
+      event.endDate === null
+        ? '-----'
+        : `${dayjs(event.startDate).format('DD/MM/YYYY')} às ${dayjs(event.startDate).format(
+            'HH:mm',
+          )}`,
     actions: (
       <DropdownMenu
         title={<EventAction />}
@@ -165,12 +199,13 @@ export const EventContainer: React.FC<EventContainerProps> = ({
           {
             title: 'Voucher de desconto',
             icon: <Ticket style={{ transform: 'scale(0.9)' }} />,
-            action: () =>
+            action: () => {
               onShouldShowModal({
                 newTitleModal: 'Cadastrar voucher de desconto',
                 value: ShouldShowModal.voucher,
-                voucher,
-              }),
+                event,
+              });
+            },
           },
           {
             title: 'Fechamento do evento',
@@ -258,55 +293,78 @@ export const EventContainer: React.FC<EventContainerProps> = ({
                 onChangeFormInput={onChangeFormInputFilter}
               />
             ),
-            [ShouldShowModal.voucher]: <RegisterVoucher />,
+            [ShouldShowModal.voucher]: (
+              <RegisterVoucher
+                handleOnSaveVoucher={handleOnSaveVoucher}
+                voucherState={voucherState}
+                handleFetchVoucher={handleFetchVoucher}
+                eventState={eventState}
+                onChangeFormInputVoucher={onChangeFormInputVoucher}
+                formDataVoucher={formDataVoucher}
+                formErrorsVoucher={formErrorsVoucher}
+                isFormValidVoucher={isFormValidVoucher}
+                copyToClipboard={copyToClipboard}
+                handleOnShowDeleteProduct={handleOnShowDeleteProduct}
+              />
+            ),
           }[shouldShowModal]
         }
       </Dialog>
       <Fragment>
         {/* <Loading isVisible={state === States.loading} /> */}
         <Container className="mainContainer" fluid={true}>
-          <div className="d-flex justify-content-between" style={{ paddingBottom: '30px' }}>
-            <div className="pageTitle" style={{ display: 'grid' }}>
+          <div
+            className="d-flex justify-content-between event-page-title-container"
+            style={{ paddingBottom: '30px' }}
+          >
+            <div className="pageTitle event-page-title" style={{ display: 'grid' }}>
               <h5 className="pageTitle" style={{ marginBottom: '1px' }}>
                 Todos os eventos cadastrados
               </h5>
-              <p className="eventDraftCounter">
-                Você tem{' '}
-                <span style={{ color: '#222222', fontWeight: '500' }}>
-                  {fullListEvent?.filter(event => event.eventStatus === 0).length} eventos{' '}
-                </span>
-                em rascunho
-              </p>
+              <div className="d-flex">
+                <div style={{ width: 'fit-content' }}>
+                  <BlackAlert style={{ marginRight: '10px', marginBottom: '10px' }} />
+                </div>
+                <p className="eventDraftCounter">
+                  Você tem{' '}
+                  <span style={{ color: colors.black, fontWeight: '500' }}>
+                    {fullListEvent?.filter(event => event.eventStatus === 0).length} eventos{' '}
+                  </span>
+                  em rascunho
+                </p>
+              </div>
             </div>
-            <div className="button-filter-container">
+            <div className="button-filter-container event-button-filter">
               <Button
                 title="+ Cadastrar novo evento"
                 onClick={() => history.push('/dashboard/event/create')}
               />
-              <div style={{ marginLeft: '15px' }}>
-                <SimpleSelect
-                  name={'Exibir'}
-                  value={pagination}
-                  options={paginationSelect}
-                  placeholder="10 por página"
-                  label="Exibir"
-                  onChange={e => {
-                    // eslint-disable-next-line no-unsafe-optional-chaining
-                    setPagination({ pageSize: Number(e?.value) });
-                  }}
-                />
-              </div>
-              <div className="filter-container">
-                <div
-                  className="filter-content"
-                  onClick={(): void =>
-                    onShouldShowModal({
-                      value: ShouldShowModal.filter,
-                      newTitleModal: '',
-                    })
-                  }
-                >
-                  <FilterVector />
+              <div className="d-flex event-filter-container">
+                <div className="select-label-container" style={{ marginLeft: '15px' }}>
+                  <SimpleSelect
+                    name={'Exibir'}
+                    value={pagination}
+                    options={paginationSelect}
+                    placeholder="10 por página"
+                    label="Exibir:"
+                    onChange={e => {
+                      // eslint-disable-next-line no-unsafe-optional-chaining
+                      setPagination({ pageSize: Number(e?.value) });
+                    }}
+                  />
+                </div>
+                <div className="filter-container m-filter">
+                  <div
+                    className="filter-content"
+                    onClick={(): void =>
+                      onShouldShowModal({
+                        value: ShouldShowModal.filter,
+                        newTitleModal: '',
+                      })
+                    }
+                  >
+                    <FilterVector />
+                  </div>
                 </div>
               </div>
             </div>
