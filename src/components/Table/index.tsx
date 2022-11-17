@@ -2,7 +2,13 @@ import React from 'react';
 import DataTable, { TableProps, TableColumn } from 'react-data-table-component';
 import { ColumnStatus, ColumnImage, CustomLoader } from './Components';
 
-import { primaryTheme, secondaryTheme, tertiaryTheme, primaryThemeWithMargin, secondaryWhithoutBorderTheme } from './style';
+import {
+  primaryTheme,
+  secondaryTheme,
+  tertiaryTheme,
+  primaryThemeWithMargin,
+  secondaryWhithoutBorderTheme,
+} from './style';
 
 type themeProps = 'primary' | 'secondary' | 'tertiary' | 'primaryWithMargin';
 

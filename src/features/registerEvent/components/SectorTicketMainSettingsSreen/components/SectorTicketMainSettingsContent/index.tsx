@@ -30,10 +30,26 @@ export enum FormInputName {
 }
 
 export const SectorTicketMainSettingsContent: React.FC<
-  Pick<SectorTicketMainSettingsContainerProps, 'formMainSettings' | 'modalConfig' | 'sectorStates'>
-> = ({ formMainSettings, modalConfig, sectorStates }) => {
+  Pick<
+    SectorTicketMainSettingsContainerProps,
+    'formMainSettings' | 'modalConfig' | 'sectorStates' | 'printerStates'
+  >
+> = ({ formMainSettings, modalConfig, sectorStates, printerStates }) => {
   const { formData, formErrors, onChangeFormInput, onChangeFormFileInput, formNameFiles } =
     formMainSettings;
+
+  const copiesOptions = [
+    { value: 1, label: '1' },
+    { value: 2, label: '2' },
+    { value: 3, label: '3' },
+    { value: 4, label: '4' },
+    { value: 5, label: '5' },
+    { value: 6, label: '6' },
+    { value: 7, label: '7' },
+    { value: 8, label: '8' },
+    { value: 9, label: '9' },
+    { value: 10, label: '10' },
+  ];
 
   return (
     <Fragment>
@@ -130,7 +146,9 @@ export const SectorTicketMainSettingsContent: React.FC<
                 placeholder="0"
                 value={formData[FormInputName.percentageHalfPrice]}
                 onChange={e =>
-                  onChangeFormInput(FormInputName.percentageHalfPrice)(e?.target.value as string)
+                  onChangeFormInput(FormInputName.percentageHalfPrice)(
+                    e?.target.value.replace(/\D/g, '') as string,
+                  )
                 }
                 error={formErrors.percentageHalfPrice && formErrors.percentageHalfPrice[0]}
                 disabled={
@@ -148,7 +166,9 @@ export const SectorTicketMainSettingsContent: React.FC<
                 placeholder="2000"
                 value={formData[FormInputName.amountHalfPrice]}
                 onChange={e =>
-                  onChangeFormInput(FormInputName.amountHalfPrice)(e?.target.value as string)
+                  onChangeFormInput(FormInputName.amountHalfPrice)(
+                    e?.target.value.replace(/\D/g, '') as string,
+                  )
                 }
                 error={formErrors.amountHalfPrice && formErrors.amountHalfPrice[0]}
                 disabled={
@@ -244,7 +264,10 @@ export const SectorTicketMainSettingsContent: React.FC<
             value={formData[FormInputName.printer]}
             onChange={e => onChangeFormInput(FormInputName.printer)(e?.value as string)}
             error={formErrors.printer && formErrors.printer[0]}
-            options={[]}
+            options={printerStates.printerList?.map(printerValue => ({
+              value: printerValue.id,
+              label: printerValue.name,
+            }))}
           />
         </FormGroup>
         <FormGroup className="mb-2">
@@ -255,7 +278,7 @@ export const SectorTicketMainSettingsContent: React.FC<
             value={formData[FormInputName.copies]}
             onChange={e => onChangeFormInput(FormInputName.copies)(e?.value as string)}
             error={formErrors.copies && formErrors.copies[0]}
-            options={[]}
+            options={copiesOptions}
           />
         </FormGroup>
         <FormGroup className="mb-2">

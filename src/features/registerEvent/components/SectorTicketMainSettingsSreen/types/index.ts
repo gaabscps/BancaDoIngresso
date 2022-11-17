@@ -68,3 +68,8 @@ export interface batchStatesProps {
   batchList: any[];
   setBatchList: React.Dispatch<React.SetStateAction<any[]>>;
 }
+
+export interface printerStatesProps {
+  printerList: any[];
+  setPrinterList: React.Dispatch<React.SetStateAction<any[]>>;
+}

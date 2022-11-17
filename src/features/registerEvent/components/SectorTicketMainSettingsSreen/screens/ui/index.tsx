@@ -12,7 +12,6 @@ import { CustomTable } from '@/components/Table';
 import { ReactComponent as CloseX } from '@/assets/images/svg/closeX.svg';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import dayjs from 'dayjs';
-import { unmask as unMaskCash } from '@/helpers/masks/cash';
 import {
   batchActionsProps,
   batchStatesProps,
@@ -21,6 +20,7 @@ import {
   formSectorProps,
   mainSettingsProps,
   modalConfigTicketMainSettingsProps,
+  printerStatesProps,
   sectorActionsProps,
   sectorStatesProps,
 } from '../../types';
@@ -49,6 +49,7 @@ export interface SectorTicketMainSettingsContainerProps {
   batchActions: batchActionsProps;
   mainSettingsActions: mainSettingsProps;
   modalConfig: modalConfigTicketMainSettingsProps;
+  printerStates: printerStatesProps;
 }
 
 export const SectorTicketMainSettingsContainer: React.FC<
@@ -64,6 +65,7 @@ export const SectorTicketMainSettingsContainer: React.FC<
   batchActions,
   mainSettingsActions,
   modalConfig,
+  printerStates,
 }) => {
   const renderActionDialogToCancel: ActionProps = {
     title: 'Cancelar',
@@ -102,6 +104,7 @@ export const SectorTicketMainSettingsContainer: React.FC<
             formMainSettings={formMainSettings}
             modalConfig={modalConfig}
             sectorStates={sectorStates}
+            printerStates={printerStates}
           />
         </div>
 
@@ -165,13 +168,17 @@ export const SectorTicketMainSettingsContainer: React.FC<
                               }`,
                               startDate: dayjs(batch.startDate).format('DD/MM/YYYY'),
                               endDate: dayjs(batch.endDate).format('DD/MM/YYYY'),
-                              totalValue: (
-                                +batch.amount * +unMaskCash(batch.unitValue)
-                              ).toLocaleString('pt-br', {
+                              totalValue: (+batch.amount * +batch.unitValue).toLocaleString(
+                                'pt-br',
+                                {
+                                  style: 'currency',
+                                  currency: 'BRL',
+                                },
+                              ),
+                              unitValue: batch.unitValue.toLocaleString('pt-br', {
                                 style: 'currency',
                                 currency: 'BRL',
                               }),
-                              unitValue: batch.unitValue,
 
                               actions: (
                                 <div className={`${batchStates.batch ? 'disabled-content' : null}`}>

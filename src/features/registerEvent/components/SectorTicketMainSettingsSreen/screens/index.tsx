@@ -1,3 +1,5 @@
+/* eslint-disable no-shadow */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { useEffect, useState } from 'react';
 import {
@@ -14,7 +16,11 @@ import api, { AxiosError } from '@/services/api';
 import { FormInputName as FormInputNameToMainSettings } from '@/features/registerEvent/components/SectorTicketMainSettingsSreen/components/SectorTicketMainSettingsContent';
 import { FormInputName as FormInputNameToSector } from '@/features/registerEvent/components/SectorTicketMainSettingsSreen/components/RegisterSectorContent';
 import { FormInputName as FormInputNameToBatch } from '@/features/registerEvent/components/SectorTicketMainSettingsSreen/components/BatchContent';
+import { unmask as unMaskCash } from '@/helpers/masks/cash';
+import { convertToBoolean } from '@/helpers/common/convertToBoolean';
 import dayjs from 'dayjs';
+// import { useEvent } from '@/features/registerEvent/hook/useEvent';
+import { useParams } from 'react-router-dom';
 import {
   batchActionsProps,
   batchStatesProps,
@@ -24,9 +30,14 @@ import {
   mainSettingsProps,
   modalConfigTicketMainSettingsProps,
   onShouldShowModalTicketMainSettingsProps,
+  printerStatesProps,
   sectorActionsProps,
   sectorStatesProps,
 } from '../types';
+
+type UrlParams = {
+  id: string;
+};
 
 export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
   const [state] = useState<States>(States.default);
@@ -40,7 +51,11 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
   const [batch, setBatch] = useState<any>();
   const [batchList, setBatchList] = useState<any>([]);
 
+  const [printerList, setPrinterList] = useState<any>([]);
+
   const { title, visible, onChangeTitle, onToggle } = useDialog();
+  // const { eventState, onChange: onChangeEvent } = useEvent();]
+  const params = useParams<UrlParams>();
 
   const {
     formData: formDataMainSettings,
@@ -67,11 +82,11 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
       observation: '',
     },
     validators: {
-      // name: [validators.required],
-      // eventSection: [validators.required],
-      // hasHalfPrice: [validators.required],
-      // hasCourtesy: [validators.required],
-      // numberTickets: [validators.required],
+      name: [validators.required],
+      eventSection: [validators.required],
+      hasHalfPrice: [validators.required],
+      hasCourtesy: [validators.required],
+      numberTickets: [validators.required],
     },
     formatters: {},
   });
@@ -136,8 +151,8 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
           const base64 = reader.result?.toString();
           if (base64) {
             setFormNameFiles({ ...formNameFiles, [inputName]: file.name });
-            onChangeFormInputBatchs(inputName)('');
-            onChangeFormInputBatchs(inputName)(base64);
+            onChangeFormInputMainSettings(inputName)('');
+            onChangeFormInputMainSettings(inputName)(base64);
           }
         };
       } else {
@@ -158,8 +173,8 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
           const base64 = reader.result?.toString();
           if (base64) {
             setFormNameFiles({ ...formNameFiles, [inputName]: file.name });
-            onChangeFormInputMainSettings(inputName)('');
-            onChangeFormInputMainSettings(inputName)(base64);
+            onChangeFormInputBatchs(inputName)('');
+            onChangeFormInputBatchs(inputName)(base64);
           }
         };
       } else {
@@ -177,6 +192,21 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
       // filter father event when event type is father
 
       setSectorList(data ?? []);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      // setState(States.default);
+    }
+  };
+
+  const handleFecthPrinterList = async (): Promise<void> => {
+    try {
+      // setState(States.loading);
+      const { data } = await api.get<any[]>(`/printer/find`);
+      // filter father event when event type is father
+
+      setPrinterList(data ?? []);
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
@@ -217,44 +247,72 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
   const handleOnSaveMainSettings = async (): Promise<void> => {
     try {
       if (isFormValidMainSettings()) {
+        const payloadBatchs: any = batchList.map((batch: any) => {
+          if (batch.id) {
+            return {
+              ...batch,
+              commission: +batch.commission,
+              amount: +batch.amount,
+              unitValue: +batch.unitValue,
+              totalValue: +batch.totalValue,
+            };
+          }
+          // eslint-disable-next-line no-param-reassign
+          delete batch.id;
+          return {
+            ...batch,
+            commission: +batch.commission,
+            amount: +batch.amount,
+            unitValue: +batch.unitValue,
+            totalValue: +batch.totalValue,
+          };
+        });
+
+        // continue someone batchList is not array empty
+        if (payloadBatchs.length === 0) {
+          toast.warn('Adicione ao menos um lote para continuar');
+          return;
+        }
+
         const payload: any = {
           id: sector?.id,
           eventSection: {
             id: formDataMainSettings[FormInputNameToMainSettings.eventSection],
           },
           name: formDataMainSettings[FormInputNameToMainSettings.name],
-          hasHalfPrice: formDataMainSettings[FormInputNameToMainSettings.hasHalfPrice],
+          hasHalfPrice: convertToBoolean(
+            formDataMainSettings[FormInputNameToMainSettings.hasHalfPrice],
+          ),
           percentageHalfPrice:
-            formDataMainSettings[FormInputNameToMainSettings.percentageHalfPrice],
-          amountHalfPrice: formDataMainSettings[FormInputNameToMainSettings.amountHalfPrice],
-          hasCourtesy: formDataMainSettings[FormInputNameToMainSettings.hasCourtesy],
-          amountCourtesy: formDataMainSettings[FormInputNameToMainSettings.amountCourtesy],
-          numberTickets: formDataMainSettings[FormInputNameToMainSettings.numberTickets],
+            +formDataMainSettings[FormInputNameToMainSettings.percentageHalfPrice],
+          amountHalfPrice: +formDataMainSettings[FormInputNameToMainSettings.amountHalfPrice],
+          hasCourtesy: convertToBoolean(
+            formDataMainSettings[FormInputNameToMainSettings.hasCourtesy],
+          ),
+          amountCourtesy: +formDataMainSettings[FormInputNameToMainSettings.amountCourtesy],
+          numberTickets: convertToBoolean(
+            formDataMainSettings[FormInputNameToMainSettings.numberTickets],
+          ),
           printLayoutBase64: formDataMainSettings[FormInputNameToMainSettings.printLayoutBase64],
           printImageBase64: formDataMainSettings[FormInputNameToMainSettings.printImageBase64],
           printer: {
             id: formDataMainSettings[FormInputNameToMainSettings.printer],
           },
-          copies: formDataMainSettings[FormInputNameToMainSettings.copies],
-          reprint: formDataMainSettings[FormInputNameToMainSettings.reprint],
-          printBatchNumber: formDataMainSettings[FormInputNameToMainSettings.printBatchNumber],
+          copies: +formDataMainSettings[FormInputNameToMainSettings.copies],
+          reprint: convertToBoolean(formDataMainSettings[FormInputNameToMainSettings.reprint]),
+          printBatchNumber: convertToBoolean(
+            formDataMainSettings[FormInputNameToMainSettings.printBatchNumber],
+          ),
           observation: formDataMainSettings[FormInputNameToMainSettings.observation],
-          batchs: batchList,
+          batchs: payloadBatchs,
         };
 
-        console.log('payload :>> ', payload);
+        if (!payload.id) {
+          delete payload.id;
+        }
+        await api.post<any>(`/event/ticket/${params.id}/main-settings`, payload);
 
-        // if (!payload.id) {
-        //   delete payload.id;
-
-        //   await api.post<any>('/section', payload);
-        //   toast.success('Setor cadastrado com sucesso!');
-        // } else {
-        //   await api.put<any>('/section', payload);
-        //   toast.success('Setor atualizado com sucesso!');
-        // }
-
-        // onToggle();
+        // onChangeEvent({ ...eventState, currentStep: eventState.currentStep + 1 });
         // handleFecthSectorList();
       }
     } catch (error) {
@@ -279,19 +337,23 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
         ).format('YYYY-MM-DDTHH:mm');
 
         const payload: any = {
-          id: sector,
           name: formDataBatchs[FormInputNameToBatch.name],
           startDate: payloadStartData,
           endDate: payloadEndData,
-          commission: formDataBatchs[FormInputNameToBatch.commission],
-          amount: formDataBatchs[FormInputNameToBatch.amount],
-          unitValue: formDataBatchs[FormInputNameToBatch.unitValue],
-          totalValue: formDataBatchs[FormInputNameToBatch.totalValue],
+          commission: +formDataBatchs[FormInputNameToBatch.commission],
+          amount: String(formDataBatchs[FormInputNameToBatch.amount]),
+          unitValue: String(+unMaskCash(formDataBatchs[FormInputNameToBatch.unitValue])),
+          totalValue: String(
+            (
+              +unMaskCash(formDataBatchs[FormInputNameToBatch.unitValue]) *
+              +unMaskCash(formDataBatchs[FormInputNameToBatch.amount])
+            ).toFixed(2),
+          ),
           imageUrl: formDataBatchs[FormInputNameToBatch.imageUrl],
         };
 
         // dont add batch if already exists
-        const batchExists = batchList.find(batch => batch.name === payload.name);
+        const batchExists = batchList.find((batch: any) => batch.name === payload.name);
 
         if (!batchExists) {
           setBatchList([...batchList, payload]);
@@ -305,10 +367,11 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
     }
   };
 
-  const handleOnDeleteBatch = async (batchSelected): Promise<void> => {
+  const handleOnDeleteBatch = async (batchSelected: any): Promise<void> => {
     try {
       // delete batch from list
-      const newBatchList = batchList.filter(batch => batch.name !== batchSelected?.name);
+      // eslint-disable-next-line no-shadow
+      const newBatchList = batchList.filter((batch: any) => batch.name !== batchSelected?.name);
 
       setBatchList(newBatchList);
     } catch (error) {
@@ -317,9 +380,10 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
     }
   };
 
-  const handleOnGetBatch = async (batchSelected): Promise<void> => {
+  const handleOnGetBatch = async (batchSelected: any): Promise<void> => {
     try {
       if (batchSelected) {
+        console.log('batchSelected :>> ', batchSelected);
         setBatch(batchSelected);
       }
     } catch (error) {
@@ -328,10 +392,10 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
     }
   };
 
-  const handleOnEditBatch = async (batchSelected): Promise<void> => {
+  const handleOnEditBatch = async (batchSelected: any): Promise<void> => {
     try {
       // edit batch from list
-      const newBatchList = batchList.map(batch => {
+      const newBatchList = batchList.map((batch: any) => {
         const payloadStartData = dayjs(
           `${formDataBatchs[FormInputNameToBatch.startDate]}T${
             formDataBatchs[FormInputNameToBatch.startTime]
@@ -346,13 +410,19 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
         if (batch.name === batchSelected?.name) {
           return {
             ...batch,
+            id: batchSelected?.id,
             name: formDataBatchs[FormInputNameToBatch.name],
             startDate: payloadStartData,
             endDate: payloadEndData,
-            commission: formDataBatchs[FormInputNameToBatch.commission],
-            amount: formDataBatchs[FormInputNameToBatch.amount],
-            unitValue: formDataBatchs[FormInputNameToBatch.unitValue],
-            totalValue: formDataBatchs[FormInputNameToBatch.totalValue],
+            commission: +formDataBatchs[FormInputNameToBatch.commission],
+            amount: String(formDataBatchs[FormInputNameToBatch.amount]),
+            unitValue: String(+unMaskCash(formDataBatchs[FormInputNameToBatch.unitValue])),
+            totalValue: String(
+              (
+                +unMaskCash(formDataBatchs[FormInputNameToBatch.unitValue]) *
+                +unMaskCash(formDataBatchs[FormInputNameToBatch.amount])
+              ).toFixed(2),
+            ),
             imageUrl: formDataBatchs[FormInputNameToBatch.imageUrl],
           };
         }
@@ -441,6 +511,11 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
     setBatchList,
   };
 
+  const controllerPrinterStates: printerStatesProps = {
+    printerList,
+    setPrinterList,
+  };
+
   const controllerMainSettingsActions: mainSettingsProps = {
     onSave: handleOnSaveMainSettings,
   };
@@ -459,6 +534,7 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     handleFecthSectorList();
+    handleFecthPrinterList();
   }, []);
 
   useEffect(() => {
@@ -495,6 +571,7 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
       mainSettingsActions={controllerMainSettingsActions}
       batchStates={controllerBatchsStates}
       batchActions={controllerBatchActions}
+      printerStates={controllerPrinterStates}
       modalConfig={controllerModalConfig}
     />
   );
