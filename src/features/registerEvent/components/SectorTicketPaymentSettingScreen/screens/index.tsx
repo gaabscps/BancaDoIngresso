@@ -7,6 +7,7 @@ import useForm from '@/hooks/useForm';
 import validators from '@/helpers/validators';
 import { toast } from 'react-toastify';
 import { useDialog } from '@/hooks/useDialog';
+import { useParams } from 'react-router-dom';
 import { formPaymentSettingsProps } from '../types';
 import { SectorTicketPaymentSettingsContainer, ShouldShowModal } from './ui';
 
@@ -51,6 +52,10 @@ export default interface PayloadSectorTicketPaymentSettings {
   ];
 }
 
+type UrlParams = {
+  id: string;
+};
+
 export const SectorTicketPaymentSettingsScreen: React.FC = (): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
   const [paymentGatewayList, setPaymentGatewayList] = useState<PaymentGateway[]>([]);
@@ -58,7 +63,7 @@ export const SectorTicketPaymentSettingsScreen: React.FC = (): JSX.Element => {
     ShouldShowModal.discountCoupons,
   );
 
-  const eventId = window.location.pathname.split('/')[4];
+  const params = useParams<UrlParams>();
   const { title, visible, onChangeTitle, onToggle } = useDialog();
 
   const {
@@ -155,8 +160,8 @@ export const SectorTicketPaymentSettingsScreen: React.FC = (): JSX.Element => {
     try {
       // if (isFormValidMainSettings()) {
       const payload: PayloadSectorTicketPaymentSettings = {
-        posGateway: '',
-        websiteGateway: '',
+        posGateway: 'ebca4cf5-c5fc-4a34-bdca-3c6654270bf8',
+        websiteGateway: 'ebca4cf5-c5fc-4a34-bdca-3c6654270bf8',
         websiteInstallmentLimit: 0,
         posInstallmentLimit: 0,
         allowFractionalPayment: true,
@@ -187,7 +192,7 @@ export const SectorTicketPaymentSettingsScreen: React.FC = (): JSX.Element => {
           fee: 0,
         },
         allowDiscount: true,
-        allowDiscountCoupon: true,
+        allowDiscountCoupon: false,
         discountCoupons: [
           {
             id: '',
@@ -195,8 +200,8 @@ export const SectorTicketPaymentSettingsScreen: React.FC = (): JSX.Element => {
         ],
       };
 
-      await api.put<PayloadSectorTicketPaymentSettings>(
-        `/event/ticket/${eventId}/payment`,
+      await api.post<PayloadSectorTicketPaymentSettings>(
+        `/event/ticket/${params.id}/payment`,
         payload,
       );
       toast.success('POS atualizado com sucesso!');
