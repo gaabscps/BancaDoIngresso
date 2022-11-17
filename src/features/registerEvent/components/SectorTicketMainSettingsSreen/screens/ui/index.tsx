@@ -145,51 +145,55 @@ export const SectorTicketMainSettingsContainer: React.FC<
               batchStates?.batchList?.length > 0
                 ? batchStates?.batchList?.map((batch, index) => (
                     <React.Fragment key={index}>
-                      <div className="supdv-title-flex">
-                        <div className="subpdv-title-container">
-                          <p className="subpdv-title subpdv-title-index">
-                            Lote #{String(index + 1)}{' '}
-                          </p>
-                          <p className="subpdv-title subpvd-title-name">• {batch.name}</p>
-                        </div>
-                      </div>
-                      <CustomTable
-                        columns={columnsBatch}
-                        data={[
-                          {
-                            amount: `${batch.amount} ${
-                              +batch.amount <= 1 ? 'unidade' : 'unidades'
-                            }`,
-                            startDate: dayjs(batch.startDate).format('DD/MM/YYYY'),
-                            endDate: dayjs(batch.endDate).format('DD/MM/YYYY'),
-                            totalValue: (
-                              +batch.amount * +unMaskCash(batch.unitValue)
-                            ).toLocaleString('pt-br', {
-                              style: 'currency',
-                              currency: 'BRL',
-                            }),
-                            unitValue: batch.unitValue,
+                      {index > 0 ? <hr style={{ margin: '25px -30px 30px -50px' }} /> : null}
 
-                            actions: (
-                              <div className={`${batchStates.batch ? 'disabled-content' : null}`}>
-                                <Pen
-                                  className="mr-4 svg-icon action-icon"
-                                  onClick={(): Promise<void> => batchActions.onGet(batch)}
-                                />
-                                <CloseX
-                                  className="mr-2 svg-icon action-icon svg-icon-trash"
-                                  onClick={() => {
-                                    batchActions.onDelete(batch);
-                                  }}
-                                />
-                              </div>
-                            ),
-                          },
-                        ]}
-                        theme="secondaryWithoutBorder"
-                        progressPending={false}
-                        numberRowsPerPage={1000}
-                      />
+                      <div>
+                        <div className="supdv-title-flex">
+                          <div className="subpdv-title-container">
+                            <p className="subpdv-title subpdv-title-index">
+                              Lote #{String(index + 1)}{' '}
+                            </p>
+                            <p className="subpdv-title subpvd-title-name">• {batch.name}</p>
+                          </div>
+                        </div>
+                        <CustomTable
+                          columns={columnsBatch}
+                          data={[
+                            {
+                              amount: `${batch.amount} ${
+                                +batch.amount <= 1 ? 'unidade' : 'unidades'
+                              }`,
+                              startDate: dayjs(batch.startDate).format('DD/MM/YYYY'),
+                              endDate: dayjs(batch.endDate).format('DD/MM/YYYY'),
+                              totalValue: (
+                                +batch.amount * +unMaskCash(batch.unitValue)
+                              ).toLocaleString('pt-br', {
+                                style: 'currency',
+                                currency: 'BRL',
+                              }),
+                              unitValue: batch.unitValue,
+
+                              actions: (
+                                <div className={`${batchStates.batch ? 'disabled-content' : null}`}>
+                                  <Pen
+                                    className="mr-4 svg-icon action-icon"
+                                    onClick={(): Promise<void> => batchActions.onGet(batch)}
+                                  />
+                                  <CloseX
+                                    className="mr-2 svg-icon action-icon svg-icon-trash"
+                                    onClick={() => {
+                                      batchActions.onDelete(batch);
+                                    }}
+                                  />
+                                </div>
+                              ),
+                            },
+                          ]}
+                          theme="secondaryWithoutBorder"
+                          progressPending={false}
+                          numberRowsPerPage={1000}
+                        />
+                      </div>
                     </React.Fragment>
                   ))
                 : 'Nenhum lote cadastrado. Aqui será exibida uma lista dos lotes cadastrados.'

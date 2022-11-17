@@ -1,4 +1,6 @@
-export const primaryTheme = {
+import { TableStyles } from 'react-data-table-component';
+
+export const primaryTheme: TableStyles = {
   table: {
     style: {
       backgroundColor: 'transparent',
@@ -41,7 +43,7 @@ export const primaryTheme = {
   },
 };
 
-export const primaryThemeWithMargin = {
+export const primaryThemeWithMargin: TableStyles = {
   table: {
     style: {
       backgroundColor: 'transparent',
@@ -84,7 +86,7 @@ export const primaryThemeWithMargin = {
   },
 };
 
-export const secondaryTheme = {
+export const secondaryTheme: TableStyles = {
   table: {
     style: {
       backgroundColor: 'transparent',
@@ -111,7 +113,7 @@ export const secondaryTheme = {
   },
 };
 
-export const tertiaryTheme = {
+export const tertiaryTheme: TableStyles = {
   table: {
     style: {
       backgroundColor: 'transparent',
@@ -140,35 +142,38 @@ export const tertiaryTheme = {
   },
 };
 
-export const secondaryWhithoutBorderTheme = {
+export const secondaryWhithoutBorderTheme: TableStyles = {
   table: {
     style: {
       backgroundColor: 'transparent',
       overflow: 'auto',
+      border: '0px solid',
+      margin: '0 -16px',
     },
   },
-  tableHead: {
+  head: {
     style: {
-      backgroundColor: 'transparent',
-      border: '0px solid',
+      border: '0px solid !important',
     },
   },
   headRow: {
     style: {
-      border: 'none !important',
+      border: '0px solid !important',
       backgroundColor: 'transparent',
       fontSize: '0.75rem',
       fontWidth: '400',
       color: '#A5A5A5',
+      minHeight: '20px',
     },
   },
   rows: {
     style: {
-      border: 'none !important',
+      border: '0px solid',
       backgroundColor: 'transparent',
       fontSize: '0.75rem',
       fontWidth: '400',
       overflow: 'hidden',
+      minHeight: '20px',
     },
   },
 };

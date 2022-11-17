@@ -33,5 +33,6 @@ export const columnsBatch: TableColumn<DataRow>[] = [
   {
     name: '',
     selector: row => row.actions,
+    width: '105px',
   },
 ];
