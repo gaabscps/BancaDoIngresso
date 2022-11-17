@@ -112,14 +112,14 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
       imageUrl: '',
     },
     validators: {
-      // name: [validators.required],
-      // startDate: [validators.required],
-      // endDate: [validators.required],
-      // startTime: [validators.required],
-      // endTime: [validators.required],
-      // commission: [validators.required],
-      // amount: [validators.required],
-      // unitValue: [validators.required],
+      name: [validators.required],
+      startDate: [validators.required],
+      endDate: [validators.required],
+      startTime: [validators.required],
+      endTime: [validators.required],
+      commission: [validators.required],
+      amount: [validators.required],
+      unitValue: [validators.required],
     },
     formatters: {},
   });
@@ -357,6 +357,7 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
 
         if (!batchExists) {
           setBatchList([...batchList, payload]);
+          onChangeFormInputBatchs(FormInputNameToBatch.name)('');
         } else {
           toast.error('Lote com o mesmo nome já existe');
         }
