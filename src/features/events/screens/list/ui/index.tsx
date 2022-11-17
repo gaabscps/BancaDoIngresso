@@ -169,7 +169,7 @@ export const EventContainer: React.FC<EventContainerProps> = ({
         }
       </div>
     ),
-    city: event.address.city,
+    city: `${event.address.city}/${event.address.state}`,
     startDate:
       event.startDate === null
         ? '-----'
