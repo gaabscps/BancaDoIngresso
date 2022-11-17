@@ -332,12 +332,23 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
     try {
       // edit batch from list
       const newBatchList = batchList.map(batch => {
+        const payloadStartData = dayjs(
+          `${formDataBatchs[FormInputNameToBatch.startDate]}T${
+            formDataBatchs[FormInputNameToBatch.startTime]
+          }`,
+        ).format('YYYY-MM-DDTHH:mm');
+
+        const payloadEndData = dayjs(
+          `${formDataBatchs[FormInputNameToBatch.endDate]}T${
+            formDataBatchs[FormInputNameToBatch.endTime]
+          }`,
+        ).format('YYYY-MM-DDTHH:mm');
         if (batch.name === batchSelected?.name) {
           return {
             ...batch,
             name: formDataBatchs[FormInputNameToBatch.name],
-            startDate: formDataBatchs[FormInputNameToBatch.startDate],
-            endDate: formDataBatchs[FormInputNameToBatch.endDate],
+            startDate: payloadStartData,
+            endDate: payloadEndData,
             commission: formDataBatchs[FormInputNameToBatch.commission],
             amount: formDataBatchs[FormInputNameToBatch.amount],
             unitValue: formDataBatchs[FormInputNameToBatch.unitValue],
@@ -453,18 +464,18 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
   useEffect(() => {
     if (batch) {
       onChangeFormInputBatchs(FormInputNameToBatch.name)(batch.name);
-      // onChangeFormInputBatchs(FormInputNameToBatch.startDate)(
-      //   dayjs(batch?.startDate).format('YYYY-MM-DD') ?? '',
-      // );
-      // onChangeFormInputBatchs(FormInputNameToBatch.endDate)(
-      //   dayjs(batch?.endDate).format('YYYY-MM-DD') ?? '',
-      // );
-      // onChangeFormInputBatchs(FormInputNameToBatch.startTime)(
-      //   batch?.startDate.split('T')[1].slice(0, 5) ?? '',
-      // );
-      // onChangeFormInputBatchs(FormInputNameToBatch.endTime)(
-      //   batch?.endDate.split('T')[1].slice(0, 5) ?? '',
-      // );
+      onChangeFormInputBatchs(FormInputNameToBatch.startDate)(
+        dayjs(batch?.startDate).format('YYYY-MM-DD') ?? '',
+      );
+      onChangeFormInputBatchs(FormInputNameToBatch.endDate)(
+        dayjs(batch?.endDate).format('YYYY-MM-DD') ?? '',
+      );
+      onChangeFormInputBatchs(FormInputNameToBatch.startTime)(
+        batch?.startDate.split('T')[1].slice(0, 5) ?? '',
+      );
+      onChangeFormInputBatchs(FormInputNameToBatch.endTime)(
+        batch?.endDate.split('T')[1].slice(0, 5) ?? '',
+      );
       onChangeFormInputBatchs(FormInputNameToBatch.commission)(batch.commission);
       onChangeFormInputBatchs(FormInputNameToBatch.amount)(batch.amount);
       onChangeFormInputBatchs(FormInputNameToBatch.unitValue)(batch.unitValue);

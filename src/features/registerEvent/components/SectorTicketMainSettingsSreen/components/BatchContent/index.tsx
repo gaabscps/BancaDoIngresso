@@ -25,11 +25,21 @@ export enum FormInputName {
   imageUrl = 'imageUrl',
 }
 
-export const BatchContent: React.FC<Pick<SectorTicketMainSettingsContainerProps, 'formBatchs'>> = ({
-  formBatchs,
-}) => {
+export const BatchContent: React.FC<
+  Pick<SectorTicketMainSettingsContainerProps, 'formBatchs' | 'batchStates'>
+> = ({ formBatchs, batchStates }) => {
   const { formData, formErrors, onChangeFormInput, onChangeFormFileInput, formNameFiles } =
     formBatchs;
+
+  const nameRef = React.useRef<HTMLInputElement>(null);
+
+  // focus on name input when batchStates is not empty
+  React.useEffect(() => {
+    console.log('batchStates.batch :>> ', batchStates?.batch);
+    if (batchStates?.batch) {
+      nameRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [batchStates?.batch]);
 
   return (
     <Fragment>
@@ -41,6 +51,7 @@ export const BatchContent: React.FC<Pick<SectorTicketMainSettingsContainerProps,
       >
         <FormGroup>
           <InputText
+            refInput={nameRef}
             name="name"
             label="Nome do lote"
             placeholder="Digite o nome do ingresso"

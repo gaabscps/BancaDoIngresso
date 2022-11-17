@@ -112,7 +112,7 @@ export const SectorTicketMainSettingsContainer: React.FC<
 
         <div style={{ background: '#FFF', borderRadius: '5px', padding: '50px 30px' }}>
           <div className="container-event">
-            <BatchContent formBatchs={formBatchs} />
+            <BatchContent formBatchs={formBatchs} batchStates={batchStates} />
           </div>
           <div className="d-flex justify-content-end">
             <div
