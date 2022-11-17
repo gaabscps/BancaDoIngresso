@@ -35,7 +35,6 @@ export const BatchContent: React.FC<
 
   // focus on name input when batchStates is not empty
   React.useEffect(() => {
-    console.log('batchStates.batch :>> ', batchStates?.batch);
     if (batchStates?.batch) {
       nameRef.current?.scrollIntoView({ behavior: 'smooth' });
     }
