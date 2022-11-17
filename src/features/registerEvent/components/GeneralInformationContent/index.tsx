@@ -98,6 +98,8 @@ export const GeneralInformationContent: React.FC<
   const textSizeRef = React.useRef<HTMLInputElement>(null);
   const latitudeRef = React.useRef<HTMLInputElement>(null);
   const longitudeRef = React.useRef<HTMLInputElement>(null);
+  const imageBase64Ref = React.useRef<HTMLInputElement>(null);
+  const imagePosBase64Ref = React.useRef<HTMLInputElement>(null);
 
   const TypeEventsOptions = [
     { value: '0', label: 'Mono' },
@@ -275,8 +277,8 @@ export const GeneralInformationContent: React.FC<
                 cep(e.target.value).then(data => {
                   onChangeFormInput(FormInputName.state)(data.state);
                   onChangeFormInput(FormInputName.city)(data.city);
-                  onChangeFormInput(FormInputName.district)(data.neighborhood);
-                  onChangeFormInput(FormInputName.street)(data.street);
+                  onChangeFormInput(FormInputName.district)(data.neighborhood ?? '-');
+                  onChangeFormInput(FormInputName.street)(data.street ?? '-');
                 });
               }
             }}
@@ -401,6 +403,7 @@ export const GeneralInformationContent: React.FC<
                 type="date"
                 name="startDate"
                 label="Data início do Evento"
+                maxLength={5}
                 value={formData[FormInputName.startDate]}
                 onChange={e => onChangeFormInput(FormInputName.startDate)(e.target.value)}
                 error={formErrors.startDate && formErrors.startDate[0]}
@@ -414,6 +417,7 @@ export const GeneralInformationContent: React.FC<
                 type="date"
                 name="endDate"
                 label="Data fim do Evento"
+                maxLength={5}
                 value={formData[FormInputName.endDate]}
                 onChange={e => onChangeFormInput(FormInputName.endDate)(e.target.value)}
                 error={formErrors.endDate && formErrors.endDate[0]}
@@ -563,6 +567,7 @@ export const GeneralInformationContent: React.FC<
         </FormGroup>
         <FormGroup className="mb-2">
           <InputFile
+            refInput={imageBase64Ref}
             name="imageBase64"
             label={
               <>
@@ -583,6 +588,7 @@ export const GeneralInformationContent: React.FC<
         </FormGroup>
         <FormGroup className="mb-2">
           <InputFile
+            refInput={imagePosBase64Ref}
             name="imagePosBase64"
             label={
               <>
@@ -636,8 +642,7 @@ export const GeneralInformationContent: React.FC<
             name="ticketPhrase"
             label="Frase do ingresso (opcional)"
             placeholder="Digite a frase que irá aparecer no ingresso"
-            maxLength={250}
-            rows={3}
+            rows={7}
             value={formData[FormInputName.ticketPhrase]}
             onChange={e => onChangeFormInput(FormInputName.ticketPhrase)(e.target.value)}
             error={formErrors.ticketPhrase && formErrors.ticketPhrase[0]}
@@ -648,8 +653,7 @@ export const GeneralInformationContent: React.FC<
             name="websiteDescription"
             label="Descrição para o site (opcional)"
             placeholder="Digite aqui a descrição que irá aparecer no site"
-            maxLength={250}
-            rows={4}
+            rows={13}
             value={formData[FormInputName.websiteDescription]}
             onChange={e => onChangeFormInput(FormInputName.websiteDescription)(e.target.value)}
             error={formErrors.websiteDescription && formErrors.websiteDescription[0]}

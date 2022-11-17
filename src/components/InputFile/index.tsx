@@ -12,6 +12,7 @@ interface InputFileProps {
   wrapperClass?: string;
   accept?: string;
   onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  refInput?: React.Ref<HTMLInputElement>;
 }
 // export default InputFile;
 
@@ -23,6 +24,7 @@ export const InputFile: React.FC<InputFileProps> = ({
   wrapperClass,
   accept,
   onChange,
+  refInput,
 }: InputFileProps) => (
   <div className={`flex-column input-component ${wrapperClass} ${error ? 'input-error' : ''}`}>
     {label && (
@@ -70,6 +72,7 @@ export const InputFile: React.FC<InputFileProps> = ({
         onChange={onChange}
         style={{ display: 'none' }}
         className={`${error ? 'input-error' : ''}`}
+        ref={refInput}
       />
       <p
         style={{

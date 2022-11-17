@@ -50,7 +50,7 @@ export const TextArea: FC<TextAreaProps> = ({
       rows={rows}
       onBlur={onBlur}
       onChange={onChange}
-      className={` form-control input-default text-area-component ${error ? 'input-error' : ''}`}
+      className={`text-wrap form-control text-area-component ${error ? 'input-error' : ''}`}
       disabled={disabled}
       ref={refTextArea}
     />
