@@ -36,7 +36,7 @@ export const EventScreen: React.FC = () => {
   const [event, setEvent] = useState<Event>();
   const [fullListEvent, setFullListEvent] = useState<Event[]>([]);
   const [pagination, setPagination] = useState({
-    pageSize: 10,
+    pageSize: 2,
   });
   const [currentPage, setCurrentPage] = useState<EventRequestParams>({
     page: 1,
@@ -300,6 +300,7 @@ export const EventScreen: React.FC = () => {
         onToggle();
         await handleFetch({
           ...currentPage,
+          page: +pagination,
           ...payload,
         });
       }
