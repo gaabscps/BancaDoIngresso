@@ -36,7 +36,7 @@ export const EventScreen: React.FC = () => {
   const [event, setEvent] = useState<Event>();
   const [fullListEvent, setFullListEvent] = useState<Event[]>([]);
   const [pagination, setPagination] = useState({
-    pageSize: 2,
+    pageSize: 10,
   });
   const [currentPage, setCurrentPage] = useState<EventRequestParams>({
     page: 1,
