@@ -174,15 +174,15 @@ export const EventContainer: React.FC<EventContainerProps> = ({
       event.startDate === null
         ? '-----'
         : // eslint-disable-next-line no-useless-concat
-          `${dayjs(event.startDate).format('DD/MM/YYYY')} às ${dayjs(event.startDate).format(
-            'HH:mm',
-          )}`,
+          `${dayjs(event.startDate).format('DD/MM/YYYY')} às ${String(event.startDate)
+            .split('T')[1]
+            .slice(0, 5)}`,
     endDate:
       event.endDate === null
         ? '-----'
-        : `${dayjs(event.startDate).format('DD/MM/YYYY')} às ${dayjs(event.startDate).format(
-            'HH:mm',
-          )}`,
+        : `${dayjs(event.endDate).format('DD/MM/YYYY')} às ${String(event.endDate)
+            .split('T')[1]
+            .slice(0, 5)}`,
     actions: (
       <DropdownMenu
         title={<EventAction />}
