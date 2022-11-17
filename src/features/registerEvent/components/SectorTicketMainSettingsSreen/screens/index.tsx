@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-shadow */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-use-before-define */
@@ -21,6 +22,9 @@ import { convertToBoolean } from '@/helpers/common/convertToBoolean';
 import dayjs from 'dayjs';
 // import { useEvent } from '@/features/registerEvent/hook/useEvent';
 import { useParams } from 'react-router-dom';
+import Section from '@/model/Section';
+import TicketBatch from '@/model/TicketBatch';
+import Printer from '@/model/Printer';
 import {
   batchActionsProps,
   batchStatesProps,
@@ -45,13 +49,13 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
 
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(ShouldShowModal.sector);
 
-  const [sector, setSector] = useState<any>();
-  const [sectorList, setSectorList] = useState<any>([]);
+  const [sector, setSector] = useState<Section>();
+  const [sectorList, setSectorList] = useState<Section[]>([]);
 
-  const [batch, setBatch] = useState<any>();
-  const [batchList, setBatchList] = useState<any>([]);
+  const [batch, setBatch] = useState<TicketBatch>();
+  const [batchList, setBatchList] = useState<TicketBatch[]>([]);
 
-  const [printerList, setPrinterList] = useState<any>([]);
+  const [printerList, setPrinterList] = useState<Printer[]>([]);
 
   const { title, visible, onChangeTitle, onToggle } = useDialog();
   // const { eventState, onChange: onChangeEvent } = useEvent();]
@@ -188,7 +192,7 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
   const handleFecthSectorList = async (): Promise<void> => {
     try {
       // setState(States.loading);
-      const { data } = await api.get<any[]>(`/section/find`);
+      const { data } = await api.get<Section[]>(`/section/find`);
       // filter father event when event type is father
 
       setSectorList(data ?? []);
@@ -203,7 +207,7 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
   const handleFecthPrinterList = async (): Promise<void> => {
     try {
       // setState(States.loading);
-      const { data } = await api.get<any[]>(`/printer/find`);
+      const { data } = await api.get<Printer[]>(`/printer/find`);
       // filter father event when event type is father
 
       setPrinterList(data ?? []);
@@ -218,7 +222,7 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
   const handleOnSaveSector = async (): Promise<void> => {
     try {
       if (isFormValidSector()) {
-        const payload: any = {
+        const payload = {
           id: sector,
           name: formDataSector[FormInputNameToSector.name],
           description: '-',
@@ -228,10 +232,10 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
         if (!payload.id) {
           delete payload.id;
 
-          await api.post<any>('/section', payload);
+          await api.post<Section>('/section', payload);
           toast.success('Setor cadastrado com sucesso!');
         } else {
-          await api.put<any>('/section', payload);
+          await api.put<Section>('/section', payload);
           toast.success('Setor atualizado com sucesso!');
         }
 
@@ -247,7 +251,7 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
   const handleOnSaveMainSettings = async (): Promise<void> => {
     try {
       if (isFormValidMainSettings()) {
-        const payloadBatchs: any = batchList.map((batch: any) => {
+        const payloadBatchs = batchList.map((batch: TicketBatch) => {
           if (batch.id) {
             return {
               ...batch,
@@ -257,7 +261,6 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
               totalValue: +batch.totalValue,
             };
           }
-          // eslint-disable-next-line no-param-reassign
           delete batch.id;
           return {
             ...batch,
@@ -274,7 +277,7 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
           return;
         }
 
-        const payload: any = {
+        const payload = {
           id: sector?.id,
           eventSection: {
             id: formDataMainSettings[FormInputNameToMainSettings.eventSection],
@@ -310,10 +313,7 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
         if (!payload.id) {
           delete payload.id;
         }
-        await api.post<any>(`/event/ticket/${params.id}/main-settings`, payload);
-
-        // onChangeEvent({ ...eventState, currentStep: eventState.currentStep + 1 });
-        // handleFecthSectorList();
+        await api.post(`/event/ticket/${params.id}/main-settings`, payload);
       }
     } catch (error) {
       const err = error as AxiosError;
@@ -353,7 +353,9 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
         };
 
         // dont add batch if already exists
-        const batchExists = batchList.find((batch: any) => batch.name === payload.name);
+        const batchExists = batchList.find(
+          (batch: { name: string }) => batch.name === payload.name,
+        );
 
         if (!batchExists) {
           setBatchList([...batchList, payload]);
@@ -368,11 +370,13 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
     }
   };
 
-  const handleOnDeleteBatch = async (batchSelected: any): Promise<void> => {
+  const handleOnDeleteBatch = async (batchSelected: TicketBatch): Promise<void> => {
     try {
       // delete batch from list
       // eslint-disable-next-line no-shadow
-      const newBatchList = batchList.filter((batch: any) => batch.name !== batchSelected?.name);
+      const newBatchList = batchList.filter(
+        (batch: TicketBatch) => batch.name !== batchSelected?.name,
+      );
 
       setBatchList(newBatchList);
     } catch (error) {
@@ -381,7 +385,7 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
     }
   };
 
-  const handleOnGetBatch = async (batchSelected: any): Promise<void> => {
+  const handleOnGetBatch = async (batchSelected: TicketBatch): Promise<void> => {
     try {
       if (batchSelected) {
         setBatch(batchSelected);
@@ -392,10 +396,10 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
     }
   };
 
-  const handleOnEditBatch = async (batchSelected: any): Promise<void> => {
+  const handleOnEditBatch = async (batchSelected: TicketBatch): Promise<void> => {
     try {
       // edit batch from list
-      const newBatchList = batchList.map((batch: any) => {
+      const newBatchList: any = batchList.map((batch: TicketBatch) => {
         const payloadStartData = dayjs(
           `${formDataBatchs[FormInputNameToBatch.startDate]}T${
             formDataBatchs[FormInputNameToBatch.startTime]
@@ -547,16 +551,16 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
         dayjs(batch?.endDate).format('YYYY-MM-DD') ?? '',
       );
       onChangeFormInputBatchs(FormInputNameToBatch.startTime)(
-        batch?.startDate.split('T')[1].slice(0, 5) ?? '',
+        String(batch?.startDate).split('T')[1].slice(0, 5) ?? '',
       );
       onChangeFormInputBatchs(FormInputNameToBatch.endTime)(
-        batch?.endDate.split('T')[1].slice(0, 5) ?? '',
+        String(batch?.endDate).split('T')[1].slice(0, 5) ?? '',
       );
-      onChangeFormInputBatchs(FormInputNameToBatch.commission)(batch.commission);
-      onChangeFormInputBatchs(FormInputNameToBatch.amount)(batch.amount);
-      onChangeFormInputBatchs(FormInputNameToBatch.unitValue)(batch.unitValue);
-      onChangeFormInputBatchs(FormInputNameToBatch.totalValue)(batch.totalValue);
-      onChangeFormInputBatchs(FormInputNameToBatch.imageUrl)(batch.imageUrl);
+      onChangeFormInputBatchs(FormInputNameToBatch.commission)(String(batch.commission));
+      onChangeFormInputBatchs(FormInputNameToBatch.amount)(String(batch.amount));
+      onChangeFormInputBatchs(FormInputNameToBatch.unitValue)(String(batch.unitValue));
+      onChangeFormInputBatchs(FormInputNameToBatch.totalValue)(String(batch.totalValue));
+      onChangeFormInputBatchs(FormInputNameToBatch.imageUrl)(String(batch.imageUrl));
     }
   }, [batch]);
 

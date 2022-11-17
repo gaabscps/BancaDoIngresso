@@ -24,6 +24,7 @@ import { RegisterVoucher } from '@/features/events/components/RegisterVoucher';
 import dayjs from 'dayjs';
 import Voucher from '@/model/Voucher';
 import { colors } from '@/styles/colors';
+import { useEvent } from '@/features/registerEvent/hook/useEvent';
 import { columns } from './table';
 
 // eslint-disable-next-line no-shadow
@@ -126,6 +127,7 @@ export const EventContainer: React.FC<EventContainerProps> = ({
   handleOnSaveVoucher,
   onShouldShowModal,
 }) => {
+  const { eventState: eventStateContext, onChange: onChangeEvent } = useEvent();
   const dataEventType = [
     { id: 0, name: 'Evento mono' },
     { id: 1, name: 'Evento pai' },
@@ -190,7 +192,10 @@ export const EventContainer: React.FC<EventContainerProps> = ({
           {
             icon: <Pen style={{ transform: 'scale(0.9)' }} />,
             title: 'Editar',
-            action: () => history.push(`/dashboard/event/edit/${event.id}`),
+            action: () => {
+              onChangeEvent({ ...eventStateContext, currentStep: 0 });
+              history.push(`/dashboard/event/edit/${event.id}`);
+            },
           },
           {
             title: 'Gestão de ingressos',
@@ -382,6 +387,7 @@ export const EventContainer: React.FC<EventContainerProps> = ({
             theme="primary"
             progressPending={false}
             getRowId={e => {
+              onChangeEvent({ ...eventStateContext, currentStep: 0 });
               history.push(`/dashboard/event/edit/${e.id}`);
             }}
           />

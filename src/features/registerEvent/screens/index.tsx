@@ -19,7 +19,13 @@ export enum States {
 
 export const EventScreen: React.FC = (): JSX.Element => {
   const [state] = useState<States>(States.default);
-  const { eventState } = useEvent();
+  const { eventState, onChange: onChangeEvent } = useEvent();
+
+  // verify if router is '/event/create'
+  const isCreate = window.location.pathname.includes('create');
+  if (isCreate) {
+    onChangeEvent({ ...eventState, currentStep: 0 });
+  }
 
   const steps = [
     {

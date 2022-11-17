@@ -1,5 +1,8 @@
 import { NameFiles } from '@/features/registerEvent/types';
 import { FormData, FormErrors, OnChangeFormInput } from '@/hooks';
+import Printer from '@/model/Printer';
+import Section from '@/model/Section';
+import TicketBatch from '@/model/TicketBatch';
 import { ShouldShowModal } from '../screens/ui';
 
 export interface formMainSettingsProps {
@@ -27,7 +30,7 @@ export interface formSectorProps {
 export interface onShouldShowModalTicketMainSettingsProps {
   value: ShouldShowModal;
   newTitleModal: string | React.ReactNode;
-  sector?: any;
+  sector?: Section;
 }
 
 export interface modalConfigTicketMainSettingsProps {
@@ -49,27 +52,27 @@ export interface sectorActionsProps {
 
 export interface batchActionsProps {
   onAdd: () => Promise<void>;
-  onGet: (batch: any) => Promise<void>;
-  onEdit: (batch: any) => Promise<void>;
+  onGet: (batch: TicketBatch) => Promise<void>;
+  onEdit: (batch: TicketBatch) => Promise<void>;
   onCancelEdit: () => Promise<void>;
-  onDelete: (batch: any) => Promise<void>;
+  onDelete: (batch: TicketBatch) => Promise<void>;
 }
 
 export interface sectorStatesProps {
-  sector: any | undefined;
-  setSector: React.Dispatch<React.SetStateAction<any | undefined>>;
-  sectorList: any[];
-  setSectorList: React.Dispatch<React.SetStateAction<any[]>>;
+  sector: Section | undefined;
+  setSector: React.Dispatch<React.SetStateAction<Section | undefined>>;
+  sectorList: Section[];
+  setSectorList: React.Dispatch<React.SetStateAction<Section[]>>;
 }
 
 export interface batchStatesProps {
-  batch: any | undefined;
-  setBatch: React.Dispatch<React.SetStateAction<any | undefined>>;
-  batchList: any[];
-  setBatchList: React.Dispatch<React.SetStateAction<any[]>>;
+  batch: TicketBatch | undefined;
+  setBatch: React.Dispatch<React.SetStateAction<TicketBatch | undefined>>;
+  batchList: TicketBatch[];
+  setBatchList: React.Dispatch<React.SetStateAction<TicketBatch[]>>;
 }
 
 export interface printerStatesProps {
-  printerList: any[];
-  setPrinterList: React.Dispatch<React.SetStateAction<any[]>>;
+  printerList: Printer[];
+  setPrinterList: React.Dispatch<React.SetStateAction<Printer[]>>;
 }

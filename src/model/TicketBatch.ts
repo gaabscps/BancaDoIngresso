@@ -1,5 +1,5 @@
 export default interface TicketBatch {
-  id: string;
+  id?: string;
   name: string;
   startDate: Date;
   endDate: Date;
