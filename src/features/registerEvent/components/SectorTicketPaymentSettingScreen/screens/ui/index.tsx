@@ -15,6 +15,7 @@ import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
 import TicketIcon from '@/assets/images/svg/Ticket';
 import PaymentGateway from '@/model/PaymentGateway';
 import { formPaymentSettingsProps } from '../../types';
+import { RegisterDiscountCoupon } from '../../components/RegisterDiscountCoupon';
 
 // eslint-disable-next-line no-shadow
 export enum States {
@@ -133,6 +134,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
         title={title}
         visible={visible}
         onClose={onToggle}
+        isContentWithCard={true}
         actions={[
           {
             [ShouldShowModal.discountCoupons]: {
@@ -145,7 +147,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
       >
         {
           {
-            [ShouldShowModal.discountCoupons]: ' ola',
+            [ShouldShowModal.discountCoupons]: <RegisterDiscountCoupon />,
           }[shouldShowModal]
         }
       </Dialog>
@@ -581,12 +583,13 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
         <div
           onClick={() =>
             onShouldShowModal({
-              newTitleModal: 'Cadastrar voucher de desconto',
+              newTitleModal: 'Adicionar cupom de desconto',
               value: ShouldShowModal.discountCoupons,
             })
           }
+          className="subpdv-register-buttom action-icon"
         >
-          + cadastrar
+          + adicionar cupom de desconto
         </div>
         <Button title="teste" onClick={() => handleOnSaveSectorTicketPayment()} />
       </Container>
