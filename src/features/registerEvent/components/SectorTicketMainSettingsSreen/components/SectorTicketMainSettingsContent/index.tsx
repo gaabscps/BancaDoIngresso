@@ -2,6 +2,8 @@
 import React, { Fragment } from 'react';
 import { ButtonGroup, InputFile, InputText, SelectCustom, TextArea } from '@/components';
 import { Col, Form, FormGroup, Row } from 'reactstrap';
+import { toast } from 'react-toastify';
+import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { SectorTicketMainSettingsContainerProps, ShouldShowModal } from '../../screens/ui';
 
 // eslint-disable-next-line no-shadow
@@ -37,6 +39,10 @@ export const SectorTicketMainSettingsContent: React.FC<
 > = ({ formMainSettings, modalConfig, sectorStates, printerStates }) => {
   const { formData, formErrors, onChangeFormInput, onChangeFormFileInput, formNameFiles } =
     formMainSettings;
+
+  const sectorSelected = sectorStates.sectorList.find(
+    sector => sector.id === formData[FormInputName.eventSection],
+  );
 
   const copiesOptions = [
     { value: 1, label: '1' },
@@ -86,25 +92,25 @@ export const SectorTicketMainSettingsContent: React.FC<
               >
                 + cadastrar novo setor
               </div>
-              {/* <div
+              <div
                 className="link-grey"
                 onClick={(): void => {
-                  if (!contractorSelected) {
-                    toast.warn('Selecione uma empresa ou contratante para continuar');
+                  if (!sectorSelected) {
+                    toast.warn('Selecione um setor para editar');
                   } else {
-                    onToggle();
-                    onShouldShowModal({
-                      value: ShouldShowModal.registerContractor,
-                      newTitleModal: contractorSelected?.id
-                        ? contractorSelected?.name
-                        : 'Cadastrar nova empresa (contratante)',
-                      contractor: contractorSelected,
+                    modalConfig.onToggle();
+                    modalConfig.onShouldShowModal({
+                      value: ShouldShowModal.sector,
+                      newTitleModal: sectorSelected?.id
+                        ? sectorSelected?.name
+                        : 'Cadastrar novo setor',
+                      sector: sectorSelected,
                     });
                   }
                 }}
               >
                 <Pen height={12} width={12} /> editar
-              </div> */}
+              </div>
             </span>
           </div>
         </FormGroup>

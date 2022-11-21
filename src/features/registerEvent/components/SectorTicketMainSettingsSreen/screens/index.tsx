@@ -223,7 +223,7 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
     try {
       if (isFormValidSector()) {
         const payload = {
-          id: sector,
+          id: sector?.id,
           name: formDataSector[FormInputNameToSector.name],
           description: '-',
           imageBase64: '',
@@ -389,6 +389,11 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
     try {
       if (batchSelected) {
         setBatch(batchSelected);
+
+        setFormNameFiles({
+          ...formNameFiles,
+          [FormInputNameToBatch.imageUrl]: 'Layout adicionado',
+        });
       }
     } catch (error) {
       const err = error as AxiosError;
@@ -436,6 +441,7 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
 
       setBatchList(newBatchList);
       setBatch(undefined);
+      setFormNameFiles({ ...formNameFiles, [FormInputNameToBatch.imageUrl]: '' });
       resetFormBatchs();
       toast.success('Lote editado com sucesso.');
     } catch (error) {
@@ -447,6 +453,7 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
   const handleOnCancelEditBatch = async (): Promise<void> => {
     try {
       setBatch(undefined);
+      setFormNameFiles({ ...formNameFiles, [FormInputNameToBatch.imageUrl]: '' });
       resetFormBatchs();
     } catch (error) {
       const err = error as AxiosError;
@@ -563,6 +570,14 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
       onChangeFormInputBatchs(FormInputNameToBatch.imageUrl)(String(batch.imageUrl));
     }
   }, [batch]);
+
+  useEffect(() => {
+    if (sector?.id) {
+      onChangeFormInputSector(FormInputNameToSector.name)(
+        sectorList.find(item => item.id === sector.id)?.name ?? '',
+      );
+    }
+  }, [sector]);
 
   return (
     <SectorTicketMainSettingsContainer
