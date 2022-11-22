@@ -69,9 +69,9 @@ export const SectorTicketPaymentSettingsScreen: React.FC = (): JSX.Element => {
   const { title, visible, onChangeTitle, onToggle } = useDialog();
 
   const {
-    formData: formDataMainSettings,
-    formErrors: formErrorsMainSettings,
-    onChangeFormInput: onChangeFormInputMainSettings,
+    formData: formDataPaymentSettings,
+    formErrors: formErrorsPaymentSettings,
+    onChangeFormInput: onChangeFormInputPaymentSettings,
     // isFormValid: isFormValidMainSettings,
   } = useForm({
     initialData: {
@@ -158,10 +158,10 @@ export const SectorTicketPaymentSettingsScreen: React.FC = (): JSX.Element => {
   //   formatters: {},
   // });
 
-  const controllerFormMainSettings: formPaymentSettingsProps = {
-    formData: formDataMainSettings,
-    formErrors: formErrorsMainSettings,
-    onChangeFormInput: onChangeFormInputMainSettings,
+  const controllerFormPaymentSettings: formPaymentSettingsProps = {
+    formData: formDataPaymentSettings,
+    formErrors: formErrorsPaymentSettings,
+    onChangeFormInput: onChangeFormInputPaymentSettings,
   };
 
   const handleAddDiscountCoupon = (): void => {
@@ -279,7 +279,7 @@ export const SectorTicketPaymentSettingsScreen: React.FC = (): JSX.Element => {
   return (
     <SectorTicketPaymentSettingsContainer
       state={state}
-      formMainSettings={controllerFormMainSettings}
+      controllerFormPaymentSettings={controllerFormPaymentSettings}
       paymentGatewayList={paymentGatewayList}
       handleOnSaveSectorTicketPayment={handleOnSaveSectorTicketPayment}
       onShouldShowModal={handleOnShouldShowModal}

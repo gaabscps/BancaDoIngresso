@@ -61,7 +61,7 @@ export const RegisterDiscountCoupon: React.FC<RegisterContentProps> = ({
                     <InputText
                       name="amount"
                       type="number"
-                      label="Quantidade de cupons"
+                      label="Quant. cupons"
                       placeholder="0"
                       value={String(item.amount)}
                       onChange={e => handleChangeDiscountCoupon('amount', index, e?.target.value)}
@@ -74,7 +74,7 @@ export const RegisterDiscountCoupon: React.FC<RegisterContentProps> = ({
                     <InputText
                       name="discount"
                       type="number"
-                      label="Porcentagem de desconto (%)"
+                      label="Desconto (%)"
                       placeholder="0"
                       value={String(item.discount)}
                       onChange={e => handleChangeDiscountCoupon('discount', index, e?.target.value)}
@@ -92,7 +92,9 @@ export const RegisterDiscountCoupon: React.FC<RegisterContentProps> = ({
                 ) : null}
               </Row>
             </div>
-            {discountCoupon.length > 1 ? <div className="border-bottom"></div> : null}
+            {discountCoupon.length > 1 ? (
+              <div className="p-4" style={{ backgroundColor: '#f8f8f8' }}></div>
+            ) : null}
           </>
         ))}
       </Form>

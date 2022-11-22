@@ -1420,3 +1420,10 @@ body
   width: calc(100% + 60px);
   margin-left: -30px;
 }
+
+.secondary-table-title {
+  color: #d8413a;
+  &.name {
+    font-weight: 500;
+  }
+}

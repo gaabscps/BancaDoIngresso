@@ -16,8 +16,12 @@ import TicketIcon from '@/assets/images/svg/Ticket';
 import PaymentGateway from '@/model/PaymentGateway';
 import DiscountCoupon from '@/model/DiscountCoupon';
 import { ActionProps } from '@/components/Dialog';
+import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
+import { CustomTable } from '@/components/Table';
+import { X } from 'react-feather';
 import { formPaymentSettingsProps } from '../../types';
 import { RegisterDiscountCoupon } from '../../components/RegisterDiscountCoupon';
+import { columnsDiscountCoupon } from './table';
 
 // eslint-disable-next-line no-shadow
 export enum States {
@@ -25,9 +29,18 @@ export enum States {
   loading = 'loading',
 }
 
+export interface DataRowDiscountCoupon {
+  id: string;
+  name: string;
+  code: string;
+  amount: string;
+  discount: string;
+  actions: string;
+}
+
 interface SectorTicketMainSettingsContainerProps {
   state: States;
-  formMainSettings: formPaymentSettingsProps;
+  controllerFormPaymentSettings: formPaymentSettingsProps;
   paymentGatewayList: PaymentGateway[] | undefined;
   title: string | React.ReactNode;
   visible: boolean;
@@ -104,7 +117,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
   SectorTicketMainSettingsContainerProps
 > = ({
   state,
-  formMainSettings,
+  controllerFormPaymentSettings,
   paymentGatewayList,
   shouldShowModal,
   title,
@@ -117,7 +130,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
   onShouldShowModal,
   handleOnSaveSectorTicketPayment,
 }) => {
-  const { formData, formErrors, onChangeFormInput } = formMainSettings;
+  const { formData, formErrors, onChangeFormInput } = controllerFormPaymentSettings;
 
   const paymentGatewayOptions = paymentGatewayList?.map(item => ({
     label: item.name,
@@ -157,7 +170,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
           {
             [ShouldShowModal.discountCoupons]: {
               title: 'Adicionar cupons',
-              onClick: () => handleChangeDiscountCoupon,
+              onClick: () => onToggle(),
             },
           }[shouldShowModal],
         ]}
@@ -406,32 +419,32 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
             <FormGroup>
               <InputText
                 name="physicalSaleDebit"
-                label="Débito"
-                value={''}
+                label="Débito %"
+                value={formData[FormInputName.physicalSaleDebit]}
                 placeholder="0"
                 onChange={e => onChangeFormInput(FormInputName.physicalSaleDebit)(e.target.value)}
                 disabled={formData[FormInputName.physicalSaleAllowCreditCardPayment] !== 'true'}
               />
               <InputText
                 name="physicalSaleCredit"
-                label="Crédito"
-                value={''}
+                label="Crédito %"
+                value={formData[FormInputName.physicalSaleCredit]}
                 placeholder="0"
                 onChange={e => onChangeFormInput(FormInputName.physicalSaleCredit)(e.target.value)}
                 disabled={formData[FormInputName.physicalSaleAllowCreditCardPayment] !== 'true'}
               />
               <InputText
                 name="physicalSalePix"
-                label="PIX"
-                value={''}
+                label="PIX %"
+                value={formData[FormInputName.physicalSalePix]}
                 placeholder="0"
                 onChange={e => onChangeFormInput(FormInputName.physicalSalePix)(e.target.value)}
                 disabled={formData[FormInputName.physicalSaleAllowCreditCardPayment] !== 'true'}
               />
               <InputText
                 name="physicalSaleAdministrateTax"
-                label="Taxa administrativa"
-                value={''}
+                label="Taxa admin. %"
+                value={formData[FormInputName.physicalSaleAdministrateTax]}
                 placeholder="0"
                 onChange={e =>
                   onChangeFormInput(FormInputName.physicalSaleAdministrateTax)(e.target.value)
@@ -502,32 +515,32 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
             <FormGroup>
               <InputText
                 name="websiteSaleDebit"
-                label="Débito"
-                value={''}
+                label="Débito %"
+                value={formData[FormInputName.websiteSaleDebit]}
                 placeholder="0"
                 onChange={e => onChangeFormInput(FormInputName.websiteSaleDebit)(e.target.value)}
                 disabled={formData[FormInputName.websiteSaleAllowCreditCardPaymen] !== 'true'}
               />
               <InputText
                 name="websiteSaleCredit"
-                label="Crédito"
-                value={''}
+                label="Crédito %"
+                value={formData[FormInputName.websiteSaleCredit]}
                 placeholder="0"
                 onChange={e => onChangeFormInput(FormInputName.websiteSaleCredit)(e.target.value)}
                 disabled={formData[FormInputName.websiteSaleAllowCreditCardPaymen] !== 'true'}
               />
               <InputText
                 name="websiteSalePix"
-                label="PIX"
-                value={''}
+                label="PIX %"
+                value={formData[FormInputName.websiteSalePix]}
                 placeholder="0"
                 onChange={e => onChangeFormInput(FormInputName.websiteSalePix)(e.target.value)}
                 disabled={formData[FormInputName.websiteSaleAllowCreditCardPaymen] !== 'true'}
               />
               <InputText
                 name="websiteSaleAdministrateTax"
-                label="Taxa administrativa"
-                value={''}
+                label="Taxa admin. %"
+                value={formData[FormInputName.websiteSaleAdministrateTax]}
                 placeholder="0"
                 onChange={e =>
                   onChangeFormInput(FormInputName.websiteSaleAdministrateTax)(e.target.value)
@@ -593,31 +606,100 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
                   { value: false, label: 'Não' },
                 ]}
                 error={formErrors.allowDiscountCoupon && formErrors.allowDiscountCoupon[0]}
+                disabled={formData[FormInputName.allowDiscount] !== 'true'}
               />
             </FormGroup>
           </Row>
         </Col>
         <Col>
-          <div
-            onClick={() =>
-              onShouldShowModal({
-                newTitleModal: 'Adicionar cupom de desconto',
-                value: ShouldShowModal.discountCoupons,
-              })
-            }
-            className="action-icon mb-5 register-buttom"
-          >
-            + adicionar cupom de desconto
-          </div>
+          {formData[FormInputName.allowDiscountCoupon] === 'true' ? (
+            <div
+              onClick={() =>
+                onShouldShowModal({
+                  newTitleModal: 'Adicionar cupom de desconto',
+                  value: ShouldShowModal.discountCoupons,
+                })
+              }
+              className="action-icon mb-5 register-buttom"
+            >
+              + adicionar cupom de desconto
+            </div>
+          ) : null}
         </Col>
         <Col md={12}>
           <SuperCollapse
-            title="Cupons de desconto adicionados (0)"
-            content="Nenhum cupom de desconto foi adicionado. Aqui será exibida uma lista dos seus cupons de desconto adicionados"
+            title={`Cupons de desconto adicionados (${discountCoupon.length})`}
+            content={
+              discountCoupon.length > 0 ? (
+                discountCoupon.map((item, index) => (
+                  <>
+                    <span className="secondary-table-title">Cupom #{index + 1}</span>
+                    <span className="secondary-table-title name">
+                      <b> ·</b> {item.name}
+                    </span>
+                    <CustomTable
+                      numberRowsPerPage={0}
+                      progressPending={false}
+                      columns={columnsDiscountCoupon}
+                      data={[
+                        {
+                          id: item.id,
+                          name: item.name,
+                          code: item.code,
+                          amount: item.amount,
+                          discount: item.discount,
+                          actions: (
+                            <React.Fragment>
+                              <Pen
+                                className="mr-4 svg-icon action-icon"
+                                onClick={(): void =>
+                                  onShouldShowModal({
+                                    value: ShouldShowModal.discountCoupons,
+                                    newTitleModal: (
+                                      <div className="d-flex">
+                                        <div
+                                          className="m-auto"
+                                          onClick={() => {
+                                            onShouldShowModal({
+                                              value: ShouldShowModal.discountCoupons,
+                                              newTitleModal: discountCoupon?.length
+                                                ? item.name
+                                                : 'Cadastrar nova empresa (contratante)',
+                                            });
+                                          }}
+                                        ></div>
+                                        <h5 className="header-title-text modal__title ml-3 mb-0">
+                                          Adicionar conta bancária
+                                        </h5>
+                                      </div>
+                                    ),
+                                  })
+                                }
+                              />
+                              <X
+                                className="svg-icon action-icon pt-1"
+                                onClick={() => {
+                                  handleRemoveDiscountCoupon(index);
+                                }}
+                              />
+                            </React.Fragment>
+                          ),
+                        },
+                      ]}
+                      theme="secondary"
+                    />
+                  </>
+                ))
+              ) : (
+                <span>Nenhum cupom de desconto adicionado</span>
+              )
+            }
             leftIcon={TicketIcon}
           />
         </Col>
-        <Button title="teste" onClick={() => handleOnSaveSectorTicketPayment()} />
+        <div className="d-flex justify-content-end">
+          <Button title="Próximo" onClick={() => handleOnSaveSectorTicketPayment()} />
+        </div>
       </Container>
     </Fragment>
   );
