@@ -41,7 +41,7 @@ export const InputText: FC<InputProps> = ({
   return (
     <div className={`${isDisabled} flex-column input-component ${wrapperClass} ${isError}`}>
       {label && (
-        <label htmlFor={name} className="input-label" style={{ whiteSpace: 'nowrap' }}>
+        <label htmlFor={name} className="input-label">
           {label}
         </label>
       )}

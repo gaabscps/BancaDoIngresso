@@ -134,7 +134,6 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
         title={title}
         visible={visible}
         onClose={onToggle}
-        isContentWithCard={true}
         actions={[
           {
             [ShouldShowModal.discountCoupons]: {
@@ -573,6 +572,19 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
             </FormGroup>
           </Row>
         </Col>
+        <Col>
+          <div
+            onClick={() =>
+              onShouldShowModal({
+                newTitleModal: 'Adicionar cupom de desconto',
+                value: ShouldShowModal.discountCoupons,
+              })
+            }
+            className="action-icon mb-5"
+          >
+            + adicionar cupom de desconto
+          </div>
+        </Col>
         <Col md={12}>
           <SuperCollapse
             title="Cupons de desconto adicionados (0)"
@@ -580,17 +592,6 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
             leftIcon={TicketIcon}
           />
         </Col>
-        <div
-          onClick={() =>
-            onShouldShowModal({
-              newTitleModal: 'Adicionar cupom de desconto',
-              value: ShouldShowModal.discountCoupons,
-            })
-          }
-          className="subpdv-register-buttom action-icon"
-        >
-          + adicionar cupom de desconto
-        </div>
         <Button title="teste" onClick={() => handleOnSaveSectorTicketPayment()} />
       </Container>
     </Fragment>
