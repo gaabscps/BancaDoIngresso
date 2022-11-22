@@ -133,6 +133,7 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
     formErrors: formErrorsSector,
     onChangeFormInput: onChangeFormInputSector,
     isFormValid: isFormValidSector,
+    resetForm: resetFormSector,
   } = useForm({
     initialData: {
       name: '',
@@ -547,6 +548,15 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
     handleFecthSectorList();
     handleFecthPrinterList();
   }, []);
+
+  useEffect(() => {
+    if (!visible) {
+      setTimeout(() => {
+        resetFormSector();
+        setSector(undefined);
+      }, 500);
+    }
+  }, [visible]);
 
   useEffect(() => {
     if (batch) {

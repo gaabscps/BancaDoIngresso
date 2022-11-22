@@ -1,6 +1,6 @@
 /* eslint-disable import/no-unresolved */
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ProgressStep } from '../components/ProgressStep';
 
 import { useEvent } from '../hook/useEvent';
@@ -21,11 +21,13 @@ export const EventScreen: React.FC = (): JSX.Element => {
   const [state] = useState<States>(States.default);
   const { eventState, onChange: onChangeEvent } = useEvent();
 
-  // verify if router is '/event/create'
-  const isCreate = window.location.pathname.includes('create');
-  if (isCreate) {
-    onChangeEvent({ ...eventState, currentStep: 0 });
-  }
+  useEffect(() => {
+    // verify if router is '/event/create'
+    const isCreate = window.location.pathname.includes('create');
+    if (isCreate) {
+      onChangeEvent({ ...eventState, currentStep: 0 });
+    }
+  }, [eventState.currentStep]);
 
   const steps = [
     {
