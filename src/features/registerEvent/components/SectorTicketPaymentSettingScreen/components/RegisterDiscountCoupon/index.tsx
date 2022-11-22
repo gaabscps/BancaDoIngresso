@@ -1,73 +1,108 @@
 import { InputText } from '@/components';
 import React from 'react';
+import DiscountCoupon from '@/model/DiscountCoupon';
+import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { Card, Col, Form, FormGroup, Row } from 'reactstrap';
 
-// interface RegisterContentProps {}
+interface RegisterContentProps {
+  handleAddDiscountCoupon: () => void;
+  handleChangeDiscountCoupon: (name: string, index: number, value: string) => void;
+  handleRemoveDiscountCoupon: (index: number) => void;
+  discountCoupon: DiscountCoupon[];
+}
 
-export const RegisterDiscountCoupon: React.FC = () => (
+export const RegisterDiscountCoupon: React.FC<RegisterContentProps> = ({
+  handleAddDiscountCoupon,
+  handleChangeDiscountCoupon,
+  handleRemoveDiscountCoupon,
+  discountCoupon,
+}) => (
   <>
-    <Card className="modal__main-container card__main-container">
+    <Card className="card__main-container">
       <Form
+        style={{ backgroundColor: '#f1f1f1' }}
         noValidate={true}
         onSubmit={(e): void => {
           e.preventDefault();
         }}
       >
-        <Row>
-          <Col md={6}>
-            <FormGroup className="mb-2">
-              <InputText
-                name="name"
-                label="Nome do cupom"
-                placeholder="Digite o nome do cupom. Ex: Dia das Mães"
-                value={'1'}
-                onChange={() => undefined}
-                error={undefined}
-              />
-            </FormGroup>
-          </Col>
-          <Col md={6}>
-            <FormGroup className="mb-2">
-              <InputText
-                name="code"
-                label="Código do cupom"
-                placeholder="Digite o código do cupom. Ex: MAE20 "
-                value={'1'}
-                onChange={() => undefined}
-                error={undefined}
-              />
-            </FormGroup>
-          </Col>
-        </Row>
-        <Row>
-          <Col md={2} sm={4}>
-            <FormGroup className="mb-2">
-              <InputText
-                name="name"
-                label="Nome do cupom"
-                placeholder="Digite o nome do cupom. Ex: Dia das Mães"
-                value={'1'}
-                onChange={() => undefined}
-                error={undefined}
-              />
-            </FormGroup>
-          </Col>
-          <Col md={2} sm={4}>
-            <FormGroup className="mb-2">
-              <InputText
-                name="code"
-                label="Código do cupom"
-                placeholder="Digite o código do cupom. Ex: MAE20 "
-                value={'1'}
-                onChange={() => undefined}
-                error={undefined}
-              />
-            </FormGroup>
-          </Col>
-        </Row>
+        {discountCoupon.map((item, index) => (
+          <>
+            <div className="modal__main-container" key={index}>
+              <Row>
+                <Col md={6}>
+                  <FormGroup className="mb-2">
+                    <InputText
+                      name="name"
+                      label="Nome do cupom"
+                      placeholder="Digite o nome do cupom. Ex: Dia das Mães"
+                      value={item.name}
+                      onChange={e => handleChangeDiscountCoupon('name', index, e?.target.value)}
+                      error={undefined}
+                    />
+                  </FormGroup>
+                </Col>
+                <Col md={6}>
+                  <FormGroup className="mb-2">
+                    <InputText
+                      name="code"
+                      label="Código do cupom"
+                      placeholder="Digite o código do cupom. Ex: MAE20 "
+                      value={item.code}
+                      onChange={e => handleChangeDiscountCoupon('code', index, e?.target.value)}
+                      error={undefined}
+                    />
+                  </FormGroup>
+                </Col>
+              </Row>
+              <Row>
+                <Col md={2} sm={4}>
+                  <FormGroup className="mb-2">
+                    <InputText
+                      name="amount"
+                      type="number"
+                      label="Quantidade de cupons"
+                      placeholder="0"
+                      value={String(item.amount)}
+                      onChange={e => handleChangeDiscountCoupon('amount', index, e?.target.value)}
+                      error={undefined}
+                    />
+                  </FormGroup>
+                </Col>
+                <Col className="ml-5" md={2} sm={4}>
+                  <FormGroup className="mb-2">
+                    <InputText
+                      name="discount"
+                      type="number"
+                      label="Porcentagem de desconto (%)"
+                      placeholder="0"
+                      value={String(item.discount)}
+                      onChange={e => handleChangeDiscountCoupon('discount', index, e?.target.value)}
+                      error={undefined}
+                    />
+                  </FormGroup>
+                </Col>
+                {index !== discountCoupon.length - 1 ? (
+                  <div className="d-flex justify-content-end align-items-center w-100 mr-3">
+                    <Trash
+                      className="svg-icon action-icon"
+                      onClick={() => handleRemoveDiscountCoupon(index)}
+                    />
+                  </div>
+                ) : null}
+              </Row>
+            </div>
+            {discountCoupon.length > 1 ? <div className="border-bottom"></div> : null}
+          </>
+        ))}
       </Form>
     </Card>
-    <div className="d-flex justify-content-end mt-4 subpdv-register-buttom action-icon">
+    <div
+      onClick={() => {
+        handleAddDiscountCoupon();
+      }}
+      className="d-flex justify-content-end mt-4 register-buttom action-icon"
+    >
       + inserir novo cupom de desconto
     </div>
   </>

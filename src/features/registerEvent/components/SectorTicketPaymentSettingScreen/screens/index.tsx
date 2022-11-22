@@ -8,6 +8,7 @@ import validators from '@/helpers/validators';
 import { toast } from 'react-toastify';
 import { useDialog } from '@/hooks/useDialog';
 import { useParams } from 'react-router-dom';
+import DiscountCoupon from '@/model/DiscountCoupon';
 import { formPaymentSettingsProps } from '../types';
 import { SectorTicketPaymentSettingsContainer, ShouldShowModal } from './ui';
 
@@ -62,6 +63,7 @@ export const SectorTicketPaymentSettingsScreen: React.FC = (): JSX.Element => {
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(
     ShouldShowModal.discountCoupons,
   );
+  const [discountCoupon, setDiscountCoupon] = useState<DiscountCoupon[]>([]);
 
   const params = useParams<UrlParams>();
   const { title, visible, onChangeTitle, onToggle } = useDialog();
@@ -137,10 +139,55 @@ export const SectorTicketPaymentSettingsScreen: React.FC = (): JSX.Element => {
     formatters: {},
   });
 
+  // const { formErrors: formErrorDiscountCoupons, resetForm: resetForm } = useForm({
+  //   initialData: {
+  //     id: '',
+  //     name: '',
+  //     code: '',
+  //     amount: '0',
+  //     discountType: '0',
+  //     discount: '0',
+  //   },
+  //   validators: {
+  //     name: [validators.required],
+  //     code: [validators.required],
+  //     amount: [validators.required],
+  //     discountType: [validators.required],
+  //     discount: [validators.required],
+  //   },
+  //   formatters: {},
+  // });
+
   const controllerFormMainSettings: formPaymentSettingsProps = {
     formData: formDataMainSettings,
     formErrors: formErrorsMainSettings,
     onChangeFormInput: onChangeFormInputMainSettings,
+  };
+
+  const handleAddDiscountCoupon = (): void => {
+    setDiscountCoupon([
+      ...discountCoupon,
+      {
+        id: '',
+        name: '',
+        code: '',
+        amount: null,
+        discountType: 0,
+        discount: null,
+      },
+    ]);
+  };
+
+  const handleChangeDiscountCoupon = (inputName: string, index: number, value: string): void => {
+    const newFormValues = [...discountCoupon] as any;
+    newFormValues[index][inputName] = value;
+    setDiscountCoupon(newFormValues);
+  };
+
+  const handleRemoveDiscountCoupon = (index: number): void => {
+    const values = [...discountCoupon];
+    values.splice(index, 1);
+    setDiscountCoupon(values);
   };
 
   const handleFecthGateway = async (): Promise<void> => {
@@ -240,6 +287,10 @@ export const SectorTicketPaymentSettingsScreen: React.FC = (): JSX.Element => {
       shouldShowModal={shouldShowModal}
       visible={visible}
       onToggle={onToggle}
+      handleAddDiscountCoupon={handleAddDiscountCoupon}
+      discountCoupon={discountCoupon}
+      handleChangeDiscountCoupon={handleChangeDiscountCoupon}
+      handleRemoveDiscountCoupon={handleRemoveDiscountCoupon}
     />
   );
 };

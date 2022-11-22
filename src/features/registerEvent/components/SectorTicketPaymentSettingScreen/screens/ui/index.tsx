@@ -14,6 +14,8 @@ import { Col, Container, Form, FormGroup, Row } from 'reactstrap';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
 import TicketIcon from '@/assets/images/svg/Ticket';
 import PaymentGateway from '@/model/PaymentGateway';
+import DiscountCoupon from '@/model/DiscountCoupon';
+import { ActionProps } from '@/components/Dialog';
 import { formPaymentSettingsProps } from '../../types';
 import { RegisterDiscountCoupon } from '../../components/RegisterDiscountCoupon';
 
@@ -29,7 +31,11 @@ interface SectorTicketMainSettingsContainerProps {
   paymentGatewayList: PaymentGateway[] | undefined;
   title: string | React.ReactNode;
   visible: boolean;
+  discountCoupon: DiscountCoupon[];
+  handleChangeDiscountCoupon: (name: string, index: number, value: string) => void;
+  handleAddDiscountCoupon: () => void;
   onToggle: () => void;
+  handleRemoveDiscountCoupon: (index: number) => void;
   handleOnSaveSectorTicketPayment: () => Promise<void>;
   onShouldShowModal: ({
     value,
@@ -103,6 +109,10 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
   shouldShowModal,
   title,
   visible,
+  discountCoupon,
+  handleRemoveDiscountCoupon,
+  handleChangeDiscountCoupon,
+  handleAddDiscountCoupon,
   onToggle,
   onShouldShowModal,
   handleOnSaveSectorTicketPayment,
@@ -113,6 +123,12 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
     label: item.name,
     value: item.id,
   }));
+
+  const renderActionDialogToCancelDiscountCoupon: ActionProps = {
+    title: 'Cancelar',
+    onClick: (): void => onToggle(),
+    theme: 'noneBorder',
+  };
 
   const optionCount = [
     { label: '1', value: 1 },
@@ -136,17 +152,26 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
         onClose={onToggle}
         actions={[
           {
+            [ShouldShowModal.discountCoupons]: renderActionDialogToCancelDiscountCoupon,
+          }[shouldShowModal],
+          {
             [ShouldShowModal.discountCoupons]: {
-              title: 'Aplicar',
-              onClick: () => undefined,
+              title: 'Adicionar cupons',
+              onClick: () => handleChangeDiscountCoupon,
             },
-            [ShouldShowModal.discountCoupons]: {},
           }[shouldShowModal],
         ]}
       >
         {
           {
-            [ShouldShowModal.discountCoupons]: <RegisterDiscountCoupon />,
+            [ShouldShowModal.discountCoupons]: (
+              <RegisterDiscountCoupon
+                handleRemoveDiscountCoupon={handleRemoveDiscountCoupon}
+                handleAddDiscountCoupon={handleAddDiscountCoupon}
+                discountCoupon={discountCoupon}
+                handleChangeDiscountCoupon={handleChangeDiscountCoupon}
+              />
+            ),
           }[shouldShowModal]
         }
       </Dialog>
@@ -580,7 +605,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
                 value: ShouldShowModal.discountCoupons,
               })
             }
-            className="action-icon mb-5"
+            className="action-icon mb-5 register-buttom"
           >
             + adicionar cupom de desconto
           </div>

@@ -544,6 +544,14 @@
     }
   }
 }
+
+.register-buttom {
+  color: #7ad81b;
+  &:hover {
+    color: #7ad81b;
+    font-weight: 500;
+  }
+}
 /**=====================
      06. Button CSS end
 ==========================**/
