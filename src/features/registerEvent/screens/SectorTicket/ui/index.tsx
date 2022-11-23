@@ -78,7 +78,13 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
       />
     </>,
     <>
-      <SectorTicketPaymentSettingsScreen />,
+      <SectorTicketPaymentSettingsScreen
+        ticketStates={ticketStates}
+        nextTab={handleNextTab}
+        backTab={handleBackTab}
+        onFirstTab={handleOnFirstTab}
+      />
+      ,
     </>,
     <>
       <SectorTicketGeneralSettingsScreen
@@ -195,7 +201,8 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
             </div>
 
             <Tab
-              numberStap={numberTab}
+              // numberStap={numberTab}
+              numberStap={1}
               titles={[
                 'Configurações principais',
                 'Configurações de pagamento',

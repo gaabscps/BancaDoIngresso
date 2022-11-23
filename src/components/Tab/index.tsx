@@ -10,7 +10,7 @@ interface TabProps {
 }
 
 export const Tab: FC<TabProps> = ({ titles, contents, numberStap }) => {
-  const [ToggleState, setToggleState] = useState(2);
+  const [ToggleState, setToggleState] = useState(0);
 
   // set ToggleState when numberStap change
   if (numberStap !== ToggleState) {
@@ -18,7 +18,9 @@ export const Tab: FC<TabProps> = ({ titles, contents, numberStap }) => {
   }
 
   // const toggleTab = (index: number): void => {
-  //   setToggleState(index);
+  //   if (index <= ToggleState) {
+  //     setToggleState(index);
+  //   }
   // };
 
   const getActiveClass = (index: number, className: string): string =>

@@ -85,7 +85,7 @@ export enum FormInputName {
   physicalSaleAdministrateTax = 'physicalSaleAdministrateTax',
   physicalSaleInstallments = 'physicalSaleInstallments',
   physicalSaleFee = 'physicalSaleFee',
-  websiteSaleAllowCreditCardPaymen = 'websiteSaleAllowCreditCardPaymen',
+  websiteSaleAllowCreditCardPayment = 'websiteSaleAllowCreditCardPayment',
   websiteSaleDebit = 'websiteSaleDebit',
   websiteSaleCredit = 'websiteSaleCredit',
   websiteSalePix = 'websiteSalePix',
@@ -136,9 +136,13 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
 }) => {
   const { formData, formErrors, onChangeFormInput } = controllerFormPaymentSettings;
 
+  React.useEffect(() => {
+    console.log('paymentGatewayList :>> ', paymentGatewayList);
+  }, [paymentGatewayList]);
+
   const paymentGatewayOptions = paymentGatewayList?.map(item => ({
     label: item.name,
-    value: item.id,
+    value: item.charge?.id,
   }));
 
   const renderActionDialogToCancelDiscountCoupon: ActionProps = {
@@ -148,16 +152,16 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
   };
 
   const optionCount = [
-    { label: '1', value: 1 },
-    { label: '2', value: 2 },
-    { label: '3', value: 3 },
-    { label: '4', value: 4 },
-    { label: '5', value: 5 },
-    { label: '6', value: 6 },
-    { label: '7', value: 7 },
-    { label: '8', value: 8 },
-    { label: '9', value: 9 },
-    { label: '10', value: 10 },
+    { label: '1', value: '1' },
+    { label: '2', value: '2' },
+    { label: '3', value: '3' },
+    { label: '4', value: '4' },
+    { label: '5', value: '5' },
+    { label: '6', value: '6' },
+    { label: '7', value: '7' },
+    { label: '8', value: '8' },
+    { label: '9', value: '9' },
+    { label: '10', value: '10' },
   ];
 
   return (
@@ -251,9 +255,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
                     placeholder="0"
                     value={formData[FormInputName.websiteInstallmentLimit]}
                     onChange={e =>
-                      onChangeFormInput(FormInputName.websiteInstallmentLimit)(
-                        e?.target?.value as string,
-                      )
+                      onChangeFormInput(FormInputName.websiteInstallmentLimit)(e?.value as string)
                     }
                     error={
                       formErrors.websiteInstallmentLimit && formErrors.websiteInstallmentLimit[0]
@@ -275,9 +277,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
                     placeholder="0"
                     value={formData[FormInputName.posInstallmentLimit]}
                     onChange={e =>
-                      onChangeFormInput(FormInputName.posInstallmentLimit)(
-                        e?.target?.value as string,
-                      )
+                      onChangeFormInput(FormInputName.posInstallmentLimit)(e?.value as string)
                     }
                     error={formErrors.posInstallmentLimit && formErrors.posInstallmentLimit[0]}
                     options={optionCount}
@@ -426,34 +426,52 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               <InputText
                 name="physicalSaleDebit"
                 label="Débito %"
+                maxLength={3}
                 value={formData[FormInputName.physicalSaleDebit]}
                 placeholder="0"
-                onChange={e => onChangeFormInput(FormInputName.physicalSaleDebit)(e.target.value)}
+                onChange={e =>
+                  onChangeFormInput(FormInputName.physicalSaleDebit)(
+                    e.target.value.replace(/\D/g, ''),
+                  )
+                }
                 disabled={formData[FormInputName.physicalSaleAllowCreditCardPayment] !== 'true'}
               />
               <InputText
                 name="physicalSaleCredit"
                 label="Crédito %"
+                maxLength={3}
                 value={formData[FormInputName.physicalSaleCredit]}
                 placeholder="0"
-                onChange={e => onChangeFormInput(FormInputName.physicalSaleCredit)(e.target.value)}
+                onChange={e =>
+                  onChangeFormInput(FormInputName.physicalSaleCredit)(
+                    e.target.value.replace(/\D/g, ''),
+                  )
+                }
                 disabled={formData[FormInputName.physicalSaleAllowCreditCardPayment] !== 'true'}
               />
               <InputText
                 name="physicalSalePix"
                 label="PIX %"
+                maxLength={3}
                 value={formData[FormInputName.physicalSalePix]}
                 placeholder="0"
-                onChange={e => onChangeFormInput(FormInputName.physicalSalePix)(e.target.value)}
+                onChange={e =>
+                  onChangeFormInput(FormInputName.physicalSalePix)(
+                    e.target.value.replace(/\D/g, ''),
+                  )
+                }
                 disabled={formData[FormInputName.physicalSaleAllowCreditCardPayment] !== 'true'}
               />
               <InputText
                 name="physicalSaleAdministrateTax"
                 label="Taxa admin. %"
+                maxLength={3}
                 value={formData[FormInputName.physicalSaleAdministrateTax]}
                 placeholder="0"
                 onChange={e =>
-                  onChangeFormInput(FormInputName.physicalSaleAdministrateTax)(e.target.value)
+                  onChangeFormInput(FormInputName.physicalSaleAdministrateTax)(
+                    e.target.value.replace(/\D/g, ''),
+                  )
                 }
                 disabled={formData[FormInputName.physicalSaleAllowCreditCardPayment] !== 'true'}
               />
@@ -468,9 +486,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               placeholder="Ex: 2"
               value={formData[FormInputName.physicalSaleInstallments]}
               onChange={e =>
-                onChangeFormInput(FormInputName.physicalSaleInstallments)(
-                  e?.target?.value as string,
-                )
+                onChangeFormInput(FormInputName.physicalSaleInstallments)(e?.value as string)
               }
               error={formErrors.physicalSaleInstallments && formErrors.physicalSaleInstallments[0]}
               options={optionCount}
@@ -482,9 +498,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               label="Juros ao mês"
               placeholder="Ex: 4"
               value={formData[FormInputName.physicalSaleFee]}
-              onChange={e =>
-                onChangeFormInput(FormInputName.physicalSaleFee)(e?.target?.value as string)
-              }
+              onChange={e => onChangeFormInput(FormInputName.physicalSaleFee)(e?.value as string)}
               error={formErrors.physicalSaleFee && formErrors.physicalSaleFee[0]}
               options={optionCount}
               disabled={formData[FormInputName.physicalSaleAllowCreditCardPayment] !== 'true'}
@@ -499,18 +513,18 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
             <FormGroup className="mb-2">
               <ButtonGroup
                 label="Permitir venda com cartão?"
-                name="websiteSaleAllowCreditCardPaymen"
-                value={formData[FormInputName.websiteSaleAllowCreditCardPaymen]}
+                name="websiteSaleAllowCreditCardPayment"
+                value={formData[FormInputName.websiteSaleAllowCreditCardPayment]}
                 onChange={e =>
-                  onChangeFormInput(FormInputName.websiteSaleAllowCreditCardPaymen)(e.target.value)
+                  onChangeFormInput(FormInputName.websiteSaleAllowCreditCardPayment)(e.target.value)
                 }
                 options={[
                   { value: true, label: 'Sim' },
                   { value: false, label: 'Não' },
                 ]}
                 error={
-                  formErrors.websiteSaleAllowCreditCardPaymen &&
-                  formErrors.websiteSaleAllowCreditCardPaymen[0]
+                  formErrors.websiteSaleAllowCreditCardPayment &&
+                  formErrors.websiteSaleAllowCreditCardPayment[0]
                 }
               />
             </FormGroup>
@@ -522,36 +536,52 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               <InputText
                 name="websiteSaleDebit"
                 label="Débito %"
+                maxLength={3}
                 value={formData[FormInputName.websiteSaleDebit]}
                 placeholder="0"
-                onChange={e => onChangeFormInput(FormInputName.websiteSaleDebit)(e.target.value)}
-                disabled={formData[FormInputName.websiteSaleAllowCreditCardPaymen] !== 'true'}
+                onChange={e =>
+                  onChangeFormInput(FormInputName.websiteSaleDebit)(
+                    e.target.value.replace(/\D/g, ''),
+                  )
+                }
+                disabled={formData[FormInputName.websiteSaleAllowCreditCardPayment] !== 'true'}
               />
               <InputText
                 name="websiteSaleCredit"
                 label="Crédito %"
+                maxLength={3}
                 value={formData[FormInputName.websiteSaleCredit]}
                 placeholder="0"
-                onChange={e => onChangeFormInput(FormInputName.websiteSaleCredit)(e.target.value)}
-                disabled={formData[FormInputName.websiteSaleAllowCreditCardPaymen] !== 'true'}
+                onChange={e =>
+                  onChangeFormInput(FormInputName.websiteSaleCredit)(
+                    e.target.value.replace(/\D/g, ''),
+                  )
+                }
+                disabled={formData[FormInputName.websiteSaleAllowCreditCardPayment] !== 'true'}
               />
               <InputText
                 name="websiteSalePix"
                 label="PIX %"
+                maxLength={3}
                 value={formData[FormInputName.websiteSalePix]}
                 placeholder="0"
-                onChange={e => onChangeFormInput(FormInputName.websiteSalePix)(e.target.value)}
-                disabled={formData[FormInputName.websiteSaleAllowCreditCardPaymen] !== 'true'}
+                onChange={e =>
+                  onChangeFormInput(FormInputName.websiteSalePix)(e.target.value.replace(/\D/g, ''))
+                }
+                disabled={formData[FormInputName.websiteSaleAllowCreditCardPayment] !== 'true'}
               />
               <InputText
                 name="websiteSaleAdministrateTax"
                 label="Taxa admin. %"
+                maxLength={3}
                 value={formData[FormInputName.websiteSaleAdministrateTax]}
                 placeholder="0"
                 onChange={e =>
-                  onChangeFormInput(FormInputName.websiteSaleAdministrateTax)(e.target.value)
+                  onChangeFormInput(FormInputName.websiteSaleAdministrateTax)(
+                    e.target.value.replace(/\D/g, ''),
+                  )
                 }
-                disabled={formData[FormInputName.websiteSaleAllowCreditCardPaymen] !== 'true'}
+                disabled={formData[FormInputName.websiteSaleAllowCreditCardPayment] !== 'true'}
               />
             </FormGroup>
           </Row>
@@ -564,11 +594,11 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               placeholder="Ex: 2"
               value={formData[FormInputName.websiteSaleInstallments]}
               onChange={e =>
-                onChangeFormInput(FormInputName.websiteSaleInstallments)(e?.target?.value as string)
+                onChangeFormInput(FormInputName.websiteSaleInstallments)(e?.value as string)
               }
               error={formErrors.websiteSaleInstallments && formErrors.websiteSaleInstallments[0]}
               options={optionCount}
-              disabled={formData[FormInputName.websiteSaleAllowCreditCardPaymen] !== 'true'}
+              disabled={formData[FormInputName.websiteSaleAllowCreditCardPayment] !== 'true'}
             />
             <span className="mt-5 mr-3 ml-3 input-label"> + </span>
             <SelectCustom
@@ -576,12 +606,10 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               label="Juros ao mês"
               placeholder="Ex: 4"
               value={formData[FormInputName.websiteSaleFee]}
-              onChange={e =>
-                onChangeFormInput(FormInputName.websiteSaleFee)(e?.target?.value as string)
-              }
+              onChange={e => onChangeFormInput(FormInputName.websiteSaleFee)(e?.value as string)}
               error={formErrors.websiteSaleFee && formErrors.websiteSaleFee[0]}
               options={optionCount}
-              disabled={formData[FormInputName.websiteSaleAllowCreditCardPaymen] !== 'true'}
+              disabled={formData[FormInputName.websiteSaleAllowCreditCardPayment] !== 'true'}
             />
           </Row>
         </Col>
@@ -636,7 +664,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
         <Col md={12}>
           <SuperCollapse
             disabled={formData[FormInputName.allowDiscount] !== 'true'}
-            title={`Cupons de desconto adicionados (${listDiscountCoupon.length})`}
+            title={`Cupons de desconto adicionados`}
             content={
               listDiscountCoupon.length > 0 ? (
                 listDiscountCoupon.map((item, index) => (
@@ -702,6 +730,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
                 <span>Nenhum cupom de desconto adicionado</span>
               )
             }
+            count={listDiscountCoupon.length}
             leftIcon={TicketIcon}
           />
         </Col>
