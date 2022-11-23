@@ -35,7 +35,9 @@ function SuperCollapse(props: Props): JSX.Element {
             <div className="iconTable">{props.leftIcon()}</div>
             <div className="normalText ">
               {props.title}{' '}
-              {props.count && props.count >= 0 && (
+              {props.count === undefined ? (
+                <span style={{ fontWeight: 'bold' }}>(0)</span>
+              ) : (
                 <span style={{ fontWeight: 'bold' }}>{getCount()}</span>
               )}
             </div>

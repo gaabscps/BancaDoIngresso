@@ -5,7 +5,6 @@ import { ButtonGroup, Loading, Tab } from '@/components';
 import { Container, FormGroup } from 'reactstrap';
 import { SectorTicketMainSettingsScreen } from '@/features/registerEvent/components/SectorTicketMainSettingsSreen/screens';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
-import UserIcon from '@/assets/images/svg/User';
 import { CustomTable } from '@/components/Table';
 import { ReactComponent as CloseX } from '@/assets/images/svg/closeX.svg';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
@@ -14,6 +13,7 @@ import {
   ticketActionsProps,
   ticketStatesProps,
 } from '@/features/registerEvent/components/SectorTicketMainSettingsSreen/types';
+import TicketIcon from '@/assets/images/svg/Ticket';
 import { formSectorTicketProps } from '../types';
 import { columnsTickets } from './table';
 
@@ -133,7 +133,7 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
                       ))
                     : 'Nenhum lote cadastrado. Aqui será exibida uma lista dos lotes cadastrados.'
                 }
-                leftIcon={UserIcon}
+                leftIcon={TicketIcon}
                 count={ticketStates?.ticketList?.length}
                 buttonTitle="Cancelar edição"
                 buttonAction={ticketActions.onCancelEdit}

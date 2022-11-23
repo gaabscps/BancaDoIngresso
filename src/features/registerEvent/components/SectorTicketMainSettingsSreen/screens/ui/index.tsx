@@ -4,7 +4,6 @@ import React, { Fragment } from 'react';
 import { Button, Dialog, Loading } from '@/components';
 import { Container } from 'reactstrap';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
-import UserIcon from '@/assets/images/svg/User';
 import { SectorTicketMainSettingsContent } from '@/features/registerEvent/components/SectorTicketMainSettingsSreen/components/SectorTicketMainSettingsContent';
 import { ActionProps } from '@/components/Dialog';
 // import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
@@ -12,6 +11,7 @@ import { CustomTable } from '@/components/Table';
 import { ReactComponent as CloseX } from '@/assets/images/svg/closeX.svg';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import dayjs from 'dayjs';
+import TicketsIcon from '@/assets/images/svg/Tickets';
 import {
   batchActionsProps,
   batchStatesProps,
@@ -207,7 +207,7 @@ export const SectorTicketMainSettingsContainer: React.FC<
                   ))
                 : 'Nenhum lote cadastrado. Aqui será exibida uma lista dos lotes cadastrados.'
             }
-            leftIcon={UserIcon}
+            leftIcon={TicketsIcon}
             count={batchStates?.batchList?.length}
           />
         </div>
