@@ -58,9 +58,12 @@ export const ButtonGroup: FC<RadioProps> = ({
                   name={name}
                   id={`${option.value}-${idRandom}`}
                   ref={refButton}
+                  disabled={disabled}
                 />
                 <label
-                  className="btn button-group label-radio-custom"
+                  className={`btn button-group label-radio-custom ${
+                    disabled ? 'buttonGroup-disabled' : ''
+                  }`}
                   htmlFor={`${option.value}-${idRandom}`}
                 >
                   {option.label}

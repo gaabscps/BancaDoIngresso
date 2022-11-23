@@ -45,6 +45,8 @@ interface SectorTicketMainSettingsContainerProps {
   title: string | React.ReactNode;
   visible: boolean;
   discountCoupon: DiscountCoupon[];
+  listDiscountCoupon: DiscountCoupon[];
+  handleOnDiscountCoupon: () => Promise<void>;
   handleChangeDiscountCoupon: (name: string, index: number, value: string) => void;
   handleAddDiscountCoupon: () => void;
   onToggle: () => void;
@@ -123,6 +125,8 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
   title,
   visible,
   discountCoupon,
+  listDiscountCoupon,
+  handleOnDiscountCoupon,
   handleRemoveDiscountCoupon,
   handleChangeDiscountCoupon,
   handleAddDiscountCoupon,
@@ -170,7 +174,9 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
           {
             [ShouldShowModal.discountCoupons]: {
               title: 'Adicionar cupons',
-              onClick: () => onToggle(),
+              onClick: () => {
+                handleOnDiscountCoupon();
+              },
             },
           }[shouldShowModal],
         ]}
@@ -597,7 +603,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
                 error={formErrors.allowDiscount && formErrors.allowDiscount[0]}
               />
               <ButtonGroup
-                label="Permitir cupom de desconto??"
+                label="Permitir cupom de desconto?"
                 name="allowDiscountCoupon"
                 value={formData[FormInputName.allowDiscountCoupon]}
                 onChange={e => onChangeFormInput(FormInputName.allowDiscountCoupon)(e.target.value)}
@@ -628,10 +634,11 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
         </Col>
         <Col md={12}>
           <SuperCollapse
-            title={`Cupons de desconto adicionados (${discountCoupon.length})`}
+            disabled={formData[FormInputName.allowDiscount] !== 'true'}
+            title={`Cupons de desconto adicionados (${listDiscountCoupon.length})`}
             content={
-              discountCoupon.length > 0 ? (
-                discountCoupon.map((item, index) => (
+              listDiscountCoupon.length > 0 ? (
+                listDiscountCoupon.map((item, index) => (
                   <>
                     <span className="secondary-table-title">Cupom #{index + 1}</span>
                     <span className="secondary-table-title name">

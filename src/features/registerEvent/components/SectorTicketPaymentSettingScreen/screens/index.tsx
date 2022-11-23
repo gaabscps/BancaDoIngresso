@@ -31,6 +31,7 @@ export default interface PayloadSectorTicketPaymentSettings {
     debit: number;
     credit: number;
     pix: number;
+    bankSlip: number;
     administrateTax: number;
     installments: number;
     fee: number;
@@ -40,6 +41,7 @@ export default interface PayloadSectorTicketPaymentSettings {
     debit: number;
     credit: number;
     pix: number;
+    bankSlip: number;
     administrateTax: number;
     installments: number;
     fee: number;
@@ -64,6 +66,7 @@ export const SectorTicketPaymentSettingsScreen: React.FC = (): JSX.Element => {
     ShouldShowModal.discountCoupons,
   );
   const [discountCoupon, setDiscountCoupon] = useState<DiscountCoupon[]>([]);
+  const [listDiscountCoupon, setListDiscountCoupon] = useState<DiscountCoupon[]>([]);
 
   const params = useParams<UrlParams>();
   const { title, visible, onChangeTitle, onToggle } = useDialog();
@@ -102,8 +105,8 @@ export const SectorTicketPaymentSettingsScreen: React.FC = (): JSX.Element => {
       websiteSaleAdministrateTax: '',
       websiteSaleInstallments: '',
       websiteSaleFee: '',
-      allowDiscount: 'true',
-      allowDiscountCoupon: 'true',
+      allowDiscount: 'false',
+      allowDiscountCoupon: 'false',
     },
     validators: {
       name: [validators.required],
@@ -139,25 +142,6 @@ export const SectorTicketPaymentSettingsScreen: React.FC = (): JSX.Element => {
     formatters: {},
   });
 
-  // const { formErrors: formErrorDiscountCoupons, resetForm: resetForm } = useForm({
-  //   initialData: {
-  //     id: '',
-  //     name: '',
-  //     code: '',
-  //     amount: '0',
-  //     discountType: '0',
-  //     discount: '0',
-  //   },
-  //   validators: {
-  //     name: [validators.required],
-  //     code: [validators.required],
-  //     amount: [validators.required],
-  //     discountType: [validators.required],
-  //     discount: [validators.required],
-  //   },
-  //   formatters: {},
-  // });
-
   const controllerFormPaymentSettings: formPaymentSettingsProps = {
     formData: formDataPaymentSettings,
     formErrors: formErrorsPaymentSettings,
@@ -188,6 +172,7 @@ export const SectorTicketPaymentSettingsScreen: React.FC = (): JSX.Element => {
     const values = [...discountCoupon];
     values.splice(index, 1);
     setDiscountCoupon(values);
+    setListDiscountCoupon(values);
   };
 
   const handleFecthGateway = async (): Promise<void> => {
@@ -200,6 +185,25 @@ export const SectorTicketPaymentSettingsScreen: React.FC = (): JSX.Element => {
       toast.error(err.message);
     } finally {
       setState(States.default);
+    }
+  };
+
+  const handleOnDiscountCoupon = async (): Promise<void> => {
+    try {
+      // verify if the bank account not exists values empty
+      const bankAccountEmpty = discountCoupon.find(
+        item =>
+          item.name === '' || item.amount === null || item.code === '' || item.discount === null,
+      );
+      if (bankAccountEmpty) {
+        toast.warn('Preencha todos os campos ou remova a conta bancária que contém campos vazios');
+        return;
+      }
+      setListDiscountCoupon(discountCoupon);
+      onToggle();
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
     }
   };
 
@@ -225,6 +229,7 @@ export const SectorTicketPaymentSettingsScreen: React.FC = (): JSX.Element => {
           debit: 0,
           credit: 0,
           pix: 0,
+          bankSlip: 0,
           administrateTax: 0,
           installments: 0,
           fee: 0,
@@ -233,6 +238,7 @@ export const SectorTicketPaymentSettingsScreen: React.FC = (): JSX.Element => {
           allowCreditCardPaymen: true,
           debit: 0,
           credit: 0,
+          bankSlip: 0,
           pix: 0,
           administrateTax: 0,
           installments: 0,
@@ -291,6 +297,8 @@ export const SectorTicketPaymentSettingsScreen: React.FC = (): JSX.Element => {
       discountCoupon={discountCoupon}
       handleChangeDiscountCoupon={handleChangeDiscountCoupon}
       handleRemoveDiscountCoupon={handleRemoveDiscountCoupon}
+      listDiscountCoupon={listDiscountCoupon}
+      handleOnDiscountCoupon={handleOnDiscountCoupon}
     />
   );
 };
