@@ -164,14 +164,14 @@
   line-height: 24px !important;
 }
 
-.secondPageTitle {
-  font-family: 'Poppins', sans-serif;
-  font-style: normal !important;
-  font-size: 28px !important;
-  line-height: 42px !important;
-  padding-bottom: 20px !important;
-  text-decoration: underline;
-}
+// .secondPageTitle {
+//   font-family: 'Poppins', sans-serif;
+//   font-style: normal !important;
+//   font-size: 28px !important;
+//   line-height: 42px !important;
+//   padding-bottom: 20px !important;
+//   text-decoration: underline;
+// }
 
 .pageSubTitle {
   font-style: normal !important;
@@ -896,8 +896,8 @@ textarea {
 }
 
 input[type='radio']:checked + .label-radio-custom {
-  background-color: #222222 !important;
-  color: #ffffff !important;
+  background-color: #222222;
+  color: #ffffff;
 }
 
 //----- Button Group -----//
@@ -1419,4 +1419,43 @@ body
   border: 1px solid #d9d9d9;
   width: calc(100% + 60px);
   margin-left: -30px;
+}
+
+.secondary-table-title {
+  color: #d8413a;
+  &.name {
+    font-weight: 500;
+  }
+}
+
+.collapse-disabled {
+  cursor: not-allowed;
+  background-color: #ececec;
+  pointer-events: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.input-action-disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.disable-text {
+  color: #c4c4c4 !important;
+}
+
+.buttonGroup-disabled {
+  background-color: transparent !important;
+  border: 1px solid #d9d9d9 !important;
+  color: #c4c4c4 !important;
 }

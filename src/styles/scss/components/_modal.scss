@@ -1,6 +1,6 @@
 .modal {
   &__main-container {
-    padding: 50px 15px 0px 15px;;
+    padding: 50px 15px 0px 15px;
     background-color: #f1f1f1;
     border: none;
     border-radius: 5px;
@@ -58,6 +58,10 @@
   width: 100%;
 }
 
+.card__main-container {
+  margin: 0px 0px 0px 0px !important;
+}
+
 // media query for mobile container
 @media (max-width: $media-query-sm) {
   .mainContainer,
@@ -65,4 +69,3 @@
     padding: 20px !important;
   }
 }
-
