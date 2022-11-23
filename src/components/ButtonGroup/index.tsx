@@ -31,19 +31,18 @@ export const ButtonGroup: FC<RadioProps> = ({
   disabled,
   refButton,
 }) => {
-  const isDisabled = disabled ? 'input-disabled' : '';
   const isError = error ? 'input-error' : '';
 
   return (
-    <div className={`${isDisabled} flex-column mb-4 ${wrapperClass}  ${isError}`}>
+    <div className={`flex-column mb-4 ${wrapperClass} ${isError}`}>
       {label && (
         <div className="d-flex flex-column-reverse">
-          <label htmlFor={name} className="input-label">
+          <label htmlFor={name} className={`input-label ${disabled ? 'disable-text' : ''}`}>
             {label}
           </label>
         </div>
       )}
-      <div>
+      <div className={`${disabled ? 'input-action-disabled' : ''}`}>
         <div className={`btn-group ${isError}`} role="group">
           {options.map((option: OptionProps) => {
             const idRandom = Math.random().toString(36).substr(2, 9);
