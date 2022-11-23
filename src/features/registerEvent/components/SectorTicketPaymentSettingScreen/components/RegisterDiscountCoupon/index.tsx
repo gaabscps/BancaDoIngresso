@@ -82,14 +82,12 @@ export const RegisterDiscountCoupon: React.FC<RegisterContentProps> = ({
                     />
                   </FormGroup>
                 </Col>
-                {index !== discountCoupon.length - 1 ? (
-                  <div className="d-flex justify-content-end align-items-center w-100 mr-3">
-                    <Trash
-                      className="svg-icon action-icon"
-                      onClick={() => handleRemoveDiscountCoupon(index)}
-                    />
-                  </div>
-                ) : null}
+                <div className="d-flex justify-content-end align-items-center w-100 mr-3">
+                  <Trash
+                    className="svg-icon action-icon"
+                    onClick={() => handleRemoveDiscountCoupon(index)}
+                  />
+                </div>
               </Row>
             </div>
             {discountCoupon.length > 1 ? (

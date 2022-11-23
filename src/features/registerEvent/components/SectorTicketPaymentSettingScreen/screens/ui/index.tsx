@@ -618,7 +618,8 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
           </Row>
         </Col>
         <Col>
-          {formData[FormInputName.allowDiscountCoupon] === 'true' ? (
+          {formData[FormInputName.allowDiscountCoupon] === 'true' &&
+          formData[FormInputName.allowDiscount] === 'true' ? (
             <div
               onClick={() =>
                 onShouldShowModal({
