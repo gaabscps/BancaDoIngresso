@@ -1,17 +1,25 @@
 import React, { FC, useState } from 'react';
 import './styles.scss';
 
+import { ReactComponent as CheckTab } from '@/assets/images/svg/CheckTab.svg';
+
 interface TabProps {
   titles: string[];
   contents: string[] | React.ReactNode[];
+  numberStap: number;
 }
 
-export const Tab: FC<TabProps> = ({ titles, contents }) => {
-  const [ToggleState, setToggleState] = useState(1);
+export const Tab: FC<TabProps> = ({ titles, contents, numberStap }) => {
+  const [ToggleState, setToggleState] = useState(2);
 
-  const toggleTab = (index: number): void => {
-    setToggleState(index);
-  };
+  // set ToggleState when numberStap change
+  if (numberStap !== ToggleState) {
+    setToggleState(numberStap);
+  }
+
+  // const toggleTab = (index: number): void => {
+  //   setToggleState(index);
+  // };
 
   const getActiveClass = (index: number, className: string): string =>
     ToggleState === index ? className : '';
@@ -24,8 +32,9 @@ export const Tab: FC<TabProps> = ({ titles, contents }) => {
             <div
               key={index}
               className={`tabs ${getActiveClass(index, 'active-tabs')}`}
-              onClick={() => toggleTab(index)}
+              // onClick={() => toggleTab(index)}
             >
+              {ToggleState > index ? <CheckTab className="mr-2" /> : ''}
               {title}
               <div className={`${getActiveClass(index, 'active-indicator')}`} />
             </div>

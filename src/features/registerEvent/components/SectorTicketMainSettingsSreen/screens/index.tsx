@@ -25,7 +25,10 @@ import { useParams } from 'react-router-dom';
 import Section from '@/model/Section';
 import TicketBatch from '@/model/TicketBatch';
 import Printer from '@/model/Printer';
-import { SectorTicketContainerProps } from '@/features/registerEvent/screens/SectorTicket/ui';
+import {
+  SectorTicketContainerProps,
+  TabSectorTicketActionsProps,
+} from '@/features/registerEvent/screens/SectorTicket/ui';
 import {
   batchActionsProps,
   batchStatesProps,
@@ -45,9 +48,9 @@ type UrlParams = {
 };
 
 export const SectorTicketMainSettingsScreen: React.FC<
-  Pick<SectorTicketContainerProps, 'ticketStates'>
-> = ({ ticketStates }): JSX.Element => {
-  const [state] = useState<States>(States.default);
+  Pick<SectorTicketContainerProps, 'ticketStates'> & Omit<TabSectorTicketActionsProps, 'backTab'>
+> = ({ ticketStates, nextTab, onFirstTab }): JSX.Element => {
+  const [state, setState] = useState<States>(States.default);
   const [formNameFiles, setFormNameFiles] = useState<NameFiles>({});
 
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(ShouldShowModal.sector);
@@ -195,7 +198,7 @@ export const SectorTicketMainSettingsScreen: React.FC<
 
   const handleFecthSectorList = async (): Promise<void> => {
     try {
-      // setState(States.loading);
+      setState(States.loading);
       const { data } = await api.get<Section[]>(`/section/find`);
       // filter father event when event type is father
 
@@ -204,13 +207,13 @@ export const SectorTicketMainSettingsScreen: React.FC<
       const err = error as AxiosError;
       toast.error(err.message);
     } finally {
-      // setState(States.default);
+      setState(States.default);
     }
   };
 
   const handleFecthPrinterList = async (): Promise<void> => {
     try {
-      // setState(States.loading);
+      setState(States.loading);
       const { data } = await api.get<Printer[]>(`/printer/find`);
       // filter father event when event type is father
 
@@ -219,7 +222,7 @@ export const SectorTicketMainSettingsScreen: React.FC<
       const err = error as AxiosError;
       toast.error(err.message);
     } finally {
-      // setState(States.default);
+      setState(States.default);
     }
   };
 
@@ -318,6 +321,7 @@ export const SectorTicketMainSettingsScreen: React.FC<
           delete payload.id;
         }
         await api.post(`/event/ticket/${params.id}/main-settings`, payload);
+        nextTab();
       }
     } catch (error) {
       const err = error as AxiosError;
@@ -568,6 +572,7 @@ export const SectorTicketMainSettingsScreen: React.FC<
       resetFormBatchs();
       setBatchList([]);
       setFormNameFiles({});
+      onFirstTab();
     }
   }, [ticketStates.ticket]);
 

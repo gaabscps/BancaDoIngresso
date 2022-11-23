@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable no-shadow */
 /* eslint-disable import/no-unresolved */
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { ButtonGroup, Loading, Tab } from '@/components';
 import { Container, FormGroup } from 'reactstrap';
 import { SectorTicketMainSettingsScreen } from '@/features/registerEvent/components/SectorTicketMainSettingsSreen/screens';
@@ -36,6 +37,12 @@ export enum FormInputName {
   isTicket = 'isTicket',
 }
 
+export type TabSectorTicketActionsProps = {
+  nextTab: () => void;
+  backTab: () => void;
+  onFirstTab: () => void;
+};
+
 export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
   state,
   formSectorTicket,
@@ -43,6 +50,42 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
   ticketActions,
 }) => {
   const { formData, formErrors, onChangeFormInput } = formSectorTicket;
+  const [numberTab, setNumberTab] = useState(0);
+
+  const handleNextTab = (): void => {
+    if (numberTab <= contentTabs.length) {
+      setNumberTab(numberTab + 1);
+    }
+  };
+
+  const handleBackTab = (): void => {
+    if (numberTab >= contentTabs.length) {
+      setNumberTab(numberTab - 1);
+    }
+  };
+
+  const handleOnFirstTab = (): void => {
+    setNumberTab(0);
+  };
+
+  const contentTabs = [
+    <>
+      <SectorTicketMainSettingsScreen
+        ticketStates={ticketStates}
+        nextTab={handleNextTab}
+        onFirstTab={handleOnFirstTab}
+      />
+    </>,
+    'Conteudo 2',
+    <>
+      <SectorTicketGeneralSettingsScreen
+        ticketStates={ticketStates}
+        nextTab={handleNextTab}
+        backTab={handleBackTab}
+        onFirstTab={handleOnFirstTab}
+      />
+    </>,
+  ];
 
   return (
     <Fragment>
@@ -158,20 +201,14 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
             </div>
 
             <Tab
+              // numberStap={numberTab}
+              numberStap={numberTab}
               titles={[
                 'Configurações principais',
                 'Configurações de pagamento',
                 'Configurações gerais',
               ]}
-              contents={[
-                <>
-                  <SectorTicketMainSettingsScreen ticketStates={ticketStates} />
-                </>,
-                'Conteudo 2',
-                <>
-                  <SectorTicketGeneralSettingsScreen ticketStates={ticketStates} />
-                </>,
-              ]}
+              contents={contentTabs}
             />
           </>
         )}

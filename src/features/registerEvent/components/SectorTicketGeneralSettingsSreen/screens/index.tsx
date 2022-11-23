@@ -13,7 +13,10 @@ import { toast } from 'react-toastify';
 import api, { AxiosError } from '@/services/api';
 import { FormInputName as FormInputNameToGeneralSettings } from '@/features/registerEvent/components/SectorTicketGeneralSettingsSreen/components/SectorTicketGeneralSettingsContent';
 import { useParams } from 'react-router-dom';
-import { SectorTicketContainerProps } from '@/features/registerEvent/screens/SectorTicket/ui';
+import {
+  SectorTicketContainerProps,
+  TabSectorTicketActionsProps,
+} from '@/features/registerEvent/screens/SectorTicket/ui';
 import { convertToBoolean } from '@/helpers/common/convertToBoolean';
 import { formGeneralSettingsProps, generalSettingsProps } from '../types';
 
@@ -22,8 +25,8 @@ type UrlParams = {
 };
 
 export const SectorTicketGeneralSettingsScreen: React.FC<
-  Pick<SectorTicketContainerProps, 'ticketStates'>
-> = ({ ticketStates }): JSX.Element => {
+  Pick<SectorTicketContainerProps, 'ticketStates'> & TabSectorTicketActionsProps
+> = ({ ticketStates, nextTab, backTab, onFirstTab }): JSX.Element => {
   const [state] = useState<States>(States.default);
 
   const params = useParams<UrlParams>();
@@ -99,6 +102,7 @@ export const SectorTicketGeneralSettingsScreen: React.FC<
         //   delete payload.id;
         // }
         await api.post(`/event/ticket/${params.id}/general-settings`, payload);
+        nextTab();
       }
     } catch (error) {
       const err = error as AxiosError;
@@ -114,10 +118,13 @@ export const SectorTicketGeneralSettingsScreen: React.FC<
 
   const controllerGeneralSettingsActions: generalSettingsProps = {
     onSave: handleOnSaveGeneralSettings,
+    onReturnTap: backTab,
   };
 
   useEffect(() => {
     const { ticket } = ticketStates;
+
+    onFirstTab();
     resetFormGeneralSettings();
 
     if (ticket?.generalSettings) {

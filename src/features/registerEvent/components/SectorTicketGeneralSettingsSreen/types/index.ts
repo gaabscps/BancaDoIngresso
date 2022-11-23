@@ -1,9 +1,6 @@
-import { NameFiles } from '@/features/registerEvent/types';
 import { FormData, FormErrors, OnChangeFormInput } from '@/hooks';
-import Printer from '@/model/Printer';
 import Section from '@/model/Section';
 import Ticket from '@/model/Ticket';
-import TicketBatch from '@/model/TicketBatch';
 import { ShouldShowModal } from '../screens/ui';
 
 export interface formGeneralSettingsProps {
@@ -20,6 +17,7 @@ export interface onShouldShowModalTicketGeneralSettingsProps {
 
 export interface generalSettingsProps {
   onSave: () => Promise<void>;
+  onReturnTap: () => void;
 }
 
 export interface ticketActionsProps {

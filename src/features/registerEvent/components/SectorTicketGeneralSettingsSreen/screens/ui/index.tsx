@@ -34,6 +34,11 @@ export const SectorTicketGeneralSettingsContainer: React.FC<
       </div>
       <div className="d-flex justify-content-end">
         <Button
+          title="Voltar"
+          theme="outlineDark"
+          onClick={() => generalSettingsActions.onReturnTap()}
+        />
+        <Button
           title="Adicionar ingresso"
           theme="outlineDark"
           onClick={() => generalSettingsActions.onSave()}
