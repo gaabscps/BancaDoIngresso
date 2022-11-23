@@ -192,17 +192,18 @@ export const secondaryWhithoutBorderTheme: TableStyles = {
       fontSize: '0.75rem',
       fontWidth: '400',
       color: '#A5A5A5',
-      minHeight: '20px',
+      minHeight: '27px',
     },
   },
   rows: {
     style: {
-      border: '0px solid',
+      border: 'none !important',
+      borderBottomWidth: '0px',
       backgroundColor: 'transparent',
       fontSize: '0.75rem',
       fontWidth: '400',
       overflow: 'hidden',
-      minHeight: '20px',
+      minHeight: '37px',
     },
   },
 };

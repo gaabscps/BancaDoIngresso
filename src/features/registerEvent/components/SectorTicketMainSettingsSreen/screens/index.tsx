@@ -25,6 +25,7 @@ import { useParams } from 'react-router-dom';
 import Section from '@/model/Section';
 import TicketBatch from '@/model/TicketBatch';
 import Printer from '@/model/Printer';
+import { SectorTicketContainerProps } from '@/features/registerEvent/screens/SectorTicket/ui';
 import {
   batchActionsProps,
   batchStatesProps,
@@ -43,7 +44,9 @@ type UrlParams = {
   id: string;
 };
 
-export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
+export const SectorTicketMainSettingsScreen: React.FC<
+  Pick<SectorTicketContainerProps, 'ticketStates'>
+> = ({ ticketStates }): JSX.Element => {
   const [state] = useState<States>(States.default);
   const [formNameFiles, setFormNameFiles] = useState<NameFiles>({});
 
@@ -58,7 +61,6 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
   const [printerList, setPrinterList] = useState<Printer[]>([]);
 
   const { title, visible, onChangeTitle, onToggle } = useDialog();
-  // const { eventState, onChange: onChangeEvent } = useEvent();]
   const params = useParams<UrlParams>();
 
   const {
@@ -67,6 +69,7 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
     onChangeFormInput: onChangeFormInputMainSettings,
     setErrors: setErrorsMainSettings,
     isFormValid: isFormValidMainSettings,
+    resetForm: resetFormMainSettings,
   } = useForm({
     initialData: {
       name: '',
@@ -559,6 +562,17 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
   }, [visible]);
 
   useEffect(() => {
+    const { ticket } = ticketStates;
+    console.log('ticket 1 :>> ', ticket);
+    if (!ticket) {
+      resetFormMainSettings();
+      resetFormBatchs();
+      setBatchList([]);
+      setFormNameFiles({});
+    }
+  }, [ticketStates.ticket]);
+
+  useEffect(() => {
     if (batch) {
       onChangeFormInputBatchs(FormInputNameToBatch.name)(batch.name);
       onChangeFormInputBatchs(FormInputNameToBatch.startDate)(
@@ -580,6 +594,50 @@ export const SectorTicketMainSettingsScreen: React.FC = (): JSX.Element => {
       onChangeFormInputBatchs(FormInputNameToBatch.imageUrl)(String(batch.imageUrl));
     }
   }, [batch]);
+
+  useEffect(() => {
+    const { ticket } = ticketStates;
+
+    if (ticket) {
+      onChangeFormInputMainSettings(FormInputNameToMainSettings.name)(ticket.name);
+      onChangeFormInputMainSettings(FormInputNameToMainSettings.eventSection)(
+        ticket.eventSection.id,
+      );
+      onChangeFormInputMainSettings(FormInputNameToMainSettings.hasHalfPrice)(
+        String(ticket.hasHalfPrice),
+      );
+      onChangeFormInputMainSettings(FormInputNameToMainSettings.percentageHalfPrice)(
+        String(ticket.percentageHalfPrice),
+      );
+      onChangeFormInputMainSettings(FormInputNameToMainSettings.amountHalfPrice)(
+        String(ticket.amountHalfPrice),
+      );
+      onChangeFormInputMainSettings(FormInputNameToMainSettings.hasCourtesy)(
+        String(ticket.hasCourtesy),
+      );
+      onChangeFormInputMainSettings(FormInputNameToMainSettings.amountCourtesy)(
+        String(ticket.amountCourtesy),
+      );
+      onChangeFormInputMainSettings(FormInputNameToMainSettings.numberTickets)(
+        String(ticket.numberTickets),
+      );
+      onChangeFormInputMainSettings(FormInputNameToMainSettings.printLayoutBase64)(
+        ticket.printLayoutBase64,
+      );
+      onChangeFormInputMainSettings(FormInputNameToMainSettings.printImageBase64)(
+        ticket.printImageBase64,
+      );
+      onChangeFormInputMainSettings(FormInputNameToMainSettings.printer)(ticket.printer.id);
+      onChangeFormInputMainSettings(FormInputNameToMainSettings.copies)(String(ticket.copies));
+      onChangeFormInputMainSettings(FormInputNameToMainSettings.reprint)(String(ticket.reprint));
+      onChangeFormInputMainSettings(FormInputNameToMainSettings.printBatchNumber)(
+        String(ticket.printBatchNumber),
+      );
+      onChangeFormInputMainSettings(FormInputNameToMainSettings.observation)(ticket.observation);
+
+      setBatchList(ticket.batchs);
+    }
+  }, [ticketStates.ticket]);
 
   useEffect(() => {
     if (sector?.id) {

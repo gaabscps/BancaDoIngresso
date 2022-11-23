@@ -2,6 +2,7 @@ import { NameFiles } from '@/features/registerEvent/types';
 import { FormData, FormErrors, OnChangeFormInput } from '@/hooks';
 import Printer from '@/model/Printer';
 import Section from '@/model/Section';
+import Ticket from '@/model/Ticket';
 import TicketBatch from '@/model/TicketBatch';
 import { ShouldShowModal } from '../screens/ui';
 
@@ -58,6 +59,12 @@ export interface batchActionsProps {
   onDelete: (batch: TicketBatch) => Promise<void>;
 }
 
+export interface ticketActionsProps {
+  onGet: (ticketSelected: Ticket) => void;
+  onCancelEdit: () => void;
+  onShowDelete: (ticketSelected: Ticket) => void;
+}
+
 export interface sectorStatesProps {
   sector: Section | undefined;
   setSector: React.Dispatch<React.SetStateAction<Section | undefined>>;
@@ -75,4 +82,9 @@ export interface batchStatesProps {
 export interface printerStatesProps {
   printerList: Printer[];
   setPrinterList: React.Dispatch<React.SetStateAction<Printer[]>>;
+}
+
+export interface ticketStatesProps {
+  ticket: Ticket | undefined;
+  ticketList: Ticket[];
 }
