@@ -300,6 +300,7 @@ export const EventScreen: React.FC = () => {
         onToggle();
         await handleFetch({
           ...currentPage,
+          page: +pagination,
           ...payload,
         });
       }

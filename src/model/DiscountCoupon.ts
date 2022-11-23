@@ -4,7 +4,7 @@ export default interface DiscountCoupon {
   id: string;
   name: string;
   code: string;
-  amount: number;
+  amount: number | null;
   discountType: DiscountType;
-  discount: number;
+  discount: number | null;
 }

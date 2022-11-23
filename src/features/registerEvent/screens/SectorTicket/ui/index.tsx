@@ -16,6 +16,7 @@ import {
 } from '@/features/registerEvent/components/SectorTicketMainSettingsSreen/types';
 import TicketIcon from '@/assets/images/svg/Ticket';
 import { SectorTicketGeneralSettingsScreen } from '@/features/registerEvent/components/SectorTicketGeneralSettingsSreen/screens';
+import { SectorTicketPaymentSettingsScreen } from '@/features/registerEvent/components/SectorTicketPaymentSettingScreen/screens';
 import { formSectorTicketProps } from '../types';
 import { columnsTickets } from './table';
 
@@ -76,7 +77,9 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
         onFirstTab={handleOnFirstTab}
       />
     </>,
-    'Conteudo 2',
+    <>
+      <SectorTicketPaymentSettingsScreen />,
+    </>,
     <>
       <SectorTicketGeneralSettingsScreen
         ticketStates={ticketStates}
@@ -184,15 +187,6 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
                 showButtonOnTitle={!!ticketStates?.ticket}
               />
             </div>
-            {/* <div className="d-flex justify-content-end">
-              <Button
-                title="Cancelar edição do ticket"
-                theme="dark"
-                onClick={() => {
-                  ticketActions.onCancelEdit();
-                }}
-              />
-            </div> */}
             <div className="mb-4">
               <p className="secondPageTitle m-0">Adicionando setor e ingresso</p>
               <span className="infoSubTitle">
@@ -201,7 +195,6 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
             </div>
 
             <Tab
-              // numberStap={numberTab}
               numberStap={numberTab}
               titles={[
                 'Configurações principais',

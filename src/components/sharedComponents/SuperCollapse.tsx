@@ -13,6 +13,7 @@ interface DispatchProps {
   leftIcon(): JSX.Element;
   buttonAction?(e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void;
   className?: string;
+  disabled?: boolean;
 }
 
 type Props = StateProps & DispatchProps;
@@ -27,13 +28,13 @@ function SuperCollapse(props: Props): JSX.Element {
       <div style={{ marginBottom: '50px' }}>
         <div
           className={`collapseTable d-flex justify-content-between collapseTableText ${
-            props.className
-          } ${open ? ' border-bottom-collapse' : ''}`}
+            props.disabled ? 'collapse-disabled' : ''
+          } ${props.className} ${open ? ' border-bottom-collapse' : ''}`}
           onClick={() => setOpen(!open)}
         >
           <div className="d-flex">
             <div className="iconTable">{props.leftIcon()}</div>
-            <div className="normalText ">
+            <div className={`normalText ${props.disabled ? 'disable-text' : ''}`}>
               {props.title}{' '}
               {props.count === undefined ? (
                 <span style={{ fontWeight: 'bold' }}>(0)</span>
@@ -57,7 +58,7 @@ function SuperCollapse(props: Props): JSX.Element {
               </button>
             )}
             <svg
-              className={`${open ? 'rotateSvg' : ''}`}
+              className={`${open ? 'rotateSvg' : ''} ${props.disabled ? 'disable-text' : ''}`}
               width="16"
               height="10"
               viewBox="0 0 16 10"

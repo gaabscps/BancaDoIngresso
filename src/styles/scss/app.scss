@@ -896,8 +896,8 @@ textarea {
 }
 
 input[type='radio']:checked + .label-radio-custom {
-  background-color: #222222 !important;
-  color: #ffffff !important;
+  background-color: #222222;
+  color: #ffffff;
 }
 
 //----- Button Group -----//
@@ -1477,3 +1477,41 @@ body
   }
 }
 
+.secondary-table-title {
+  color: #d8413a;
+  &.name {
+    font-weight: 500;
+  }
+}
+
+.collapse-disabled {
+  cursor: not-allowed;
+  background-color: #ececec;
+  pointer-events: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.input-action-disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.disable-text {
+  color: #c4c4c4 !important;
+}
+
+.buttonGroup-disabled {
+  background-color: transparent !important;
+  border: 1px solid #d9d9d9 !important;
+  color: #c4c4c4 !important;
+}

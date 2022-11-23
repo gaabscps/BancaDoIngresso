@@ -7,9 +7,10 @@ interface CheckboxProps {
   label?: string;
   wrapperClass?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  checked: boolean;
+  checked?: boolean;
   error?: string;
   disabled?: boolean;
+  value?: string;
 }
 
 export const Checkbox: FC<CheckboxProps> = ({
@@ -20,6 +21,7 @@ export const Checkbox: FC<CheckboxProps> = ({
   checked,
   error,
   disabled,
+  value,
 }) => (
   <div className={`mb-4 d-flex ${wrapperClass}`}>
     <label className="checkbox style-d" htmlFor={name}>
@@ -30,6 +32,7 @@ export const Checkbox: FC<CheckboxProps> = ({
         checked={checked}
         onChange={onChange}
         disabled={disabled}
+        value={value}
       />
       <div className="checkbox__checkmark" />
     </label>
