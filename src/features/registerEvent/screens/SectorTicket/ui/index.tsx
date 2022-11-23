@@ -14,6 +14,7 @@ import {
   ticketStatesProps,
 } from '@/features/registerEvent/components/SectorTicketMainSettingsSreen/types';
 import TicketIcon from '@/assets/images/svg/Ticket';
+import { SectorTicketGeneralSettingsScreen } from '@/features/registerEvent/components/SectorTicketGeneralSettingsSreen/screens';
 import { formSectorTicketProps } from '../types';
 import { columnsTickets } from './table';
 
@@ -167,7 +168,9 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
                   <SectorTicketMainSettingsScreen ticketStates={ticketStates} />
                 </>,
                 'Conteudo 2',
-                'Conteudo 3',
+                <>
+                  <SectorTicketGeneralSettingsScreen ticketStates={ticketStates} />
+                </>,
               ]}
             />
           </>

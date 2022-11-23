@@ -282,7 +282,7 @@ export const SectorTicketMainSettingsScreen: React.FC<
         }
 
         const payload = {
-          id: sector?.id,
+          id: ticketStates.ticket?.id,
           eventSection: {
             id: formDataMainSettings[FormInputNameToMainSettings.eventSection],
           },
@@ -563,7 +563,6 @@ export const SectorTicketMainSettingsScreen: React.FC<
 
   useEffect(() => {
     const { ticket } = ticketStates;
-    console.log('ticket 1 :>> ', ticket);
     if (!ticket) {
       resetFormMainSettings();
       resetFormBatchs();
