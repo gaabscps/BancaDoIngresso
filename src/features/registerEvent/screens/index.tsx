@@ -10,6 +10,7 @@ import '@/features/registerEvent/components/ProgressStep/styles.scss';
 import { GeneralInformationScreen } from './GeneralInformation';
 // import { SectorTicketScreen } from './SectorTicket';
 import { SectorProductScreen } from './SectorProduct';
+import { SectorTicketScreen } from './SectorTicket';
 
 // eslint-disable-next-line no-shadow
 export enum States {
@@ -35,7 +36,7 @@ export const EventScreen: React.FC = (): JSX.Element => {
       title: 'Informações gerais',
     },
     {
-      Component: <SectorProductScreen />,
+      Component: <SectorTicketScreen />,
       title: 'Setor e Ingresso',
     },
     {

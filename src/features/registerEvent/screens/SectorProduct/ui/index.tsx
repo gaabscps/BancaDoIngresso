@@ -71,6 +71,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
                 'Conteudo 4',
                 'Conteudo 5',
               ]}
+              numberStap={0}
             />
           </>
         )}
