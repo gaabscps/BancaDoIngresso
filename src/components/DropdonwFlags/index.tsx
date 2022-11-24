@@ -6,17 +6,20 @@ import '@/components/DropdonwFlags/styles.scss';
 
 interface DropdonwFlagsProps {
   dataColumn: {
-    id: string | number;
+    id?: string | number;
     name: string;
+    imageBase64?: string;
   }[];
   pointerClass?: boolean;
   className?: string;
+  style?: React.CSSProperties;
 }
 
 export const DropdonwFlags: React.FC<DropdonwFlagsProps> = ({
   dataColumn,
   pointerClass,
   className,
+  style,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const idRandom = Math.random().toString(36).substr(2, 9);
@@ -25,7 +28,7 @@ export const DropdonwFlags: React.FC<DropdonwFlagsProps> = ({
     setIsOpen(!isOpen);
   };
   return (
-    <label className={`dropdown-flags-custom ${className}`}>
+    <label style={style} className={`dropdown-flags-custom ${className}`}>
       <div className="dd-button"></div>
       <label
         className={`d-flex mb-0 ${pointerClass === true ? 'pointerSvg' : ''}`}

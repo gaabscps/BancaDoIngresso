@@ -1,14 +1,16 @@
-import { InputFile, InputText, Loading } from '@/components';
+import { DropdonwFlags, InputFile, InputText, Loading } from '@/components';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
 import SectorProductGroup from '@/model/SectorProductGroup';
 import React from 'react';
 import TicketIcon from '@/assets/images/svg/Ticket';
 import { X } from 'react-feather';
 import { Col, Container, Form, FormGroup, Row } from 'reactstrap';
+import GroupProduct from '@/model/SubgruopProduct';
 import { formGroupProps } from '../../types';
 
 interface SectorProductGroupContainerProps {
-  group: SectorProductGroup[];
+  subGroup: GroupProduct[];
+  subGroupList: GroupProduct[];
   groupList: SectorProductGroup[];
   controllerFormGroup: formGroupProps;
   handleChangeGroup: (name: string, index: number, value: string) => void;
@@ -29,8 +31,9 @@ export enum FormInputName {
 }
 
 export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerProps> = ({
-  group,
+  subGroup,
   groupList,
+  subGroupList,
   controllerFormGroup,
   handleChangeGroup,
   handleAddGroup,
@@ -47,7 +50,7 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
   //     </div>
   //   ),
   // }));
-  console.log('group', group);
+  console.log('subGroup', subGroup);
   return (
     <>
       <Loading isVisible={false} />
@@ -76,47 +79,44 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
               </FormGroup>
             </Col>
           </Row>
-          {group.map((groupValue, groupIndex) =>
-            groupValue.subgroup?.map((sub, index) => (
-              <>
-                <Row>
-                  <Col md={12}>
-                    <div className="d-flex">
-                      <div key={groupValue.id}>
-                        <InputText
-                          label="Nome do subgrupo"
-                          name=""
-                          value={sub.name[index]}
-                          onChange={e => handleChangeGroup('name', index, e?.target.value)}
-                          placeholder="Digite o nome do subgrupo. Ex: Refrigerantes"
-                        />
-                        <div className="d-flex">
-                          <InputFile name={''} />
-                          <X className="ml-5 mt-3 pt-1 action-icon" />
-                        </div>
+          {subGroup.map((sub, index) => (
+            <>
+              <Row>
+                <Col md={12}>
+                  <div className="d-flex">
+                    <div key={sub.id}>
+                      <InputText
+                        label="Nome do subgrupo"
+                        name=""
+                        value={sub.name}
+                        onChange={e => handleChangeGroup('name', index, e?.target.value)}
+                        placeholder="Digite o nome do subgrupo. Ex: Refrigerantes"
+                      />
+                      <div className="d-flex">
+                        <InputFile name={''} />
+                        <X className="ml-5 mt-3 pt-1 action-icon" />
                       </div>
-                      {groupIndex === 0 && (
-                        <div
-                          className="ml-4 mt-5 action-icon"
-                          onClick={() => addGroup(String(index))}
-                        >
-                          adicionar novo subgrupo
-                        </div>
-                      )}
-                      {groupIndex !== 0 && (
-                        <X onClick={() => removeGroup(index)} className="mt-5 ml-5 action-icon" />
-                      )}
                     </div>
-                  </Col>
-                </Row>
-              </>
-            )),
-          )}
-          <div
-            className="d-flex justify-content-end register-buttom action-icon"
-            onClick={() => handleAddGroup()}
-          >
-            + cadastrar grupo
+                    {index === 0 && (
+                      <div
+                        className="ml-4 mt-5 action-icon"
+                        onClick={() => addGroup(String(index))}
+                      >
+                        adicionar novo subgrupo
+                      </div>
+                    )}
+                    {index !== 0 && (
+                      <X onClick={() => removeGroup(index)} className="mt-5 ml-5 action-icon" />
+                    )}
+                  </div>
+                </Col>
+              </Row>
+            </>
+          ))}
+          <div className="d-flex justify-content-end register-buttom">
+            <span className="action-icon" onClick={() => handleAddGroup()}>
+              + cadastrar grupo
+            </span>
           </div>
         </Form>
         <div className="mt-5">
@@ -125,20 +125,38 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
               <SuperCollapse
                 title={'Grupos cadastrados (0)'}
                 content={
-                  // <CustomTable
-                  //   numberRowsPerPage={0}
-                  //   progressPending={false}
-                  //   columns={columnsDiscountCoupon}
-                  //   data={datarow}
                   groupList.length > 0 &&
                   groupList.map((item, index) => (
-                    <div key={index}>
-                      <h5>
-                        Grupo # {groupList.length} - {item.name}
-                        {' // '}
-                        {/* <DropdonwFlags dataColumn={subgroup} /> */}
-                      </h5>
-                    </div>
+                    <>
+                      <div
+                        style={{ marginRight: '20px' }}
+                        className="mb-3 d-flex align-items-center "
+                        key={index}
+                      >
+                        <span style={{ whiteSpace: 'nowrap' }} className="secondary-table-title">
+                          Grupo # {index + 1} <b> ·</b> {item.name}
+                        </span>
+                        <span className="secondary-table-title ml-5">{'//'}</span>
+                        <div className="d-flex w-100">
+                          <div>
+                            <span className="secondary-table-title ml-5 mr-2">Subgrupo</span>
+                            <DropdonwFlags
+                              style={{ color: '#000 !important' }}
+                              dataColumn={subGroupList}
+                            />
+                          </div>
+                          <X className="ml-5 action-icon" />
+                        </div>
+                      </div>
+                      <div
+                        className="mb-3"
+                        style={{
+                          borderBottom: '1px solid #d9d9d9',
+                          marginRight: '20px',
+                          transform: 'scaleX(1.13)',
+                        }}
+                      />
+                    </>
                   ))
                 }
                 leftIcon={TicketIcon}

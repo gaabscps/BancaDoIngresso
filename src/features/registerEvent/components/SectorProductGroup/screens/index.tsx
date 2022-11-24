@@ -4,13 +4,13 @@ import { toast } from 'react-toastify';
 import useForm from '@/hooks/useForm';
 import { AxiosError } from 'axios';
 import validators from '@/helpers/validators';
+import GroupProduct from '@/model/SubgruopProduct';
 import { SectorProductGroupContainer } from './ui';
 import { formGroupProps } from '../types';
 
 export const SectorProductGroupScreen: React.FC = (): JSX.Element => {
-  const [group, setGroup] = useState<SectorProductGroup[]>([
-    { id: '', name: '', subgroup: [{ id: '', name: '' }] },
-  ]);
+  const [subGroup, setSubGroup] = useState<GroupProduct[]>([{ id: '', name: '' }]);
+  const [subGroupList, setSubGroupList] = useState<GroupProduct[]>([{ id: '', name: '' }]);
   const [groupList, setGroupList] = useState<SectorProductGroup[]>([]);
 
   const {
@@ -37,20 +37,27 @@ export const SectorProductGroupScreen: React.FC = (): JSX.Element => {
   };
 
   const handleChangeGroup = (inputName: string, index: number, value: string): void => {
-    const newFormValues = [...group] as any;
+    const newFormValues = [...subGroup] as any;
     newFormValues[index][inputName] = value;
-    setGroup(newFormValues);
+    setSubGroup(newFormValues);
   };
 
   const addGroup = (index: string): void => {
-    setGroup([...group, { id: index, name: '', subgroup: [{ id: '', name: '' }] }]);
+    setSubGroup([...subGroup, { id: index, name: '' }]);
   };
 
   const removeGroup = (index: number): void => {
-    const values = [...group];
+    const values = [...subGroup];
     values.splice(index, 1);
-    setGroup(values);
+    setSubGroup(values);
   };
+
+  // Será utilizado para adicionar um novo grupo na integracao com o backend
+  // const resetForm = (): void => {
+  //   setSubGroup([{ id: '', name: '' }]);
+  //   setSubGroupList([{ id: '', name: '' }]);
+  //   setGroupList([]);
+  // };
 
   const handleAddGroup = async (): Promise<void> => {
     try {
@@ -58,7 +65,20 @@ export const SectorProductGroupScreen: React.FC = (): JSX.Element => {
         toast.warn('Preencha todos os campos ou remova o subgrupo que contém campos vazios');
         return;
       }
-      setGroupList(group);
+
+      // Aqui será feito a integração com o backend
+      // chamar a api para adicionar um novo grupo
+      setSubGroupList(subGroup);
+      setGroupList([
+        ...groupList,
+        {
+          id: '',
+          name: formDataGroup.name,
+          imageBase64: formDataGroup.image,
+          subgroup: subGroup,
+        },
+      ]);
+      // resetForm();
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
@@ -67,10 +87,11 @@ export const SectorProductGroupScreen: React.FC = (): JSX.Element => {
 
   return (
     <SectorProductGroupContainer
-      group={group}
+      subGroup={subGroup}
       addGroup={addGroup}
       removeGroup={removeGroup}
       groupList={groupList}
+      subGroupList={subGroupList}
       handleAddGroup={handleAddGroup}
       controllerFormGroup={controllerFormGroup}
       handleChangeGroup={handleChangeGroup}
