@@ -14,6 +14,8 @@ interface DispatchProps {
   buttonAction?(e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void;
   className?: string;
   disabled?: boolean;
+  overflow?: boolean;
+  noPadding?: boolean;
 }
 
 type Props = StateProps & DispatchProps;
@@ -73,7 +75,12 @@ function SuperCollapse(props: Props): JSX.Element {
 
         <Collapse in={open} className={open ? 'show' : ''}>
           <div className="collapseTable">
-            <div className="subTitleMain collapseTableText">{props.content}</div>
+            <div
+              style={props.overflow ? { overflow: 'auto' } : {}}
+              className={`${props.noPadding ? 'subTitleMain' : 'collapseTableText subTitleMain'}`}
+            >
+              {props.content}
+            </div>
           </div>
         </Collapse>
       </div>
