@@ -142,7 +142,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
 
   const paymentGatewayOptions = paymentGatewayList?.map(item => ({
     label: item.name,
-    value: item.charge?.id,
+    value: item.id,
   }));
 
   const renderActionDialogToCancelDiscountCoupon: ActionProps = {
