@@ -41,6 +41,7 @@ export const SectorTicketGeneralSettingsContainer: React.FC<
         <Button
           title="Adicionar ingresso"
           theme="outlineDark"
+          className="ml-3"
           onClick={() => generalSettingsActions.onSave()}
         />
       </div>

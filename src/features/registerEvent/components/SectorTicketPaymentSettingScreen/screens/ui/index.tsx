@@ -61,6 +61,7 @@ interface SectorTicketMainSettingsContainerProps {
     event?: Event;
   }) => void;
   shouldShowModal: ShouldShowModal;
+  backTab: () => void;
 }
 
 // eslint-disable-next-line no-shadow
@@ -133,6 +134,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
   onToggle,
   onShouldShowModal,
   handleOnSaveSectorTicketPayment,
+  backTab,
 }) => {
   const { formData, formErrors, onChangeFormInput } = controllerFormPaymentSettings;
 
@@ -759,7 +761,19 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
           />
         </Col>
         <div className="d-flex justify-content-end">
-          <Button title="Próximo" onClick={() => handleOnSaveSectorTicketPayment()} />
+          <Button
+            title="Voltar"
+            theme="noneBorder"
+            onClick={() => {
+              backTab();
+            }}
+          />
+          <Button
+            title="Próximo"
+            theme="outlineDark"
+            className="ml-3"
+            onClick={() => handleOnSaveSectorTicketPayment()}
+          />
         </div>
       </Container>
     </Fragment>

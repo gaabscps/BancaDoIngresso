@@ -60,7 +60,7 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
   };
 
   const handleBackTab = (): void => {
-    if (numberTab >= contentTabs.length) {
+    if (numberTab <= contentTabs.length && numberTab >= 0) {
       setNumberTab(numberTab - 1);
     }
   };

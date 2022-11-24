@@ -70,12 +70,7 @@ type UrlParams = {
 
 export const SectorTicketPaymentSettingsScreen: React.FC<
   Pick<SectorTicketContainerProps, 'ticketStates'> & TabSectorTicketActionsProps
-> = ({
-  ticketStates,
-  nextTab,
-  // backTab,
-  onFirstTab,
-}): JSX.Element => {
+> = ({ ticketStates, nextTab, backTab, onFirstTab }): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
   const [paymentGatewayList, setPaymentGatewayList] = useState<PaymentGateway[]>([]);
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(
@@ -437,6 +432,7 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
       handleRemoveDiscountCoupon={handleRemoveDiscountCoupon}
       listDiscountCoupon={listDiscountCoupon}
       handleOnDiscountCoupon={handleOnDiscountCoupon}
+      backTab={backTab}
     />
   );
 };
