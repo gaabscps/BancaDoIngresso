@@ -191,12 +191,14 @@ export const SectorTicketPaymentSettingsScreen: React.FC = (): JSX.Element => {
   const handleOnDiscountCoupon = async (): Promise<void> => {
     try {
       // verify if the bank account not exists values empty
-      const bankAccountEmpty = discountCoupon.find(
+      const discountCouponEmpty = discountCoupon.find(
         item =>
           item.name === '' || item.amount === null || item.code === '' || item.discount === null,
       );
-      if (bankAccountEmpty) {
-        toast.warn('Preencha todos os campos ou remova a conta bancária que contém campos vazios');
+      if (discountCouponEmpty) {
+        toast.warn(
+          'Preencha todos os campos ou remova o cupom de desconto que contém campos vazios',
+        );
         return;
       }
       setListDiscountCoupon(discountCoupon);
