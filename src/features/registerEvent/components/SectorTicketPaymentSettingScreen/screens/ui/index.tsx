@@ -19,7 +19,7 @@ import { ActionProps } from '@/components/Dialog';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { CustomTable } from '@/components/Table';
 import { X } from 'react-feather';
-import { formPaymentSettingsProps } from '../../types';
+import { formPaymentSettingsProps, PaymentSettingsActionsProps } from '../../types';
 import { RegisterDiscountCoupon } from '../../components/RegisterDiscountCoupon';
 import { columnsDiscountCoupon } from './table';
 
@@ -62,6 +62,8 @@ interface SectorTicketMainSettingsContainerProps {
   }) => void;
   shouldShowModal: ShouldShowModal;
   backTab: () => void;
+  nextTab: () => void;
+  paymentSettingsActions: PaymentSettingsActionsProps;
 }
 
 // eslint-disable-next-line no-shadow
@@ -134,7 +136,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
   onToggle,
   onShouldShowModal,
   handleOnSaveSectorTicketPayment,
-  backTab,
+  paymentSettingsActions,
 }) => {
   const { formData, formErrors, onChangeFormInput } = controllerFormPaymentSettings;
 
@@ -760,20 +762,34 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
             leftIcon={TicketIcon}
           />
         </Col>
-        <div className="d-flex justify-content-end">
-          <Button
-            title="Voltar"
-            theme="noneBorder"
-            onClick={() => {
-              backTab();
-            }}
-          />
-          <Button
-            title="Próximo"
-            theme="outlineDark"
-            className="ml-3"
-            onClick={() => handleOnSaveSectorTicketPayment()}
-          />
+        <div className="d-flex justify-content-between">
+          <div>
+            <Button
+              title="Salvar"
+              theme="noneBorder"
+              onClick={() => {
+                handleOnSaveSectorTicketPayment();
+              }}
+            />
+          </div>
+          <div>
+            <Button
+              title="Voltar"
+              theme="noneBorder"
+              onClick={async () => {
+                await paymentSettingsActions.onSave();
+              }}
+            />
+            <Button
+              title="Próximo"
+              theme="outlineDark"
+              className="ml-3"
+              onClick={async () => {
+                console.log('TODO: Realizar integração da fase de pagamento ');
+                await paymentSettingsActions.onNextTap();
+              }}
+            />
+          </div>
         </div>
       </Container>
     </Fragment>

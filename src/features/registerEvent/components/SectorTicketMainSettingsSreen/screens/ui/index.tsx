@@ -12,6 +12,7 @@ import { ReactComponent as CloseX } from '@/assets/images/svg/closeX.svg';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import dayjs from 'dayjs';
 import TicketsIcon from '@/assets/images/svg/Tickets';
+import { updateMask } from '@/helpers/masks/cash';
 import {
   batchActionsProps,
   batchStatesProps,
@@ -170,17 +171,8 @@ export const SectorTicketMainSettingsContainer: React.FC<
                               }`,
                               startDate: dayjs(batch.startDate).format('DD/MM/YYYY'),
                               endDate: dayjs(batch.endDate).format('DD/MM/YYYY'),
-                              totalValue: (+batch.amount * +batch.unitValue).toLocaleString(
-                                'pt-br',
-                                {
-                                  style: 'currency',
-                                  currency: 'BRL',
-                                },
-                              ),
-                              unitValue: batch.unitValue.toLocaleString('pt-br', {
-                                style: 'currency',
-                                currency: 'BRL',
-                              }),
+                              totalValue: updateMask(String(+batch.totalValue)),
+                              unitValue: updateMask(String(+batch.unitValue)),
 
                               actions: (
                                 <div className={`${batchStates.batch ? 'disabled-content' : null}`}>
@@ -211,11 +203,20 @@ export const SectorTicketMainSettingsContainer: React.FC<
             count={batchStates?.batchList?.length}
           />
         </div>
-        <div className="d-flex justify-content-end">
+        <div className="d-flex justify-content-between">
+          <Button
+            title="Salvar"
+            theme="noneBorder"
+            onClick={async () => {
+              await mainSettingsActions.onSave();
+            }}
+          />
           <Button
             title="Próximo"
             theme="outlineDark"
-            onClick={() => mainSettingsActions.onSave()}
+            onClick={async () => {
+              await mainSettingsActions.onNextTab();
+            }}
           />
         </div>
       </Container>

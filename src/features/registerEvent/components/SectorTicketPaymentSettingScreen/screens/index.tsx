@@ -19,7 +19,7 @@ import {
   TabSectorTicketActionsProps,
 } from '@/features/registerEvent/screens/SectorTicket/ui';
 import { convertToBoolean } from '@/helpers/common/convertToBoolean';
-import { formPaymentSettingsProps } from '../types';
+import { formPaymentSettingsProps, PaymentSettingsActionsProps } from '../types';
 
 export default interface PayloadSectorTicketPaymentSettings {
   posGateway: string;
@@ -321,14 +321,31 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
         if (!payload.id) {
           delete payload.id;
         }
-        await api.post(`/event/ticket/${params.id}/payment`, payload);
-        // toast.success('POS atualizado com sucesso!');
-        nextTab();
+        const reponse = await api.post(`/event/ticket/${params.id}/payment`, payload);
+        if (reponse) toast.success('Dados salvos com sucesso!');
       }
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
     }
+  };
+
+  const handleNextTab = async (): Promise<void> => {
+    await handleOnSaveSectorTicketPayment();
+    // if (isFormValidtPaymentSettings()) {
+    nextTab();
+    // }
+  };
+
+  const handleBackTab = (): void => {
+    backTab();
+  };
+
+  const controllerPaymentSettingsActions: PaymentSettingsActionsProps = {
+    onSave: handleOnSaveSectorTicketPayment,
+    onFirstTab,
+    onReturnTab: handleBackTab,
+    onNextTap: handleNextTab,
   };
 
   const handleOnShouldShowModal = ({
@@ -433,6 +450,8 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
       listDiscountCoupon={listDiscountCoupon}
       handleOnDiscountCoupon={handleOnDiscountCoupon}
       backTab={backTab}
+      nextTab={nextTab}
+      paymentSettingsActions={controllerPaymentSettingsActions}
     />
   );
 };

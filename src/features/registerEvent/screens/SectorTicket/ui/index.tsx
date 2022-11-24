@@ -154,13 +154,10 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
                                       style: 'currency',
                                       currency: 'BRL',
                                     }),
-                                    totalValue: (+batch.amount * +batch.unitValue).toLocaleString(
-                                      'pt-br',
-                                      {
-                                        style: 'currency',
-                                        currency: 'BRL',
-                                      },
-                                    ),
+                                    totalValue: (+batch.totalValue).toLocaleString('pt-br', {
+                                      style: 'currency',
+                                      currency: 'BRL',
+                                    }),
                                     amount: `${batch.amount} uni`,
                                   }))}
                                   theme="secondaryWithoutBorder"

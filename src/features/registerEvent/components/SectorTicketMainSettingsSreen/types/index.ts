@@ -1,5 +1,5 @@
 import { NameFiles } from '@/features/registerEvent/types';
-import { FormData, FormErrors, OnChangeFormInput } from '@/hooks';
+import { FormData, FormErrors, OnChangeFormInput, IsFormValid } from '@/hooks';
 import Printer from '@/model/Printer';
 import Section from '@/model/Section';
 import Ticket from '@/model/Ticket';
@@ -9,6 +9,7 @@ import { ShouldShowModal } from '../screens/ui';
 export interface formMainSettingsProps {
   formData: FormData;
   formErrors: FormErrors;
+  isFormValid: IsFormValid;
   onChangeFormInput: OnChangeFormInput;
   onChangeFormFileInput: (inputName: string) => (file: File | undefined) => void;
   formNameFiles: NameFiles;
@@ -45,6 +46,7 @@ export interface modalConfigTicketMainSettingsProps {
 
 export interface mainSettingsProps {
   onSave: () => Promise<void>;
+  onNextTab: () => Promise<void>;
 }
 
 export interface sectorActionsProps {

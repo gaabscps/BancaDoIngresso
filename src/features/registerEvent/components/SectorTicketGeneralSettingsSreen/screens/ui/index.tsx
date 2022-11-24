@@ -32,18 +32,31 @@ export const SectorTicketGeneralSettingsContainer: React.FC<
       <div className="container-event">
         <SectorTicketGeneralSettingsContent formGeneralSettings={formGeneralSettings} />
       </div>
-      <div className="d-flex justify-content-end">
-        <Button
-          title="Voltar"
-          theme="outlineDark"
-          onClick={() => generalSettingsActions.onReturnTap()}
-        />
-        <Button
-          title="Adicionar ingresso"
-          theme="outlineDark"
-          className="ml-3"
-          onClick={() => generalSettingsActions.onSave()}
-        />
+      <div className="d-flex justify-content-between">
+        <div>
+          <Button
+            title="Salvar"
+            theme="noneBorder"
+            onClick={async () => {
+              await generalSettingsActions.onSave();
+            }}
+          />
+        </div>
+        <div>
+          <Button
+            title="Voltar"
+            theme="noneBorder"
+            onClick={() => generalSettingsActions.onReturnTap()}
+          />
+          <Button
+            title="Adicionar ingresso"
+            theme="outlineDark"
+            className="ml-3"
+            onClick={async () => {
+              await generalSettingsActions.onNextTap();
+            }}
+          />
+        </div>
       </div>
     </Container>
   </Fragment>

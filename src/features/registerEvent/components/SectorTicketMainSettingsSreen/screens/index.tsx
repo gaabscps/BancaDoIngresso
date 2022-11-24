@@ -320,8 +320,8 @@ export const SectorTicketMainSettingsScreen: React.FC<
         if (!payload.id) {
           delete payload.id;
         }
-        await api.post(`/event/ticket/${params.id}/main-settings`, payload);
-        nextTab();
+        const reponse = await api.post(`/event/ticket/${params.id}/main-settings`, payload);
+        if (reponse) toast.success('Dados salvos com sucesso!');
       }
     } catch (error) {
       const err = error as AxiosError;
@@ -351,12 +351,7 @@ export const SectorTicketMainSettingsScreen: React.FC<
           commission: +formDataBatchs[FormInputNameToBatch.commission],
           amount: String(formDataBatchs[FormInputNameToBatch.amount]),
           unitValue: String(+unMaskCash(formDataBatchs[FormInputNameToBatch.unitValue])),
-          totalValue: String(
-            (
-              +unMaskCash(formDataBatchs[FormInputNameToBatch.unitValue]) *
-              +unMaskCash(formDataBatchs[FormInputNameToBatch.amount])
-            ).toFixed(2),
-          ),
+          totalValue: String(+unMaskCash(formDataBatchs[FormInputNameToBatch.totalValue])),
           imageUrl: formDataBatchs[FormInputNameToBatch.imageUrl],
         };
 
@@ -434,12 +429,7 @@ export const SectorTicketMainSettingsScreen: React.FC<
             commission: +formDataBatchs[FormInputNameToBatch.commission],
             amount: String(formDataBatchs[FormInputNameToBatch.amount]),
             unitValue: String(+unMaskCash(formDataBatchs[FormInputNameToBatch.unitValue])),
-            totalValue: String(
-              (
-                +unMaskCash(formDataBatchs[FormInputNameToBatch.unitValue]) *
-                +unMaskCash(formDataBatchs[FormInputNameToBatch.amount])
-              ).toFixed(2),
-            ),
+            totalValue: String(+unMaskCash(formDataBatchs[FormInputNameToBatch.totalValue])),
             imageUrl: formDataBatchs[FormInputNameToBatch.imageUrl],
           };
         }
@@ -497,6 +487,7 @@ export const SectorTicketMainSettingsScreen: React.FC<
   const controllerFormMainSettings: formMainSettingsProps = {
     formData: formDataMainSettings,
     formErrors: formErrorsMainSettings,
+    isFormValid: isFormValidMainSettings,
     onChangeFormInput: onChangeFormInputMainSettings,
     onChangeFormFileInput: handleOnChangeFileInputMainSettings,
     formNameFiles,
@@ -535,8 +526,16 @@ export const SectorTicketMainSettingsScreen: React.FC<
     setPrinterList,
   };
 
+  const handleNextTab = async (): Promise<void> => {
+    await handleOnSaveMainSettings();
+    if (isFormValidMainSettings()) {
+      nextTab();
+    }
+  };
+
   const controllerMainSettingsActions: mainSettingsProps = {
     onSave: handleOnSaveMainSettings,
+    onNextTab: handleNextTab,
   };
 
   const controllerSectorActions: sectorActionsProps = {

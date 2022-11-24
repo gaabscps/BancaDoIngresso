@@ -1,4 +1,4 @@
-import { FormData, FormErrors, OnChangeFormInput } from '@/hooks';
+import { FormData, FormErrors, OnChangeFormInput, IsFormValid } from '@/hooks';
 import Section from '@/model/Section';
 import Ticket from '@/model/Ticket';
 import { ShouldShowModal } from '../screens/ui';
@@ -7,6 +7,7 @@ export interface formGeneralSettingsProps {
   formData: FormData;
   formErrors: FormErrors;
   onChangeFormInput: OnChangeFormInput;
+  isFormValid: IsFormValid;
 }
 
 export interface onShouldShowModalTicketGeneralSettingsProps {
@@ -17,7 +18,9 @@ export interface onShouldShowModalTicketGeneralSettingsProps {
 
 export interface generalSettingsProps {
   onSave: () => Promise<void>;
+  onFirstTab: () => void;
   onReturnTap: () => void;
+  onNextTap: () => Promise<void>;
 }
 
 export interface ticketActionsProps {

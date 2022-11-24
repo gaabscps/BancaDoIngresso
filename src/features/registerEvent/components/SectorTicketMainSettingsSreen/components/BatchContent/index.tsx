@@ -133,9 +133,12 @@ export const BatchContent: React.FC<
                 placeholder="Ex: 20000"
                 maxLength={15}
                 value={formData[FormInputName.amount]}
-                onChange={e =>
-                  onChangeFormInput(FormInputName.amount)(e.target.value.replace(/\D/g, ''))
-                }
+                onChange={e => {
+                  onChangeFormInput(FormInputName.amount)(e.target.value.replace(/\D/g, ''));
+                  onChangeFormInput(FormInputName.totalValue)(
+                    String(+e.target.value * +unMaskCash(formData[FormInputName.unitValue])),
+                  );
+                }}
                 error={formErrors.amount && formErrors.amount[0]}
               />
             </FormGroup>
@@ -146,10 +149,15 @@ export const BatchContent: React.FC<
                 name="unitValue"
                 label="Valor unitário"
                 placeholder="Ex: 20,00"
-                value={formData[FormInputName.unitValue]}
-                onChange={e =>
-                  onChangeFormInput(FormInputName.unitValue)(updateMaskCash(e.target.value))
-                }
+                value={updateMaskCash(formData[FormInputName.unitValue])}
+                onChange={e => {
+                  onChangeFormInput(FormInputName.unitValue)(
+                    String(updateMaskCash(e.target.value)),
+                  );
+                  onChangeFormInput(FormInputName.totalValue)(
+                    String(+unMaskCash(e.target.value) * +formData[FormInputName.amount]),
+                  );
+                }}
                 error={formErrors.unitValue && formErrors.unitValue[0]}
               />
             </FormGroup>
@@ -160,14 +168,7 @@ export const BatchContent: React.FC<
             name="totalValue"
             label="Valor total estimado"
             placeholder="Ex: 20,00"
-            value={updateMaskCash(
-              String(
-                (
-                  +unMaskCash(formData[FormInputName.unitValue]) *
-                  +unMaskCash(formData[FormInputName.amount])
-                ).toFixed(2),
-              ),
-            )}
+            value={updateMaskCash(formData[FormInputName.totalValue])}
             onChange={() => undefined}
             error={formErrors.totalValue && formErrors.totalValue[0]}
             disabled

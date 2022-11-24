@@ -26,7 +26,7 @@ type UrlParams = {
 
 export const SectorTicketGeneralSettingsScreen: React.FC<
   Pick<SectorTicketContainerProps, 'ticketStates'> & TabSectorTicketActionsProps
-> = ({ ticketStates, nextTab, backTab, onFirstTab }): JSX.Element => {
+> = ({ ticketStates, backTab, onFirstTab }): JSX.Element => {
   const [state] = useState<States>(States.default);
 
   const params = useParams<UrlParams>();
@@ -101,8 +101,8 @@ export const SectorTicketGeneralSettingsScreen: React.FC<
         // if (!payload.id) {
         //   delete payload.id;
         // }
-        await api.post(`/event/ticket/${params.id}/general-settings`, payload);
-        nextTab();
+        const reponse = await api.post(`/event/ticket/${params.id}/general-settings`, payload);
+        if (reponse) toast.success('Dados salvos com sucesso!');
       }
     } catch (error) {
       const err = error as AxiosError;
@@ -110,15 +110,29 @@ export const SectorTicketGeneralSettingsScreen: React.FC<
     }
   };
 
+  const handleNextTab = async (): Promise<void> => {
+    await handleOnSaveGeneralSettings();
+    if (isFormValidGeneralSettings()) {
+      onFirstTab();
+    }
+  };
+
+  const handleBackTab = (): void => {
+    backTab();
+  };
+
   const controllerFormGeneralSettings: formGeneralSettingsProps = {
     formData: formDataGeneralSettings,
     formErrors: formErrorsGeneralSettings,
     onChangeFormInput: onChangeFormInputGeneralSettings,
+    isFormValid: isFormValidGeneralSettings,
   };
 
   const controllerGeneralSettingsActions: generalSettingsProps = {
     onSave: handleOnSaveGeneralSettings,
-    onReturnTap: backTab,
+    onFirstTab,
+    onReturnTap: handleBackTab,
+    onNextTap: handleNextTab,
   };
 
   useEffect(() => {

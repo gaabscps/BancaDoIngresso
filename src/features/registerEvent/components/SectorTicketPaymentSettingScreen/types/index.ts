@@ -5,3 +5,10 @@ export interface formPaymentSettingsProps {
   formErrors: FormErrors;
   onChangeFormInput: OnChangeFormInput;
 }
+
+export interface PaymentSettingsActionsProps {
+  onSave: () => Promise<void>;
+  onFirstTab: () => void;
+  onReturnTab: () => void;
+  onNextTap: () => Promise<void>;
+}
