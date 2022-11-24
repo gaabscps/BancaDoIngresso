@@ -27,7 +27,7 @@ function SuperCollapse(props: Props): JSX.Element {
     <>
       <div style={{ marginBottom: '50px' }}>
         <div
-          className={`collapseTable d-flex justify-content-between collapseTableText ${
+          className={`collapseTable d-flex justify-content-between collapseTableText position-relative ${
             props.disabled ? 'collapse-disabled' : ''
           } ${props.className} ${open ? ' border-bottom-collapse' : ''}`}
           onClick={() => setOpen(!open)}
@@ -46,7 +46,8 @@ function SuperCollapse(props: Props): JSX.Element {
           <div>
             {props.showButtonOnTitle && props.buttonTitle && props.buttonAction && (
               <button
-                className="btn button-dark collapse-title-button"
+                className="btn button-dark collapse-title-button position-absolute"
+                style={{ right: '60px', top: '25px' }}
                 type="button"
                 onClick={e =>
                   props.buttonAction
