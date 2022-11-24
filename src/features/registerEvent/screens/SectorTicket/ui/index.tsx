@@ -131,7 +131,13 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
                           <div>
                             <div className="content-collapse-title-flex">
                               <div className="content-collapse-title-container">
-                                <p className="content-collapse-title subpvd-title-name">
+                                <p
+                                  className={`content-collapse-title subpvd-title-name ${
+                                    ticket?.id === ticketStates.ticket?.id
+                                      ? 'font-weight-bolder'
+                                      : ''
+                                  }`}
+                                >
                                   {ticket.eventSection.name}
                                 </p>
                               </div>
