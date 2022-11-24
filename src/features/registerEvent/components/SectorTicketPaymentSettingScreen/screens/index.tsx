@@ -139,19 +139,19 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
       allowSellingPos: [validators.required],
       printReceipt: [validators.required],
       physicalSaleAllowCreditCardPayment: [validators.required],
-      physicalSaleDebit: [validators.required],
-      physicalSaleCredit: [validators.required],
-      physicalSalePix: [validators.required],
-      physicalSaleAdministrateTax: [validators.required],
+      physicalSaleDebit: [validators.required, validators.between(0, 10)],
+      physicalSaleCredit: [validators.required, validators.between(0, 10)],
+      physicalSalePix: [validators.required, validators.between(0, 10)],
+      physicalSaleAdministrateTax: [validators.required, validators.between(0, 10)],
       physicalSaleInstallments: [validators.required],
-      physicalSaleFee: [validators.required],
+      physicalSaleFee: [validators.required, validators.between(0, 10)],
       websiteSaleAllowCreditCardPayment: [validators.required],
-      websiteSaleDebit: [validators.required],
-      websiteSaleCredit: [validators.required],
-      websiteSalePix: [validators.required],
-      websiteSaleAdministrateTax: [validators.required],
+      websiteSaleDebit: [validators.required, validators.between(0, 10)],
+      websiteSaleCredit: [validators.required, validators.between(0, 10)],
+      websiteSalePix: [validators.required, validators.between(0, 10)],
+      websiteSaleAdministrateTax: [validators.required, validators.between(0, 10)],
       websiteSaleInstallments: [validators.required],
-      websiteSaleFee: [validators.required],
+      websiteSaleFee: [validators.required, validators.between(0, 10)],
       allowDiscount: [validators.required],
       allowDiscountCoupon: [validators.required],
     },
@@ -335,64 +335,6 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
       toast.error(err.message);
     }
   };
-
-  // const handleOnSaveSectorTicketPayment = async (): Promise<void> => {
-  //   try {
-  //     // if (isFormValidMainSettings()) {
-  //     const payload: PayloadSectorTicketPaymentSettings = {
-  //       posGateway: 'ebca4cf5-c5fc-4a34-bdca-3c6654270bf8',
-  //       websiteGateway: 'ebca4cf5-c5fc-4a34-bdca-3c6654270bf8',
-  //       websiteInstallmentLimit: 0,
-  //       posInstallmentLimit: 0,
-  //       allowFractionalPayment: true,
-  //       allowVariableRate: true,
-  //       allowVariableValue: true,
-  //       allowPaymentBankSlip: true,
-  //       allowPaymentPIX: true,
-  //       allowContactlessPayment: true,
-  //       allowSellingWebsite: true,
-  //       allowSellingPos: true,
-  //       printReceipt: true,
-  //       physicalSale: {
-  //         allowCreditCardPayment: true,
-  //         debit: 0,
-  //         credit: 0,
-  //         pix: 0,
-  //         bankSlip: 0,
-  //         administrateTax: 0,
-  //         installments: 0,
-  //         fee: 0,
-  //       },
-  //       websiteSale: {
-  //         allowCreditCardPaymen: true,
-  //         debit: 0,
-  //         credit: 0,
-  //         bankSlip: 0,
-  //         pix: 0,
-  //         administrateTax: 0,
-  //         installments: 0,
-  //         fee: 0,
-  //       },
-  //       allowDiscount: true,
-  //       allowDiscountCoupon: false,
-  //       discountCoupons: [
-  //         {
-  //           id: '',
-  //         },
-  //       ],
-  //     };
-
-  //     await api.post<PayloadSectorTicketPaymentSettings>(
-  //       `/event/ticket/${params.id}/payment`,
-  //       payload,
-  //     );
-  //     toast.success('POS atualizado com sucesso!');
-  //     // }
-  //   } catch (error) {
-  //     const err = error as AxiosError;
-  //     toast.error(err.message);
-  //   }
-  // };
 
   const handleOnShouldShowModal = ({
     value,
