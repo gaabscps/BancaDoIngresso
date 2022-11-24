@@ -201,8 +201,7 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
             </div>
 
             <Tab
-              // numberStap={numberTab}
-              numberStap={1}
+              numberStap={numberTab}
               titles={[
                 'Configurações principais',
                 'Configurações de pagamento',
