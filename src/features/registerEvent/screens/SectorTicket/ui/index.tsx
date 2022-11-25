@@ -17,6 +17,7 @@ import {
 import TicketIcon from '@/assets/images/svg/Ticket';
 import { SectorTicketGeneralSettingsScreen } from '@/features/registerEvent/components/SectorTicketGeneralSettingsSreen/screens';
 import { SectorTicketPaymentSettingsScreen } from '@/features/registerEvent/components/SectorTicketPaymentSettingScreen/screens';
+import { useParams } from 'react-router-dom';
 import { formSectorTicketProps } from '../types';
 import { columnsTickets } from './table';
 
@@ -44,6 +45,10 @@ export type TabSectorTicketActionsProps = {
   onFirstTab: () => void;
 };
 
+type UrlParams = {
+  id: string;
+};
+
 export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
   state,
   formSectorTicket,
@@ -52,21 +57,25 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
 }) => {
   const { formData, formErrors, onChangeFormInput } = formSectorTicket;
   const [numberTab, setNumberTab] = useState(0);
+  const params = useParams<UrlParams>();
 
   const handleNextTab = (): void => {
     if (numberTab <= contentTabs.length) {
       setNumberTab(numberTab + 1);
+      ticketActions.onGetAll(params.id);
     }
   };
 
   const handleBackTab = (): void => {
     if (numberTab <= contentTabs.length && numberTab >= 0) {
       setNumberTab(numberTab - 1);
+      ticketActions.onGetAll(params.id);
     }
   };
 
   const handleOnFirstTab = (): void => {
     setNumberTab(0);
+    ticketActions.onGetAll(params.id);
   };
 
   const contentTabs = [
@@ -172,7 +181,7 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
                                   <Pen
                                     className="mr-4 svg-icon action-icon"
                                     onClick={() => {
-                                      ticketActions.onGet(ticket);
+                                      ticketActions.onGetById(ticket);
                                     }}
                                   />
                                   <CloseX

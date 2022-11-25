@@ -392,10 +392,20 @@ export const SectorTicketMainSettingsScreen: React.FC<
     try {
       if (batchSelected) {
         setBatch(batchSelected);
+        // genetare string witch 10 random numbers
+        const randomNumbers = (): string => {
+          let result = '';
+          const characters = '0123456789';
+          const charactersLength = characters.length;
+          for (let i = 0; i < 10; i += 1) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+          }
+          return result;
+        };
 
         setFormNameFiles({
           ...formNameFiles,
-          [FormInputNameToBatch.imageUrl]: 'Layout adicionado',
+          [FormInputNameToBatch.imageUrl]: `${randomNumbers()}.JPEG`,
         });
       }
     } catch (error) {

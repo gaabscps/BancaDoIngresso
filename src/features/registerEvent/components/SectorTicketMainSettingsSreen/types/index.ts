@@ -62,7 +62,8 @@ export interface batchActionsProps {
 }
 
 export interface ticketActionsProps {
-  onGet: (ticketSelected: Ticket) => void;
+  onGetById: (ticketSelected: Ticket) => void;
+  onGetAll: (eventId: string) => void;
   onCancelEdit: () => void;
   onShowDelete: (ticketSelected: Ticket) => void;
 }

@@ -153,7 +153,11 @@ export const SectorTicketMainSettingsContainer: React.FC<
 
                       <div>
                         <div className="content-collapse-title-flex">
-                          <div className="content-collapse-title-container">
+                          <div
+                            className={`content-collapse-title-container ${
+                              batch?.id === batchStates.batch?.id ? 'font-weight-bolder' : ''
+                            }`}
+                          >
                             <p className="content-collapse-title content-collapse-title-index">
                               Lote #{String(index + 1)}{' '}
                             </p>

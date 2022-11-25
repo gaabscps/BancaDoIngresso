@@ -439,7 +439,6 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
       state={state}
       controllerFormPaymentSettings={controllerFormPaymentSettings}
       paymentGatewayList={paymentGatewayList}
-      handleOnSaveSectorTicketPayment={handleOnSaveSectorTicketPayment}
       onShouldShowModal={handleOnShouldShowModal}
       title={title}
       shouldShowModal={shouldShowModal}

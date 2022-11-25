@@ -115,7 +115,8 @@ export const SectorTicketScreen: React.FC = (): JSX.Element => {
   };
 
   const controllerTicketActions: ticketActionsProps = {
-    onGet: handleOnGetTicket,
+    onGetById: handleOnGetTicket,
+    onGetAll: handleFecthTicketsList,
     onCancelEdit: handleOnCancelEditTicket,
     onShowDelete: handleOnShowDeleteTicket,
   };

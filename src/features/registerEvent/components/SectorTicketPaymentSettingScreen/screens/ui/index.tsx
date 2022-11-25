@@ -51,7 +51,6 @@ interface SectorTicketMainSettingsContainerProps {
   handleAddDiscountCoupon: () => void;
   onToggle: () => void;
   handleRemoveDiscountCoupon: (index: number) => void;
-  handleOnSaveSectorTicketPayment: () => Promise<void>;
   onShouldShowModal: ({
     value,
     newTitleModal,
@@ -135,7 +134,6 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
   handleAddDiscountCoupon,
   onToggle,
   onShouldShowModal,
-  handleOnSaveSectorTicketPayment,
   paymentSettingsActions,
 }) => {
   const { formData, formErrors, onChangeFormInput } = controllerFormPaymentSettings;
@@ -767,8 +765,8 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
             <Button
               title="Salvar"
               theme="noneBorder"
-              onClick={() => {
-                handleOnSaveSectorTicketPayment();
+              onClick={async () => {
+                await paymentSettingsActions.onSave();
               }}
             />
           </div>
@@ -776,8 +774,8 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
             <Button
               title="Voltar"
               theme="noneBorder"
-              onClick={async () => {
-                await paymentSettingsActions.onSave();
+              onClick={() => {
+                paymentSettingsActions.onReturnTab();
               }}
             />
             <Button
