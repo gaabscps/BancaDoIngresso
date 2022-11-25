@@ -2,7 +2,7 @@
 /* eslint-disable no-shadow */
 /* eslint-disable import/no-unresolved */
 import React, { Fragment, useState } from 'react';
-import { ButtonGroup, Loading, Tab } from '@/components';
+import { Button, ButtonGroup, Loading, Tab } from '@/components';
 import { Container, FormGroup } from 'reactstrap';
 import { SectorTicketMainSettingsScreen } from '@/features/registerEvent/components/SectorTicketMainSettingsSreen/screens';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
@@ -221,6 +221,15 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
               ]}
               contents={contentTabs}
             />
+            <hr />
+            <div className="footer-register-event">
+              <Button title="Voltar" theme="noneBorder" onClick={() => () => undefined} />
+              <Button
+                title="Avançar para Setor e produto"
+                onClick={() => undefined}
+                disabled={!(ticketStates.ticketList.length > 0)}
+              />
+            </div>
           </>
         )}
       </Container>
