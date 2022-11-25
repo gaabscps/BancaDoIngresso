@@ -55,17 +55,6 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
   addGroup,
   removeGroup,
 }): JSX.Element => (
-  // const datarow = groupList.map((item, index) => ({
-  //   id: index,
-  //   group: <div onClick={() => console.log(item.group)}>{item.name}</div>,
-  //   group: item.group?.find(sub => sub.id === item.id)?.name,
-  //   actions: (
-  //     <div className="d-flex align-items-center">
-  //       <X size={20} className="cursor-pointer" onClick={() => removeGroup(index)} />
-  //     </div>
-  //   ),
-  // }));
-
   <>
     <Loading isVisible={state === States.loading} />
     <Container style={{ maxWidth: '100%' }} className="mainContainer">

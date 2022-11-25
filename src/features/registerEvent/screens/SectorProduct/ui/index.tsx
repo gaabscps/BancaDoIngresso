@@ -3,6 +3,7 @@ import React, { Fragment } from 'react';
 import { ButtonGroup, Loading, Tab } from '@/components';
 import { Container, FormGroup } from 'reactstrap';
 import { SectorProductGroupScreen } from '@/features/registerEvent/components/SectorProductGroup/screens';
+import { SectorProductScreen } from '@/features/registerEvent/components/SectorProductScreen/screens';
 import { formSectorProductProps } from '../types';
 
 // eslint-disable-next-line no-shadow
@@ -66,12 +67,14 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
                 <>
                   <SectorProductGroupScreen />
                 </>,
-                'Conteudo 2',
+                <>
+                  <SectorProductScreen />
+                </>,
                 'Conteudo 3',
                 'Conteudo 4',
                 'Conteudo 5',
               ]}
-              numberStap={0}
+              numberStap={1}
             />
           </>
         )}
