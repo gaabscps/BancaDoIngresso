@@ -1,6 +1,5 @@
 import { FormData, FormErrors, OnChangeFormInput, IsFormValid } from '@/hooks';
-import Section from '@/model/Section';
-import Ticket from '@/model/Ticket';
+import DiscountCoupon from '@/model/DiscountCoupon';
 import { ShouldShowModal } from '../screens/ui';
 
 export interface formProductProps {
@@ -8,28 +7,48 @@ export interface formProductProps {
   formErrors: FormErrors;
   onChangeFormInput: OnChangeFormInput;
   isFormValid: IsFormValid;
+  onChangeFormFileInput: (inputName: string) => (file: File | undefined) => void;
+  formNameFiles: { [key: string]: string };
 }
 
-export interface onShouldShowModalTicketProductProps {
+export interface formConfigProductProps {
+  formData: FormData;
+  formErrors: FormErrors;
+  onChangeFormInput: OnChangeFormInput;
+  isFormValid: IsFormValid;
+}
+
+export interface onShouldShowModalSectorProductProps {
   value: ShouldShowModal;
   newTitleModal: string | React.ReactNode;
-  sector?: Section;
+  product?: any;
 }
 
-export interface productProps {
+export interface modalConfigTicketMainSettingsProps {
+  title: string | React.ReactNode;
+  visible: boolean;
+  onChangeTitle: (title: string) => void;
+  onToggle: () => void;
+  onShouldShowModal: (props: onShouldShowModalSectorProductProps) => void;
+  shouldShowModal: ShouldShowModal;
+  onShowModalDelete: any;
+}
+
+export interface productActionsProps {
   onSave: () => Promise<void>;
   onFirstTab: () => void;
   onReturnTap: () => void;
   onNextTap: () => Promise<void>;
 }
 
-export interface ticketActionsProps {
-  onGet: (ticketSelected: Ticket) => void;
-  onCancelEdit: () => void;
-  onShowDelete: (ticketSelected: Ticket) => void;
+export interface productStatesProps {
+  product: any | undefined;
+  setProduct: React.Dispatch<React.SetStateAction<any>>;
 }
 
-export interface ticketStatesProps {
-  ticket: Ticket | undefined;
-  ticketList: Ticket[];
+export interface FormDiscountCouponProps {
+  handleAddDiscountCoupon: () => void;
+  handleChangeDiscountCoupon: (name: string, index: number, value: string) => void;
+  handleRemoveDiscountCoupon: (index: number) => void;
+  discountCoupon: DiscountCoupon[];
 }

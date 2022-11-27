@@ -1,7 +1,8 @@
 /* eslint-disable import/no-unresolved */
 import React, { Fragment } from 'react';
-import { ButtonGroup, InputText, SelectCustom } from '@/components';
+import { ButtonGroup, InputFile, InputText, SelectCustom } from '@/components';
 import { Col, Form, FormGroup, Row } from 'reactstrap';
+import { updateMask as updateMaskCash, unmask as unMaskCash } from '@/helpers/masks/cash';
 import { SectorProductContainerProps } from '../../screens/ui';
 
 // eslint-disable-next-line no-shadow
@@ -26,7 +27,8 @@ export enum FormInputName {
 export const ProductRegisterContent: React.FC<Pick<SectorProductContainerProps, 'formProduct'>> = ({
   formProduct,
 }) => {
-  const { formData, formErrors, onChangeFormInput } = formProduct;
+  const { formData, formErrors, onChangeFormInput, onChangeFormFileInput, formNameFiles } =
+    formProduct;
 
   return (
     <Fragment>
@@ -107,7 +109,12 @@ export const ProductRegisterContent: React.FC<Pick<SectorProductContainerProps, 
                 label="Quantidade"
                 placeholder="Ex: 200"
                 value={formData[FormInputName.amount]}
-                onChange={e => onChangeFormInput(FormInputName.amount)(e.target.value)}
+                onChange={e => {
+                  onChangeFormInput(FormInputName.amount)(e.target.value.replace(/\D/g, ''));
+                  onChangeFormInput(FormInputName.totalValue)(
+                    String(+e.target.value * +unMaskCash(formData[FormInputName.unitValue])),
+                  );
+                }}
                 error={formErrors.amount && formErrors.amount[0]}
               />
             </FormGroup>
@@ -118,8 +125,15 @@ export const ProductRegisterContent: React.FC<Pick<SectorProductContainerProps, 
                 name="unitValue"
                 label="Valor unitário"
                 placeholder="Ex: 20,00"
-                value={formData[FormInputName.unitValue]}
-                onChange={e => onChangeFormInput(FormInputName.unitValue)(e.target.value)}
+                value={updateMaskCash(formData[FormInputName.unitValue])}
+                onChange={e => {
+                  onChangeFormInput(FormInputName.unitValue)(
+                    String(updateMaskCash(e.target.value)),
+                  );
+                  onChangeFormInput(FormInputName.totalValue)(
+                    String(+unMaskCash(e.target.value) * +formData[FormInputName.amount]),
+                  );
+                }}
                 error={formErrors.unitValue && formErrors.unitValue[0]}
               />
             </FormGroup>
@@ -130,10 +144,24 @@ export const ProductRegisterContent: React.FC<Pick<SectorProductContainerProps, 
             name="totalValue"
             label="Valor total"
             placeholder=""
-            value={formData[FormInputName.totalValue]}
-            onChange={e => onChangeFormInput(FormInputName.totalValue)(e.target.value)}
+            value={updateMaskCash(formData[FormInputName.totalValue])}
+            onChange={() => undefined}
             error={formErrors.totalValue && formErrors.totalValue[0]}
             disabled
+          />
+        </FormGroup>
+        <FormGroup className="mb-2">
+          <InputFile
+            name="imageBase64"
+            label="Imagem do produto (opcional)"
+            placeholder=""
+            fileName={formNameFiles?.imageBase64}
+            onChange={e => {
+              onChangeFormFileInput(FormInputName.imageBase64)(
+                (e.target as HTMLInputElement)?.files?.[0],
+              );
+            }}
+            error={formErrors.imageBase64 && formErrors.imageBase64[0]}
           />
         </FormGroup>
       </Form>

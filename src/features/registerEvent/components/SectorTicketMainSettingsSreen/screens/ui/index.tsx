@@ -114,7 +114,7 @@ export const SectorTicketMainSettingsContainer: React.FC<
           <p>{batchStates.batch ? 'Editar lote' : 'Cadastrar lote'}</p>
         </div>
 
-        <div style={{ background: '#FFF', borderRadius: '5px', padding: '50px 30px' }}>
+        <div className="card-ligth-color">
           <div className="container-event">
             <BatchContent formBatchs={formBatchs} batchStates={batchStates} />
           </div>

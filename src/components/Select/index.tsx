@@ -23,6 +23,7 @@ export interface SelectAutoCompleteProps {
   id?: string;
   style?: React.CSSProperties;
   wrapperClass?: string;
+  className?: string;
   control?: any;
   defaultValue?: OptionProps;
   onBlur?: () => void;
@@ -55,6 +56,7 @@ export const SelectCustom = (props: SelectAutoCompleteProps) => {
           onChange={props.onChange}
           onBlur={props.onBlur}
           styles={customStyles(props)}
+          className={props.className}
           noOptionsMessage={() => 'Nenhum resultado encontrado'}
           value={props.options.find((option: OptionProps) => option.value === props.value)}
           defaultValue={props.defaultValue}

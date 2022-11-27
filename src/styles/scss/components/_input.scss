@@ -50,6 +50,10 @@ input[type='checkbox'] {
   margin-top: 15px;
 }
 
+.w-input-sm {
+  width: 135px;
+}
+
 @media screen and (max-width: 1200px) {
   .tbody-container {
     flex-direction: column;

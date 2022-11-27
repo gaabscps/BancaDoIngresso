@@ -18,85 +18,83 @@ export const RegisterDiscountCoupon: React.FC<RegisterContentProps> = ({
   discountCoupon,
 }) => (
   <>
-    <Card className="card__main-container">
-      <Form
-        style={{ backgroundColor: '#f1f1f1' }}
-        noValidate={true}
-        onSubmit={(e): void => {
-          e.preventDefault();
-        }}
-      >
-        {discountCoupon.map((item, index) => (
-          <>
-            <div className="modal__main-container" key={index}>
-              <Row>
-                <Col md={6}>
-                  <FormGroup className="mb-2">
-                    <InputText
-                      name="name"
-                      label="Nome do cupom"
-                      placeholder="Digite o nome do cupom. Ex: Dia das Mães"
-                      value={item.name}
-                      onChange={e => handleChangeDiscountCoupon('name', index, e?.target.value)}
-                      error={undefined}
-                    />
-                  </FormGroup>
-                </Col>
-                <Col md={6}>
-                  <FormGroup className="mb-2">
-                    <InputText
-                      name="code"
-                      label="Código do cupom"
-                      placeholder="Digite o código do cupom. Ex: MAE20 "
-                      value={item.code}
-                      onChange={e => handleChangeDiscountCoupon('code', index, e?.target.value)}
-                      error={undefined}
-                    />
-                  </FormGroup>
-                </Col>
-              </Row>
-              <Row>
-                <Col md={2} sm={4}>
-                  <FormGroup className="mb-2">
-                    <InputText
-                      name="amount"
-                      type="number"
-                      label="Quant. cupons"
-                      placeholder="0"
-                      value={String(item.amount)}
-                      onChange={e => handleChangeDiscountCoupon('amount', index, e?.target.value)}
-                      error={undefined}
-                    />
-                  </FormGroup>
-                </Col>
-                <Col className="ml-5" md={2} sm={4}>
-                  <FormGroup className="mb-2">
-                    <InputText
-                      name="discount"
-                      type="number"
-                      label="Desconto (%)"
-                      placeholder="0"
-                      value={String(item.discount)}
-                      onChange={e => handleChangeDiscountCoupon('discount', index, e?.target.value)}
-                      error={undefined}
-                    />
-                  </FormGroup>
-                </Col>
-                <div className="d-flex justify-content-end align-items-center w-100 mr-3">
-                  <Trash
-                    className="svg-icon action-icon"
-                    onClick={() => handleRemoveDiscountCoupon(index)}
+    <Form
+      style={{ backgroundColor: '#f1f1f1' }}
+      noValidate={true}
+      onSubmit={(e): void => {
+        e.preventDefault();
+      }}
+    >
+      {discountCoupon.map((item, index) => (
+        <>
+          <div className="modal__main-container" key={index}>
+            <Row>
+              <Col md={6}>
+                <FormGroup className="mb-2">
+                  <InputText
+                    name="name"
+                    label="Nome do cupom"
+                    placeholder="Digite o nome do cupom. Ex: Dia das Mães"
+                    value={item.name}
+                    onChange={e => handleChangeDiscountCoupon('name', index, e?.target.value)}
+                    error={undefined}
                   />
-                </div>
-              </Row>
-            </div>
-            {discountCoupon.length > 1 ? (
-              <div className="p-4" style={{ backgroundColor: '#f8f8f8' }}></div>
-            ) : null}
-          </>
-        ))}
-      </Form>
-    </Card>
+                </FormGroup>
+              </Col>
+              <Col md={6}>
+                <FormGroup className="mb-2">
+                  <InputText
+                    name="code"
+                    label="Código do cupom"
+                    placeholder="Digite o código do cupom. Ex: MAE20 "
+                    value={item.code}
+                    onChange={e => handleChangeDiscountCoupon('code', index, e?.target.value)}
+                    error={undefined}
+                  />
+                </FormGroup>
+              </Col>
+            </Row>
+            <Row>
+              <Col md={2} sm={4}>
+                <FormGroup className="mb-2">
+                  <InputText
+                    name="amount"
+                    type="number"
+                    label="Quant. cupons"
+                    placeholder="0"
+                    value={String(item.amount)}
+                    onChange={e => handleChangeDiscountCoupon('amount', index, e?.target.value)}
+                    error={undefined}
+                  />
+                </FormGroup>
+              </Col>
+              <Col className="ml-5" md={2} sm={4}>
+                <FormGroup className="mb-2">
+                  <InputText
+                    name="discount"
+                    type="number"
+                    label="Desconto (%)"
+                    placeholder="0"
+                    value={String(item.discount)}
+                    onChange={e => handleChangeDiscountCoupon('discount', index, e?.target.value)}
+                    error={undefined}
+                  />
+                </FormGroup>
+              </Col>
+              <div className="d-flex justify-content-end align-items-center w-100 mr-3">
+                <Trash
+                  className="svg-icon action-icon"
+                  onClick={() => handleRemoveDiscountCoupon(index)}
+                />
+              </div>
+            </Row>
+          </div>
+          {discountCoupon.length > 1 ? (
+            <div className="p-4" style={{ backgroundColor: '#f8f8f8' }}></div>
+          ) : null}
+        </>
+      ))}
+    </Form>
     <div
       onClick={() => {
         handleAddDiscountCoupon();
