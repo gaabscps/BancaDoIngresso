@@ -152,8 +152,13 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
       </Dialog>
       <Loading isVisible={state === States.loading} />
       <Container className="mainContainer" fluid={true}>
-        <div className="container-event">
-          <ProductRegisterContent formProduct={formProduct} />
+        <div className="card-ligth-color mb-5">
+          <div className="container-event ">
+            <ProductRegisterContent formProduct={formProduct} />
+          </div>
+          <div className="d-flex justify-content-end">
+            <div className="link-green mr-3">+ cadastrar produto</div>
+          </div>
         </div>
         <SuperCollapse
           title={`Produtos cadastrados`}
