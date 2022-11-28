@@ -261,11 +261,19 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
 
   const handleOnGetProduct = async (productSelected: any): Promise<void> => {
     try {
-      console.log('Aqui 1 ');
       if (productSelected) {
-        console.log('Aqui 2');
         setProduct(productSelected);
       }
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    }
+  };
+
+  const handleOnCancelEditProduct = (): void => {
+    try {
+      setProduct(undefined);
+      resetFormProduct();
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
@@ -294,6 +302,7 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
     onFirstTab,
     onReturnTab: handleBackTab,
     onNextTab: handleNextTab,
+    onCancelEdit: handleOnCancelEditProduct,
   };
 
   const controllerProductStates: productStatesProps = {

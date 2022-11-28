@@ -40,6 +40,7 @@ export interface productActionsProps {
   onFirstTab: () => void;
   onReturnTab: () => void;
   onNextTab: () => Promise<void>;
+  onCancelEdit: () => void;
 }
 
 export interface productStatesProps {

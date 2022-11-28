@@ -157,7 +157,26 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
             <ProductRegisterContent formProduct={formProduct} />
           </div>
           <div className="d-flex justify-content-end">
-            <div className="link-green mr-3">+ cadastrar produto</div>
+            <div
+              className="mr-3"
+              onClick={() => {
+                productActions.onCancelEdit();
+              }}
+            >
+              {productStates.product ? 'Cancelar edição do produto' : null}
+            </div>
+            <div
+              className="link-green"
+              // onClick={() => {
+              //   if (productStates.product) {
+              //     productActions.onEdit(productStates.product);
+              //   } else {
+              //     productActions.onAdd();
+              //   }
+              // }}
+            >
+              {productStates.product ? 'Salvar produto' : '+ cadastrar produto'}
+            </div>
           </div>
         </div>
         <SuperCollapse
@@ -189,36 +208,38 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
                         totalValue: item.totalValue,
                         actions: (
                           <React.Fragment>
-                            <div className="d-flex align-items-center">
-                              <div>
-                                <Switch
-                                  name="status"
-                                  label="Vender online"
-                                  onChange={() => undefined}
-                                  checked={item.allowOnline}
-                                />
-                              </div>
-                              <div className="ml-4">
-                                <Config
-                                  className="mr-4 svg-icon action-icon"
-                                  onClick={(): void => {
-                                    modalConfig.onShouldShowModal({
-                                      value: ShouldShowModal.configProduct,
-                                      newTitleModal: 'Configurações do produto',
-                                      product: item,
-                                    });
-                                  }}
-                                />
-                                <Pen
-                                  className="mr-4 svg-icon action-icon"
-                                  onClick={(): Promise<void> => productActions.onGet(item)}
-                                />
-                                <Trash
-                                  className="svg-icon svg-icon-trash"
-                                  onClick={() => {
-                                    modalConfig.onShowModalDelete(item);
-                                  }}
-                                />
+                            <div className={`${productStates.product ? 'disabled-content' : null}`}>
+                              <div className="d-flex align-items-center">
+                                <div>
+                                  <Switch
+                                    name="status"
+                                    label="Vender online"
+                                    onChange={() => undefined}
+                                    checked={item.allowOnline}
+                                  />
+                                </div>
+                                <div className="ml-4">
+                                  <Config
+                                    className="mr-4 svg-icon action-icon"
+                                    onClick={(): void => {
+                                      modalConfig.onShouldShowModal({
+                                        value: ShouldShowModal.configProduct,
+                                        newTitleModal: 'Configurações do produto',
+                                        product: item,
+                                      });
+                                    }}
+                                  />
+                                  <Pen
+                                    className="mr-4 svg-icon action-icon"
+                                    onClick={(): Promise<void> => productActions.onGet(item)}
+                                  />
+                                  <Trash
+                                    className="svg-icon svg-icon-trash"
+                                    onClick={() => {
+                                      modalConfig.onShowModalDelete(item);
+                                    }}
+                                  />
+                                </div>
                               </div>
                             </div>
                           </React.Fragment>
