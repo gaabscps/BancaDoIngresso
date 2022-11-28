@@ -2,7 +2,7 @@
 import React from 'react';
 import { ReactComponent as TriagingFaceDown } from '@/assets/images/svg/TriagingFaceDown.svg';
 import { ReactComponent as CheckStep } from '@/assets/images/svg/CheckStep.svg';
-import { useEvent } from '../../hook/useEvent';
+// import { useEvent } from '../../hook/useEvent';
 
 interface ProgressStepProps {
   steps: {
@@ -13,7 +13,7 @@ interface ProgressStepProps {
 }
 
 export const ProgressStep = ({ currentStep, steps }: ProgressStepProps): JSX.Element => {
-  const { eventState, onChange: onChangeEvent } = useEvent();
+  // const { eventState, onChange: onChangeEvent } = useEvent();
   // gerate steps with status todo, done and current
   const newSteps =
     steps &&
@@ -27,11 +27,12 @@ export const ProgressStep = ({ currentStep, steps }: ProgressStepProps): JSX.Ele
       return { ...step, status: 'todo' };
     });
 
-  const handleClickStep = (step: number): void => {
-    if (step < currentStep) {
-      onChangeEvent({ ...eventState, currentStep: step });
-    }
-  };
+  // TODO: Descomentar quando o fluxo de cadastro de evento estiver completo
+  // const handleClickStep = (step: number): void => {
+  //   if (step < currentStep) {
+  //     onChangeEvent({ ...eventState, currentStep: step });
+  //   }
+  // };
 
   return (
     <div className="container-fluid mainContainer">
@@ -42,7 +43,7 @@ export const ProgressStep = ({ currentStep, steps }: ProgressStepProps): JSX.Ele
             <React.Fragment key={index}>
               <div
                 className={`progress-step__item cursor__${status}`}
-                onClick={() => handleClickStep(index)}
+                // onClick={() => handleClickStep(index)}
               >
                 <div className="progress-step__item__status">
                   <div className={`progress-step__item__status__${status}`}>

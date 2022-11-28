@@ -2,19 +2,16 @@
 /* eslint-disable no-shadow */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useForm from '@/hooks/useForm';
-// import validators from '@/helpers/validators';
 import { toast } from 'react-toastify';
 import api, { AxiosError } from '@/services/api';
 import { useParams } from 'react-router-dom';
-// import { convertToBoolean } from '@/helpers/common/convertToBoolean';
-// import { FormInputName as FormInputNameToProduct } from '@/features/registerEvent/components/SectorProductScreen/components/ProductRegisterContent';
+import { FormInputName as FormInputNameToProduct } from '@/features/registerEvent/components/SectorProductScreen/components/ProductRegisterContent';
 import { useDialog } from '@/hooks/useDialog';
 import {
   ShouldShowModal,
   SectorProductContainer,
-  //  SectorProductContainerProps,
   States,
 } from '@/features/registerEvent/components/SectorProductScreen/screens/ui';
 import DiscountCoupon from '@/model/DiscountCoupon';
@@ -52,7 +49,7 @@ export const SectorProductScreen: React.FC<
   );
   const [nameFiles, setNameFiles] = useState<NameFiles>({});
 
-  const [product, setProduct] = useState();
+  const [product, setProduct] = useState<any>();
 
   const [discountCoupon, setDiscountCoupon] = useState<DiscountCoupon[]>([]);
   const [listDiscountCoupon, setListDiscountCoupon] = useState<DiscountCoupon[]>([]);
@@ -68,7 +65,7 @@ export const SectorProductScreen: React.FC<
     onChangeFormInput: onChangeFormInputProduct,
     isFormValid: isFormValidProduct,
     setErrors: setErrorsProduct,
-    // resetForm: resetFormProduct,
+    resetForm: resetFormProduct,
   } = useForm({
     initialData: {
       group: '',
@@ -266,6 +263,19 @@ export const SectorProductScreen: React.FC<
     backTab();
   };
 
+  const handleOnGetProduct = async (productSelected: any): Promise<void> => {
+    try {
+      console.log('Aqui 1 ');
+      if (productSelected) {
+        console.log('Aqui 2');
+        setProduct(productSelected);
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    }
+  };
+
   const controllerFormProduct: formProductProps = {
     formData: formDataProduct,
     formErrors: formErrorsProduct,
@@ -284,6 +294,7 @@ export const SectorProductScreen: React.FC<
 
   const controllerProductActions: productActionsProps = {
     onSave: handleOnSaveProduct,
+    onGet: handleOnGetProduct,
     onFirstTab,
     onReturnTap: handleBackTab,
     onNextTap: handleNextTab,
@@ -294,41 +305,18 @@ export const SectorProductScreen: React.FC<
     setProduct,
   };
 
-  // useEffect(() => {
-  //   const { ticket } = ticketStates;
+  useEffect(() => {
+    resetFormProduct();
+    if (product) {
+      // TODO: Add states when to get API return
 
-  //   onFirstTab();
-  //   resetFormProduct();
-
-  //   if (ticket?.product) {
-  //     onChangeFormInputProduct(FormInputNameToProduct.sendTicketWhatsApp)(
-  //       String(ticket.product.sendTicketWhatsApp),
-  //     );
-  //     onChangeFormInputProduct(FormInputNameToProduct.codeType)(String(ticket.product.codeType));
-  //     onChangeFormInputProduct(FormInputNameToProduct.printType)(String(ticket.product.printType));
-  //     onChangeFormInputProduct(FormInputNameToProduct.entranceGate)(
-  //       String(ticket.product.entranceGate ?? ''),
-  //     );
-  //     onChangeFormInputProduct(FormInputNameToProduct.nameBeforePurchase)(
-  //       String(ticket.product.nameBeforePurchase),
-  //     );
-  //     onChangeFormInputProduct(FormInputNameToProduct.printNameTicket)(
-  //       String(ticket.product.printNameTicket),
-  //     );
-  //     onChangeFormInputProduct(FormInputNameToProduct.requestCpf)(
-  //       String(ticket.product.requestCpf),
-  //     );
-  //     onChangeFormInputProduct(FormInputNameToProduct.printCpfTicket)(
-  //       String(ticket.product.printCpfTicket),
-  //     );
-  //     onChangeFormInputProduct(FormInputNameToProduct.validateCpf)(
-  //       String(ticket.product.validateCpf),
-  //     );
-  //     onChangeFormInputProduct(FormInputNameToProduct.purchaseLimitCpf)(
-  //       String(ticket.product.purchaseLimitCpf ?? ''),
-  //     );
-  //   }
-  // }, [ticketStates.ticket]);
+      onChangeFormInputProduct(FormInputNameToProduct.name)(String(product.product));
+      onChangeFormInputProduct(FormInputNameToProduct.allowOnline)(String(product.allowOnline));
+      onChangeFormInputProduct(FormInputNameToProduct.unitMeasurement)(String(product.amount));
+      onChangeFormInputProduct(FormInputNameToProduct.unitValue)(String(product.unitValue));
+      onChangeFormInputProduct(FormInputNameToProduct.totalValue)(String(product.totalValue));
+    }
+  }, [product]);
 
   return (
     <SectorProductContainer

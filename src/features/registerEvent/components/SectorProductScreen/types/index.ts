@@ -36,6 +36,7 @@ export interface modalConfigTicketMainSettingsProps {
 
 export interface productActionsProps {
   onSave: () => Promise<void>;
+  onGet: (productSelected: any) => Promise<void>;
   onFirstTab: () => void;
   onReturnTap: () => void;
   onNextTap: () => Promise<void>;

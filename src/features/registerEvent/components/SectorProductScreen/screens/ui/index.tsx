@@ -211,7 +211,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
                                 />
                                 <Pen
                                   className="mr-4 svg-icon action-icon"
-                                  onClick={(): void => undefined}
+                                  onClick={(): Promise<void> => productActions.onGet(item)}
                                 />
                                 <Trash
                                   className="svg-icon svg-icon-trash"

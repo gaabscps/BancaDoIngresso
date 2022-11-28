@@ -124,7 +124,7 @@ export const RegisterDiscountCoupon: React.FC<RegisterContentProps> = ({ formDis
         onClick={() => {
           handleAddDiscountCoupon();
         }}
-        className="d-flex justify-content-end mb-4 register-buttom action-icon"
+        className="mb-4 register-buttom action-icon"
       >
         + inserir novo cupom de desconto
       </div>

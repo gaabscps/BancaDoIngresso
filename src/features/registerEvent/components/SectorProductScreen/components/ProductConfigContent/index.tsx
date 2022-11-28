@@ -29,6 +29,7 @@ export enum FormInputName {
   websiteSaleFee = 'websiteSaleFee',
   allowDiscount = 'allowDiscount',
   allowDiscountCoupon = 'allowDiscountCoupon',
+  partialPayment = 'partialPayment',
 }
 
 export const ProductConfigContent: React.FC<
@@ -303,12 +304,24 @@ export const ProductConfigContent: React.FC<
             </div>
 
             <div className="container-event mb-4">
-              <h5 className="mb-2 border-bottom-title mb-5">Cupons e descontos</h5>
+              <h5 className="mb-2 border-bottom-title mb-5">Informações Complementares</h5>
             </div>
 
             <FormGroup>
+              <InputText
+                name="partialPayment"
+                label="Porcentagem do Garçom %"
+                placeholder="0"
+                className="w-input-sm"
+                maxLength={2}
+                value={formData[FormInputName.partialPayment]}
+                onChange={e =>
+                  onChangeFormInput(FormInputName.partialPayment)(e.target.value.replace(/\D/g, ''))
+                }
+                error={formErrors.partialPayment && formErrors.partialPayment[0]}
+              />
               <ButtonGroup
-                label="Permitir desconto?"
+                label="Pagamento parcial(rateio)?"
                 name="allowDiscount"
                 value={formData[FormInputName.allowDiscount]}
                 onChange={e => onChangeFormInput(FormInputName.allowDiscount)(e.target.value)}
@@ -319,7 +332,7 @@ export const ProductConfigContent: React.FC<
                 error={formErrors.allowDiscount && formErrors.allowDiscount[0]}
               />
               <ButtonGroup
-                label="Permitir cupom de desconto?"
+                label="Permitir Código de Desconto?"
                 name="allowDiscountCoupon"
                 value={formData[FormInputName.allowDiscountCoupon]}
                 onChange={e => onChangeFormInput(FormInputName.allowDiscountCoupon)(e.target.value)}
