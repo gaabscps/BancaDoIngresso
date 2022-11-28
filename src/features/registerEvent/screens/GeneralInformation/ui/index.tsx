@@ -81,7 +81,7 @@ export const GeneralInformationContainer: React.FC<GeneralInformationContainerPr
           }[modalConfig.shouldShowModal],
           {
             [ShouldShowModal.category]: {
-              title: categoryStates?.category ? 'Salvar' : 'Cadastrar nova empresa',
+              title: categoryStates?.category ? 'Salvar' : 'Cadastrar novo setor',
               onClick: (): Promise<void> => categoryActions.onSave(),
             },
             [ShouldShowModal.fatherEvent]: {

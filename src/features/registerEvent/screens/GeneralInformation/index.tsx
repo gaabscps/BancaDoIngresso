@@ -422,7 +422,7 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
         }
         const { data } = await api.post<any>('/event/general-information', payload);
 
-        onToggle();
+        // onToggle();
         onChangeEvent({ ...eventState, currentStep: eventState.currentStep + 1 });
         history.push(`/dashboard/event/edit/${data.id}`);
       }
