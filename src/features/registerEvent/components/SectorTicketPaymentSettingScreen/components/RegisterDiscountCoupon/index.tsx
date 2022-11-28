@@ -2,7 +2,7 @@ import { InputText } from '@/components';
 import React from 'react';
 import DiscountCoupon from '@/model/DiscountCoupon';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
-import { Card, Col, Form, FormGroup, Row } from 'reactstrap';
+import { Col, Form, FormGroup, Row } from 'reactstrap';
 
 interface RegisterContentProps {
   handleAddDiscountCoupon: () => void;

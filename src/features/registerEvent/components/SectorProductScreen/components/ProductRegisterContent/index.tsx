@@ -3,6 +3,8 @@ import React, { Fragment } from 'react';
 import { ButtonGroup, InputFile, InputText, SelectCustom } from '@/components';
 import { Col, Form, FormGroup, Row } from 'reactstrap';
 import { updateMask as updateMaskCash, unmask as unMaskCash } from '@/helpers/masks/cash';
+import ReactTooltip from 'react-tooltip';
+import { ReactComponent as Info } from '@/assets/images/svg/infoTooltip.svg';
 import { SectorProductContainerProps } from '../../screens/ui';
 
 // eslint-disable-next-line no-shadow
@@ -85,21 +87,37 @@ export const ProductRegisterContent: React.FC<Pick<SectorProductContainerProps, 
             error={formErrors.allowOnline && formErrors.allowOnline[0]}
           />
         </FormGroup>
-        <FormGroup className="mb-2">
-          <ButtonGroup
-            label="Unidade de medida"
-            name="unitMeasurement"
-            value={formData[FormInputName.unitMeasurement]}
-            onChange={e => {
-              onChangeFormInput(FormInputName.unitMeasurement)(e.target.value);
-            }}
-            options={[
-              { value: '0', label: 'Unitário' },
-              { value: '1', label: 'Quilo' },
-              { value: '2', label: 'Variável' },
-            ]}
-            error={formErrors.unitMeasurement && formErrors.unitMeasurement[0]}
-          />
+        <FormGroup className="mb-2 ">
+          <div>
+            <ButtonGroup
+              label="Unidade de medida"
+              name="unitMeasurement"
+              value={formData[FormInputName.unitMeasurement]}
+              onChange={e => {
+                onChangeFormInput(FormInputName.unitMeasurement)(e.target.value);
+              }}
+              options={[
+                { value: '0', label: 'Unitário' },
+                { value: '1', label: 'Quilo' },
+                {
+                  value: '2',
+                  label: (
+                    <>
+                      Variável
+                      <a data-for="soclose" data-tip="8" className="ml-3">
+                        <Info />
+                      </a>
+                    </>
+                  ),
+                },
+              ]}
+              error={formErrors.unitMeasurement && formErrors.unitMeasurement[0]}
+            />
+
+            <ReactTooltip id="soclose" effect="solid" place={'right'} border={true} type={'light'}>
+              Quando o valor for definido no momento da venda.
+            </ReactTooltip>
+          </div>
         </FormGroup>
         <Row>
           <Col md={6} className="pl-0">

@@ -166,10 +166,16 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
             listDiscountCoupon.length > 0 ? (
               listDiscountCoupon.map((item, index) => (
                 <React.Fragment key={index}>
-                  <span className="secondary-table-title">Cupom #{index + 1}</span>
-                  <span className="secondary-table-title">
-                    <b> ·</b> Teste
-                  </span>
+                  <div className="mb-5">
+                    <span className="secondary-table-title">Grupo #{index + 1}</span>
+                    <span className="secondary-table-title font-weight-bold">
+                      <b> ·</b> Bebidas //
+                    </span>
+                    <span className="secondary-table-title"> Subgrupo #{index + 1}</span>
+                    <span className="secondary-table-title font-weight-bold">
+                      <b> ·</b> Bebidas alcoólicas
+                    </span>
+                  </div>
                   <CustomTable
                     numberRowsPerPage={0}
                     progressPending={false}
@@ -183,7 +189,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
                         totalValue: item.totalValue,
                         actions: (
                           <React.Fragment>
-                            <div className="d-flex">
+                            <div className="d-flex align-items-center">
                               <div>
                                 <Switch
                                   name="status"
@@ -219,7 +225,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
                         ),
                       },
                     ]}
-                    theme="secondary"
+                    theme="secondaryWithoutBorder"
                   />
                 </React.Fragment>
               ))
