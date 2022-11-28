@@ -125,7 +125,6 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
             error={formErrors.isTicket && formErrors.isTicket[0]}
           />
         </FormGroup>
-        <hr />
         {formData[FormInputName.isTicket] === 'true' && (
           <>
             <div className="mt-5">
@@ -221,17 +220,17 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
               ]}
               contents={contentTabs}
             />
-            <hr />
-            <div className="footer-register-event">
-              <Button title="Voltar" theme="noneBorder" onClick={() => () => undefined} />
-              <Button
-                title="Avançar para Setor e produto"
-                onClick={() => undefined}
-                disabled={!(ticketStates.ticketList.length > 0)}
-              />
-            </div>
           </>
         )}
+        <hr className="mt-5" />
+        <div className="footer-register-event">
+          <Button title="Voltar" theme="noneBorder" onClick={() => () => undefined} />
+          <Button
+            title="Avançar para Setor e produto"
+            onClick={() => undefined}
+            disabled={!(ticketStates.ticketList.length > 0)}
+          />
+        </div>
       </Container>
     </Fragment>
   );
