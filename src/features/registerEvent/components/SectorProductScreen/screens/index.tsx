@@ -17,6 +17,7 @@ import {
 import DiscountCoupon from '@/model/DiscountCoupon';
 import { useConfirmDelete } from '@/hooks/useConfirmDelete';
 import { DeleteContent } from '@/components/DeleteContent';
+import { TabSectorProductActionsProps } from '@/features/registerEvent/screens/SectorProduct/ui';
 import {
   formConfigProductProps,
   formProductProps,
@@ -34,13 +35,9 @@ export interface NameFiles {
   [key: string]: string;
 }
 
-export const SectorProductScreen: React.FC<
-  // Pick<SectorProductContainerProps, 'ticketStates'> &
-  // TabSectorProductActionsProps
-  any
-> = ({
-  // ticketStates,
+export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
   backTab,
+  nextTab,
   onFirstTab,
 }): JSX.Element => {
   const [state] = useState<States>(States.default);
@@ -253,9 +250,8 @@ export const SectorProductScreen: React.FC<
   };
 
   const handleNextTab = async (): Promise<void> => {
-    await handleOnSaveProduct();
     if (isFormValidProduct()) {
-      onFirstTab();
+      nextTab();
     }
   };
 
@@ -296,8 +292,8 @@ export const SectorProductScreen: React.FC<
     onSave: handleOnSaveProduct,
     onGet: handleOnGetProduct,
     onFirstTab,
-    onReturnTap: handleBackTab,
-    onNextTap: handleNextTab,
+    onReturnTab: handleBackTab,
+    onNextTab: handleNextTab,
   };
 
   const controllerProductStates: productStatesProps = {

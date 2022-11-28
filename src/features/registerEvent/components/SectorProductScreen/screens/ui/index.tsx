@@ -240,14 +240,14 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
           <Button
             title="Voltar etapa"
             theme="noneBorder"
-            onClick={() => productActions.onReturnTap()}
+            onClick={() => productActions.onReturnTab()}
           />
           <Button
             title="Próxima etapa"
             theme="outlineDark"
             className="ml-3"
             onClick={async () => {
-              await productActions.onNextTap();
+              await productActions.onNextTab();
             }}
           />
         </div>

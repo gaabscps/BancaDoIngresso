@@ -8,11 +8,14 @@ import api from '@/services/api';
 import GroupProduct from '@/model/SubgruopProduct';
 import ProductSubgroup from '@/model/ProductSubgroup';
 import ProductGroup from '@/model/ProductGroup';
+import { TabSectorProductActionsProps } from '@/features/registerEvent/screens/SectorProduct/ui';
 import { SectorProductGroupContainer } from './ui';
 import { formGroupProps } from '../types';
 import { States } from '../../ContractorScreen/screens/ui';
 
-export const SectorProductGroupScreen: React.FC = (): JSX.Element => {
+export const SectorProductGroupScreen: React.FC<
+  Omit<TabSectorProductActionsProps, 'onFirstTab' | 'backTab'>
+> = ({ nextTab }): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
   const [subGroup, setSubGroup] = useState<GroupProduct[]>([{ id: '', name: '' }]);
   const [subGroupList, setSubGroupList] = useState<GroupProduct[]>([{ id: '', name: '' }]);
@@ -36,6 +39,12 @@ export const SectorProductGroupScreen: React.FC = (): JSX.Element => {
     },
     formatters: {},
   });
+
+  const handleNextTab = async (): Promise<void> => {
+    // if (isFormValidGroup()) {
+    nextTab();
+    // }
+  };
 
   const controllerFormGroup: formGroupProps = {
     onChangeFormInputGroup,
@@ -133,6 +142,7 @@ export const SectorProductGroupScreen: React.FC = (): JSX.Element => {
       controllerFormGroup={controllerFormGroup}
       handleChangeGroup={handleChangeGroup}
       handleFecthProductSubGroupList={handleFecthProductSubGroupList}
+      onNextTab={handleNextTab}
     />
   );
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { DropdonwFlags, InputFile, Loading } from '@/components';
+import { Button, DropdonwFlags, InputFile, Loading } from '@/components';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
 import SectorProductGroup from '@/model/SectorProductGroup';
 import TicketIcon from '@/assets/images/svg/Ticket';
@@ -28,6 +28,7 @@ interface SectorProductGroupContainerProps {
   addGroup: (index: string) => void;
   removeGroup: (index: number) => void;
   handleFecthProductSubGroupList: (id: string) => Promise<void>;
+  onNextTab: () => void;
 }
 
 export interface DataRowDiscountCoupon {
@@ -54,6 +55,7 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
   handleAddGroup,
   addGroup,
   removeGroup,
+  onNextTab,
 }): JSX.Element => (
   <>
     <Loading isVisible={state === States.loading} />
@@ -200,6 +202,16 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
             />
           </Col>
         </Row>
+      </div>
+      <div className="d-flex justify-content-end">
+        <Button
+          title="Próxima etapa"
+          theme="outlineDark"
+          className="ml-3"
+          onClick={() => {
+            onNextTab();
+          }}
+        />
       </div>
     </Container>
   </>

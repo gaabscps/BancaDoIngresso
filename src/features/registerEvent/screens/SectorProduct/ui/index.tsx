@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
+/* eslint-disable no-shadow */
 /* eslint-disable import/no-unresolved */
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { ButtonGroup, Loading, Tab } from '@/components';
 import { Container, FormGroup } from 'reactstrap';
 import { SectorProductGroupScreen } from '@/features/registerEvent/components/SectorProductGroup/screens';
@@ -22,11 +24,50 @@ export enum FormInputName {
   isProduct = 'isProduct',
 }
 
+export type TabSectorProductActionsProps = {
+  nextTab: () => void;
+  backTab: () => void;
+  onFirstTab: () => void;
+};
+
 export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
   state,
   formSectorTicket,
 }) => {
   const { formData, formErrors, onChangeFormInput } = formSectorTicket;
+  const [numberTab, setNumberTab] = useState(0);
+
+  const handleNextTab = (): void => {
+    if (numberTab <= contentTabs.length) {
+      setNumberTab(numberTab + 1);
+    }
+  };
+
+  const handleBackTab = (): void => {
+    if (numberTab <= contentTabs.length && numberTab >= 0) {
+      setNumberTab(numberTab - 1);
+    }
+  };
+
+  const handleOnFirstTab = (): void => {
+    setNumberTab(0);
+  };
+
+  const contentTabs = [
+    <>
+      <SectorProductGroupScreen nextTab={handleNextTab} />
+    </>,
+    <>
+      <SectorProductScreen
+        nextTab={handleNextTab}
+        backTab={handleBackTab}
+        onFirstTab={handleOnFirstTab}
+      />
+    </>,
+    'Conteudo 3',
+    'Conteudo 4',
+    'Conteudo 5',
+  ];
   return (
     <Fragment>
       <Loading isVisible={state === States.loading} />
@@ -47,7 +88,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
             error={formErrors.isProduct && formErrors.isProduct[0]}
           />
         </FormGroup>
-        <hr />
+        <hr className="mt-5" />
         {formData[FormInputName.isProduct] === 'true' && (
           <>
             <p className="secondPageTitle m-0">Adicionando setor e produto</p>
@@ -63,18 +104,8 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
                 'Configs de setores',
                 'Configurações de POS',
               ]}
-              contents={[
-                <>
-                  <SectorProductGroupScreen />
-                </>,
-                <>
-                  <SectorProductScreen />
-                </>,
-                'Conteudo 3',
-                'Conteudo 4',
-                'Conteudo 5',
-              ]}
-              numberStap={1}
+              contents={contentTabs}
+              numberStap={numberTab}
             />
           </>
         )}
