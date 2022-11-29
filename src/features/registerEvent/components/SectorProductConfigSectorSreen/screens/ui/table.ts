@@ -1,12 +1,12 @@
 import { TableColumn } from '@/components/Table';
 
-interface DataRowProducts {
+interface DataRowSectors {
   products: string;
   combos: string;
   actions: string;
 }
 
-export const columnsSectors: TableColumn<DataRowProducts>[] = [
+export const columnsSectors: TableColumn<DataRowSectors>[] = [
   {
     name: 'Quantidade de produtos',
     selector: row => row.products,

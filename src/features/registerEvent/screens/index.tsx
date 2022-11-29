@@ -1,14 +1,10 @@
-/* eslint-disable import/no-unresolved */
-/* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { useEffect, useState } from 'react';
 import { ProgressStep } from '../components/ProgressStep';
 
 import { useEvent } from '../hook/useEvent';
 import { ConfirmationEventContainer } from './Confirmation/ui';
-import { PdvEventContainer } from './Pdv/ui';
 import '@/features/registerEvent/components/ProgressStep/styles.scss';
 import { GeneralInformationScreen } from './GeneralInformation';
-// import { SectorTicketScreen } from './SectorTicket';
 import { SectorProductScreen } from './SectorProduct';
 import { SectorTicketScreen } from './SectorTicket';
 import { PdvEventScreen } from './Pdv';
