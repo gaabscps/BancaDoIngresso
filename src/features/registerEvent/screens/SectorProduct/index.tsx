@@ -9,9 +9,9 @@ export const SectorProductScreen: React.FC = (): JSX.Element => {
   const [state] = useState<States>(States.default);
 
   const {
-    formData: formDataSectorTicket,
-    formErrors: formErrorsSectorTicket,
-    onChangeFormInput: onChangeFormInputSectorTicket,
+    formData: formDataSectorProduct,
+    formErrors: formErrorsSectorProduct,
+    onChangeFormInput: onChangeFormInputSectorProduct,
   } = useForm({
     initialData: {
       isProduct: '',
@@ -22,11 +22,11 @@ export const SectorProductScreen: React.FC = (): JSX.Element => {
     formatters: {},
   });
 
-  const controllerFormSectorTicket: formSectorProductProps = {
-    formData: formDataSectorTicket,
-    formErrors: formErrorsSectorTicket,
-    onChangeFormInput: onChangeFormInputSectorTicket,
+  const controllerFormSectorProduct: formSectorProductProps = {
+    formData: formDataSectorProduct,
+    formErrors: formErrorsSectorProduct,
+    onChangeFormInput: onChangeFormInputSectorProduct,
   };
 
-  return <SectorProductContainer formSectorTicket={controllerFormSectorTicket} state={state} />;
+  return <SectorProductContainer formSectorProduct={controllerFormSectorProduct} state={state} />;
 };

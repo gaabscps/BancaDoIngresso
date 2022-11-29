@@ -6,6 +6,7 @@ import { ButtonGroup, Loading, Tab } from '@/components';
 import { Container, FormGroup } from 'reactstrap';
 import { SectorProductGroupScreen } from '@/features/registerEvent/components/SectorProductGroup/screens';
 import { SectorProductScreen } from '@/features/registerEvent/components/SectorProductScreen/screens';
+import { SectorProductConfigSectorScreen } from '@/features/registerEvent/components/SectorProductConfigSectorSreen/screens';
 import { formSectorProductProps } from '../types';
 
 // eslint-disable-next-line no-shadow
@@ -14,9 +15,9 @@ export enum States {
   loading = 'loading',
 }
 
-interface SectorProductContainerProps {
+export interface SectorProductContainerProps {
   state: States;
-  formSectorTicket: formSectorProductProps;
+  formSectorProduct: formSectorProductProps;
 }
 
 // eslint-disable-next-line no-shadow
@@ -32,9 +33,9 @@ export type TabSectorProductActionsProps = {
 
 export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
   state,
-  formSectorTicket,
+  formSectorProduct,
 }) => {
-  const { formData, formErrors, onChangeFormInput } = formSectorTicket;
+  const { formData, formErrors, onChangeFormInput } = formSectorProduct;
   const [numberTab, setNumberTab] = useState(0);
 
   const handleNextTab = (): void => {
@@ -65,7 +66,11 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
       />
     </>,
     'Conteudo 3',
-    'Conteudo 4',
+    <>
+      <>
+        <SectorProductConfigSectorScreen nextTab={handleNextTab} backTab={handleBackTab} />
+      </>
+    </>,
     'Conteudo 5',
   ];
   return (
@@ -105,7 +110,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
                 'Configurações de POS',
               ]}
               contents={contentTabs}
-              numberStap={numberTab}
+              numberStap={3}
             />
           </>
         )}
