@@ -6,6 +6,7 @@ import { Container, FormGroup } from 'reactstrap';
 import { MainPdvContent } from '@/features/registerEvent/components/MainPdvContent';
 import { CustomTable } from '@/components/Table';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
+import { mainPdvStatesProps } from '@/features/registerEvent/components/PdvScreen/types';
 import { columnsEventPdv } from './table';
 import TicketIcon from '../../../../../assets/images/svg/Ticket';
 
@@ -20,7 +21,7 @@ export interface PdvContainerProps {
   formPdv: any;
   formMainPdv: any;
   mainPdvActions: any;
-  mainPdvStates: any;
+  mainPdvStates: mainPdvStatesProps;
 }
 
 // eslint-disable-next-line no-shadow
@@ -76,7 +77,11 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
         {formData[FormInputName.isPdv] === 'true' && (
           <>
             <div className="container-event">
-              <MainPdvContent formMainPdv={formMainPdv} />
+              <MainPdvContent
+                formMainPdv={formMainPdv}
+                mainPdvActions={mainPdvActions}
+                mainPdvStates={mainPdvStates}
+              />
             </div>
             <hr className="mt-5 mb-5" />
             <SuperCollapse

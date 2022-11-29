@@ -1,17 +1,22 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PdvEventContainer, States } from '@/features/registerEvent/screens/Pdv/ui';
 import useForm from '@/hooks/useForm';
 import { toast } from 'react-toastify';
 import { AxiosError } from 'axios';
 import { DeleteContent } from '@/components/DeleteContent';
 import { useConfirmDelete } from '@/hooks/useConfirmDelete';
+import api from '@/services/api';
+import Pdv from '@/model/Pdv';
+import { mainPdvStatesProps } from '../../components/PdvScreen/types';
+import validators from '@/helpers/validators';
 
 export const PdvEventScreen: React.FC = (): JSX.Element => {
   const [state] = useState<States>(States.default);
   const confirmDelete = useConfirmDelete();
 
-  const [mainPdv, setMainPdv] = useState();
+  const [mainPdv, setMainPdv] = useState<Pdv>();
+  const [mainPdvList, setMainPdvList] = useState<Pdv[]>([]);
 
   const {
     formData: formDataPdv,
@@ -34,9 +39,27 @@ export const PdvEventScreen: React.FC = (): JSX.Element => {
     resetForm: resetFormMainPdv,
   } = useForm({
     initialData: {
-      isPdv: '',
+      pdv: '',
+      allowMoney: 'true',
+      allowAdvanceFee: 'true',
+      allowDebit: 'true',
+      allowCreditCard: 'true',
+      // allowBankSlip:'true',
+      allowPix: 'true',
+      allowSellingWebsite: 'false',
+      allowDiscount: 'true',
     },
-    validators: {},
+    validators: {
+      pdv: [validators.required],
+      allowMoney: [validators.required],
+      allowAdvanceFee: [validators.required],
+      allowDebit: [validators.required],
+      allowCreditCard: [validators.required],
+      // allowBankSlip:[validators.required],
+      allowPix: [validators.required],
+      allowSellingWebsite: [validators.required],
+      allowDiscount: [validators.required],
+    },
     formatters: {},
   });
 
@@ -58,6 +81,19 @@ export const PdvEventScreen: React.FC = (): JSX.Element => {
         },
       ],
     });
+  };
+
+  const handleFecthCategoryList = async (): Promise<void> => {
+    try {
+      // setState(States.loading);
+      const { data } = await api.get<Pdv[]>(`/pdv/find`);
+      setMainPdvList(data ?? []);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      // setState(States.default);
+    }
   };
 
   const handleOnGetMainPdv = async (mainPdvSelected: any): Promise<void> => {
@@ -82,14 +118,17 @@ export const PdvEventScreen: React.FC = (): JSX.Element => {
   };
 
   const controllerMainPdvActions: any = {
+    onGetList: handleFecthCategoryList,
     onGet: handleOnGetMainPdv,
     onCancelEdit: handleOnCancelEditMainPdv,
     onShowModalDelete: handleOnShowDeleteMainPdv,
   };
 
-  const controllerMainPdvStates: any = {
+  const controllerMainPdvStates: mainPdvStatesProps = {
     mainPdv,
     setMainPdv,
+    mainPdvList,
+    setMainPdvList,
   };
 
   const controllerFormPdv = {
@@ -105,6 +144,10 @@ export const PdvEventScreen: React.FC = (): JSX.Element => {
     onChangeFormInput: onChangeFormInputMainPdv,
     isFormValid: isFormValidMainPdv,
   };
+
+  useEffect(() => {
+    handleFecthCategoryList();
+  }, []);
 
   return (
     <PdvEventContainer

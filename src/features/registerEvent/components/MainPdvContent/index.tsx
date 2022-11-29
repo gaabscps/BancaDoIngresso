@@ -1,7 +1,9 @@
 import React from 'react';
 import { Form, FormGroup } from 'reactstrap';
 import { ButtonGroup, SelectCustom } from '@/components';
+import Pdv from '@/model/Pdv';
 import { PdvContainerProps } from '../../screens/Pdv/ui';
+import { PdvScreen } from '../PdvScreen/screens/List';
 
 // eslint-disable-next-line no-shadow
 export enum FormInputName {
@@ -16,10 +18,13 @@ export enum FormInputName {
   allowDiscount = 'allowDiscount',
 }
 
-export const MainPdvContent: React.FC<Pick<PdvContainerProps, 'formMainPdv'>> = ({
-  formMainPdv,
-}) => {
+export const MainPdvContent: React.FC<
+  Pick<PdvContainerProps, 'formMainPdv' | 'mainPdvActions' | 'mainPdvStates'>
+> = ({ formMainPdv, mainPdvActions, mainPdvStates }) => {
   const { formData, formErrors, onChangeFormInput } = formMainPdv;
+
+  const pdvDataSelected = mainPdvStates?.mainPdvList.find((item: Pdv) => item.id === formData.pdv);
+
   return (
     <Form
       noValidate={true}
@@ -35,8 +40,12 @@ export const MainPdvContent: React.FC<Pick<PdvContainerProps, 'formMainPdv'>> = 
           onChange={e => onChangeFormInput(FormInputName.pdv)(e?.value as string)}
           error={formErrors.pdv && formErrors.pdv[0]}
           value={formData[FormInputName.pdv]}
-          options={[]}
+          options={mainPdvStates.mainPdvList.map(item => ({
+            value: item.id,
+            label: item.name,
+          }))}
         />
+        <PdvScreen pdvActions={mainPdvActions} pdvSelected={pdvDataSelected} />
       </FormGroup>
       <FormGroup className="mb-2">
         <ButtonGroup
