@@ -11,6 +11,7 @@ import { GeneralInformationScreen } from './GeneralInformation';
 // import { SectorTicketScreen } from './SectorTicket';
 import { SectorProductScreen } from './SectorProduct';
 import { SectorTicketScreen } from './SectorTicket';
+import { PdvEventScreen } from './Pdv';
 
 // eslint-disable-next-line no-shadow
 export enum States {
@@ -44,7 +45,7 @@ export const EventScreen: React.FC = (): JSX.Element => {
       title: 'Setor e Produto',
     },
     {
-      Component: <PdvEventContainer state={state} />,
+      Component: <PdvEventScreen />,
       title: 'PDV',
     },
     {
