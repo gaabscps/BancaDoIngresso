@@ -100,6 +100,7 @@ export const SectorTicketMainSettingsContainer: React.FC<
       </Dialog>
       <Loading isVisible={state === States.loading} />
       <Container className="mainContainer" fluid={true}>
+        <h6>Cadastrando grupos</h6>
         <div className="container-event">
           <SectorTicketMainSettingsContent
             formMainSettings={formMainSettings}

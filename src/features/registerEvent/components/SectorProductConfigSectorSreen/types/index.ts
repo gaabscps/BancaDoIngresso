@@ -30,6 +30,7 @@ export interface modalConfigSectorSettingsProps {
 }
 
 export interface configSectorActions {
+  onGetAllSector: () => Promise<void>;
   onGet: (SectorSelected: any) => void;
   onCancelEdit: () => void;
   onSave: () => Promise<void>;
@@ -39,7 +40,9 @@ export interface configSectorActions {
 
 export interface sectorStatesProps {
   sector: Section | undefined;
-  setSector: any;
-  sectorList: any;
-  setSectorList: any;
+  setSector: React.Dispatch<React.SetStateAction<Section | undefined>>;
+  sectorList: Section[];
+  setSectorList: React.Dispatch<React.SetStateAction<Section[]>>;
+  sectorDropdown: Section[];
+  setSectorDropdown: React.Dispatch<React.SetStateAction<Section[]>>;
 }
