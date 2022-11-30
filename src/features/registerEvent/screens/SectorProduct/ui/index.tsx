@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable no-shadow */
 /* eslint-disable import/no-unresolved */
@@ -8,6 +9,7 @@ import { SectorProductComboScreen } from '@/features/registerEvent/components/Se
 import { SectorProductGroupScreen } from '@/features/registerEvent/components/SectorProductGroup/screens';
 import { SectorProductScreen } from '@/features/registerEvent/components/SectorProductScreen/screens';
 import { SectorProductConfigSectorScreen } from '@/features/registerEvent/components/SectorProductConfigSectorSreen/screens';
+import { SectorPosScreen } from '@/features/registerEvent/components/SectorPosScreen/screens';
 import { formSectorProductProps } from '../types';
 
 // eslint-disable-next-line no-shadow
@@ -56,29 +58,19 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
   };
 
   const contentTabs = [
-    <>
-      <SectorProductGroupScreen nextTab={handleNextTab} />
-    </>,
-    <>
-      <SectorProductScreen
-        nextTab={handleNextTab}
-        backTab={handleBackTab}
-        onFirstTab={handleOnFirstTab}
-      />
-    </>,
-    <>
-      <SectorProductComboScreen
-        nextTab={handleNextTab}
-        backTab={handleBackTab}
-        onFirstTab={handleOnFirstTab}
-      />
-    </>,
-    <>
-      <>
-        <SectorProductConfigSectorScreen nextTab={handleNextTab} backTab={handleBackTab} />
-      </>
-    </>,
-    'Conteudo 5',
+    <SectorProductGroupScreen nextTab={handleNextTab} />,
+    <SectorProductScreen
+      nextTab={handleNextTab}
+      backTab={handleBackTab}
+      onFirstTab={handleOnFirstTab}
+    />,
+    <SectorProductComboScreen
+      nextTab={handleNextTab}
+      backTab={handleBackTab}
+      onFirstTab={handleOnFirstTab}
+    />,
+    <SectorProductConfigSectorScreen nextTab={handleNextTab} backTab={handleBackTab} />,
+    <SectorPosScreen nextTab={handleNextTab} backTab={handleBackTab} />,
   ];
   return (
     <Fragment>
