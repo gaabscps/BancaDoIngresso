@@ -7,6 +7,7 @@ import { ReactComponent as Config } from '@/assets/images/svg/config.svg';
 import { CustomTable } from '@/components/Table';
 import React from 'react';
 import { Col, Container, Form, FormGroup, Row } from 'reactstrap';
+import { formPosProps } from '../../types';
 
 // eslint-disable-next-line no-shadow
 export enum States {
@@ -14,11 +15,25 @@ export enum States {
   loading = 'loading',
 }
 
+// eslint-disable-next-line no-shadow
+export enum FormInputName {
+  allowPos = 'allowPos',
+  pos = 'pos',
+  waiter = 'waiter',
+  commission = 'commission',
+  allowDiscount = 'allowDiscount',
+}
+
 interface SectorProductPosContainerProps {
   state: States;
+  controllerFormPos: formPosProps;
 }
-export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({ state }) => {
+export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
+  state,
+  controllerFormPos,
+}) => {
   console.log(States);
+  const { formData, formErrors, onChangeFormInput } = controllerFormPos;
   return (
     <>
       <Loading isVisible={state === States.loading} />
@@ -31,79 +46,95 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({ s
                 <ButtonGroup
                   label="Permitir POS?"
                   name="allowPos"
-                  value="true"
-                  onChange={() => undefined}
+                  value={formData[FormInputName.allowPos]}
+                  onChange={e =>
+                    onChangeFormInput(FormInputName.allowPos)(e?.target?.value as string)
+                  }
                   options={[
                     { value: true, label: 'Sim' },
                     { value: false, label: 'Não' },
                   ]}
+                  error={formErrors.allowPos && formErrors.allowPos[0]}
                 />
               </FormGroup>
             </Form>
           </Col>
         </Row>
-        <Col>
-          <Row>
-            <div className="card-ligth-color mb-5 w-100">
+        {formData[FormInputName.allowPos] === 'true' ? (
+          <>
+            <Col>
               <Row>
-                <Col md={7}>
-                  <SelectCustom label="POS" name={''} value={''} options={[]} />
-                </Col>
-                <Col md={3}>
-                  <InputText
-                    label="Porcentagem do garçom (%)"
-                    name={''}
-                    value={''}
-                    onChange={() => undefined}
-                  />
-                </Col>
+                <div className="card-ligth-color mb-5 w-100">
+                  <Row>
+                    <Col md={7}>
+                      <SelectCustom
+                        name="pos"
+                        label="POS"
+                        value={formData[FormInputName.pos]}
+                        onChange={e => onChangeFormInput(FormInputName.pos)(e?.value as string)}
+                        options={[]}
+                        error={formErrors.pos && formErrors.pos[0]}
+                      />
+                    </Col>
+                    <Col md={3}>
+                      <InputText
+                        type="number"
+                        label="Porcentagem do garçom (%)"
+                        name="waiter"
+                        placeholder="0"
+                        value={formData[FormInputName.waiter]}
+                        onChange={e => onChangeFormInput(FormInputName.waiter)(e.target.value)}
+                        error={formErrors.waiter && formErrors.waiter[0]}
+                      />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <div className="link-green mb-5">+ cadastrar produto</div>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col className="mr-5" md={3}>
+                      <InputText
+                        type="number"
+                        label="Porcentagem de comissão(%)"
+                        name="commission"
+                        value={formData[FormInputName.commission]}
+                        onChange={e => onChangeFormInput(FormInputName.commission)(e.target.value)}
+                        error={formErrors.commission && formErrors.commission[0]}
+                      />
+                    </Col>
+                    <Col md={3}>
+                      <ButtonGroup
+                        label="Aceita desconto?"
+                        name="allowDiscount"
+                        value={formData[FormInputName.allowDiscount]}
+                        onChange={e =>
+                          onChangeFormInput(FormInputName.allowDiscount)(e.target.value)
+                        }
+                        error={formErrors.allowDiscount && formErrors.allowDiscount[0]}
+                        options={[
+                          { value: true, label: 'Sim' },
+                          { value: false, label: 'Não' },
+                        ]}
+                      />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <div className="action-icon d-flex justify-content-end">Inserir POS</div>
+                    </Col>
+                  </Row>
+                </div>
               </Row>
-              <Row>
-                <Col>
-                  <div
-                    className="link-green mb-5"
-                    // onClick={() => {
-                    //   if (productStates.product) {
-                    //     productActions.onEdit(productStates.product);
-                    //   } else {
-                    //     productActions.onAdd();
-                    //   }
-                    // }}
-                  >
-                    + cadastrar produto
-                  </div>
-                </Col>
-              </Row>
-              <Row>
-                <Col className="mr-5" md={3}>
-                  <InputText
-                    label="Porcentagem de comissão(%)"
-                    name={''}
-                    value={''}
-                    onChange={() => undefined}
-                  />
-                </Col>
-                <Col md={3}>
-                  <ButtonGroup
-                    label="Aceita desconto?"
-                    name="allowPos"
-                    value="true"
-                    onChange={() => undefined}
-                    options={[
-                      { value: true, label: 'Sim' },
-                      { value: false, label: 'Não' },
-                    ]}
-                  />
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <div className="action-icon d-flex justify-content-end">Inserir POS</div>
-                </Col>
-              </Row>
-            </div>
-          </Row>
-        </Col>
+            </Col>
+            <Row>
+              <Col></Col>
+            </Row>
+          </>
+        ) : (
+          <div className="pb-4"></div>
+        )}
         <Row>
           <Col>
             <SuperCollapse
