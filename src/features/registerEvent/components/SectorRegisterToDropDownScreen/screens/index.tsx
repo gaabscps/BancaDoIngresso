@@ -1,8 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import {
-  ShouldShowModal,
-  States,
-} from '@/features/registerEvent/components/SectorTicketMainSettingsSreen/screens/ui';
 import useForm from '@/hooks/useForm';
 import validators from '@/helpers/validators';
 import { useDialog } from '@/hooks/useDialog';
@@ -11,12 +7,16 @@ import api, { AxiosError } from '@/services/api';
 import Section from '@/model/Section';
 import { FormInputName as FormInputNameToSector } from '@/features/registerEvent/components/SectorRegisterToDropDownScreen/components/RegisterSectorContent';
 import {
+  ShouldShowModal,
+  States,
+  SectorRegisterContainer,
+} from '@/features/registerEvent/components/SectorRegisterToDropDownScreen/screens/ui';
+import {
   formSectorProps,
   modalConfigProps,
   onShouldShowModalSectorProps,
   sectorActionsProps,
 } from '../types';
-import { SectorRegisterContainer } from './ui';
 
 export const SectorRegisterToDropDownScreen: React.FC<any> = ({
   sectorActions: sectorSelectedActions,
