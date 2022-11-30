@@ -3,6 +3,7 @@ import React, { Fragment } from 'react';
 import { InputFile, SelectCustom } from '@/components';
 import { Form, FormGroup } from 'reactstrap';
 import { SectorProductConfigSectorContainerProps } from '../../screens/ui';
+import { SectorRegisterToDropDownScreen } from '../../../SectorRegisterToDropDownScreen/screens';
 
 // eslint-disable-next-line no-shadow
 export enum States {
@@ -17,10 +18,17 @@ export enum FormInputName {
 }
 
 export const SectorProductConfigSectorContent: React.FC<
-  Pick<SectorProductConfigSectorContainerProps, 'formConfigSector'>
-> = ({ formConfigSector }) => {
+  Pick<
+    SectorProductConfigSectorContainerProps,
+    'formConfigSector' | 'configSectorActions' | 'configSectorStates'
+  >
+> = ({ formConfigSector, configSectorActions, configSectorStates }) => {
   const { formData, formErrors, onChangeFormInput, onChangeFormFileInput, formNameFiles } =
     formConfigSector;
+
+  const sectorSelected = configSectorStates?.sectorDropdown.find(
+    sector => sector.id === formData[FormInputName.section],
+  );
 
   return (
     <Fragment>
@@ -38,7 +46,14 @@ export const SectorProductConfigSectorContent: React.FC<
             value={formData[FormInputName.section]}
             onChange={e => onChangeFormInput(FormInputName.section)(e?.value as string)}
             error={formErrors.section && formErrors.section[0]}
-            options={[]}
+            options={configSectorStates.sectorDropdown.map(sector => ({
+              value: sector.id,
+              label: sector.name,
+            }))}
+          />
+          <SectorRegisterToDropDownScreen
+            sectorStates={sectorSelected}
+            sectorActions={configSectorActions}
           />
         </FormGroup>
         <FormGroup className="mb-2">

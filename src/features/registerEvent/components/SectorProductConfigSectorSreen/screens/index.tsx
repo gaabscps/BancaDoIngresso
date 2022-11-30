@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useForm from '@/hooks/useForm';
 import validators from '@/helpers/validators';
 import { toast } from 'react-toastify';
@@ -34,7 +34,7 @@ type UrlParams = {
 export const SectorProductConfigSectorScreen: React.FC<
   Omit<TabSectorProductActionsProps, 'onFirstTab'>
 > = ({ backTab, nextTab }): JSX.Element => {
-  const [state] = useState<States>(States.default);
+  const [state, setState] = useState<States>(States.default);
   const [formNameFiles, setFormNameFiles] = useState<NameFiles>({});
 
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(
@@ -43,6 +43,8 @@ export const SectorProductConfigSectorScreen: React.FC<
 
   const [sector, setSector] = useState<Section>();
   const [sectorList, setSectorList] = useState<Section[]>([]);
+
+  const [sectorDropdown, setSectorDropdown] = useState<Section[]>([]);
 
   const { title, visible, onChangeTitle, onToggle } = useDialog();
   const confirmDelete = useConfirmDelete();
@@ -120,6 +122,21 @@ export const SectorProductConfigSectorScreen: React.FC<
       }
     };
   // Change file input ---------------------------------------------------------
+
+  const handleFecthSectorList = async (): Promise<void> => {
+    try {
+      setState(States.loading);
+      const { data } = await api.get<Section[]>(`/section/find`);
+      // filter father event when event type is father
+
+      setSectorDropdown(data ?? []);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
 
   const handleNextTab = async (): Promise<void> => {
     await handleOnSaveConfigSector();
@@ -209,6 +226,7 @@ export const SectorProductConfigSectorScreen: React.FC<
   };
 
   const controllerConfigSectorActions: configSectorActions = {
+    onGetAllSector: handleFecthSectorList,
     onGet: handleOnGetSector,
     onCancelEdit: handleOnCancelEditSector,
     onSave: handleOnSaveConfigSector,
@@ -221,7 +239,13 @@ export const SectorProductConfigSectorScreen: React.FC<
     setSector,
     sectorList,
     setSectorList,
+    sectorDropdown,
+    setSectorDropdown,
   };
+
+  useEffect(() => {
+    handleFecthSectorList();
+  }, []);
 
   return (
     <SectorProductConfigSectorContainer

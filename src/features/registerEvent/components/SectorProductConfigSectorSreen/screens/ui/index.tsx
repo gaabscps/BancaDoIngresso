@@ -84,7 +84,11 @@ export const SectorProductConfigSectorContainer: React.FC<
       <Container className="mainContainer" fluid={true}>
         <div className="card-ligth-color mb-5">
           <div className="container-event">
-            <SectorProductConfigSectorContent formConfigSector={formConfigSector} />
+            <SectorProductConfigSectorContent
+              formConfigSector={formConfigSector}
+              configSectorActions={configSectorActions}
+              configSectorStates={configSectorStates}
+            />
           </div>
           <div className="d-flex justify-content-end">
             <div
