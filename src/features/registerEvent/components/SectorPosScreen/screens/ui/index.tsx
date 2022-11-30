@@ -1,5 +1,5 @@
 import TicketIcon from '@/assets/images/svg/Ticket';
-import { ButtonGroup, InputText, Loading, SelectCustom, Switch } from '@/components';
+import { ButtonGroup, Dialog, InputText, Loading, SelectCustom, Switch } from '@/components';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
@@ -7,12 +7,19 @@ import { ReactComponent as Config } from '@/assets/images/svg/config.svg';
 import { CustomTable } from '@/components/Table';
 import React from 'react';
 import { Col, Container, Form, FormGroup, Row } from 'reactstrap';
-import { formPosProps } from '../../types';
+import { ActionProps } from '@/components/Dialog';
+import { formPosProps, modalConfigPosProps } from '../../types';
+import { PosConfigContent } from '../../components/PosConfigContent';
 
 // eslint-disable-next-line no-shadow
 export enum States {
   default = 'default',
   loading = 'loading',
+}
+
+// eslint-disable-next-line no-shadow
+export enum ShouldShowModal {
+  configPos = 'configPos',
 }
 
 // eslint-disable-next-line no-shadow
@@ -27,15 +34,49 @@ export enum FormInputName {
 interface SectorProductPosContainerProps {
   state: States;
   controllerFormPos: formPosProps;
+  controllerModalConfig: modalConfigPosProps;
 }
 export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
   state,
   controllerFormPos,
+  controllerModalConfig,
 }) => {
-  console.log(States);
   const { formData, formErrors, onChangeFormInput } = controllerFormPos;
+  const { shouldShowModal, title, visible, onToggle, onShouldShowModal } = controllerModalConfig;
+
+  const renderActionDialogToCancel: ActionProps = {
+    title: 'Cancelar',
+    onClick: (): void => onToggle(),
+    theme: 'noneBorder',
+  };
+
   return (
     <>
+      <Dialog
+        title={title}
+        visible={visible}
+        onClose={onToggle}
+        isContentWithCard
+        actions={[
+          {
+            [ShouldShowModal.configPos]: renderActionDialogToCancel,
+          }[shouldShowModal],
+          {
+            [ShouldShowModal.configPos]: {
+              // title: productStates?.product ? 'Salvar' : 'Cadastrar novo setor',
+              // onClick: (): Promise<void> => productActions.onSave(),
+              title: 'Salvar',
+              onClick: () => undefined,
+            },
+          }[shouldShowModal],
+        ]}
+      >
+        {
+          {
+            [ShouldShowModal.configPos]: <PosConfigContent />,
+          }[shouldShowModal]
+        }
+      </Dialog>
       <Loading isVisible={state === States.loading} />
       <Container className="mainContainer" fluid={true}>
         <Row>
@@ -193,7 +234,13 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
                           <>
                             <Config
                               className="mr-4 svg-icon action-icon"
-                              onClick={() => undefined}
+                              onClick={(): void => {
+                                onShouldShowModal({
+                                  value: ShouldShowModal.configPos,
+                                  newTitleModal: 'Configuração de setores e produtos da POS',
+                                  // product: item,
+                                });
+                              }}
                             />
                             <Pen
                               width={15}

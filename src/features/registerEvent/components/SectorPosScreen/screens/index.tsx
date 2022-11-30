@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import useForm from '@/hooks/useForm';
 import validators from '@/helpers/validators';
-import { SectorPosContainer } from './ui';
-import { formPosProps } from '../types';
+import { useDialog } from '@/hooks/useDialog';
+import { SectorPosContainer, ShouldShowModal } from './ui';
+import { formPosProps, modalConfigPosProps, onShouldShowModalSectorProductProps } from '../types';
 
 // eslint-disable-next-line no-shadow
 export enum States {
@@ -14,7 +15,10 @@ interface SectorProductPosContainerProps {
   state: States;
 }
 export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({ state }) => {
-  console.log(States);
+  const { title, visible, onChangeTitle, onToggle } = useDialog();
+  const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(
+    ShouldShowModal.configPos,
+  );
 
   const {
     formData: formDataPos,
@@ -48,9 +52,37 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({ stat
     isFormValid: isFormValidPos,
   };
 
+  // modal config ------------------------------------------------------------
+  const handleOnShouldShowModal = ({
+    value,
+    newTitleModal,
+  }: // product: productSelected,
+  onShouldShowModalSectorProductProps): void => {
+    setShouldShowModal(value);
+    onChangeTitle(newTitleModal);
+    onToggle();
+
+    // if (productSelected?.id && value === ShouldShowModal.configPos) {
+    //   setProduct(productSelected);
+    // }
+  };
+
+  const controllerModalConfig: modalConfigPosProps = {
+    title,
+    visible,
+    onChangeTitle,
+    onToggle,
+    onShouldShowModal: handleOnShouldShowModal,
+    shouldShowModal,
+  };
+
   return (
     <>
-      <SectorPosContainer controllerFormPos={controllerFormPos} state={state} />
+      <SectorPosContainer
+        controllerModalConfig={controllerModalConfig}
+        controllerFormPos={controllerFormPos}
+        state={state}
+      />
     </>
   );
 };
