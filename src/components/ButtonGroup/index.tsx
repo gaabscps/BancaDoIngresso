@@ -1,4 +1,4 @@
-import React, { FC, LegacyRef } from 'react';
+import React, { CSSProperties, FC, LegacyRef } from 'react';
 
 interface RadioProps {
   name: string;
@@ -9,9 +9,10 @@ interface RadioProps {
   icon?: any;
   options?: any;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  value: string;
+  value: string | number;
   disabled?: boolean;
   refButton?: LegacyRef<HTMLInputElement>;
+  style?: CSSProperties;
 }
 
 interface OptionProps {
@@ -30,11 +31,12 @@ export const ButtonGroup: FC<RadioProps> = ({
   value,
   disabled,
   refButton,
+  style,
 }) => {
   const isError = error ? 'input-error' : '';
 
   return (
-    <div className={`flex-column mb-4 ${wrapperClass} ${isError}`}>
+    <div style={style} className={`flex-column mb-4 ${wrapperClass} ${isError}`}>
       {label && (
         <div className="d-flex flex-column-reverse">
           <label htmlFor={name} className={`input-label ${disabled ? 'disable-text' : ''}`}>

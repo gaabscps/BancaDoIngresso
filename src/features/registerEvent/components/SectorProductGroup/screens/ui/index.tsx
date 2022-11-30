@@ -150,7 +150,7 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
             <SuperCollapse
               noPadding={true}
               overflow={true}
-              title={'Grupos cadastrados (0)'}
+              title={'Grupos cadastrados'}
               content={
                 groupList.length > 0 &&
                 groupList.map((item, index) => (

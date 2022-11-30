@@ -4,6 +4,7 @@
 import React, { Fragment, useState } from 'react';
 import { ButtonGroup, Loading, Tab } from '@/components';
 import { Container, FormGroup } from 'reactstrap';
+import { SectorProductComboScreen } from '@/features/registerEvent/components/SectorProductCombo/screens';
 import { SectorProductGroupScreen } from '@/features/registerEvent/components/SectorProductGroup/screens';
 import { SectorProductScreen } from '@/features/registerEvent/components/SectorProductScreen/screens';
 import { SectorProductConfigSectorScreen } from '@/features/registerEvent/components/SectorProductConfigSectorSreen/screens';
@@ -65,7 +66,13 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
         onFirstTab={handleOnFirstTab}
       />
     </>,
-    'Conteudo 3',
+    <>
+      <SectorProductComboScreen
+        nextTab={handleNextTab}
+        backTab={handleBackTab}
+        onFirstTab={handleOnFirstTab}
+      />
+    </>,
     <>
       <>
         <SectorProductConfigSectorScreen nextTab={handleNextTab} backTab={handleBackTab} />

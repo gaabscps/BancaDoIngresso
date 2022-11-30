@@ -410,7 +410,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
         </div>
         <Col>
           <div className="container-event mb-4">
-            <h5 className="mb-2 border-bottom-title mb-5">Taxas de cartão</h5>
+            <h5 className="mb-2 border-bottom-title mb-5">Taxa de cartão</h5>
           </div>
           <p style={{ fontSize: '21px', fontWeight: '500' }}>Venda física</p>
           <Row>
