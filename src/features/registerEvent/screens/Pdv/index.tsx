@@ -8,8 +8,8 @@ import { DeleteContent } from '@/components/DeleteContent';
 import { useConfirmDelete } from '@/hooks/useConfirmDelete';
 import api from '@/services/api';
 import Pdv from '@/model/Pdv';
-import { mainPdvStatesProps } from '../../components/PdvScreen/types';
 import validators from '@/helpers/validators';
+import { mainPdvStatesProps } from '../../components/PdvScreen/types';
 
 export const PdvEventScreen: React.FC = (): JSX.Element => {
   const [state] = useState<States>(States.default);
