@@ -9,7 +9,6 @@ import {
   States,
   ShouldShowModal,
 } from '@/features/registerEvent/components/SectorProductConfigSectorSreen/screens/ui';
-// import { FormInputName as FormInputNameToConfigSector } from '@/features/registerEvent/components/SectorProductConfigSectorSreen/components/SectorTicketConfigSectorContent';
 import { useParams } from 'react-router-dom';
 import { useDialog } from '@/hooks/useDialog';
 import { DeleteContent } from '@/components/DeleteContent';

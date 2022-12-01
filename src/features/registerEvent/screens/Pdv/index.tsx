@@ -12,7 +12,7 @@ import validators from '@/helpers/validators';
 import { mainPdvStatesProps } from '../../components/PdvScreen/types';
 
 export const PdvEventScreen: React.FC = (): JSX.Element => {
-  const [state] = useState<States>(States.default);
+  const [state, setState] = useState<States>(States.default);
   const confirmDelete = useConfirmDelete();
 
   const [mainPdv, setMainPdv] = useState<Pdv>();
@@ -85,14 +85,14 @@ export const PdvEventScreen: React.FC = (): JSX.Element => {
 
   const handleFecthCategoryList = async (): Promise<void> => {
     try {
-      // setState(States.loading);
+      setState(States.loading);
       const { data } = await api.get<Pdv[]>(`/pdv/find`);
       setMainPdvList(data ?? []);
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
     } finally {
-      // setState(States.default);
+      setState(States.default);
     }
   };
 

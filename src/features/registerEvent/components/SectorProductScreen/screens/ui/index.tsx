@@ -50,60 +50,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
   modalConfig,
   formDiscountCoupon,
 }) => {
-  // mock listDiscountCoupon
-  // const listDiscountCoupon = [
-  //   {
-  //     id: '1',
-  //     group: {
-  //       id: '1',
-  //     },
-  //     subgroup: {
-  //       id: '1',
-  //     },
-  //     name: 'Whisky Red Label 1L',
-  //     amount: 100,
-  //     unitValue: 20,
-  //     totalValue: 20000,
-  //     imageBase64: '',
-  //     physicalSale: {
-  //       id: 'string',
-  //       allowCreditCardPayment: true,
-  //       debit: 0,
-  //       credit: 0,
-  //       bankSlip: 0,
-  //       pix: 0,
-  //       administrateTax: 0,
-  //       installments: 0,
-  //       fee: 0,
-  //     },
-  //     websiteSale: {
-  //       id: 'string',
-  //       allowCreditCardPayment: true,
-  //       debit: 0,
-  //       credit: 0,
-  //       bankSlip: 0,
-  //       pix: 0,
-  //       administrateTax: 0,
-  //       installments: 0,
-  //       fee: 0,
-  //     },
-  //     waiter: 0,
-  //     partialPayment: true,
-  //     allowDiscountCoupon: true,
-  //     discountCoupons: [
-  //       {
-  //         id: 'string',
-  //         name: 'string',
-  //         code: 'string',
-  //         amount: 0,
-  //         discountType: 0,
-  //         discount: 0,
-  //       },
-  //     ],
-  //   },
-  // ];
-
-  const listDiscountCoupon = [
+  const listDiscountCouponMock = [
     {
       id: '1',
       product: 'Whisky Red Label 1L',
@@ -165,16 +112,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
             >
               {productStates.product ? 'Cancelar edição do produto' : null}
             </div>
-            <div
-              className="link-green"
-              // onClick={() => {
-              //   if (productStates.product) {
-              //     productActions.onEdit(productStates.product);
-              //   } else {
-              //     productActions.onAdd();
-              //   }
-              // }}
-            >
+            <div className="link-green">
               {productStates.product ? 'Salvar produto' : '+ cadastrar produto'}
             </div>
           </div>
@@ -182,8 +120,8 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
         <SuperCollapse
           title={`Produtos cadastrados`}
           content={
-            listDiscountCoupon.length > 0 ? (
-              listDiscountCoupon.map((item, index) => (
+            listDiscountCouponMock.length > 0 ? (
+              listDiscountCouponMock.map((item, index) => (
                 <React.Fragment key={index}>
                   <div className="mb-5">
                     <span className="secondary-table-title">Grupo #{index + 1}</span>
@@ -254,7 +192,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
               <span>Nenhum cupom de desconto adicionado</span>
             )
           }
-          count={listDiscountCoupon.length}
+          count={listDiscountCouponMock.length}
           leftIcon={TicketIcon}
         />
         <div className="d-flex justify-content-end">

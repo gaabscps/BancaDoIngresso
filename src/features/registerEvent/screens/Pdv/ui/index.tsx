@@ -1,9 +1,5 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import React, {
-  Fragment,
-  useState,
-  //  useState
-} from 'react';
+import React, { Fragment, useState } from 'react';
 import { ButtonGroup, Loading, Tab } from '@/components';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
@@ -12,6 +8,7 @@ import { MainPdvContent } from '@/features/registerEvent/components/MainPdvConte
 import { CustomTable } from '@/components/Table';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
 import { mainPdvStatesProps } from '@/features/registerEvent/components/PdvScreen/types';
+import { PdvEventPosScreen } from '@/features/registerEvent/components/PdvEventPosScreen/screens';
 import { PdvProductScreen } from '@/features/registerEvent/components/PdvProductsScreen/screens';
 import { columnsEventPdv } from './table';
 import TicketIcon from '../../../../../assets/images/svg/Ticket';
@@ -67,16 +64,6 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
   //   setNumberTab(0);
   // };
 
-  const contentTabs = [
-    <>
-      <PdvProductScreen nextTab={handleNextTab} backTab={handleBackTab} />
-    </>,
-    'Conteudo 2',
-    'Conteudo 3',
-    'Conteudo 4',
-    'Conteudo 5',
-  ];
-
   const listDiscountCoupon = [
     {
       id: '1',
@@ -85,6 +72,17 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
     },
   ];
 
+  const contentTabs = [
+    'Conteudo 1',
+    <>
+      <PdvEventPosScreen />
+    </>,
+    <>
+      <PdvProductScreen nextTab={handleNextTab} backTab={handleBackTab} />
+    </>,
+    'Conteudo 4',
+    'Conteudo 5',
+  ];
   return (
     <Fragment>
       <Loading isVisible={state === States.loading} />
@@ -186,7 +184,7 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
                 'Cadastrar Sub PDV’s',
               ]}
               contents={contentTabs}
-              numberStap={0}
+              numberStap={numberTab}
             />
           </>
         )}

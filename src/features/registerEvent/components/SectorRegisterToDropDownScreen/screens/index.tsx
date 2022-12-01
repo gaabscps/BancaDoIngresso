@@ -29,7 +29,6 @@ export const SectorRegisterToDropDownScreen: React.FC<any> = ({
   const [sector, setSector] = useState<Section>();
 
   const { title, visible, onChangeTitle, onToggle } = useDialog();
-  // const params = useParams<UrlParams>();
 
   const {
     formData: formDataSector,
@@ -112,8 +111,6 @@ export const SectorRegisterToDropDownScreen: React.FC<any> = ({
   const controllerSectorStates: any = {
     sector,
     setSector,
-    // sectorList,
-    // setSectorList,
   };
 
   const controllerSectorActions: sectorActionsProps = {

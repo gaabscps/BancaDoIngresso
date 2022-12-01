@@ -1,14 +1,6 @@
 /* eslint-disable import/no-unresolved */
 import React, { Fragment } from 'react';
-// import { ButtonGroup, InputText, SelectCustom } from '@/components';
-import {
-  Form,
-  //  Col,
-  //  FormGroup,
-  //  Row
-} from 'reactstrap';
-// import { SectorProductConfigSectorContainerProps } from '../../screens/ui';
-// import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
+import { Form } from 'reactstrap';
 
 // eslint-disable-next-line no-shadow
 export enum States {
@@ -37,10 +29,7 @@ export enum FormInputName {
   partialPayment = 'partialPayment',
 }
 
-export const SectorConfigContent: React.FC<
-  // SectorProductConfigSectorContainerProps
-  any
-> = () => (
+export const SectorConfigContent: React.FC<any> = () => (
   <Fragment>
     <Form
       noValidate={true}
