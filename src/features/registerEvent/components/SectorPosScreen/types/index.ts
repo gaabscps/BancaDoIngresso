@@ -8,7 +8,7 @@ export interface formPosProps {
   isFormValid: IsFormValid;
 }
 
-export interface onShouldShowModalSectorProductProps {
+export interface onShouldShowModalSectorPosProps {
   value: ShouldShowModal;
   newTitleModal: string | React.ReactNode;
   product?: any;
@@ -19,6 +19,6 @@ export interface modalConfigPosProps {
   visible: boolean;
   onChangeTitle: (title: string) => void;
   onToggle: () => void;
-  onShouldShowModal: (props: onShouldShowModalSectorProductProps) => void;
+  onShouldShowModal: (props: onShouldShowModalSectorPosProps) => void;
   shouldShowModal: ShouldShowModal;
 }

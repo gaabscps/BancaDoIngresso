@@ -1,4 +1,8 @@
-import React, { Fragment } from 'react';
+/* eslint-disable @typescript-eslint/no-use-before-define */
+import React, {
+  Fragment,
+  //  useState
+} from 'react';
 import { ButtonGroup, Loading, Tab } from '@/components';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
@@ -7,6 +11,7 @@ import { MainPdvContent } from '@/features/registerEvent/components/MainPdvConte
 import { CustomTable } from '@/components/Table';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
 import { mainPdvStatesProps } from '@/features/registerEvent/components/PdvScreen/types';
+// import { PdvProductScreen } from '@/features/registerEvent/components/PdvProductsScreen/screens';
 import { columnsEventPdv } from './table';
 import TicketIcon from '../../../../../assets/images/svg/Ticket';
 
@@ -43,6 +48,25 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
   mainPdvStates,
 }) => {
   const { formData, formErrors, onChangeFormInput } = formPdv;
+  // const [numberTab, setNumberTab] = useState(0);
+
+  // const handleNextTab = (): void => {
+  //   if (numberTab <= contentTabs.length) {
+  //     setNumberTab(numberTab + 1);
+  //   }
+  // };
+
+  // const handleBackTab = (): void => {
+  //   if (numberTab <= contentTabs.length && numberTab >= 0) {
+  //     setNumberTab(numberTab - 1);
+  //   }
+  // };
+
+  // const handleOnFirstTab = (): void => {
+  //   setNumberTab(0);
+  // };
+
+  const contentTabs = ['Conteudo 1', 'Conteudo 2', 'Conteudo 3', 'Conteudo 4', 'Conteudo 5'];
 
   const listDiscountCoupon = [
     {
@@ -52,7 +76,6 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
     },
   ];
 
-  const contentTabs = ['Conteudo 1', 'Conteudo 2', 'Conteudo 3', 'Conteudo 4', 'Conteudo 5'];
   return (
     <Fragment>
       <Loading isVisible={state === States.loading} />

@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import useForm from '@/hooks/useForm';
 import validators from '@/helpers/validators';
-import { useDialog } from '@/hooks/useDialog';
-import { SectorPosContainer, ShouldShowModal } from './ui';
-import { formPosProps, modalConfigPosProps, onShouldShowModalSectorPosProps } from '../types';
+import { PdvProductContainer } from './ui';
+import { formPdvProductProps } from '../types';
 
 // eslint-disable-next-line no-shadow
 export enum States {
@@ -16,16 +15,11 @@ interface SectorProductPosContainerProps {
   nextTab: () => void;
   backTab: () => void;
 }
-export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({
+export const PdvProductScreen: React.FC<SectorProductPosContainerProps> = ({
   // state,
   nextTab,
   backTab,
 }) => {
-  const { title, visible, onChangeTitle, onToggle } = useDialog();
-  const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(
-    ShouldShowModal.configPos,
-  );
-
   const {
     formData: formDataPos,
     formErrors: formErrorsPos,
@@ -51,41 +45,16 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({
     formatters: {},
   });
 
-  const controllerFormPos: formPosProps = {
+  const controllerFormPos: formPdvProductProps = {
     formData: formDataPos,
     formErrors: formErrorsPos,
     onChangeFormInput: onChangeFormInputPos,
     isFormValid: isFormValidPos,
   };
 
-  // modal config ------------------------------------------------------------
-  const handleOnShouldShowModal = ({
-    value,
-    newTitleModal,
-  }: // product: productSelected,
-  onShouldShowModalSectorPosProps): void => {
-    setShouldShowModal(value);
-    onChangeTitle(newTitleModal);
-    onToggle();
-
-    // if (productSelected?.id && value === ShouldShowModal.configPos) {
-    //   setProduct(productSelected);
-    // }
-  };
-
-  const controllerModalConfig: modalConfigPosProps = {
-    title,
-    visible,
-    onChangeTitle,
-    onToggle,
-    onShouldShowModal: handleOnShouldShowModal,
-    shouldShowModal,
-  };
-
   return (
     <>
-      <SectorPosContainer
-        controllerModalConfig={controllerModalConfig}
+      <PdvProductContainer
         controllerFormPos={controllerFormPos}
         nextTab={nextTab}
         backTab={backTab}
