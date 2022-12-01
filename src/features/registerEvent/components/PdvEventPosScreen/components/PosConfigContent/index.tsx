@@ -1,18 +1,7 @@
 /* eslint-disable import/no-unresolved */
 import { ButtonGroup, InputText, SelectCustom } from '@/components';
 import React, { Fragment } from 'react';
-// import { ButtonGroup, InputText, SelectCustom } from '@/components';
-import {
-  Col,
-  Form,
-  FormGroup,
-  Row,
-  //  Col,
-  //  FormGroup,
-  //  Row
-} from 'reactstrap';
-// import { PosProductConfigPosContainerProps } from '../../screens/ui';
-// import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
+import { Col, Form, FormGroup, Row } from 'reactstrap';
 
 // eslint-disable-next-line no-shadow
 export enum States {
@@ -31,10 +20,7 @@ export enum FormInputName {
   physicalSaleFee = 'physicalSaleFee',
 }
 
-export const PosConfigContent: React.FC<
-  // PosProductConfigPosContainerProps
-  any
-> = ({ formPosConfig }) => {
+export const PosConfigContent: React.FC<any> = ({ formPosConfig }) => {
   const { formData, onChangeFormInput, formErrors } = formPosConfig;
 
   const optionCount = [
