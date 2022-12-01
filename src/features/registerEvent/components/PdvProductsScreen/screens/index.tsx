@@ -21,35 +21,30 @@ export const PdvProductScreen: React.FC<SectorProductPosContainerProps> = ({
   backTab,
 }) => {
   const {
-    formData: formDataPos,
-    formErrors: formErrorsPos,
-    onChangeFormInput: onChangeFormInputPos,
-    isFormValid: isFormValidPos,
-    // setErrors: setErrorsProduct,
+    formData: formDataProduct,
+    formErrors: formErrorsProduct,
+    onChangeFormInput: onChangeFormInputProduct,
+    isFormValid: isFormValidProduct,
     // resetForm: resetFormProduct,
   } = useForm({
     initialData: {
-      allowPos: '',
-      pos: '',
-      waiter: '',
-      commission: '',
-      allowDiscount: '',
+      allowProduct: 'true',
+      sector: '',
+      product: '',
     },
     validators: {
-      allowPos: [validators.required],
-      pos: [validators.required],
-      waiter: [validators.required],
-      commission: [validators.required],
-      allowDiscount: [validators.required],
+      allowProduct: [validators.required],
+      sector: [validators.required],
+      product: [validators.required],
     },
     formatters: {},
   });
 
   const controllerFormPos: formPdvProductProps = {
-    formData: formDataPos,
-    formErrors: formErrorsPos,
-    onChangeFormInput: onChangeFormInputPos,
-    isFormValid: isFormValidPos,
+    formData: formDataProduct,
+    formErrors: formErrorsProduct,
+    onChangeFormInput: onChangeFormInputProduct,
+    isFormValid: isFormValidProduct,
   };
 
   return (

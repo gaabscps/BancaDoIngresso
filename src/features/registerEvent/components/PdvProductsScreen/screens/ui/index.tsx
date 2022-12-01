@@ -43,7 +43,7 @@ export const PdvProductContainer: React.FC<SectorProductPosContainerProps> = ({
   nextTab,
   backTab,
 }) => {
-  const { formData, formErrors, onChangeFormInput } = controllerFormPos;
+  const { formData, formErrors, onChangeFormInput, isFormValid } = controllerFormPos;
 
   return (
     <>
@@ -83,7 +83,7 @@ export const PdvProductContainer: React.FC<SectorProductPosContainerProps> = ({
                         label="Setor"
                         value={formData[FormInputName.sector]}
                         onChange={e => onChangeFormInput(FormInputName.sector)(e?.value as string)}
-                        options={[]}
+                        options={[{ value: '1', label: 'Setor 1' }]}
                         error={formErrors.sector && formErrors.sector[0]}
                       />
                     </Col>
@@ -93,17 +93,44 @@ export const PdvProductContainer: React.FC<SectorProductPosContainerProps> = ({
                         label="Produtos"
                         value={formData[FormInputName.product]}
                         onChange={e => onChangeFormInput(FormInputName.product)(e?.value as string)}
-                        options={[]}
+                        options={[{ value: '1', label: 'Produto 1' }]}
                         error={formErrors.product && formErrors.product[0]}
+                        disabled={formData[FormInputName.sector] === ''}
                       />
                     </Col>
                   </Row>
 
                   <Row>
                     <Col>
-                      <div className="d-flex  justify-content-between">
-                        <div className="action-icon">Inserir TODOS produtos desse setor</div>
-                        <div className="action-icon">Inserir produtos</div>
+                      <div className="d-flex justify-content-between mt-5">
+                        <div
+                          onClick={() => {
+                            if (isFormValid()) {
+                              console.log('adicionar todos os produto');
+                            }
+                          }}
+                          className={`action-icon link-green ${
+                            formData[FormInputName.sector] === ''
+                              ? 'disable-text input-action-disabled '
+                              : ''
+                          }`}
+                        >
+                          Inserir TODOS produtos desse setor
+                        </div>
+                        <div
+                          onClick={() => {
+                            if (isFormValid()) {
+                              console.log('adicionar produto');
+                            }
+                          }}
+                          className={`action-icon link-green ${
+                            formData[FormInputName.product] === ''
+                              ? 'disable-text input-action-disabled '
+                              : ''
+                          }`}
+                        >
+                          Inserir produtos
+                        </div>
                       </div>
                     </Col>
                   </Row>
@@ -120,16 +147,15 @@ export const PdvProductContainer: React.FC<SectorProductPosContainerProps> = ({
         <Row>
           <Col>
             <SuperCollapse
+              disabled={formData[FormInputName.allowProduct] !== 'true'}
               title="Setores e produtos inseridos"
               content={
                 // change 0 to index
                 <React.Fragment key="content">
                   <div className="d-flex w-100 justify-content-between">
                     <div className="mb-3 w-100">
-                      <span className="secondary-table-title">Setor#{0 + 1} </span>
-                      <span className="secondary-table-title font-weight-bold">
-                        • Nome do setor 1
-                      </span>
+                      <span className="secondary-table-title light-text">Setor#{0 + 1} </span>
+                      <span className="secondary-table-title name">• Nome do setor 1</span>
                     </div>
                   </div>
                   <div className="mb-5">
@@ -165,7 +191,7 @@ export const PdvProductContainer: React.FC<SectorProductPosContainerProps> = ({
                                 className="mr-4 svg-icon action-icon"
                                 onClick={() => undefined}
                               />
-                              <X className="action-icon svg-icon-trash" onClick={() => undefined} />
+                              <X className="action-icon svg-icon" onClick={() => undefined} />
                             </>
                           ),
                           selector: row => row.actions,
@@ -195,10 +221,8 @@ export const PdvProductContainer: React.FC<SectorProductPosContainerProps> = ({
 
                   <div className="d-flex w-100 justify-content-between">
                     <div className="mb-3 w-100">
-                      <span className="secondary-table-title">Setor#{0 + 1} </span>
-                      <span className="secondary-table-title font-weight-bold">
-                        • Nome do setor 1
-                      </span>
+                      <span className="secondary-table-title light-text">Setor#{0 + 1} </span>
+                      <span className="secondary-table-title name">• Nome do setor 1</span>
                     </div>
                   </div>
                   <div className="mb-5">
@@ -274,7 +298,7 @@ export const PdvProductContainer: React.FC<SectorProductPosContainerProps> = ({
             theme="outlineDark"
             className="ml-3"
             onClick={async () => {
-              await nextTab();
+              nextTab();
             }}
           />
         </div>
