@@ -6,7 +6,6 @@ import { Container } from 'reactstrap';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
 import { SectorTicketMainSettingsContent } from '@/features/registerEvent/components/SectorTicketMainSettingsSreen/components/SectorTicketMainSettingsContent';
 import { ActionProps } from '@/components/Dialog';
-// import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { CustomTable } from '@/components/Table';
 import { ReactComponent as CloseX } from '@/assets/images/svg/closeX.svg';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';

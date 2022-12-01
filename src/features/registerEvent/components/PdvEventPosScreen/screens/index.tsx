@@ -4,7 +4,6 @@ import { useConfirmDelete } from '@/hooks/useConfirmDelete';
 import validators from '@/helpers/validators';
 import { toast } from 'react-toastify';
 import api, { AxiosError } from '@/services/api';
-// import { FormInputName as FormInputNameToPosRegister } from '@/features/registerEvent/components/PdvEventPosScreen/components/PosContent';
 import Pos from '@/model/Pos';
 import { useDialog } from '@/hooks/useDialog';
 import { DeleteContent } from '@/components/DeleteContent';
@@ -37,7 +36,6 @@ export const PdvEventPosScreen: React.FC<any> = ({ backTab, onFirstTab }): JSX.E
     formErrors: formErrorsPos,
     onChangeFormInput: onChangeFormInputPos,
     isFormValid: isFormValidPos,
-    // resetForm: resetFormPos,
   } = useForm({
     initialData: {
       hasPos: '',
@@ -71,7 +69,6 @@ export const PdvEventPosScreen: React.FC<any> = ({ backTab, onFirstTab }): JSX.E
     formErrors: formErrorsPosConfig,
     onChangeFormInput: onChangeFormInputPosConfig,
     isFormValid: isFormValidPosConfig,
-    // resetForm: resetFormPosConfig,
   } = useForm({
     initialData: {
       physicalSaleAllowCreditCardPayment: '',
@@ -146,7 +143,6 @@ export const PdvEventPosScreen: React.FC<any> = ({ backTab, onFirstTab }): JSX.E
   };
 
   const handleNextTab = async (): Promise<void> => {
-    // await handleOnSaveGeneralSettings();
     if (isFormValidPos()) {
       onFirstTab();
     }

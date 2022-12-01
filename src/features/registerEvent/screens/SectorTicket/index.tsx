@@ -20,7 +20,7 @@ type UrlParams = {
 };
 
 export const SectorTicketScreen: React.FC = (): JSX.Element => {
-  const [state] = useState<States>(States.default);
+  const [state, setState] = useState<States>(States.default);
 
   const [ticket, setTicket] = useState<Ticket>();
   const [ticketList, setTicketList] = useState<Ticket[]>([]);
@@ -49,7 +49,7 @@ export const SectorTicketScreen: React.FC = (): JSX.Element => {
         idEvent: string;
         tickets: Ticket[];
       };
-      // setState(States.loading);
+      setState(States.loading);
       const { data } = await api.get<TicketsResponse>(`event/ticket/${id}`);
       // filter father event when event type is father
       const { tickets } = data;
@@ -58,7 +58,7 @@ export const SectorTicketScreen: React.FC = (): JSX.Element => {
       const err = error as AxiosError;
       toast.error(err.message);
     } finally {
-      // setState(States.default);
+      setState(States.default);
     }
   };
 

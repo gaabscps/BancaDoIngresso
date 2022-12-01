@@ -99,16 +99,7 @@ export const SectorProductConfigSectorContainer: React.FC<
             >
               {configSectorStates.sector ? 'Cancelar edição do produto' : null}
             </div>
-            <div
-              className="link-green"
-              // onClick={() => {
-              //   if (productStates.product) {
-              //     productActions.onEdit(productStates.product);
-              //   } else {
-              //     productActions.onAdd();
-              //   }
-              // }}
-            >
+            <div className="link-green">
               {configSectorStates.sector ? 'Salvar setor' : '+ inserir setor'}
             </div>
           </div>

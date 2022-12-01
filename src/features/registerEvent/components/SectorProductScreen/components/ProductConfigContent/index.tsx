@@ -349,13 +349,7 @@ export const ProductConfigContent: React.FC<
       </Form>
       {formData[FormInputName.allowDiscountCoupon] === 'true' &&
       formData[FormInputName.allowDiscount] === 'true' ? (
-        <RegisterDiscountCoupon
-          // handleRemoveDiscountCoupon={handleRemoveDiscountCoupon}
-          // handleAddDiscountCoupon={handleAddDiscountCoupon}
-          // discountCoupon={discountCoupon}
-          // handleChangeDiscountCoupon={handleChangeDiscountCoupon}
-          formDiscountCoupon={formDiscountCoupon}
-        />
+        <RegisterDiscountCoupon formDiscountCoupon={formDiscountCoupon} />
       ) : null}
     </Fragment>
   );

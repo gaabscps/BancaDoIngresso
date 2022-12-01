@@ -191,18 +191,15 @@ export const PdvEventPosContainer: React.FC<PosContainerProps> = ({
               buttonAction={() => posActions.onCancelEdit()}
               showButtonOnTitle={!!posStates?.pos}
             />
-            <div className="d-flex justify-content-between">
-              <div>
-                <Button title="Salvar" theme="noneBorder" onClick={() => undefined} />
-              </div>
+            <div className="d-flex justify-content-end">
               <div>
                 <Button
-                  title="Voltar"
+                  title="Voltar etapa"
                   theme="noneBorder"
                   onClick={() => posActions.onReturnTap()}
                 />
                 <Button
-                  title="Adicionar ingresso"
+                  title="Proxima etapa"
                   theme="outlineDark"
                   className="ml-3"
                   onClick={async () => {

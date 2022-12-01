@@ -27,7 +27,6 @@ export const SectorProductGroupScreen: React.FC<
     formData: formDataGroup,
     formErrors: formErrorsGroup,
     onChangeFormInput: onChangeFormInputGroup,
-    // isFormValid: isFormValidGroup,
   } = useForm({
     initialData: {
       name: '',
@@ -68,13 +67,6 @@ export const SectorProductGroupScreen: React.FC<
     setSubGroup(values);
   };
 
-  // Será utilizado para adicionar um novo grupo na integracao com o backend
-  // const resetForm = (): void => {
-  //   setSubGroup([{ id: '', name: '' }]);
-  //   setSubGroupList([{ id: '', name: '' }]);
-  //   setGroupList([]);
-  // };
-
   const handleAddGroup = async (): Promise<void> => {
     try {
       // Aqui será feito a integração com o backend
@@ -89,7 +81,6 @@ export const SectorProductGroupScreen: React.FC<
           subgroup: subGroup,
         },
       ]);
-      // resetForm();
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
