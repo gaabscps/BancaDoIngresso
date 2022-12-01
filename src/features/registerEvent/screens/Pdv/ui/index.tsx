@@ -10,6 +10,7 @@ import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
 import { mainPdvStatesProps } from '@/features/registerEvent/components/PdvScreen/types';
 import { PdvEventPosScreen } from '@/features/registerEvent/components/PdvEventPosScreen/screens';
 import { PdvProductScreen } from '@/features/registerEvent/components/PdvProductsScreen/screens';
+import { PdvEventSubPdvScreen } from '@/features/registerEvent/components/PdvEventSubPdvScreen/screens';
 import { columnsEventPdv } from './table';
 import TicketIcon from '../../../../../assets/images/svg/Ticket';
 
@@ -81,7 +82,9 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
       <PdvProductScreen nextTab={handleNextTab} backTab={handleBackTab} />
     </>,
     'Conteudo 4',
-    'Conteudo 5',
+    <>
+      <PdvEventSubPdvScreen />
+    </>,
   ];
   return (
     <Fragment>
@@ -184,7 +187,7 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
                 'Cadastrar Sub PDV’s',
               ]}
               contents={contentTabs}
-              numberStap={numberTab}
+              numberStap={4}
             />
           </>
         )}
