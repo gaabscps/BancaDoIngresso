@@ -1,7 +1,6 @@
 import { FormData, FormErrors, OnChangeFormInput, IsFormValid } from '@/hooks';
 import SubPdv from '@/model/SubPdv';
-import Section from '@/model/Section';
-import Ticket from '@/model/Ticket';
+import User from '@/model/User';
 import { ShouldShowModal } from '../screens/ui';
 
 export interface formSubPdvProps {
@@ -58,3 +57,10 @@ export interface modalConfigSubPdvSettingsProps {
   shouldShowModal: ShouldShowModal;
   onShowModalDelete: (subPdvsector: any) => void;
 }
+
+export type ContractorControllerUser = {
+  listUsers: User[];
+  usersSelected: User[];
+  handleAddUser(userId: string): void;
+  handleRemoveUser(index: number): void;
+};

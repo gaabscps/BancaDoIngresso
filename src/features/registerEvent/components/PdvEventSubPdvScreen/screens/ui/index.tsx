@@ -10,6 +10,7 @@ import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
 import TicketIcon from '@/assets/images/svg/Ticket';
 import { ActionProps } from '@/components/Dialog';
 import {
+  ContractorControllerUser,
   formSubPdvProps,
   formSubPdvRegisterProps,
   modalConfigSubPdvSettingsProps,
@@ -39,6 +40,7 @@ export interface SubPdvContainerProps {
   formSubPdvRegister: formSubPdvRegisterProps;
   subPdvStates: subPdvStatesProps;
   subPdvActions: subPdvActionsProps;
+  appendUser: ContractorControllerUser;
   modalConfig: modalConfigSubPdvSettingsProps;
 }
 
@@ -48,6 +50,7 @@ export const PdvEventSubPdvContainer: React.FC<SubPdvContainerProps> = ({
   formSubPdvRegister,
   subPdvStates,
   subPdvActions,
+  appendUser,
   modalConfig,
 }) => {
   const { formData, formErrors, onChangeFormInput } = formSubPdv;
@@ -55,10 +58,9 @@ export const PdvEventSubPdvContainer: React.FC<SubPdvContainerProps> = ({
   const subPdvListMock = [
     {
       id: '1',
-      name: 'Maquininha do Seu Zé',
-      numberSubPdv: '123456',
-      expirationDate: '01/01/2021',
-      partialPayment: '3%',
+      name: 'Promoter Ronaldo MOCK',
+      users: '123.456.789-00, 987.654.321-00',
+      link: 'bit.ly/linkvenda/L1-88-3-...',
     },
   ];
 
@@ -92,6 +94,7 @@ export const PdvEventSubPdvContainer: React.FC<SubPdvContainerProps> = ({
             [ShouldShowModal.configProduct]: (
               <SubPdvContent
                 formSubPdvRegister={formSubPdvRegister}
+                appendUser={appendUser}
                 // subPdvStates={subPdvStates}
               />
             ),
@@ -100,7 +103,7 @@ export const PdvEventSubPdvContainer: React.FC<SubPdvContainerProps> = ({
       </Dialog>
       <Loading isVisible={state === States.loading} />
       <Container className="mainContainer" fluid={true}>
-        <FormGroup className="mb-2">
+        <FormGroup className="mb-2 d-flex">
           <ButtonGroup
             label="Permitir Sub PDV?"
             name="hasSubPdv"
@@ -114,18 +117,18 @@ export const PdvEventSubPdvContainer: React.FC<SubPdvContainerProps> = ({
             ]}
             error={formErrors.hasSubPdv && formErrors.hasSubPdv[0]}
           />
-          <div className="d-flex justify-content-end">
-            <div
-              className="mr-5 link-green"
-              onClick={() =>
-                modalConfig.onShouldShowModal({
-                  value: ShouldShowModal.configProduct,
-                  newTitleModal: 'Cadastrar novo Sub PDV',
-                })
-              }
-            >
-              + cadastrar novo Sub PDV
-            </div>
+          <div
+            className={`mt-5 ml-4 link-green ${
+              formData[FormInputName.hasSubPdv] === 'true' ? '' : 'd-none'
+            }`}
+            onClick={() =>
+              modalConfig.onShouldShowModal({
+                value: ShouldShowModal.configProduct,
+                newTitleModal: 'Cadastrar novo Sub PDV',
+              })
+            }
+          >
+            + cadastrar novo Sub PDV
           </div>
         </FormGroup>
 
@@ -138,9 +141,9 @@ export const PdvEventSubPdvContainer: React.FC<SubPdvContainerProps> = ({
                   subPdvListMock.map((item, index) => (
                     <React.Fragment key={index}>
                       <div className="mb-5">
-                        <span className="secondary-table-title">POS #{index + 1}</span>
+                        <span className="secondary-table-title">Sub PDV’s #{index + 1}</span>
                         <span className="secondary-table-title font-weight-bold">
-                          <b> ·</b> {}
+                          <b> ·</b> {item.name}
                         </span>
                       </div>
                       <CustomTable
@@ -150,14 +153,11 @@ export const PdvEventSubPdvContainer: React.FC<SubPdvContainerProps> = ({
                         data={[
                           {
                             id: item.id,
-                            numberSubPdv: item.numberSubPdv,
-                            expirationDate: item.expirationDate,
-                            partialPayment: item.partialPayment,
+                            users: item.name,
+                            link: 'bit.ly/linkvenda/L1-88-3-...',
                             actions: (
                               <React.Fragment>
-                                <div
-                                  className={`${subPdvStates.subPdv ? 'disabled-content' : null}`}
-                                >
+                                <div>
                                   <div className="d-flex align-items-center">
                                     <div className="ml-4">
                                       <Pen
@@ -193,9 +193,6 @@ export const PdvEventSubPdvContainer: React.FC<SubPdvContainerProps> = ({
               }
               count={1}
               leftIcon={TicketIcon}
-              buttonTitle="Cancelar edição"
-              buttonAction={() => subPdvActions.onCancelEdit()}
-              showButtonOnTitle={!!subPdvStates?.subPdv}
             />
             <div className="d-flex justify-content-end">
               <div>
@@ -205,7 +202,7 @@ export const PdvEventSubPdvContainer: React.FC<SubPdvContainerProps> = ({
                   onClick={() => subPdvActions.onReturnTap()}
                 />
                 <Button
-                  title="Proxima etapa"
+                  title="Adicionar PDV"
                   theme="outlineDark"
                   className="ml-3"
                   onClick={async () => {

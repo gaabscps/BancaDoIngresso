@@ -7,6 +7,7 @@ import api, { AxiosError } from '@/services/api';
 import SubPdv from '@/model/SubPdv';
 import { useDialog } from '@/hooks/useDialog';
 import { DeleteContent } from '@/components/DeleteContent';
+import User from '@/model/User';
 import {
   formSubPdvProps,
   formSubPdvRegisterProps,
@@ -26,6 +27,10 @@ export const PdvEventSubPdvScreen: React.FC<any> = ({ backTab, onFirstTab }): JS
   const [subPdv, setSubPdv] = useState<SubPdv>();
   const [subPdvList, setSubPdvList] = useState<SubPdv[]>([]);
   const [subPdvOptions, setSubPdvOptions] = useState<SubPdv[]>([]);
+
+  const [listUsers, setListUsers] = useState<User[]>([]);
+  const [listUsersDefault, setListUsersDefault] = useState<User[]>([]);
+  const [usersSelected, setUsersSelected] = useState<User[]>([]);
 
   const { title, visible, onChangeTitle, onToggle } = useDialog();
   const confirmDelete = useConfirmDelete();
@@ -63,6 +68,41 @@ export const PdvEventSubPdvScreen: React.FC<any> = ({ backTab, onFirstTab }): JS
     formatters: {},
   });
 
+  useEffect(() => {
+    if (!visible) {
+      setTimeout(() => {
+        resetFormSubPdvRegister();
+        setUsersSelected([]);
+        setListUsers([]);
+        setSubPdv(undefined);
+      }, 500);
+    }
+  }, [visible]);
+
+  const controllerAppendUser = {
+    listUsers,
+    usersSelected,
+    handleAddUser(userId: string): void {
+      const newUsersSelected = listUsers.filter(item => item.id === userId)[0];
+      // not add user if already exists
+      if (usersSelected.find(item => item.id === newUsersSelected.id)) {
+        return;
+      }
+      setUsersSelected([...usersSelected, newUsersSelected]);
+      // remove user selected from list
+      const newListUsers = listUsers.filter(item => item.id !== userId);
+      setListUsers(newListUsers);
+    },
+    handleRemoveUser(index: number): void {
+      const values = [...usersSelected];
+      values.splice(index, 1);
+      setUsersSelected(values);
+      // add user removed to list
+      const newUser = listUsers.concat(usersSelected[index]);
+      setListUsers(newUser);
+    },
+  };
+
   // modal config ------------------------------------------------------------
   const handleOnShouldShowModal = ({
     value,
@@ -76,6 +116,18 @@ export const PdvEventSubPdvScreen: React.FC<any> = ({ backTab, onFirstTab }): JS
     if (subPdvSelected?.id && value === ShouldShowModal.configProduct) {
       setSubPdv(subPdvSelected);
     }
+
+    // reset list users
+    setListUsers(listUsersDefault);
+    setUsersSelected([]);
+
+    setListUsers(() => {
+      // remove users selected from list listUsersDefault
+      const newListUsers = listUsersDefault.filter(
+        item => !usersSelected?.find(user => user.id === item.id),
+      );
+      return newListUsers;
+    });
   };
 
   const handleOnShowDeleteSubPdv = (subPdvSelected: any): void => {
@@ -114,6 +166,23 @@ export const PdvEventSubPdvScreen: React.FC<any> = ({ backTab, onFirstTab }): JS
       setState(States.loading);
       const { data } = await api.get<SubPdv[]>('/subPdv/find');
       setSubPdvOptions(data ?? []);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
+  const handleGetUsers = async (): Promise<void> => {
+    try {
+      setState(States.loading);
+      const { data } = await api.get<User[]>('/user/find');
+
+      if (data) {
+        setListUsers(data);
+        setListUsersDefault(data);
+      }
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
@@ -187,6 +256,7 @@ export const PdvEventSubPdvScreen: React.FC<any> = ({ backTab, onFirstTab }): JS
 
   useEffect(() => {
     handleGetAllSubPdv();
+    handleGetUsers();
   }, []);
 
   return (
@@ -197,6 +267,7 @@ export const PdvEventSubPdvScreen: React.FC<any> = ({ backTab, onFirstTab }): JS
       subPdvStates={controllerSubPdvStates}
       subPdvActions={controllerSubPdvActions}
       modalConfig={controllerModalConfig}
+      appendUser={controllerAppendUser}
     />
   );
 };
