@@ -1,14 +1,14 @@
 /* eslint-disable no-shadow */
 import React, { Fragment } from 'react';
-import { Button, ButtonGroup, Loading } from '@/components';
+import { Button, ButtonGroup, Dialog, Loading } from '@/components';
 import { Container, FormGroup } from 'reactstrap';
 import { SubPdvContent } from '@/features/registerEvent/components/PdvEventSubPdvScreen/components/SubPdvContent';
 import { CustomTable } from '@/components/Table';
-import { ReactComponent as Config } from '@/assets/images/svg/config.svg';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
 import TicketIcon from '@/assets/images/svg/Ticket';
+import { ActionProps } from '@/components/Dialog';
 import {
   formSubPdvProps,
   formSubPdvRegisterProps,
@@ -55,14 +55,49 @@ export const PdvEventSubPdvContainer: React.FC<SubPdvContainerProps> = ({
   const subPdvListMock = [
     {
       id: '1',
+      name: 'Maquininha do Seu Zé',
       numberSubPdv: '123456',
       expirationDate: '01/01/2021',
       partialPayment: '3%',
     },
   ];
 
+  const renderActionDialogToCancel: ActionProps = {
+    title: 'Cancelar',
+    onClick: (): void => modalConfig.onToggle(),
+    theme: 'noneBorder',
+  };
+
   return (
     <Fragment>
+      <Dialog
+        title={modalConfig.title}
+        visible={modalConfig.visible}
+        onClose={modalConfig.onToggle}
+        isContentWithCard
+        actions={[
+          {
+            [ShouldShowModal.configProduct]: renderActionDialogToCancel,
+          }[modalConfig.shouldShowModal],
+          {
+            [ShouldShowModal.configProduct]: {
+              title: subPdvStates?.subPdv ? 'Salvar' : 'Cadastrar novo Sub PDV',
+              onClick: (): void => undefined,
+            },
+          }[modalConfig.shouldShowModal],
+        ]}
+      >
+        {
+          {
+            [ShouldShowModal.configProduct]: (
+              <SubPdvContent
+                formSubPdvRegister={formSubPdvRegister}
+                // subPdvStates={subPdvStates}
+              />
+            ),
+          }[modalConfig.shouldShowModal]
+        }
+      </Dialog>
       <Loading isVisible={state === States.loading} />
       <Container className="mainContainer" fluid={true}>
         <FormGroup className="mb-2">
@@ -79,18 +114,23 @@ export const PdvEventSubPdvContainer: React.FC<SubPdvContainerProps> = ({
             ]}
             error={formErrors.hasSubPdv && formErrors.hasSubPdv[0]}
           />
+          <div className="d-flex justify-content-end">
+            <div
+              className="mr-5 link-green"
+              onClick={() =>
+                modalConfig.onShouldShowModal({
+                  value: ShouldShowModal.configProduct,
+                  newTitleModal: 'Cadastrar novo Sub PDV',
+                })
+              }
+            >
+              + cadastrar novo Sub PDV
+            </div>
+          </div>
         </FormGroup>
+
         {formData[FormInputName.hasSubPdv] === 'true' && (
           <>
-            <div className="card-ligth-color mb-5">
-              <SubPdvContent
-                formSubPdvRegister={formSubPdvRegister}
-                // subPdvStates={subPdvStates}
-              />
-              <div className="d-flex justify-content-end">
-                <div className="mr-5 link-green">Inserir POS</div>
-              </div>
-            </div>
             <SuperCollapse
               title={`Sub PDV’s cadastrados`}
               content={
@@ -100,7 +140,7 @@ export const PdvEventSubPdvContainer: React.FC<SubPdvContainerProps> = ({
                       <div className="mb-5">
                         <span className="secondary-table-title">POS #{index + 1}</span>
                         <span className="secondary-table-title font-weight-bold">
-                          <b> ·</b> Maquininha do Seu Zé
+                          <b> ·</b> {}
                         </span>
                       </div>
                       <CustomTable
@@ -120,19 +160,15 @@ export const PdvEventSubPdvContainer: React.FC<SubPdvContainerProps> = ({
                                 >
                                   <div className="d-flex align-items-center">
                                     <div className="ml-4">
-                                      <Config
-                                        className="mr-4 svg-icon action-icon"
-                                        onClick={(): void => {
-                                          modalConfig.onShouldShowModal({
-                                            value: ShouldShowModal.configProduct,
-                                            newTitleModal: 'Configurações da POS',
-                                            subPdv: item,
-                                          });
-                                        }}
-                                      />
                                       <Pen
                                         className="mr-4 svg-icon action-icon"
-                                        onClick={(): void => subPdvActions.onGet(item as any)}
+                                        onClick={(): void =>
+                                          modalConfig.onShouldShowModal({
+                                            value: ShouldShowModal.configProduct,
+                                            newTitleModal: item.name,
+                                            subPdv: item,
+                                          })
+                                        }
                                       />
                                       <Trash
                                         className="svg-icon svg-icon-trash"
@@ -152,7 +188,7 @@ export const PdvEventSubPdvContainer: React.FC<SubPdvContainerProps> = ({
                     </React.Fragment>
                   ))
                 ) : (
-                  <span>Nenhum cupom de desconto adicionado</span>
+                  <span>Nenhum sub PDV adicionado</span>
                 )
               }
               count={1}
