@@ -63,7 +63,7 @@ export const PdvEventScreen: React.FC = (): JSX.Element => {
     formatters: {},
   });
 
-  const handleOnShowDeleteMainPdv = (mainPdvSelected: any): void => {
+  const handleOnShowDeleteMainPdv = (mainPdvSelected: Pdv): void => {
     confirmDelete.show({
       title: '',
       children: <DeleteContent />,
@@ -96,7 +96,7 @@ export const PdvEventScreen: React.FC = (): JSX.Element => {
     }
   };
 
-  const handleOnGetMainPdv = async (mainPdvSelected: any): Promise<void> => {
+  const handleOnGetMainPdv = async (mainPdvSelected: Pdv): Promise<void> => {
     try {
       if (mainPdvSelected) {
         setMainPdv(mainPdvSelected);

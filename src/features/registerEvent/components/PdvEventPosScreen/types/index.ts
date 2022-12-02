@@ -38,7 +38,6 @@ export interface posActionsProps {
   // onSave: () => Promise<void>;
   onGet: (posSelected: Pos) => void;
   onCancelEdit: () => void;
-  onFirstTab: () => void;
   onReturnTap: () => void;
   onNextTap: () => Promise<void>;
 }

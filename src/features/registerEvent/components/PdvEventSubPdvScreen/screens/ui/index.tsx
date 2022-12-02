@@ -194,25 +194,24 @@ export const PdvEventSubPdvContainer: React.FC<SubPdvContainerProps> = ({
               count={1}
               leftIcon={TicketIcon}
             />
-            <div className="d-flex justify-content-end">
-              <div>
-                <Button
-                  title="Voltar etapa"
-                  theme="noneBorder"
-                  onClick={() => subPdvActions.onReturnTap()}
-                />
-                <Button
-                  title="Adicionar PDV"
-                  theme="outlineDark"
-                  className="ml-3"
-                  onClick={async () => {
-                    await subPdvActions.onNextTap();
-                  }}
-                />
-              </div>
-            </div>
           </>
         )}
+        <div className="d-flex justify-content-end">
+          <div>
+            <Button
+              title="Voltar etapa"
+              theme="noneBorder"
+              onClick={() => subPdvActions.onReturnTap()}
+            />
+            <Button
+              title="Adicionar PDV"
+              theme="outlineDark"
+              className="ml-3"
+              onClick={() => undefined}
+              disabled={formData[FormInputName.hasSubPdv] !== 'true'}
+            />
+          </div>
+        </div>
       </Container>
     </Fragment>
   );

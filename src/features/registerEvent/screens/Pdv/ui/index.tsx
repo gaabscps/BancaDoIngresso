@@ -3,11 +3,17 @@ import React, { Fragment, useState } from 'react';
 import { ButtonGroup, Loading, Tab } from '@/components';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
+import { ReactComponent as Info } from '@/assets/images/svg/infoTooltip.svg';
 import { Container, FormGroup } from 'reactstrap';
 import { MainPdvContent } from '@/features/registerEvent/components/MainPdvContent';
 import { CustomTable } from '@/components/Table';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
-import { mainPdvStatesProps } from '@/features/registerEvent/components/PdvScreen/types';
+import {
+  formMainPdvProductProps,
+  formPdvProductProps,
+  mainPdvActionsProps,
+  mainPdvStatesProps,
+} from '@/features/registerEvent/components/PdvScreen/types';
 import { PdvEventPosScreen } from '@/features/registerEvent/components/PdvEventPosScreen/screens';
 import { PdvProductScreen } from '@/features/registerEvent/components/PdvProductsScreen/screens';
 import { PdvEventSubPdvScreen } from '@/features/registerEvent/components/PdvEventSubPdvScreen/screens';
@@ -22,9 +28,9 @@ export enum States {
 
 export interface PdvContainerProps {
   state: States;
-  formPdv: any;
-  formMainPdv: any;
-  mainPdvActions: any;
+  formPdv: formPdvProductProps;
+  formMainPdv: formMainPdvProductProps;
+  mainPdvActions: mainPdvActionsProps;
   mainPdvStates: mainPdvStatesProps;
 }
 
@@ -36,7 +42,7 @@ export enum FormInputName {
 export type TabPdvActionsProps = {
   nextTab: () => void;
   backTab: () => void;
-  onFirstTab: () => void;
+  firstTab: () => void;
 };
 
 export const PdvEventContainer: React.FC<PdvContainerProps> = ({
@@ -47,7 +53,7 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
   mainPdvStates,
 }) => {
   const { formData, formErrors, onChangeFormInput } = formPdv;
-  const [numberTab, setNumberTab] = useState(0);
+  const [numberTab, setNumberTab] = useState(1);
 
   const handleNextTab = (): void => {
     if (numberTab <= contentTabs.length) {
@@ -61,9 +67,9 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
     }
   };
 
-  // const handleOnFirstTab = (): void => {
-  //   setNumberTab(0);
-  // };
+  const handleOnFirstTab = (): void => {
+    setNumberTab(0);
+  };
 
   const listDiscountCoupon = [
     {
@@ -76,14 +82,14 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
   const contentTabs = [
     'Conteudo 1',
     <>
-      <PdvEventPosScreen />
+      <PdvEventPosScreen nextTab={handleNextTab} backTab={handleBackTab} />
     </>,
     <>
       <PdvProductScreen nextTab={handleNextTab} backTab={handleBackTab} />
     </>,
     'Conteudo 4',
     <>
-      <PdvEventSubPdvScreen />
+      <PdvEventSubPdvScreen backTab={handleBackTab} firstTab={handleOnFirstTab} />
     </>,
   ];
   return (
@@ -91,9 +97,9 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
       <Loading isVisible={state === States.loading} />
       <Container className="mainContainer" fluid={true}>
         <div className="container-event">
-          <h5 className="mb-2 border-bottom-title mb-5">Setor e Produto</h5>
+          <h5 className="mb-2 border-bottom-title mb-5">Pdv</h5>
         </div>
-        <FormGroup className="mb-2">
+        <FormGroup className="mb-2 d-flex ">
           <ButtonGroup
             label="Permitir PDV?"
             name="isProduct"
@@ -105,6 +111,7 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
             ]}
             error={formErrors.isPdv && formErrors.isPdv[0]}
           />
+          <Info />
         </FormGroup>
         <hr className="mt-5" />
         {formData[FormInputName.isPdv] === 'true' && (
@@ -149,12 +156,12 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
                                     <div className="ml-4">
                                       <Pen
                                         className="mr-4 svg-icon action-icon"
-                                        onClick={(): void => mainPdvActions.onGet(item)}
+                                        onClick={(): void => mainPdvActions.onGet(item as any)}
                                       />
                                       <Trash
                                         className="svg-icon svg-icon-trash"
                                         onClick={() => {
-                                          mainPdvActions.onShowModalDelete(item);
+                                          mainPdvActions.onShowModalDelete(item as any);
                                         }}
                                       />
                                     </div>
@@ -187,7 +194,7 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
                 'Cadastrar Sub PDV’s',
               ]}
               contents={contentTabs}
-              numberStap={4}
+              numberStap={numberTab}
             />
           </>
         )}

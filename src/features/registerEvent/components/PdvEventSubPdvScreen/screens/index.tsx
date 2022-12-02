@@ -8,6 +8,7 @@ import SubPdv from '@/model/SubPdv';
 import { useDialog } from '@/hooks/useDialog';
 import { DeleteContent } from '@/components/DeleteContent';
 import User from '@/model/User';
+import { TabPdvActionsProps } from '@/features/registerEvent/screens/Pdv/ui';
 import {
   formSubPdvProps,
   formSubPdvRegisterProps,
@@ -17,7 +18,10 @@ import {
 } from '../types';
 import { States, PdvEventSubPdvContainer, ShouldShowModal } from './ui';
 
-export const PdvEventSubPdvScreen: React.FC<any> = ({ backTab, onFirstTab }): JSX.Element => {
+export const PdvEventSubPdvScreen: React.FC<Omit<TabPdvActionsProps, 'nextTab'>> = ({
+  backTab,
+  firstTab,
+}): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
 
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(
@@ -191,12 +195,6 @@ export const PdvEventSubPdvScreen: React.FC<any> = ({ backTab, onFirstTab }): JS
     }
   };
 
-  const handleNextTab = async (): Promise<void> => {
-    if (isFormValidSubPdv()) {
-      onFirstTab();
-    }
-  };
-
   const handleBackTab = (): void => {
     backTab();
   };
@@ -249,9 +247,8 @@ export const PdvEventSubPdvScreen: React.FC<any> = ({ backTab, onFirstTab }): JS
     // onSave: () => Promise<void>;
     onGet: handleOnGetSubPdv,
     onCancelEdit: handleOnCancelEditSubPdv,
-    onFirstTab,
+    onFirstTab: firstTab,
     onReturnTap: handleBackTab,
-    onNextTap: handleNextTab,
   };
 
   useEffect(() => {

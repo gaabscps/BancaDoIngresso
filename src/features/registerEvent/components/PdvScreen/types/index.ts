@@ -1,3 +1,4 @@
+import { FormData, FormErrors, IsFormValid, OnChangeFormInput } from '@/hooks';
 import Page from '@/model/Page';
 import Pdv from '@/model/Pdv';
 import User from '@/model/User';
@@ -25,9 +26,30 @@ export type PdvSelectedProps = {
   pdvActions: any;
 };
 
+export interface formMainPdvProductProps {
+  formData: FormData;
+  formErrors: FormErrors;
+  onChangeFormInput: OnChangeFormInput;
+  isFormValid: IsFormValid;
+}
+
+export interface formPdvProductProps {
+  formData: FormData;
+  formErrors: FormErrors;
+  onChangeFormInput: OnChangeFormInput;
+  isFormValid: IsFormValid;
+}
+
 export interface mainPdvStatesProps {
   mainPdv: Pdv | undefined;
   setMainPdv: React.Dispatch<React.SetStateAction<Pdv | undefined>>;
   mainPdvList: Pdv[];
   setMainPdvList: React.Dispatch<React.SetStateAction<Pdv[]>>;
+}
+
+export interface mainPdvActionsProps {
+  onGetList: () => void;
+  onGet: (pdvSelected: Pdv) => void;
+  onCancelEdit: () => void;
+  onShowModalDelete: (pdvSelected: Pdv) => void;
 }

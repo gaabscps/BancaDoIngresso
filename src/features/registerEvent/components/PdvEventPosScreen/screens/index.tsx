@@ -7,6 +7,7 @@ import api, { AxiosError } from '@/services/api';
 import Pos from '@/model/Pos';
 import { useDialog } from '@/hooks/useDialog';
 import { DeleteContent } from '@/components/DeleteContent';
+import { TabPdvActionsProps } from '@/features/registerEvent/screens/Pdv/ui';
 import {
   formPosConfigProps,
   formPosProps,
@@ -17,7 +18,10 @@ import {
 } from '../types';
 import { States, PdvEventPosContainer, ShouldShowModal } from './ui';
 
-export const PdvEventPosScreen: React.FC<any> = ({ backTab, onFirstTab }): JSX.Element => {
+export const PdvEventPosScreen: React.FC<Omit<TabPdvActionsProps, 'firstTab'>> = ({
+  backTab,
+  nextTab,
+}): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
 
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(
@@ -144,7 +148,7 @@ export const PdvEventPosScreen: React.FC<any> = ({ backTab, onFirstTab }): JSX.E
 
   const handleNextTab = async (): Promise<void> => {
     if (isFormValidPos()) {
-      onFirstTab();
+      nextTab();
     }
   };
 
@@ -207,7 +211,6 @@ export const PdvEventPosScreen: React.FC<any> = ({ backTab, onFirstTab }): JSX.E
     // onSave: () => Promise<void>;
     onGet: handleOnGetPos,
     onCancelEdit: handleOnCancelEditPos,
-    onFirstTab,
     onReturnTap: handleBackTab,
     onNextTap: handleNextTab,
   };
