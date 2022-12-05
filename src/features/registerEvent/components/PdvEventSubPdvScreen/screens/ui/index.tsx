@@ -92,11 +92,7 @@ export const PdvEventSubPdvContainer: React.FC<SubPdvContainerProps> = ({
         {
           {
             [ShouldShowModal.configProduct]: (
-              <SubPdvContent
-                formSubPdvRegister={formSubPdvRegister}
-                appendUser={appendUser}
-                // subPdvStates={subPdvStates}
-              />
+              <SubPdvContent formSubPdvRegister={formSubPdvRegister} appendUser={appendUser} />
             ),
           }[modalConfig.shouldShowModal]
         }

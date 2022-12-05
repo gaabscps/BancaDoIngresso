@@ -29,8 +29,6 @@ export interface subPdvStatesProps {
   setSubPdv: React.Dispatch<React.SetStateAction<SubPdv | undefined>>;
   subPdvList: SubPdv[];
   setSubPdvList: React.Dispatch<React.SetStateAction<SubPdv[]>>;
-  subPdvOptions: SubPdv[];
-  setSubPdvOptions: React.Dispatch<React.SetStateAction<SubPdv[]>>;
 }
 
 export interface subPdvActionsProps {
@@ -62,4 +60,5 @@ export type ContractorControllerUser = {
   usersSelected: User[];
   handleAddUser(userId: string): void;
   handleRemoveUser(index: number): void;
+  handleGetUsers: () => Promise<void>;
 };

@@ -4,6 +4,8 @@ import { Button, InputText, SelectCustom } from '@/components';
 import { Col, Form, FormGroup, Row } from 'reactstrap';
 import { CustomTable } from '@/components/Table';
 import { ReactComponent as CloseX } from '@/assets/images/svg/closeX.svg';
+import { UserScreen } from '@/features/core/UserScreen/screens/List';
+import User from '@/model/User';
 import { SubPdvContainerProps } from '../../screens/ui';
 
 import { columnsUser } from '../../screens/ui/table';
@@ -24,6 +26,8 @@ export const SubPdvContent: React.FC<
   Pick<SubPdvContainerProps, 'formSubPdvRegister' | 'appendUser'>
 > = ({ formSubPdvRegister, appendUser }) => {
   const { formData, formErrors, onChangeFormInput } = formSubPdvRegister;
+
+  const userDataSelected = appendUser?.listUsers.find((item: User) => item.id === formData.user);
 
   const refSelectUser = useRef<any>(null);
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -87,6 +91,10 @@ export const SubPdvContent: React.FC<
                   value: itemUser.id,
                 }))}
                 isClearable
+              />
+              <UserScreen
+                getUsersDropdown={appendUser.handleGetUsers}
+                userDropdownSelected={userDataSelected}
               />
             </FormGroup>
           </Col>

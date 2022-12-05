@@ -30,7 +30,6 @@ export const PdvEventSubPdvScreen: React.FC<Omit<TabPdvActionsProps, 'nextTab'>>
 
   const [subPdv, setSubPdv] = useState<SubPdv>();
   const [subPdvList, setSubPdvList] = useState<SubPdv[]>([]);
-  const [subPdvOptions, setSubPdvOptions] = useState<SubPdv[]>([]);
 
   const [listUsers, setListUsers] = useState<User[]>([]);
   const [listUsersDefault, setListUsersDefault] = useState<User[]>([]);
@@ -83,6 +82,28 @@ export const PdvEventSubPdvScreen: React.FC<Omit<TabPdvActionsProps, 'nextTab'>>
     }
   }, [visible]);
 
+  const handleGetUsers = async (): Promise<void> => {
+    try {
+      setState(States.loading);
+      const { data } = await api.get<User[]>('/user/find');
+
+      if (data) {
+        setListUsers(data);
+        setListUsersDefault(data);
+        setUsersSelected([]);
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
+  const handleBackTab = (): void => {
+    backTab();
+  };
+
   const controllerAppendUser = {
     listUsers,
     usersSelected,
@@ -105,6 +126,7 @@ export const PdvEventSubPdvScreen: React.FC<Omit<TabPdvActionsProps, 'nextTab'>>
       const newUser = listUsers.concat(usersSelected[index]);
       setListUsers(newUser);
     },
+    handleGetUsers,
   };
 
   // modal config ------------------------------------------------------------
@@ -165,40 +187,6 @@ export const PdvEventSubPdvScreen: React.FC<Omit<TabPdvActionsProps, 'nextTab'>>
   };
   // modal config ------------------------------------------------------------
 
-  const handleGetAllSubPdv = async (): Promise<void> => {
-    try {
-      setState(States.loading);
-      const { data } = await api.get<SubPdv[]>('/subPdv/find');
-      setSubPdvOptions(data ?? []);
-    } catch (error) {
-      const err = error as AxiosError;
-      toast.error(err.message);
-    } finally {
-      setState(States.default);
-    }
-  };
-
-  const handleGetUsers = async (): Promise<void> => {
-    try {
-      setState(States.loading);
-      const { data } = await api.get<User[]>('/user/find');
-
-      if (data) {
-        setListUsers(data);
-        setListUsersDefault(data);
-      }
-    } catch (error) {
-      const err = error as AxiosError;
-      toast.error(err.message);
-    } finally {
-      setState(States.default);
-    }
-  };
-
-  const handleBackTab = (): void => {
-    backTab();
-  };
-
   const handleOnGetSubPdv = async (subPdvSelected: SubPdv): Promise<void> => {
     try {
       if (subPdvSelected) {
@@ -239,8 +227,6 @@ export const PdvEventSubPdvScreen: React.FC<Omit<TabPdvActionsProps, 'nextTab'>>
     setSubPdv,
     subPdvList,
     setSubPdvList,
-    subPdvOptions,
-    setSubPdvOptions,
   };
 
   const controllerSubPdvActions: subPdvActionsProps = {
@@ -252,7 +238,6 @@ export const PdvEventSubPdvScreen: React.FC<Omit<TabPdvActionsProps, 'nextTab'>>
   };
 
   useEffect(() => {
-    handleGetAllSubPdv();
     handleGetUsers();
   }, []);
 
