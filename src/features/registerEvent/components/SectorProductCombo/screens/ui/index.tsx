@@ -119,7 +119,7 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
           }[shouldShowModal],
           {
             [ShouldShowModal.comboConfig]: {
-              title: 'Cadastrar novo SubPDV',
+              title: 'Salvar',
               onClick: () => undefined,
             },
           }[shouldShowModal],
@@ -393,13 +393,6 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                                   </span>
                                 </span>
                                 <div className="mt-4 d-flex w-100 justify-content-end">
-                                  <Switch
-                                    label="Vender online"
-                                    className="ml-5 action-icon"
-                                    name={''}
-                                    onChange={() => undefined}
-                                    checked={undefined}
-                                  />
                                   <Switch
                                     label="Vender online"
                                     className="ml-5 action-icon"

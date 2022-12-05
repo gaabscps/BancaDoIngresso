@@ -1,14 +1,18 @@
 import {
   Button,
+  Dialog,
   // Loading,
   SelectCustom,
 } from '@/components';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { CustomTable } from '@/components/Table';
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import { Col, Container, Form, FormGroup, Row } from 'reactstrap';
 import { X } from 'react-feather';
+import { ActionProps } from '@/components/Dialog';
 import { formPdvUserProps } from '../../types';
+import { PdvUserRegisterContent } from '../../components';
+import { CheckBoxData, CheckBoxGroup, CheckBoxModule } from '..';
 // import { formPdvProductProps } from '../../types';
 
 // eslint-disable-next-line no-shadow
@@ -19,33 +23,113 @@ export enum States {
 
 // eslint-disable-next-line no-shadow
 export enum ShouldShowModal {
-  configPos = 'configPos',
+  userRegister = 'userRegister',
 }
 
 // eslint-disable-next-line no-shadow
-export enum FormInputName {
-  allowProduct = 'allowProduct',
-  sector = 'sector',
-  product = 'product',
+export enum FormInputUser {
+  user = 'user',
+  name = 'name',
+  cpf = 'cpf',
+  telephone = 'telephone',
+  email = 'email',
+  imageBase64 = 'imageBase64',
+  imageName = 'imageName',
+  password = 'password',
+  userType = 'userType',
+  status = 'status',
 }
 
-interface SectorProductPosContainerProps {
+interface SectorProductUserProps {
   // state: States;
-  controllerFormPos: formPdvUserProps;
+  title: string | React.ReactNode;
+  visible: boolean;
+  controllerFormUser: formPdvUserProps;
+  shouldShowModal: ShouldShowModal;
+  modules?: CheckBoxModule[];
+  userProfileCheckBox: CheckBoxData[];
+  // userStates: any;
+  saveUser(): Promise<void>;
+  onChangeUserTypeSelected(e: ChangeEvent<HTMLInputElement>, userType: CheckBoxData): void;
+  onBlurCPF: () => void;
+  onToggle: () => void;
   nextTab: () => void;
   backTab: () => void;
+  onChangeUserGroupSelected(e: ChangeEvent<HTMLInputElement>, group: CheckBoxGroup): void;
+  onActivateAndInactivate(e: ChangeEvent<HTMLInputElement>): void;
+  changeFileInputUser: (inputName: string) => (file: File | undefined) => void;
+  onShouldShowModal: ({
+    value,
+    newTitleModal,
+  }: {
+    value: ShouldShowModal;
+    newTitleModal: string | React.ReactNode;
+  }) => void;
 }
-export const PdvUserContainer: React.FC<SectorProductPosContainerProps> = ({
+export const PdvUserContainer: React.FC<SectorProductUserProps> = ({
   // state,
-  controllerFormPos,
+  title,
+  visible,
+  controllerFormUser,
+  shouldShowModal,
+  modules,
+  userProfileCheckBox,
+  saveUser,
+  onChangeUserGroupSelected,
+  onChangeUserTypeSelected,
+  // userStates,
+  onActivateAndInactivate,
+  changeFileInputUser,
+  onBlurCPF,
+  onToggle,
+  onShouldShowModal,
   nextTab,
   backTab,
 }) => {
-  const { formData, formErrors, onChangeFormInput } = controllerFormPos;
+  const { formData, formErrors, onChangeFormInput } = controllerFormUser;
+  const renderActionDialogToCancel: ActionProps = {
+    title: 'Cancelar',
+    onClick: (): void => onToggle(),
+    theme: 'noneBorder',
+  };
 
   return (
     <>
       {/* <Loading isVisible={state === States.loading} /> */}
+      <Dialog
+        title={title}
+        visible={visible}
+        onClose={onToggle}
+        isContentWithCard={true}
+        actions={[
+          {
+            [ShouldShowModal.userRegister]: renderActionDialogToCancel,
+          }[shouldShowModal],
+          {
+            [ShouldShowModal.userRegister]: {
+              title: 'Cadastrar usuário',
+              onClick: () => saveUser(),
+            },
+          }[shouldShowModal],
+        ]}
+      >
+        {
+          {
+            [ShouldShowModal.userRegister]: (
+              <PdvUserRegisterContent
+                onBlurCPF={onBlurCPF}
+                controllerFormUser={controllerFormUser}
+                onActivateAndInactivate={onActivateAndInactivate}
+                changeFileInputUser={changeFileInputUser}
+                userProfileCheckBox={userProfileCheckBox}
+                modules={modules}
+                onChangeUserTypeSelected={onChangeUserTypeSelected}
+                onChangeUserGroupSelected={onChangeUserGroupSelected}
+              />
+            ),
+          }[shouldShowModal]
+        }
+      </Dialog>
       <Container className="mainContainer" fluid={true}>
         <Form>
           <div className="mb-5">
@@ -55,8 +139,8 @@ export const PdvUserContainer: React.FC<SectorProductPosContainerProps> = ({
                   <SelectCustom
                     name="user"
                     label="Digite ou selecione o usuário do PDV"
-                    value={formData[FormInputName.sector]}
-                    onChange={e => onChangeFormInput(FormInputName.sector)(e?.value as string)}
+                    value={formData[FormInputUser.user]}
+                    onChange={e => onChangeFormInput(FormInputUser.user)(e?.value as string)}
                     options={[{ value: '1', label: 'Setor 1' }]}
                     error={formErrors.sector && formErrors.sector[0]}
                   />
@@ -64,7 +148,7 @@ export const PdvUserContainer: React.FC<SectorProductPosContainerProps> = ({
                 <Col className="d-flex align-items-center mb-3" md={4}>
                   <div
                     className={`action-icon link-green ${
-                      formData[FormInputName.sector] === ''
+                      formData[FormInputUser.user] === ''
                         ? 'input-action-disabled disable-text'
                         : ''
                     }`}
@@ -75,7 +159,16 @@ export const PdvUserContainer: React.FC<SectorProductPosContainerProps> = ({
               </Row>
               <Row>
                 <Col md={3}>
-                  <div style={{ width: 'fit-content' }} className="action-icon link-green">
+                  <div
+                    onClick={() => {
+                      onShouldShowModal({
+                        value: ShouldShowModal.userRegister,
+                        newTitleModal: `Cadastrar usuário`,
+                      });
+                    }}
+                    style={{ width: 'fit-content' }}
+                    className="action-icon link-green"
+                  >
                     + cadastrar novo usuário
                   </div>
                 </Col>
@@ -83,7 +176,7 @@ export const PdvUserContainer: React.FC<SectorProductPosContainerProps> = ({
                   <div
                     style={{ width: 'fit-content' }}
                     className={`d-flex action-icon svg-icon align-items-center ${
-                      formData[FormInputName.sector] === ''
+                      formData[FormInputUser.user] === ''
                         ? 'input-action-disabled disable-text'
                         : ''
                     }`}
@@ -130,11 +223,7 @@ export const PdvUserContainer: React.FC<SectorProductPosContainerProps> = ({
                   {
                     name: 'Maria Antonia',
                     login: '987.654.321-00',
-                    actions: (
-                      <>
-                        <X className="action-icon svg-icon" onClick={() => undefined} />
-                      </>
-                    ),
+                    actions: <X className="action-icon svg-icon" onClick={() => undefined} />,
                   },
                 ]}
               />
