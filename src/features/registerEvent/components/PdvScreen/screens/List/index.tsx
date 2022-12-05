@@ -126,6 +126,7 @@ export const PdvScreen: React.FC<PdvSelectedProps> = ({
       if (data) {
         setListUsers(data);
         setListUsersDefault(data);
+        setUsersSelected([]);
       }
     } catch (error) {
       const err = error as AxiosError;
@@ -157,6 +158,7 @@ export const PdvScreen: React.FC<PdvSelectedProps> = ({
       const newUser = listUsers.concat(usersSelected[index]);
       setListUsers(newUser);
     },
+    handleGetUsers,
   };
 
   const handleOnChangeFileInput =

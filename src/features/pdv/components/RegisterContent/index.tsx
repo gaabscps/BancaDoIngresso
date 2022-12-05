@@ -10,6 +10,7 @@ import { CustomTable } from '@/components/Table';
 import { ReactComponent as CloseX } from '@/assets/images/svg/closeX.svg';
 import { columnsUser } from '@/features/contractor/screens/List/ui/table';
 import User from '@/model/User';
+import { UserScreen } from '@/features/core/UserScreen/screens/List';
 
 interface RegisterContentProps {
   formData: FormData;
@@ -65,6 +66,10 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
       refSelectUser?.current.clearValue();
     }
   };
+
+  const userDataSelected = controllerAppendUser?.listUsers.find(
+    (item: User) => item.id === formData.user,
+  );
 
   const dataTableUser = controllerAppendUser.usersSelected?.map((item, index) => ({
     id: item.id,
@@ -410,6 +415,10 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
                 value: itemUser.id,
               }))}
               isClearable
+            />
+            <UserScreen
+              getUsersDropdown={controllerAppendUser.handleGetUsers}
+              userDropdownSelected={userDataSelected}
             />
           </FormGroup>
         </Col>
