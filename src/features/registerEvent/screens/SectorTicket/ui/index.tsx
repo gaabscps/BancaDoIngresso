@@ -57,6 +57,7 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
 }) => {
   const { formData, formErrors, onChangeFormInput } = formSectorTicket;
   const [numberTab, setNumberTab] = useState(0);
+  const titleTabRef = React.useRef<HTMLInputElement>(null);
   const params = useParams<UrlParams>();
 
   const handleNextTab = (): void => {
@@ -105,6 +106,13 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
     </>,
   ];
 
+  // focus on tab
+  React.useEffect(() => {
+    if (ticketStates?.ticket) {
+      titleTabRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [ticketStates?.ticket]);
+
   return (
     <Fragment>
       <Loading isVisible={state === States.loading} />
@@ -127,6 +135,7 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
         </FormGroup>
         {formData[FormInputName.isTicket] === 'true' && (
           <>
+            <hr className="mt-5" />
             <div className="mt-5">
               <SuperCollapse
                 title="Setores e ingressos adicionados"
@@ -136,16 +145,16 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
                         <React.Fragment key={ticket.id}>
                           {index > 0 ? <hr style={{ margin: '25px -30px 30px -50px' }} /> : null}
 
-                          <div>
+                          <div
+                            className={`${
+                              ticketStates.ticket && ticket.id !== ticketStates.ticket?.id
+                                ? 'disabled-content'
+                                : ''
+                            }`}
+                          >
                             <div className="content-collapse-title-flex">
                               <div className="content-collapse-title-container">
-                                <p
-                                  className={`content-collapse-title subpvd-title-name ${
-                                    ticket?.id === ticketStates.ticket?.id
-                                      ? 'font-weight-bolder'
-                                      : ''
-                                  }`}
-                                >
+                                <p className="content-collapse-title subpvd-title-name">
                                   {ticket.eventSection.name}
                                 </p>
                               </div>
@@ -199,18 +208,25 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
                 }
                 leftIcon={TicketIcon}
                 count={ticketStates?.ticketList?.length}
-                buttonTitle="Cancelar edição"
-                buttonAction={ticketActions.onCancelEdit}
-                showButtonOnTitle={!!ticketStates?.ticket}
               />
             </div>
-            <div className="mb-4">
-              <p className="secondPageTitle m-0">Adicionando setor e ingresso</p>
-              <span className="infoSubTitle">
-                Preencha as 3 (TRÊS) etapas abaixo para adicionar um setor e ingresso
-              </span>
+            <div ref={titleTabRef} className="mb-4 d-flex justify-content-between">
+              <div>
+                <p className="secondPageTitle m-0">Adicionando setor e ingresso</p>
+                <span className="infoSubTitle">
+                  Preencha as 3 (TRÊS) etapas abaixo para adicionar um setor e ingresso
+                </span>
+              </div>
+              <div>
+                {ticketStates?.ticket ? (
+                  <Button
+                    title="Cancelar"
+                    theme="outlineDark"
+                    onClick={() => ticketActions.onCancelEdit()}
+                  />
+                ) : null}
+              </div>
             </div>
-
             <Tab
               numberStap={numberTab}
               titles={[

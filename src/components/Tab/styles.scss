@@ -29,6 +29,8 @@
     white-space: nowrap;
     padding: 0 20px;
     user-select: none;
+    font-weight: 400;
+    font-size: 1rem;
     cursor: not-allowed;
     &.active-tabs {
       display: flex;
@@ -36,6 +38,7 @@
       justify-content: center;
       color: #050100;
       cursor: default;
+      font-weight: 500;
       .active-indicator {
         position: absolute;
         bottom: 40px;

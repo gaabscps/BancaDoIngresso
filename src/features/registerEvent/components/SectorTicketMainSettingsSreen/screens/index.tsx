@@ -578,6 +578,7 @@ export const SectorTicketMainSettingsScreen: React.FC<
     if (!ticket) {
       resetFormMainSettings();
       resetFormBatchs();
+      setBatch(undefined);
       setBatchList([]);
       setFormNameFiles({});
       onFirstTab();
@@ -662,6 +663,7 @@ export const SectorTicketMainSettingsScreen: React.FC<
   return (
     <SectorTicketMainSettingsContainer
       state={state}
+      ticketStates={ticketStates}
       formMainSettings={controllerFormMainSettings}
       formBatchs={controllerFormBatchs}
       formSector={controllerFormSector}

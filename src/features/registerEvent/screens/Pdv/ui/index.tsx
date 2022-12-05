@@ -17,6 +17,7 @@ import {
 import { PdvEventPosScreen } from '@/features/registerEvent/components/PdvEventPosScreen/screens';
 import { PdvProductScreen } from '@/features/registerEvent/components/PdvProductsScreen/screens';
 import { PdvEventSubPdvScreen } from '@/features/registerEvent/components/PdvEventSubPdvScreen/screens';
+import ReactTooltip from 'react-tooltip';
 import { columnsEventPdv } from './table';
 import TicketIcon from '../../../../../assets/images/svg/Ticket';
 
@@ -101,7 +102,14 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
         </div>
         <FormGroup className="mb-2 d-flex ">
           <ButtonGroup
-            label="Permitir PDV?"
+            label={
+              <>
+                Permitir PDV?
+                <a data-for="pdvInfo" data-tip="8" className="ml-3">
+                  <Info />
+                </a>
+              </>
+            }
             name="isProduct"
             value={formData[FormInputName.isPdv]}
             onChange={e => onChangeFormInput(FormInputName.isPdv)(e.target.value)}
@@ -111,7 +119,9 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
             ]}
             error={formErrors.isPdv && formErrors.isPdv[0]}
           />
-          <Info />
+          <ReactTooltip id="pdvInfo" effect="solid" place={'right'} border={true} type={'light'}>
+            Comece escolhendo o PDV que você quer adicionar ao evento.
+          </ReactTooltip>
         </FormGroup>
         <hr className="mt-5" />
         {formData[FormInputName.isPdv] === 'true' && (

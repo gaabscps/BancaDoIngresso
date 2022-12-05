@@ -25,20 +25,11 @@ export enum FormInputName {
   imageUrl = 'imageUrl',
 }
 
-export const BatchContent: React.FC<
-  Pick<SectorTicketMainSettingsContainerProps, 'formBatchs' | 'batchStates'>
-> = ({ formBatchs, batchStates }) => {
+export const BatchContent: React.FC<Pick<SectorTicketMainSettingsContainerProps, 'formBatchs'>> = ({
+  formBatchs,
+}) => {
   const { formData, formErrors, onChangeFormInput, onChangeFormFileInput, formNameFiles } =
     formBatchs;
-
-  const nameRef = React.useRef<HTMLInputElement>(null);
-
-  // focus on name input when batchStates is not empty
-  React.useEffect(() => {
-    if (batchStates?.batch) {
-      nameRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [batchStates?.batch]);
 
   return (
     <Fragment>
@@ -50,10 +41,9 @@ export const BatchContent: React.FC<
       >
         <FormGroup>
           <InputText
-            refInput={nameRef}
             name="name"
             label="Nome do lote"
-            placeholder="Digite o nome do ingresso"
+            placeholder="Digite o nome do lote"
             value={formData[FormInputName.name]}
             onChange={e => onChangeFormInput(FormInputName.name)(e.target.value)}
             error={formErrors.name && formErrors.name[0]}
@@ -77,7 +67,7 @@ export const BatchContent: React.FC<
               <InputText
                 type="date"
                 name="endDate"
-                label="Data fim da Venda"
+                label="Data Fim da Venda"
                 value={formData[FormInputName.endDate]}
                 onChange={e => onChangeFormInput(FormInputName.endDate)(e.target.value)}
                 error={formErrors.endDate && formErrors.endDate[0]}
@@ -177,7 +167,7 @@ export const BatchContent: React.FC<
         <FormGroup className="mb-2">
           <InputFile
             name="imageUrl"
-            label="Layout de impressão (opcional)"
+            label="Imagem do lote (opcional)"
             fileName={formNameFiles?.imageUrl}
             onChange={e =>
               onChangeFormFileInput(FormInputName.imageUrl)(

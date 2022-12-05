@@ -5,7 +5,7 @@ import { Button, Loading } from '@/components';
 import { Container } from 'reactstrap';
 import { SectorTicketGeneralSettingsContent } from '@/features/registerEvent/components/SectorTicketGeneralSettingsSreen/components/SectorTicketGeneralSettingsContent';
 
-import { formGeneralSettingsProps, generalSettingsProps } from '../../types';
+import { formGeneralSettingsProps, generalSettingsProps, ticketStatesProps } from '../../types';
 
 // eslint-disable-next-line no-shadow
 export enum States {
@@ -21,11 +21,12 @@ export interface SectorTicketGeneralSettingsContainerProps {
   state: States;
   formGeneralSettings: formGeneralSettingsProps;
   generalSettingsActions: generalSettingsProps;
+  ticketStates: ticketStatesProps;
 }
 
 export const SectorTicketGeneralSettingsContainer: React.FC<
   SectorTicketGeneralSettingsContainerProps
-> = ({ state, formGeneralSettings, generalSettingsActions }) => (
+> = ({ state, formGeneralSettings, generalSettingsActions, ticketStates }) => (
   <Fragment>
     <Loading isVisible={state === States.loading} />
     <Container className="mainContainer" fluid={true}>
@@ -34,13 +35,15 @@ export const SectorTicketGeneralSettingsContainer: React.FC<
       </div>
       <div className="d-flex justify-content-between">
         <div>
-          <Button
-            title="Salvar"
-            theme="noneBorder"
-            onClick={async () => {
-              await generalSettingsActions.onSave();
-            }}
-          />
+          {ticketStates?.ticket ? (
+            <Button
+              title="Salvar"
+              theme="noneBorder"
+              onClick={async () => {
+                await generalSettingsActions.onSave();
+              }}
+            />
+          ) : null}
         </div>
         <div>
           <Button

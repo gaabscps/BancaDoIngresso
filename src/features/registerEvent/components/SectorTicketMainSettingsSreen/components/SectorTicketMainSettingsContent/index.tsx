@@ -150,6 +150,7 @@ export const SectorTicketMainSettingsContent: React.FC<
                 name="percentageHalfPrice"
                 label="Porcentagem de meia entrada (%)"
                 placeholder="0"
+                className="w-input-sm"
                 value={formData[FormInputName.percentageHalfPrice]}
                 onChange={e =>
                   onChangeFormInput(FormInputName.percentageHalfPrice)(
@@ -203,26 +204,23 @@ export const SectorTicketMainSettingsContent: React.FC<
             error={formErrors.hasCourtesy && formErrors.hasCourtesy[0]}
           />
         </FormGroup>
-        <Row>
-          <Col md={6} className="pl-0">
-            <FormGroup className="mb-2">
-              <InputText
-                name="amountCourtesy"
-                label="Quantidade de ingressos cortesia"
-                placeholder="Ex: 2000"
-                value={formData[FormInputName.amountCourtesy]}
-                onChange={e =>
-                  onChangeFormInput(FormInputName.amountCourtesy)(e?.target.value as string)
-                }
-                error={formErrors.amountCourtesy && formErrors.amountCourtesy[0]}
-                disabled={
-                  !formData[FormInputName.hasCourtesy] ||
-                  formData[FormInputName.hasCourtesy] === 'false'
-                }
-              />
-            </FormGroup>
-          </Col>
-        </Row>
+        <FormGroup className="mb-2">
+          <InputText
+            name="amountCourtesy"
+            label="Quantidade de ingressos cortesia"
+            placeholder="Ex: 20000"
+            className="w-input-sm"
+            value={formData[FormInputName.amountCourtesy]}
+            onChange={e =>
+              onChangeFormInput(FormInputName.amountCourtesy)(e?.target.value as string)
+            }
+            error={formErrors.amountCourtesy && formErrors.amountCourtesy[0]}
+            disabled={
+              !formData[FormInputName.hasCourtesy] ||
+              formData[FormInputName.hasCourtesy] === 'false'
+            }
+          />
+        </FormGroup>
         <FormGroup className="mb-2">
           <ButtonGroup
             label="Numerar ingressos?"
@@ -281,6 +279,7 @@ export const SectorTicketMainSettingsContent: React.FC<
             name="copies"
             label="Número de vias (opcional)"
             placeholder="1"
+            className="w-input-sm"
             value={formData[FormInputName.copies]}
             onChange={e => onChangeFormInput(FormInputName.copies)(e?.value as string)}
             error={formErrors.copies && formErrors.copies[0]}

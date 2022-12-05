@@ -178,6 +178,7 @@ export const SectorTicketGeneralSettingsScreen: React.FC<
   return (
     <SectorTicketGeneralSettingsContainer
       state={state}
+      ticketStates={ticketStates}
       formGeneralSettings={controllerFormGeneralSettings}
       generalSettingsActions={controllerGeneralSettingsActions}
     />

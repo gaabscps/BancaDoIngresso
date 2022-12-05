@@ -23,6 +23,7 @@ import {
   printerStatesProps,
   sectorActionsProps,
   sectorStatesProps,
+  ticketStatesProps,
 } from '../../types';
 import { BatchContent } from '../../components/BatchContent';
 import { RegisterSectorContent } from '../../components/RegisterSectorContent';
@@ -40,6 +41,7 @@ export enum ShouldShowModal {
 
 export interface SectorTicketMainSettingsContainerProps {
   state: States;
+  ticketStates: ticketStatesProps;
   formMainSettings: formMainSettingsProps;
   formBatchs: formBatchsProps;
   formSector: formSectorProps;
@@ -66,7 +68,17 @@ export const SectorTicketMainSettingsContainer: React.FC<
   mainSettingsActions,
   modalConfig,
   printerStates,
+  ticketStates,
 }) => {
+  const titleBatchRef = React.useRef<HTMLInputElement>(null);
+
+  // focus on name input when batchStates is not empty
+  React.useEffect(() => {
+    if (batchStates?.batch) {
+      titleBatchRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [batchStates?.batch]);
+
   const renderActionDialogToCancel: ActionProps = {
     title: 'Cancelar',
     onClick: (): void => modalConfig.onToggle(),
@@ -108,14 +120,14 @@ export const SectorTicketMainSettingsContainer: React.FC<
           />
         </div>
 
-        <div className="container-event mb-4">
+        <div ref={titleBatchRef} className="container-event mb-4">
           <h5 className="mb-2 border-bottom-title mb-5">Lotes</h5>
-          <p>{batchStates.batch ? 'Editar lote' : 'Cadastrar lote'}</p>
+          <p>{batchStates.batch ? `Editar ${batchStates.batch.name}` : 'Cadastrar lote'}</p>
         </div>
 
         <div className="card-ligth-color">
           <div className="container-event">
-            <BatchContent formBatchs={formBatchs} batchStates={batchStates} />
+            <BatchContent formBatchs={formBatchs} />
           </div>
           <div className="d-flex justify-content-end">
             <div
@@ -124,7 +136,7 @@ export const SectorTicketMainSettingsContainer: React.FC<
                 batchActions.onCancelEdit();
               }}
             >
-              {batchStates.batch ? 'Cancelar edição do lote' : null}
+              {batchStates.batch ? 'Cancelar' : null}
             </div>
             <div
               className="link-green"
@@ -136,7 +148,7 @@ export const SectorTicketMainSettingsContainer: React.FC<
                 }
               }}
             >
-              {batchStates.batch ? 'Salvar lote' : '+ cadastrar lote'}
+              {batchStates.batch ? 'Salvar edição' : '+ cadastrar lote'}
             </div>
           </div>
         </div>
@@ -150,13 +162,15 @@ export const SectorTicketMainSettingsContainer: React.FC<
                     <React.Fragment key={index}>
                       {index > 0 ? <hr style={{ margin: '25px -30px 30px -50px' }} /> : null}
 
-                      <div>
+                      <div
+                        className={`${
+                          batchStates.batch && batch?.id === batchStates.batch?.id
+                            ? 'disabled-content'
+                            : null
+                        }`}
+                      >
                         <div className="content-collapse-title-flex">
-                          <div
-                            className={`content-collapse-title-container ${
-                              batch?.id === batchStates.batch?.id ? 'font-weight-bolder' : ''
-                            }`}
-                          >
+                          <div className="content-collapse-title-container">
                             <p className="content-collapse-title content-collapse-title-index">
                               Lote #{String(index + 1)}{' '}
                             </p>
@@ -207,20 +221,26 @@ export const SectorTicketMainSettingsContainer: React.FC<
           />
         </div>
         <div className="d-flex justify-content-between">
-          <Button
-            title="Salvar"
-            theme="noneBorder"
-            onClick={async () => {
-              await mainSettingsActions.onSave();
-            }}
-          />
-          <Button
-            title="Próximo"
-            theme="outlineDark"
-            onClick={async () => {
-              await mainSettingsActions.onNextTab();
-            }}
-          />
+          <div>
+            {ticketStates?.ticket ? (
+              <Button
+                title="Salvar"
+                theme="noneBorder"
+                onClick={async () => {
+                  await mainSettingsActions.onSave();
+                }}
+              />
+            ) : null}
+          </div>
+          <div>
+            <Button
+              title="Próxima etapa"
+              theme="outlineDark"
+              onClick={async () => {
+                await mainSettingsActions.onNextTab();
+              }}
+            />
+          </div>
         </div>
       </Container>
     </Fragment>

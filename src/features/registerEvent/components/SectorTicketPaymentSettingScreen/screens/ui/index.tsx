@@ -317,7 +317,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
                     }
                   />
                   <ButtonGroup
-                    label="Permitir taxa variavel?"
+                    label="Permitir taxa variável?"
                     name="allowVariableRate"
                     value={formData[FormInputName.allowVariableRate]}
                     onChange={e =>
@@ -330,7 +330,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
                     error={formErrors.allowVariableRate && formErrors.allowVariableRate[0]}
                   />
                   <ButtonGroup
-                    label="Permitir valor variavel?"
+                    label="Permitir valor variável?"
                     name="allowVariableValue"
                     value={formData[FormInputName.allowVariableValue]}
                     onChange={e =>
@@ -772,14 +772,14 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
           </div>
           <div>
             <Button
-              title="Voltar"
+              title="Voltar etapa"
               theme="noneBorder"
               onClick={() => {
                 paymentSettingsActions.onReturnTab();
               }}
             />
             <Button
-              title="Próximo"
+              title="Próxima etapa"
               theme="outlineDark"
               className="ml-3"
               onClick={async () => {
