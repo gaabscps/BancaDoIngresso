@@ -11,6 +11,7 @@ import { Col, Container, Form, FormGroup, Row } from 'reactstrap';
 import { ActionProps } from '@/components/Dialog';
 import User from '@/model/User';
 import { formatToCPFOrCNPJ } from 'brazilian-values';
+import { UserScreen } from '@/features/core/UserScreen/screens/List';
 import { formPdvUserProps } from '../../types';
 // import { formPdvProductProps } from '../../types';
 
@@ -77,7 +78,11 @@ export const PdvUserContainer: React.FC<SectorProductUserProps> = ({
     }
   };
 
-  const dataTableUser = controllerAppendUser.usersSelected?.map((item, index) => ({
+  const userDataSelected = controllerAppendUser?.listUsers.find(
+    (item: User) => item.id === formData.user,
+  );
+
+  const dataTableUser = controllerAppendUser.usersSelected?.map((item: any, index: any) => ({
     id: item.id,
     name: item.name,
     login: item.cpf,
@@ -117,9 +122,9 @@ export const PdvUserContainer: React.FC<SectorProductUserProps> = ({
           }[shouldShowModal]
         }
       </Dialog>
-      <Form>
-        <FormGroup>
-          <Container>
+      <Container className="mainContainer" fluid={true}>
+        <Form>
+          <FormGroup>
             <Row>
               <Col md={8}>
                 <h5 className="mt-5 mb-5 border-bottom-title fw-700">Usuários do PDV</h5>
@@ -132,7 +137,7 @@ export const PdvUserContainer: React.FC<SectorProductUserProps> = ({
                     name="user"
                     label="Usuário do PDV"
                     placeholder="Digite ou selecione o usuário do PDV"
-                    // refSelect={refSelectUser}
+                    refSelect={refSelectUser}
                     value={formData[FormInputName.user]}
                     onChange={e => onChangeFormInput(FormInputName.user)(e?.value as string)}
                     error={formErrors.user && formErrors.user[0]}
@@ -141,6 +146,10 @@ export const PdvUserContainer: React.FC<SectorProductUserProps> = ({
                       value: itemUser.id,
                     }))}
                     isClearable
+                  />
+                  <UserScreen
+                    getUsersDropdown={controllerAppendUser.handleGetUsers}
+                    userDropdownSelected={userDataSelected}
                   />
                 </FormGroup>
               </Col>
@@ -163,7 +172,7 @@ export const PdvUserContainer: React.FC<SectorProductUserProps> = ({
               </Col>
             </Row>
             <Row>
-              <Col md={7}>
+              <Col md={5}>
                 <h5 className="mb-4 border-bottom-title fw-400">Usuários inseridos no PDV</h5>
                 {controllerAppendUser.usersSelected.length > 0 ? (
                   <CustomTable
@@ -201,9 +210,9 @@ export const PdvUserContainer: React.FC<SectorProductUserProps> = ({
                 )}
               </Col>
             </Row>
-          </Container>
-        </FormGroup>
-      </Form>
+          </FormGroup>
+        </Form>
+      </Container>
     </>
   );
 };

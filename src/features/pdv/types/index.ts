@@ -18,4 +18,5 @@ export type ContractorControllerUser = {
   usersSelected: User[];
   handleAddUser(userId: string): void;
   handleRemoveUser(index: number): void;
+  handleGetUsers: () => Promise<void>;
 };

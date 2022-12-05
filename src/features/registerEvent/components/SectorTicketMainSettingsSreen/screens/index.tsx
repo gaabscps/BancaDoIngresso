@@ -20,7 +20,6 @@ import { FormInputName as FormInputNameToBatch } from '@/features/registerEvent/
 import { unmask as unMaskCash } from '@/helpers/masks/cash';
 import { convertToBoolean } from '@/helpers/common/convertToBoolean';
 import dayjs from 'dayjs';
-// import { useEvent } from '@/features/registerEvent/hook/useEvent';
 import { useParams } from 'react-router-dom';
 import Section from '@/model/Section';
 import TicketBatch from '@/model/TicketBatch';

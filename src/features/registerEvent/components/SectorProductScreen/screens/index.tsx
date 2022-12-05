@@ -84,7 +84,6 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
     formErrors: formErrorsConfigProduct,
     onChangeFormInput: onChangeFormInputConfigProduct,
     isFormValid: isFormValidConfigProduct,
-    // resetForm: resetFormConfigProduct,
   } = useForm({
     initialData: {
       physicalSaleAllowCreditCardPayment: '',
@@ -136,8 +135,7 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
         {
           title: 'Sim, quero excluir',
           onClick: (): void => {
-            console.log('TODO: Add function exclud item :>> ', productSelected);
-            // handleOnConfirmDeleteToProduct(productSelected);
+            console.log('TODO: Add function exclude item :>> ', productSelected);
           },
         },
       ],

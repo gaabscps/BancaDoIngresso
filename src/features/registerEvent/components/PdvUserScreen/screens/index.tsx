@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useForm from '@/hooks/useForm';
 import validators from '@/helpers/validators';
 import { useDialog } from '@/hooks/useDialog';
@@ -8,10 +8,12 @@ import { updateMask as updateMaskCPFOrCNPJ } from '@/helpers/masks/cpfCnpj';
 import { updateMask as updateMaskMobilePhone } from '@/helpers/masks/mobilePhone';
 import Permission from '@/model/Permission';
 import Module from '@/model/Module';
-
 import User from '@/model/User';
-import { formPdvUserProps, onShouldShowModalSectorProductUserProps } from '../types';
+import { AxiosError } from 'axios';
+import api from '@/services/api';
+import { toast } from 'react-toastify';
 import { PdvUserContainer, ShouldShowModal } from './ui';
+import { formPdvUserProps, onShouldShowModalSectorProductUserProps } from '../types';
 // import { formPdvProductProps } from '../types';
 
 // eslint-disable-next-line no-shadow
@@ -64,7 +66,7 @@ export const PdvUserScreen: React.FC<SectorProductPosContainerProps> = ({
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(
     ShouldShowModal.userRegister,
   );
-
+  // const [state, setState] = useState<States>(States.default);
   const [listUsers, setListUsers] = useState<User[]>([]);
   // const [listUsersDefault, setListUsersDefault] = useState<User[]>([]);
   const [usersSelected, setUsersSelected] = useState<User[]>([]);
@@ -102,6 +104,23 @@ export const PdvUserScreen: React.FC<SectorProductPosContainerProps> = ({
       telephone: updateMaskMobilePhone,
     },
   });
+  const handleGetUsers = async (): Promise<void> => {
+    try {
+      // setState(States.loading);
+      const { data } = await api.get<User[]>('/user/find');
+
+      if (data) {
+        setListUsers(data);
+        // setListUsersDefault(data);
+        setUsersSelected([]);
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      // setState(States.default);
+    }
+  };
 
   const controllerFormUser: formPdvUserProps = {
     formData: formDataUser,
@@ -143,7 +162,12 @@ export const PdvUserScreen: React.FC<SectorProductPosContainerProps> = ({
       const newUser = listUsers.concat(usersSelected[index]);
       setListUsers(newUser);
     },
+    handleGetUsers,
   };
+
+  useEffect(() => {
+    handleGetUsers();
+  }, []);
 
   return (
     <>
