@@ -4,15 +4,14 @@ import {
   // Loading,
   SelectCustom,
 } from '@/components';
-import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { CustomTable } from '@/components/Table';
-import React, { ChangeEvent } from 'react';
+import React, { useRef } from 'react';
+import { ReactComponent as CloseX } from '@/assets/images/svg/closeX.svg';
 import { Col, Container, Form, FormGroup, Row } from 'reactstrap';
-import { X } from 'react-feather';
 import { ActionProps } from '@/components/Dialog';
+import User from '@/model/User';
+import { formatToCPFOrCNPJ } from 'brazilian-values';
 import { formPdvUserProps } from '../../types';
-import { PdvUserRegisterContent } from '../../components';
-import { CheckBoxData, CheckBoxGroup, CheckBoxModule } from '..';
 // import { formPdvProductProps } from '../../types';
 
 // eslint-disable-next-line no-shadow
@@ -27,17 +26,8 @@ export enum ShouldShowModal {
 }
 
 // eslint-disable-next-line no-shadow
-export enum FormInputUser {
+export enum FormInputName {
   user = 'user',
-  name = 'name',
-  cpf = 'cpf',
-  telephone = 'telephone',
-  email = 'email',
-  imageBase64 = 'imageBase64',
-  imageName = 'imageName',
-  password = 'password',
-  userType = 'userType',
-  status = 'status',
 }
 
 interface SectorProductUserProps {
@@ -46,18 +36,11 @@ interface SectorProductUserProps {
   visible: boolean;
   controllerFormUser: formPdvUserProps;
   shouldShowModal: ShouldShowModal;
-  modules?: CheckBoxModule[];
-  userProfileCheckBox: CheckBoxData[];
+  controllerAppendUser: any;
   // userStates: any;
-  saveUser(): Promise<void>;
-  onChangeUserTypeSelected(e: ChangeEvent<HTMLInputElement>, userType: CheckBoxData): void;
-  onBlurCPF: () => void;
   onToggle: () => void;
   nextTab: () => void;
   backTab: () => void;
-  onChangeUserGroupSelected(e: ChangeEvent<HTMLInputElement>, group: CheckBoxGroup): void;
-  onActivateAndInactivate(e: ChangeEvent<HTMLInputElement>): void;
-  changeFileInputUser: (inputName: string) => (file: File | undefined) => void;
   onShouldShowModal: ({
     value,
     newTitleModal,
@@ -72,19 +55,12 @@ export const PdvUserContainer: React.FC<SectorProductUserProps> = ({
   visible,
   controllerFormUser,
   shouldShowModal,
-  modules,
-  userProfileCheckBox,
-  saveUser,
-  onChangeUserGroupSelected,
-  onChangeUserTypeSelected,
+  controllerAppendUser,
   // userStates,
-  onActivateAndInactivate,
-  changeFileInputUser,
-  onBlurCPF,
   onToggle,
-  onShouldShowModal,
-  nextTab,
-  backTab,
+  // onShouldShowModal,
+  // nextTab,
+  // backTab,
 }) => {
   const { formData, formErrors, onChangeFormInput } = controllerFormUser;
   const renderActionDialogToCancel: ActionProps = {
@@ -92,6 +68,28 @@ export const PdvUserContainer: React.FC<SectorProductUserProps> = ({
     onClick: (): void => onToggle(),
     theme: 'noneBorder',
   };
+
+  const refSelectUser = useRef<any>(null);
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  const onClearSelectUser = () => {
+    if (refSelectUser) {
+      refSelectUser?.current.clearValue();
+    }
+  };
+
+  const dataTableUser = controllerAppendUser.usersSelected?.map((item, index) => ({
+    id: item.id,
+    name: item.name,
+    login: item.cpf,
+    actions: (
+      <CloseX
+        className="mr-2 svg-icon action-icon"
+        onClick={() => {
+          controllerAppendUser.handleRemoveUser(index);
+        }}
+      />
+    ),
+  }));
 
   return (
     <>
@@ -108,173 +106,104 @@ export const PdvUserContainer: React.FC<SectorProductUserProps> = ({
           {
             [ShouldShowModal.userRegister]: {
               title: 'Cadastrar usuário',
-              onClick: () => saveUser(),
+              onClick: () => undefined,
             },
           }[shouldShowModal],
         ]}
       >
         {
           {
-            [ShouldShowModal.userRegister]: (
-              <PdvUserRegisterContent
-                onBlurCPF={onBlurCPF}
-                controllerFormUser={controllerFormUser}
-                onActivateAndInactivate={onActivateAndInactivate}
-                changeFileInputUser={changeFileInputUser}
-                userProfileCheckBox={userProfileCheckBox}
-                modules={modules}
-                onChangeUserTypeSelected={onChangeUserTypeSelected}
-                onChangeUserGroupSelected={onChangeUserGroupSelected}
-              />
-            ),
+            [ShouldShowModal.userRegister]: <div></div>,
           }[shouldShowModal]
         }
       </Dialog>
-      <Container className="mainContainer" fluid={true}>
-        <Form>
-          <div className="mb-5">
-            <FormGroup>
-              <Row>
-                <Col md={8}>
+      <Form>
+        <FormGroup>
+          <Container>
+            <Row>
+              <Col md={8}>
+                <h5 className="mt-5 mb-5 border-bottom-title fw-700">Usuários do PDV</h5>
+              </Col>
+            </Row>
+            <Row>
+              <Col md={8}>
+                <FormGroup className="mb-2">
                   <SelectCustom
                     name="user"
-                    label="Digite ou selecione o usuário do PDV"
-                    value={formData[FormInputUser.user]}
-                    onChange={e => onChangeFormInput(FormInputUser.user)(e?.value as string)}
-                    options={[{ value: '1', label: 'Setor 1' }]}
-                    error={formErrors.sector && formErrors.sector[0]}
+                    label="Usuário do PDV"
+                    placeholder="Digite ou selecione o usuário do PDV"
+                    // refSelect={refSelectUser}
+                    value={formData[FormInputName.user]}
+                    onChange={e => onChangeFormInput(FormInputName.user)(e?.value as string)}
+                    error={formErrors.user && formErrors.user[0]}
+                    options={controllerAppendUser.listUsers.map((itemUser: User) => ({
+                      label: itemUser.name,
+                      value: itemUser.id,
+                    }))}
+                    isClearable
                   />
-                </Col>
-                <Col className="d-flex align-items-center mb-3" md={4}>
-                  <div
-                    className={`action-icon link-green ${
-                      formData[FormInputUser.user] === ''
-                        ? 'input-action-disabled disable-text'
-                        : ''
-                    }`}
-                  >
-                    Inserir usuário
-                  </div>
-                </Col>
-              </Row>
-              <Row>
-                <Col md={3}>
-                  <div
+                </FormGroup>
+              </Col>
+              <Col md={4}>
+                <div style={{ padding: '37px 0' }}>
+                  <Button
+                    title="Inserir usuário"
+                    theme="noneBorder"
                     onClick={() => {
-                      onShouldShowModal({
-                        value: ShouldShowModal.userRegister,
-                        newTitleModal: `Cadastrar usuário`,
-                      });
+                      controllerAppendUser.handleAddUser(formData[FormInputName.user]);
+                      onClearSelectUser();
                     }}
-                    style={{ width: 'fit-content' }}
-                    className="action-icon link-green"
-                  >
-                    + cadastrar novo usuário
-                  </div>
-                </Col>
-                <Col md={2}>
-                  <div
-                    style={{ width: 'fit-content' }}
-                    className={`d-flex action-icon svg-icon align-items-center ${
-                      formData[FormInputUser.user] === ''
-                        ? 'input-action-disabled disable-text'
-                        : ''
-                    }`}
-                  >
-                    <Pen className="mr-2" width={12} />
-                    <div>Editar</div>
-                  </div>
-                </Col>
-              </Row>
-            </FormGroup>
-          </div>
-        </Form>
-
-        <React.Fragment key="content">
-          <Row>
-            <Col>
-              <div className="d-flex w-100 justify-content-between">
-                <h5 className="border-bottom-title">Usuários inseridos do PDV</h5>
-              </div>
-            </Col>
-          </Row>
-          <Row className="mb-5">
-            <Col md={7}>
-              <CustomTable
-                theme="secondary"
-                numberRowsPerPage={0}
-                progressPending={false}
-                columns={[
-                  {
-                    name: 'Nome',
-                    selector: row => row.name,
-                  },
-                  {
-                    name: 'Login',
-                    selector: row => row.login,
-                  },
-                  {
-                    name: '',
-                    selector: row => row.actions,
-                    right: true,
-                  },
-                ]}
-                data={[
-                  {
-                    name: 'Maria Antonia',
-                    login: '987.654.321-00',
-                    actions: <X className="action-icon svg-icon" onClick={() => undefined} />,
-                  },
-                ]}
-              />
-              <div style={{ borderBottom: '1.5px solid #E6E6E6' }}></div>
-              <CustomTable
-                theme="secondary"
-                numberRowsPerPage={0}
-                progressPending={false}
-                columns={[
-                  {
-                    name: 'Nome',
-                    selector: row => row.product,
-                  },
-                  {
-                    name: 'Login',
-                    selector: row => row.group,
-                  },
-                  {
-                    name: '',
-                    selector: row => row.actions,
-                    right: true,
-                  },
-                ]}
-                data={[
-                  {
-                    product: 'José da Silva',
-                    group: '123.456.789-22',
-                    actions: (
-                      <>
-                        <X className="action-icon svg-icon" onClick={() => undefined} />
-                      </>
-                    ),
-                  },
-                ]}
-              />
-            </Col>
-          </Row>
-        </React.Fragment>
-
-        <div className="d-flex justify-content-end">
-          <Button title="Voltar etapa" theme="noneBorder" onClick={() => backTab()} />
-          <Button
-            title="Próxima etapa"
-            theme="outlineDark"
-            className="ml-3"
-            onClick={async () => {
-              nextTab();
-            }}
-          />
-        </div>
-      </Container>
+                    disabled={
+                      formData[FormInputName.user] === undefined ||
+                      formData[FormInputName.user] === '' ||
+                      formData[FormInputName.user] === null
+                    }
+                  />
+                </div>
+              </Col>
+            </Row>
+            <Row>
+              <Col md={7}>
+                <h5 className="mb-4 border-bottom-title fw-400">Usuários inseridos no PDV</h5>
+                {controllerAppendUser.usersSelected.length > 0 ? (
+                  <CustomTable
+                    columns={[
+                      {
+                        name: 'Nome do usuário',
+                        selector: row => row.name,
+                        maxWidth: '325px',
+                      },
+                      {
+                        name: 'Login',
+                        selector: row => formatToCPFOrCNPJ(row.login),
+                        maxWidth: '140px',
+                      },
+                      {
+                        name: '',
+                        selector: row => row.actions,
+                        maxWidth: '85px',
+                      },
+                    ]}
+                    data={dataTableUser}
+                    theme="tertiary"
+                    progressPending={false}
+                    numberRowsPerPage={1}
+                  />
+                ) : (
+                  <>
+                    <div style={{ padding: '10px 0 20px 0', color: '#A5A5A5' }}>
+                      Você ainda não inseriu nenhum usuário neste PDV.
+                    </div>
+                    <div style={{ color: '#A5A5A5', paddingBottom: '30px' }}>
+                      Aqui será exibida uma lista dos usuários inseridos neste PDV.
+                    </div>
+                  </>
+                )}
+              </Col>
+            </Row>
+          </Container>
+        </FormGroup>
+      </Form>
     </>
   );
 };
