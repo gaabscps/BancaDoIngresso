@@ -2,8 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import useForm from '@/hooks/useForm';
 import validators from '@/helpers/validators';
-import { useDialog } from '@/hooks/useDialog';
-
 import { updateMask as updateMaskCPFOrCNPJ } from '@/helpers/masks/cpfCnpj';
 import { updateMask as updateMaskMobilePhone } from '@/helpers/masks/mobilePhone';
 import Permission from '@/model/Permission';
@@ -12,8 +10,8 @@ import User from '@/model/User';
 import { AxiosError } from 'axios';
 import api from '@/services/api';
 import { toast } from 'react-toastify';
-import { PdvUserContainer, ShouldShowModal } from './ui';
-import { formPdvUserProps, onShouldShowModalSectorProductUserProps } from '../types';
+import { PdvUserContainer } from './ui';
+import { formPdvUserProps } from '../types';
 // import { formPdvProductProps } from '../types';
 
 // eslint-disable-next-line no-shadow
@@ -54,32 +52,19 @@ export interface CheckBoxGroup {
 }
 
 interface SectorProductPosContainerProps {
-  // state: States;
   nextTab: () => void;
   backTab: () => void;
 }
-export const PdvUserScreen: React.FC<SectorProductPosContainerProps> = ({
-  // state,
-  nextTab,
-  backTab,
-}) => {
-  const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(
-    ShouldShowModal.userRegister,
-  );
+export const PdvUserScreen: React.FC<SectorProductPosContainerProps> = ({ nextTab, backTab }) => {
   // const [state, setState] = useState<States>(States.default);
   const [listUsers, setListUsers] = useState<User[]>([]);
-  // const [listUsersDefault, setListUsersDefault] = useState<User[]>([]);
   const [usersSelected, setUsersSelected] = useState<User[]>([]);
-  // const [userState, setUserState] = useState<any>();
-  const { title, onChangeTitle, visible, onToggle } = useDialog();
 
   const {
     formData: formDataUser,
     formErrors: formErrorsUser,
     onChangeFormInput: onChangeFormInputUser,
     isFormValid: isFormValidUser,
-    // setErrors: setErrorsUser,
-    // resetForm: resetFormUser,
   } = useForm({
     initialData: {
       name: '',
@@ -128,17 +113,6 @@ export const PdvUserScreen: React.FC<SectorProductPosContainerProps> = ({
     onChangeFormInput: onChangeFormInputUser,
     isFormValid: isFormValidUser,
   };
-  const handleOnShouldShowModal = ({
-    value,
-    newTitleModal,
-  }: // user: userSelected,
-  onShouldShowModalSectorProductUserProps): void => {
-    setShouldShowModal(value);
-    onChangeTitle(newTitleModal);
-    onToggle();
-
-    // setUserState(userSelected);
-  };
 
   const controllerAppendUser = {
     listUsers,
@@ -175,11 +149,6 @@ export const PdvUserScreen: React.FC<SectorProductPosContainerProps> = ({
         controllerFormUser={controllerFormUser}
         nextTab={nextTab}
         backTab={backTab}
-        title={title}
-        onToggle={onToggle}
-        visible={visible}
-        shouldShowModal={shouldShowModal}
-        onShouldShowModal={handleOnShouldShowModal}
         controllerAppendUser={controllerAppendUser}
       />
     </>

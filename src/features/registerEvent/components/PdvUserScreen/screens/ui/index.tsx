@@ -1,6 +1,5 @@
 import {
   Button,
-  Dialog,
   // Loading,
   SelectCustom,
 } from '@/components';
@@ -8,7 +7,6 @@ import { CustomTable } from '@/components/Table';
 import React, { useRef } from 'react';
 import { ReactComponent as CloseX } from '@/assets/images/svg/closeX.svg';
 import { Col, Container, Form, FormGroup, Row } from 'reactstrap';
-import { ActionProps } from '@/components/Dialog';
 import User from '@/model/User';
 import { formatToCPFOrCNPJ } from 'brazilian-values';
 import { UserScreen } from '@/features/core/UserScreen/screens/List';
@@ -22,53 +20,25 @@ export enum States {
 }
 
 // eslint-disable-next-line no-shadow
-export enum ShouldShowModal {
-  userRegister = 'userRegister',
-}
-
-// eslint-disable-next-line no-shadow
 export enum FormInputName {
   user = 'user',
 }
 
 interface SectorProductUserProps {
-  // state: States;
-  title: string | React.ReactNode;
-  visible: boolean;
   controllerFormUser: formPdvUserProps;
-  shouldShowModal: ShouldShowModal;
   controllerAppendUser: any;
   // userStates: any;
-  onToggle: () => void;
   nextTab: () => void;
   backTab: () => void;
-  onShouldShowModal: ({
-    value,
-    newTitleModal,
-  }: {
-    value: ShouldShowModal;
-    newTitleModal: string | React.ReactNode;
-  }) => void;
 }
 export const PdvUserContainer: React.FC<SectorProductUserProps> = ({
   // state,
-  title,
-  visible,
   controllerFormUser,
-  shouldShowModal,
   controllerAppendUser,
-  // userStates,
-  onToggle,
-  // onShouldShowModal,
-  // nextTab,
-  // backTab,
+  nextTab,
+  backTab,
 }) => {
   const { formData, formErrors, onChangeFormInput } = controllerFormUser;
-  const renderActionDialogToCancel: ActionProps = {
-    title: 'Cancelar',
-    onClick: (): void => onToggle(),
-    theme: 'noneBorder',
-  };
 
   const refSelectUser = useRef<any>(null);
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -99,29 +69,7 @@ export const PdvUserContainer: React.FC<SectorProductUserProps> = ({
   return (
     <>
       {/* <Loading isVisible={state === States.loading} /> */}
-      <Dialog
-        title={title}
-        visible={visible}
-        onClose={onToggle}
-        isContentWithCard={true}
-        actions={[
-          {
-            [ShouldShowModal.userRegister]: renderActionDialogToCancel,
-          }[shouldShowModal],
-          {
-            [ShouldShowModal.userRegister]: {
-              title: 'Cadastrar usuário',
-              onClick: () => undefined,
-            },
-          }[shouldShowModal],
-        ]}
-      >
-        {
-          {
-            [ShouldShowModal.userRegister]: <div></div>,
-          }[shouldShowModal]
-        }
-      </Dialog>
+
       <Container className="mainContainer" fluid={true}>
         <Form>
           <FormGroup>
@@ -212,6 +160,17 @@ export const PdvUserContainer: React.FC<SectorProductUserProps> = ({
             </Row>
           </FormGroup>
         </Form>
+        <div className="d-flex justify-content-end">
+          <Button title="Voltar etapa" theme="noneBorder" onClick={() => backTab()} />
+          <Button
+            title="Próxima etapa"
+            theme="outlineDark"
+            className="ml-3"
+            onClick={async () => {
+              nextTab();
+            }}
+          />
+        </div>
       </Container>
     </>
   );
