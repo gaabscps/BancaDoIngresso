@@ -164,7 +164,7 @@ export const SectorTicketMainSettingsContainer: React.FC<
 
                       <div
                         className={`${
-                          batchStates.batch && batch?.id === batchStates.batch?.id
+                          batchStates.batch && batch?.id !== batchStates.batch?.id
                             ? 'disabled-content'
                             : null
                         }`}

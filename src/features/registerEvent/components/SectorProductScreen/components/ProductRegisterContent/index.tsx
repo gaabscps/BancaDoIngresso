@@ -143,6 +143,7 @@ export const ProductRegisterContent: React.FC<Pick<SectorProductContainerProps, 
                 name="unitValue"
                 label="Valor unitário"
                 placeholder="Ex: 20,00"
+                addon="R$"
                 value={updateMaskCash(formData[FormInputName.unitValue])}
                 onChange={e => {
                   onChangeFormInput(FormInputName.unitValue)(

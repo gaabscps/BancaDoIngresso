@@ -311,6 +311,7 @@ export const ProductConfigContent: React.FC<
               <InputText
                 name="partialPayment"
                 label="Porcentagem do Garçom %"
+                addon="%"
                 placeholder="0"
                 className="w-input-sm"
                 maxLength={2}

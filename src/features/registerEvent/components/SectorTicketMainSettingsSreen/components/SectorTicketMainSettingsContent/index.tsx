@@ -150,6 +150,7 @@ export const SectorTicketMainSettingsContent: React.FC<
                 name="percentageHalfPrice"
                 label="Porcentagem de meia entrada (%)"
                 placeholder="0"
+                addon="%"
                 className="w-input-sm"
                 value={formData[FormInputName.percentageHalfPrice]}
                 onChange={e =>

@@ -135,6 +135,7 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
                         type="number"
                         name="waiter"
                         label="Porcentagem do garçom (%)"
+                        addon="%"
                         placeholder="0"
                         className="w-input-sm"
                         value={formData[FormInputName.waiter]}
@@ -155,6 +156,7 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
                         name="commission"
                         label="Porcentagem de comissão(%)"
                         placeholder="0"
+                        addon="%"
                         className="w-input-sm"
                         value={formData[FormInputName.commission]}
                         onChange={e => onChangeFormInput(FormInputName.commission)(e.target.value)}

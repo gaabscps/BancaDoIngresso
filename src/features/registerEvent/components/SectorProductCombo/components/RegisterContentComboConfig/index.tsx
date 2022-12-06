@@ -342,6 +342,7 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
               <InputText
                 name="waiter"
                 label="Porcentagem do Garçom (%)"
+                addon="%"
                 maxLength={2}
                 value={formDataComboConfig[FormInputNameComboConfig.waiter]}
                 onChange={e =>

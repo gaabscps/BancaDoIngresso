@@ -106,6 +106,7 @@ export const BatchContent: React.FC<Pick<SectorTicketMainSettingsContainerProps,
             name="commission"
             label="Porcentagem de Comissão (%)"
             placeholder="0"
+            addon="%"
             maxLength={3}
             value={formData[FormInputName.commission]}
             onChange={e =>
@@ -139,6 +140,7 @@ export const BatchContent: React.FC<Pick<SectorTicketMainSettingsContainerProps,
                 name="unitValue"
                 label="Valor unitário"
                 placeholder="Ex: 20,00"
+                addon="R$"
                 value={updateMaskCash(formData[FormInputName.unitValue])}
                 onChange={e => {
                   onChangeFormInput(FormInputName.unitValue)(

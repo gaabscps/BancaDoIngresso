@@ -14,6 +14,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
   onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  addon?: string | React.ReactNode;
   disabled?: boolean;
   refInput?: LegacyRef<HTMLInputElement>;
 }
@@ -32,6 +33,7 @@ export const InputText: FC<InputProps> = ({
   wrapperClass,
   className,
   renderForward,
+  addon,
   disabled,
   refInput,
 }) => {
@@ -45,22 +47,25 @@ export const InputText: FC<InputProps> = ({
           {label}
         </label>
       )}
-      <input
-        aria-invalid={error ? 'true' : 'false'}
-        type={type}
-        value={value}
-        placeholder={placeholder ?? 'Digite aqui'}
-        maxLength={maxLength}
-        ref={refInput}
-        onBlur={onBlur}
-        onFocus={onFocus}
-        onChange={onChange}
-        className={`form-control input-default ${isError} ${className} ${
-          type === 'date' ? 'text-uppercase' : ''
-        } ${value === '' ? 'text-black-50' : ''}`}
-        disabled={disabled}
-        {...(type === 'date' ? { max: '9999-12-31' } : {})}
-      />
+      <div className={`position-relative ${className}`}>
+        <input
+          aria-invalid={error ? 'true' : 'false'}
+          type={type}
+          value={value}
+          placeholder={placeholder ?? 'Digite aqui'}
+          maxLength={maxLength}
+          ref={refInput}
+          onBlur={onBlur}
+          onFocus={onFocus}
+          onChange={onChange}
+          className={`form-control input-default ${isError} ${className} ${
+            type === 'date' ? 'text-uppercase' : ''
+          } ${value === '' ? 'text-black-50' : ''} ${addon ? 'pr-5' : ''}`}
+          disabled={disabled}
+          {...(type === 'date' ? { max: '9999-12-31' } : {})}
+        />
+        {addon && <div className="addon-input">{addon}</div>}
+      </div>
       {renderForward}
       {error && (
         <span role="alert" className="alert-error position-relative text-sm mb-2">

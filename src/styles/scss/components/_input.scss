@@ -54,6 +54,19 @@ input[type='checkbox'] {
   width: 135px;
 }
 
+.addon-input {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 19px 20px;
+
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+
+  color: #828282;
+}
+
 @media screen and (max-width: 1200px) {
   .tbody-container {
     flex-direction: column;
