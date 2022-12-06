@@ -191,25 +191,25 @@ export const PdvEventPosContainer: React.FC<PosContainerProps> = ({
               buttonAction={() => posActions.onCancelEdit()}
               showButtonOnTitle={!!posStates?.pos}
             />
-            <div className="d-flex justify-content-end">
-              <div>
-                <Button
-                  title="Voltar etapa"
-                  theme="noneBorder"
-                  onClick={() => posActions.onReturnTap()}
-                />
-                <Button
-                  title="Proxima etapa"
-                  theme="outlineDark"
-                  className="ml-3"
-                  onClick={async () => {
-                    await posActions.onNextTap();
-                  }}
-                />
-              </div>
-            </div>
           </>
         )}
+        <div className="d-flex justify-content-end">
+          <div>
+            <Button
+              title="Voltar etapa"
+              theme="noneBorder"
+              onClick={() => posActions.onReturnTap()}
+            />
+            <Button
+              title="Proxima etapa"
+              theme="outlineDark"
+              className="ml-3"
+              onClick={async () => {
+                await posActions.onNextTap();
+              }}
+            />
+          </div>
+        </div>
       </Container>
     </Fragment>
   );

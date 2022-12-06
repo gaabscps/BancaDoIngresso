@@ -18,6 +18,7 @@ import { PdvEventPosScreen } from '@/features/registerEvent/components/PdvEventP
 import { PdvProductScreen } from '@/features/registerEvent/components/PdvProductsScreen/screens';
 import { PdvEventSubPdvScreen } from '@/features/registerEvent/components/PdvEventSubPdvScreen/screens';
 import ReactTooltip from 'react-tooltip';
+import { PdvUserScreen } from '@/features/registerEvent/components/PdvUserScreen/screens';
 import { columnsEventPdv } from './table';
 import TicketIcon from '../../../../../assets/images/svg/Ticket';
 
@@ -88,7 +89,9 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
     <>
       <PdvProductScreen nextTab={handleNextTab} backTab={handleBackTab} />
     </>,
-    'Conteudo 4',
+    <>
+      <PdvUserScreen nextTab={handleNextTab} backTab={handleBackTab} />
+    </>,
     <>
       <PdvEventSubPdvScreen backTab={handleBackTab} firstTab={handleOnFirstTab} />
     </>,
