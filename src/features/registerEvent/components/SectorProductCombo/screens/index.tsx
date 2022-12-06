@@ -46,6 +46,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
     // isFormValid: isFormValidCombo,
   } = useForm({
     initialData: {
+      allowCombo: 'true',
       id: '',
       name: '',
       amount: '',

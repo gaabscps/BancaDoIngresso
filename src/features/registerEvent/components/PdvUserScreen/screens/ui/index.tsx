@@ -10,7 +10,7 @@ import { Col, Container, Form, FormGroup, Row } from 'reactstrap';
 import User from '@/model/User';
 import { formatToCPFOrCNPJ } from 'brazilian-values';
 import { UserScreen } from '@/features/core/UserScreen/screens/List';
-import { formPdvUserProps } from '../../types';
+import { appendPdvUserProps, formPdvUserProps } from '../../types';
 // import { formPdvProductProps } from '../../types';
 
 // eslint-disable-next-line no-shadow
@@ -26,7 +26,7 @@ export enum FormInputName {
 
 interface SectorProductUserProps {
   controllerFormUser: formPdvUserProps;
-  controllerAppendUser: any;
+  controllerAppendUser: appendPdvUserProps;
   nextTab: () => void;
   backTab: () => void;
 }

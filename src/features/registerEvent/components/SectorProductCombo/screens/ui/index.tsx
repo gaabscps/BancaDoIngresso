@@ -322,7 +322,7 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                   <>
                     <div key={sub.id}>
                       <Row>
-                        <Col md={5}>
+                        <Col md={6}>
                           <SelectCreateable
                             label="Produto"
                             name="product"
@@ -350,12 +350,11 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                             placeholder="Ex: 100"
                           />
                         </Col>
-                        {index === 0 ? (
-                          <Col md={7}>
+                        {index === product.length - 1 ? (
+                          <Col md={4}>
                             <div
-                              className="ml-4 mt-5 action-icon"
+                              className="mt-5 action-icon"
                               onClick={() => {
-                                console.log(product);
                                 addProduct(String(index));
                               }}
                             >
@@ -364,10 +363,10 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                           </Col>
                         ) : (
                           <Col>
-                            {index !== 0 && (
+                            {index !== product.length - 1 && (
                               <X
                                 onClick={() => removeProduct(index)}
-                                className="mt-5 ml-5 action-icon"
+                                className="mt-5 action-icon"
                               />
                             )}
                           </Col>
@@ -383,7 +382,7 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                       handleAddProduct();
                     }}
                   >
-                    + cadastrar produto
+                    + cadastrar combo
                   </span>
                 </div>
               </Form>
@@ -394,87 +393,96 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                   <SuperCollapse
                     overflow={true}
                     title="Combos cadastrados"
-                    content={combo.map((combos, index) => (
-                      <>
-                        <div>
-                          <div className="ml-3 mt-3 d-flex align-items-center" key={index}>
-                            {combo.length > 0 ? (
-                              <>
-                                <span
-                                  style={{ whiteSpace: 'nowrap', fontWeight: '300' }}
-                                  className="secondary-table-title"
-                                >
-                                  Combo # {index + 1}{' '}
-                                  <span style={{ transform: 'scale(5)' }}> · </span>
-                                  <span style={{ fontWeight: '500' }}>
-                                    {controllerFormCombo.formDataCombo.name}
-                                  </span>
-                                </span>
-                                <div className="mt-4 d-flex w-100 justify-content-end">
-                                  <Switch
-                                    label="Vender online"
-                                    className="ml-5 action-icon"
-                                    name={''}
-                                    onChange={() => undefined}
-                                    checked={undefined}
-                                  />
-                                </div>
-                              </>
-                            ) : null}
-                          </div>
-
-                          <CustomTable
-                            theme="secondary"
-                            numberRowsPerPage={0}
-                            progressPending={false}
-                            columns={[
-                              {
-                                name: 'Produtos',
-                                width: '35%',
-                                selector: row => row.name,
-                              },
-                              {
-                                name: 'Quantidade',
-                                width: '20%',
-                                selector: row => row.amount,
-                              },
-                              {
-                                name: 'Valor do Combo',
-                                width: '20%',
-                                selector: row => row.totalValue,
-                              },
-                              {
-                                name: (
+                    content={
+                      combo.length > 0 ? (
+                        combo.map((combos, index) => (
+                          <>
+                            <div>
+                              <div className="ml-3 mt-3 d-flex align-items-center" key={index}>
+                                {combo.length > 0 ? (
                                   <>
-                                    <ItemConfig
-                                      onClick={(): void => {
-                                        onToggle();
-                                        onShouldShowModal({
-                                          value: ShouldShowModal.comboConfig,
-                                          newTitleModal: `Configurações do combo #${index + 1}`,
-                                        });
-                                      }}
-                                      className="mr-3 action-icon"
-                                    />
-                                    <Pen className="mr-3 action-icon" />
-                                    <Trash className="action-icon" />
+                                    <span
+                                      style={{ whiteSpace: 'nowrap', fontWeight: '300' }}
+                                      className="secondary-table-title"
+                                    >
+                                      Combo # {index + 1}{' '}
+                                      <span style={{ transform: 'scale(5)' }}> · </span>
+                                      <span style={{ fontWeight: '500' }}>
+                                        {controllerFormCombo.formDataCombo.name}
+                                      </span>
+                                    </span>
+                                    <div className="mt-4 d-flex w-100 justify-content-end">
+                                      <Switch
+                                        label="Vender online"
+                                        className="ml-5 action-icon"
+                                        name={''}
+                                        onChange={() => undefined}
+                                        checked={undefined}
+                                      />
+                                    </div>
                                   </>
-                                ),
-                                selector: row => row.action,
-                                right: true,
-                              },
-                            ]}
-                            data={combos.products.map((products, productIndex) => ({
-                              id: products.id,
-                              name: products.name,
-                              amount: `${products.amount} un`,
-                              totalValue: productIndex === 0 ? `R$ ${combos.totalValue}` : null,
-                              action: '',
-                            }))}
-                          />
+                                ) : null}
+                              </div>
+
+                              <CustomTable
+                                theme="secondary"
+                                numberRowsPerPage={0}
+                                progressPending={false}
+                                columns={[
+                                  {
+                                    name: 'Produtos',
+                                    width: '35%',
+                                    selector: row => row.name,
+                                  },
+                                  {
+                                    name: 'Quantidade',
+                                    width: '20%',
+                                    selector: row => row.amount,
+                                  },
+                                  {
+                                    name: 'Valor do Combo',
+                                    width: '20%',
+                                    selector: row => row.totalValue,
+                                  },
+                                  {
+                                    name: (
+                                      <>
+                                        <ItemConfig
+                                          onClick={(): void => {
+                                            onToggle();
+                                            onShouldShowModal({
+                                              value: ShouldShowModal.comboConfig,
+                                              newTitleModal: `Configurações do combo #${index + 1}`,
+                                            });
+                                          }}
+                                          className="mr-3 action-icon"
+                                        />
+                                        <Pen className="mr-3 action-icon" />
+                                        <Trash className="action-icon" />
+                                      </>
+                                    ),
+                                    selector: row => row.action,
+                                    right: true,
+                                  },
+                                ]}
+                                data={combos.products.map((products, productIndex) => ({
+                                  id: products.id,
+                                  name: products.name,
+                                  amount: `${products.amount} un`,
+                                  totalValue: productIndex === 0 ? `R$ ${combos.totalValue}` : null,
+                                  action: '',
+                                }))}
+                              />
+                            </div>
+                          </>
+                        ))
+                      ) : (
+                        <div>
+                          Nenhum combo cadastrado. Aqui será exibida uma lista dos combos
+                          cadastrados
                         </div>
-                      </>
-                    ))}
+                      )
+                    }
                     leftIcon={TicketIcon}
                   />
                 </Col>
