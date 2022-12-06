@@ -113,26 +113,26 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
                     noPadding={true}
                   />
                 </Col>
-                {index === 0 ? (
+                {index === subGroup.length - 1 ? (
                   <Col md={4}>
-                    <div className="ml-4 mt-5 action-icon" onClick={() => addGroup(String(index))}>
+                    <div className="mt-5 action-icon" onClick={() => addGroup(String(index))}>
                       adicionar novo subgrupo
                     </div>
                   </Col>
                 ) : (
                   <Col>
-                    {index !== 0 && (
-                      <X onClick={() => removeGroup(index)} className="mt-5 ml-5 action-icon" />
+                    {index !== subGroup.length - 1 && (
+                      <X onClick={() => removeGroup(index)} className="mt-5 action-icon" />
                     )}
                   </Col>
                 )}
               </Row>
               <Row>
                 <Col md={6}>
-                  <SimpleInputFile label={''} title={'subgrupo'} name={''} />
+                  <SimpleInputFile label="" title="subgrupo" name="" />
                 </Col>
                 <Col md={4}>
-                  <X className="ml-5 mt-3 pt-1 action-icon" />
+                  <X className="mt-3 pt-1 action-icon" />
                 </Col>
               </Row>
             </div>
