@@ -11,6 +11,7 @@ import EventType from './EventType';
 import TextSize from './TextSize';
 import Ticket from './Ticket';
 import Voucher from './Voucher';
+import Section from './Section';
 
 export default interface Event {
   id: string;
@@ -38,6 +39,7 @@ export default interface Event {
   tickets?: Ticket[];
   products?: EventProduct[];
   combos?: EventProductCombo[];
+  eventSection?: Section[];
   sectionproductsAndCombos?: EventSectionGet[];
   poss?: EventPos[];
   pdvs?: EventPdv[];

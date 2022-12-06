@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { ProgressStep } from '../components/ProgressStep';
 
 import { useEvent } from '../hook/useEvent';
-import { ConfirmationEventContainer } from './Confirmation/ui';
 import '@/features/registerEvent/components/ProgressStep/styles.scss';
 import { GeneralInformationScreen } from './GeneralInformation';
 import { SectorProductScreen } from './SectorProduct';
 import { SectorTicketScreen } from './SectorTicket';
 import { PdvEventScreen } from './Pdv';
+import { ConfirmationEventScreen } from './Confirmation';
 
 // eslint-disable-next-line no-shadow
 export enum States {
@@ -16,7 +16,6 @@ export enum States {
 }
 
 export const EventScreen: React.FC = (): JSX.Element => {
-  const [state] = useState<States>(States.default);
   const { eventState, onChange: onChangeEvent } = useEvent();
 
   useEffect(() => {
@@ -45,7 +44,7 @@ export const EventScreen: React.FC = (): JSX.Element => {
       title: 'PDV',
     },
     {
-      Component: <ConfirmationEventContainer state={state} />,
+      Component: <ConfirmationEventScreen />,
       title: 'Confirmação',
     },
   ];
