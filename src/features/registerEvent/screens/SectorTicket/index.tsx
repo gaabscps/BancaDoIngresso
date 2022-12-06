@@ -82,7 +82,10 @@ export const SectorTicketScreen: React.FC = (): JSX.Element => {
 
   const handleOnConfirmDeleteToTicket = async (ticketSelected: Ticket): Promise<void> => {
     try {
-      console.log('TODO: Fetch delete ticket:>> ', ticketSelected);
+      await api.delete(`/event/ticket/${params?.id}/${ticketSelected.id}`);
+      toast.success('Ticket excluído com sucesso!');
+      confirmDelete.hide();
+      handleFecthTicketsList(params?.id);
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
