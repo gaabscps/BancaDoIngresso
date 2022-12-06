@@ -152,51 +152,59 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
               overflow={true}
               title={'Grupos cadastrados'}
               content={
-                groupList.length > 0 &&
-                groupList.map((item, index) => (
-                  <React.Fragment key={index}>
-                    <div>
-                      <div
-                        style={{ marginRight: '20px' }}
-                        className="mb-3 mt-3 ml-5 d-flex align-items-center "
-                        key={index}
-                      >
-                        <span
-                          style={{ whiteSpace: 'nowrap', fontWeight: '300' }}
-                          className="secondary-table-title"
+                groupList.length > 0 ? (
+                  groupList.map((item, index) => (
+                    <React.Fragment key={index}>
+                      <div>
+                        <div
+                          style={{ marginRight: '20px' }}
+                          className="mb-3 mt-3 ml-5 d-flex align-items-center "
+                          key={index}
                         >
-                          Grupo # {index + 1} <span style={{ transform: 'scale(5)' }}> · </span>
-                          <span style={{ fontWeight: '500' }}>{item.name}</span>
-                        </span>
-                        <span className="secondary-table-title ml-5">{'//'}</span>
-                        <div className="d-flex w-100">
-                          <div className="d-flex align-items-center" style={{ flexWrap: 'nowrap' }}>
-                            <span className="secondary-table-title ml-5 mr-2">Subgrupo</span>
-                            <DropdonwFlags
-                              style={{ color: '#000 !important', fontWeight: '500' }}
-                              dataColumn={subGroupList}
-                            />
+                          <span
+                            style={{ whiteSpace: 'nowrap', fontWeight: '300' }}
+                            className="secondary-table-title"
+                          >
+                            Grupo # {index + 1} <span style={{ transform: 'scale(5)' }}> · </span>
+                            <span style={{ fontWeight: '500' }}>{item.name}</span>
+                          </span>
+                          <span className="secondary-table-title ml-5">{'//'}</span>
+                          <div className="d-flex w-100">
+                            <div
+                              className="d-flex align-items-center"
+                              style={{ flexWrap: 'nowrap' }}
+                            >
+                              <span className="secondary-table-title ml-5 mr-2">Subgrupo</span>
+                              <DropdonwFlags
+                                style={{ color: '#000 !important', fontWeight: '500' }}
+                                dataColumn={subGroupList}
+                              />
+                            </div>
+                            <Pen className="ml-5 action-icon" />
+                            <Trash className="ml-5 action-icon" />
                           </div>
-                          <Pen className="ml-5 action-icon" />
-                          <Trash className="ml-5 action-icon" />
                         </div>
+                        {
+                          // gray line before each item
+                          index !== groupList.length - 1 && (
+                            <div
+                              className="mb-3 mt-3"
+                              style={{
+                                width: '100%',
+                                height: '1px',
+                                backgroundColor: '#E5E5E5',
+                              }}
+                            ></div>
+                          )
+                        }
                       </div>
-                      {
-                        // gray line before each item
-                        index !== groupList.length - 1 && (
-                          <div
-                            className="mb-3 mt-3"
-                            style={{
-                              width: '100%',
-                              height: '1px',
-                              backgroundColor: '#E5E5E5',
-                            }}
-                          ></div>
-                        )
-                      }
-                    </div>
-                  </React.Fragment>
-                ))
+                    </React.Fragment>
+                  ))
+                ) : (
+                  <div className="collapseTableText">
+                    Nenhum grupo cadastrado. Aqui será exibida uma lista dos grupos cadastrados
+                  </div>
+                )
               }
               leftIcon={TicketIcon}
             />

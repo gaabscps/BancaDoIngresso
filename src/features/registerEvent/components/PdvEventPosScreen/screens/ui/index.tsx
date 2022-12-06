@@ -182,7 +182,9 @@ export const PdvEventPosContainer: React.FC<PosContainerProps> = ({
                     </React.Fragment>
                   ))
                 ) : (
-                  <span>Nenhum cupom de desconto adicionado</span>
+                  <div className="collapseTableText">
+                    Nenhuma POS cadastrado. Aqui será exibida uma lista das POS cadastrados
+                  </div>
                 )
               }
               count={1}
