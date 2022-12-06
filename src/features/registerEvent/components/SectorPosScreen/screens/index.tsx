@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useForm from '@/hooks/useForm';
 import validators from '@/helpers/validators';
 import { useDialog } from '@/hooks/useDialog';
-import { SectorPosContainer, ShouldShowModal } from './ui';
+import { AxiosError } from 'axios';
+import api from '@/services/api';
+import { toast } from 'react-toastify';
+import { useParams } from 'react-router-dom';
 import { formPosProps, modalConfigPosProps, onShouldShowModalSectorPosProps } from '../types';
+import { SectorPosContainer, ShouldShowModal } from './ui';
 
 // eslint-disable-next-line no-shadow
 export enum States {
@@ -12,19 +16,23 @@ export enum States {
 }
 
 interface SectorProductPosContainerProps {
-  // state: States;
   nextTab: () => void;
   backTab: () => void;
 }
-export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({
-  // state,
-  nextTab,
-  backTab,
-}) => {
+
+type UrlParams = {
+  id: string;
+};
+
+export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({ nextTab, backTab }) => {
+  // const [state, setState] = useState<States>(States.default);
   const { title, visible, onChangeTitle, onToggle } = useDialog();
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(
     ShouldShowModal.configPos,
   );
+  const [posList, setPosList] = useState<any[]>([]);
+
+  const params = useParams<UrlParams>();
 
   const {
     formData: formDataPos,
@@ -82,14 +90,33 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({
     shouldShowModal,
   };
 
+  const handleGetPosList = async (id: string): Promise<void> => {
+    try {
+      // setState(States.loading);
+      const { data } = await api.get(`event/section-product/${id}/pos`);
+
+      setPosList(data ?? []);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      // setState(States.default);
+    }
+  };
+
+  useEffect(() => {
+    handleGetPosList(params.id);
+  }, []);
+
   return (
     <>
       <SectorPosContainer
+        // state={state}
         controllerModalConfig={controllerModalConfig}
         controllerFormPos={controllerFormPos}
+        posList={posList}
         nextTab={nextTab}
         backTab={backTab}
-        // state={state}
       />
     </>
   );

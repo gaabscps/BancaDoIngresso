@@ -13,6 +13,7 @@ import { SectorProductComboContainer } from '@/features/registerEvent/components
 import SectorProductComboProduct from '@/model/SectorProductComboProduct';
 import SectorProductCombo from '@/model/SectorProductCombo';
 import { TabSectorProductActionsProps } from '@/features/registerEvent/screens/SectorProduct/ui';
+import { useParams } from 'react-router-dom';
 import { comboActionsProps, formComboConfigProps, formComboProps } from '../types';
 import { States } from '../../ContractorScreen/screens/ui';
 
@@ -20,6 +21,10 @@ import { States } from '../../ContractorScreen/screens/ui';
 export enum ShouldShowModal {
   comboConfig = 'comboConfig',
 }
+
+type UrlParams = {
+  id: string;
+};
 
 export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = ({
   backTab,
@@ -32,12 +37,16 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
     ShouldShowModal.comboConfig,
   );
   const [combo, setCombo] = useState<SectorProductCombo[]>([]);
+  const [comboList, setComboList] = useState<SectorProductCombo[]>([]);
+
   const [product, setProduct] = useState<SectorProductComboProduct[]>([
     { id: '', name: '', amount: 0 },
   ]);
   const [productList, setProductList] = useState<SectorProductComboProduct[]>([]);
   const [listProductGroup, setListProductGroup] = useState<ProductGroup[]>([]);
   const [listProductSubGroup, setListProductSubGroup] = useState<ProductSubgroup[]>([]);
+
+  const params = useParams<UrlParams>();
 
   const {
     formData: formDataCombo,
@@ -281,6 +290,20 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
     }
   };
 
+  const handleGetComboList = async (id: string): Promise<void> => {
+    try {
+      setState(States.loading);
+      const { data } = await api.get(`event/section-product/${id}/combo`);
+
+      setComboList(data ?? []);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
   const handleOnShouldShowModal = ({
     value,
     newTitleModal,
@@ -296,6 +319,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
   };
 
   useEffect(() => {
+    handleGetComboList(params.id);
     handleFecthProductGroupList();
   }, []);
 
@@ -323,6 +347,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
       handleChangeDiscountCoupon={handleChangeDiscountCoupon}
       handleRemoveDiscountCoupon={handleRemoveDiscountCoupon}
       combo={combo}
+      comboList={comboList}
       controllerProductActions={controllerProductActions}
     />
   );

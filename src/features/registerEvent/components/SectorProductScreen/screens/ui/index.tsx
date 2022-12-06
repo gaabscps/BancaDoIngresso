@@ -81,7 +81,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
           {
             [ShouldShowModal.configProduct]: {
               title: productStates?.product ? 'Salvar' : 'Cadastrar novo setor',
-              onClick: (): Promise<void> => productActions.onSave(),
+              onClick: (): Promise<void> => undefined as any,
             },
           }[modalConfig.shouldShowModal],
         ]}
@@ -102,7 +102,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
         <h6 className="mb-5">Cadastrando produtos</h6>
         <div className="card-ligth-color mb-5">
           <div className="container-event ">
-            <ProductRegisterContent formProduct={formProduct} />
+            <ProductRegisterContent formProduct={formProduct} productStates={productStates} />
           </div>
           <div className="d-flex justify-content-end">
             <div
@@ -113,7 +113,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
             >
               {productStates.product ? 'Cancelar edição do produto' : null}
             </div>
-            <div className="link-green">
+            <div className="link-green" onClick={() => productActions.onSave()}>
               {productStates.product ? 'Salvar produto' : '+ cadastrar produto'}
             </div>
           </div>
@@ -121,77 +121,77 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
         <SuperCollapse
           title={`Produtos cadastrados`}
           content={
-            listDiscountCouponMock.length > 0 ? (
-              listDiscountCouponMock.map((item, index) => (
-                <React.Fragment key={index}>
-                  <div className="mb-5">
-                    <span className="secondary-table-title">Grupo #{index + 1}</span>
-                    <span className="secondary-table-title font-weight-bold">
-                      <b> ·</b> Bebidas //
-                    </span>
-                    <span className="secondary-table-title"> Subgrupo #{index + 1}</span>
-                    <span className="secondary-table-title font-weight-bold">
-                      <b> ·</b> Bebidas alcoólicas
-                    </span>
-                  </div>
-                  <CustomTable
-                    numberRowsPerPage={0}
-                    progressPending={false}
-                    columns={columnsProducts}
-                    data={[
-                      {
-                        id: item.id,
-                        products: item.product,
-                        amount: item.amount,
-                        unitValue: item.unitValue,
-                        totalValue: item.totalValue,
-                        actions: (
-                          <React.Fragment>
-                            <div className={`${productStates.product ? 'disabled-content' : null}`}>
-                              <div className="d-flex align-items-center">
-                                <div>
-                                  <Switch
-                                    name="status"
-                                    label="Vender online"
-                                    onChange={() => undefined}
-                                    checked={item.allowOnline}
-                                  />
-                                </div>
-                                <div className="ml-4">
-                                  <Config
-                                    className="mr-4 svg-icon action-icon"
-                                    onClick={(): void => {
-                                      modalConfig.onShouldShowModal({
-                                        value: ShouldShowModal.configProduct,
-                                        newTitleModal: 'Configurações do produto',
-                                        product: item,
-                                      });
-                                    }}
-                                  />
-                                  <Pen
-                                    className="mr-4 svg-icon action-icon"
-                                    onClick={(): Promise<void> => productActions.onGet(item)}
-                                  />
-                                  <Trash
-                                    className="svg-icon svg-icon-trash"
-                                    onClick={() => {
-                                      modalConfig.onShowModalDelete(item);
-                                    }}
-                                  />
+            productStates.productList.length > 0
+              ? productStates.productList.map((item, index) => (
+                  <React.Fragment key={index}>
+                    <div className="mb-5">
+                      <span className="secondary-table-title">Grupo #{index + 1}</span>
+                      <span className="secondary-table-title font-weight-bold">
+                        <b> ·</b> Bebidas //
+                      </span>
+                      <span className="secondary-table-title"> Subgrupo #{index + 1}</span>
+                      <span className="secondary-table-title font-weight-bold">
+                        <b> ·</b> Bebidas alcoólicas
+                      </span>
+                    </div>
+                    <CustomTable
+                      numberRowsPerPage={0}
+                      progressPending={false}
+                      columns={columnsProducts}
+                      data={[
+                        {
+                          id: item.id,
+                          products: item.product,
+                          amount: item.amount,
+                          unitValue: item.unitValue,
+                          totalValue: item.totalValue,
+                          actions: (
+                            <React.Fragment>
+                              <div
+                                className={`${productStates.product ? 'disabled-content' : null}`}
+                              >
+                                <div className="d-flex align-items-center">
+                                  <div>
+                                    <Switch
+                                      name="status"
+                                      label="Vender online"
+                                      onChange={() => undefined}
+                                      checked={item.allowOnline}
+                                    />
+                                  </div>
+                                  <div className="ml-4">
+                                    <Config
+                                      className="mr-4 svg-icon action-icon"
+                                      onClick={(): void => {
+                                        modalConfig.onShouldShowModal({
+                                          value: ShouldShowModal.configProduct,
+                                          newTitleModal: 'Configurações do produto',
+                                          product: item,
+                                        });
+                                      }}
+                                    />
+                                    <Pen
+                                      className="mr-4 svg-icon action-icon"
+                                      onClick={(): Promise<void> => productActions.onGet(item)}
+                                    />
+                                    <Trash
+                                      className="svg-icon svg-icon-trash"
+                                      onClick={() => {
+                                        modalConfig.onShowModalDelete(item);
+                                      }}
+                                    />
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                          </React.Fragment>
-                        ),
-                      },
-                    ]}
-                    theme="secondaryWithoutBorder"
-                  />
-                </React.Fragment>
-              ))
-            ) : (
-              <span>Nenhum cupom de desconto adicionado</span>
-            )
+                            </React.Fragment>
+                          ),
+                        },
+                      ]}
+                      theme="secondaryWithoutBorder"
+                    />
+                  </React.Fragment>
+                ))
+              : 'Nenhum produto cadastrado. Aqui será exibida uma lista dos produtos cadastrados'
           }
           count={listDiscountCouponMock.length}
           leftIcon={TicketIcon}

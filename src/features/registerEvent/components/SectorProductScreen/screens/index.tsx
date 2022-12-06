@@ -40,13 +40,16 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
   nextTab,
   onFirstTab,
 }): JSX.Element => {
-  const [state] = useState<States>(States.default);
+  const [state, setState] = useState<States>(States.default);
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(
     ShouldShowModal.configProduct,
   );
   const [nameFiles, setNameFiles] = useState<NameFiles>({});
 
   const [product, setProduct] = useState<any>();
+  const [productList, setProductList] = useState<any>([]);
+
+  const [groupList, setGroupList] = useState<any>([]);
 
   const [discountCoupon, setDiscountCoupon] = useState<DiscountCoupon[]>([]);
   const [listDiscountCoupon, setListDiscountCoupon] = useState<DiscountCoupon[]>([]);
@@ -223,6 +226,35 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
       }
     };
 
+  const handleGetProductList = async (id: string): Promise<void> => {
+    try {
+      setState(States.loading);
+      const { data } = await api.get(`event/section-product/${id}/product`);
+      // filter father event when event type is father
+      const { tickets } = data;
+      setProductList(tickets ?? []);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
+  const handleGetGroupList = async (id: string): Promise<void> => {
+    try {
+      setState(States.loading);
+      const { data } = await api.get(`event/section-product/${id}/group`);
+
+      setGroupList(data ?? []);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
   const handleOnSaveProduct = async (): Promise<void> => {
     try {
       if (isFormValidProduct()) {
@@ -237,7 +269,20 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
 
         console.log('Payload Cupons de desconto :>> ', payloadDiscountCoupon);
 
-        const payload = {};
+        const payload = {
+          id: '',
+          group: {
+            id: '7049c51a-cd2d-413d-8cd3-0368fb916c70', // TODO: add group id when is selected
+          },
+          subgroup: {
+            id: '7049c51a-cd2d-413d-8cd3-0368fb916c70', // TODO: add subgroup id when is selected
+          },
+          name: formDataProduct[FormInputNameToProduct.name] ?? '',
+          amount: formDataProduct[FormInputNameToProduct.amount] ?? 0,
+          unitValue: formDataProduct[FormInputNameToProduct.unitValue] ?? 0,
+          totalValue: formDataProduct[FormInputNameToProduct.totalValue] ?? 0,
+          imageBase64: formDataProduct[FormInputNameToProduct.imageBase64] ?? '',
+        };
         const reponse = await api.post(`/event/ticket/${params.id}/general-settings`, payload);
         if (reponse) toast.success('Dados salvos com sucesso!');
       }
@@ -306,7 +351,15 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
   const controllerProductStates: productStatesProps = {
     product,
     setProduct,
+    productList,
+    setProductList,
+    groupList,
   };
+
+  useEffect(() => {
+    handleGetProductList(params.id);
+    handleGetGroupList(params.id);
+  }, [product]);
 
   useEffect(() => {
     resetFormProduct();

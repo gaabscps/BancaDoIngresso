@@ -45,6 +45,7 @@ interface SectorProductPosContainerProps {
   controllerModalConfig: modalConfigPosProps;
   nextTab: () => void;
   backTab: () => void;
+  posList: any;
 }
 export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
   // state,
@@ -145,9 +146,7 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
                     </Col>
                   </Row>
                   <Row>
-                    <Col>
-                      <div className="link-green mb-5">+ cadastrar produto</div>
-                    </Col>
+                    <Col>{/* <div className="link-green mb-5">+ cadastrar produto</div> */}</Col>
                   </Row>
                   <Row>
                     <Col className="mr-5" md={3}>

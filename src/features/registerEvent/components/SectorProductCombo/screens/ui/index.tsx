@@ -37,6 +37,7 @@ interface SectorProductComboContainerProps {
   listProductSubGroup: ProductSubgroup[];
   listProductGroup: ProductGroup[];
   combo: SectorProductCombo[];
+  comboList: SectorProductCombo[];
   handleAddDiscountCoupon: () => void;
   handleChangeDiscountCoupon: (name: string, index: number, value: string) => void;
   handleRemoveDiscountCoupon: (index: number) => void;
@@ -87,7 +88,8 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
   listProductGroup,
   listProductSubGroup,
   discountCoupon,
-  combo,
+  // combo,
+  comboList,
   controllerProductActions,
   handleAddDiscountCoupon,
   handleChangeDiscountCoupon,
@@ -394,12 +396,12 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                     overflow={true}
                     title="Combos cadastrados"
                     content={
-                      combo.length > 0 ? (
-                        combo.map((combos, index) => (
+                      comboList.length > 0 ? (
+                        comboList.map((combos, index) => (
                           <>
                             <div>
                               <div className="ml-3 mt-3 d-flex align-items-center" key={index}>
-                                {combo.length > 0 ? (
+                                {comboList.length > 0 ? (
                                   <>
                                     <span
                                       style={{ whiteSpace: 'nowrap', fontWeight: '300' }}

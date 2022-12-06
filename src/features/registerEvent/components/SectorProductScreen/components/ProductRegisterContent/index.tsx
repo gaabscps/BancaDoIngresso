@@ -26,9 +26,9 @@ export enum FormInputName {
   imageBase64 = 'imageBase64',
 }
 
-export const ProductRegisterContent: React.FC<Pick<SectorProductContainerProps, 'formProduct'>> = ({
-  formProduct,
-}) => {
+export const ProductRegisterContent: React.FC<
+  Pick<SectorProductContainerProps, 'formProduct' | 'productStates'>
+> = ({ formProduct, productStates }) => {
   const { formData, formErrors, onChangeFormInput, onChangeFormFileInput, formNameFiles } =
     formProduct;
 
@@ -48,7 +48,10 @@ export const ProductRegisterContent: React.FC<Pick<SectorProductContainerProps, 
             value={formData[FormInputName.group]}
             onChange={e => onChangeFormInput(FormInputName.group)(e?.value as string)}
             error={formErrors.group && formErrors.group[0]}
-            options={[]}
+            options={productStates.groupList.map(group => ({
+              value: group.categoryGroupId,
+              label: group.categoryGroupName,
+            }))}
           />
         </FormGroup>
         <FormGroup className="mb-2">
@@ -59,7 +62,12 @@ export const ProductRegisterContent: React.FC<Pick<SectorProductContainerProps, 
             value={formData[FormInputName.subgroup]}
             onChange={e => onChangeFormInput(FormInputName.subgroup)(e?.value as string)}
             error={formErrors.subgroup && formErrors.subgroup[0]}
-            options={[]}
+            options={productStates.groupList.map(group =>
+              group.subGroups.map((subgroup: any) => ({
+                value: subgroup.categorySubgroupId,
+                label: subgroup.categorySubgroupName,
+              })),
+            )}
           />
         </FormGroup>
         <FormGroup className="mb-2">
