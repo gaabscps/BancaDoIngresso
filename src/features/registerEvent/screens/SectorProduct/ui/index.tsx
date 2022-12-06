@@ -95,10 +95,12 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
         <hr className="mt-5" />
         {formData[FormInputName.isProduct] === 'true' && (
           <>
-            <p className="secondPageTitle m-0">Adicionando setor e produto</p>
-            <span className="infoSubTitle mb-3">
-              Preencha as 5 (CINCO) etapas abaixo para adicionar um setor e produto
-            </span>
+            <div className="mt-5 mb-4">
+              <p className="secondPageTitle m-0">Adicionando setor e produto</p>
+              <span className="infoSubTitle mb-3">
+                Preencha as 5 (CINCO) etapas abaixo para adicionar um setor e produto
+              </span>
+            </div>
 
             <Tab
               titles={[

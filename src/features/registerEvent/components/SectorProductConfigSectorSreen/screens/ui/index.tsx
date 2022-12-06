@@ -82,6 +82,7 @@ export const SectorProductConfigSectorContainer: React.FC<
       </Dialog>
       <Loading isVisible={state === States.loading} />
       <Container className="mainContainer" fluid={true}>
+        <h6 className="mb-4">Cadastrando setores</h6>
         <div className="card-ligth-color mb-5">
           <div className="container-event">
             <SectorProductConfigSectorContent

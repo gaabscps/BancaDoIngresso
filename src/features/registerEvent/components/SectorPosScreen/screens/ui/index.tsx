@@ -123,6 +123,7 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
                       <SelectCustom
                         name="pos"
                         label="POS"
+                        placeholder="Digite ou selecione a POS"
                         value={formData[FormInputName.pos]}
                         onChange={e => onChangeFormInput(FormInputName.pos)(e?.value as string)}
                         options={[]}
@@ -132,9 +133,10 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
                     <Col md={3}>
                       <InputText
                         type="number"
-                        label="Porcentagem do garçom (%)"
                         name="waiter"
+                        label="Porcentagem do garçom (%)"
                         placeholder="0"
+                        className="w-input-sm"
                         value={formData[FormInputName.waiter]}
                         onChange={e => onChangeFormInput(FormInputName.waiter)(e.target.value)}
                         error={formErrors.waiter && formErrors.waiter[0]}
@@ -150,8 +152,10 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
                     <Col className="mr-5" md={3}>
                       <InputText
                         type="number"
-                        label="Porcentagem de comissão(%)"
                         name="commission"
+                        label="Porcentagem de comissão(%)"
+                        placeholder="0"
+                        className="w-input-sm"
                         value={formData[FormInputName.commission]}
                         onChange={e => onChangeFormInput(FormInputName.commission)(e.target.value)}
                         error={formErrors.commission && formErrors.commission[0]}

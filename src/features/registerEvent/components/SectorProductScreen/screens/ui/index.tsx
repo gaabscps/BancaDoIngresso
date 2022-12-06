@@ -99,6 +99,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
       </Dialog>
       <Loading isVisible={state === States.loading} />
       <Container className="mainContainer" fluid={true}>
+        <h6 className="mb-5">Cadastrando produtos</h6>
         <div className="card-ligth-color mb-5">
           <div className="container-event ">
             <ProductRegisterContent formProduct={formProduct} />

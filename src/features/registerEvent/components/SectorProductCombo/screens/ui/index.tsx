@@ -10,6 +10,7 @@ import ProductSubgroup from '@/model/ProductSubgroup';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { ReactComponent as ItemConfig } from '@/assets/images/svg/ItemConfig.svg';
+import { ReactComponent as Info } from '@/assets/images/svg/infoTooltip.svg';
 import ProductGroup from '@/model/ProductGroup';
 import { X } from 'react-feather';
 import { CustomTable } from '@/components/Table';
@@ -17,6 +18,7 @@ import { ActionProps } from '@/components/Dialog';
 import DiscountCoupon from '@/model/DiscountCoupon';
 import SectorProductComboProduct from '@/model/SectorProductComboProduct';
 import SectorProductCombo from '@/model/SectorProductCombo';
+import ReactTooltip from 'react-tooltip';
 import { comboActionsProps, formComboConfigProps, formComboProps } from '../../types';
 import { States } from '../../../ContractorScreen/screens/ui';
 import { ShouldShowModal } from '..';
@@ -141,7 +143,7 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
       </Dialog>
       <Container style={{ maxWidth: '100%' }} className="mainContainer">
         <Row>
-          <Col className="mb-5">
+          <Col className="mb-4">
             <ButtonGroup
               label="Este evento terá combos?"
               name="allowCombo"
@@ -162,7 +164,7 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
         </Row>
         {controllerFormCombo.formDataCombo[FormInputName.allowCombo] === 'true' && (
           <>
-            <h6>Cadastrando grupos</h6>
+            <h6 className="mb-4">Cadastrando combos</h6>
             <Container
               style={{ backgroundColor: 'white', borderRadius: '5px' }}
               className="mainContainer"
@@ -201,7 +203,7 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                             e?.value as string,
                           );
                         }}
-                        placeholder="Bebidas doces"
+                        placeholder="Digite ou selecione o subgrupo do combo"
                         options={listProductSubGroup.map(item => ({
                           value: item.id,
                           label: item.name,
@@ -252,7 +254,14 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                     <FormGroup>
                       <InputText
                         type="number"
-                        label="Quantidade"
+                        label={
+                          <>
+                            Quantidade
+                            <a data-for="soclose" data-tip="8" className="ml-3">
+                              <Info />
+                            </a>
+                          </>
+                        }
                         placeholder="Ex: 200"
                         name="amount"
                         value={controllerFormCombo.formDataCombo[FormInputName.amount]}
@@ -266,6 +275,15 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                           controllerFormCombo.formErrorsCombo.allowCreditCardPayment[0]
                         }
                       />
+                      <ReactTooltip
+                        id="soclose"
+                        effect="solid"
+                        place={'right'}
+                        border={true}
+                        type={'light'}
+                      >
+                        Ao digitar a quantidade 0 (zero), o combo se torna ilimitado.
+                      </ReactTooltip>
                     </FormGroup>
                   </Col>
                   <Col md={4}>
@@ -312,7 +330,7 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                             onChange={e => {
                               handleChangeProduct('name', index, e?.value as string);
                             }}
-                            placeholder="Bebidas doces"
+                            placeholder="Digite ou selecione o produto"
                             options={listProductSubGroup.map(item => ({
                               value: item.name,
                               label: item.name,
