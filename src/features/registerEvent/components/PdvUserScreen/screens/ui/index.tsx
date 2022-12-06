@@ -75,11 +75,6 @@ export const PdvUserContainer: React.FC<SectorProductUserProps> = ({
           <FormGroup>
             <Row>
               <Col md={8}>
-                <h5 className="mt-5 mb-5 border-bottom-title fw-700">Usuários do PDV</h5>
-              </Col>
-            </Row>
-            <Row>
-              <Col md={8}>
                 <FormGroup className="mb-2">
                   <SelectCustom
                     name="user"
