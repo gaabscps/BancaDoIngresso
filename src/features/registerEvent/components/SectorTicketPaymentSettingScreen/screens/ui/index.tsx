@@ -238,20 +238,21 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               <Row>
                 <FormGroup className="mb-2">
                   <label className="input-label mb-4">Gateway de pagamento SITE</label>
-                  {paymentGatewayList?.map(item => (
-                    // eslint-disable-next-line react/jsx-key
-                    <Checkbox
-                      name={item.name}
-                      label={item.name}
-                      onChange={e => {
-                        if (e.target.value === item.id) {
-                          e.target.checked = true;
-                          onChangeFormInput(item.name)(e.target.value);
-                        } else {
-                          onChangeFormInput(item.name)('');
-                        }
-                      }}
-                    />
+                  {paymentGatewayList?.map((item, index) => (
+                    <React.Fragment key={index}>
+                      <Checkbox
+                        name={item.name}
+                        label={item.name}
+                        onChange={e => {
+                          if (e.target.value === item.id) {
+                            e.target.checked = true;
+                            onChangeFormInput(item.name)(e.target.value);
+                          } else {
+                            onChangeFormInput(item.name)('');
+                          }
+                        }}
+                      />
+                    </React.Fragment>
                   ))}
                 </FormGroup>
               </Row>
