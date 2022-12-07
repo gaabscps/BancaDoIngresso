@@ -277,8 +277,8 @@ export const GeneralInformationContent: React.FC<
                 cep(e.target.value).then(data => {
                   onChangeFormInput(FormInputName.state)(data.state);
                   onChangeFormInput(FormInputName.city)(data.city);
-                  onChangeFormInput(FormInputName.district)(data.neighborhood ?? '-');
-                  onChangeFormInput(FormInputName.street)(data.street ?? '-');
+                  onChangeFormInput(FormInputName.district)(data.neighborhood || '-');
+                  onChangeFormInput(FormInputName.street)(data.street || '-');
                 });
               }
             }}
