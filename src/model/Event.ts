@@ -20,6 +20,7 @@ export default interface Event {
   posName: string;
   establishmentName: string;
   eventType: EventType;
+  eventPlace: string;
   address: Address;
   startDate: Date;
   endDate: Date;
