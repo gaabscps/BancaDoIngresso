@@ -1,6 +1,6 @@
 import { FormData, FormErrors, OnChangeFormInput, IsFormValid } from '@/hooks';
 import Section from '@/model/Section';
-import Ticket from '@/model/Ticket';
+import Tickets from '@/model/Tickets';
 import { ShouldShowModal } from '../screens/ui';
 
 export interface formGeneralSettingsProps {
@@ -24,12 +24,12 @@ export interface generalSettingsProps {
 }
 
 export interface ticketActionsProps {
-  onGet: (ticketSelected: Ticket) => void;
+  onGet: (ticketSelected: Tickets) => void;
   onCancelEdit: () => void;
-  onShowDelete: (ticketSelected: Ticket) => void;
+  onShowDelete: (ticketSelected: Tickets) => void;
 }
 
 export interface ticketStatesProps {
-  ticket: Ticket | undefined;
-  ticketList: Ticket[];
+  ticket: Tickets | undefined;
+  ticketList: Tickets[];
 }

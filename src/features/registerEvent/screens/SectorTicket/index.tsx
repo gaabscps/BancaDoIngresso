@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { SectorTicketContainer, States } from '@/features/registerEvent/screens/SectorTicket/ui';
 import useForm from '@/hooks/useForm';
 import validators from '@/helpers/validators';
-import Ticket from '@/model/Ticket';
+import Tickets from '@/model/Tickets';
 import api, { AxiosError } from '@/services/api';
 import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
@@ -22,8 +22,8 @@ type UrlParams = {
 export const SectorTicketScreen: React.FC = (): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
 
-  const [ticket, setTicket] = useState<Ticket>();
-  const [ticketList, setTicketList] = useState<Ticket[]>([]);
+  const [ticket, setTicket] = useState<Tickets>();
+  const [ticketList, setTicketList] = useState<Tickets[]>([]);
 
   const params = useParams<UrlParams>();
 
@@ -47,7 +47,7 @@ export const SectorTicketScreen: React.FC = (): JSX.Element => {
     try {
       type TicketsResponse = {
         idEvent: string;
-        tickets: Ticket[];
+        tickets: Tickets[];
       };
       setState(States.loading);
       const { data } = await api.get<TicketsResponse>(`event/ticket/${id}`);
@@ -62,7 +62,7 @@ export const SectorTicketScreen: React.FC = (): JSX.Element => {
     }
   };
 
-  const handleOnGetTicket = (ticketSelected: Ticket): void => {
+  const handleOnGetTicket = (ticketSelected: Tickets): void => {
     try {
       setTicket(ticketSelected);
     } catch (error) {
@@ -80,7 +80,7 @@ export const SectorTicketScreen: React.FC = (): JSX.Element => {
     }
   };
 
-  const handleOnConfirmDeleteToTicket = async (ticketSelected: Ticket): Promise<void> => {
+  const handleOnConfirmDeleteToTicket = async (ticketSelected: Tickets): Promise<void> => {
     try {
       console.log('TODO: Fetch delete ticket:>> ', ticketSelected);
     } catch (error) {
@@ -89,7 +89,7 @@ export const SectorTicketScreen: React.FC = (): JSX.Element => {
     }
   };
 
-  const handleOnShowDeleteTicket = (ticketSelected: Ticket): void => {
+  const handleOnShowDeleteTicket = (ticketSelected: Tickets): void => {
     confirmDelete.show({
       title: '',
       children: <DeleteContent />,
