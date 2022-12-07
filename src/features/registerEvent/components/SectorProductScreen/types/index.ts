@@ -41,6 +41,7 @@ export interface productActionsProps {
   onReturnTab: () => void;
   onNextTab: () => Promise<void>;
   onCancelEdit: () => void;
+  onChangeAllowOnline: (productSelected: any) => Promise<void>;
 }
 
 export interface productStatesProps {

@@ -292,6 +292,26 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
     }
   };
 
+  const handleOnChangeAllowOnline = async (productSelected: any): Promise<void> => {
+    try {
+      setState(States.loading);
+      const activedInput = productSelected.websiteSale.allowCreditCardPayment;
+
+      await api.patch(
+        `event/section-product/${params.id}/product/${productSelected.id}${
+          activedInput ? ' /disable' : '/enable'
+        }`,
+      );
+
+      handleGetProductList(params.id);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
   const handleNextTab = async (): Promise<void> => {
     if (isFormValidProduct()) {
       nextTab();
@@ -346,6 +366,7 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
     onReturnTab: handleBackTab,
     onNextTab: handleNextTab,
     onCancelEdit: handleOnCancelEditProduct,
+    onChangeAllowOnline: handleOnChangeAllowOnline,
   };
 
   const controllerProductStates: productStatesProps = {

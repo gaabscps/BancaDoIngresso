@@ -55,6 +55,8 @@ interface SectorProductComboContainerProps {
   addProduct: (index: string) => void;
   removeProduct: (index: number) => void;
   handleFecthProductSubGroupList: (id: string) => Promise<void>;
+  onChangeAllowOnlineSwitch: (comboSelected: any) => Promise<void>;
+  onChangeComboSwitch: (comboSelected: any) => Promise<void>;
 }
 
 export interface DataRowDiscountCoupon {
@@ -101,6 +103,8 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
   handleAddProduct,
   addProduct,
   removeProduct,
+  onChangeAllowOnlineSwitch,
+  onChangeComboSwitch,
 }): JSX.Element => {
   const renderActionDialogToCancel: ActionProps = {
     title: 'Cancelar',
@@ -412,8 +416,8 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                                       label="Vender online"
                                       className="ml-5 action-icon"
                                       name={''}
-                                      onChange={() => undefined}
-                                      checked={undefined}
+                                      onChange={() => onChangeAllowOnlineSwitch(combos)}
+                                      checked={combos.status}
                                     />
                                   </div>
                                 </>

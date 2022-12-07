@@ -304,6 +304,46 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
     }
   };
 
+  const handleOnChangeAllowOnlineSwitch = async (comboSelected: any): Promise<void> => {
+    try {
+      setState(States.loading);
+      const activedInput = comboSelected.websiteSale.allowCreditCardPayment;
+
+      await api.patch(
+        `event/section-product/${params.id}/combo/${comboSelected.id}${
+          activedInput ? ' /disable-online' : '/enable-online'
+        }`,
+      );
+
+      handleGetComboList(params.id);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
+  const handleOnChangeComboSwitch = async (comboSelected: any): Promise<void> => {
+    try {
+      setState(States.loading);
+      const activedInput = comboSelected.status;
+
+      await api.patch(
+        `event/section-product/${params.id}/combo/${comboSelected.id}${
+          activedInput ? ' /disable' : '/enable'
+        }`,
+      );
+
+      handleGetComboList(params.id);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
   const handleOnShouldShowModal = ({
     value,
     newTitleModal,
@@ -349,6 +389,8 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
       combo={combo}
       comboList={comboList}
       controllerProductActions={controllerProductActions}
+      onChangeAllowOnlineSwitch={handleOnChangeAllowOnlineSwitch}
+      onChangeComboSwitch={handleOnChangeComboSwitch}
     />
   );
 };
