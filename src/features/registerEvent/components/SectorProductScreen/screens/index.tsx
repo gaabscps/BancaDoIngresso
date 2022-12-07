@@ -125,6 +125,19 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
     }
   };
 
+  const handleOnConfirmDeleteTopProduct = async (productSelected: any): Promise<void> => {
+    try {
+      await api.delete(`/event/section-product/${params?.id}/product/${productSelected.id}`);
+      toast.success('Produto excluído com sucesso!');
+      handleGetProductList(params.id);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      confirmDelete.hide();
+    }
+  };
+
   const handleOnShowDeleteProduct = (productSelected: any): void => {
     confirmDelete.show({
       title: '',
@@ -137,9 +150,7 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
         },
         {
           title: 'Sim, quero excluir',
-          onClick: (): void => {
-            console.log('TODO: Add function exclude item :>> ', productSelected);
-          },
+          onClick: (): Promise<void> => handleOnConfirmDeleteTopProduct(productSelected),
         },
       ],
     });
@@ -295,7 +306,7 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
   const handleOnChangeAllowOnline = async (productSelected: any): Promise<void> => {
     try {
       setState(States.loading);
-      const activedInput = productSelected.websiteSale.allowCreditCardPayment;
+      const activedInput = productSelected.allowSellingWebsite;
 
       await api.patch(
         `event/section-product/${params.id}/product/${productSelected.id}${

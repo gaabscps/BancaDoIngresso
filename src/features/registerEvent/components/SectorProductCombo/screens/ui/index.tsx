@@ -57,6 +57,7 @@ interface SectorProductComboContainerProps {
   handleFecthProductSubGroupList: (id: string) => Promise<void>;
   onChangeAllowOnlineSwitch: (comboSelected: any) => Promise<void>;
   onChangeComboSwitch: (comboSelected: any) => Promise<void>;
+  onShowDeleteCombo: (comboSelected: any) => void;
 }
 
 export interface DataRowDiscountCoupon {
@@ -90,8 +91,8 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
   listProductGroup,
   listProductSubGroup,
   discountCoupon,
-  // combo,
-  comboList,
+  combo,
+  // comboList,
   controllerProductActions,
   handleAddDiscountCoupon,
   handleChangeDiscountCoupon,
@@ -105,6 +106,7 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
   removeProduct,
   onChangeAllowOnlineSwitch,
   onChangeComboSwitch,
+  onShowDeleteCombo,
 }): JSX.Element => {
   const renderActionDialogToCancel: ActionProps = {
     title: 'Cancelar',
@@ -395,11 +397,11 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                     overflow={true}
                     title="Combos cadastrados"
                     content={
-                      comboList.length > 0 ? (
-                        comboList.map((combos, index) => (
+                      combo.length > 0 ? (
+                        combo.map((combos, index) => (
                           <div key={index}>
                             <div className="ml-3 mt-3 d-flex align-items-center">
-                              {comboList.length > 0 ? (
+                              {combo.length > 0 ? (
                                 <>
                                   <span
                                     style={{ whiteSpace: 'nowrap', fontWeight: '300' }}
@@ -415,9 +417,16 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                                     <Switch
                                       label="Vender online"
                                       className="ml-5 action-icon"
-                                      name={''}
+                                      name="allowSellingWebsite"
                                       onChange={() => onChangeAllowOnlineSwitch(combos)}
-                                      checked={combos.status}
+                                      checked={!!combos.allowSellingWebsite}
+                                    />
+                                    <Switch
+                                      label="Combo ativo"
+                                      className="ml-5 action-icon"
+                                      name="status"
+                                      onChange={() => onChangeComboSwitch(combos)}
+                                      checked={!!combos.status}
                                     />
                                   </div>
                                 </>
@@ -458,7 +467,10 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                                         className="mr-3 action-icon"
                                       />
                                       <Pen className="mr-3 action-icon" />
-                                      <Trash className="action-icon" />
+                                      <Trash
+                                        className="action-icon"
+                                        onClick={() => onShowDeleteCombo(combos)}
+                                      />
                                     </>
                                   ),
                                   selector: row => row.action,
