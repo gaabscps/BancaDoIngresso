@@ -11,6 +11,7 @@ import { CustomTable } from '@/components/Table';
 import React from 'react';
 import { Col, Container, Form, FormGroup, Row } from 'reactstrap';
 import { X } from 'react-feather';
+
 import { formPdvProductProps } from '../../types';
 
 // eslint-disable-next-line no-shadow
@@ -36,14 +37,91 @@ interface SectorProductPosContainerProps {
   controllerFormPos: formPdvProductProps;
   nextTab: () => void;
   backTab: () => void;
+  handleOnShowDeleteProduct: (id: any) => void;
 }
 export const PdvProductContainer: React.FC<SectorProductPosContainerProps> = ({
   // state,
   controllerFormPos,
+  handleOnShowDeleteProduct,
   nextTab,
   backTab,
 }) => {
   const { formData, formErrors, onChangeFormInput, isFormValid } = controllerFormPos;
+
+  const eventSectionsProductListMock = [
+    {
+      eventSections: [
+        {
+          section: {
+            id: 12314,
+            name: 'Setor 1',
+          },
+          products: [
+            {
+              id: 1,
+              name: 'Produto 1',
+              categorySubGroup: {
+                id: 1,
+                name: 'Categoria 1',
+                categoryGroup: {
+                  id: 1,
+                  name: 'Grupo 1',
+                },
+              },
+            },
+            {
+              id: 2,
+              name: 'Produto 2',
+              categorySubGroup: {
+                id: 2,
+                name: 'Categoria 2',
+                categoryGroup: {
+                  id: 2,
+                  name: 'Grupo 2',
+                },
+              },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      eventSections: [
+        {
+          section: {
+            id: 1,
+            name: 'Setor 1',
+          },
+          products: [
+            {
+              id: 1,
+              name: 'Produto 1',
+              categorySubGroup: {
+                id: 1,
+                name: 'Categoria 1',
+                categoryGroup: {
+                  id: 1,
+                  name: 'Grupo 1',
+                },
+              },
+            },
+            {
+              id: 2,
+              name: 'Produto 2',
+              categorySubGroup: {
+                id: 2,
+                name: 'Categoria 2',
+                categoryGroup: {
+                  id: 2,
+                  name: 'Grupo 2',
+                },
+              },
+            },
+          ],
+        },
+      ],
+    },
+  ];
 
   return (
     <>
@@ -151,141 +229,75 @@ export const PdvProductContainer: React.FC<SectorProductPosContainerProps> = ({
               title="Setores e produtos inseridos"
               content={
                 // change 0 to index
-                <React.Fragment key="content">
-                  <div className="d-flex w-100 justify-content-between">
-                    <div className="mb-3 w-100">
-                      <span className="secondary-table-title light-text">Setor#{0 + 1} </span>
-                      <span className="secondary-table-title name">• Nome do setor 1</span>
-                    </div>
-                  </div>
-                  <div className="mb-5">
-                    <CustomTable
-                      theme="secondaryWithoutBorder"
-                      numberRowsPerPage={0}
-                      progressPending={false}
-                      columns={[
-                        {
-                          name: 'Produto',
-                          selector: row => row.product,
-                        },
-                        {
-                          name: 'Grupo',
-                          selector: row => row.group,
-                        },
-                        {
-                          name: 'Subgrupo',
-                          selector: row => row.subGroup,
-                        },
-                        {
-                          name: 'Quantidade',
-                          selector: row => row.amount,
-                        },
-                        {
-                          name: 'Valor unitário',
-                          selector: row => row.value,
-                        },
-                        {
-                          name: (
-                            <>
-                              <Pen
-                                className="mr-4 svg-icon action-icon"
-                                onClick={() => undefined}
-                              />
-                              <X className="action-icon svg-icon" onClick={() => undefined} />
-                            </>
-                          ),
-                          selector: row => row.actions,
-                          right: true,
-                        },
-                      ]}
-                      data={[
-                        {
-                          product: 'Whisky Red Label',
-                          group: 'Bebidas alcoolicas',
-                          subGroup: 'Bebidas destiladas',
-                          amount: '100 unidades',
-                          value: 'R$20,00',
-                          actions: '',
-                        },
-                        {
-                          product: 'Whisky Red Label',
-                          group: 'Bebidas alcoolicas',
-                          subGroup: 'Bebidas destiladas',
-                          amount: '100 unidades',
-                          value: 'R$20,00',
-                          actions: '',
-                        },
-                      ]}
-                    />
-                  </div>
-
-                  <div className="d-flex w-100 justify-content-between">
-                    <div className="mb-3 w-100">
-                      <span className="secondary-table-title light-text">Setor#{0 + 1} </span>
-                      <span className="secondary-table-title name">• Nome do setor 1</span>
-                    </div>
-                  </div>
-                  <div className="mb-5">
-                    <CustomTable
-                      theme="secondaryWithoutBorder"
-                      numberRowsPerPage={0}
-                      progressPending={false}
-                      columns={[
-                        {
-                          name: 'Produto',
-                          selector: row => row.product,
-                        },
-                        {
-                          name: 'Grupo',
-                          selector: row => row.group,
-                        },
-                        {
-                          name: 'Subgrupo',
-                          selector: row => row.subGroup,
-                        },
-                        {
-                          name: 'Quantidade',
-                          selector: row => row.amount,
-                        },
-                        {
-                          name: 'Valor unitário',
-                          selector: row => row.value,
-                        },
-                        {
-                          name: (
-                            <>
-                              <Pen
-                                className="mr-4 svg-icon action-icon"
-                                onClick={() => undefined}
-                              />
-                              <X className="action-icon svg-icon-trash" onClick={() => undefined} />
-                            </>
-                          ),
-                          selector: row => row.actions,
-                          right: true,
-                        },
-                      ]}
-                      data={[
-                        {
-                          product: 'Whisky Red Label',
-                          group: 'Bebidas alcoolicas',
-                          subGroup: 'Bebidas destiladas',
-                          amount: '100 unidades',
-                          value: 'R$20,00',
-                          actions: '',
-                        },
-                        {
-                          product: 'Whisky Red Label',
-                          group: 'Bebidas alcoolicas',
-                          subGroup: 'Bebidas destiladas',
-                          amount: '100 unidades',
-                          value: 'R$20,00',
-                          actions: '',
-                        },
-                      ]}
-                    />
-                  </div>
-                </React.Fragment>
+                eventSectionsProductListMock.map(eventSectionProduct =>
+                  eventSectionProduct.eventSections.map((eventSection, index) => (
+                    <>
+                      <div className="d-flex w-100 justify-content-between">
+                        <div className="mb-3 w-100">
+                          <span className="secondary-table-title light-text">
+                            Setor{index + 1}{' '}
+                          </span>
+                          <span className="secondary-table-title name">
+                            • {eventSection.section.name}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="mb-5">
+                        <CustomTable
+                          theme="secondaryWithoutBorder"
+                          numberRowsPerPage={0}
+                          progressPending={false}
+                          columns={[
+                            {
+                              name: 'Produto',
+                              selector: row => row.product,
+                            },
+                            {
+                              name: 'Grupo',
+                              selector: row => row.group,
+                            },
+                            {
+                              name: 'Subgrupo',
+                              selector: row => row.subGroup,
+                            },
+                            {
+                              name: 'Quantidade',
+                              selector: row => row.amount,
+                            },
+                            {
+                              name: 'Valor unitário',
+                              selector: row => row.value,
+                            },
+                            {
+                              name: (
+                                <>
+                                  <Pen
+                                    className="mr-4 svg-icon action-icon"
+                                    onClick={() => undefined}
+                                  />
+                                  <X
+                                    className="action-icon svg-icon-trash"
+                                    onClick={() => handleOnShowDeleteProduct(eventSection.section)}
+                                  />
+                                </>
+                              ),
+                              selector: row => row.actions,
+                              right: true,
+                            },
+                          ]}
+                          data={eventSection.products.map(product => ({
+                            product: product.name,
+                            group: product.categorySubGroup.categoryGroup.name,
+                            subGroup: product.categorySubGroup.name,
+                            amount: 'falta endpoint de quantidade',
+                            value: 'falta endpoint de valor unitário',
+                            actions: '',
+                          }))}
+                        />
+                      </div>
+                    </>
+                  )),
+                )
               }
               leftIcon={TicketIcon}
             />

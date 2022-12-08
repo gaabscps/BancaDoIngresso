@@ -1,7 +1,5 @@
 import { FormData, FormErrors, OnChangeFormInput, IsFormValid } from '@/hooks';
 import Pos from '@/model/Pos';
-import Section from '@/model/Section';
-import Ticket from '@/model/Ticket';
 import { ShouldShowModal } from '../screens/ui';
 
 export interface formPosProps {
