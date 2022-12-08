@@ -1,16 +1,7 @@
 /* eslint-disable import/no-unresolved */
 import React, { Fragment } from 'react';
-import {
-  Button,
-  ButtonGroup,
-  Checkbox,
-  Dialog,
-  InputText,
-  Loading,
-  Radio,
-  SelectCustom,
-} from '@/components';
-import { Col, Container, Form, FormGroup, Row } from 'reactstrap';
+import { Button, ButtonGroup, Dialog, InputText, Loading, Radio, SelectCustom } from '@/components';
+import { Container, Form, FormGroup } from 'reactstrap';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
 import TicketIcon from '@/assets/images/svg/Ticket';
 import PaymentGateway from '@/model/PaymentGateway';
@@ -219,292 +210,262 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               e.preventDefault();
             }}
           >
-            <Col>
-              <Row>
-                <FormGroup className="mb-2">
-                  <Radio
-                    name="posGateway"
-                    label="Gateway de pagamento POS"
-                    placeholder="Gateway de pagamento POS"
-                    value={formData[FormInputName.posGateway]}
-                    onChange={e =>
-                      onChangeFormInput(FormInputName.posGateway)(e?.target?.value as string)
-                    }
-                    error={formErrors.posGateway && formErrors.posGateway[0]}
-                    options={paymentGatewayOptions}
-                  />
-                </FormGroup>
-              </Row>
-              <Row>
-                <FormGroup className="mb-2">
-                  <label className="input-label mb-4">Gateway de pagamento SITE</label>
-                  {paymentGatewayList?.map((item, index) => (
-                    <React.Fragment key={index}>
-                      <Checkbox
-                        name={item.name}
-                        label={item.name}
-                        onChange={e => {
-                          if (e.target.value === item.id) {
-                            e.target.checked = true;
-                            onChangeFormInput(item.name)(e.target.value);
-                          } else {
-                            onChangeFormInput(item.name)('');
-                          }
-                        }}
-                      />
-                    </React.Fragment>
-                  ))}
-                </FormGroup>
-              </Row>
-            </Col>
+            <FormGroup className="mb-2">
+              <Radio
+                name="posGateway"
+                label="Gateway de pagamento POS"
+                placeholder="Gateway de pagamento POS"
+                value={formData[FormInputName.posGateway]}
+                onChange={e =>
+                  onChangeFormInput(FormInputName.posGateway)(e?.target?.value as string)
+                }
+                error={formErrors.posGateway && formErrors.posGateway[0]}
+                options={paymentGatewayOptions}
+              />
+            </FormGroup>
+
+            <FormGroup className="mb-2">
+              <Radio
+                name="websiteGateway"
+                label="Gateway de pagamento SITE"
+                placeholder="Gateway de pagamento SITE"
+                value={formData[FormInputName.websiteGateway]}
+                onChange={e =>
+                  onChangeFormInput(FormInputName.websiteGateway)(e?.target?.value as string)
+                }
+                error={formErrors.websiteGateway && formErrors.websiteGateway[0]}
+                options={paymentGatewayOptions}
+              />
+            </FormGroup>
+
             <label htmlFor="websiteInstallmentLimit" className="ml-3 input-label">
               Limite de parcelamento online
             </label>
-            <Col md={4}>
-              <Row>
-                <FormGroup>
-                  <SelectCustom
-                    name="websiteInstallmentLimit"
-                    label=""
-                    placeholder="0"
-                    value={formData[FormInputName.websiteInstallmentLimit]}
-                    onChange={e =>
-                      onChangeFormInput(FormInputName.websiteInstallmentLimit)(e?.value as string)
-                    }
-                    error={
-                      formErrors.websiteInstallmentLimit && formErrors.websiteInstallmentLimit[0]
-                    }
-                    options={optionLimiteCount}
-                  />
-                </FormGroup>
-              </Row>
-            </Col>
+
+            <FormGroup>
+              <SelectCustom
+                name="websiteInstallmentLimit"
+                label=""
+                placeholder="0"
+                className="w-input-sm"
+                value={formData[FormInputName.websiteInstallmentLimit]}
+                onChange={e =>
+                  onChangeFormInput(FormInputName.websiteInstallmentLimit)(e?.value as string)
+                }
+                error={formErrors.websiteInstallmentLimit && formErrors.websiteInstallmentLimit[0]}
+                options={optionLimiteCount}
+              />
+            </FormGroup>
+
             <label htmlFor="" className="ml-3 input-label">
               Limite de parcelamento POS
             </label>
-            <Col md={4}>
-              <Row>
-                <FormGroup>
-                  <SelectCustom
-                    name="posInstallmentLimit"
-                    label=""
-                    placeholder="0"
-                    value={formData[FormInputName.posInstallmentLimit]}
-                    onChange={e =>
-                      onChangeFormInput(FormInputName.posInstallmentLimit)(e?.value as string)
-                    }
-                    error={formErrors.posInstallmentLimit && formErrors.posInstallmentLimit[0]}
-                    options={optionLimiteCount}
-                  />
-                </FormGroup>
-              </Row>
-            </Col>
-            <Col>
-              <Row>
-                <FormGroup className="mb-2">
-                  <ButtonGroup
-                    label="Permitir pagamento fracionado?"
-                    name="allowFractionalPayment"
-                    value={formData[FormInputName.allowFractionalPayment]}
-                    onChange={e =>
-                      onChangeFormInput(FormInputName.allowFractionalPayment)(e.target.value)
-                    }
-                    options={[
-                      { value: true, label: 'Sim' },
-                      { value: false, label: 'Não' },
-                    ]}
-                    error={
-                      formErrors.allowFractionalPayment && formErrors.allowFractionalPayment[0]
-                    }
-                  />
-                  <ButtonGroup
-                    label="Permitir taxa variável?"
-                    name="allowVariableRate"
-                    value={formData[FormInputName.allowVariableRate]}
-                    onChange={e =>
-                      onChangeFormInput(FormInputName.allowVariableRate)(e.target.value)
-                    }
-                    options={[
-                      { value: true, label: 'Sim' },
-                      { value: false, label: 'Não' },
-                    ]}
-                    error={formErrors.allowVariableRate && formErrors.allowVariableRate[0]}
-                  />
-                  <ButtonGroup
-                    label="Permitir valor variável?"
-                    name="allowVariableValue"
-                    value={formData[FormInputName.allowVariableValue]}
-                    onChange={e =>
-                      onChangeFormInput(FormInputName.allowVariableValue)(e.target.value)
-                    }
-                    options={[
-                      { value: true, label: 'Sim' },
-                      { value: false, label: 'Não' },
-                    ]}
-                    error={formErrors.allowVariableValue && formErrors.allowVariableValue[0]}
-                  />
-                  <ButtonGroup
-                    label="Permitir pagamento com PIX?"
-                    name="allowPaymentPIX"
-                    value={formData[FormInputName.allowPaymentPIX]}
-                    onChange={e => onChangeFormInput(FormInputName.allowPaymentPIX)(e.target.value)}
-                    options={[
-                      { value: true, label: 'Sim' },
-                      { value: false, label: 'Não' },
-                    ]}
-                    error={formErrors.allowPaymentPIX && formErrors.allowPaymentPIX[0]}
-                  />
-                  <ButtonGroup
-                    label="Permitir pagamento por aproximação?"
-                    name="allowContactlessPayment"
-                    value={formData[FormInputName.allowContactlessPayment]}
-                    onChange={e =>
-                      onChangeFormInput(FormInputName.allowContactlessPayment)(e.target.value)
-                    }
-                    options={[
-                      { value: true, label: 'Sim' },
-                      { value: false, label: 'Não' },
-                    ]}
-                    error={
-                      formErrors.allowContactlessPayment && formErrors.allowContactlessPayment[0]
-                    }
-                  />
-                  <ButtonGroup
-                    label="Permitir vender online?"
-                    name="allowSellingWebsite"
-                    value={formData[FormInputName.allowSellingWebsite]}
-                    onChange={e =>
-                      onChangeFormInput(FormInputName.allowSellingWebsite)(e.target.value)
-                    }
-                    options={[
-                      { value: true, label: 'Sim' },
-                      { value: false, label: 'Não' },
-                    ]}
-                    error={formErrors.allowSellingWebsite && formErrors.allowSellingWebsite[0]}
-                  />
-                  <ButtonGroup
-                    label="Permitir vender na POS?"
-                    name="allowSellingPos"
-                    value={formData[FormInputName.allowSellingPos]}
-                    onChange={e => onChangeFormInput(FormInputName.allowSellingPos)(e.target.value)}
-                    options={[
-                      { value: true, label: 'Sim' },
-                      { value: false, label: 'Não' },
-                    ]}
-                    error={formErrors.allowSellingPos && formErrors.allowSellingPos[0]}
-                  />
-                  <ButtonGroup
-                    label="Imprimir recibo (POS)?"
-                    name="printReceipt"
-                    value={formData[FormInputName.printReceipt]}
-                    onChange={e => onChangeFormInput(FormInputName.printReceipt)(e.target.value)}
-                    options={[
-                      { value: true, label: 'Sim' },
-                      { value: false, label: 'Não' },
-                    ]}
-                    error={formErrors.printReceipt && formErrors.printReceipt[0]}
-                  />
-                </FormGroup>
-              </Row>
-            </Col>
-          </Form>
-        </div>
-        <Col>
-          <div className="container-event mb-4">
-            <h5 className="mb-2 border-bottom-title mb-5">Taxa de cartão</h5>
-          </div>
-          <p style={{ fontSize: '21px', fontWeight: '500' }}>Venda física</p>
-          <Row>
+
+            <FormGroup>
+              <SelectCustom
+                name="posInstallmentLimit"
+                label=""
+                placeholder="0"
+                className="w-input-sm"
+                value={formData[FormInputName.posInstallmentLimit]}
+                onChange={e =>
+                  onChangeFormInput(FormInputName.posInstallmentLimit)(e?.value as string)
+                }
+                error={formErrors.posInstallmentLimit && formErrors.posInstallmentLimit[0]}
+                options={optionLimiteCount}
+              />
+            </FormGroup>
+
             <FormGroup className="mb-2">
               <ButtonGroup
-                label="Permitir venda com cartão?"
-                name="physicalSaleAllowCreditCardPayment"
-                value={formData[FormInputName.physicalSaleAllowCreditCardPayment]}
+                label="Permitir pagamento fracionado?"
+                name="allowFractionalPayment"
+                value={formData[FormInputName.allowFractionalPayment]}
                 onChange={e =>
-                  onChangeFormInput(FormInputName.physicalSaleAllowCreditCardPayment)(
-                    e.target.value,
-                  )
+                  onChangeFormInput(FormInputName.allowFractionalPayment)(e.target.value)
                 }
                 options={[
                   { value: true, label: 'Sim' },
                   { value: false, label: 'Não' },
                 ]}
-                error={formErrors.allowCreditCardPayment && formErrors.allowCreditCardPayment[0]}
+                error={formErrors.allowFractionalPayment && formErrors.allowFractionalPayment[0]}
+              />
+              <ButtonGroup
+                label="Permitir taxa variável?"
+                name="allowVariableRate"
+                value={formData[FormInputName.allowVariableRate]}
+                onChange={e => onChangeFormInput(FormInputName.allowVariableRate)(e.target.value)}
+                options={[
+                  { value: true, label: 'Sim' },
+                  { value: false, label: 'Não' },
+                ]}
+                error={formErrors.allowVariableRate && formErrors.allowVariableRate[0]}
+              />
+              <ButtonGroup
+                label="Permitir valor variável?"
+                name="allowVariableValue"
+                value={formData[FormInputName.allowVariableValue]}
+                onChange={e => onChangeFormInput(FormInputName.allowVariableValue)(e.target.value)}
+                options={[
+                  { value: true, label: 'Sim' },
+                  { value: false, label: 'Não' },
+                ]}
+                error={formErrors.allowVariableValue && formErrors.allowVariableValue[0]}
+              />
+              <ButtonGroup
+                label="Permitir pagamento com PIX?"
+                name="allowPaymentPIX"
+                value={formData[FormInputName.allowPaymentPIX]}
+                onChange={e => onChangeFormInput(FormInputName.allowPaymentPIX)(e.target.value)}
+                options={[
+                  { value: true, label: 'Sim' },
+                  { value: false, label: 'Não' },
+                ]}
+                error={formErrors.allowPaymentPIX && formErrors.allowPaymentPIX[0]}
+              />
+              <ButtonGroup
+                label="Permitir pagamento por aproximação?"
+                name="allowContactlessPayment"
+                value={formData[FormInputName.allowContactlessPayment]}
+                onChange={e =>
+                  onChangeFormInput(FormInputName.allowContactlessPayment)(e.target.value)
+                }
+                options={[
+                  { value: true, label: 'Sim' },
+                  { value: false, label: 'Não' },
+                ]}
+                error={formErrors.allowContactlessPayment && formErrors.allowContactlessPayment[0]}
+              />
+              <ButtonGroup
+                label="Permitir vender online?"
+                name="allowSellingWebsite"
+                value={formData[FormInputName.allowSellingWebsite]}
+                onChange={e => onChangeFormInput(FormInputName.allowSellingWebsite)(e.target.value)}
+                options={[
+                  { value: true, label: 'Sim' },
+                  { value: false, label: 'Não' },
+                ]}
+                error={formErrors.allowSellingWebsite && formErrors.allowSellingWebsite[0]}
+              />
+              <ButtonGroup
+                label="Permitir vender na POS?"
+                name="allowSellingPos"
+                value={formData[FormInputName.allowSellingPos]}
+                onChange={e => onChangeFormInput(FormInputName.allowSellingPos)(e.target.value)}
+                options={[
+                  { value: true, label: 'Sim' },
+                  { value: false, label: 'Não' },
+                ]}
+                error={formErrors.allowSellingPos && formErrors.allowSellingPos[0]}
+              />
+              <ButtonGroup
+                label="Imprimir recibo (POS)?"
+                name="printReceipt"
+                value={formData[FormInputName.printReceipt]}
+                onChange={e => onChangeFormInput(FormInputName.printReceipt)(e.target.value)}
+                options={[
+                  { value: true, label: 'Sim' },
+                  { value: false, label: 'Não' },
+                ]}
+                error={formErrors.printReceipt && formErrors.printReceipt[0]}
               />
             </FormGroup>
-          </Row>
-        </Col>
-        <Col md={1}>
-          <Row>
-            <FormGroup>
-              <InputText
-                name="physicalSaleDebit"
-                label="Débito %"
-                maxLength={2}
-                value={formData[FormInputName.physicalSaleDebit]}
-                placeholder="0"
-                onChange={e =>
-                  onChangeFormInput(FormInputName.physicalSaleDebit)(
-                    e.target.value.replace(/\D/g, ''),
-                  )
-                }
-                error={formErrors.physicalSaleDebit && formErrors.physicalSaleDebit[0]}
-                disabled={formData[FormInputName.physicalSaleAllowCreditCardPayment] !== 'true'}
-              />
-              <InputText
-                name="physicalSaleCredit"
-                label="Crédito %"
-                maxLength={2}
-                value={formData[FormInputName.physicalSaleCredit]}
-                placeholder="0"
-                onChange={e =>
-                  onChangeFormInput(FormInputName.physicalSaleCredit)(
-                    e.target.value.replace(/\D/g, ''),
-                  )
-                }
-                error={formErrors.physicalSaleCredit && formErrors.physicalSaleCredit[0]}
-                disabled={formData[FormInputName.physicalSaleAllowCreditCardPayment] !== 'true'}
-              />
-              <InputText
-                name="physicalSalePix"
-                label="PIX %"
-                maxLength={2}
-                value={formData[FormInputName.physicalSalePix]}
-                placeholder="0"
-                onChange={e =>
-                  onChangeFormInput(FormInputName.physicalSalePix)(
-                    e.target.value.replace(/\D/g, ''),
-                  )
-                }
-                error={formErrors.physicalSalePix && formErrors.physicalSalePix[0]}
-                disabled={formData[FormInputName.physicalSaleAllowCreditCardPayment] !== 'true'}
-              />
-              <InputText
-                name="physicalSaleAdministrateTax"
-                label="Taxa admin. %"
-                maxLength={2}
-                value={formData[FormInputName.physicalSaleAdministrateTax]}
-                placeholder="0"
-                onChange={e =>
-                  onChangeFormInput(FormInputName.physicalSaleAdministrateTax)(
-                    e.target.value.replace(/\D/g, ''),
-                  )
-                }
-                error={
-                  formErrors.physicalSaleAdministrateTax &&
-                  formErrors.physicalSaleAdministrateTax[0]
-                }
-                disabled={formData[FormInputName.physicalSaleAllowCreditCardPayment] !== 'true'}
-              />
-            </FormGroup>
-          </Row>
-        </Col>
-        <Col md={6}>
-          <Row>
+          </Form>
+        </div>
+
+        <div className="container-event mb-4">
+          <h5 className="mb-2 border-bottom-title mb-5">Taxa de cartão</h5>
+
+          <p style={{ fontSize: '21px', fontWeight: '500' }}>Venda física</p>
+
+          <FormGroup className="mb-2">
+            <ButtonGroup
+              label="Permitir venda com cartão?"
+              name="physicalSaleAllowCreditCardPayment"
+              value={formData[FormInputName.physicalSaleAllowCreditCardPayment]}
+              onChange={e =>
+                onChangeFormInput(FormInputName.physicalSaleAllowCreditCardPayment)(e.target.value)
+              }
+              options={[
+                { value: true, label: 'Sim' },
+                { value: false, label: 'Não' },
+              ]}
+              error={formErrors.allowCreditCardPayment && formErrors.allowCreditCardPayment[0]}
+            />
+          </FormGroup>
+
+          <FormGroup>
+            <InputText
+              name="physicalSaleDebit"
+              label="Débito"
+              className="w-input-sm"
+              addon="%"
+              maxLength={2}
+              value={formData[FormInputName.physicalSaleDebit]}
+              placeholder="0"
+              onChange={e =>
+                onChangeFormInput(FormInputName.physicalSaleDebit)(
+                  e.target.value.replace(/\D/g, ''),
+                )
+              }
+              error={formErrors.physicalSaleDebit && formErrors.physicalSaleDebit[0]}
+              disabled={formData[FormInputName.physicalSaleAllowCreditCardPayment] !== 'true'}
+            />
+            <InputText
+              name="physicalSaleCredit"
+              label="Crédito"
+              className="w-input-sm"
+              addon="%"
+              maxLength={2}
+              value={formData[FormInputName.physicalSaleCredit]}
+              placeholder="0"
+              onChange={e =>
+                onChangeFormInput(FormInputName.physicalSaleCredit)(
+                  e.target.value.replace(/\D/g, ''),
+                )
+              }
+              error={formErrors.physicalSaleCredit && formErrors.physicalSaleCredit[0]}
+              disabled={formData[FormInputName.physicalSaleAllowCreditCardPayment] !== 'true'}
+            />
+            <InputText
+              name="physicalSalePix"
+              label="PIX"
+              className="w-input-sm"
+              addon="%"
+              maxLength={2}
+              value={formData[FormInputName.physicalSalePix]}
+              placeholder="0"
+              onChange={e =>
+                onChangeFormInput(FormInputName.physicalSalePix)(e.target.value.replace(/\D/g, ''))
+              }
+              error={formErrors.physicalSalePix && formErrors.physicalSalePix[0]}
+              disabled={formData[FormInputName.physicalSaleAllowCreditCardPayment] !== 'true'}
+            />
+            <InputText
+              name="physicalSaleAdministrateTax"
+              label="Taxa administrativa"
+              className="w-input-sm"
+              addon="%"
+              maxLength={2}
+              value={formData[FormInputName.physicalSaleAdministrateTax]}
+              placeholder="0"
+              onChange={e =>
+                onChangeFormInput(FormInputName.physicalSaleAdministrateTax)(
+                  e.target.value.replace(/\D/g, ''),
+                )
+              }
+              error={
+                formErrors.physicalSaleAdministrateTax && formErrors.physicalSaleAdministrateTax[0]
+              }
+              disabled={formData[FormInputName.physicalSaleAllowCreditCardPayment] !== 'true'}
+            />
+          </FormGroup>
+          <div className="d-flex">
             <SelectCustom
               name="physicalSaleInstallments"
               label="Qtd parcelas"
               placeholder="Ex: 2"
+              className="w-input-sm"
               value={formData[FormInputName.physicalSaleInstallments]}
               onChange={e =>
                 onChangeFormInput(FormInputName.physicalSaleInstallments)(e?.value as string)
@@ -517,6 +478,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
             <SelectCustom
               name="physicalSaleFee"
               label="Juros ao mês"
+              className="w-input-sm"
               placeholder="Ex: 4"
               value={formData[FormInputName.physicalSaleFee]}
               onChange={e => onChangeFormInput(FormInputName.physicalSaleFee)(e?.value as string)}
@@ -524,101 +486,98 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               options={optionLimiteCount}
               disabled={formData[FormInputName.physicalSaleAllowCreditCardPayment] !== 'true'}
             />
-          </Row>
-        </Col>
-        <Col>
-          <Row>
-            <p style={{ fontSize: '21px', fontWeight: '500' }}>Venda e-commerce</p>
-          </Row>
-          <Row>
-            <FormGroup className="mb-2">
-              <ButtonGroup
-                label="Permitir venda com cartão?"
-                name="websiteSaleAllowCreditCardPayment"
-                value={formData[FormInputName.websiteSaleAllowCreditCardPayment]}
-                onChange={e =>
-                  onChangeFormInput(FormInputName.websiteSaleAllowCreditCardPayment)(e.target.value)
-                }
-                options={[
-                  { value: true, label: 'Sim' },
-                  { value: false, label: 'Não' },
-                ]}
-                error={
-                  formErrors.websiteSaleAllowCreditCardPayment &&
-                  formErrors.websiteSaleAllowCreditCardPayment[0]
-                }
-              />
-            </FormGroup>
-          </Row>
-        </Col>
-        <Col md={1}>
-          <Row>
-            <FormGroup>
-              <InputText
-                name="websiteSaleDebit"
-                label="Débito %"
-                maxLength={2}
-                value={formData[FormInputName.websiteSaleDebit]}
-                placeholder="0"
-                onChange={e =>
-                  onChangeFormInput(FormInputName.websiteSaleDebit)(
-                    e.target.value.replace(/\D/g, ''),
-                  )
-                }
-                error={formErrors.websiteSaleDebit && formErrors.websiteSaleDebit[0]}
-                disabled={formData[FormInputName.websiteSaleAllowCreditCardPayment] !== 'true'}
-              />
-              <InputText
-                name="websiteSaleCredit"
-                label="Crédito %"
-                maxLength={2}
-                value={formData[FormInputName.websiteSaleCredit]}
-                placeholder="0"
-                onChange={e =>
-                  onChangeFormInput(FormInputName.websiteSaleCredit)(
-                    e.target.value.replace(/\D/g, ''),
-                  )
-                }
-                error={formErrors.websiteSaleCredit && formErrors.websiteSaleCredit[0]}
-                disabled={formData[FormInputName.websiteSaleAllowCreditCardPayment] !== 'true'}
-              />
-              <InputText
-                name="websiteSalePix"
-                label="PIX %"
-                maxLength={2}
-                value={formData[FormInputName.websiteSalePix]}
-                placeholder="0"
-                onChange={e =>
-                  onChangeFormInput(FormInputName.websiteSalePix)(e.target.value.replace(/\D/g, ''))
-                }
-                error={formErrors.websiteSalePix && formErrors.websiteSalePix[0]}
-                disabled={formData[FormInputName.websiteSaleAllowCreditCardPayment] !== 'true'}
-              />
-              <InputText
-                name="websiteSaleAdministrateTax"
-                label="Taxa admin. %"
-                maxLength={2}
-                value={formData[FormInputName.websiteSaleAdministrateTax]}
-                placeholder="0"
-                onChange={e =>
-                  onChangeFormInput(FormInputName.websiteSaleAdministrateTax)(
-                    e.target.value.replace(/\D/g, ''),
-                  )
-                }
-                error={
-                  formErrors.websiteSaleAdministrateTax && formErrors.websiteSaleAdministrateTax[0]
-                }
-                disabled={formData[FormInputName.websiteSaleAllowCreditCardPayment] !== 'true'}
-              />
-            </FormGroup>
-          </Row>
-        </Col>
-        <Col md={6}>
-          <Row>
+          </div>
+
+          <p style={{ fontSize: '21px', fontWeight: '500' }}>Venda e-commerce</p>
+
+          <FormGroup className="mb-2">
+            <ButtonGroup
+              label="Permitir venda com cartão?"
+              name="websiteSaleAllowCreditCardPayment"
+              value={formData[FormInputName.websiteSaleAllowCreditCardPayment]}
+              onChange={e =>
+                onChangeFormInput(FormInputName.websiteSaleAllowCreditCardPayment)(e.target.value)
+              }
+              options={[
+                { value: true, label: 'Sim' },
+                { value: false, label: 'Não' },
+              ]}
+              error={
+                formErrors.websiteSaleAllowCreditCardPayment &&
+                formErrors.websiteSaleAllowCreditCardPayment[0]
+              }
+            />
+          </FormGroup>
+          <FormGroup>
+            <InputText
+              name="websiteSaleDebit"
+              label="Débito"
+              className="w-input-sm"
+              addon="%"
+              maxLength={2}
+              value={formData[FormInputName.websiteSaleDebit]}
+              placeholder="0"
+              onChange={e =>
+                onChangeFormInput(FormInputName.websiteSaleDebit)(e.target.value.replace(/\D/g, ''))
+              }
+              error={formErrors.websiteSaleDebit && formErrors.websiteSaleDebit[0]}
+              disabled={formData[FormInputName.websiteSaleAllowCreditCardPayment] !== 'true'}
+            />
+            <InputText
+              name="websiteSaleCredit"
+              label="Crédito"
+              className="w-input-sm"
+              addon="%"
+              maxLength={2}
+              value={formData[FormInputName.websiteSaleCredit]}
+              placeholder="0"
+              onChange={e =>
+                onChangeFormInput(FormInputName.websiteSaleCredit)(
+                  e.target.value.replace(/\D/g, ''),
+                )
+              }
+              error={formErrors.websiteSaleCredit && formErrors.websiteSaleCredit[0]}
+              disabled={formData[FormInputName.websiteSaleAllowCreditCardPayment] !== 'true'}
+            />
+            <InputText
+              name="websiteSalePix"
+              label="PIX"
+              className="w-input-sm"
+              addon="%"
+              maxLength={2}
+              value={formData[FormInputName.websiteSalePix]}
+              placeholder="0"
+              onChange={e =>
+                onChangeFormInput(FormInputName.websiteSalePix)(e.target.value.replace(/\D/g, ''))
+              }
+              error={formErrors.websiteSalePix && formErrors.websiteSalePix[0]}
+              disabled={formData[FormInputName.websiteSaleAllowCreditCardPayment] !== 'true'}
+            />
+            <InputText
+              name="websiteSaleAdministrateTax"
+              label="Taxa administrativa"
+              className="w-input-sm"
+              addon="%"
+              maxLength={2}
+              value={formData[FormInputName.websiteSaleAdministrateTax]}
+              placeholder="0"
+              onChange={e =>
+                onChangeFormInput(FormInputName.websiteSaleAdministrateTax)(
+                  e.target.value.replace(/\D/g, ''),
+                )
+              }
+              error={
+                formErrors.websiteSaleAdministrateTax && formErrors.websiteSaleAdministrateTax[0]
+              }
+              disabled={formData[FormInputName.websiteSaleAllowCreditCardPayment] !== 'true'}
+            />
+          </FormGroup>
+          <div className="d-flex">
             <SelectCustom
               name="websiteSaleInstallments"
               label="Qtd parcelas"
               placeholder="Ex: 2"
+              className="w-input-sm"
               value={formData[FormInputName.websiteSaleInstallments]}
               onChange={e =>
                 onChangeFormInput(FormInputName.websiteSaleInstallments)(e?.value as string)
@@ -631,6 +590,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
             <SelectCustom
               name="websiteSaleFee"
               label="Juros ao mês"
+              className="w-input-sm"
               placeholder="Ex: 4"
               value={formData[FormInputName.websiteSaleFee]}
               onChange={e => onChangeFormInput(FormInputName.websiteSaleFee)(e?.value as string)}
@@ -638,129 +598,125 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               options={optionLimiteCount}
               disabled={formData[FormInputName.websiteSaleAllowCreditCardPayment] !== 'true'}
             />
-          </Row>
-        </Col>
-        <Col>
+          </div>
           <div className="container-event mb-4">
             <h5 className="mb-2 border-bottom-title mb-5">Cupons e descontos</h5>
           </div>
-          <Row>
-            <FormGroup>
-              <ButtonGroup
-                label="Permitir desconto?"
-                name="allowDiscount"
-                value={formData[FormInputName.allowDiscount]}
-                onChange={e => onChangeFormInput(FormInputName.allowDiscount)(e.target.value)}
-                options={[
-                  { value: true, label: 'Sim' },
-                  { value: false, label: 'Não' },
-                ]}
-                error={formErrors.allowDiscount && formErrors.allowDiscount[0]}
-              />
-              <ButtonGroup
-                label="Permitir cupom de desconto?"
-                name="allowDiscountCoupon"
-                value={formData[FormInputName.allowDiscountCoupon]}
-                onChange={e => onChangeFormInput(FormInputName.allowDiscountCoupon)(e.target.value)}
-                options={[
-                  { value: true, label: 'Sim' },
-                  { value: false, label: 'Não' },
-                ]}
-                error={formErrors.allowDiscountCoupon && formErrors.allowDiscountCoupon[0]}
-                disabled={formData[FormInputName.allowDiscount] !== 'true'}
-              />
-            </FormGroup>
-          </Row>
-        </Col>
-        <Col>
-          {formData[FormInputName.allowDiscountCoupon] === 'true' &&
-          formData[FormInputName.allowDiscount] === 'true' ? (
-            <div
-              onClick={() =>
-                onShouldShowModal({
-                  newTitleModal: 'Adicionar cupom de desconto',
-                  value: ShouldShowModal.discountCoupons,
-                })
-              }
-              className="action-icon mb-5 register-buttom"
-            >
-              + adicionar cupom de desconto
-            </div>
-          ) : null}
-        </Col>
-        <Col md={12}>
-          <SuperCollapse
-            disabled={formData[FormInputName.allowDiscount] !== 'true'}
-            title={`Cupons de desconto adicionados`}
-            content={
-              listDiscountCoupon.length > 0 ? (
-                listDiscountCoupon.map((item, index) => (
-                  <>
-                    <span className="secondary-table-title">Cupom #{index + 1}</span>
-                    <span className="secondary-table-title name">
-                      <b> ·</b> {item.name}
-                    </span>
-                    <CustomTable
-                      numberRowsPerPage={0}
-                      progressPending={false}
-                      columns={columnsDiscountCoupon}
-                      data={[
-                        {
-                          id: item.id,
-                          name: item.name,
-                          code: item.code,
-                          amount: item.amount,
-                          discount: item.discount,
-                          actions: (
-                            <React.Fragment>
-                              <Pen
-                                className="mr-4 svg-icon action-icon"
-                                onClick={(): void =>
-                                  onShouldShowModal({
-                                    value: ShouldShowModal.discountCoupons,
-                                    newTitleModal: (
-                                      <div className="d-flex">
-                                        <div
-                                          className="m-auto"
-                                          onClick={() => {
-                                            onShouldShowModal({
-                                              value: ShouldShowModal.discountCoupons,
-                                              newTitleModal: discountCoupon?.length
-                                                ? item.name
-                                                : 'Cadastrar nova empresa (contratante)',
-                                            });
-                                          }}
-                                        ></div>
-                                        <h5 className="header-title-text modal__title ml-3 mb-0">
-                                          Adicionar conta bancária
-                                        </h5>
-                                      </div>
-                                    ),
-                                  })
-                                }
-                              />
-                              <X
-                                className="svg-icon action-icon pt-1"
-                                onClick={() => {
-                                  handleRemoveDiscountCoupon(index);
-                                }}
-                              />
-                            </React.Fragment>
-                          ),
-                        },
-                      ]}
-                      theme="secondary"
-                    />
-                  </>
-                ))
-              ) : (
-                <span>Nenhum cupom de desconto adicionado</span>
-              )
+
+          <FormGroup>
+            <ButtonGroup
+              label="Permitir desconto?"
+              name="allowDiscount"
+              value={formData[FormInputName.allowDiscount]}
+              onChange={e => onChangeFormInput(FormInputName.allowDiscount)(e.target.value)}
+              options={[
+                { value: true, label: 'Sim' },
+                { value: false, label: 'Não' },
+              ]}
+              error={formErrors.allowDiscount && formErrors.allowDiscount[0]}
+            />
+            <ButtonGroup
+              label="Permitir cupom de desconto?"
+              name="allowDiscountCoupon"
+              value={formData[FormInputName.allowDiscountCoupon]}
+              onChange={e => onChangeFormInput(FormInputName.allowDiscountCoupon)(e.target.value)}
+              options={[
+                { value: true, label: 'Sim' },
+                { value: false, label: 'Não' },
+              ]}
+              error={formErrors.allowDiscountCoupon && formErrors.allowDiscountCoupon[0]}
+              disabled={formData[FormInputName.allowDiscount] !== 'true'}
+            />
+          </FormGroup>
+        </div>
+
+        {formData[FormInputName.allowDiscountCoupon] === 'true' &&
+        formData[FormInputName.allowDiscount] === 'true' ? (
+          <div
+            onClick={() =>
+              onShouldShowModal({
+                newTitleModal: 'Adicionar cupom de desconto',
+                value: ShouldShowModal.discountCoupons,
+              })
             }
-            count={listDiscountCoupon.length}
-            leftIcon={TicketIcon}
-          />
-        </Col>
+            className="action-icon mb-5 register-buttom"
+          >
+            + adicionar cupom de desconto
+          </div>
+        ) : null}
+
+        <SuperCollapse
+          disabled={formData[FormInputName.allowDiscount] !== 'true'}
+          title={`Cupons de desconto adicionados`}
+          content={
+            listDiscountCoupon.length > 0 ? (
+              listDiscountCoupon.map((item, index) => (
+                <>
+                  <span className="secondary-table-title">Cupom #{index + 1}</span>
+                  <span className="secondary-table-title name">
+                    <b> ·</b> {item.name}
+                  </span>
+                  <CustomTable
+                    numberRowsPerPage={0}
+                    progressPending={false}
+                    columns={columnsDiscountCoupon}
+                    data={[
+                      {
+                        id: item.id,
+                        name: item.name,
+                        code: item.code,
+                        amount: item.amount,
+                        discount: item.discount,
+                        actions: (
+                          <React.Fragment>
+                            <Pen
+                              className="mr-4 svg-icon action-icon"
+                              onClick={(): void =>
+                                onShouldShowModal({
+                                  value: ShouldShowModal.discountCoupons,
+                                  newTitleModal: (
+                                    <div className="d-flex">
+                                      <div
+                                        className="m-auto"
+                                        onClick={() => {
+                                          onShouldShowModal({
+                                            value: ShouldShowModal.discountCoupons,
+                                            newTitleModal: discountCoupon?.length
+                                              ? item.name
+                                              : 'Cadastrar nova empresa (contratante)',
+                                          });
+                                        }}
+                                      ></div>
+                                      <h5 className="header-title-text modal__title ml-3 mb-0">
+                                        Adicionar conta bancária
+                                      </h5>
+                                    </div>
+                                  ),
+                                })
+                              }
+                            />
+                            <X
+                              className="svg-icon action-icon pt-1"
+                              onClick={() => {
+                                handleRemoveDiscountCoupon(index);
+                              }}
+                            />
+                          </React.Fragment>
+                        ),
+                      },
+                    ]}
+                    theme="secondary"
+                  />
+                </>
+              ))
+            ) : (
+              <span>Nenhum cupom de desconto adicionado</span>
+            )
+          }
+          count={listDiscountCoupon.length}
+          leftIcon={TicketIcon}
+        />
+
         <div className="d-flex justify-content-between">
           <div>
             <Button
