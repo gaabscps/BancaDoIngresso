@@ -197,7 +197,6 @@ export const ConfirmationEventContainer: React.FC<ConfirmationEventContainerProp
                   />
                 </div>
                 <DataList
-                  array={true}
                   data={[
                     {
                       title: 'Usuários do PDV:',
@@ -206,7 +205,6 @@ export const ConfirmationEventContainer: React.FC<ConfirmationEventContainerProp
                   ]}
                 />
                 <DataList
-                  array={true}
                   data={[
                     {
                       title: 'SubPDV’s:',

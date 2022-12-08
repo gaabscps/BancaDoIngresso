@@ -24,7 +24,6 @@ export const SectorProduct: React.FC<SectorProductProps> = ({ event, data }) => 
             }}
           >
             <DataList
-              array={true}
               data={[
                 {
                   title: 'Grupo:',
