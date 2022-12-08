@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import useForm from '@/hooks/useForm';
-import validators from '@/helpers/validators';
 import { toast } from 'react-toastify';
 import api, { AxiosError } from '@/services/api';
 import { TabSectorProductActionsProps } from '@/features/registerEvent/screens/SectorProduct/ui';
@@ -70,17 +69,7 @@ export const SectorProductConfigSectorScreen: React.FC<
       validateCpf: '',
       purchaseLimitCpf: '',
     },
-    validators: {
-      sendTicketWhatsApp: [validators.required],
-      codeType: [validators.required],
-      printType: [validators.required],
-      nameBeforePurchase: [validators.required],
-      printNameTicket: [validators.required],
-      requestCpf: [validators.required],
-      printCpfTicket: [validators.required],
-      validateCpf: [validators.required],
-      purchaseLimitCpf: [validators.required, validators.between(1, 50)],
-    },
+    validators: {},
     formatters: {},
   });
 

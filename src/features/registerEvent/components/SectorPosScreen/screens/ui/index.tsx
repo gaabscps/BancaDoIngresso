@@ -4,6 +4,7 @@ import {
   ButtonGroup,
   Dialog,
   InputText,
+  Loading,
   // Loading,
   SelectCustom,
   Switch,
@@ -16,8 +17,10 @@ import { CustomTable } from '@/components/Table';
 import React from 'react';
 import { Col, Container, Form, FormGroup, Row } from 'reactstrap';
 import { ActionProps } from '@/components/Dialog';
+import Pos from '@/model/Pos';
 import { formPosProps, modalConfigPosProps } from '../../types';
 import { PosConfigContent } from '../../components/PosConfigContent';
+import { columnsPos } from './table';
 
 // eslint-disable-next-line no-shadow
 export enum States {
@@ -40,19 +43,25 @@ export enum FormInputName {
 }
 
 interface SectorProductPosContainerProps {
-  // state: States;
+  state: States;
   controllerFormPos: formPosProps;
   controllerModalConfig: modalConfigPosProps;
+  handleOnSavePos: () => Promise<void>;
   nextTab: () => void;
   backTab: () => void;
   posList: any;
+  posOptions: Pos[];
+  handleOnShowDeletePos: (posSelected: Pos) => void;
 }
 export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
-  // state,
+  state,
   controllerFormPos,
   controllerModalConfig,
+  handleOnSavePos,
   nextTab,
   backTab,
+  posOptions,
+  handleOnShowDeletePos,
 }) => {
   const { formData, formErrors, onChangeFormInput } = controllerFormPos;
   const { shouldShowModal, title, visible, onToggle, onShouldShowModal } = controllerModalConfig;
@@ -62,6 +71,17 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
     onClick: (): void => onToggle(),
     theme: 'noneBorder',
   };
+
+  const posListMock = [
+    {
+      id: 1,
+      name: 'Máquininha do Seu Zé',
+      serialNumber: '098765',
+      date: '01/05/2022',
+      waiter: '3%',
+      commission: '5%',
+    },
+  ];
 
   return (
     <>
@@ -79,7 +99,7 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
               // title: productStates?.product ? 'Salvar' : 'Cadastrar novo setor',
               // onClick: (): Promise<void> => productActions.onSave(),
               title: 'Salvar',
-              onClick: () => undefined,
+              onClick: () => handleOnSavePos(),
             },
           }[shouldShowModal],
         ]}
@@ -90,7 +110,7 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
           }[shouldShowModal]
         }
       </Dialog>
-      {/* <Loading isVisible={state === States.loading} /> */}
+      <Loading isVisible={state === States.loading} />
       <Container className="mainContainer" fluid={true}>
         <Row>
           <Col>
@@ -127,7 +147,10 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
                         placeholder="Digite ou selecione a POS"
                         value={formData[FormInputName.pos]}
                         onChange={e => onChangeFormInput(FormInputName.pos)(e?.value as string)}
-                        options={[]}
+                        options={posOptions.map(item => ({
+                          value: item.id,
+                          label: item.name,
+                        }))}
                         error={formErrors.pos && formErrors.pos[0]}
                       />
                     </Col>
@@ -180,7 +203,18 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
                   </Row>
                   <Row>
                     <Col>
-                      <div className="action-icon d-flex justify-content-end">Inserir POS</div>
+                      <div
+                        className="action-icon d-flex justify-content-end"
+                        onClick={(): void => {
+                          onShouldShowModal({
+                            value: ShouldShowModal.configPos,
+                            newTitleModal: 'Configuração de setores e produtos da POS',
+                            // product: item,
+                          });
+                        }}
+                      >
+                        Inserir POS
+                      </div>
                     </Col>
                   </Row>
                 </div>
@@ -199,82 +233,64 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
               title="POS’s inseridos"
               content={
                 // change 0 to index
-                <React.Fragment key="content">
-                  <div className="d-flex w-100 justify-content-between">
-                    <div className="mb-3 w-100">
-                      <span className="secondary-table-title">POS #{0 + 1} </span>
-                      <span className="secondary-table-title font-weight-bold">
-                        • Máquininha do Seu Zé
-                      </span>
-                    </div>
-                    <Switch
-                      label={`POS  ativa`}
-                      name=""
-                      onChange={() => undefined}
-                      checked={true}
-                    />
-                  </div>
-                  <CustomTable
-                    theme="secondaryWithoutBorder"
-                    numberRowsPerPage={0}
-                    progressPending={false}
-                    columns={[
-                      {
-                        name: 'Nº de série',
-                        selector: row => row.serialNumber,
-                      },
-                      {
-                        name: 'Data do vínculo',
-                        selector: row => row.date,
-                      },
-                      {
-                        name: '% do garçom',
-                        selector: row => row.waiter,
-                      },
-                      {
-                        name: '% de comissão',
-                        selector: row => row.commission,
-                      },
-                      {
-                        name: '',
-                        selector: row => row.actions,
-                        right: true,
-                      },
-                    ]}
-                    data={[
-                      {
-                        serialNumber: '098765',
-                        date: '01/05/2022',
-                        waiter: '3%',
-                        commission: '5%',
-                        actions: (
-                          <>
-                            <Config
-                              className="mr-4 svg-icon action-icon"
-                              onClick={(): void => {
-                                onShouldShowModal({
-                                  value: ShouldShowModal.configPos,
-                                  newTitleModal: 'Configuração de setores e produtos da POS',
-                                  // product: item,
-                                });
-                              }}
-                            />
-                            <Pen
-                              width={15}
-                              className="mr-4 svg-icon action-icon"
-                              onClick={() => undefined}
-                            />
-                            <Trash
-                              width={13}
-                              className="action-icon svg-icon-trash"
-                              onClick={() => undefined}
-                            />
-                          </>
-                        ),
-                      },
-                    ]}
-                  />
-                </React.Fragment>
+                posListMock.length > 0
+                  ? posListMock.map((pos, index) => (
+                      <React.Fragment key={index}>
+                        <div className="d-flex w-100 justify-content-between">
+                          <div className="mb-3 w-100">
+                            <span className="secondary-table-title">POS # {index + 1}</span>
+                            <span className="secondary-table-title font-weight-bold">
+                              • {pos.name}
+                            </span>
+                          </div>
+                          <Switch
+                            label={`POS  ativa`}
+                            name=""
+                            onChange={() => undefined}
+                            checked={true}
+                          />
+                        </div>
+                        <CustomTable
+                          theme="secondaryWithoutBorder"
+                          numberRowsPerPage={0}
+                          progressPending={false}
+                          columns={columnsPos}
+                          data={[
+                            {
+                              serialNumber: '098765',
+                              date: '01/05/2022',
+                              waiter: '3%',
+                              commission: '5%',
+                              actions: (
+                                <>
+                                  <Config
+                                    className="mr-4 svg-icon action-icon"
+                                    onClick={(): void => {
+                                      onShouldShowModal({
+                                        value: ShouldShowModal.configPos,
+                                        newTitleModal: 'Configuração de setores e produtos da POS',
+                                        // product: item,
+                                      });
+                                    }}
+                                  />
+                                  <Pen
+                                    width={15}
+                                    className="mr-4 svg-icon action-icon"
+                                    onClick={() => undefined}
+                                  />
+                                  <Trash
+                                    width={13}
+                                    className="action-icon svg-icon-trash"
+                                    onClick={() => handleOnShowDeletePos(pos as any)}
+                                  />
+                                </>
+                              ),
+                            },
+                          ]}
+                        />
+                      </React.Fragment>
+                    ))
+                  : 'Nenhuma pos cadastrada. Aqui será exibida uma lista de pos'
               }
               leftIcon={TicketIcon}
             />
