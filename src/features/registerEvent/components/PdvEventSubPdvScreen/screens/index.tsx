@@ -9,6 +9,7 @@ import { useDialog } from '@/hooks/useDialog';
 import { DeleteContent } from '@/components/DeleteContent';
 import User from '@/model/User';
 import { TabPdvActionsProps } from '@/features/registerEvent/screens/Pdv/ui';
+import { useParams } from 'react-router-dom';
 import {
   formSubPdvProps,
   formSubPdvRegisterProps,
@@ -17,6 +18,10 @@ import {
   subPdvActionsProps,
 } from '../types';
 import { States, PdvEventSubPdvContainer, ShouldShowModal } from './ui';
+
+type UrlParams = {
+  id: string;
+};
 
 export const PdvEventSubPdvScreen: React.FC<Omit<TabPdvActionsProps, 'nextTab'>> = ({
   backTab,
@@ -37,6 +42,7 @@ export const PdvEventSubPdvScreen: React.FC<Omit<TabPdvActionsProps, 'nextTab'>>
 
   const { title, visible, onChangeTitle, onToggle } = useDialog();
   const confirmDelete = useConfirmDelete();
+  const params = useParams<UrlParams>();
 
   const {
     formData: formDataSubPdv,
@@ -156,6 +162,17 @@ export const PdvEventSubPdvScreen: React.FC<Omit<TabPdvActionsProps, 'nextTab'>>
     });
   };
 
+  const handleOnConfirmDelete = async (subPdvSelected: SubPdv): Promise<void> => {
+    try {
+      await api.delete(`/event/pdv/${params.id}/${subPdvSelected.id}`);
+      toast.success('SubPdv excluído com sucesso!');
+      confirmDelete.hide();
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    }
+  };
+
   const handleOnShowDeleteSubPdv = (subPdvSelected: any): void => {
     confirmDelete.show({
       title: '',
@@ -169,7 +186,7 @@ export const PdvEventSubPdvScreen: React.FC<Omit<TabPdvActionsProps, 'nextTab'>>
         {
           title: 'Sim, quero excluir',
           onClick: (): void => {
-            console.log('TODO: Add function exclud item :>> ', subPdvSelected);
+            handleOnConfirmDelete(subPdvSelected);
           },
         },
       ],

@@ -8,6 +8,7 @@ import Pos from '@/model/Pos';
 import { useDialog } from '@/hooks/useDialog';
 import { DeleteContent } from '@/components/DeleteContent';
 import { TabPdvActionsProps } from '@/features/registerEvent/screens/Pdv/ui';
+import { useParams } from 'react-router-dom';
 import {
   formPosConfigProps,
   formPosProps,
@@ -17,6 +18,10 @@ import {
   posActionsProps,
 } from '../types';
 import { States, PdvEventPosContainer, ShouldShowModal } from './ui';
+
+type UrlParams = {
+  id: string;
+};
 
 export const PdvEventPosScreen: React.FC<Omit<TabPdvActionsProps, 'firstTab'>> = ({
   backTab,
@@ -34,6 +39,8 @@ export const PdvEventPosScreen: React.FC<Omit<TabPdvActionsProps, 'firstTab'>> =
 
   const { title, visible, onChangeTitle, onToggle } = useDialog();
   const confirmDelete = useConfirmDelete();
+
+  const params = useParams<UrlParams>();
 
   const {
     formData: formDataPos,
@@ -101,8 +108,18 @@ export const PdvEventPosScreen: React.FC<Omit<TabPdvActionsProps, 'firstTab'>> =
       setPos(posSelected);
     }
   };
+  const handleOnConfirmDelete = async (posSelected: Pos): Promise<void> => {
+    try {
+      await api.delete(`/event/pdv/${params.id}/${posSelected.id}`);
+      toast.success('POS excluída com sucesso!');
+      confirmDelete.hide();
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    }
+  };
 
-  const handleOnShowDeletePos = (posSelected: any): void => {
+  const handleOnShowDeletePos = (posSelected: Pos): void => {
     confirmDelete.show({
       title: '',
       children: <DeleteContent />,
@@ -115,7 +132,7 @@ export const PdvEventPosScreen: React.FC<Omit<TabPdvActionsProps, 'firstTab'>> =
         {
           title: 'Sim, quero excluir',
           onClick: (): void => {
-            console.log('TODO: Add function exclud item :>> ', posSelected);
+            handleOnConfirmDelete(posSelected);
           },
         },
       ],
