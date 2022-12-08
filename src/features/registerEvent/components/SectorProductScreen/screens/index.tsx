@@ -76,7 +76,7 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
       amount: '',
       unitValue: '',
       totalValue: '',
-      imageBase64: '',
+      imageBase64Product: '',
     },
     validators: {},
     formatters: {},
@@ -292,7 +292,7 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
           amount: formDataProduct[FormInputNameToProduct.amount] ?? 0,
           unitValue: formDataProduct[FormInputNameToProduct.unitValue] ?? 0,
           totalValue: formDataProduct[FormInputNameToProduct.totalValue] ?? 0,
-          imageBase64: formDataProduct[FormInputNameToProduct.imageBase64] ?? '',
+          imageBase64: formDataProduct[FormInputNameToProduct.imageBase64Product] ?? '',
         };
         const reponse = await api.post(`/event/ticket/${params.id}/general-settings`, payload);
         if (reponse) toast.success('Dados salvos com sucesso!');
