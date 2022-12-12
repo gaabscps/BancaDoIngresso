@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import SectorProductGroup from '@/model/SectorProductGroup';
 import { toast } from 'react-toastify';
 import useForm from '@/hooks/useForm';
 import { AxiosError } from 'axios';
@@ -11,6 +10,7 @@ import ProductGroup from '@/model/ProductGroup';
 import { TabSectorProductActionsProps } from '@/features/registerEvent/screens/SectorProduct/ui';
 import EventGroupSubgroup from '@/model/EventGroupSubgroup';
 import { useParams } from 'react-router-dom';
+import { useConfirmDelete } from '@/hooks/useConfirmDelete';
 import { FormInputName, SectorProductGroupContainer } from './ui';
 import { formGroupProps } from '../types';
 import { States } from '../../ContractorScreen/screens/ui';
@@ -26,16 +26,18 @@ export interface NameFiles {
 export const SectorProductGroupScreen: React.FC<
   Omit<TabSectorProductActionsProps, 'onFirstTab' | 'backTab'>
 > = ({ nextTab }): JSX.Element => {
+  const initialData = {};
+
   const [state, setState] = useState<States>(States.default);
   const [nameFiles, setNameFiles] = useState<NameFiles>({});
-  const [subGroup, setSubGroup] = useState<GroupProduct[]>([{ id: '', name: '' }]);
-  const [subGroupList, setSubGroupList] = useState<GroupProduct[]>([{ id: '', name: '' }]);
+  const [nameFilesSub, setNameFilesSub] = useState<NameFiles>(initialData);
+  const [subGroup, setSubGroup] = useState<GroupProduct[]>([{ id: '', name: '', imageBase64: '' }]);
   const [listProductGroup, setListProductGroup] = useState<ProductGroup[]>([]);
-  const [groupList, setGroupList] = useState<SectorProductGroup[]>([]);
   const [listProductSubGroup, setListProductSubGroup] = useState<ProductSubgroup[]>([]);
 
   const [listGroupSubgroup, setListGroupSubgroup] = useState<EventGroupSubgroup[]>([]);
 
+  const confirmDelete = useConfirmDelete();
   const params = useParams<UrlParams>();
 
   const {
@@ -102,13 +104,44 @@ export const SectorProductGroupScreen: React.FC<
     setSubGroup(values);
   };
 
+  // handleChange do input de imagem do subgrupo
+  const handleChangeAppendFileInput =
+    (inputName: string, index: number) =>
+    (file: File | undefined): void => {
+      // validate if file is image
+      if (file && file.type.match(/image\/(jpg|jpeg|png)/)) {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          const base64 = reader.result?.toString();
+          if (base64) {
+            console.log(nameFilesSub);
+            setNameFilesSub({ ...nameFilesSub, [inputName]: file.name });
+            const newFormValues = [...subGroup] as any;
+            newFormValues[index][inputName] = base64;
+            setSubGroup([...subGroup, { id: index, name: '', imageBase64: base64 }]);
+          }
+        };
+      } else {
+        setErrorsGroup({
+          [inputName]: ['O formato deve ser .jpg, .jpeg ou .png'],
+        });
+      }
+    };
+
+  // reset the input file form onChange and nameFilesSub on Click
+  const handleResetFileInput = (inputName: string, index: number): void => {
+    const newFormValues = [...subGroup] as any;
+    newFormValues[index][inputName] = '';
+    setSubGroup(newFormValues);
+    setNameFilesSub({ ...nameFilesSub, [inputName]: '' });
+  };
+
   // Monta a tabela da página
-  const handleGetGroupSubgroupList = async (): Promise<void> => {
+  const handleGetGroupSubgroupList = async (id: string): Promise<void> => {
     try {
       setState(States.loading);
-      const { data } = await api.get<EventGroupSubgroup[]>(
-        `/event/section-product/${params.id}/group`,
-      );
+      const { data } = await api.get<EventGroupSubgroup[]>(`/event/section-product/${id}/group`);
 
       if (data) {
         setListGroupSubgroup(data);
@@ -125,14 +158,14 @@ export const SectorProductGroupScreen: React.FC<
     try {
       if (isFormValid()) {
         const dataSubgGroup = subGroup.map(sub => ({
-          productSubGroupName: sub?.name,
-          image: sub.imageBase64,
+          productSubGroupName: sub.name,
+          imageBase64: sub?.imageBase64,
         }));
 
         const payload = {
-          categoryGroupName: formDataGroup[FormInputName.categoryGroupName],
+          categoryGroupId: formDataGroup[FormInputName.categoryGroupName],
           image: formDataGroup[FormInputName.imageBase64Group],
-          subGroups: [dataSubgGroup],
+          subGroups: dataSubgGroup,
         };
         const reponse = await api.post(`/event/event-section/${params.id}/group`, payload);
         if (reponse) toast.success('Dados salvos com sucesso!');
@@ -148,16 +181,6 @@ export const SectorProductGroupScreen: React.FC<
       // Aqui será feito a integração com o backend
       // chamar a api para adicionar um novo grupo
       handleOnSaveGroup();
-      setSubGroupList(subGroup);
-      setGroupList([
-        ...groupList,
-        {
-          id: '',
-          name: formDataGroup.name,
-          imageBase64: formDataGroup.image,
-          subgroup: subGroup,
-        },
-      ]);
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
@@ -178,6 +201,20 @@ export const SectorProductGroupScreen: React.FC<
     }
   };
 
+  // Deleta um grupo de produtos
+  const handleOnConfirmDeleteTopProduct = async (productSelected: any): Promise<void> => {
+    try {
+      await api.delete(`/event/section-product/${params?.id}/product/${productSelected.id}`);
+      toast.success('Produto excluído com sucesso!');
+      handleGetGroupSubgroupList(params.id);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      confirmDelete.hide();
+    }
+  };
+
   // Busca por subgrupos de produtos cadastrados na sidebar
   const handleFecthProductSubGroupList = async (dataSubgGroup: any): Promise<void> => {
     try {
@@ -186,9 +223,6 @@ export const SectorProductGroupScreen: React.FC<
         `/category-subgroup/find/group/${dataSubgGroup}`,
       );
       setListProductSubGroup(data ?? []);
-    } catch (error) {
-      const err = error as AxiosError;
-      toast.error(err.message);
     } finally {
       setState(States.default);
     }
@@ -202,8 +236,12 @@ export const SectorProductGroupScreen: React.FC<
 
   useEffect(() => {
     handleFecthProductGroupList();
-    handleGetGroupSubgroupList();
+    handleGetGroupSubgroupList(params.id);
   }, []);
+
+  useEffect(() => {
+    console.log(nameFilesSub);
+  }, [nameFilesSub]);
 
   return (
     <SectorProductGroupContainer
@@ -213,8 +251,6 @@ export const SectorProductGroupScreen: React.FC<
       subGroup={subGroup}
       addGroup={addGroup}
       removeGroup={removeGroup}
-      groupList={groupList}
-      subGroupList={subGroupList}
       handleAddGroup={handleAddGroup}
       controllerFormGroup={controllerFormGroup}
       handleChangeGroup={handleChangeGroup}
@@ -223,6 +259,10 @@ export const SectorProductGroupScreen: React.FC<
       listGroupSubgroup={listGroupSubgroup}
       nameFiles={nameFiles}
       handleOnSaveGroup={handleOnSaveGroup}
+      handleOnConfirmDeleteTopProduct={handleOnConfirmDeleteTopProduct}
+      onChangeAppendFileInput={handleChangeAppendFileInput}
+      nameFilesSub={nameFilesSub}
+      handleClearAppendFileInput={handleResetFileInput}
     />
   );
 };

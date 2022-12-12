@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button, DropdonwFlags, InputFile, Loading } from '@/components';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
-import SectorProductGroup from '@/model/SectorProductGroup';
 import TicketIcon from '@/assets/images/svg/Ticket';
 import { X } from 'react-feather';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
@@ -20,13 +19,14 @@ import { NameFiles } from '..';
 interface SectorProductGroupContainerProps {
   state: string;
   subGroup: GroupProduct[];
-  subGroupList: GroupProduct[];
-  groupList: SectorProductGroup[];
   controllerFormGroup: formGroupProps;
   listProductSubGroup: ProductSubgroup[];
   listProductGroup: ProductGroup[];
   listGroupSubgroup: EventGroupSubgroup[];
   nameFiles: NameFiles;
+  nameFilesSub: NameFiles;
+  handleClearAppendFileInput: (inputName: string, index: number) => void;
+  onChangeAppendFileInput: (inputName: string, index: number) => (value: File | undefined) => void;
   handleOnSaveGroup: () => Promise<void>;
   handleChangeGroup: (name: string, index: number, value: string | undefined) => void;
   handleAddGroup: () => Promise<void>;
@@ -34,6 +34,7 @@ interface SectorProductGroupContainerProps {
   removeGroup: (index: number) => void;
   handleFecthProductSubGroupList: (id: string) => Promise<void>;
   onNextTab: () => void;
+  handleOnConfirmDeleteTopProduct: (id: string) => Promise<void>;
 }
 
 export interface DataRowDiscountCoupon {
@@ -52,13 +53,15 @@ export enum FormInputName {
 export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerProps> = ({
   state,
   subGroup,
-  groupList,
-  // subGroupList,
   nameFiles,
+  nameFilesSub,
   controllerFormGroup,
   listProductGroup,
   listProductSubGroup,
   listGroupSubgroup,
+  handleClearAppendFileInput,
+  onChangeAppendFileInput,
+  handleOnConfirmDeleteTopProduct,
   handleOnSaveGroup,
   handleFecthProductSubGroupList,
   handleChangeGroup,
@@ -92,12 +95,12 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
                       e?.value as string,
                     );
                     handleFecthProductSubGroupList(
-                      listProductGroup.find(item => item.name === e?.value)?.id || '',
+                      listProductGroup.find(item => item.id === e?.value)?.id || '',
                     );
                   }}
                   value={controllerFormGroup.formDataGroup[FormInputName.categoryGroupName]}
                   options={listProductGroup.map(item => ({
-                    value: item.name,
+                    value: item.id,
                     label: item.name,
                   }))}
                   placeholder="Digite o nome do grupo. Ex: Bebidas"
@@ -155,16 +158,17 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
               <Row>
                 <Col md={6}>
                   <SimpleInputFile
-                    key={sub.id}
+                    key={index}
                     label=""
                     title="subgrupo"
-                    name={'imageBase64SubGroup'}
-                    fileName={nameFiles.imageBase64SubGroup}
-                    onChange={e =>
-                      controllerFormGroup.handleOnChangeFileInput(
-                        FormInputName.imageBase64SubGroup,
-                      )((e.target as HTMLInputElement)?.files?.[0])
-                    }
+                    name={`imageBase64SubGroup-${index}`}
+                    fileName={nameFilesSub[`imageBase64SubGroup-${index}`]}
+                    onChange={e => {
+                      onChangeAppendFileInput(
+                        `imageBase64SubGroup-${index}`,
+                        index,
+                      )((e.target as HTMLInputElement)?.files?.[0]);
+                    }}
                     error={
                       controllerFormGroup.formErrorsGroup.imageBase64SubGroup &&
                       controllerFormGroup.formErrorsGroup.imageBase64SubGroup[0]
@@ -172,7 +176,14 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
                   />
                 </Col>
                 <Col md={4}>
-                  <X className="mt-3 pt-1 action-icon" />
+                  {nameFilesSub[`imageBase64SubGroup-${index}`] && (
+                    <X
+                      onClick={() =>
+                        handleClearAppendFileInput(`imageBase64SubGroup-${index}`, index)
+                      }
+                      className="mt-3 pt-1 action-icon"
+                    />
+                  )}
                 </Col>
               </Row>
             </div>
@@ -224,12 +235,15 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
                               />
                             </div>
                             <Pen className="ml-5 action-icon" />
-                            <Trash className="ml-5 action-icon" />
+                            <Trash
+                              onClick={() => handleOnConfirmDeleteTopProduct(item?.categoryGroupId)}
+                              className="ml-5 action-icon"
+                            />
                           </div>
                         </div>
                         {
                           // gray line before each item
-                          index !== groupList.length - 1 && (
+                          index !== listGroupSubgroup.length - 1 && (
                             <div
                               className="mb-3 mt-3"
                               style={{
