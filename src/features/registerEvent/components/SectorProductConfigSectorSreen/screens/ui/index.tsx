@@ -98,11 +98,23 @@ export const SectorProductConfigSectorContainer: React.FC<
                 configSectorActions.onCancelEdit();
               }}
             >
-              {configSectorStates.sector ? 'Cancelar edição do produto' : null}
+              {configSectorStates.sector ? 'Cancelar' : null}
             </div>
-            <div className="link-green">
-              {configSectorStates.sector ? 'Salvar setor' : '+ inserir setor'}
-            </div>
+            {configSectorStates.sector ? (
+              <div className="link-green">Salvar edição</div>
+            ) : (
+              <div
+                className="link-green"
+                onClick={(): void => {
+                  modalConfig.onShouldShowModal({
+                    value: ShouldShowModal.configProduct,
+                    newTitleModal: 'Configurações do sector',
+                  });
+                }}
+              >
+                + inserir setor
+              </div>
+            )}
           </div>
         </div>
         <SuperCollapse

@@ -50,9 +50,19 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
   modalConfig,
   formDiscountCoupon,
 }) => {
+  const titleRef = React.useRef<HTMLInputElement>(null);
+
+  // focus on name input when batchStates is not empty
+  React.useEffect(() => {
+    if (productStates?.product) {
+      titleRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [productStates?.product]);
+
   const listDiscountCouponMock = [
     {
       id: '1',
+      name: 'Whisky Red Label 1L',
       product: 'Whisky Red Label 1L',
       amount: '100 unidades',
       unitValue: 'R$20,00',
@@ -99,7 +109,11 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
       </Dialog>
       <Loading isVisible={state === States.loading} />
       <Container className="mainContainer" fluid={true}>
-        <h6 className="mb-5">Cadastrando produtos</h6>
+        <h6 ref={titleRef} className="mb-5">
+          {productStates.product
+            ? `Editando ${productStates.product.name}`
+            : 'Cadastrando produtos'}
+        </h6>
         <div className="card-ligth-color mb-5">
           <div className="container-event ">
             <ProductRegisterContent formProduct={formProduct} productStates={productStates} />
@@ -111,18 +125,18 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
                 productActions.onCancelEdit();
               }}
             >
-              {productStates.product ? 'Cancelar edição do produto' : null}
+              {productStates.product ? 'Cancelar' : null}
             </div>
             <div className="link-green" onClick={() => productActions.onSave()}>
-              {productStates.product ? 'Salvar produto' : '+ cadastrar produto'}
+              {productStates.product ? 'Salvar edição' : '+ cadastrar produto'}
             </div>
           </div>
         </div>
         <SuperCollapse
           title={`Produtos cadastrados`}
           content={
-            productStates.productList.length > 0
-              ? productStates.productList.map((item, index) => (
+            listDiscountCouponMock.length > 0
+              ? listDiscountCouponMock.map((item, index) => (
                   <React.Fragment key={index}>
                     <div className="mb-5">
                       <span className="secondary-table-title">Grupo #{index + 1}</span>
@@ -155,7 +169,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
                                     <Switch
                                       name="status"
                                       label="Vender online"
-                                      onChange={() => undefined}
+                                      onChange={() => productActions.onChangeAllowOnline(item)}
                                       checked={item.allowOnline}
                                     />
                                   </div>

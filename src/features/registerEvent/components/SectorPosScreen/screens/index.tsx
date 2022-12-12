@@ -6,6 +6,9 @@ import { AxiosError } from 'axios';
 import api from '@/services/api';
 import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
+import Pos from '@/model/Pos';
+import { useConfirmDelete } from '@/hooks/useConfirmDelete';
+import { DeleteContent } from '@/components/DeleteContent';
 import { formPosProps, modalConfigPosProps, onShouldShowModalSectorPosProps } from '../types';
 import { SectorPosContainer, ShouldShowModal } from './ui';
 
@@ -25,12 +28,16 @@ type UrlParams = {
 };
 
 export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({ nextTab, backTab }) => {
-  // const [state, setState] = useState<States>(States.default);
+  const [state, setState] = useState<States>(States.default);
   const { title, visible, onChangeTitle, onToggle } = useDialog();
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(
     ShouldShowModal.configPos,
   );
   const [posList, setPosList] = useState<any[]>([]);
+
+  const [posOptions, setPosOptions] = useState<Pos[]>([]);
+
+  const confirmDelete = useConfirmDelete();
 
   const params = useParams<UrlParams>();
 
@@ -92,31 +99,91 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({ next
 
   const handleGetPosList = async (id: string): Promise<void> => {
     try {
-      // setState(States.loading);
-      const { data } = await api.get(`event/section-product/${id}/pos`);
+      setState(States.loading);
+      const { data } = await api.get(`/event/section-product/${id}/pos`);
 
       setPosList(data ?? []);
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
     } finally {
-      // setState(States.default);
+      setState(States.default);
     }
   };
 
+  const handleGetAllPos = async (): Promise<void> => {
+    try {
+      setState(States.loading);
+      const { data } = await api.get<Pos[]>('/pos/find');
+      setPosOptions(data ?? []);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
+  const handleOnSavePos = async (): Promise<void> => {
+    try {
+      const payload = {};
+
+      const reponse = await api.post(`/event/section-product/${params.id}/pos`, payload);
+      if (reponse) toast.success('Dados salvos com sucesso!');
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    }
+  };
+
+  const handleOnConfirmDeleteToPos = async (posSelected: Pos): Promise<void> => {
+    try {
+      await api.delete(`/combo/${posSelected?.id}`);
+
+      toast.success('Pos excluído com sucesso!');
+      confirmDelete.hide();
+      handleGetPosList(params.id);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    }
+  };
+
+  const handleOnShowDeletePos = (posSelected: Pos): void => {
+    confirmDelete.show({
+      title: '',
+      children: <DeleteContent />,
+      actions: [
+        {
+          title: 'Não, quero manter',
+          theme: 'noneBorder',
+          onClick: (): void => confirmDelete.hide(),
+        },
+        {
+          title: 'Sim, quero excluir',
+          onClick: (): Promise<void> => handleOnConfirmDeleteToPos(posSelected),
+        },
+      ],
+    });
+  };
+
   useEffect(() => {
+    handleGetAllPos();
     handleGetPosList(params.id);
   }, []);
 
   return (
     <>
       <SectorPosContainer
-        // state={state}
+        state={state}
         controllerModalConfig={controllerModalConfig}
         controllerFormPos={controllerFormPos}
         posList={posList}
+        posOptions={posOptions}
         nextTab={nextTab}
         backTab={backTab}
+        handleOnSavePos={handleOnSavePos}
+        handleOnShowDeletePos={handleOnShowDeletePos}
       />
     </>
   );

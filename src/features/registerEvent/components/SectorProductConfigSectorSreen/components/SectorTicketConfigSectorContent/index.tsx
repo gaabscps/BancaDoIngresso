@@ -14,7 +14,7 @@ export enum States {
 // eslint-disable-next-line no-shadow
 export enum FormInputName {
   section = 'section',
-  imageBase64 = 'imageBase64',
+  imageBase64Sector = 'imageBase64Sector',
 }
 
 export const SectorProductConfigSectorContent: React.FC<
@@ -58,15 +58,15 @@ export const SectorProductConfigSectorContent: React.FC<
         </FormGroup>
         <FormGroup className="mb-2">
           <InputFile
-            name="imageBase64"
+            name="imageBase64Sector"
             label="Imagem do setor (opcional)"
-            fileName={formNameFiles?.imageBase64}
+            fileName={formNameFiles?.imageBase64Sector}
             onChange={e =>
-              onChangeFormFileInput(FormInputName.imageBase64)(
+              onChangeFormFileInput(FormInputName.imageBase64Sector)(
                 (e.target as HTMLInputElement)?.files?.[0],
               )
             }
-            error={formErrors.imageBase64 && formErrors.imageBase64[0]}
+            error={formErrors.imageBase64Sector && formErrors.imageBase64Sector[0]}
           />
         </FormGroup>
       </Form>

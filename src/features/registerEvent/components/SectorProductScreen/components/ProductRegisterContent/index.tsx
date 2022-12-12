@@ -23,7 +23,7 @@ export enum FormInputName {
   amount = 'amount',
   unitValue = 'unitValue',
   totalValue = 'totalValue',
-  imageBase64 = 'imageBase64',
+  imageBase64Product = 'imageBase64Product',
 }
 
 export const ProductRegisterContent: React.FC<
@@ -179,16 +179,16 @@ export const ProductRegisterContent: React.FC<
         </FormGroup>
         <FormGroup className="mb-2">
           <InputFile
-            name="imageBase64"
+            name="imageBase64Product"
             label="Imagem do produto (opcional)"
             placeholder=""
-            fileName={formNameFiles?.imageBase64}
+            fileName={formNameFiles?.imageBase64Product}
             onChange={e => {
-              onChangeFormFileInput(FormInputName.imageBase64)(
+              onChangeFormFileInput(FormInputName.imageBase64Product)(
                 (e.target as HTMLInputElement)?.files?.[0],
               );
             }}
-            error={formErrors.imageBase64 && formErrors.imageBase64[0]}
+            error={formErrors.imageBase64Product && formErrors.imageBase64Product[0]}
           />
         </FormGroup>
       </Form>

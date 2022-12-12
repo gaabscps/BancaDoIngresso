@@ -1,4 +1,5 @@
 import SectorProductComboProduct from './SectorProductComboProduct';
+import StatusType from './StatusType';
 
 export default interface SectorProductCombo {
   id?: string;
@@ -22,4 +23,6 @@ export default interface SectorProductCombo {
   totalValue: number;
   imageBase64: string;
   products: SectorProductComboProduct[];
+  status: StatusType;
+  allowSellingWebsite: boolean;
 }
