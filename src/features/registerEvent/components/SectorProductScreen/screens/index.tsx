@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import api, { AxiosError } from '@/services/api';
 import { useParams } from 'react-router-dom';
 import { FormInputName as FormInputNameToProduct } from '@/features/registerEvent/components/SectorProductScreen/components/ProductRegisterContent';
+import { FormInputName as FormInputNameToConfigProduct } from '@/features/registerEvent/components/SectorProductScreen/components/ProductConfigContent';
 import { useDialog } from '@/hooks/useDialog';
 import {
   ShouldShowModal,
@@ -18,6 +19,7 @@ import DiscountCoupon from '@/model/DiscountCoupon';
 import { useConfirmDelete } from '@/hooks/useConfirmDelete';
 import { DeleteContent } from '@/components/DeleteContent';
 import { TabSectorProductActionsProps } from '@/features/registerEvent/screens/SectorProduct/ui';
+import validators from '@/helpers/validators';
 import {
   formConfigProductProps,
   formProductProps,
@@ -78,7 +80,16 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
       totalValue: '',
       imageBase64Product: '',
     },
-    validators: {},
+    validators: {
+      group: [validators.required],
+      subgroup: [validators.required],
+      name: [validators.required],
+      allowOnline: [validators.required],
+      unitMeasurement: [validators.required],
+      amount: [validators.required],
+      unitValue: [validators.required],
+      totalValue: [validators.required],
+    },
     formatters: {},
   });
 
@@ -106,9 +117,31 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
       allowDiscount: '',
       allowDiscountCoupon: '',
     },
-    validators: {},
+    validators: {
+      physicalSaleAllowCreditCardPayment: [validators.required],
+      physicalSaleDebit: [validators.required],
+      physicalSaleCredit: [validators.required],
+      physicalSalePix: [validators.required],
+      physicalSaleAdministrateTax: [validators.required],
+      physicalSaleInstallments: [validators.required],
+      physicalSaleFee: [validators.required],
+      websiteSaleAllowCreditCardPayment: [validators.required],
+      websiteSaleDebit: [validators.required],
+      websiteSaleCredit: [validators.required],
+      websiteSalePix: [validators.required],
+      websiteSaleAdministrateTax: [validators.required],
+      websiteSaleInstallments: [validators.required],
+      websiteSaleFee: [validators.required],
+      allowDiscount: [validators.required],
+      allowDiscountCoupon: [validators.required],
+    },
     formatters: {},
   });
+
+  const handleOnTougleModal = (): void => {
+    onToggle();
+    setProduct(undefined);
+  };
 
   // modal config ------------------------------------------------------------
   const handleOnShouldShowModal = ({
@@ -118,7 +151,7 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
   }: onShouldShowModalSectorProductProps): void => {
     setShouldShowModal(value);
     onChangeTitle(newTitleModal);
-    onToggle();
+    handleOnTougleModal();
 
     if (productSelected?.id && value === ShouldShowModal.configProduct) {
       setProduct(productSelected);
@@ -160,7 +193,7 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
     title,
     visible,
     onChangeTitle,
-    onToggle,
+    handleOnTougleModal,
     onShouldShowModal: handleOnShouldShowModal,
     shouldShowModal,
     onShowModalDelete: handleOnShowDeleteProduct,
@@ -207,7 +240,7 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
           return;
         }
         setListDiscountCoupon(discountCoupon);
-        onToggle();
+        handleOnTougleModal();
       } catch (error) {
         const err = error as AxiosError;
         toast.error(err.message);
@@ -241,9 +274,8 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
     try {
       setState(States.loading);
       const { data } = await api.get(`event/section-product/${id}/product`);
-      // filter father event when event type is father
-      const { tickets } = data;
-      setProductList(tickets ?? []);
+
+      setProductList(data ?? []);
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
@@ -268,35 +300,80 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
 
   const handleOnSaveProduct = async (): Promise<void> => {
     try {
-      if (isFormValidProduct()) {
-        const payloadDiscountCoupon = listDiscountCoupon.map(item => ({
-          id: item.id,
-          name: item.name,
-          code: item.code,
-          amount: item.amount,
-          discountType: item.discountType,
-          discount: item.discount ?? 0,
-        }));
+      // if (isFormValidProduct()) {
+      const payload = {
+        id: product?.id,
+        group: {
+          id: '7049c51a-cd2d-413d-8cd3-0368fb916c70', // TODO: add group id when is selected
+        },
+        subgroup: {
+          id: '7049c51a-cd2d-413d-8cd3-0368fb916c70', // TODO: add subgroup id when is selected
+        },
+        allowSellingWebsite: formDataProduct[FormInputNameToProduct.allowOnline] ?? true,
+        name: formDataProduct[FormInputNameToProduct.name] ?? '',
+        amount: formDataProduct[FormInputNameToProduct.amount] ?? 0,
+        unitValue: formDataProduct[FormInputNameToProduct.unitValue] ?? 0,
+        totalValue: formDataProduct[FormInputNameToProduct.totalValue] ?? 0,
+        imageBase64: formDataProduct[FormInputNameToProduct.imageBase64Product] ?? '',
+      };
+      const reponse = await api.post(`/event/section-product/${params.id}/product`, payload);
+      if (reponse) toast.success('Dados salvos com sucesso!');
+      // }
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    }
+  };
 
-        console.log('Payload Cupons de desconto :>> ', payloadDiscountCoupon);
-
-        const payload = {
-          id: '',
-          group: {
-            id: '7049c51a-cd2d-413d-8cd3-0368fb916c70', // TODO: add group id when is selected
-          },
-          subgroup: {
-            id: '7049c51a-cd2d-413d-8cd3-0368fb916c70', // TODO: add subgroup id when is selected
-          },
-          name: formDataProduct[FormInputNameToProduct.name] ?? '',
-          amount: formDataProduct[FormInputNameToProduct.amount] ?? 0,
-          unitValue: formDataProduct[FormInputNameToProduct.unitValue] ?? 0,
-          totalValue: formDataProduct[FormInputNameToProduct.totalValue] ?? 0,
-          imageBase64: formDataProduct[FormInputNameToProduct.imageBase64Product] ?? '',
-        };
-        const reponse = await api.post(`/event/ticket/${params.id}/general-settings`, payload);
-        if (reponse) toast.success('Dados salvos com sucesso!');
-      }
+  const handleOnSaveConfigProduct = async (productSelected: any): Promise<void> => {
+    try {
+      // if (isFormValidConfigProduct()) {
+      const payloadDiscountCoupon = listDiscountCoupon.map(item => ({
+        id: item.id,
+        name: item.name,
+        code: item.code,
+        amount: item.amount,
+        discountType: item.discountType,
+        discount: item.discount ?? 0,
+      }));
+      const payload = {
+        id: productSelected?.id,
+        physicalSale: {
+          id: productSelected?.physicalSale?.id,
+          allowCreditCardPayment:
+            formDataProduct[FormInputNameToConfigProduct.physicalSaleAllowCreditCardPayment] ??
+            true,
+          debit: formDataProduct[FormInputNameToConfigProduct.physicalSaleDebit] ?? 0,
+          credit: formDataProduct[FormInputNameToConfigProduct.physicalSaleCredit] ?? 0,
+          // bankSlip: 0,
+          pix: formDataProduct[FormInputNameToConfigProduct.physicalSalePix] ?? 0,
+          administrateTax:
+            formDataProduct[FormInputNameToConfigProduct.physicalSaleAdministrateTax] ?? 0,
+          installments: formDataProduct[FormInputNameToConfigProduct.physicalSaleInstallments] ?? 0,
+          fee: formDataProduct[FormInputNameToConfigProduct.physicalSaleFee] ?? 0,
+        },
+        websiteSale: {
+          id: productSelected?.websiteSale?.id,
+          allowCreditCardPayment:
+            formDataProduct[FormInputNameToConfigProduct.websiteSaleAllowCreditCardPayment] ?? true,
+          debit: formDataProduct[FormInputNameToConfigProduct.websiteSaleDebit] ?? 0,
+          credit: formDataProduct[FormInputNameToConfigProduct.websiteSaleCredit] ?? 0,
+          // bankSlip: 0,
+          pix: formDataProduct[FormInputNameToConfigProduct.websiteSalePix] ?? 0,
+          administrateTax:
+            formDataProduct[FormInputNameToConfigProduct.websiteSaleAdministrateTax] ?? 0,
+          installments: formDataProduct[FormInputNameToConfigProduct.websiteSaleInstallments] ?? 0,
+          fee: formDataProduct[FormInputNameToConfigProduct.websiteSaleFee] ?? 0,
+        },
+        waiter: formDataProduct[FormInputNameToConfigProduct.waiter] ?? 0,
+        partialPayment: formDataProduct[FormInputNameToConfigProduct.partialPayment] ?? true,
+        allowDiscountCoupon:
+          formDataProduct[FormInputNameToConfigProduct.allowDiscountCoupon] ?? true,
+        discountCoupons: payloadDiscountCoupon,
+      };
+      const reponse = await api.post(`/event/section-product/${params.id}/product`, payload);
+      if (reponse) toast.success('Dados salvos com sucesso!');
+      // }
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
@@ -324,9 +401,9 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
   };
 
   const handleNextTab = async (): Promise<void> => {
-    if (isFormValidProduct()) {
-      nextTab();
-    }
+    // if (isFormValidProduct()) {
+    nextTab();
+    // }
   };
 
   const handleBackTab = (): void => {
@@ -372,6 +449,7 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
 
   const controllerProductActions: productActionsProps = {
     onSave: handleOnSaveProduct,
+    onSaveConfig: handleOnSaveConfigProduct,
     onGet: handleOnGetProduct,
     onFirstTab,
     onReturnTab: handleBackTab,
@@ -391,7 +469,7 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
   useEffect(() => {
     handleGetProductList(params.id);
     handleGetGroupList(params.id);
-  }, [product]);
+  }, []);
 
   useEffect(() => {
     resetFormProduct();

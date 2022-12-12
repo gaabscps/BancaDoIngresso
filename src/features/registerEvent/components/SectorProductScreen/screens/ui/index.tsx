@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-comment-textnodes */
 /* eslint-disable no-shadow */
 /* eslint-disable import/no-unresolved */
 import React, { Fragment } from 'react';
@@ -59,21 +60,12 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
     }
   }, [productStates?.product]);
 
-  const listDiscountCouponMock = [
-    {
-      id: '1',
-      name: 'Whisky Red Label 1L',
-      product: 'Whisky Red Label 1L',
-      amount: '100 unidades',
-      unitValue: 'R$20,00',
-      totalValue: 'R$2.000,00',
-      allowOnline: true,
-    },
-  ];
-
   const renderActionDialogToCancel: ActionProps = {
     title: 'Cancelar',
-    onClick: (): void => modalConfig.onToggle(),
+    onClick: (): void => {
+      productStates.setProduct(undefined);
+      modalConfig.handleOnTougleModal();
+    },
     theme: 'noneBorder',
   };
 
@@ -82,7 +74,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
       <Dialog
         title={modalConfig.title}
         visible={modalConfig.visible}
-        onClose={modalConfig.onToggle}
+        onClose={modalConfig.handleOnTougleModal}
         isContentWithCard
         actions={[
           {
@@ -91,7 +83,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
           {
             [ShouldShowModal.configProduct]: {
               title: productStates?.product ? 'Salvar' : 'Cadastrar novo setor',
-              onClick: (): Promise<void> => undefined as any,
+              onClick: (): Promise<void> => productActions.onSaveConfig(productStates?.product),
             },
           }[modalConfig.shouldShowModal],
         ]}
@@ -135,79 +127,92 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
         <SuperCollapse
           title={`Produtos cadastrados`}
           content={
-            listDiscountCouponMock.length > 0
-              ? listDiscountCouponMock.map((item, index) => (
+            productStates?.productList.length > 0
+              ? productStates?.productList.map((item, index) => (
                   <React.Fragment key={index}>
-                    <div className="mb-5">
-                      <span className="secondary-table-title">Grupo #{index + 1}</span>
-                      <span className="secondary-table-title font-weight-bold">
-                        <b> ·</b> Bebidas //
-                      </span>
-                      <span className="secondary-table-title"> Subgrupo #{index + 1}</span>
-                      <span className="secondary-table-title font-weight-bold">
-                        <b> ·</b> Bebidas alcoólicas
-                      </span>
-                    </div>
-                    <CustomTable
-                      numberRowsPerPage={0}
-                      progressPending={false}
-                      columns={columnsProducts}
-                      data={[
-                        {
-                          id: item.id,
-                          products: item.product,
-                          amount: item.amount,
-                          unitValue: item.unitValue,
-                          totalValue: item.totalValue,
-                          actions: (
-                            <React.Fragment>
-                              <div
-                                className={`${productStates.product ? 'disabled-content' : null}`}
-                              >
-                                <div className="d-flex align-items-center">
-                                  <div>
-                                    <Switch
-                                      name="status"
-                                      label="Vender online"
-                                      onChange={() => productActions.onChangeAllowOnline(item)}
-                                      checked={item.allowOnline}
-                                    />
-                                  </div>
-                                  <div className="ml-4">
-                                    <Config
-                                      className="mr-4 svg-icon action-icon"
-                                      onClick={(): void => {
-                                        modalConfig.onShouldShowModal({
-                                          value: ShouldShowModal.configProduct,
-                                          newTitleModal: 'Configurações do produto',
-                                          product: item,
-                                        });
-                                      }}
-                                    />
-                                    <Pen
-                                      className="mr-4 svg-icon action-icon"
-                                      onClick={(): Promise<void> => productActions.onGet(item)}
-                                    />
-                                    <Trash
-                                      className="svg-icon svg-icon-trash"
-                                      onClick={() => {
-                                        modalConfig.onShowModalDelete(item);
-                                      }}
-                                    />
+                    {index > 0 ? <hr style={{ margin: '25px -30px 30px -50px' }} /> : null}
+                    <div
+                      className={
+                        productStates.product && item.id !== productStates.product?.id
+                          ? 'disabled-content'
+                          : ''
+                      }
+                    >
+                      <div className="mb-5">
+                        <span className="secondary-table-title">Grupo #{index + 1}</span>
+                        <span className="secondary-table-title font-weight-bold">
+                          <b> ·</b> {item.group.name} //
+                        </span>
+                        <span className="secondary-table-title"> Subgrupo #{index + 1}</span>
+                        <span className="secondary-table-title font-weight-bold">
+                          <b> ·</b> {item.subgroup.name}
+                        </span>
+                      </div>
+                      <CustomTable
+                        numberRowsPerPage={0}
+                        progressPending={false}
+                        columns={columnsProducts}
+                        data={[
+                          {
+                            id: item.id,
+                            products: item.name,
+                            amount: item.amount,
+                            unitValue: item.unitValue,
+                            totalValue: item.totalValue,
+                            actions: (
+                              <React.Fragment>
+                                <div
+                                  className={`${productStates.product ? 'disabled-content' : null}`}
+                                >
+                                  <div className="d-flex align-items-center">
+                                    <div>
+                                      <Switch
+                                        name="status"
+                                        label="Vender online"
+                                        onChange={() => productActions.onChangeAllowOnline(item)}
+                                        checked={item.allowOnline}
+                                      />
+                                    </div>
+                                    <div className="ml-4">
+                                      <Config
+                                        className={`mr-4 svg-icon action-icon ${
+                                          item?.physicalSale && item?.websiteSale
+                                            ? ''
+                                            : 'svg-icon-error'
+                                        }`}
+                                        onClick={(): void => {
+                                          modalConfig.onShouldShowModal({
+                                            value: ShouldShowModal.configProduct,
+                                            newTitleModal: 'Configurações do produto',
+                                            product: item,
+                                          });
+                                        }}
+                                      />
+                                      <Pen
+                                        className="mr-4 svg-icon action-icon"
+                                        onClick={(): Promise<void> => productActions.onGet(item)}
+                                      />
+                                      <Trash
+                                        className="svg-icon svg-icon-trash"
+                                        onClick={() => {
+                                          modalConfig.onShowModalDelete(item);
+                                        }}
+                                      />
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                            </React.Fragment>
-                          ),
-                        },
-                      ]}
-                      theme="secondaryWithoutBorder"
-                    />
+                              </React.Fragment>
+                            ),
+                          },
+                        ]}
+                        theme="secondaryWithoutBorder"
+                      />
+                    </div>
                   </React.Fragment>
                 ))
               : 'Nenhum produto cadastrado. Aqui será exibida uma lista dos produtos cadastrados'
           }
-          count={listDiscountCouponMock.length}
+          count={productStates?.productList.length}
           leftIcon={TicketIcon}
         />
         <div className="d-flex justify-content-end">

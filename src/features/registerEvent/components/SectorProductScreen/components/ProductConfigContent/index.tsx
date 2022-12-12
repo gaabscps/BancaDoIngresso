@@ -30,6 +30,7 @@ export enum FormInputName {
   allowDiscount = 'allowDiscount',
   allowDiscountCoupon = 'allowDiscountCoupon',
   partialPayment = 'partialPayment',
+  waiter = 'waiter',
 }
 
 export const ProductConfigContent: React.FC<
@@ -309,28 +310,28 @@ export const ProductConfigContent: React.FC<
 
             <FormGroup>
               <InputText
-                name="partialPayment"
+                name="waiter"
                 label="Porcentagem do Garçom %"
                 addon="%"
                 placeholder="0"
                 className="w-input-sm"
                 maxLength={2}
-                value={formData[FormInputName.partialPayment]}
+                value={formData[FormInputName.waiter]}
                 onChange={e =>
-                  onChangeFormInput(FormInputName.partialPayment)(e.target.value.replace(/\D/g, ''))
+                  onChangeFormInput(FormInputName.waiter)(e.target.value.replace(/\D/g, ''))
                 }
-                error={formErrors.partialPayment && formErrors.partialPayment[0]}
+                error={formErrors.waiter && formErrors.waiter[0]}
               />
               <ButtonGroup
                 label="Pagamento parcial(rateio)?"
-                name="allowDiscount"
-                value={formData[FormInputName.allowDiscount]}
-                onChange={e => onChangeFormInput(FormInputName.allowDiscount)(e.target.value)}
+                name="partialPayment"
+                value={formData[FormInputName.partialPayment]}
+                onChange={e => onChangeFormInput(FormInputName.partialPayment)(e.target.value)}
                 options={[
                   { value: true, label: 'Sim' },
                   { value: false, label: 'Não' },
                 ]}
-                error={formErrors.allowDiscount && formErrors.allowDiscount[0]}
+                error={formErrors.partialPayment && formErrors.partialPayment[0]}
               />
               <ButtonGroup
                 label="Permitir Código de Desconto?"
