@@ -14,6 +14,8 @@ import SectorProductComboProduct from '@/model/SectorProductComboProduct';
 import SectorProductCombo from '@/model/SectorProductCombo';
 import { TabSectorProductActionsProps } from '@/features/registerEvent/screens/SectorProduct/ui';
 import { useParams } from 'react-router-dom';
+import { useConfirmDelete } from '@/hooks/useConfirmDelete';
+import { DeleteContent } from '@/components/DeleteContent';
 import { comboActionsProps, formComboConfigProps, formComboProps } from '../types';
 import { States } from '../../ContractorScreen/screens/ui';
 
@@ -45,6 +47,8 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
   const [productList, setProductList] = useState<SectorProductComboProduct[]>([]);
   const [listProductGroup, setListProductGroup] = useState<ProductGroup[]>([]);
   const [listProductSubGroup, setListProductSubGroup] = useState<ProductSubgroup[]>([]);
+
+  const confirmDelete = useConfirmDelete();
 
   const params = useParams<UrlParams>();
 
@@ -252,6 +256,8 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
             name: formDataCombo.subgroup,
           },
           products: [...productList, ...product],
+          status: 0,
+          allowSellingWebsite: true,
         },
       ]);
 
@@ -304,6 +310,79 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
     }
   };
 
+  const handleOnChangeAllowOnlineSwitch = async (comboSelected: any): Promise<void> => {
+    console.log('object 1');
+    try {
+      setState(States.loading);
+      const activedInput = comboSelected.allowSellingWebsite;
+
+      await api.patch(
+        `event/section-product/${params.id}/combo/${comboSelected.id}${
+          activedInput ? ' /disable-online' : '/enable-online'
+        }`,
+      );
+
+      handleGetComboList(params.id);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
+  const handleOnChangeComboSwitch = async (comboSelected: any): Promise<void> => {
+    console.log('object 1');
+    try {
+      setState(States.loading);
+      const activedInput = comboSelected.status;
+
+      await api.patch(
+        `event/section-product/${params.id}/combo/${comboSelected.id}${
+          activedInput ? ' /disable' : '/enable'
+        }`,
+      );
+
+      handleGetComboList(params.id);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
+  const handleOnConfirmDeleteCombo = async (comboSelected: any): Promise<void> => {
+    try {
+      await api.delete(`/event/section-product/${params?.id}/combo/${comboSelected.id}`);
+      toast.success('Combo excluído com sucesso!');
+      handleGetComboList(params.id);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      confirmDelete.hide();
+    }
+  };
+
+  const handleOnShowDeleteCombo = (comboSelected: any): void => {
+    confirmDelete.show({
+      title: '',
+      children: <DeleteContent />,
+      actions: [
+        {
+          title: 'Não, quero manter',
+          theme: 'noneBorder',
+          onClick: (): void => confirmDelete.hide(),
+        },
+        {
+          title: 'Sim, quero excluir',
+          onClick: (): Promise<void> => handleOnConfirmDeleteCombo(comboSelected),
+        },
+      ],
+    });
+  };
+
   const handleOnShouldShowModal = ({
     value,
     newTitleModal,
@@ -349,6 +428,9 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
       combo={combo}
       comboList={comboList}
       controllerProductActions={controllerProductActions}
+      onChangeAllowOnlineSwitch={handleOnChangeAllowOnlineSwitch}
+      onChangeComboSwitch={handleOnChangeComboSwitch}
+      onShowDeleteCombo={handleOnShowDeleteCombo}
     />
   );
 };

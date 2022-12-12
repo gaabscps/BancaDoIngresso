@@ -76,7 +76,7 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
       amount: '',
       unitValue: '',
       totalValue: '',
-      imageBase64: '',
+      imageBase64Product: '',
     },
     validators: {},
     formatters: {},
@@ -125,6 +125,19 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
     }
   };
 
+  const handleOnConfirmDeleteTopProduct = async (productSelected: any): Promise<void> => {
+    try {
+      await api.delete(`/event/section-product/${params?.id}/product/${productSelected.id}`);
+      toast.success('Produto excluído com sucesso!');
+      handleGetProductList(params.id);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      confirmDelete.hide();
+    }
+  };
+
   const handleOnShowDeleteProduct = (productSelected: any): void => {
     confirmDelete.show({
       title: '',
@@ -137,9 +150,7 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
         },
         {
           title: 'Sim, quero excluir',
-          onClick: (): void => {
-            console.log('TODO: Add function exclude item :>> ', productSelected);
-          },
+          onClick: (): Promise<void> => handleOnConfirmDeleteTopProduct(productSelected),
         },
       ],
     });
@@ -281,7 +292,7 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
           amount: formDataProduct[FormInputNameToProduct.amount] ?? 0,
           unitValue: formDataProduct[FormInputNameToProduct.unitValue] ?? 0,
           totalValue: formDataProduct[FormInputNameToProduct.totalValue] ?? 0,
-          imageBase64: formDataProduct[FormInputNameToProduct.imageBase64] ?? '',
+          imageBase64: formDataProduct[FormInputNameToProduct.imageBase64Product] ?? '',
         };
         const reponse = await api.post(`/event/ticket/${params.id}/general-settings`, payload);
         if (reponse) toast.success('Dados salvos com sucesso!');
@@ -289,6 +300,26 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
+    }
+  };
+
+  const handleOnChangeAllowOnline = async (productSelected: any): Promise<void> => {
+    try {
+      setState(States.loading);
+      const activedInput = productSelected.allowSellingWebsite;
+
+      await api.patch(
+        `event/section-product/${params.id}/product/${productSelected.id}${
+          activedInput ? ' /disable' : '/enable'
+        }`,
+      );
+
+      handleGetProductList(params.id);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
     }
   };
 
@@ -346,6 +377,7 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
     onReturnTab: handleBackTab,
     onNextTab: handleNextTab,
     onCancelEdit: handleOnCancelEditProduct,
+    onChangeAllowOnline: handleOnChangeAllowOnline,
   };
 
   const controllerProductStates: productStatesProps = {
