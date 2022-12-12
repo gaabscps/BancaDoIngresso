@@ -497,7 +497,9 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
       onChangeFormInputProduct(FormInputNameToProduct.group)(String(product.group.id));
       onChangeFormInputProduct(FormInputNameToProduct.subgroup)(String(product.subgroup.id));
       onChangeFormInputProduct(FormInputNameToProduct.name)(String(product.id));
-      onChangeFormInputProduct(FormInputNameToProduct.allowOnline)(String(product.allowOnline));
+      onChangeFormInputProduct(FormInputNameToProduct.allowOnline)(
+        String(product.allowSellingWebsite),
+      );
       onChangeFormInputProduct(FormInputNameToProduct.unitMeasurement)(
         String(product.unitMeasurement),
       );
