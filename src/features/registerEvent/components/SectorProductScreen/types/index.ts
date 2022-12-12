@@ -51,6 +51,7 @@ export interface productStatesProps {
   productList: any[];
   setProductList: React.Dispatch<React.SetStateAction<any[]>>;
   groupList: any[];
+  optionProduct: any[];
 }
 
 export interface FormDiscountCouponProps {

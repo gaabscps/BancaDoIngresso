@@ -5,6 +5,7 @@ import { Col, Form, FormGroup, Row } from 'reactstrap';
 import { updateMask as updateMaskCash, unmask as unMaskCash } from '@/helpers/masks/cash';
 import ReactTooltip from 'react-tooltip';
 import { ReactComponent as Info } from '@/assets/images/svg/infoTooltip.svg';
+import { SelectCreateable } from '@/components/SelectCreateable';
 import { SectorProductContainerProps } from '../../screens/ui';
 
 // eslint-disable-next-line no-shadow
@@ -17,6 +18,7 @@ export enum States {
 export enum FormInputName {
   group = 'group',
   subgroup = 'subgroup',
+  id = 'id',
   name = 'name',
   allowOnline = 'allowOnline',
   unitMeasurement = 'unitMeasurement',
@@ -71,13 +73,25 @@ export const ProductRegisterContent: React.FC<
           />
         </FormGroup>
         <FormGroup className="mb-2">
-          <InputText
-            name="name"
+          <SelectCreateable
             label="Nome do produto"
-            placeholder="Digite  o nome do grupo"
+            placeholder="Digite ou selecione nome do produto"
+            name="name"
+            onChange={e => {
+              const product = productStates.optionProduct.find(item => item.id === e?.value);
+              if (product) {
+                onChangeFormInput(FormInputName.id)(e?.value as string);
+                onChangeFormInput(FormInputName.name)(product.name as string);
+              } else {
+                onChangeFormInput(FormInputName.id)('' as string);
+                onChangeFormInput(FormInputName.name)(e?.value as string);
+              }
+            }}
             value={formData[FormInputName.name]}
-            onChange={e => onChangeFormInput(FormInputName.name)(e.target.value)}
-            error={formErrors.name && formErrors.name[0]}
+            options={productStates.optionProduct.map(item => ({
+              value: item.id,
+              label: item.name,
+            }))}
           />
         </FormGroup>
         <FormGroup className="mb-2">
@@ -178,18 +192,22 @@ export const ProductRegisterContent: React.FC<
           />
         </FormGroup>
         <FormGroup className="mb-2">
-          <InputFile
-            name="imageBase64Product"
-            label="Imagem do produto (opcional)"
-            placeholder=""
-            fileName={formNameFiles?.imageBase64Product}
-            onChange={e => {
-              onChangeFormFileInput(FormInputName.imageBase64Product)(
-                (e.target as HTMLInputElement)?.files?.[0],
-              );
-            }}
-            error={formErrors.imageBase64Product && formErrors.imageBase64Product[0]}
-          />
+          {formData[FormInputName.id] === '' ? (
+            <InputFile
+              name="imageBase64Product"
+              label="Imagem do produto (opcional)"
+              placeholder=""
+              fileName={formNameFiles?.imageBase64Product}
+              onChange={e => {
+                onChangeFormFileInput(FormInputName.imageBase64Product)(
+                  (e.target as HTMLInputElement)?.files?.[0],
+                );
+              }}
+              error={formErrors.imageBase64Product && formErrors.imageBase64Product[0]}
+            />
+          ) : (
+            ''
+          )}
         </FormGroup>
       </Form>
     </Fragment>

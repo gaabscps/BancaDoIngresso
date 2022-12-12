@@ -53,6 +53,8 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
 
   const [groupList, setGroupList] = useState<any>([]);
 
+  const [optionProduct, setOptionProduct] = useState<any>([]);
+
   const [discountCoupon, setDiscountCoupon] = useState<DiscountCoupon[]>([]);
   const [listDiscountCoupon, setListDiscountCoupon] = useState<DiscountCoupon[]>([]);
 
@@ -284,6 +286,20 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
     }
   };
 
+  const handleGettOptionProduct = async (): Promise<void> => {
+    try {
+      setState(States.loading);
+      const { data } = await api.get('product/find');
+
+      setOptionProduct(data ?? []);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
   const handleGetGroupList = async (id: string): Promise<void> => {
     try {
       setState(States.loading);
@@ -302,7 +318,7 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
     try {
       // if (isFormValidProduct()) {
       const payload = {
-        id: product?.id,
+        id: formDataProduct[FormInputNameToProduct.id] ?? '',
         group: {
           id: '7049c51a-cd2d-413d-8cd3-0368fb916c70', // TODO: add group id when is selected
         },
@@ -464,11 +480,13 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
     productList,
     setProductList,
     groupList,
+    optionProduct,
   };
 
   useEffect(() => {
     handleGetProductList(params.id);
     handleGetGroupList(params.id);
+    handleGettOptionProduct();
   }, []);
 
   useEffect(() => {
@@ -476,11 +494,19 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
     if (product) {
       // TODO: Add states when to get API return
 
-      onChangeFormInputProduct(FormInputNameToProduct.name)(String(product.product));
+      onChangeFormInputProduct(FormInputNameToProduct.group)(String(product.group.id));
+      onChangeFormInputProduct(FormInputNameToProduct.subgroup)(String(product.subgroup.id));
+      onChangeFormInputProduct(FormInputNameToProduct.name)(String(product.id));
       onChangeFormInputProduct(FormInputNameToProduct.allowOnline)(String(product.allowOnline));
-      onChangeFormInputProduct(FormInputNameToProduct.unitMeasurement)(String(product.amount));
+      onChangeFormInputProduct(FormInputNameToProduct.unitMeasurement)(
+        String(product.unitMeasurement),
+      );
+      onChangeFormInputProduct(FormInputNameToProduct.amount)(String(product.amount));
       onChangeFormInputProduct(FormInputNameToProduct.unitValue)(String(product.unitValue));
       onChangeFormInputProduct(FormInputNameToProduct.totalValue)(String(product.totalValue));
+      onChangeFormInputProduct(FormInputNameToProduct.imageBase64Product)(
+        String(product.imageBase64),
+      );
     }
   }, [product]);
 
