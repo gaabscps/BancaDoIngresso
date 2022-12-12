@@ -12,8 +12,10 @@ import { SelectCreateable } from '@/components/SelectCreateable';
 import ProductSubgroup from '@/model/ProductSubgroup';
 import { SimpleInputFile } from '@/components/SimpleInputFile';
 import ProductGroup from '@/model/ProductGroup';
+import EventGroupSubgroup from '@/model/EventGroupSubgroup';
 import { formGroupProps } from '../../types';
 import { States } from '../../../ContractorScreen/screens/ui';
+import { NameFiles } from '..';
 
 interface SectorProductGroupContainerProps {
   state: string;
@@ -23,6 +25,9 @@ interface SectorProductGroupContainerProps {
   controllerFormGroup: formGroupProps;
   listProductSubGroup: ProductSubgroup[];
   listProductGroup: ProductGroup[];
+  listGroupSubgroup: EventGroupSubgroup[];
+  nameFiles: NameFiles;
+  handleOnSaveGroup: () => Promise<void>;
   handleChangeGroup: (name: string, index: number, value: string | undefined) => void;
   handleAddGroup: () => Promise<void>;
   addGroup: (index: string) => void;
@@ -38,21 +43,26 @@ export interface DataRowDiscountCoupon {
 
 // eslint-disable-next-line no-shadow
 export enum FormInputName {
-  name = 'name',
-  image = 'image',
+  categoryGroupName = 'categoryGroupName',
+  imageBase64Group = 'imageBase64Group',
+  productSubGroupName = 'productSubGroupName',
+  imageBase64SubGroup = 'imageBase64SubGroup',
 }
 
 export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerProps> = ({
   state,
   subGroup,
   groupList,
-  subGroupList,
+  // subGroupList,
+  nameFiles,
   controllerFormGroup,
   listProductGroup,
   listProductSubGroup,
+  listGroupSubgroup,
+  handleOnSaveGroup,
   handleFecthProductSubGroupList,
   handleChangeGroup,
-  handleAddGroup,
+  // handleAddGroup,
   addGroup,
   removeGroup,
   onNextTab,
@@ -76,21 +86,36 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
               <FormGroup>
                 <SelectCreateable
                   label="Nome do grupo"
-                  name="name"
+                  name="categoryGroupName"
                   onChange={e => {
-                    controllerFormGroup.onChangeFormInputGroup(FormInputName.name)(
+                    controllerFormGroup.onChangeFormInputGroup(FormInputName.categoryGroupName)(
                       e?.value as string,
                     );
-                    handleFecthProductSubGroupList(e?.value as string);
+                    handleFecthProductSubGroupList(
+                      listProductGroup.find(item => item.name === e?.value)?.id || '',
+                    );
                   }}
-                  value={controllerFormGroup.formDataGroup[FormInputName.name]}
+                  value={controllerFormGroup.formDataGroup[FormInputName.categoryGroupName]}
                   options={listProductGroup.map(item => ({
-                    value: item.id,
+                    value: item.name,
                     label: item.name,
                   }))}
                   placeholder="Digite o nome do grupo. Ex: Bebidas"
                 />
-                <InputFile label="Imagem do grupo (opcional)" name="imageBase64" />
+                <InputFile
+                  label="Imagem do grupo (opcional)"
+                  name="imageBase64Group"
+                  fileName={nameFiles.imageBase64Group}
+                  onChange={e =>
+                    controllerFormGroup.handleOnChangeFileInput(FormInputName.imageBase64Group)(
+                      (e.target as HTMLInputElement)?.files?.[0],
+                    )
+                  }
+                  error={
+                    controllerFormGroup.formErrorsGroup.imageBase64Group &&
+                    controllerFormGroup.formErrorsGroup.imageBase64Group[0]
+                  }
+                />
               </FormGroup>
             </Col>
           </Row>
@@ -100,14 +125,14 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
                 <Col md={8}>
                   <SelectCreateable
                     label="Nome do subgrupo"
-                    name=""
+                    name="productSubGroupName"
                     value={sub.name}
                     onChange={e => {
                       handleChangeGroup('name', index, e?.value as string);
                     }}
                     placeholder="Bebidas doces"
                     options={listProductSubGroup.map(item => ({
-                      value: item.id,
+                      value: item.name,
                       label: item.name,
                     }))}
                     noPadding={true}
@@ -129,7 +154,22 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
               </Row>
               <Row>
                 <Col md={6}>
-                  <SimpleInputFile label="" title="subgrupo" name="" />
+                  <SimpleInputFile
+                    key={sub.id}
+                    label=""
+                    title="subgrupo"
+                    name={'imageBase64SubGroup'}
+                    fileName={nameFiles.imageBase64SubGroup}
+                    onChange={e =>
+                      controllerFormGroup.handleOnChangeFileInput(
+                        FormInputName.imageBase64SubGroup,
+                      )((e.target as HTMLInputElement)?.files?.[0])
+                    }
+                    error={
+                      controllerFormGroup.formErrorsGroup.imageBase64SubGroup &&
+                      controllerFormGroup.formErrorsGroup.imageBase64SubGroup[0]
+                    }
+                  />
                 </Col>
                 <Col md={4}>
                   <X className="mt-3 pt-1 action-icon" />
@@ -138,7 +178,7 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
             </div>
           ))}
           <div className="d-flex justify-content-end register-buttom">
-            <span className="action-icon" onClick={() => handleAddGroup()}>
+            <span className="action-icon" onClick={() => handleOnSaveGroup()}>
               + cadastrar grupo
             </span>
           </div>
@@ -152,8 +192,8 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
               overflow={true}
               title={'Grupos cadastrados'}
               content={
-                groupList.length > 0 ? (
-                  groupList.map((item, index) => (
+                listGroupSubgroup.length > 0 ? (
+                  listGroupSubgroup.map((item, index) => (
                     <React.Fragment key={index}>
                       <div>
                         <div
@@ -166,7 +206,7 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
                             className="secondary-table-title"
                           >
                             Grupo # {index + 1} <span style={{ transform: 'scale(5)' }}> · </span>
-                            <span style={{ fontWeight: '500' }}>{item.name}</span>
+                            <span style={{ fontWeight: '500' }}>{item?.categoryGroupName}</span>
                           </span>
                           <span className="secondary-table-title ml-5">{'//'}</span>
                           <div className="d-flex w-100">
@@ -177,7 +217,10 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
                               <span className="secondary-table-title ml-5 mr-2">Subgrupo</span>
                               <DropdonwFlags
                                 style={{ color: '#000 !important', fontWeight: '500' }}
-                                dataColumn={subGroupList}
+                                dataColumn={item?.subGroups?.map(subgroup => ({
+                                  id: subgroup?.productSubGroupId || '',
+                                  name: subgroup?.productSubGroupName || '',
+                                }))}
                               />
                             </div>
                             <Pen className="ml-5 action-icon" />
