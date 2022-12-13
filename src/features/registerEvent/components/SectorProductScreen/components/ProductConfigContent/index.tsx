@@ -27,7 +27,6 @@ export enum FormInputName {
   websiteSaleAdministrateTax = 'websiteSaleAdministrateTax',
   websiteSaleInstallments = 'websiteSaleInstallments',
   websiteSaleFee = 'websiteSaleFee',
-  allowDiscount = 'allowDiscount',
   allowDiscountCoupon = 'allowDiscountCoupon',
   partialPayment = 'partialPayment',
   waiter = 'waiter',
@@ -334,7 +333,7 @@ export const ProductConfigContent: React.FC<
                 error={formErrors.partialPayment && formErrors.partialPayment[0]}
               />
               <ButtonGroup
-                label="Permitir Código de Desconto?"
+                label="Permitir código de desconto?"
                 name="allowDiscountCoupon"
                 value={formData[FormInputName.allowDiscountCoupon]}
                 onChange={e => onChangeFormInput(FormInputName.allowDiscountCoupon)(e.target.value)}
@@ -343,14 +342,12 @@ export const ProductConfigContent: React.FC<
                   { value: false, label: 'Não' },
                 ]}
                 error={formErrors.allowDiscountCoupon && formErrors.allowDiscountCoupon[0]}
-                disabled={formData[FormInputName.allowDiscount] !== 'true'}
               />
             </FormGroup>
           </Col>
         </Row>
       </Form>
-      {formData[FormInputName.allowDiscountCoupon] === 'true' &&
-      formData[FormInputName.allowDiscount] === 'true' ? (
+      {formData[FormInputName.allowDiscountCoupon] === 'true' ? (
         <RegisterDiscountCoupon formDiscountCoupon={formDiscountCoupon} />
       ) : null}
     </Fragment>

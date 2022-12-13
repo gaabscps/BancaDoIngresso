@@ -156,16 +156,16 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
                           {
                             id: item.id,
                             products: item.name,
-                            amount: item.amount,
-                            unitValue: item.unitValue,
-                            totalValue: item.totalValue,
+                            amount: `${item.amount} unidades`,
+                            unitValue: `R$ ${item.unitValue}`,
+                            totalValue: `R$ ${item.totalValue}`,
                             actions: (
                               <React.Fragment>
                                 <div
                                   className={`${productStates.product ? 'disabled-content' : null}`}
                                 >
                                   <div className="d-flex align-items-center">
-                                    <div>
+                                    <div className="mt-3">
                                       <Switch
                                         name="status"
                                         label="Vender online"
