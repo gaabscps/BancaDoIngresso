@@ -134,19 +134,19 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
       allowSellingPos: [validators.required],
       printReceipt: [validators.required],
       physicalSaleAllowCreditCardPayment: [validators.required],
-      physicalSaleDebit: [validators.required, validators.between(0, 10)],
-      physicalSaleCredit: [validators.required, validators.between(0, 10)],
-      physicalSalePix: [validators.required, validators.between(0, 10)],
-      physicalSaleAdministrateTax: [validators.required, validators.between(0, 10)],
-      physicalSaleInstallments: [validators.required],
-      physicalSaleFee: [validators.required, validators.between(0, 10)],
+      physicalSaleDebit: [validators.required, validators.between(0.1, 10)],
+      physicalSaleCredit: [validators.required, validators.between(1, 10)],
+      physicalSalePix: [validators.required, validators.between(1, 10)],
+      physicalSaleAdministrateTax: [validators.required, validators.between(1, 10)],
+      physicalSaleInstallments: [validators.required, validators.between(1, 12)],
+      physicalSaleFee: [validators.required, validators.between(1, 10)],
       websiteSaleAllowCreditCardPayment: [validators.required],
-      websiteSaleDebit: [validators.required, validators.between(0, 10)],
-      websiteSaleCredit: [validators.required, validators.between(0, 10)],
-      websiteSalePix: [validators.required, validators.between(0, 10)],
-      websiteSaleAdministrateTax: [validators.required, validators.between(0, 10)],
-      websiteSaleInstallments: [validators.required],
-      websiteSaleFee: [validators.required, validators.between(0, 10)],
+      websiteSaleBankSlip: [validators.required, validators.between(0.1, 10)],
+      websiteSaleCredit: [validators.required, validators.between(1, 10)],
+      websiteSalePix: [validators.required, validators.between(1, 10)],
+      websiteSaleAdministrateTax: [validators.required, validators.between(1, 10)],
+      websiteSaleInstallments: [validators.required, validators.between(1, 12)],
+      websiteSaleFee: [validators.required, validators.between(1, 10)],
       allowDiscount: [validators.required],
       allowDiscountCoupon: [validators.required],
     },
@@ -284,7 +284,6 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
             ),
             debit: +formDataPaymentSettings[FormInputNameToPaymentSettings.physicalSaleDebit],
             credit: +formDataPaymentSettings[FormInputNameToPaymentSettings.physicalSaleCredit],
-            // bankSlip: +formDataPaymentSettings[FormInputNameToPaymentSettings.physicalSaleBankSlip],
             bankSlip: 0,
             pix: +formDataPaymentSettings[FormInputNameToPaymentSettings.physicalSalePix],
             administrateTax:
@@ -299,10 +298,9 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
                 FormInputNameToPaymentSettings.websiteSaleAllowCreditCardPayment
               ],
             ),
-            debit: +formDataPaymentSettings[FormInputNameToPaymentSettings.websiteSaleDebit],
             credit: +formDataPaymentSettings[FormInputNameToPaymentSettings.websiteSaleCredit],
-            // bankSlip: +formDataPaymentSettings[FormInputNameToPaymentSettings.websiteSaleBankSlip],
-            bankSlip: 0,
+            bankSlip: +formDataPaymentSettings[FormInputNameToPaymentSettings.websiteSaleBankSlip],
+            debit: 0,
             pix: +formDataPaymentSettings[FormInputNameToPaymentSettings.websiteSalePix],
             administrateTax:
               +formDataPaymentSettings[FormInputNameToPaymentSettings.websiteSaleAdministrateTax],
@@ -333,9 +331,9 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
 
   const handleNextTab = async (): Promise<void> => {
     await handleOnSaveSectorTicketPayment();
-    // if (isFormValidtPaymentSettings()) {
-    nextTab();
-    // }
+    if (isFormValidtPaymentSettings()) {
+      nextTab();
+    }
   };
 
   const handleBackTab = (): void => {
@@ -438,8 +436,8 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
       onChangeFormInputPaymentSettings(
         FormInputNameToPaymentSettings.websiteSaleAllowCreditCardPayment,
       )(String(ticket.payment.websiteSale.allowCreditCardPayment));
-      onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.websiteSaleDebit)(
-        String(ticket.payment.websiteSale.debit),
+      onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.websiteSaleBankSlip)(
+        String(ticket.payment.websiteSale.bankSlip),
       );
       onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.websiteSaleCredit)(
         String(ticket.payment.websiteSale.credit),

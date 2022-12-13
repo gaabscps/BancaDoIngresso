@@ -79,7 +79,7 @@ export enum FormInputName {
   physicalSaleInstallments = 'physicalSaleInstallments',
   physicalSaleFee = 'physicalSaleFee',
   websiteSaleAllowCreditCardPayment = 'websiteSaleAllowCreditCardPayment',
-  websiteSaleDebit = 'websiteSaleDebit',
+  websiteSaleBankSlip = 'websiteSaleBankSlip',
   websiteSaleCredit = 'websiteSaleCredit',
   websiteSalePix = 'websiteSalePix',
   websiteSaleAdministrateTax = 'websiteSaleAdministrateTax',
@@ -400,64 +400,62 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               label="Débito"
               className="w-input-sm"
               addon="%"
-              maxLength={2}
+              maxLength={5}
               value={formData[FormInputName.physicalSaleDebit]}
               placeholder="0"
               onChange={e =>
                 onChangeFormInput(FormInputName.physicalSaleDebit)(
-                  e.target.value.replace(/\D/g, ''),
+                  e.target.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1'),
                 )
               }
               error={formErrors.physicalSaleDebit && formErrors.physicalSaleDebit[0]}
-              disabled={formData[FormInputName.physicalSaleAllowCreditCardPayment] !== 'true'}
             />
             <InputText
               name="physicalSaleCredit"
               label="Crédito"
               className="w-input-sm"
               addon="%"
-              maxLength={2}
+              maxLength={5}
               value={formData[FormInputName.physicalSaleCredit]}
               placeholder="0"
               onChange={e =>
                 onChangeFormInput(FormInputName.physicalSaleCredit)(
-                  e.target.value.replace(/\D/g, ''),
+                  e.target.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1'),
                 )
               }
               error={formErrors.physicalSaleCredit && formErrors.physicalSaleCredit[0]}
-              disabled={formData[FormInputName.physicalSaleAllowCreditCardPayment] !== 'true'}
             />
             <InputText
               name="physicalSalePix"
               label="PIX"
               className="w-input-sm"
               addon="%"
-              maxLength={2}
+              maxLength={5}
               value={formData[FormInputName.physicalSalePix]}
               placeholder="0"
               onChange={e =>
-                onChangeFormInput(FormInputName.physicalSalePix)(e.target.value.replace(/\D/g, ''))
+                onChangeFormInput(FormInputName.physicalSalePix)(
+                  e.target.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1'),
+                )
               }
               error={formErrors.physicalSalePix && formErrors.physicalSalePix[0]}
-              disabled={formData[FormInputName.physicalSaleAllowCreditCardPayment] !== 'true'}
             />
             <InputText
               name="physicalSaleAdministrateTax"
               label="Taxa administrativa"
               className="w-input-sm"
               addon="%"
-              maxLength={2}
+              maxLength={5}
               value={formData[FormInputName.physicalSaleAdministrateTax]}
               placeholder="0"
               onChange={e =>
                 onChangeFormInput(FormInputName.physicalSaleAdministrateTax)(
-                  e.target.value.replace(/\D/g, ''),
+                  e.target.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1'),
                 )
               }
               error={
                 formErrors.physicalSaleAdministrateTax && formErrors.physicalSaleAdministrateTax[0]
               }
-              disabled={formData[FormInputName.physicalSaleAllowCreditCardPayment] !== 'true'}
             />
           </FormGroup>
           <div className="d-flex">
@@ -472,7 +470,6 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               }
               error={formErrors.physicalSaleInstallments && formErrors.physicalSaleInstallments[0]}
               options={optionCount}
-              disabled={formData[FormInputName.physicalSaleAllowCreditCardPayment] !== 'true'}
             />
             <span className="mt-5 mr-3 ml-3 input-label"> + </span>
             <SelectCustom
@@ -484,7 +481,6 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               onChange={e => onChangeFormInput(FormInputName.physicalSaleFee)(e?.value as string)}
               error={formErrors.physicalSaleFee && formErrors.physicalSaleFee[0]}
               options={optionLimiteCount}
-              disabled={formData[FormInputName.physicalSaleAllowCreditCardPayment] !== 'true'}
             />
           </div>
 
@@ -510,66 +506,66 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
           </FormGroup>
           <FormGroup>
             <InputText
-              name="websiteSaleDebit"
-              label="Débito"
+              name="websiteSaleBankSlip"
+              label="Boleto"
               className="w-input-sm"
               addon="%"
-              maxLength={2}
-              value={formData[FormInputName.websiteSaleDebit]}
+              maxLength={5}
+              value={formData[FormInputName.websiteSaleBankSlip]}
               placeholder="0"
               onChange={e =>
-                onChangeFormInput(FormInputName.websiteSaleDebit)(e.target.value.replace(/\D/g, ''))
+                onChangeFormInput(FormInputName.websiteSaleBankSlip)(
+                  e.target.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1'),
+                )
               }
-              error={formErrors.websiteSaleDebit && formErrors.websiteSaleDebit[0]}
-              disabled={formData[FormInputName.websiteSaleAllowCreditCardPayment] !== 'true'}
+              error={formErrors.websiteSaleBankSlip && formErrors.websiteSaleBankSlip[0]}
             />
             <InputText
               name="websiteSaleCredit"
               label="Crédito"
               className="w-input-sm"
               addon="%"
-              maxLength={2}
+              maxLength={5}
               value={formData[FormInputName.websiteSaleCredit]}
               placeholder="0"
               onChange={e =>
                 onChangeFormInput(FormInputName.websiteSaleCredit)(
-                  e.target.value.replace(/\D/g, ''),
+                  e.target.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1'),
                 )
               }
               error={formErrors.websiteSaleCredit && formErrors.websiteSaleCredit[0]}
-              disabled={formData[FormInputName.websiteSaleAllowCreditCardPayment] !== 'true'}
             />
             <InputText
               name="websiteSalePix"
               label="PIX"
               className="w-input-sm"
               addon="%"
-              maxLength={2}
+              maxLength={5}
               value={formData[FormInputName.websiteSalePix]}
               placeholder="0"
               onChange={e =>
-                onChangeFormInput(FormInputName.websiteSalePix)(e.target.value.replace(/\D/g, ''))
+                onChangeFormInput(FormInputName.websiteSalePix)(
+                  e.target.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1'),
+                )
               }
               error={formErrors.websiteSalePix && formErrors.websiteSalePix[0]}
-              disabled={formData[FormInputName.websiteSaleAllowCreditCardPayment] !== 'true'}
             />
             <InputText
               name="websiteSaleAdministrateTax"
               label="Taxa administrativa"
               className="w-input-sm"
               addon="%"
-              maxLength={2}
+              maxLength={5}
               value={formData[FormInputName.websiteSaleAdministrateTax]}
               placeholder="0"
               onChange={e =>
                 onChangeFormInput(FormInputName.websiteSaleAdministrateTax)(
-                  e.target.value.replace(/\D/g, ''),
+                  e.target.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1'),
                 )
               }
               error={
                 formErrors.websiteSaleAdministrateTax && formErrors.websiteSaleAdministrateTax[0]
               }
-              disabled={formData[FormInputName.websiteSaleAllowCreditCardPayment] !== 'true'}
             />
           </FormGroup>
           <div className="d-flex">
@@ -584,7 +580,6 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               }
               error={formErrors.websiteSaleInstallments && formErrors.websiteSaleInstallments[0]}
               options={optionCount}
-              disabled={formData[FormInputName.websiteSaleAllowCreditCardPayment] !== 'true'}
             />
             <span className="mt-5 mr-3 ml-3 input-label"> + </span>
             <SelectCustom
@@ -596,7 +591,6 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               onChange={e => onChangeFormInput(FormInputName.websiteSaleFee)(e?.value as string)}
               error={formErrors.websiteSaleFee && formErrors.websiteSaleFee[0]}
               options={optionLimiteCount}
-              disabled={formData[FormInputName.websiteSaleAllowCreditCardPayment] !== 'true'}
             />
           </div>
           <div className="container-event mb-4">

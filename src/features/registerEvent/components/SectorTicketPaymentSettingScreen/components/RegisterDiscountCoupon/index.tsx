@@ -75,6 +75,7 @@ export const RegisterDiscountCoupon: React.FC<RegisterContentProps> = ({
                     type="number"
                     label="Desconto (%)"
                     placeholder="0"
+                    maxLength={2}
                     value={String(item.discount)}
                     onChange={e => handleChangeDiscountCoupon('discount', index, e?.target.value)}
                     error={undefined}
