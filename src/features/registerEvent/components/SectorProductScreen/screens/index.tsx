@@ -150,9 +150,6 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
   const handleValidateAllFields = (data: any[]): boolean => {
     const physicalSale = data.filter(item => item?.physicalSale === true);
     const websiteSale = data.filter(item => item?.websiteSale === true);
-    console.log('data :>> ', data, !!physicalSale, !!websiteSale);
-    console.log('physicalSale :>> ', physicalSale);
-    console.log('websiteSale :>> ', websiteSale);
 
     if (!physicalSale && !websiteSale) {
       toast.error('É necessário configurar as taxas de todos os produtos');
