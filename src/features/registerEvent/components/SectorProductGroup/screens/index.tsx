@@ -108,6 +108,7 @@ export const SectorProductGroupScreen: React.FC<
   const handleChangeAppendFileInput =
     (inputName: string, index: number) =>
     (file: File | undefined): void => {
+      console.log(index);
       // validate if file is image
       if (file && file.type.match(/image\/(jpg|jpeg|png)/)) {
         const reader = new FileReader();
@@ -115,11 +116,18 @@ export const SectorProductGroupScreen: React.FC<
         reader.onload = () => {
           const base64 = reader.result?.toString();
           if (base64) {
-            console.log(nameFilesSub);
             setNameFilesSub({ ...nameFilesSub, [inputName]: file.name });
             const newFormValues = [...subGroup] as any;
             newFormValues[index][inputName] = base64;
-            setSubGroup([...subGroup, { id: index, name: '', imageBase64: base64 }]);
+            setSubGroup([
+              ...subGroup.slice(0, index),
+              {
+                id: newFormValues[index].id,
+                name: newFormValues[index].name,
+                imageBase64: base64,
+              },
+              ...subGroup.slice(index + 1),
+            ]);
           }
         };
       } else {
@@ -129,11 +137,19 @@ export const SectorProductGroupScreen: React.FC<
       }
     };
 
-  // reset the input file form onChange and nameFilesSub on Click
   const handleResetFileInput = (inputName: string, index: number): void => {
     const newFormValues = [...subGroup] as any;
     newFormValues[index][inputName] = '';
-    setSubGroup(newFormValues);
+    // push empty value on imagebase64 on subGroup to reset the input file
+    setSubGroup([
+      ...subGroup.slice(0, index),
+      {
+        id: newFormValues[index].id,
+        name: newFormValues[index].name,
+        imageBase64: '',
+      },
+      ...subGroup.slice(index + 1),
+    ]);
     setNameFilesSub({ ...nameFilesSub, [inputName]: '' });
   };
 

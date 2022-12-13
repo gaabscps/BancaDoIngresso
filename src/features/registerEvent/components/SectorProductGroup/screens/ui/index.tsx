@@ -168,6 +168,7 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
                         `imageBase64SubGroup-${index}`,
                         index,
                       )((e.target as HTMLInputElement)?.files?.[0]);
+                      e.target.value = '';
                     }}
                     error={
                       controllerFormGroup.formErrorsGroup.imageBase64SubGroup &&
