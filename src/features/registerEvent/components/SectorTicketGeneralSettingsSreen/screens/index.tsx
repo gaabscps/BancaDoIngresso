@@ -25,8 +25,10 @@ type UrlParams = {
 };
 
 export const SectorTicketGeneralSettingsScreen: React.FC<
-  Pick<SectorTicketContainerProps, 'ticketStates'> & TabSectorTicketActionsProps
-> = ({ ticketStates, backTab, onFirstTab }): JSX.Element => {
+  Pick<SectorTicketContainerProps, 'ticketStates'> &
+    Pick<SectorTicketContainerProps, 'ticketStep'> &
+    TabSectorTicketActionsProps
+> = ({ ticketStates, ticketStep, backTab }): JSX.Element => {
   const [state] = useState<States>(States.default);
 
   const params = useParams<UrlParams>();
@@ -70,7 +72,7 @@ export const SectorTicketGeneralSettingsScreen: React.FC<
         const payload = {
           eventTickets: [
             {
-              id: ticketStates.ticket?.id,
+              id: ticketStep?.ticketState?.id,
             },
           ],
           sendTicketWhatsApp: convertToBoolean(
@@ -113,7 +115,8 @@ export const SectorTicketGeneralSettingsScreen: React.FC<
   const handleNextTab = async (): Promise<void> => {
     await handleOnSaveGeneralSettings();
     if (isFormValidGeneralSettings()) {
-      onFirstTab();
+      console.log('TODO : adicionar aqui a ação do ultimo botão');
+      // TODO : adicionar aqui a ação do ultimo botão
     }
   };
 
@@ -130,7 +133,6 @@ export const SectorTicketGeneralSettingsScreen: React.FC<
 
   const controllerGeneralSettingsActions: generalSettingsProps = {
     onSave: handleOnSaveGeneralSettings,
-    onFirstTab,
     onReturnTap: handleBackTab,
     onNextTap: handleNextTab,
   };
@@ -138,7 +140,6 @@ export const SectorTicketGeneralSettingsScreen: React.FC<
   useEffect(() => {
     const { ticket } = ticketStates;
 
-    onFirstTab();
     resetFormGeneralSettings();
 
     if (ticket?.generalSettings) {

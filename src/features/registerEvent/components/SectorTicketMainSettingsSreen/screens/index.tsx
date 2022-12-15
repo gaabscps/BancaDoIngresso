@@ -47,8 +47,10 @@ type UrlParams = {
 };
 
 export const SectorTicketMainSettingsScreen: React.FC<
-  Pick<SectorTicketContainerProps, 'ticketStates'> & Omit<TabSectorTicketActionsProps, 'backTab'>
-> = ({ ticketStates, nextTab, onFirstTab }): JSX.Element => {
+  Pick<SectorTicketContainerProps, 'ticketStates'> &
+    Pick<SectorTicketContainerProps, 'ticketStep'> &
+    Omit<TabSectorTicketActionsProps, 'backTab'>
+> = ({ ticketStates, ticketStep, nextTab, onFirstTab }): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
   const [formNameFiles, setFormNameFiles] = useState<NameFiles>({});
 
@@ -319,8 +321,9 @@ export const SectorTicketMainSettingsScreen: React.FC<
         if (!payload.id) {
           delete payload.id;
         }
-        const reponse = await api.post(`/event/ticket/${params.id}/main-settings`, payload);
-        if (reponse) toast.success('Dados salvos com sucesso!');
+        const response = await api.post(`/event/ticket/${params.id}/main-settings`, payload);
+        if (response) toast.success('Dados salvos com sucesso!');
+        ticketStep.setTicketState(response.data);
       }
     } catch (error) {
       const err = error as AxiosError;

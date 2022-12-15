@@ -18,7 +18,6 @@ export interface onShouldShowModalTicketGeneralSettingsProps {
 
 export interface generalSettingsProps {
   onSave: () => Promise<void>;
-  onFirstTab: () => void;
   onReturnTap: () => void;
   onNextTap: () => Promise<void>;
 }

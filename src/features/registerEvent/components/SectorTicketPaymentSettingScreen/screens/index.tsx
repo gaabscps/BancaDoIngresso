@@ -69,8 +69,10 @@ type UrlParams = {
 };
 
 export const SectorTicketPaymentSettingsScreen: React.FC<
-  Pick<SectorTicketContainerProps, 'ticketStates'> & TabSectorTicketActionsProps
-> = ({ ticketStates, nextTab, backTab, onFirstTab }): JSX.Element => {
+  Pick<SectorTicketContainerProps, 'ticketStates'> &
+    Pick<SectorTicketContainerProps, 'ticketStep'> &
+    TabSectorTicketActionsProps
+> = ({ ticketStates, ticketStep, nextTab, backTab }): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
   const [paymentGatewayList, setPaymentGatewayList] = useState<PaymentGateway[]>([]);
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(
@@ -233,10 +235,10 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
         }));
 
         const payload = {
-          id: ticketStates.ticket?.payment?.id,
+          id: ticketStep?.ticketState?.payment?.id,
           eventTickets: [
             {
-              id: ticketStates.ticket?.id,
+              id: ticketStep.ticketState?.id,
             },
           ],
           posGateway: {
@@ -320,8 +322,8 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
         if (!payload.id) {
           delete payload.id;
         }
-        const reponse = await api.post(`/event/ticket/${params.id}/payment`, payload);
-        if (reponse) toast.success('Dados salvos com sucesso!');
+        const response = await api.post(`/event/ticket/${params.id}/payment`, payload);
+        if (response) toast.success('Dados salvos com sucesso!');
       }
     } catch (error) {
       const err = error as AxiosError;
@@ -342,7 +344,6 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
 
   const controllerPaymentSettingsActions: PaymentSettingsActionsProps = {
     onSave: handleOnSaveSectorTicketPayment,
-    onFirstTab,
     onReturnTab: handleBackTab,
     onNextTap: handleNextTab,
   };
@@ -367,7 +368,6 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
   useEffect(() => {
     const { ticket } = ticketStates;
 
-    onFirstTab();
     resetFormPaymentSettings();
 
     if (ticket?.payment) {
