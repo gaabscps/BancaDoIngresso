@@ -49,14 +49,14 @@ export const SectorTicketGeneralSettingsContainer: React.FC<
           <Button
             title="Voltar"
             theme="noneBorder"
-            onClick={() => generalSettingsActions.onReturnTap()}
+            onClick={() => generalSettingsActions.onReturnTab()}
           />
           <Button
             title="Adicionar ingresso"
             theme="outlineDark"
             className="ml-3"
             onClick={async () => {
-              await generalSettingsActions.onNextTap();
+              await generalSettingsActions.onNextTab();
             }}
           />
         </div>

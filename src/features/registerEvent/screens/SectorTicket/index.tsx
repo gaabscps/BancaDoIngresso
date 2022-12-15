@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
 import { useConfirmDelete } from '@/hooks/useConfirmDelete';
 import { DeleteContent } from '@/components/DeleteContent';
-import { formSectorTicketProps } from './types';
+import { formSectorTicketProps, ticketStepProps } from './types';
 import {
   ticketActionsProps,
   ticketStatesProps,
@@ -23,6 +23,7 @@ export const SectorTicketScreen: React.FC = (): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
 
   const [ticket, setTicket] = useState<Ticket>();
+  const [ticketState, setTicketState] = useState<Ticket>();
   const [ticketList, setTicketList] = useState<Ticket[]>([]);
 
   const params = useParams<UrlParams>();
@@ -115,6 +116,7 @@ export const SectorTicketScreen: React.FC = (): JSX.Element => {
   const controllerTicketStates: ticketStatesProps = {
     ticket,
     ticketList,
+    setTicket,
   };
 
   const controllerTicketActions: ticketActionsProps = {
@@ -134,12 +136,18 @@ export const SectorTicketScreen: React.FC = (): JSX.Element => {
     onChangeFormInput: onChangeFormInputSectorTicket,
   };
 
+  const controllerTicketStep: ticketStepProps = {
+    ticketState,
+    setTicketState,
+  };
+
   return (
     <SectorTicketContainer
       formSectorTicket={controllerFormSectorTicket}
       state={state}
       ticketStates={controllerTicketStates}
       ticketActions={controllerTicketActions}
+      ticketStep={controllerTicketStep}
     />
   );
 };
