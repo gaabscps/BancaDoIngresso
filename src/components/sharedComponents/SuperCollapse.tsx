@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Collapse } from 'reactstrap';
 
 interface StateProps {
-  title: string;
+  title: string | React.ReactNode;
   content: string | React.ReactNode;
   count?: number;
   showButtonOnTitle?: boolean;
@@ -35,11 +35,11 @@ function SuperCollapse(props: Props): JSX.Element {
           onClick={() => setOpen(!open)}
         >
           <div className="d-flex">
-            <div className="iconTable">{props.leftIcon()}</div>
+            <div className="iconTable">{props?.leftIcon()}</div>
             <div className={`normalText ${props.disabled ? 'disable-text' : ''}`}>
               {props.title}{' '}
               {props.count === undefined ? (
-                <span style={{ fontWeight: 'bold' }}>(0)</span>
+                <span style={{ fontWeight: 'bold' }}></span>
               ) : (
                 <span style={{ fontWeight: 'bold' }}>{getCount()}</span>
               )}

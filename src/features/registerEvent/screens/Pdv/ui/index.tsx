@@ -189,7 +189,7 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
                     </React.Fragment>
                   ))
                 ) : (
-                  <span>Nenhum cupom de desconto adicionado</span>
+                  <span>Nenhum PDV adicionado</span>
                 )
               }
               count={1}

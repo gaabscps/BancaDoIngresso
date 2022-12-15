@@ -16,6 +16,7 @@ import {
   configSectorActions,
   sectorStatesProps,
   modalConfigSectorSettingsProps,
+  dataConfigStatesProps,
 } from '../../types';
 import TicketIcon from '../../../../../../assets/images/svg/Ticket';
 
@@ -37,19 +38,19 @@ export interface SectorProductConfigSectorContainerProps {
   configSectorActions: configSectorActions;
   configSectorStates: sectorStatesProps;
   modalConfig: modalConfigSectorSettingsProps;
+  dataConfig: dataConfigStatesProps;
 }
 
 export const SectorProductConfigSectorContainer: React.FC<
   SectorProductConfigSectorContainerProps
-> = ({ state, formConfigSector, configSectorStates, configSectorActions, modalConfig }) => {
-  const listDiscountCoupon = [
-    {
-      id: '1',
-      product: '50',
-      combos: '6',
-    },
-  ];
-
+> = ({
+  state,
+  formConfigSector,
+  configSectorStates,
+  configSectorActions,
+  modalConfig,
+  dataConfig,
+}) => {
   const renderActionDialogToCancel: ActionProps = {
     title: 'Cancelar',
     onClick: (): void => modalConfig.onToggle(),
@@ -76,7 +77,7 @@ export const SectorProductConfigSectorContainer: React.FC<
       >
         {
           {
-            [ShouldShowModal.configProduct]: <SectorConfigContent />,
+            [ShouldShowModal.configProduct]: <SectorConfigContent dataConfig={dataConfig} />,
           }[modalConfig.shouldShowModal]
         }
       </Dialog>
@@ -106,10 +107,12 @@ export const SectorProductConfigSectorContainer: React.FC<
               <div
                 className="link-green"
                 onClick={(): void => {
-                  modalConfig.onShouldShowModal({
-                    value: ShouldShowModal.configProduct,
-                    newTitleModal: 'Configurações do sector',
-                  });
+                  if (formConfigSector.isFormValid()) {
+                    modalConfig.onShouldShowModal({
+                      value: ShouldShowModal.configProduct,
+                      newTitleModal: 'Configurações do sector',
+                    });
+                  }
                 }}
               >
                 + inserir setor
@@ -120,67 +123,79 @@ export const SectorProductConfigSectorContainer: React.FC<
         <SuperCollapse
           title={`Setores inseridos`}
           content={
-            listDiscountCoupon.length > 0 ? (
-              listDiscountCoupon.map((item, index) => (
-                <React.Fragment key={index}>
-                  <div className="mb-5">
-                    <span className="secondary-table-title">Setor #{index + 1}</span>
-                    <span className="secondary-table-title font-weight-bold">
-                      <b> ·</b> Camarote
-                    </span>
-                  </div>
-                  <CustomTable
-                    numberRowsPerPage={0}
-                    progressPending={false}
-                    columns={columnsSectors}
-                    data={[
-                      {
-                        id: item.id,
-                        products: item.product,
-                        combos: item.combos,
-                        actions: (
-                          <React.Fragment>
-                            <div
-                              className={`${configSectorStates.sector ? 'disabled-content' : null}`}
-                            >
-                              <div className="d-flex align-items-center">
-                                <div className="ml-4">
-                                  <Config
-                                    className="mr-4 svg-icon action-icon"
-                                    onClick={(): void => {
-                                      modalConfig.onShouldShowModal({
-                                        value: ShouldShowModal.configProduct,
-                                        newTitleModal: 'Configurações do sector',
-                                        sector: item,
-                                      });
-                                    }}
-                                  />
-                                  <Pen
-                                    className="mr-4 svg-icon action-icon"
-                                    onClick={(): void => configSectorActions.onGet(item)}
-                                  />
-                                  <Trash
-                                    className="svg-icon svg-icon-trash"
-                                    onClick={() => {
-                                      modalConfig.onShowModalDelete(item);
-                                    }}
-                                  />
+            configSectorStates.sectorTableList.length > 0 ? (
+              configSectorStates.sectorTableList.map(
+                ({ sectionNome, sectionId, sectionGroup }, index) => (
+                  <React.Fragment key={index}>
+                    <div className="mb-5">
+                      <span className="secondary-table-title">Setor #{index + 1}</span>
+                      <span className="secondary-table-title font-weight-bold">
+                        <b> ·</b> {sectionNome}
+                      </span>
+                    </div>
+                    <CustomTable
+                      numberRowsPerPage={0}
+                      progressPending={false}
+                      columns={columnsSectors}
+                      data={sectionGroup.map(({ subGroups }: any) =>
+                        subGroups.map(({ products, combos }: any, index: number) => ({
+                          id: index,
+                          products: products.length,
+                          combos: combos.length,
+                          actions: (
+                            <React.Fragment>
+                              <div
+                                className={`${
+                                  configSectorStates.sector ? 'disabled-content' : null
+                                }`}
+                              >
+                                <div className="d-flex align-items-center">
+                                  <div className="ml-4">
+                                    <Config
+                                      className="mr-4 svg-icon action-icon"
+                                      onClick={(): void => {
+                                        modalConfig.onShouldShowModal({
+                                          value: ShouldShowModal.configProduct,
+                                          newTitleModal: 'Configurações do sector',
+                                          sector: sectionGroup,
+                                        });
+                                      }}
+                                    />
+                                    <Pen
+                                      width={17}
+                                      height={17}
+                                      className="mr-4 svg-icon action-icon"
+                                      onClick={(): void =>
+                                        configSectorActions.onGet(configSectorStates)
+                                      }
+                                    />
+                                    <Trash
+                                      width={17}
+                                      height={17}
+                                      className="svg-icon svg-icon-trash"
+                                      onClick={() => {
+                                        modalConfig.onShowModalDelete(
+                                          configSectorStates.sectorTableList,
+                                        );
+                                      }}
+                                    />
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                          </React.Fragment>
-                        ),
-                      },
-                    ]}
-                    theme="secondaryWithoutBorder"
-                  />
-                </React.Fragment>
-              ))
+                            </React.Fragment>
+                          ),
+                        })),
+                      )}
+                      theme="secondaryWithoutBorder"
+                    />
+                  </React.Fragment>
+                ),
+              )
             ) : (
-              <span>Nenhum cupom de desconto adicionado</span>
+              <span>Nenhum setor adicionado</span>
             )
           }
-          count={1}
+          count={configSectorStates.sectorTableList.length}
           leftIcon={TicketIcon}
         />
         <div className="d-flex justify-content-end">

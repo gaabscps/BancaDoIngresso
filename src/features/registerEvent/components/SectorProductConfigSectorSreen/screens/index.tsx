@@ -13,13 +13,16 @@ import { useDialog } from '@/hooks/useDialog';
 import { DeleteContent } from '@/components/DeleteContent';
 import { useConfirmDelete } from '@/hooks/useConfirmDelete';
 import Section from '@/model/Section';
+import { FormInputName as FormInputNameConfigSector } from '@/features/registerEvent/components/SectorProductConfigSectorSreen/components/SectorTicketConfigSectorContent';
 import {
   formConfigSectorProps,
   configSectorActions,
   modalConfigSectorSettingsProps,
   onShouldShowModalSectorSettingsProps,
   sectorStatesProps,
+  dataConfigStatesProps,
 } from '../types';
+import validators from '@/helpers/validators';
 
 export interface NameFiles {
   [key: string]: string;
@@ -34,6 +37,7 @@ export const SectorProductConfigSectorScreen: React.FC<
 > = ({ backTab, nextTab }): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
   const [formNameFiles, setFormNameFiles] = useState<NameFiles>({});
+  const [form, setForm] = useState<any>({});
 
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(
     ShouldShowModal.configProduct,
@@ -41,6 +45,9 @@ export const SectorProductConfigSectorScreen: React.FC<
 
   const [sector, setSector] = useState<Section>();
   const [sectorList, setSectorList] = useState<Section[]>([]);
+  const [sectorTableList, setSectorTableList] = useState<Section[]>([]);
+
+  const [configList, setConfigList] = useState<Section[]>([]);
 
   const [sectorDropdown, setSectorDropdown] = useState<Section[]>([]);
 
@@ -58,43 +65,71 @@ export const SectorProductConfigSectorScreen: React.FC<
     resetForm: resetFormConfigSector,
   } = useForm({
     initialData: {
-      sendTicketWhatsApp: '',
-      codeType: '',
-      printType: '',
-      entranceGate: '',
-      nameBeforePurchase: '',
-      printNameTicket: '',
-      requestCpf: '',
-      printCpfTicket: '',
-      validateCpf: '',
-      purchaseLimitCpf: '',
+      section: '',
+      imageBase64Sector: '',
     },
-    validators: {},
-    formatters: {},
+    validators: {
+      section: [validators.required],
+    },
   });
+
+  const handleGetProducComboConfigtList = async (id: string): Promise<void> => {
+    try {
+      setState(States.loading);
+      const { data } = await api.get(`/event/section-product/${id}/product/section`);
+
+      setConfigList(data ?? []);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
+  const handleGetSectorList = async (id: string): Promise<void> => {
+    try {
+      setState(States.loading);
+      const { data } = await api.get(`/event/section-product/${id}/section`);
+
+      setSectorTableList(data ?? []);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
 
   const handleOnSaveConfigSector = async (): Promise<void> => {
     try {
       if (isFormValidConfigSector()) {
-        // TODO: Remove mock
+        const productChecked = form.products?.map((value: any) => {
+          const productId = value.split('_')[2];
+          return {
+            id: productId,
+          };
+        });
+
+        const combosChecked = form.combos?.map((value: any) => {
+          const comboId = value.split('_')[2];
+          return {
+            id: comboId,
+          };
+        });
+
         const payload = {
           section: {
-            id: 'b6ea5435-7738-4251-b11a-81ac40f3b14f',
+            id: formDataConfigSector[FormInputNameConfigSector.section],
           },
-          products: [
-            {
-              id: '95e4cfdd-1388-41fa-b5d5-fecdead2dea9',
-            },
-          ],
-          combos: [
-            {
-              id: 'd3df424d-bd4f-4ba5-99b1-476af1c0b89f',
-            },
-          ],
+          products: productChecked || [],
+          combos: combosChecked || [],
         };
 
         const reponse = await api.post(`/event/section-product/${params.id}/section`, payload);
         if (reponse) toast.success('Dados salvos com sucesso!');
+
+        handleGetSectorList(params.id);
       }
     } catch (error) {
       const err = error as AxiosError;
@@ -161,7 +196,7 @@ export const SectorProductConfigSectorScreen: React.FC<
     setShouldShowModal(value);
     onChangeTitle(newTitleModal);
     onToggle();
-
+    console.log('sectorSelected :>> ', sectorSelected);
     if (sectorSelected?.id && value === ShouldShowModal.configProduct) {
       setSector(sectorSelected);
     }
@@ -217,7 +252,14 @@ export const SectorProductConfigSectorScreen: React.FC<
     shouldShowModal,
     onShowModalDelete: handleOnShowDeleteProduct,
   };
+
   // modal config ------------------------------------------------------------
+
+  const controllerDataConfig: dataConfigStatesProps = {
+    form,
+    setForm,
+    configList,
+  };
 
   const controllerFormConfigSector: formConfigSectorProps = {
     formData: formDataConfigSector,
@@ -244,10 +286,13 @@ export const SectorProductConfigSectorScreen: React.FC<
     setSectorList,
     sectorDropdown,
     setSectorDropdown,
+    sectorTableList,
   };
 
   useEffect(() => {
     handleFecthSectorList();
+    handleGetProducComboConfigtList(params.id);
+    handleGetSectorList(params.id);
   }, []);
 
   return (
@@ -257,6 +302,7 @@ export const SectorProductConfigSectorScreen: React.FC<
       configSectorStates={controllerSectorStates}
       configSectorActions={controllerConfigSectorActions}
       modalConfig={controllerModalConfig}
+      dataConfig={controllerDataConfig}
     />
   );
 };
