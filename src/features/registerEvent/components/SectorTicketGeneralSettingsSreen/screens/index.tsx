@@ -103,8 +103,8 @@ export const SectorTicketGeneralSettingsScreen: React.FC<
         // if (!payload.id) {
         //   delete payload.id;
         // }
-        const reponse = await api.post(`/event/ticket/${params.id}/general-settings`, payload);
-        if (reponse) toast.success('Dados salvos com sucesso!');
+        const response = await api.post(`/event/ticket/${params.id}/general-settings`, payload);
+        if (response) toast.success('Dados salvos com sucesso!');
       }
     } catch (error) {
       const err = error as AxiosError;
@@ -133,8 +133,8 @@ export const SectorTicketGeneralSettingsScreen: React.FC<
 
   const controllerGeneralSettingsActions: generalSettingsProps = {
     onSave: handleOnSaveGeneralSettings,
-    onReturnTap: handleBackTab,
-    onNextTap: handleNextTab,
+    onReturnTab: handleBackTab,
+    onNextTab: handleNextTab,
   };
 
   useEffect(() => {

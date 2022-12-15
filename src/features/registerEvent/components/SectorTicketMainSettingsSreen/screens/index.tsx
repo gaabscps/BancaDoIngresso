@@ -540,9 +540,7 @@ export const SectorTicketMainSettingsScreen: React.FC<
 
   const handleNextTab = async (): Promise<void> => {
     await handleOnSaveMainSettings();
-    if (isFormValidMainSettings()) {
-      nextTab();
-    }
+    nextTab();
   };
 
   const controllerMainSettingsActions: mainSettingsProps = {
