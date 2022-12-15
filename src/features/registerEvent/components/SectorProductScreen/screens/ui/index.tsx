@@ -181,6 +181,8 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
                                     </div>
                                     <div className="ml-4">
                                       <Config
+                                        height={20}
+                                        width={20}
                                         className={`mr-4 svg-icon action-icon ${
                                           product?.physicalSale && product?.websiteSale
                                             ? ''
@@ -195,6 +197,8 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
                                         }}
                                       />
                                       <Pen
+                                        height={20}
+                                        width={20}
                                         className="mr-4 svg-icon action-icon"
                                         onClick={(): Promise<void> => productActions.onGet(product)}
                                       />
