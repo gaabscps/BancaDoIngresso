@@ -14,6 +14,7 @@ import { DeleteContent } from '@/components/DeleteContent';
 import { useConfirmDelete } from '@/hooks/useConfirmDelete';
 import Section from '@/model/Section';
 import { FormInputName as FormInputNameConfigSector } from '@/features/registerEvent/components/SectorProductConfigSectorSreen/components/SectorTicketConfigSectorContent';
+import validators from '@/helpers/validators';
 import {
   formConfigSectorProps,
   configSectorActions,
@@ -22,7 +23,6 @@ import {
   sectorStatesProps,
   dataConfigStatesProps,
 } from '../types';
-import validators from '@/helpers/validators';
 
 export interface NameFiles {
   [key: string]: string;
