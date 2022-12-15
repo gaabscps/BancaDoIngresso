@@ -111,14 +111,15 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
       physicalSaleInstallments: '',
       physicalSaleFee: '',
       websiteSaleAllowCreditCardPayment: '',
-      websiteSaleDebit: '',
       websiteSaleCredit: '',
       websiteSalePix: '',
       websiteSaleAdministrateTax: '',
+      websiteSaleBankSlip: '',
       websiteSaleInstallments: '',
       websiteSaleFee: '',
-      // allowDiscount: '',
       allowDiscountCoupon: '',
+      waiter: '',
+      partialPayment: '',
     },
     validators: {
       physicalSaleAllowCreditCardPayment: [validators.required],
@@ -129,14 +130,15 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
       physicalSaleInstallments: [validators.required],
       physicalSaleFee: [validators.required],
       websiteSaleAllowCreditCardPayment: [validators.required],
-      websiteSaleDebit: [validators.required],
       websiteSaleCredit: [validators.required],
       websiteSalePix: [validators.required],
       websiteSaleAdministrateTax: [validators.required],
+      websiteSaleBankSlip: [validators.required],
       websiteSaleInstallments: [validators.required],
       websiteSaleFee: [validators.required],
-      // allowDiscount: [validators.required],
       allowDiscountCoupon: [validators.required],
+      waiter: [validators.required],
+      partialPayment: [validators.required],
     },
     formatters: {},
   });
@@ -339,6 +341,7 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
           subgroup: {
             id: '0a2d6217-a628-49c6-8305-0abadd3b5abd', // TODO: add subgroup id when is selected
           },
+          unitMeasurement: formDataProduct[FormInputNameToProduct.unitMeasurement] ?? '',
           allowSellingWebsite: formDataProduct[FormInputNameToProduct.allowOnline] ?? true,
           name: formDataProduct[FormInputNameToProduct.name] ?? '',
           amount: +formDataProduct[FormInputNameToProduct.amount] ?? 0,
@@ -381,7 +384,6 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
               ) ?? true,
             debit: +formDataConfigProduct[FormInputNameToConfigProduct.physicalSaleDebit] ?? 0,
             credit: +formDataConfigProduct[FormInputNameToConfigProduct.physicalSaleCredit] ?? 0,
-            // bankSlip: 0,
             pix: +formDataConfigProduct[FormInputNameToConfigProduct.physicalSalePix] ?? 0,
             administrateTax:
               +formDataConfigProduct[FormInputNameToConfigProduct.physicalSaleAdministrateTax] ?? 0,
@@ -397,9 +399,8 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
                   FormInputNameToConfigProduct.websiteSaleAllowCreditCardPayment
                 ],
               ) ?? true,
-            debit: +formDataConfigProduct[FormInputNameToConfigProduct.websiteSaleDebit] ?? 0,
             credit: +formDataConfigProduct[FormInputNameToConfigProduct.websiteSaleCredit] ?? 0,
-            // bankSlip: 0,
+            bankSlip: +formDataConfigProduct[FormInputNameToConfigProduct.websiteSaleBankSlip] ?? 0,
             pix: +formDataConfigProduct[FormInputNameToConfigProduct.websiteSalePix] ?? 0,
             administrateTax:
               +formDataConfigProduct[FormInputNameToConfigProduct.websiteSaleAdministrateTax] ?? 0,
@@ -572,9 +573,6 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
       onChangeFormInputConfigProduct(
         FormInputNameToConfigProduct.websiteSaleAllowCreditCardPayment,
       )(String(product.websiteSale?.allowCreditCardPayment));
-      onChangeFormInputConfigProduct(FormInputNameToConfigProduct.websiteSaleDebit)(
-        String(product.websiteSale?.debit ?? ''),
-      );
       onChangeFormInputConfigProduct(FormInputNameToConfigProduct.websiteSaleCredit)(
         String(product.websiteSale?.credit ?? ''),
       );

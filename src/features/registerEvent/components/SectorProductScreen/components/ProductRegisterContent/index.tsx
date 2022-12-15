@@ -91,6 +91,7 @@ export const ProductRegisterContent: React.FC<
               value: item.id,
               label: item.name,
             }))}
+            error={formErrors.name && formErrors.name[0]}
           />
         </FormGroup>
         <FormGroup className="mb-2">
@@ -118,10 +119,10 @@ export const ProductRegisterContent: React.FC<
                 onChangeFormInput(FormInputName.unitMeasurement)(e.target.value);
               }}
               options={[
-                { value: '0', label: 'Unitário' },
-                { value: '1', label: 'Quilo' },
+                { value: 'Unitário', label: 'Unitário' },
+                { value: 'Quilo', label: 'Quilo' },
                 {
-                  value: '2',
+                  value: 'Variável',
                   label: (
                     <>
                       Variável

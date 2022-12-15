@@ -21,7 +21,6 @@ export enum FormInputName {
   physicalSaleInstallments = 'physicalSaleInstallments',
   physicalSaleFee = 'physicalSaleFee',
   websiteSaleAllowCreditCardPayment = 'websiteSaleAllowCreditCardPayment',
-  websiteSaleDebit = 'websiteSaleDebit',
   websiteSaleCredit = 'websiteSaleCredit',
   websiteSalePix = 'websiteSalePix',
   websiteSaleAdministrateTax = 'websiteSaleAdministrateTax',
