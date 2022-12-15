@@ -76,9 +76,24 @@ export const SectorProductConfigSectorScreen: React.FC<
   const handleOnSaveConfigSector = async (): Promise<void> => {
     try {
       if (isFormValidConfigSector()) {
-        const payload = {};
+        // TODO: Remove mock
+        const payload = {
+          section: {
+            id: 'b6ea5435-7738-4251-b11a-81ac40f3b14f',
+          },
+          products: [
+            {
+              id: '95e4cfdd-1388-41fa-b5d5-fecdead2dea9',
+            },
+          ],
+          combos: [
+            {
+              id: 'd3df424d-bd4f-4ba5-99b1-476af1c0b89f',
+            },
+          ],
+        };
 
-        const reponse = await api.post(`/event/ticket/${params.id}/general-settings`, payload);
+        const reponse = await api.post(`/event/section-product/${params.id}/section`, payload);
         if (reponse) toast.success('Dados salvos com sucesso!');
       }
     } catch (error) {

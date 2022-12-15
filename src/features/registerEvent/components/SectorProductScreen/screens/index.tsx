@@ -289,7 +289,7 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
   const handleGetProductList = async (id: string): Promise<void> => {
     try {
       setState(States.loading);
-      const { data } = await api.get(`event/section-product/${id}/product`);
+      const { data } = await api.get(`/event/section-product/${id}/product/section`);
 
       setProductList(data ?? []);
     } catch (error) {
@@ -439,8 +439,8 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
       const activedInput = productSelected.allowSellingWebsite;
 
       await api.patch(
-        `event/section-product/${params.id}/product/${productSelected.id}${
-          activedInput ? ' /disable' : '/enable'
+        `event/section-product/${params.id}/product/${String(productSelected.id).trim()}${
+          activedInput ? '/disable-online' : '/enable-online'
         }`,
       );
 
@@ -532,9 +532,8 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
     resetFormProduct();
     if (product) {
       // TODO: Add states when to get API return
-
-      onChangeFormInputProduct(FormInputNameToProduct.group)(String(product.group.id));
-      onChangeFormInputProduct(FormInputNameToProduct.subgroup)(String(product.subgroup.id));
+      onChangeFormInputProduct(FormInputNameToProduct.group)(String(product.group?.id));
+      onChangeFormInputProduct(FormInputNameToProduct.subgroup)(String(product.subgroup?.id));
       onChangeFormInputProduct(FormInputNameToProduct.name)(String(product.id));
       onChangeFormInputProduct(FormInputNameToProduct.allowOnline)(
         String(product.allowSellingWebsite),
@@ -584,6 +583,9 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
       );
       onChangeFormInputConfigProduct(FormInputNameToConfigProduct.websiteSaleAdministrateTax)(
         String(product.websiteSale?.administrateTax ?? ''),
+      );
+      onChangeFormInputConfigProduct(FormInputNameToConfigProduct.websiteSaleBankSlip)(
+        String(product.websiteSale?.bankSlip ?? ''),
       );
       onChangeFormInputConfigProduct(FormInputNameToConfigProduct.websiteSaleInstallments)(
         String(product.websiteSale?.installments ?? ''),

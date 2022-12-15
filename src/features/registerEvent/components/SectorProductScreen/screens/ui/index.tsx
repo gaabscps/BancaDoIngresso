@@ -127,38 +127,44 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
         <SuperCollapse
           title={`Produtos cadastrados`}
           content={
-            productStates?.productList.length > 0
-              ? productStates?.productList.map((item, index) => (
-                  <React.Fragment key={index}>
-                    {index > 0 ? <hr style={{ margin: '25px -30px 30px -50px' }} /> : null}
-                    <div
-                      className={
-                        productStates.product && item.id !== productStates.product?.id
-                          ? 'disabled-content'
-                          : ''
-                      }
-                    >
-                      <div className="mb-5">
-                        <span className="secondary-table-title">Grupo #{index + 1}</span>
-                        <span className="secondary-table-title font-weight-bold">
-                          <b> ·</b> {item.group.name} //
-                        </span>
-                        <span className="secondary-table-title"> Subgrupo #{index + 1}</span>
-                        <span className="secondary-table-title font-weight-bold">
-                          <b> ·</b> {item.subgroup.name}
-                        </span>
-                      </div>
-                      <CustomTable
-                        numberRowsPerPage={0}
-                        progressPending={false}
-                        columns={columnsProducts}
-                        data={[
-                          {
-                            id: item.id,
-                            products: item.name,
-                            amount: `${item.amount} unidades`,
-                            unitValue: `R$ ${item.unitValue}`,
-                            totalValue: `R$ ${item.totalValue}`,
+            productStates.productList.length > 0
+              ? productStates.productList.map((group, indexGroup) =>
+                  group.subGroups.map((subGroup: any, indexSubGroup: any) => (
+                    <React.Fragment key={indexSubGroup}>
+                      {indexGroup > 0 ? <hr style={{ margin: '25px -30px 30px -50px' }} /> : null}
+                      <div
+                        className={
+                          productStates.product &&
+                          subGroup.products.filter(
+                            (product: any) => product.id !== productStates.product?.id,
+                          )
+                            ? 'disabled-content'
+                            : ''
+                        }
+                      >
+                        <div className="mb-5">
+                          <span className="secondary-table-title">Grupo #{indexSubGroup + 1}</span>
+                          <span className="secondary-table-title font-weight-bold">
+                            <b> ·</b> {subGroup.categorySubGroupName} //
+                          </span>
+                          <span className="secondary-table-title">
+                            {' '}
+                            Subgrupo #{indexSubGroup + 1}
+                          </span>
+                          <span className="secondary-table-title font-weight-bold">
+                            <b> ·</b> {subGroup.categorySubGroupName}
+                          </span>
+                        </div>
+                        <CustomTable
+                          numberRowsPerPage={0}
+                          progressPending={false}
+                          columns={columnsProducts}
+                          data={subGroup.products.map((product: any) => ({
+                            id: product.id,
+                            products: product?.name,
+                            amount: `${product?.amount} unidades`,
+                            unitValue: `R$ ${product?.unitValue}`,
+                            totalValue: `R$ ${product?.totalValue}`,
                             actions: (
                               <React.Fragment>
                                 <div
@@ -167,16 +173,16 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
                                   <div className="d-flex align-items-center">
                                     <div className="mt-3">
                                       <Switch
-                                        name="status"
+                                        name={`allowSellingWebsite-${product.id}`}
                                         label="Vender online"
-                                        onChange={() => productActions.onChangeAllowOnline(item)}
-                                        checked={item.allowOnline}
+                                        onChange={() => productActions.onChangeAllowOnline(product)}
+                                        checked={product.allowSellingWebsite}
                                       />
                                     </div>
                                     <div className="ml-4">
                                       <Config
                                         className={`mr-4 svg-icon action-icon ${
-                                          item?.physicalSale && item?.websiteSale
+                                          product?.physicalSale && product?.websiteSale
                                             ? ''
                                             : 'svg-icon-error'
                                         }`}
@@ -184,18 +190,18 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
                                           modalConfig.onShouldShowModal({
                                             value: ShouldShowModal.configProduct,
                                             newTitleModal: 'Configurações do produto',
-                                            product: item,
+                                            product,
                                           });
                                         }}
                                       />
                                       <Pen
                                         className="mr-4 svg-icon action-icon"
-                                        onClick={(): Promise<void> => productActions.onGet(item)}
+                                        onClick={(): Promise<void> => productActions.onGet(product)}
                                       />
                                       <Trash
                                         className="svg-icon svg-icon-trash"
                                         onClick={() => {
-                                          modalConfig.onShowModalDelete(item);
+                                          modalConfig.onShowModalDelete(product);
                                         }}
                                       />
                                     </div>
@@ -203,13 +209,13 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
                                 </div>
                               </React.Fragment>
                             ),
-                          },
-                        ]}
-                        theme="secondaryWithoutBorder"
-                      />
-                    </div>
-                  </React.Fragment>
-                ))
+                          }))}
+                          theme="secondaryWithoutBorder"
+                        />
+                      </div>
+                    </React.Fragment>
+                  )),
+                )
               : 'Nenhum produto cadastrado. Aqui será exibida uma lista dos produtos cadastrados'
           }
           count={productStates?.productList.length}
