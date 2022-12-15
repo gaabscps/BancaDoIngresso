@@ -48,7 +48,7 @@ type UrlParams = {
 
 export const SectorTicketMainSettingsScreen: React.FC<
   Pick<SectorTicketContainerProps, 'ticketStates'> & Omit<TabSectorTicketActionsProps, 'backTab'>
-> = ({ ticketStates, nextTab, onFirstTab }): JSX.Element => {
+> = ({ ticketStates, onFirstTab, nextTab }): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
   const [formNameFiles, setFormNameFiles] = useState<NameFiles>({});
 
@@ -319,8 +319,9 @@ export const SectorTicketMainSettingsScreen: React.FC<
         if (!payload.id) {
           delete payload.id;
         }
-        const reponse = await api.post(`/event/ticket/${params.id}/main-settings`, payload);
-        if (reponse) toast.success('Dados salvos com sucesso!');
+        const response = await api.post(`/event/ticket/${params.id}/main-settings`, payload);
+        if (response) toast.success('Dados salvos com sucesso!');
+        ticketStates.setTicket(response.data);
       }
     } catch (error) {
       const err = error as AxiosError;
@@ -537,9 +538,7 @@ export const SectorTicketMainSettingsScreen: React.FC<
 
   const handleNextTab = async (): Promise<void> => {
     await handleOnSaveMainSettings();
-    if (isFormValidMainSettings()) {
-      nextTab();
-    }
+    nextTab();
   };
 
   const controllerMainSettingsActions: mainSettingsProps = {

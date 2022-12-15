@@ -115,6 +115,7 @@ export const SectorTicketScreen: React.FC = (): JSX.Element => {
   const controllerTicketStates: ticketStatesProps = {
     ticket,
     ticketList,
+    setTicket,
   };
 
   const controllerTicketActions: ticketActionsProps = {

@@ -90,4 +90,5 @@ export interface printerStatesProps {
 export interface ticketStatesProps {
   ticket: Ticket | undefined;
   ticketList: Ticket[];
+  setTicket: React.Dispatch<React.SetStateAction<Ticket | undefined>>;
 }
