@@ -25,8 +25,10 @@ type UrlParams = {
 };
 
 export const SectorTicketGeneralSettingsScreen: React.FC<
-  Pick<SectorTicketContainerProps, 'ticketStates'> & TabSectorTicketActionsProps
-> = ({ ticketStates, backTab, onFirstTab }): JSX.Element => {
+  Pick<SectorTicketContainerProps, 'ticketStates'> &
+    Pick<SectorTicketContainerProps, 'ticketStep'> &
+    TabSectorTicketActionsProps
+> = ({ ticketStates, ticketStep, backTab }): JSX.Element => {
   const [state] = useState<States>(States.default);
 
   const params = useParams<UrlParams>();
@@ -70,7 +72,7 @@ export const SectorTicketGeneralSettingsScreen: React.FC<
         const payload = {
           eventTickets: [
             {
-              id: ticketStates.ticket?.id,
+              id: ticketStep?.ticketState?.id,
             },
           ],
           sendTicketWhatsApp: convertToBoolean(
@@ -101,8 +103,8 @@ export const SectorTicketGeneralSettingsScreen: React.FC<
         // if (!payload.id) {
         //   delete payload.id;
         // }
-        const reponse = await api.post(`/event/ticket/${params.id}/general-settings`, payload);
-        if (reponse) toast.success('Dados salvos com sucesso!');
+        const response = await api.post(`/event/ticket/${params.id}/general-settings`, payload);
+        if (response) toast.success('Dados salvos com sucesso!');
       }
     } catch (error) {
       const err = error as AxiosError;
@@ -113,7 +115,8 @@ export const SectorTicketGeneralSettingsScreen: React.FC<
   const handleNextTab = async (): Promise<void> => {
     await handleOnSaveGeneralSettings();
     if (isFormValidGeneralSettings()) {
-      onFirstTab();
+      console.log('TODO : adicionar aqui a ação do ultimo botão');
+      // TODO : adicionar aqui a ação do ultimo botão
     }
   };
 
@@ -130,15 +133,13 @@ export const SectorTicketGeneralSettingsScreen: React.FC<
 
   const controllerGeneralSettingsActions: generalSettingsProps = {
     onSave: handleOnSaveGeneralSettings,
-    onFirstTab,
-    onReturnTap: handleBackTab,
-    onNextTap: handleNextTab,
+    onReturnTab: handleBackTab,
+    onNextTab: handleNextTab,
   };
 
   useEffect(() => {
     const { ticket } = ticketStates;
 
-    onFirstTab();
     resetFormGeneralSettings();
 
     if (ticket?.generalSettings) {

@@ -8,7 +8,6 @@ export interface formPaymentSettingsProps {
 
 export interface PaymentSettingsActionsProps {
   onSave: () => Promise<void>;
-  onFirstTab: () => void;
   onReturnTab: () => void;
   onNextTap: () => Promise<void>;
 }

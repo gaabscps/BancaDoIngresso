@@ -18,7 +18,7 @@ import TicketIcon from '@/assets/images/svg/Ticket';
 import { SectorTicketGeneralSettingsScreen } from '@/features/registerEvent/components/SectorTicketGeneralSettingsSreen/screens';
 import { SectorTicketPaymentSettingsScreen } from '@/features/registerEvent/components/SectorTicketPaymentSettingScreen/screens';
 import { useParams } from 'react-router-dom';
-import { formSectorTicketProps } from '../types';
+import { formSectorTicketProps, ticketStepProps } from '../types';
 import { columnsTickets } from './table';
 
 // eslint-disable-next-line no-shadow
@@ -32,6 +32,7 @@ export interface SectorTicketContainerProps {
   formSectorTicket: formSectorTicketProps;
   ticketStates: ticketStatesProps;
   ticketActions: ticketActionsProps;
+  ticketStep: ticketStepProps;
 }
 
 // eslint-disable-next-line no-shadow
@@ -54,6 +55,7 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
   formSectorTicket,
   ticketStates,
   ticketActions,
+  ticketStep,
 }) => {
   const { formData, formErrors, onChangeFormInput } = formSectorTicket;
   const [numberTab, setNumberTab] = useState(0);
@@ -83,6 +85,7 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
     <>
       <SectorTicketMainSettingsScreen
         ticketStates={ticketStates}
+        ticketStep={ticketStep}
         nextTab={handleNextTab}
         onFirstTab={handleOnFirstTab}
       />
@@ -90,6 +93,7 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
     <>
       <SectorTicketPaymentSettingsScreen
         ticketStates={ticketStates}
+        ticketStep={ticketStep}
         nextTab={handleNextTab}
         backTab={handleBackTab}
         onFirstTab={handleOnFirstTab}
@@ -99,6 +103,7 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
     <>
       <SectorTicketGeneralSettingsScreen
         ticketStates={ticketStates}
+        ticketStep={ticketStep}
         nextTab={handleNextTab}
         backTab={handleBackTab}
         onFirstTab={handleOnFirstTab}
