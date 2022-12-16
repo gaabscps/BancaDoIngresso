@@ -29,10 +29,6 @@ export const EventScreen: React.FC = (): JSX.Element => {
 
   const steps = [
     {
-      Component: <SectorProductScreen />,
-      title: 'Setor e Produto',
-    },
-    {
       Component: <GeneralInformationScreen />,
       title: 'Informações gerais',
     },
@@ -40,10 +36,10 @@ export const EventScreen: React.FC = (): JSX.Element => {
       Component: <SectorTicketScreen />,
       title: 'Setor e Ingresso',
     },
-    // {
-    //   Component: <SectorProductScreen />,
-    //   title: 'Setor e Produto',
-    // },
+    {
+      Component: <SectorProductScreen />,
+      title: 'Setor e Produto',
+    },
     {
       Component: <PdvEventScreen />,
       title: 'PDV',
