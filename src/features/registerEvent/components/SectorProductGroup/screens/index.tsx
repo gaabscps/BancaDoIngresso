@@ -5,7 +5,6 @@ import useForm from '@/hooks/useForm';
 import { AxiosError } from 'axios';
 // import validators from '@/helpers/validators';
 import api from '@/services/api';
-import GroupProduct from '@/model/SubgruopProduct';
 import ProductSubgroup from '@/model/ProductSubgroup';
 import ProductGroup from '@/model/ProductGroup';
 import { TabSectorProductActionsProps } from '@/features/registerEvent/screens/SectorProduct/ui';
@@ -31,8 +30,8 @@ export const SectorProductGroupScreen: React.FC<
   const [state, setState] = useState<States>(States.default);
   const [nameFiles, setNameFiles] = useState<NameFiles>({});
   const [nameFilesSub, setNameFilesSub] = useState<NameFiles>({});
-  const [subGroup, setSubGroup] = useState<GroupProduct[]>([{ id: '', name: '', imageBase64: '' }]);
-  const [group, setGroup] = useState<ProductGroup>();
+  const [subGroup, setSubGroup] = useState<any[]>([{ id: '', name: '', imageBase64: '' }]);
+  const [group, setGroup] = useState<any>();
   const [groupOptions, setGroupOptions] = useState<ProductGroup[]>([]);
   const [subGroupOptions, setSubGroupOptions] = useState<ProductSubgroup[]>([]);
 
@@ -127,6 +126,7 @@ export const SectorProductGroupScreen: React.FC<
                 name: newFormValues[index].name,
                 imageBase64: base64,
               },
+              ...subGroup.slice(index + 1),
             ]);
           }
         };
@@ -324,17 +324,26 @@ export const SectorProductGroupScreen: React.FC<
     onGetGroup: handleOnGetGroup,
   };
 
-  // const productEdit = optionProduct.find((item: any) => item.id === product.id);
-  //       if (productEdit) {
-  //         onChangeFormInputProduct(FormInputNameToProduct.id)(product.id as string);
-  //         onChangeFormInputProduct(FormInputNameToProduct.name)(product.name as string);
-
   useEffect(() => {
     if (group) {
       const groupEdit = groupOptions.find((item: any) => item.id === group.id);
       if (groupEdit) {
         onChangeFormInputGroup(FormInputName.id)(group.id);
         onChangeFormInputGroup(FormInputName.name)(group.name);
+        onChangeFormInputGroup(FormInputName.imageBase64Group)(group.imageBase64);
+
+        setNameFiles(filesValues => ({
+          ...filesValues,
+          [FormInputName.imageBase64Group]: group?.imageBase64?.split('/').pop(),
+        }));
+        subGroup.map((_item: any, index) => {
+          setNameFilesSub(filesValues => ({
+            ...filesValues,
+            [`imageBase64SubGroup-${index}`]: `${
+              subGroup.find((itemm: any) => itemm.id === group.subGroups[index].id).name
+            }.png`,
+          }));
+        });
       }
       handleFecthProductSubGroupList(group.id);
     }
