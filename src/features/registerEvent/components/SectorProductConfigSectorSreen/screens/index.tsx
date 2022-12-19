@@ -1,3 +1,6 @@
+/* eslint-disable array-callback-return */
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
 import useForm from '@/hooks/useForm';
 import { toast } from 'react-toastify';
@@ -43,7 +46,8 @@ export const SectorProductConfigSectorScreen: React.FC<
     ShouldShowModal.configProduct,
   );
 
-  const [sector, setSector] = useState<Section>();
+  const [sector, setSector] = useState<any>();
+  // const [sectorConfig, setSectorConfig] = useState([]);
   const [sectorList, setSectorList] = useState<Section[]>([]);
   const [sectorTableList, setSectorTableList] = useState<Section[]>([]);
 
@@ -101,6 +105,20 @@ export const SectorProductConfigSectorScreen: React.FC<
     }
   };
 
+  const handleOnConfirmDeleteSector = async (sectorSelected: any): Promise<void> => {
+    console.log('sectorSelected :>> ', sectorSelected);
+    try {
+      await api.delete(`/event/section-product/${params?.id}/section/${sectorSelected.sectionId}`);
+      toast.success('Setor desviculado ao evento');
+      handleGetSectorList(params.id);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      confirmDelete.hide();
+    }
+  };
+
   const handleOnSaveConfigSector = async (): Promise<void> => {
     try {
       if (isFormValidConfigSector()) {
@@ -121,6 +139,7 @@ export const SectorProductConfigSectorScreen: React.FC<
         const payload = {
           section: {
             id: formDataConfigSector[FormInputNameConfigSector.section],
+            imageBase64: formDataConfigSector[FormInputNameConfigSector.imageBase64Sector],
           },
           products: productChecked || [],
           combos: combosChecked || [],
@@ -130,6 +149,8 @@ export const SectorProductConfigSectorScreen: React.FC<
         if (reponse) toast.success('Dados salvos com sucesso!');
 
         handleGetSectorList(params.id);
+        setSector(undefined);
+        onToggle();
       }
     } catch (error) {
       const err = error as AxiosError;
@@ -196,9 +217,14 @@ export const SectorProductConfigSectorScreen: React.FC<
     setShouldShowModal(value);
     onChangeTitle(newTitleModal);
     onToggle();
+
     console.log('sectorSelected :>> ', sectorSelected);
-    if (sectorSelected?.id && value === ShouldShowModal.configProduct) {
-      setSector(sectorSelected);
+    if (value === ShouldShowModal.configProduct) {
+      if (sectorSelected) {
+        setSector(sectorSelected);
+      } else {
+        setForm({});
+      }
     }
   };
 
@@ -214,9 +240,7 @@ export const SectorProductConfigSectorScreen: React.FC<
         },
         {
           title: 'Sim, quero excluir',
-          onClick: (): void => {
-            console.log('TODO: Add function exclud item :>> ', sectorSelected);
-          },
+          onClick: (): Promise<void> => handleOnConfirmDeleteSector(sectorSelected),
         },
       ],
     });
@@ -291,9 +315,64 @@ export const SectorProductConfigSectorScreen: React.FC<
 
   useEffect(() => {
     handleFecthSectorList();
-    handleGetProducComboConfigtList(params.id);
     handleGetSectorList(params.id);
+    handleGetProducComboConfigtList(params.id);
   }, []);
+
+  // useEffect(() => {
+  //   // verify if sector not array empty
+  //   if (sectorConfig.length > 0) {
+  //     const _products: any[] = [];
+  //     sectorConfig.map(({ categoryGroupId, categoryGroupName, subGroups }: any) => {
+  //       subGroups.map((subgroup: any) => {
+  //         _products.push({ categoryGroupId, categoryGroupName, ...subgroup });
+  //       });
+  //     });
+
+  //     const { products, combos, categoryGroupId, categorySubGroupId }: any = _products[0];
+  //     const newProducts = products.map(
+  //       ({ id }: any) => `${categoryGroupId}_${categorySubGroupId}_${id}`,
+  //     );
+  //     const newCombos = combos.map(
+  //       ({ id }: any) => `${categoryGroupId}_${categorySubGroupId}_${id}`,
+  //     );
+
+  //     setForm({
+  //       products: newProducts,
+  //       combos: newCombos,
+  //     });
+  //   }
+  // }, [sectorConfig]);
+
+  useEffect(() => {
+    // verify if sector not array empty
+    if (sector) {
+      const _products: any[] = [];
+      sector.sectionGroup.map(({ categoryGroupId, categoryGroupName, subGroups }: any) => {
+        subGroups.map((subgroup: any) => {
+          _products.push({ categoryGroupId, categoryGroupName, ...subgroup });
+        });
+      });
+
+      const { products, combos, categoryGroupId, categorySubGroupId }: any = _products[0];
+      const newProducts = products.map(
+        ({ id }: any) => `${categoryGroupId}_${categorySubGroupId}_${id}`,
+      );
+      const newCombos = combos.map(
+        ({ id }: any) => `${categoryGroupId}_${categorySubGroupId}_${id}`,
+      );
+
+      setForm({
+        products: newProducts,
+        combos: newCombos,
+      });
+
+      onChangeFormInputConfigSector(FormInputNameConfigSector.section)(sector.sectionId);
+      onChangeFormInputConfigSector(FormInputNameConfigSector.imageBase64Sector)(
+        sector.imageBase64Sector,
+      );
+    }
+  }, [sector]);
 
   return (
     <SectorProductConfigSectorContainer

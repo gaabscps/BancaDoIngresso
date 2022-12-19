@@ -85,8 +85,8 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
       imageBase64Product: '',
     },
     validators: {
-      // group: [validators.required],
-      // subgroup: [validators.required],
+      group: [validators.required],
+      subgroup: [validators.required],
       name: [validators.required],
       allowOnline: [validators.required],
       unitMeasurement: [validators.required],
@@ -101,6 +101,7 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
     formErrors: formErrorsConfigProduct,
     onChangeFormInput: onChangeFormInputConfigProduct,
     isFormValid: isFormValidConfigProduct,
+    resetForm: resetFormConfigProduct,
   } = useForm({
     initialData: {
       physicalSaleAllowCreditCardPayment: '',
@@ -372,6 +373,7 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
           discountType: item.discountType && +item.discountType,
           discount: item.discount && +item.discount,
         }));
+
         const payload = {
           id: productSelected?.id,
           physicalSale: {
@@ -479,8 +481,11 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
 
   const handleOnCancelEditProduct = (): void => {
     try {
-      setProduct(undefined);
-      resetFormProduct();
+      setTimeout(() => {
+        setProduct(undefined);
+        resetFormProduct();
+        resetFormConfigProduct();
+      }, 500);
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
@@ -531,11 +536,12 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
 
   useEffect(() => {
     resetFormProduct();
+    resetFormConfigProduct();
+
     if (product) {
-      // TODO: Add states when to get API return
       onChangeFormInputProduct(FormInputNameToProduct.group)(String(product.group?.id));
       onChangeFormInputProduct(FormInputNameToProduct.subgroup)(String(product.subgroup?.id));
-      onChangeFormInputProduct(FormInputNameToProduct.name)(String(product.id));
+      onChangeFormInputProduct(FormInputNameToProduct.id)(String(product.id));
       onChangeFormInputProduct(FormInputNameToProduct.allowOnline)(
         String(product.allowSellingWebsite),
       );
@@ -591,6 +597,23 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
       onChangeFormInputConfigProduct(FormInputNameToConfigProduct.websiteSaleFee)(
         String(product.websiteSale?.fee ?? ''),
       );
+      onChangeFormInputConfigProduct(FormInputNameToConfigProduct.waiter)(
+        String(product?.waiter ?? ''),
+      );
+      onChangeFormInputConfigProduct(FormInputNameToConfigProduct.partialPayment)(
+        String(product?.partialPayment ?? ''),
+      );
+      onChangeFormInputConfigProduct(FormInputNameToConfigProduct.allowDiscountCoupon)(
+        String(product?.allowDiscountCoupon ?? ''),
+      );
+
+      setDiscountCoupon(product.discountCoupons ?? []);
+
+      const productEdit = optionProduct.find((item: any) => item.id === product.id);
+      if (productEdit) {
+        onChangeFormInputProduct(FormInputNameToProduct.id)(product.id as string);
+        onChangeFormInputProduct(FormInputNameToProduct.name)(product.name as string);
+      }
     }
   }, [product]);
 

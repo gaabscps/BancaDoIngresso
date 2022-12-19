@@ -1,5 +1,5 @@
 /* eslint-disable import/no-unresolved */
-import React, { Fragment } from 'react';
+import React, { Fragment, useRef } from 'react';
 import { ButtonGroup, InputFile, InputText, SelectCustom } from '@/components';
 import { Col, Form, FormGroup, Row } from 'reactstrap';
 import ReactTooltip from 'react-tooltip';
@@ -33,6 +33,22 @@ export const ProductRegisterContent: React.FC<
   const { formData, formErrors, onChangeFormInput, onChangeFormFileInput, formNameFiles } =
     formProduct;
 
+  const refSelectSubGroup = useRef<any>(null);
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  const onClearSelectSubGroup = () => {
+    if (refSelectSubGroup) {
+      refSelectSubGroup?.current.clearValue();
+    }
+  };
+
+  const subGruopOptions =
+    productStates.groupList
+      ?.find(group => group?.id === formData[FormInputName.group])
+      ?.subGroups?.map((subGroup: { id: string; name: string }) => ({
+        value: subGroup.id,
+        label: subGroup.name,
+      })) ?? [];
+
   return (
     <Fragment>
       <Form
@@ -47,28 +63,28 @@ export const ProductRegisterContent: React.FC<
             label="Grupo do produto"
             placeholder="Digite ou selecione o grupo do produto"
             value={formData[FormInputName.group]}
-            onChange={e => onChangeFormInput(FormInputName.group)(e?.value as string)}
+            onChange={e => {
+              onChangeFormInput(FormInputName.group)(e?.value as string);
+              onClearSelectSubGroup();
+            }}
             error={formErrors.group && formErrors.group[0]}
             options={productStates.groupList.map(group => ({
-              value: group.categoryGroupId,
-              label: group.categoryGroupName,
+              value: group.id,
+              label: group.name,
             }))}
           />
         </FormGroup>
         <FormGroup className="mb-2">
           <SelectCustom
+            refSelect={refSelectSubGroup}
             name="subgroup"
             label="Subgrupo do produto"
             placeholder="Digite ou selecione o subgrupo do produto"
             value={formData[FormInputName.subgroup]}
             onChange={e => onChangeFormInput(FormInputName.subgroup)(e?.value as string)}
             error={formErrors.subgroup && formErrors.subgroup[0]}
-            options={productStates.groupList.map(group =>
-              group.subGroups.map((subgroup: any) => ({
-                value: subgroup.categorySubgroupId,
-                label: subgroup.categorySubgroupName,
-              })),
-            )}
+            options={subGruopOptions}
+            disabled={formData[FormInputName.group] === ''}
           />
         </FormGroup>
         <FormGroup className="mb-2">
@@ -86,7 +102,7 @@ export const ProductRegisterContent: React.FC<
                 onChangeFormInput(FormInputName.name)(e?.value as string);
               }
             }}
-            value={formData[FormInputName.name]}
+            value={formData[FormInputName.id]}
             options={productStates.optionProduct.map(item => ({
               value: item.id,
               label: item.name,

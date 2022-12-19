@@ -297,7 +297,7 @@ export const ProductConfigContent: React.FC<
           <FormGroup>
             <InputText
               name="waiter"
-              label="Porcentagem do Garçom %"
+              label="Porcentagem do Garçom (%)"
               addon="%"
               placeholder="0"
               className="w-input-sm"
