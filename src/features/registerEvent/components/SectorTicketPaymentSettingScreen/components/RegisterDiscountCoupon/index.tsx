@@ -63,7 +63,13 @@ export const RegisterDiscountCoupon: React.FC<RegisterContentProps> = ({
                     label="Quant. cupons"
                     placeholder="0"
                     value={String(item.amount)}
-                    onChange={e => handleChangeDiscountCoupon('amount', index, e?.target.value)}
+                    onChange={e =>
+                      handleChangeDiscountCoupon(
+                        'amount',
+                        index,
+                        e?.target.value.replace(/\D/g, ''),
+                      )
+                    }
                     error={undefined}
                   />
                 </FormGroup>
@@ -77,7 +83,13 @@ export const RegisterDiscountCoupon: React.FC<RegisterContentProps> = ({
                     placeholder="0"
                     maxLength={2}
                     value={String(item.discount)}
-                    onChange={e => handleChangeDiscountCoupon('discount', index, e?.target.value)}
+                    onChange={e =>
+                      handleChangeDiscountCoupon(
+                        'discount',
+                        index,
+                        e.target.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1'),
+                      )
+                    }
                     error={undefined}
                   />
                 </FormGroup>

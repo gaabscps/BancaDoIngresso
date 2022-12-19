@@ -101,7 +101,7 @@ export const RegisterDiscountCoupon: React.FC<RegisterContentProps> = ({ formDis
                       handleChangeDiscountCoupon(
                         'discount',
                         index,
-                        e?.target.value.replace(/\D/g, ''),
+                        e.target.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1'),
                       )
                     }
                     error={undefined}
