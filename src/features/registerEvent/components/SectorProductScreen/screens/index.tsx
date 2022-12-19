@@ -337,10 +337,10 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
         const payload = {
           id: formDataProduct[FormInputNameToProduct.id] ?? '',
           group: {
-            id: '7049c51a-cd2d-413d-8cd3-0368fb916c70', // TODO: add group id when is selected
+            id: formDataProduct[FormInputNameToProduct.group], // TODO: add group id when is selected
           },
           subgroup: {
-            id: '0a2d6217-a628-49c6-8305-0abadd3b5abd', // TODO: add subgroup id when is selected
+            id: formDataProduct[FormInputNameToProduct.subgroup], // TODO: add subgroup id when is selected
           },
           unitMeasurement: formDataProduct[FormInputNameToProduct.unitMeasurement] ?? '',
           allowSellingWebsite: formDataProduct[FormInputNameToProduct.allowOnline] ?? true,
