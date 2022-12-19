@@ -53,7 +53,7 @@ export const DropdonwFlags: React.FC<DropdonwFlagsProps> = ({
             {dataColumn?.map((item, index) => {
               if (index !== 0)
                 return (
-                  <span key={item.id} className="flag-item flag-item-list" title={item.name}>
+                  <span key={index} className="flag-item flag-item-list" title={item.name}>
                     {item.name}
                   </span>
                 );

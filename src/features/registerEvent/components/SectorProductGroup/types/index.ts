@@ -25,6 +25,7 @@ export interface appendFormProps {
 export interface requestProps {
   onSaveGroup: () => Promise<void>;
   onGetProductSubGroupList: (id: string) => Promise<void>;
+  onGetGroup(groupSelected: any): Promise<void>;
 }
 
 export interface groupStateProps {

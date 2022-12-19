@@ -50,10 +50,10 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
     onResetAppendFileInput,
     nameFilesSub,
   } = controllerAppendForm;
-  const { listGroupSubGroup } = groupState;
+  const { listGroupSubGroup, groupOptions, subGroup, subGroupOptions } = groupState;
   const { formDataGroup, formErrorsGroup, onChangeFileInput, nameFiles, onChangeFormInputGroup } =
     controllerFormGroup;
-  const { onGetProductSubGroupList, onSaveGroup } = controllerRequest;
+  const { onGetProductSubGroupList, onSaveGroup, onGetGroup } = controllerRequest;
   return (
     <>
       <Loading isVisible={state === States.loading} />
@@ -76,7 +76,7 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
                     label="Nome do grupo"
                     name="categoryGroupName"
                     onChange={e => {
-                      const groups = groupState.groupOptions.find(item => item.id === e?.value);
+                      const groups = groupOptions.find(item => item.id === e?.value);
                       if (groups?.id) {
                         onChangeFormInputGroup(FormInputName.id)(e?.value as string);
                         onChangeFormInputGroup(FormInputName.name)(groups.name as string);
@@ -88,8 +88,8 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
                         onGetProductSubGroupList(e?.value as string);
                       }
                     }}
-                    value={formDataGroup[FormInputName.name]}
-                    options={groupState.groupOptions.map(item => ({
+                    value={formDataGroup[FormInputName.id]}
+                    options={groupOptions.map(item => ({
                       value: item.id,
                       label: item.name,
                     }))}
@@ -112,35 +112,33 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
                 </FormGroup>
               </Col>
             </Row>
-            {groupState.subGroup.map((sub, index) => (
-              <div key={sub.id}>
+            {subGroup.map((sub: any, index: any) => (
+              <div key={index}>
                 <Row>
                   <Col md={8}>
                     <SelectCreateable
                       label="Nome do subgrupo"
                       name="productSubGroupName"
-                      value={sub.name}
+                      value={sub.id}
                       onChange={e => {
-                        const subGroups = groupState.subGroupOptions.find(
-                          item => item.id === e?.value,
-                        );
+                        const subGroups = subGroupOptions.find(item => item.id === e?.value);
                         if (subGroups?.id) {
-                          onChangeSubGroup('name', index, subGroups?.name as string);
                           onChangeSubGroup('id', index, e?.value as string);
+                          onChangeSubGroup('name', index, subGroups?.name as string);
                         } else {
-                          onChangeSubGroup('name', index, e?.value as string);
                           onChangeSubGroup('id', index, '' as string);
+                          onChangeSubGroup('name', index, e?.value as string);
                         }
                       }}
                       placeholder="Bebidas doces"
-                      options={groupState.subGroupOptions.map(item => ({
+                      options={subGroupOptions.map(item => ({
                         value: item.id,
                         label: item.name,
                       }))}
                       noPadding={true}
                     />
                   </Col>
-                  {index === groupState.subGroup.length - 1 ? (
+                  {index === subGroup.length - 1 ? (
                     <Col md={4}>
                       <div className="mt-5 action-icon" onClick={() => addSubGroup(String(index))}>
                         adicionar novo subgrupo
@@ -148,7 +146,7 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
                     </Col>
                   ) : (
                     <Col>
-                      {index !== groupState.subGroup.length - 1 && (
+                      {index !== subGroup.length - 1 && (
                         <X onClick={() => removeSubGroup(index)} className="mt-5 action-icon" />
                       )}
                     </Col>
@@ -204,7 +202,7 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
                 title={'Grupos cadastrados'}
                 content={
                   listGroupSubGroup.length > 0 ? (
-                    listGroupSubGroup.map((item, index) => (
+                    listGroupSubGroup.map((group, index) => (
                       <React.Fragment key={index}>
                         <div>
                           <div
@@ -217,7 +215,7 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
                               className="secondary-table-title"
                             >
                               Grupo # {index + 1} <span style={{ transform: 'scale(5)' }}> · </span>
-                              <span style={{ fontWeight: '500' }}>{item?.name}</span>
+                              <span style={{ fontWeight: '500' }}>{group?.name}</span>
                             </span>
                             <span className="secondary-table-title ml-5">{'//'}</span>
                             <div className="d-flex w-100">
@@ -226,16 +224,16 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
                                 style={{ flexWrap: 'nowrap' }}
                               >
                                 <span
-                                  onClick={() => console.log('item', item)}
+                                  onClick={() => console.log('item', group)}
                                   className="secondary-table-title ml-5 mr-2"
                                 >
                                   Subgrupo
                                 </span>
-                                {item.subGroups.length !== 1 ? (
+                                {group.subGroups.length !== 1 ? (
                                   <DropdonwFlags
                                     style={{ color: '#000 !important', fontWeight: '500' }}
-                                    dataColumn={item?.subGroups?.map(subgroup => ({
-                                      id: item?.id || undefined,
+                                    dataColumn={group?.subGroups?.map(subgroup => ({
+                                      id: group?.id || undefined,
                                       name: subgroup?.name || '',
                                     }))}
                                     pointerClass={true}
@@ -247,16 +245,16 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
                                       fontWeight: '500',
                                       marginRight: '32px',
                                     }}
-                                    dataColumn={item?.subGroups?.map(subgroup => ({
-                                      id: item?.id || '',
+                                    dataColumn={group?.subGroups?.map(subgroup => ({
+                                      id: group?.id || '',
                                       name: subgroup?.name || '',
                                     }))}
                                   />
                                 )}
                               </div>
-                              <Pen className="ml-5 action-icon" />
+                              <Pen onClick={() => onGetGroup(group)} className="ml-5 action-icon" />
                               <Trash
-                                onClick={() => handleOnConfirmDeleteTopProduct(item?.id || '')}
+                                onClick={() => handleOnConfirmDeleteTopProduct(group?.id || '')}
                                 className="ml-5 action-icon"
                               />
                             </div>

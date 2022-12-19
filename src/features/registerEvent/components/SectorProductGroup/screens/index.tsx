@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import useForm from '@/hooks/useForm';
@@ -11,6 +12,7 @@ import { TabSectorProductActionsProps } from '@/features/registerEvent/screens/S
 import EventGroupSubgroup from '@/model/EventGroupSubgroup';
 import { useParams } from 'react-router-dom';
 import { useConfirmDelete } from '@/hooks/useConfirmDelete';
+// import validators from '@/helpers/validators';
 import { FormInputName, SectorProductGroupContainer } from './ui';
 import { appendFormProps, formGroupProps, groupStateProps, requestProps } from '../types';
 import { States } from '../../ContractorScreen/screens/ui';
@@ -26,12 +28,11 @@ export interface NameFiles {
 export const SectorProductGroupScreen: React.FC<
   Omit<TabSectorProductActionsProps, 'onFirstTab' | 'backTab'>
 > = ({ nextTab }): JSX.Element => {
-  const initialData = {};
-
   const [state, setState] = useState<States>(States.default);
   const [nameFiles, setNameFiles] = useState<NameFiles>({});
-  const [nameFilesSub, setNameFilesSub] = useState<NameFiles>(initialData);
+  const [nameFilesSub, setNameFilesSub] = useState<NameFiles>({});
   const [subGroup, setSubGroup] = useState<GroupProduct[]>([{ id: '', name: '', imageBase64: '' }]);
+  const [group, setGroup] = useState<ProductGroup>();
   const [groupOptions, setGroupOptions] = useState<ProductGroup[]>([]);
   const [subGroupOptions, setSubGroupOptions] = useState<ProductSubgroup[]>([]);
 
@@ -96,8 +97,8 @@ export const SectorProductGroupScreen: React.FC<
     setSubGroup(newFormValues);
   };
 
-  const addAppendSubGroup = (index: string): void => {
-    setSubGroup([...subGroup, { id: index, name: '' }]);
+  const addAppendSubGroup = (): void => {
+    setSubGroup([...subGroup, { id: '', name: '' }]);
   };
 
   const removeAppendSubGroup = (index: number): void => {
@@ -126,7 +127,6 @@ export const SectorProductGroupScreen: React.FC<
                 name: newFormValues[index].name,
                 imageBase64: base64,
               },
-              ...subGroup.slice(index + 1),
             ]);
           }
         };
@@ -201,11 +201,17 @@ export const SectorProductGroupScreen: React.FC<
           setGroupSubgroup(response.data);
           resetForm();
         } else {
-          // cenário de criação
-          if (payload.subGroups.find(sub => sub.id === '')) {
-            // remove o subgrupo sem ID (criação de um novo subgrupo)
-            delete payload.subGroups.find(subd => subd.id === '')?.id;
+          if (payload.subGroups.find(sub => sub.name === '')) {
+            payload.subGroups = payload.subGroups.filter(sub => sub.name !== '');
           }
+          // apaga o ID de todos os objetos com id "" do array de subGroup
+          payload.subGroups.forEach(sub => {
+            if (sub.id === '') {
+              // eslint-disable-next-line no-param-reassign
+              delete sub.id;
+            }
+          });
+
           const response = await api.post(`/event/section-product/${params.id}/group`, payload);
           if (response) toast.success('Dados salvos com sucesso!');
           setGroupSubgroup(response.data);
@@ -228,6 +234,24 @@ export const SectorProductGroupScreen: React.FC<
       toast.error(err.message);
     } finally {
       setState(States.default);
+    }
+  };
+
+  const handleOnGetGroup = async (groupSelected: any): Promise<void> => {
+    try {
+      if (groupSelected) {
+        setGroup(groupSelected);
+        setSubGroup(
+          groupSelected.subGroups.map((sub: any) => ({
+            id: sub.id,
+            name: sub.name,
+            imageBase64: sub.imageBase64,
+          })),
+        );
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
     }
   };
 
@@ -297,7 +321,24 @@ export const SectorProductGroupScreen: React.FC<
   const controllerRequest: requestProps = {
     onSaveGroup: handleOnSaveGroup,
     onGetProductSubGroupList: handleFecthProductSubGroupList,
+    onGetGroup: handleOnGetGroup,
   };
+
+  // const productEdit = optionProduct.find((item: any) => item.id === product.id);
+  //       if (productEdit) {
+  //         onChangeFormInputProduct(FormInputNameToProduct.id)(product.id as string);
+  //         onChangeFormInputProduct(FormInputNameToProduct.name)(product.name as string);
+
+  useEffect(() => {
+    if (group) {
+      const groupEdit = groupOptions.find((item: any) => item.id === group.id);
+      if (groupEdit) {
+        onChangeFormInputGroup(FormInputName.id)(group.id);
+        onChangeFormInputGroup(FormInputName.name)(group.name);
+      }
+      handleFecthProductSubGroupList(group.id);
+    }
+  }, [group]);
 
   useEffect(() => {
     handleFecthProductGroupList();
