@@ -111,7 +111,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
                 'Configurações de POS',
               ]}
               contents={contentTabs}
-              numberStap={1}
+              numberStap={numberTab}
             />
           </>
         )}
