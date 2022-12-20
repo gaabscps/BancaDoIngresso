@@ -12,7 +12,7 @@ import { TabSectorProductActionsProps } from '@/features/registerEvent/screens/S
 import EventGroupSubgroup from '@/model/EventGroupSubgroup';
 import { useParams } from 'react-router-dom';
 import { useConfirmDelete } from '@/hooks/useConfirmDelete';
-import validators from '@/helpers/validators';
+// import validators from '@/helpers/validators';
 import { DeleteContent } from '@/components/DeleteContent';
 import { FormInputName, SectorProductGroupContainer } from './ui';
 import { appendFormProps, formGroupProps, groupStateProps, requestProps } from '../types';
@@ -57,9 +57,7 @@ export const SectorProductGroupScreen: React.FC<
       name: '',
       imageBase64Group: '',
     },
-    validators: {
-      id: [validators.required],
-    },
+    validators: {},
     formatters: {},
   });
 
@@ -182,7 +180,12 @@ export const SectorProductGroupScreen: React.FC<
       console.log(formErrorsGroup, 'error');
       console.log(isFormValidGroup(), 'validator');
       console.log(formDataGroup, 'data');
-      if (isFormValidGroup()) {
+
+      const validation =
+        !(formDataGroup[FormInputName.name] === '' && formDataGroup[FormInputName.id] === '') ||
+        formDataGroup[FormInputName.id] !== '';
+
+      if (validation) {
         const dataSubgGroup = subGroup.map(sub => ({
           id: sub?.id,
           name: sub.name,
@@ -224,6 +227,10 @@ export const SectorProductGroupScreen: React.FC<
         if (response) toast.success('Dados salvos com sucesso!');
         setGroupSubgroup(response.data);
         handleOnCancelEditGroup();
+      } else {
+        setErrorsGroup({
+          [FormInputName.id]: ['Campo obrigatório'],
+        });
       }
     } catch (error) {
       const err = error as AxiosError;
@@ -336,6 +343,7 @@ export const SectorProductGroupScreen: React.FC<
   const controllerFormGroup: formGroupProps = {
     onChangeFormInputGroup,
     onChangeFileInput: handleOnChangeFileInput,
+    setErrorsGroup,
     formDataGroup,
     formErrorsGroup,
     nameFiles,

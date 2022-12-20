@@ -51,8 +51,14 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
     nameFilesSub,
   } = controllerAppendForm;
   const { listGroupSubGroup, groupOptions, subGroup, subGroupOptions, groupsState } = groupState;
-  const { formDataGroup, formErrorsGroup, onChangeFileInput, nameFiles, onChangeFormInputGroup } =
-    controllerFormGroup;
+  const {
+    formDataGroup,
+    formErrorsGroup,
+    onChangeFileInput,
+    nameFiles,
+    onChangeFormInputGroup,
+    setErrorsGroup,
+  } = controllerFormGroup;
   const { onGetProductSubGroupList, onSaveGroup, onGetGroup, onCancelEdit } = controllerRequest;
   const titleRef = React.useRef<HTMLInputElement>(null);
 
@@ -91,6 +97,7 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
                       if (groups?.id) {
                         onGetProductSubGroupList(e?.value as string);
                       }
+                      setErrorsGroup({ ...formErrorsGroup, id: [] });
                     }}
                     value={formDataGroup[FormInputName.id]}
                     options={groupOptions.map(item => ({

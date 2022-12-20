@@ -11,6 +11,7 @@ export interface formGroupProps {
   formDataGroup: FormData;
   formErrorsGroup: FormErrors;
   nameFiles: NameFiles;
+  setErrorsGroup: (errors: FormErrors) => void;
 }
 
 export interface appendFormProps {
