@@ -1,43 +1,51 @@
 import React from 'react';
-import { Button, ButtonGroup, Dialog, InputFile, InputText, Loading, Switch } from '@/components';
+import {
+  Button,
+  ButtonGroup,
+  Dialog,
+  InputFile,
+  InputText,
+  Loading,
+  SelectCustom,
+  Switch,
+} from '@/components';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
 import TicketIcon from '@/assets/images/svg/Ticket';
 // import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 // import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { Col, Container, Form, FormGroup, Row } from 'reactstrap';
 import { SelectCreateable } from '@/components/SelectCreateable';
-import ProductSubgroup from '@/model/ProductSubgroup';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { ReactComponent as ItemConfig } from '@/assets/images/svg/ItemConfig.svg';
 import { ReactComponent as Info } from '@/assets/images/svg/infoTooltip.svg';
-import ProductGroup from '@/model/ProductGroup';
 import { X } from 'react-feather';
 import { CustomTable } from '@/components/Table';
 import { ActionProps } from '@/components/Dialog';
 import DiscountCoupon from '@/model/DiscountCoupon';
-import SectorProductComboProduct from '@/model/SectorProductComboProduct';
-import SectorProductCombo from '@/model/SectorProductCombo';
 import ReactTooltip from 'react-tooltip';
-import { comboActionsProps, formComboConfigProps, formComboProps } from '../../types';
+import {
+  comboActionsProps,
+  comboRequestProps,
+  comboStatesProps,
+  formAppendProductsProps,
+  formComboConfigProps,
+  formComboProps,
+} from '../../types';
 import { States } from '../../../ContractorScreen/screens/ui';
 import { ShouldShowModal } from '..';
 import { RegisterContentComboConfig } from '../../components/RegisterContentComboConfig';
 
 interface SectorProductComboContainerProps {
   title: string | React.ReactNode;
-  state: string;
-  product: SectorProductComboProduct[];
-  productList: SectorProductComboProduct[];
   visible: boolean;
   shouldShowModal: ShouldShowModal;
   controllerFormCombo: formComboProps;
   controllerFormComboConfig: formComboConfigProps;
   controllerProductActions: comboActionsProps;
-  listProductSubGroup: ProductSubgroup[];
-  listProductGroup: ProductGroup[];
-  combo: SectorProductCombo[];
-  comboList: SectorProductCombo[];
+  comboStates: comboStatesProps;
+  formAppendProducts: formAppendProductsProps;
+  comboRequests: comboRequestProps;
   handleAddDiscountCoupon: () => void;
   handleChangeDiscountCoupon: (name: string, index: number, value: string) => void;
   handleRemoveDiscountCoupon: (index: number) => void;
@@ -50,13 +58,6 @@ interface SectorProductComboContainerProps {
     newTitleModal: string | React.ReactNode;
   }) => void;
   onToggle: () => void;
-  handleChangeProduct: (name: string, index: number, value: string | undefined) => void;
-  handleAddProduct: () => Promise<void>;
-  addProduct: (index: string) => void;
-  removeProduct: (index: number) => void;
-  handleFecthProductSubGroupList: (id: string) => Promise<void>;
-  onChangeAllowOnlineSwitch: (comboSelected: any) => Promise<void>;
-  onChangeComboSwitch: (comboSelected: any) => Promise<void>;
   onShowDeleteCombo: (comboSelected: any) => void;
 }
 
@@ -82,30 +83,20 @@ export enum FormInputName {
 
 export const SectorProductComboContainer: React.FC<SectorProductComboContainerProps> = ({
   title,
-  state,
   visible,
-  product,
   shouldShowModal,
   controllerFormCombo,
   controllerFormComboConfig,
-  listProductGroup,
-  listProductSubGroup,
+  comboStates,
+  formAppendProducts,
+  comboRequests,
   discountCoupon,
-  combo,
-  // comboList,
   controllerProductActions,
   handleAddDiscountCoupon,
   handleChangeDiscountCoupon,
   handleRemoveDiscountCoupon,
   onToggle,
-  handleChangeProduct,
   onShouldShowModal,
-  handleFecthProductSubGroupList,
-  handleAddProduct,
-  addProduct,
-  removeProduct,
-  onChangeAllowOnlineSwitch,
-  onChangeComboSwitch,
   onShowDeleteCombo,
 }): JSX.Element => {
   const renderActionDialogToCancel: ActionProps = {
@@ -114,6 +105,10 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
     theme: 'noneBorder',
   };
 
+  const { state, combo, listProductGroup, listProductSubGroup, product } = comboStates;
+  const { addProduct, onChangeProduct, removeProduct } = formAppendProducts;
+  const { getProductSubGroupList, onChangeComboSwitch, onChangeAllowOnlineSwitch, saveCombo } =
+    comboRequests;
   return (
     <>
       <Loading isVisible={state === States.loading} />
@@ -182,14 +177,14 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                 <Row>
                   <Col md={8}>
                     <FormGroup>
-                      <SelectCreateable
+                      <SelectCustom
                         label="Grupo do combo"
                         name="groupName"
                         onChange={e => {
                           controllerFormCombo.onChangeFormInputCombo(FormInputName.group)(
                             e?.value as string,
                           );
-                          handleFecthProductSubGroupList(e?.value as string);
+                          getProductSubGroupList(e?.value as string);
                         }}
                         value={controllerFormCombo.formDataCombo[FormInputName.group]}
                         options={listProductGroup.map(item => ({
@@ -202,10 +197,9 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                           controllerFormCombo.formErrorsCombo.allowCreditCardPayment[0]
                         }
                       />
-                      <SelectCreateable
+                      <SelectCustom
                         label="Nome do subgrupo"
                         name="subGroup"
-                        value={controllerFormCombo.formDataCombo[FormInputName.subGroup]}
                         onChange={e => {
                           controllerFormCombo.onChangeFormInputCombo(FormInputName.subGroup)(
                             e?.value as string,
@@ -220,6 +214,7 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                           controllerFormCombo.formErrorsCombo.allowCreditCardPayment &&
                           controllerFormCombo.formErrorsCombo.allowCreditCardPayment[0]
                         }
+                        value={controllerFormCombo.formDataCombo[FormInputName.subGroup]}
                       />
                       <InputText
                         name="name"
@@ -335,7 +330,7 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                           name="product"
                           value={sub.name}
                           onChange={e => {
-                            handleChangeProduct('name', index, e?.value as string);
+                            onChangeProduct('name', index, e?.value as string);
                           }}
                           placeholder="Digite ou selecione o produto"
                           options={listProductSubGroup.map(item => ({
@@ -352,7 +347,7 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                           name="amount"
                           value={String(sub.amount)}
                           onChange={e => {
-                            handleChangeProduct('amount', index, e?.target.value as string);
+                            onChangeProduct('amount', index, e?.target.value as string);
                           }}
                           placeholder="Ex: 100"
                         />
@@ -382,7 +377,7 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                   <span
                     className="action-icon"
                     onClick={() => {
-                      handleAddProduct();
+                      saveCombo();
                     }}
                   >
                     + cadastrar combo

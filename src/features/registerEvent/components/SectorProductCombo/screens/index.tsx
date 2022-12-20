@@ -16,7 +16,14 @@ import { TabSectorProductActionsProps } from '@/features/registerEvent/screens/S
 import { useParams } from 'react-router-dom';
 import { useConfirmDelete } from '@/hooks/useConfirmDelete';
 import { DeleteContent } from '@/components/DeleteContent';
-import { comboActionsProps, formComboConfigProps, formComboProps } from '../types';
+import {
+  comboActionsProps,
+  comboRequestProps,
+  comboStatesProps,
+  formAppendProductsProps,
+  formComboConfigProps,
+  formComboProps,
+} from '../types';
 import { States } from '../../ContractorScreen/screens/ui';
 
 // eslint-disable-next-line no-shadow
@@ -166,23 +173,10 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
   const handleBackTab = (): void => {
     backTab();
   };
-  const controllerFormCombo: formComboProps = {
-    onChangeFormInputCombo,
-    formDataCombo,
-    formErrorsCombo,
-  };
-  const controllerFormComboConfig: formComboConfigProps = {
-    formDataComboConfig,
-    formErrorsComboConfig,
-    onChangeFormInputComboConfig,
-  };
 
-  const controllerProductActions: comboActionsProps = {
-    onFirstTab,
-    onReturnTab: handleBackTab,
-    onNextTab: handleNextTab,
-  };
+  // Começo DiscountCoupon form control
 
+  // Adiciona um novo campo de cupom no formulário
   const handleAddDiscountCoupon = (): void => {
     setDiscountCoupon([
       ...discountCoupon,
@@ -197,18 +191,25 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
     ]);
   };
 
+  // onChange do valor do campo de cupom no formulário
   const handleChangeDiscountCoupon = (inputName: string, index: number, value: string): void => {
     const newFormValues = [...discountCoupon] as any;
     newFormValues[index][inputName] = value;
     setDiscountCoupon(newFormValues);
   };
 
+  // Remove um campo de cupom do formulário
   const handleRemoveDiscountCoupon = (index: number): void => {
     const values = [...discountCoupon];
     values.splice(index, 1);
     setDiscountCoupon(values);
   };
 
+  // Fim DiscountCoupon form control
+
+  // Começo Product form control
+
+  // onChange do valor do campo de produto no formulário
   const handleChangeProduct = (
     inputName: string,
     index: number,
@@ -219,28 +220,25 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
     setProduct(newFormValues);
   };
 
-  /// adiciona novo produto ao combo(front)
+  // Adiciona um novo campo de produto no formulário
   const addProduct = (index: string): void => {
     setProduct([...product, { id: index, name: '', amount: 0 }]);
   };
 
+  // Remove um campo de produto do formulário
   const removeProduct = (index: number): void => {
     const values = [...product];
     values.splice(index, 1);
     setProduct(values);
   };
 
-  // Será utilizado para adicionar um novo grupo na integracao com o backend
-  // const resetForm = (): void => {
-  //   setSubGroup([{ id: '', name: '' }]);
-  //   setSubGroupList([{ id: '', name: '' }]);
-  //   setGroupList([]);
-  // };
+  // Fim Product form control
 
-  const handleAddProduct = async (): Promise<void> => {
+  // Payload para adicionar um novo combo
+  const handleSaveCombo = async (): Promise<void> => {
     try {
       // Aqui será feito a integração com o backend
-      // chamar a api para adicionar um novo grupo
+      // chamar a api para adicionar um novo combo
       setProductList([...productList, ...product]);
 
       setCombo([
@@ -268,10 +266,11 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
     }
   };
 
-  const handleFecthProductGroupList = async (): Promise<void> => {
+  // Get para montar o select de grupo de produto
+  const handleFecthProductGroupList = async (id: string): Promise<void> => {
     try {
       setState(States.loading);
-      const { data } = await api.get<ProductGroup[]>('/category-group/find');
+      const { data } = await api.get<ProductGroup[]>(`event/section-product/${id}/group`);
       setListProductGroup(data ?? []);
     } catch (error) {
       const err = error as AxiosError;
@@ -281,7 +280,8 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
     }
   };
 
-  const handleFecthProductSubGroupList = async (dataSubgGroup: any): Promise<void> => {
+  // Get para montar o select de subgrupo de produto
+  const handleGetProductSubGroupList = async (dataSubgGroup: any): Promise<void> => {
     try {
       setState(States.loading);
       const { data } = await api.get<ProductSubgroup[]>(
@@ -296,6 +296,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
     }
   };
 
+  // Get para montar a tabela de combos já cadastrados
   const handleGetComboList = async (id: string): Promise<void> => {
     try {
       setState(States.loading);
@@ -310,6 +311,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
     }
   };
 
+  // Patch para ativar ou desativar venda online
   const handleOnChangeAllowOnlineSwitch = async (comboSelected: any): Promise<void> => {
     console.log('object 1');
     try {
@@ -331,6 +333,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
     }
   };
 
+  // Patch para ativar ou desativar combo
   const handleOnChangeComboSwitch = async (comboSelected: any): Promise<void> => {
     console.log('object 1');
     try {
@@ -352,6 +355,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
     }
   };
 
+  // Delete para excluir um combo
   const handleOnConfirmDeleteCombo = async (comboSelected: any): Promise<void> => {
     try {
       await api.delete(`/event/section-product/${params?.id}/combo/${comboSelected.id}`);
@@ -365,6 +369,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
     }
   };
 
+  // Função para abrir o modal de confirmação de exclusão
   const handleOnShowDeleteCombo = (comboSelected: any): void => {
     confirmDelete.show({
       title: '',
@@ -383,6 +388,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
     });
   };
 
+  // Função para abrir o modal de configuração de combo
   const handleOnShouldShowModal = ({
     value,
     newTitleModal,
@@ -397,39 +403,69 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
     onChangeTitle(newTitleModal);
   };
 
+  const controllerComboStates: comboStatesProps = {
+    state,
+    listProductSubGroup,
+    listProductGroup,
+    product,
+    productList,
+    combo,
+    comboList,
+  };
+
+  const controllerFormCombo: formComboProps = {
+    onChangeFormInputCombo,
+    formDataCombo,
+    formErrorsCombo,
+  };
+
+  const controllerFormAppendProducts: formAppendProductsProps = {
+    onChangeProduct: handleChangeProduct,
+    addProduct,
+    removeProduct,
+  };
+
+  const controllerFormComboConfig: formComboConfigProps = {
+    formDataComboConfig,
+    formErrorsComboConfig,
+    onChangeFormInputComboConfig,
+  };
+
+  const controllerProductActions: comboActionsProps = {
+    onFirstTab,
+    onReturnTab: handleBackTab,
+    onNextTab: handleNextTab,
+  };
+
+  const controllerComboRequests: comboRequestProps = {
+    saveCombo: handleSaveCombo,
+    getProductSubGroupList: handleGetProductSubGroupList,
+    onChangeAllowOnlineSwitch: handleOnChangeAllowOnlineSwitch,
+    onChangeComboSwitch: handleOnChangeComboSwitch,
+  };
+
   useEffect(() => {
     handleGetComboList(params.id);
-    handleFecthProductGroupList();
+    handleFecthProductGroupList(params.id);
   }, []);
 
   return (
     <SectorProductComboContainer
       title={title}
       visible={visible}
-      onToggle={onToggle}
-      state={state}
-      shouldShowModal={shouldShowModal}
-      listProductSubGroup={listProductSubGroup}
-      listProductGroup={listProductGroup}
-      product={product}
-      addProduct={addProduct}
-      removeProduct={removeProduct}
-      productList={productList}
-      handleAddProduct={handleAddProduct}
+      comboStates={controllerComboStates}
+      formAppendProducts={controllerFormAppendProducts}
+      controllerProductActions={controllerProductActions}
       controllerFormCombo={controllerFormCombo}
       controllerFormComboConfig={controllerFormComboConfig}
-      handleChangeProduct={handleChangeProduct}
-      handleFecthProductSubGroupList={handleFecthProductSubGroupList}
+      comboRequests={controllerComboRequests}
+      onToggle={onToggle}
+      shouldShowModal={shouldShowModal}
       onShouldShowModal={handleOnShouldShowModal}
       handleAddDiscountCoupon={handleAddDiscountCoupon}
       discountCoupon={discountCoupon}
       handleChangeDiscountCoupon={handleChangeDiscountCoupon}
       handleRemoveDiscountCoupon={handleRemoveDiscountCoupon}
-      combo={combo}
-      comboList={comboList}
-      controllerProductActions={controllerProductActions}
-      onChangeAllowOnlineSwitch={handleOnChangeAllowOnlineSwitch}
-      onChangeComboSwitch={handleOnChangeComboSwitch}
       onShowDeleteCombo={handleOnShowDeleteCombo}
     />
   );
