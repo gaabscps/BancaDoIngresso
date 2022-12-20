@@ -88,6 +88,7 @@ export const SectorProductGroupScreen: React.FC<
   // FIM Configuração do formulário de grupo
 
   // Configuração do formulário de subgrupo
+
   // onChange do select de subGrupo
   const handleChangeAppendSubGroup = (
     inputName: string,
@@ -155,6 +156,7 @@ export const SectorProductGroupScreen: React.FC<
     ]);
     setNameFilesSub({ ...nameFilesSub, [inputName]: '' });
   };
+
   // FIM Configuração do formulário de subgrupo
 
   // GET com dados para montar a tabela da página
@@ -196,34 +198,25 @@ export const SectorProductGroupScreen: React.FC<
           subGroups: dataSubgGroup,
         };
 
-        if (!payload.id) {
-          // cenário de criação
+        // cenário de criação
+        if (payload.id === '') {
           delete payload.id;
-          // apaga o ID de todos os objetos com id "" do array de subGroup
-          payload.subGroups.forEach(sub => {
-            if (sub.id === '') {
-              delete sub.id;
-            }
-          });
-
-          const response = await api.post(`/event/section-product/${params.id}/group`, payload);
-          if (response) toast.success('Dados salvos com sucesso!');
-          setGroupSubgroup(response.data);
-        } else {
-          // cenario de edição
-          // apaga o ID de todos os objetos com id "" do array de subGroup
-          payload.subGroups.forEach(sub => {
-            if (sub.id === '') {
-              delete sub.id;
-            }
-          });
-
-          const response = await api.post(`/event/section-product/${params.id}/group`, payload);
-          if (response) toast.success('Dados salvos com sucesso!');
-          setGroupSubgroup(response.data);
         }
-        handleOnCancelEditGroup();
+
+        payload.subGroups = payload.subGroups.filter(sub => sub.name !== '');
+
+        // Condição para remover o id do subgrupo caso seja um novo subgrupo
+        payload.subGroups.forEach(sub => {
+          if (sub.id === '') {
+            delete sub.id;
+          }
+        });
+
+        const response = await api.post(`/event/section-product/${params.id}/group`, payload);
+        if (response) toast.success('Dados salvos com sucesso!');
+        setGroupSubgroup(response.data);
       }
+      handleOnCancelEditGroup();
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
@@ -244,6 +237,7 @@ export const SectorProductGroupScreen: React.FC<
     }
   };
 
+  // Busca por um grupo de produtos específico
   const handleOnGetGroup = async (groupSelected: any): Promise<void> => {
     try {
       if (groupSelected) {
@@ -276,6 +270,7 @@ export const SectorProductGroupScreen: React.FC<
     }
   };
 
+  // Abre o modal de confirmação de exclusão de grupo
   const handleOnShowDeleteProduct = (groupSelected: any): void => {
     confirmDelete.show({
       title: '',
@@ -320,6 +315,7 @@ export const SectorProductGroupScreen: React.FC<
     }
   };
 
+  // avança para o próximo passo do cadastro
   const handleNextTab = async (): Promise<void> => {
     if (listGroupSubGroup.length > 0) {
       nextTab();
