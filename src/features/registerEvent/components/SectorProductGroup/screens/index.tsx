@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable array-callback-return */
 import React, { useEffect, useState } from 'react';
@@ -13,6 +14,7 @@ import EventGroupSubgroup from '@/model/EventGroupSubgroup';
 import { useParams } from 'react-router-dom';
 import { useConfirmDelete } from '@/hooks/useConfirmDelete';
 // import validators from '@/helpers/validators';
+import { DeleteContent } from '@/components/DeleteContent';
 import { FormInputName, SectorProductGroupContainer } from './ui';
 import { appendFormProps, formGroupProps, groupStateProps, requestProps } from '../types';
 import { States } from '../../ContractorScreen/screens/ui';
@@ -98,7 +100,7 @@ export const SectorProductGroupScreen: React.FC<
   };
 
   const addAppendSubGroup = (): void => {
-    setSubGroup([...subGroup, { id: '', name: '' }]);
+    setSubGroup([...subGroup, { id: '', name: '', imageBase64: '' }]);
   };
 
   const removeAppendSubGroup = (index: number): void => {
@@ -195,20 +197,11 @@ export const SectorProductGroupScreen: React.FC<
         };
 
         if (!payload.id) {
-          // cenário de edição
+          // cenário de criação
           delete payload.id;
-          const response = await api.post(`/event/section-product/${params.id}/group`, payload);
-          if (response) toast.success('Dados salvos com sucesso!');
-          setGroupSubgroup(response.data);
-          resetForm();
-        } else {
-          if (payload.subGroups.find(sub => sub.name === '')) {
-            payload.subGroups = payload.subGroups.filter(sub => sub.name !== '');
-          }
           // apaga o ID de todos os objetos com id "" do array de subGroup
           payload.subGroups.forEach(sub => {
             if (sub.id === '') {
-              // eslint-disable-next-line no-param-reassign
               delete sub.id;
             }
           });
@@ -216,8 +209,20 @@ export const SectorProductGroupScreen: React.FC<
           const response = await api.post(`/event/section-product/${params.id}/group`, payload);
           if (response) toast.success('Dados salvos com sucesso!');
           setGroupSubgroup(response.data);
-          handleOnCancelEditGroup();
+        } else {
+          // cenario de edição
+          // apaga o ID de todos os objetos com id "" do array de subGroup
+          payload.subGroups.forEach(sub => {
+            if (sub.id === '') {
+              delete sub.id;
+            }
+          });
+
+          const response = await api.post(`/event/section-product/${params.id}/group`, payload);
+          if (response) toast.success('Dados salvos com sucesso!');
+          setGroupSubgroup(response.data);
         }
+        handleOnCancelEditGroup();
       }
     } catch (error) {
       const err = error as AxiosError;
@@ -258,7 +263,7 @@ export const SectorProductGroupScreen: React.FC<
   };
 
   // Deleta um grupo de produtos
-  const handleOnConfirmDeleteTopProduct = async (groupSelected: string): Promise<void> => {
+  const handleOnConfirmDeleteGroup = async (groupSelected: string): Promise<void> => {
     try {
       await api.delete(`/event/section-product/${params?.id}/group/${groupSelected}`);
       toast.success('Produto excluído com sucesso!');
@@ -269,6 +274,24 @@ export const SectorProductGroupScreen: React.FC<
     } finally {
       confirmDelete.hide();
     }
+  };
+
+  const handleOnShowDeleteProduct = (groupSelected: any): void => {
+    confirmDelete.show({
+      title: '',
+      children: <DeleteContent />,
+      actions: [
+        {
+          title: 'Não, quero manter',
+          theme: 'noneBorder',
+          onClick: (): void => confirmDelete.hide(),
+        },
+        {
+          title: 'Sim, quero excluir',
+          onClick: (): Promise<void> => handleOnConfirmDeleteGroup(groupSelected),
+        },
+      ],
+    });
   };
 
   // Busca por subgrupos de produtos cadastrados na sidebar
@@ -365,6 +388,29 @@ export const SectorProductGroupScreen: React.FC<
   }, [group]);
 
   useEffect(() => {
+    if (group) {
+      const groupEdit = groupOptions.find((item: any) => item.id === group.id);
+      if (groupEdit) {
+        onChangeFormInputGroup(FormInputName.id)(group.id);
+        onChangeFormInputGroup(FormInputName.name)(group.name);
+        onChangeFormInputGroup(FormInputName.imageBase64Group)(group.imageBase64);
+
+        setNameFiles(filesValues => ({
+          ...filesValues,
+          [FormInputName.imageBase64Group]: group?.imageBase64?.split('/').pop(),
+        }));
+        subGroup.map((item: any, index) => {
+          setNameFilesSub(filesValues => ({
+            ...filesValues,
+            [`imageBase64SubGroup-${index}`]: item?.imageBase64?.split('/').pop(),
+          }));
+        });
+      }
+      handleFecthProductSubGroupList(group.id);
+    }
+  }, [group]);
+
+  useEffect(() => {
     handleFecthProductGroupList();
     handleGetGroupSubgroupList(params.id);
   }, [groupSubgroup]);
@@ -377,7 +423,7 @@ export const SectorProductGroupScreen: React.FC<
       controllerRequest={controllerRequest}
       groupState={controllerGroupState}
       onNextTab={handleNextTab}
-      handleOnConfirmDeleteTopProduct={handleOnConfirmDeleteTopProduct}
+      onShowDeleteProduct={handleOnShowDeleteProduct}
     />
   );
 };

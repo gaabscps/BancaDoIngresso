@@ -18,7 +18,7 @@ interface SectorProductGroupContainerProps {
   controllerRequest: requestProps;
   groupState: groupStateProps;
   onNextTab: () => void;
-  handleOnConfirmDeleteTopProduct: (id: string) => Promise<void>;
+  onShowDeleteProduct: (groupSelected: any) => void;
 }
 
 export interface DataRowDiscountCoupon {
@@ -39,7 +39,7 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
   controllerFormGroup,
   controllerAppendForm,
   groupState,
-  handleOnConfirmDeleteTopProduct,
+  onShowDeleteProduct,
   onNextTab,
 }): JSX.Element => {
   const {
@@ -199,7 +199,12 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
               >
                 {groupsState ? 'Cancelar' : null}
               </div>
-              <div className="link-green" onClick={() => onSaveGroup()}>
+              <div
+                className="link-green"
+                onClick={() => {
+                  onSaveGroup();
+                }}
+              >
                 {groupsState ? 'salvar' : '+ cadastrar grupo'}
               </div>
             </div>
@@ -272,7 +277,7 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
                                   className="ml-5 action-icon"
                                 />
                                 <Trash
-                                  onClick={() => handleOnConfirmDeleteTopProduct(group?.id || '')}
+                                  onClick={() => onShowDeleteProduct(group?.id || '')}
                                   className="ml-5 action-icon"
                                 />
                               </div>
