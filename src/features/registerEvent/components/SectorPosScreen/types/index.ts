@@ -11,7 +11,7 @@ export interface formPosProps {
 export interface onShouldShowModalSectorPosProps {
   value: ShouldShowModal;
   newTitleModal: string | React.ReactNode;
-  product?: any;
+  pos?: any;
 }
 
 export interface modalConfigPosProps {
@@ -21,4 +21,10 @@ export interface modalConfigPosProps {
   onToggle: () => void;
   onShouldShowModal: (props: onShouldShowModalSectorPosProps) => void;
   shouldShowModal: ShouldShowModal;
+}
+
+export interface dataConfigStatesProps {
+  form: any | undefined;
+  setForm: React.Dispatch<React.SetStateAction<any | undefined>>;
+  configList: any[];
 }

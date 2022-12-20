@@ -311,7 +311,6 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
   };
 
   const handleOnChangeAllowOnlineSwitch = async (comboSelected: any): Promise<void> => {
-    console.log('object 1');
     try {
       setState(States.loading);
       const activedInput = comboSelected.allowSellingWebsite;
@@ -332,14 +331,13 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
   };
 
   const handleOnChangeComboSwitch = async (comboSelected: any): Promise<void> => {
-    console.log('object 1');
     try {
       setState(States.loading);
       const activedInput = comboSelected.status;
 
       await api.patch(
         `event/section-product/${params.id}/combo/${comboSelected.id}${
-          activedInput ? ' /disable' : '/enable'
+          activedInput ? '/disable' : '/enable'
         }`,
       );
 
