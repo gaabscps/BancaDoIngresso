@@ -5,7 +5,6 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import useForm from '@/hooks/useForm';
 import { AxiosError } from 'axios';
-// import validators from '@/helpers/validators';
 import api from '@/services/api';
 import ProductSubgroup from '@/model/ProductSubgroup';
 import ProductGroup from '@/model/ProductGroup';
@@ -13,7 +12,7 @@ import { TabSectorProductActionsProps } from '@/features/registerEvent/screens/S
 import EventGroupSubgroup from '@/model/EventGroupSubgroup';
 import { useParams } from 'react-router-dom';
 import { useConfirmDelete } from '@/hooks/useConfirmDelete';
-// import validators from '@/helpers/validators';
+import validators from '@/helpers/validators';
 import { DeleteContent } from '@/components/DeleteContent';
 import { FormInputName, SectorProductGroupContainer } from './ui';
 import { appendFormProps, formGroupProps, groupStateProps, requestProps } from '../types';
@@ -50,15 +49,17 @@ export const SectorProductGroupScreen: React.FC<
     formErrors: formErrorsGroup,
     onChangeFormInput: onChangeFormInputGroup,
     setErrors: setErrorsGroup,
-    isFormValid,
+    isFormValid: isFormValidGroup,
     resetForm,
   } = useForm({
     initialData: {
-      categoryGroupName: '',
+      id: '',
+      name: '',
       imageBase64Group: '',
     },
     validators: {
-      // categoryGroupName: [validators.required],
+      id: [validators.required],
+      // name: [validators.required],
     },
     formatters: {},
   });
@@ -135,9 +136,9 @@ export const SectorProductGroupScreen: React.FC<
           }
         };
       } else {
-        setErrorsGroup({
-          [inputName]: ['O formato deve ser .jpg, .jpeg ou .png'],
-        });
+        // setErrorsGroup({
+        //   [inputName]: ['O formato deve ser .jpg, .jpeg ou .png'],
+        // });
       }
     };
 
@@ -179,7 +180,10 @@ export const SectorProductGroupScreen: React.FC<
   // Payload para envio de cadastro/edição de grupo
   const handleOnSaveGroup = async (): Promise<void> => {
     try {
-      if (isFormValid()) {
+      console.log(formErrorsGroup, 'error');
+      console.log(isFormValidGroup(), 'validator');
+      console.log(formDataGroup, 'data');
+      if (isFormValidGroup()) {
         const dataSubgGroup = subGroup.map(sub => ({
           id: sub?.id,
           name: sub.name,
@@ -215,8 +219,8 @@ export const SectorProductGroupScreen: React.FC<
         const response = await api.post(`/event/section-product/${params.id}/group`, payload);
         if (response) toast.success('Dados salvos com sucesso!');
         setGroupSubgroup(response.data);
+        handleOnCancelEditGroup();
       }
-      handleOnCancelEditGroup();
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);

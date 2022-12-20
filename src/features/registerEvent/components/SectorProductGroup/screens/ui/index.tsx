@@ -78,7 +78,7 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
                 <FormGroup>
                   <SelectCreateable
                     label="Nome do grupo"
-                    name="categoryGroupName"
+                    name="name"
                     onChange={e => {
                       const groups = groupOptions.find(item => item.id === e?.value);
                       if (groups?.id) {
@@ -98,9 +98,7 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
                       label: item.name,
                     }))}
                     placeholder="Digite o nome do grupo. Ex: Bebidas"
-                    error={
-                      formErrorsGroup.categoryGroupName && formErrorsGroup.categoryGroupName[0]
-                    }
+                    error={formErrorsGroup.id && formErrorsGroup.id[0]}
                   />
                   <InputFile
                     label="Imagem do grupo (opcional)"
