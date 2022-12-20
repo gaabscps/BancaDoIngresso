@@ -14,7 +14,7 @@ import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { ReactComponent as Config } from '@/assets/images/svg/config.svg';
 import { CustomTable } from '@/components/Table';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Col, Container, Form, FormGroup, Row } from 'reactstrap';
 import { ActionProps } from '@/components/Dialog';
 import Pos from '@/model/Pos';
