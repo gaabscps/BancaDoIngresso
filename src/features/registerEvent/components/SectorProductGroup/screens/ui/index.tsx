@@ -50,17 +50,21 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
     onResetAppendFileInput,
     nameFilesSub,
   } = controllerAppendForm;
-  const { listGroupSubGroup, groupOptions, subGroup, subGroupOptions } = groupState;
+  const { listGroupSubGroup, groupOptions, subGroup, subGroupOptions, groupsState } = groupState;
   const { formDataGroup, formErrorsGroup, onChangeFileInput, nameFiles, onChangeFormInputGroup } =
     controllerFormGroup;
-  const { onGetProductSubGroupList, onSaveGroup, onGetGroup } = controllerRequest;
+  const { onGetProductSubGroupList, onSaveGroup, onGetGroup, onCancelEdit } = controllerRequest;
+  const titleRef = React.useRef<HTMLInputElement>(null);
+
   return (
     <>
       <Loading isVisible={state === States.loading} />
       <Container style={{ maxWidth: '100%' }} className="mainContainer">
         <Row>
-          <Col className="mb-5">
-            <h6>Cadastrando grupos</h6>
+          <Col>
+            <h6 ref={titleRef} className="mb-5">
+              {groupsState ? `Editando ${groupsState.name}` : 'Cadastrando grupos'}
+            </h6>
           </Col>
         </Row>
         <Container
@@ -186,10 +190,18 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
                 </Row>
               </div>
             ))}
-            <div className="d-flex justify-content-end register-buttom">
-              <span className="action-icon" onClick={() => onSaveGroup()}>
-                + cadastrar grupo
-              </span>
+            <div className="d-flex justify-content-end">
+              <div
+                className="mr-3"
+                onClick={() => {
+                  onCancelEdit();
+                }}
+              >
+                {groupsState ? 'Cancelar' : null}
+              </div>
+              <div className="link-green" onClick={() => onSaveGroup()}>
+                {groupsState ? 'salvar' : '+ cadastrar grupo'}
+              </div>
             </div>
           </Form>
         </Container>
@@ -202,9 +214,11 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
                 title={'Grupos cadastrados'}
                 content={
                   listGroupSubGroup.length > 0 ? (
+                    // eslint-disable-next-line no-shadow
                     listGroupSubGroup.map((group, index) => (
                       <React.Fragment key={index}>
-                        <div>
+                        {index > 0 ? <hr style={{ margin: '25px 0px 30px -50px' }} /> : null}
+                        <div className={groupsState ? 'disabled-content' : ''}>
                           <div
                             style={{ marginRight: '20px' }}
                             className="mb-3 mt-3 ml-5 d-flex align-items-center "
@@ -252,26 +266,18 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
                                   />
                                 )}
                               </div>
-                              <Pen onClick={() => onGetGroup(group)} className="ml-5 action-icon" />
-                              <Trash
-                                onClick={() => handleOnConfirmDeleteTopProduct(group?.id || '')}
-                                className="ml-5 action-icon"
-                              />
+                              <div className="d-flex align-items-center">
+                                <Pen
+                                  onClick={() => onGetGroup(group)}
+                                  className="ml-5 action-icon"
+                                />
+                                <Trash
+                                  onClick={() => handleOnConfirmDeleteTopProduct(group?.id || '')}
+                                  className="ml-5 action-icon"
+                                />
+                              </div>
                             </div>
                           </div>
-                          {
-                            // gray line before each item
-                            index !== listGroupSubGroup.length - 1 && (
-                              <div
-                                className="mb-3 mt-3"
-                                style={{
-                                  width: '100%',
-                                  height: '1px',
-                                  backgroundColor: '#E5E5E5',
-                                }}
-                              ></div>
-                            )
-                          }
                         </div>
                       </React.Fragment>
                     ))

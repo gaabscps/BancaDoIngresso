@@ -26,6 +26,7 @@ export interface requestProps {
   onSaveGroup: () => Promise<void>;
   onGetProductSubGroupList: (id: string) => Promise<void>;
   onGetGroup(groupSelected: any): Promise<void>;
+  onCancelEdit: () => void;
 }
 
 export interface groupStateProps {
@@ -33,4 +34,5 @@ export interface groupStateProps {
   subGroupOptions: ProductSubgroup[];
   subGroup: GroupProduct[];
   listGroupSubGroup: EventGroupSubgroup[];
+  groupsState: ProductGroup;
 }

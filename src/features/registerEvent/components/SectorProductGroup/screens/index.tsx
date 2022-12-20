@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable array-callback-return */
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -215,6 +216,7 @@ export const SectorProductGroupScreen: React.FC<
           const response = await api.post(`/event/section-product/${params.id}/group`, payload);
           if (response) toast.success('Dados salvos com sucesso!');
           setGroupSubgroup(response.data);
+          handleOnCancelEditGroup();
         }
       }
     } catch (error) {
@@ -282,6 +284,19 @@ export const SectorProductGroupScreen: React.FC<
     }
   };
 
+  const handleOnCancelEditGroup = (): void => {
+    try {
+      setGroup(undefined);
+      resetForm();
+      setNameFiles({});
+      setSubGroup([{ id: '', name: '', imageBase64: '' }]);
+      setNameFilesSub({});
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    }
+  };
+
   const handleNextTab = async (): Promise<void> => {
     if (listGroupSubGroup.length > 0) {
       nextTab();
@@ -315,6 +330,7 @@ export const SectorProductGroupScreen: React.FC<
     subGroupOptions,
     subGroup,
     listGroupSubGroup,
+    groupsState: group,
   };
 
   // Constroller das requisições
@@ -322,6 +338,7 @@ export const SectorProductGroupScreen: React.FC<
     onSaveGroup: handleOnSaveGroup,
     onGetProductSubGroupList: handleFecthProductSubGroupList,
     onGetGroup: handleOnGetGroup,
+    onCancelEdit: handleOnCancelEditGroup,
   };
 
   useEffect(() => {
@@ -336,12 +353,10 @@ export const SectorProductGroupScreen: React.FC<
           ...filesValues,
           [FormInputName.imageBase64Group]: group?.imageBase64?.split('/').pop(),
         }));
-        subGroup.map((_item: any, index) => {
+        subGroup.map((item: any, index) => {
           setNameFilesSub(filesValues => ({
             ...filesValues,
-            [`imageBase64SubGroup-${index}`]: `${
-              subGroup.find((itemm: any) => itemm.id === group.subGroups[index].id).name
-            }.png`,
+            [`imageBase64SubGroup-${index}`]: item?.imageBase64?.split('/').pop(),
           }));
         });
       }

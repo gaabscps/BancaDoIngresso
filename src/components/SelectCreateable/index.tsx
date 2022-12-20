@@ -42,7 +42,7 @@ export const SelectCreateable = (props: SelectAutoCompleteProps) => {
   return (
     <>
       <div
-        className={`flex-column input-component ${props.wrapperClass} ${
+        className={`w-100 flex-column input-component ${props.wrapperClass} ${
           props.disabled ? 'input-disabled' : ''
         } ${props.error ? 'input-error' : ''}`}
         style={props.noPadding ? { marginBottom: '0px' } : {}}
