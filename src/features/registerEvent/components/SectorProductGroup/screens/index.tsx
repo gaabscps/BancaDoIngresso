@@ -59,7 +59,6 @@ export const SectorProductGroupScreen: React.FC<
     },
     validators: {
       id: [validators.required],
-      // name: [validators.required],
     },
     formatters: {},
   });
@@ -136,9 +135,9 @@ export const SectorProductGroupScreen: React.FC<
           }
         };
       } else {
-        // setErrorsGroup({
-        //   [inputName]: ['O formato deve ser .jpg, .jpeg ou .png'],
-        // });
+        setErrorsGroup({
+          [inputName]: ['O formato deve ser .jpg, .jpeg ou .png'],
+        });
       }
     };
 
@@ -215,6 +214,11 @@ export const SectorProductGroupScreen: React.FC<
             delete sub.id;
           }
         });
+
+        if (payload.subGroups.length === 0) {
+          toast.error('É necessário cadastrar pelo menos um subgrupo');
+          return;
+        }
 
         const response = await api.post(`/event/section-product/${params.id}/group`, payload);
         if (response) toast.success('Dados salvos com sucesso!');
