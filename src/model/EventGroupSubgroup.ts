@@ -1,10 +1,17 @@
 export default interface EventGroupSubgroup {
-  categoryGroupId: string;
-  categoryGroupName: string;
+  id?: string;
+  name: string;
+  imageBase64: string;
   subGroups: [
     {
-      productSubGroupId: string;
-      productSubGroupName: string;
+      id?: string;
+      name: string;
+      imageBase64: string;
+      categoryGroup: {
+        id: string;
+        name: string;
+        imageBase64: string;
+      };
     },
   ];
 }
