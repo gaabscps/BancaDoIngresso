@@ -1,4 +1,5 @@
 import { FormData, FormErrors, IsFormValid, OnChangeFormInput } from '@/hooks';
+import EventPdv from '@/model/EventPdv';
 import Page from '@/model/Page';
 import Pdv from '@/model/Pdv';
 import User from '@/model/User';
@@ -45,6 +46,7 @@ export interface mainPdvStatesProps {
   setMainPdv: React.Dispatch<React.SetStateAction<Pdv | undefined>>;
   mainPdvList: Pdv[];
   setMainPdvList: React.Dispatch<React.SetStateAction<Pdv[]>>;
+  eventPDVs: EventPdv[];
 }
 
 export interface mainPdvActionsProps {

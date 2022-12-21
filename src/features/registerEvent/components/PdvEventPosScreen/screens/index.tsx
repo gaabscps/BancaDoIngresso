@@ -9,6 +9,8 @@ import { useDialog } from '@/hooks/useDialog';
 import { DeleteContent } from '@/components/DeleteContent';
 import { TabPdvActionsProps } from '@/features/registerEvent/screens/Pdv/ui';
 import { useParams } from 'react-router-dom';
+import EventPdvPos from '@/model/EventPdvPos';
+import Pdv from '@/model/Pdv';
 import {
   formPosConfigProps,
   formPosProps,
@@ -17,13 +19,19 @@ import {
   onShouldShowPosSettingsProps,
   posActionsProps,
 } from '../types';
-import { States, PdvEventPosContainer, ShouldShowModal } from './ui';
+import { States, PdvEventPosContainer, ShouldShowModal, FormInputName } from './ui';
+import { FormInputName as FormInputNameRegister } from '../components/PosContent';
 
 type UrlParams = {
   id: string;
 };
 
-export const PdvEventPosScreen: React.FC<Omit<TabPdvActionsProps, 'firstTab'>> = ({
+interface PdvEventPosScreen extends TabPdvActionsProps {
+  pdvId?: string;
+}
+
+export const PdvEventPosScreen: React.FC<Omit<PdvEventPosScreen, 'firstTab'>> = ({
+  pdvId,
   backTab,
   nextTab,
 }): JSX.Element => {
@@ -34,7 +42,7 @@ export const PdvEventPosScreen: React.FC<Omit<TabPdvActionsProps, 'firstTab'>> =
   );
 
   const [pos, setPos] = useState<Pos>();
-  const [posList, setPosList] = useState<Pos[]>([]);
+  const [posList, setPosList] = useState<EventPdvPos[]>([]);
   const [posOptions, setPosOptions] = useState<Pos[]>([]);
 
   const { title, visible, onChangeTitle, onToggle } = useDialog();
@@ -150,9 +158,20 @@ export const PdvEventPosScreen: React.FC<Omit<TabPdvActionsProps, 'firstTab'>> =
   };
   // modal config ------------------------------------------------------------
 
+  const getPoss = async (): Promise<void> => {
+    if (pdvId) {
+      const response = await api.get<EventPdvPos[]>(`/event/pdv/${params.id}/pos/${pdvId}/`);
+      if (response.data.length > 0) {
+        onChangeFormInputPos(FormInputName.hasPos)('true');
+      }
+      setPosList(response.data);
+    }
+  };
+
   const handleGetAllPos = async (): Promise<void> => {
     try {
       setState(States.loading);
+      await getPoss();
       const { data } = await api.get<Pos[]>('/pos/find');
       setPosOptions(data ?? []);
     } catch (error) {
@@ -194,10 +213,39 @@ export const PdvEventPosScreen: React.FC<Omit<TabPdvActionsProps, 'firstTab'>> =
     }
   };
 
+  const handleInsertPos = async (): Promise<void> => {
+    if (isFormValidPosRegister()) {
+      try {
+        setState(States.loading);
+        const pdv = {
+          id: pdvId,
+        } as Pdv;
+        const posReq = {
+          id: formDataPosRegister[FormInputNameRegister.name],
+        } as Pos;
+        const request: EventPdvPos = {
+          pdv,
+          pos: posReq,
+          waiter: formDataPosRegister[FormInputNameRegister.partialPayment] as unknown as number,
+        };
+
+        await api.post<EventPdvPos>(`/event/pdv/${params.id}/pos/`, request);
+        resetFormPosRegister();
+        await getPoss();
+      } catch (error) {
+        const err = error as AxiosError;
+        toast.error(err.message);
+      } finally {
+        setState(States.default);
+      }
+    }
+  };
+
   const controllerFormPos: formPosProps = {
     formData: formDataPos,
     formErrors: formErrorsPos,
     onChangeFormInput: onChangeFormInputPos,
+    onInsertPos: handleInsertPos,
     isFormValid: isFormValidPos,
   };
 
@@ -215,6 +263,7 @@ export const PdvEventPosScreen: React.FC<Omit<TabPdvActionsProps, 'firstTab'>> =
     isFormValid: isFormValidPosConfig,
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const controllerPosStates: any = {
     pos,
     setPos,
