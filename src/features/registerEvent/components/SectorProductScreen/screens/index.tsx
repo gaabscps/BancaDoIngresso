@@ -21,6 +21,9 @@ import { DeleteContent } from '@/components/DeleteContent';
 import { TabSectorProductActionsProps } from '@/features/registerEvent/screens/SectorProduct/ui';
 import validators from '@/helpers/validators';
 import { convertToBoolean } from '@/helpers/common/convertToBoolean';
+import Product from '@/model/Product';
+import GroupProduct from '@/model/SubgruopProduct';
+import EventProduct from '@/model/EventProduct';
 import {
   formConfigProductProps,
   formProductProps,
@@ -49,12 +52,12 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
   );
   const [nameFiles, setNameFiles] = useState<NameFiles>({});
 
-  const [product, setProduct] = useState<any>();
-  const [productList, setProductList] = useState<any>([]);
+  const [product, setProduct] = useState<EventProduct>();
+  const [productList, setProductList] = useState<EventProduct[]>([]);
 
-  const [groupList, setGroupList] = useState<any>([]);
+  const [groupList, setGroupList] = useState<GroupProduct[]>([]);
 
-  const [optionProduct, setOptionProduct] = useState<any>([]);
+  const [optionProduct, setOptionProduct] = useState<Product[]>([]);
 
   const [discountCoupon, setDiscountCoupon] = useState<DiscountCoupon[]>([]);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

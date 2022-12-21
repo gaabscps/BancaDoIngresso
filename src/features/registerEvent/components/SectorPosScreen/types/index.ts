@@ -1,4 +1,5 @@
 import { FormData, FormErrors, OnChangeFormInput, IsFormValid } from '@/hooks';
+import ProductSectionEvent from '@/model/SectionProductEvent';
 import { ShouldShowModal } from '../screens/ui';
 
 export interface formPosProps {
@@ -33,5 +34,5 @@ export interface modalConfigPosProps {
 export interface dataConfigStatesProps {
   form: any | undefined;
   setForm: React.Dispatch<React.SetStateAction<any | undefined>>;
-  configList: any[];
+  configList: ProductSectionEvent[];
 }

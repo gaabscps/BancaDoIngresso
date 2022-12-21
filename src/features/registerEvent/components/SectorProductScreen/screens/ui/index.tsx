@@ -118,7 +118,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
           </div>
           <div className="d-flex justify-content-end">
             <div
-              className="mr-3"
+              className="cursor-pointer mr-3"
               onClick={() => {
                 productActions.onCancelEdit();
               }}

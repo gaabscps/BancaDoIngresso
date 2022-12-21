@@ -236,7 +236,7 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
                       </div> */}
                       <div className="d-flex justify-content-end">
                         <div
-                          className="mr-3"
+                          className="cursor-pointer mr-3"
                           onClick={() => {
                             handleOnCancelEditPos();
                           }}

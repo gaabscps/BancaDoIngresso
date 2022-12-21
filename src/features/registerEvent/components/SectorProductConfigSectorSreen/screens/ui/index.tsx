@@ -110,7 +110,7 @@ export const SectorProductConfigSectorContainer: React.FC<
           </div>
           <div className="d-flex justify-content-end">
             <div
-              className="mr-3"
+              className="cursor-pointer mr-3"
               onClick={() => {
                 configSectorActions.onCancelEdit();
               }}

@@ -10,7 +10,6 @@ import api from '@/services/api';
 import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
 import Pos from '@/model/Pos';
-import Section from '@/model/Section';
 import { useConfirmDelete } from '@/hooks/useConfirmDelete';
 import { DeleteContent } from '@/components/DeleteContent';
 import {
@@ -19,6 +18,7 @@ import {
   ShouldShowModal,
 } from '@/features/registerEvent/components/SectorPosScreen/screens/ui';
 import { convertToBoolean } from '@/helpers/common/convertToBoolean';
+import ProductSectionEvent from '@/model/SectionProductEvent';
 import {
   dataConfigStatesProps,
   formAllowPosProps,
@@ -49,7 +49,7 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({ back
     ShouldShowModal.configPos,
   );
   const [form, setForm] = useState<any>({});
-  const [configList, setConfigList] = useState<Section[]>([]);
+  const [configList, setConfigList] = useState<ProductSectionEvent[]>([]);
 
   const [pos, setPos] = useState<any>();
   const [posList, setPosList] = useState<any[]>([]);
