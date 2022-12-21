@@ -55,7 +55,6 @@ export interface SectorProductPosContainerProps {
   controllerFormAllowPos: formAllowPosProps;
   controllerModalConfig: modalConfigPosProps;
   handleOnSavePos: () => Promise<void>;
-  nextTab: () => void;
   backTab: () => void;
   posList: any[];
   posOptions: Pos[];
@@ -72,7 +71,6 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
   controllerFormAllowPos,
   controllerModalConfig,
   handleOnSavePos,
-  nextTab,
   backTab,
   posList,
   posOptions,
@@ -394,14 +392,6 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
         )}
         <div className="d-flex justify-content-end">
           <Button title="Voltar etapa" theme="noneBorder" onClick={() => backTab()} />
-          <Button
-            title="Próxima etapa"
-            theme="outlineDark"
-            className="ml-3"
-            onClick={async () => {
-              await nextTab();
-            }}
-          />
         </div>
       </Container>
     </>

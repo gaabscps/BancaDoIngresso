@@ -18,7 +18,6 @@ import {
   SectorPosContainer,
   ShouldShowModal,
 } from '@/features/registerEvent/components/SectorPosScreen/screens/ui';
-// import { FormInputName as FormInputNamePos } from '@/features/registerEvent/components/SectorPosScreen/screens/ui';
 import { convertToBoolean } from '@/helpers/common/convertToBoolean';
 import {
   dataConfigStatesProps,
@@ -43,7 +42,7 @@ type UrlParams = {
   id: string;
 };
 
-export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({ nextTab, backTab }) => {
+export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({ backTab }) => {
   const [state, setState] = useState<States>(States.default);
   const { title, visible, onChangeTitle, onToggle } = useDialog();
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(
@@ -415,7 +414,6 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({ next
         posList={posList}
         posOptions={posOptions}
         dataConfig={controllerDataConfig}
-        nextTab={nextTab}
         backTab={backTab}
         handleOnSavePos={handleOnSavePos}
         handleOnShowDeletePos={handleOnShowDeletePos}
