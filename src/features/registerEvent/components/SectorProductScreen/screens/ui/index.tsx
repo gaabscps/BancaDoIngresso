@@ -54,7 +54,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
   const titleRef = React.useRef<HTMLInputElement>(null);
 
   // sum of all products within subGroups
-  const countProducts = productStates.productList.reduce((acc, { subGroups }) => {
+  const countProducts = productStates.productList?.reduce((acc, { subGroups }) => {
     const count = subGroups.reduce((acc: any, { products }: any) => acc + products.length, 0);
     return acc + count;
   }, 0);
