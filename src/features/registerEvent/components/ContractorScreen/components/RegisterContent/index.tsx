@@ -82,7 +82,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
   contractorState,
   controllerAppendUser,
 }) => {
-  const refSelectUser = useRef<any>(null);
+  const refSelectUser = useRef<HTMLSelectElement | any>(null);
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   const onClearSelectUser = () => {
     if (refSelectUser) {

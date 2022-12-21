@@ -26,8 +26,8 @@ export const RegisterDiscountCoupon: React.FC<RegisterContentProps> = ({
       }}
     >
       {discountCoupon.map((item, index) => (
-        <>
-          <div className="modal__main-container" key={index}>
+        <React.Fragment key={index}>
+          <div className="modal__main-container">
             <Row>
               <Col md={6}>
                 <FormGroup className="mb-2">
@@ -105,7 +105,7 @@ export const RegisterDiscountCoupon: React.FC<RegisterContentProps> = ({
           {discountCoupon.length > 1 ? (
             <div className="p-4" style={{ backgroundColor: '#f8f8f8' }}></div>
           ) : null}
-        </>
+        </React.Fragment>
       ))}
     </Form>
     <div

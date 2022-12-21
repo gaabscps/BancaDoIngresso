@@ -27,8 +27,8 @@ export const PosConfigContent: React.FC<Pick<SectorProductPosContainerProps, 'da
       value.includes(sectionId),
     );
 
-    const _products: any[] = [];
-    const _combos: any[] = [];
+    const _products = [];
+    const _combos = [];
 
     sectionGroup.map(({ subGroups, categoryGroupId }: any) =>
       subGroups.map(({ products, combos, categorySubGroupId }: any) => {

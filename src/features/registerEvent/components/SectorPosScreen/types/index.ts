@@ -1,7 +1,15 @@
 import { FormData, FormErrors, OnChangeFormInput, IsFormValid } from '@/hooks';
+import ProductSectionEvent from '@/model/SectionProductEvent';
 import { ShouldShowModal } from '../screens/ui';
 
 export interface formPosProps {
+  formData: FormData;
+  formErrors: FormErrors;
+  onChangeFormInput: OnChangeFormInput;
+  isFormValid: IsFormValid;
+}
+
+export interface formAllowPosProps {
   formData: FormData;
   formErrors: FormErrors;
   onChangeFormInput: OnChangeFormInput;
@@ -26,5 +34,5 @@ export interface modalConfigPosProps {
 export interface dataConfigStatesProps {
   form: any | undefined;
   setForm: React.Dispatch<React.SetStateAction<any | undefined>>;
-  configList: any[];
+  configList: ProductSectionEvent[];
 }
