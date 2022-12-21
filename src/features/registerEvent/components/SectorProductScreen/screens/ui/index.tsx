@@ -51,7 +51,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
   modalConfig,
   formDiscountCoupon,
 }) => {
-  const titleRef = React.useRef<HTMLInputElement>(null);
+  const titleRef = React.useRef<HTMLDivElement>(null);
 
   // sum of all products within subGroups
   const countProducts = productStates.productList?.reduce((acc, { subGroups }) => {

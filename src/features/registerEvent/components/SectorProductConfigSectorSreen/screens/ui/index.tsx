@@ -51,6 +51,14 @@ export const SectorProductConfigSectorContainer: React.FC<
   modalConfig,
   dataConfig,
 }) => {
+  const titleRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    if (configSectorStates.sector) {
+      titleRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [configSectorStates.sector]);
+
   const renderActionDialogToCancel: ActionProps = {
     title: 'Cancelar',
     onClick: (): void => {
@@ -59,6 +67,7 @@ export const SectorProductConfigSectorContainer: React.FC<
     },
     theme: 'noneBorder',
   };
+
   return (
     <Fragment>
       <Dialog
@@ -86,7 +95,11 @@ export const SectorProductConfigSectorContainer: React.FC<
       </Dialog>
       <Loading isVisible={state === States.loading} />
       <Container className="mainContainer" fluid={true}>
-        <h6 className="mb-4">Cadastrando setores</h6>
+        <h6 ref={titleRef} className="mb-4">
+          {configSectorStates.sector
+            ? `Editando ${configSectorStates.sector.sectionNome}`
+            : 'Cadastrando produtos'}
+        </h6>
         <div className="card-ligth-color mb-5">
           <div className="container-event">
             <SectorProductConfigSectorContent

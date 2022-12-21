@@ -60,7 +60,7 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
     setErrorsGroup,
   } = controllerFormGroup;
   const { onGetProductSubGroupList, onSaveGroup, onGetGroup, onCancelEdit } = controllerRequest;
-  const titleRef = React.useRef<HTMLInputElement>(null);
+  const titleRef = React.useRef<HTMLDivElement>(null);
 
   return (
     <>

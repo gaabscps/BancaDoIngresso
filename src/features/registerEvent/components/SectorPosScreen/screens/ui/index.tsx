@@ -86,7 +86,7 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
   const { formData, formErrors, onChangeFormInput } = controllerFormPos;
   const { shouldShowModal, title, visible, onToggle, onShouldShowModal } = controllerModalConfig;
 
-  const titleRef = React.useRef<HTMLInputElement>(null);
+  const titleRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
     if (posState) {
