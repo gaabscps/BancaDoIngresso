@@ -1,5 +1,6 @@
 import { FormData, FormErrors, OnChangeFormInput } from '@/hooks';
-import ProductGroup from '@/model/ProductGroup';
+import EventGroupSubgroup from '@/model/EventGroupSubgroup';
+import EventProduct from '@/model/EventProduct';
 import ProductSubgroup from '@/model/ProductSubgroup';
 import SectorProductCombo from '@/model/SectorProductCombo';
 import SectorProductComboProduct from '@/model/SectorProductComboProduct';
@@ -8,6 +9,7 @@ export interface formComboProps {
   onChangeFormInputCombo: OnChangeFormInput;
   formDataCombo: FormData;
   formErrorsCombo: FormErrors;
+  onClearSelectSubGroup: (ref: any) => void;
 }
 
 export interface formAppendProductsProps {
@@ -25,11 +27,12 @@ export interface formComboConfigProps {
 export interface comboStatesProps {
   state: string;
   listProductSubGroup: ProductSubgroup[];
-  listProductGroup: ProductGroup[];
+  listProductGroup: EventGroupSubgroup[];
   product: SectorProductComboProduct[];
   productList: SectorProductComboProduct[];
   combo: SectorProductCombo[];
   comboList: SectorProductCombo[];
+  productGet: EventProduct[];
 }
 export interface comboActionsProps {
   onFirstTab: () => void;

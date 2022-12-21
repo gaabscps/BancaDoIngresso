@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import {
   Button,
   ButtonGroup,
@@ -68,12 +68,13 @@ export interface DataRowDiscountCoupon {
 
 // eslint-disable-next-line no-shadow
 export enum FormInputName {
+  id = 'id',
   name = 'name',
   group = 'group',
   subGroup = 'subGroup',
   image = 'image',
   allowCombo = 'allowCombo',
-  allowOnlineSale = 'allowOnlineSale',
+  allowSellingWebsite = 'allowSellingWebsite',
   amount = 'amount',
   totalValue = 'totalValue',
   imageBase64 = 'imageBase64',
@@ -109,6 +110,10 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
   const { addProduct, onChangeProduct, removeProduct } = formAppendProducts;
   const { getProductSubGroupList, onChangeComboSwitch, onChangeAllowOnlineSwitch, saveCombo } =
     comboRequests;
+  const { onClearSelectSubGroup } = controllerFormCombo;
+
+  const refSelectSubGroup = useRef<any>(null);
+
   return (
     <>
       <Loading isVisible={state === States.loading} />
@@ -125,7 +130,7 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
           {
             [ShouldShowModal.comboConfig]: {
               title: 'Salvar',
-              onClick: () => undefined,
+              onClick: () => saveCombo(),
             },
           }[shouldShowModal],
         ]}
@@ -179,12 +184,13 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                     <FormGroup>
                       <SelectCustom
                         label="Grupo do combo"
-                        name="groupName"
+                        name="group"
                         onChange={e => {
                           controllerFormCombo.onChangeFormInputCombo(FormInputName.group)(
                             e?.value as string,
                           );
                           getProductSubGroupList(e?.value as string);
+                          onClearSelectSubGroup(refSelectSubGroup);
                         }}
                         value={controllerFormCombo.formDataCombo[FormInputName.group]}
                         options={listProductGroup.map(item => ({
@@ -198,6 +204,7 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                         }
                       />
                       <SelectCustom
+                        refSelect={refSelectSubGroup}
                         label="Nome do subgrupo"
                         name="subGroup"
                         onChange={e => {
@@ -210,11 +217,12 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                           value: item.id,
                           label: item.name,
                         }))}
+                        value={controllerFormCombo.formDataCombo[FormInputName.subGroup]}
                         error={
                           controllerFormCombo.formErrorsCombo.allowCreditCardPayment &&
                           controllerFormCombo.formErrorsCombo.allowCreditCardPayment[0]
                         }
-                        value={controllerFormCombo.formDataCombo[FormInputName.subGroup]}
+                        disabled={controllerFormCombo.formDataCombo[FormInputName.group] === ''}
                       />
                       <InputText
                         name="name"
@@ -234,19 +242,19 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                       <ButtonGroup
                         label="Vender online?"
                         name="allowOnlineSale"
-                        value={controllerFormCombo.formDataCombo[FormInputName.allowOnlineSale]}
+                        value={controllerFormCombo.formDataCombo[FormInputName.allowSellingWebsite]}
                         onChange={e =>
-                          controllerFormCombo.onChangeFormInputCombo(FormInputName.allowOnlineSale)(
-                            e.target.value,
-                          )
+                          controllerFormCombo.onChangeFormInputCombo(
+                            FormInputName.allowSellingWebsite,
+                          )(e.target.value)
                         }
                         options={[
                           { value: true, label: 'Sim' },
                           { value: false, label: 'Não' },
                         ]}
                         error={
-                          controllerFormCombo.formErrorsCombo.allowCreditCardPayment &&
-                          controllerFormCombo.formErrorsCombo.allowCreditCardPayment[0]
+                          controllerFormCombo.formErrorsCombo.allowSellingWebsite &&
+                          controllerFormCombo.formErrorsCombo.allowSellingWebsite[0]
                         }
                       />
                     </FormGroup>
@@ -274,8 +282,8 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                           )
                         }
                         error={
-                          controllerFormCombo.formErrorsCombo.allowCreditCardPayment &&
-                          controllerFormCombo.formErrorsCombo.allowCreditCardPayment[0]
+                          controllerFormCombo.formErrorsCombo.amount &&
+                          controllerFormCombo.formErrorsCombo.amount[0]
                         }
                       />
                       <ReactTooltip
@@ -333,10 +341,12 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                             onChangeProduct('name', index, e?.value as string);
                           }}
                           placeholder="Digite ou selecione o produto"
-                          options={listProductSubGroup.map(item => ({
-                            value: item.name,
-                            label: item.name,
-                          }))}
+                          options={[
+                            {
+                              value: '68423df8-a185-42f6-a63f-5a1fdcfb5f53',
+                              label: 'produto mockado',
+                            },
+                          ]}
                           noPadding={true}
                         />
                       </Col>
@@ -376,8 +386,12 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                 <div className="d-flex justify-content-end register-buttom">
                   <span
                     className="action-icon"
-                    onClick={() => {
-                      saveCombo();
+                    onClick={(): void => {
+                      onToggle();
+                      onShouldShowModal({
+                        value: ShouldShowModal.comboConfig,
+                        newTitleModal: `Configurações do combo`,
+                      });
                     }}
                   >
                     + cadastrar combo

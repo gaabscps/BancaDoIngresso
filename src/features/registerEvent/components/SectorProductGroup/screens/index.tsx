@@ -49,7 +49,6 @@ export const SectorProductGroupScreen: React.FC<
     formErrors: formErrorsGroup,
     onChangeFormInput: onChangeFormInputGroup,
     setErrors: setErrorsGroup,
-    isFormValid: isFormValidGroup,
     resetForm,
   } = useForm({
     initialData: {
@@ -177,10 +176,6 @@ export const SectorProductGroupScreen: React.FC<
   // Payload para envio de cadastro/edição de grupo
   const handleOnSaveGroup = async (): Promise<void> => {
     try {
-      console.log(formErrorsGroup, 'error');
-      console.log(isFormValidGroup(), 'validator');
-      console.log(formDataGroup, 'data');
-
       const validation =
         !(formDataGroup[FormInputName.name] === '' && formDataGroup[FormInputName.id] === '') ||
         formDataGroup[FormInputName.id] !== '';

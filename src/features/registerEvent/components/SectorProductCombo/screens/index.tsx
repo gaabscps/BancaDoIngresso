@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import React, { useEffect, useState } from 'react';
 import SectorProductGroup from '@/model/SectorProductGroup';
 import { toast } from 'react-toastify';
@@ -7,15 +8,20 @@ import validators from '@/helpers/validators';
 import api from '@/services/api';
 import DiscountCoupon from '@/model/DiscountCoupon';
 import ProductSubgroup from '@/model/ProductSubgroup';
-import ProductGroup from '@/model/ProductGroup';
 import { useDialog } from '@/hooks/useDialog';
-import { SectorProductComboContainer } from '@/features/registerEvent/components/SectorProductCombo/screens/ui';
+import {
+  FormInputName as FormInputNameCombo,
+  SectorProductComboContainer,
+} from '@/features/registerEvent/components/SectorProductCombo/screens/ui';
 import SectorProductComboProduct from '@/model/SectorProductComboProduct';
 import SectorProductCombo from '@/model/SectorProductCombo';
 import { TabSectorProductActionsProps } from '@/features/registerEvent/screens/SectorProduct/ui';
 import { useParams } from 'react-router-dom';
 import { useConfirmDelete } from '@/hooks/useConfirmDelete';
 import { DeleteContent } from '@/components/DeleteContent';
+import EventGroupSubgroup from '@/model/EventGroupSubgroup';
+import EventProduct from '@/model/EventProduct';
+import { convertToBoolean } from '@/helpers/common/convertToBoolean';
 import {
   comboActionsProps,
   comboRequestProps,
@@ -25,6 +31,7 @@ import {
   formComboProps,
 } from '../types';
 import { States } from '../../ContractorScreen/screens/ui';
+import { FormInputNameComboConfig } from '../components/RegisterContentComboConfig';
 
 // eslint-disable-next-line no-shadow
 export enum ShouldShowModal {
@@ -52,7 +59,8 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
     { id: '', name: '', amount: 0 },
   ]);
   const [productList, setProductList] = useState<SectorProductComboProduct[]>([]);
-  const [listProductGroup, setListProductGroup] = useState<ProductGroup[]>([]);
+  const [productGet, setProductGet] = useState<EventProduct[]>([]);
+  const [listProductGroup, setListProductGroup] = useState<EventGroupSubgroup[]>([]);
   const [listProductSubGroup, setListProductSubGroup] = useState<ProductSubgroup[]>([]);
 
   const confirmDelete = useConfirmDelete();
@@ -73,9 +81,9 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
       totalValue: '',
       imageBase64: '',
       groupId: '',
-      groupName: '',
+      group: '',
       groupImageBase64: '',
-      subgroupName: '',
+      subgroup: '',
       subgroupImageBase64: '',
       product: '',
       productAmount: '',
@@ -86,9 +94,9 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
       totalValue: [validators.required],
       imageBase64: [validators.required],
       groupId: [validators.required],
-      groupName: [validators.required],
+      group: [validators.required],
       groupImageBase64: [validators.required],
-      subgroupName: [validators.required],
+      subgroup: [validators.required],
       subgroupImageBase64: [validators.required],
       product: [validators.required],
     },
@@ -125,10 +133,10 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
       partialPayment: '',
       allowDiscountCoupon: '',
       discountsId: '',
-      discountsName: '',
-      discountsCode: '',
-      discountsAmount: '',
-      discountsDiscount: '',
+      name: '',
+      code: '',
+      amount: '',
+      discount: '',
     },
     validators: {
       name: [validators.required],
@@ -237,6 +245,90 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
   // Payload para adicionar um novo combo
   const handleSaveCombo = async (): Promise<void> => {
     try {
+      const productData = product.map(prod => ({
+        id: prod.id,
+        name: prod.name,
+        amount: Number(prod.amount),
+      }));
+
+      const discountData = discountCoupon.map(disc => ({
+        name: disc.name,
+        code: disc.code,
+        amount: Number(disc.amount),
+        discountType: disc.discountType,
+        discount: Number(disc.discount),
+      }));
+
+      const payload = {
+        id: formDataCombo[FormInputNameCombo.id] || undefined,
+        group: {
+          id: formDataCombo[FormInputNameCombo.group],
+        },
+        subgroup: {
+          id: formDataCombo[FormInputNameCombo.subGroup],
+        },
+        name: formDataCombo[FormInputNameCombo.name],
+        amount: +formDataCombo[FormInputNameCombo.amount],
+        totalValue: +formDataCombo[FormInputNameCombo.totalValue],
+        imageBase64: formDataCombo[FormInputNameCombo.imageBase64],
+        products: productData,
+        formPrinting: formDataComboConfig[FormInputNameComboConfig.formPrinting],
+        hasCourtesy: convertToBoolean(formDataComboConfig[FormInputNameComboConfig.hasCourtesy]),
+        physicalSale: {
+          allowCreditCardPayment: convertToBoolean(
+            formDataComboConfig[FormInputNameComboConfig.physicalSaleAllowCreditCardPayment],
+          ),
+          debit: +formDataComboConfig[FormInputNameComboConfig.physicalSaleDebit],
+          credit: +formDataComboConfig[FormInputNameComboConfig.physicalSaleCredit],
+          pix: +formDataComboConfig[FormInputNameComboConfig.physicalSalePix],
+          administrateTax:
+            +formDataComboConfig[FormInputNameComboConfig.physicalSaleAdministrateTax],
+          bankSlip: 0,
+          installments: +formDataComboConfig[FormInputNameComboConfig.physicalSaleInstallments],
+          fee: +formDataComboConfig[FormInputNameComboConfig.physicalSaleFee],
+        },
+        allowSellingWebsite: convertToBoolean(
+          formDataCombo[FormInputNameCombo.allowSellingWebsite],
+        ),
+        websiteSale: {
+          allowCreditCardPayment: convertToBoolean(
+            formDataComboConfig[FormInputNameComboConfig.websiteSaleAllowCreditCardPayment],
+          ),
+          debit: 1,
+          credit: +formDataComboConfig[FormInputNameComboConfig.websiteSaleCredit],
+          pix: +formDataComboConfig[FormInputNameComboConfig.websiteSalePix],
+          administrateTax:
+            +formDataComboConfig[FormInputNameComboConfig.websiteSaleAdministrateTax],
+          bankSlip: +formDataComboConfig[FormInputNameComboConfig.websiteSaleBankSlip],
+          installments: +formDataComboConfig[FormInputNameComboConfig.websiteSaleInstallments],
+          fee: +formDataComboConfig[FormInputNameComboConfig.websiteSaleFee],
+        },
+        waiter: +formDataComboConfig[FormInputNameComboConfig.waiter],
+        partialPayment: formDataComboConfig[FormInputNameComboConfig.partialPayment],
+        allowDiscountCoupon: convertToBoolean(
+          formDataComboConfig[FormInputNameComboConfig.allowDiscountCoupon],
+        ),
+        discounts: discountData,
+      };
+
+      // cenário de criação
+      if (payload.id === '') {
+        delete payload.id;
+      }
+
+      payload.products = payload.products.filter(prod => prod.name !== '');
+
+      // Condição para remover o id do produto caso seja um novo subgrupo
+      payload.products.forEach(productObject => {
+        if (productObject.id === '') {
+          // eslint-disable-next-line no-param-reassign
+          delete productObject.id;
+        }
+      });
+
+      const reponse = await api.post(`/event/section-product/${params.id}/combo`, payload);
+      if (reponse) toast.success('Dados salvos com sucesso!');
+
       // Aqui será feito a integração com o backend
       // chamar a api para adicionar um novo combo
       setProductList([...productList, ...product]);
@@ -254,8 +346,42 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
             name: formDataCombo.subgroup,
           },
           products: [...productList, ...product],
+          formPrinting: +formDataComboConfig.formPrinting,
+          hasCourtesy: convertToBoolean(formDataComboConfig.hasCourtesy),
+          physicalSale: {
+            allowCreditCardPayment: convertToBoolean(formDataComboConfig.allowCreditCardPayment),
+            debit: +formDataComboConfig.debit,
+            credit: +formDataComboConfig.credit,
+            bankSlip: +formDataComboConfig.bankSlip,
+            pix: +formDataComboConfig.pix,
+            administrateTax: +formDataComboConfig.administrateTax,
+            installments: +formDataComboConfig.installments,
+            fee: +formDataComboConfig.fee,
+          },
+          allowSellingWebsite: convertToBoolean(formDataCombo.allowSellingWebsite),
+          websiteSale: {
+            allowCreditCardPayment: convertToBoolean(formDataComboConfig.allowCreditCardPayment),
+            debit: +formDataComboConfig.debit,
+            credit: +formDataComboConfig.credit,
+            bankSlip: +formDataComboConfig.bankSlip,
+            pix: +formDataComboConfig.pix,
+            administrateTax: +formDataComboConfig.administrateTax,
+            installments: +formDataComboConfig.installments,
+            fee: +formDataComboConfig.fee,
+          },
+          waiter: 0,
+          partialPayment: true,
+          allowDiscountCoupon: true,
+          discounts: [
+            {
+              name: formDataComboConfig.name,
+              code: formDataComboConfig.code,
+              amount: +formDataComboConfig.amount,
+              discountType: +formDataComboConfig.discountType,
+              discount: +formDataComboConfig.discount,
+            },
+          ],
           status: 0,
-          allowSellingWebsite: true,
         },
       ]);
 
@@ -270,8 +396,21 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
   const handleFecthProductGroupList = async (id: string): Promise<void> => {
     try {
       setState(States.loading);
-      const { data } = await api.get<ProductGroup[]>(`event/section-product/${id}/group`);
+      const { data } = await api.get<EventGroupSubgroup[]>(`event/section-product/${id}/group`);
       setListProductGroup(data ?? []);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
+  const handleFecthProductList = async (id: string): Promise<void> => {
+    try {
+      setState(States.loading);
+      const { data } = await api.get<EventProduct[]>(`event/section-product/${id}/product`);
+      setProductGet(data ?? []);
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
@@ -296,6 +435,11 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
     }
   };
 
+  const onClearSelectSubGroup = (ref: any) => {
+    if (ref) {
+      ref?.current.clearValue();
+    }
+  };
   // Get para montar a tabela de combos já cadastrados
   const handleGetComboList = async (id: string): Promise<void> => {
     try {
@@ -313,7 +457,6 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
 
   // Patch para ativar ou desativar venda online
   const handleOnChangeAllowOnlineSwitch = async (comboSelected: any): Promise<void> => {
-    console.log('object 1');
     try {
       setState(States.loading);
       const activedInput = comboSelected.allowSellingWebsite;
@@ -335,7 +478,6 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
 
   // Patch para ativar ou desativar combo
   const handleOnChangeComboSwitch = async (comboSelected: any): Promise<void> => {
-    console.log('object 1');
     try {
       setState(States.loading);
       const activedInput = comboSelected.status;
@@ -411,12 +553,14 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
     productList,
     combo,
     comboList,
+    productGet,
   };
 
   const controllerFormCombo: formComboProps = {
     onChangeFormInputCombo,
     formDataCombo,
     formErrorsCombo,
+    onClearSelectSubGroup,
   };
 
   const controllerFormAppendProducts: formAppendProductsProps = {
@@ -447,6 +591,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
   useEffect(() => {
     handleGetComboList(params.id);
     handleFecthProductGroupList(params.id);
+    handleFecthProductList(params.id);
   }, []);
 
   return (

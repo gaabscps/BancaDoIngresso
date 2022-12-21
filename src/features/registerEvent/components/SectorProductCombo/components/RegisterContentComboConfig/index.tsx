@@ -299,12 +299,12 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
           <Col md={2}>
             <FormGroup>
               <InputText
-                name="physicalSaleInstallments"
+                name="websiteSaleInstallments"
                 label="Qtd parcelas"
                 maxLength={2}
-                value={formDataComboConfig[FormInputNameComboConfig.physicalSaleInstallments]}
+                value={formDataComboConfig[FormInputNameComboConfig.websiteSaleInstallments]}
                 onChange={e =>
-                  onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSaleInstallments)(
+                  onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSaleInstallments)(
                     e?.target?.value as string,
                   )
                 }
@@ -315,12 +315,12 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
           <Col className="ml-5" md={2}>
             <FormGroup>
               <InputText
-                name="physicalSaleFee"
+                name="websiteSaleFee"
                 label="Juros ao mês"
                 maxLength={2}
-                value={formDataComboConfig[FormInputNameComboConfig.physicalSaleFee]}
+                value={formDataComboConfig[FormInputNameComboConfig.websiteSaleFee]}
                 onChange={e =>
-                  onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSaleFee)(
+                  onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSaleFee)(
                     e?.target?.value as string,
                   )
                 }
