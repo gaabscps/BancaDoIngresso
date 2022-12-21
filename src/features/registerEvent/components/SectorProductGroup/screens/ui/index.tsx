@@ -51,8 +51,14 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
     nameFilesSub,
   } = controllerAppendForm;
   const { listGroupSubGroup, groupOptions, subGroup, subGroupOptions, groupsState } = groupState;
-  const { formDataGroup, formErrorsGroup, onChangeFileInput, nameFiles, onChangeFormInputGroup } =
-    controllerFormGroup;
+  const {
+    formDataGroup,
+    formErrorsGroup,
+    onChangeFileInput,
+    nameFiles,
+    onChangeFormInputGroup,
+    setErrorsGroup,
+  } = controllerFormGroup;
   const { onGetProductSubGroupList, onSaveGroup, onGetGroup, onCancelEdit } = controllerRequest;
   const titleRef = React.useRef<HTMLInputElement>(null);
 
@@ -78,7 +84,7 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
                 <FormGroup>
                   <SelectCreateable
                     label="Nome do grupo"
-                    name="categoryGroupName"
+                    name="name"
                     onChange={e => {
                       const groups = groupOptions.find(item => item.id === e?.value);
                       if (groups?.id) {
@@ -91,6 +97,7 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
                       if (groups?.id) {
                         onGetProductSubGroupList(e?.value as string);
                       }
+                      setErrorsGroup({ ...formErrorsGroup, id: [] });
                     }}
                     value={formDataGroup[FormInputName.id]}
                     options={groupOptions.map(item => ({
@@ -98,9 +105,7 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
                       label: item.name,
                     }))}
                     placeholder="Digite o nome do grupo. Ex: Bebidas"
-                    error={
-                      formErrorsGroup.categoryGroupName && formErrorsGroup.categoryGroupName[0]
-                    }
+                    error={formErrorsGroup.id && formErrorsGroup.id[0]}
                   />
                   <InputFile
                     label="Imagem do grupo (opcional)"
