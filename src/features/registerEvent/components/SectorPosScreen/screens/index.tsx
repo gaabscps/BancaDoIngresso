@@ -22,6 +22,7 @@ import {
 import { convertToBoolean } from '@/helpers/common/convertToBoolean';
 import {
   dataConfigStatesProps,
+  formAllowPosProps,
   formPosProps,
   modalConfigPosProps,
   onShouldShowModalSectorPosProps,
@@ -61,22 +62,34 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({ next
   const params = useParams<UrlParams>();
 
   const {
+    formData: formDataAllowPos,
+    formErrors: formErrorsAllowPos,
+    onChangeFormInput: onChangeFormInputAllowPos,
+    isFormValid: isFormValidAllowPos,
+  } = useForm({
+    initialData: {
+      allowPos: '',
+    },
+    validators: {
+      allowPos: [validators.required],
+    },
+    formatters: {},
+  });
+
+  const {
     formData: formDataPos,
     formErrors: formErrorsPos,
     onChangeFormInput: onChangeFormInputPos,
     isFormValid: isFormValidPos,
-    // setErrors: setErrorsPos,
     resetForm: resetFormPos,
   } = useForm({
     initialData: {
-      allowPos: '',
       pos: '',
       waiter: '',
       commission: '',
       allowDiscount: '',
     },
     validators: {
-      allowPos: [validators.required],
       pos: [validators.required],
       waiter: [validators.required],
       commission: [validators.required],
@@ -90,6 +103,13 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({ next
     formErrors: formErrorsPos,
     onChangeFormInput: onChangeFormInputPos,
     isFormValid: isFormValidPos,
+  };
+
+  const controllerFormAllowPos: formAllowPosProps = {
+    formData: formDataAllowPos,
+    formErrors: formErrorsAllowPos,
+    onChangeFormInput: onChangeFormInputAllowPos,
+    isFormValid: isFormValidAllowPos,
   };
 
   // modal config ------------------------------------------------------------
@@ -210,7 +230,7 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({ next
 
   const handleOnSavePos = async (): Promise<void> => {
     try {
-      const productSameSection = form.products.reduce((acc: any, item: any) => {
+      const productSameSection = form.products?.reduce((acc: any, item: any) => {
         const [sectionId, categoryGroupId, categorySubGroupId, productsId] = item.split('_');
 
         // push product to section
@@ -246,7 +266,7 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({ next
         return acc;
       }, {});
 
-      const comboSameSection = form.combos.reduce((acc: any, item: any) => {
+      const comboSameSection = form.combos?.reduce((acc: any, item: any) => {
         const [sectionId, categoryGroupId, categorySubGroupId, combosId] = item.split('_');
 
         // push product to section
@@ -349,7 +369,6 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({ next
     resetFormPos();
 
     if (pos) {
-      onChangeFormInputPos(FormInputNamePos.allowPos)(String(true));
       onChangeFormInputPos(FormInputNamePos.pos)(String(pos.pos?.id));
       onChangeFormInputPos(FormInputNamePos.waiter)(String(pos?.waiter));
       onChangeFormInputPos(FormInputNamePos.commission)(String(pos?.commission));
@@ -392,6 +411,7 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({ next
         state={state}
         controllerModalConfig={controllerModalConfig}
         controllerFormPos={controllerFormPos}
+        controllerFormAllowPos={controllerFormAllowPos}
         posList={posList}
         posOptions={posOptions}
         dataConfig={controllerDataConfig}

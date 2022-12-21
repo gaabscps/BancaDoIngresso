@@ -150,7 +150,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
                               Grupo #{indexSubGroup + 1}
                             </span>
                             <span className="secondary-table-title font-weight-bold">
-                              <b> ·</b> {subGroup.categorySubGroupName} //
+                              <b> ·</b> {group.categoryGroupName} //
                             </span>
                             <span className="secondary-table-title">
                               {' '}

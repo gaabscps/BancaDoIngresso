@@ -8,6 +8,13 @@ export interface formPosProps {
   isFormValid: IsFormValid;
 }
 
+export interface formAllowPosProps {
+  formData: FormData;
+  formErrors: FormErrors;
+  onChangeFormInput: OnChangeFormInput;
+  isFormValid: IsFormValid;
+}
+
 export interface onShouldShowModalSectorPosProps {
   value: ShouldShowModal;
   newTitleModal: string | React.ReactNode;
