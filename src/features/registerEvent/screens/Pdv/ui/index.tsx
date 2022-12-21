@@ -162,8 +162,14 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
                         data={[
                           {
                             id: item.pdv.id,
-                            pos: item.poss,
-                            users: item.pdv.users,
+                            pos:
+                              item.poss && item.poss.length > 0
+                                ? item.poss.map(data => data.pos.name)
+                                : undefined,
+                            users:
+                              item.pdv.users && item.pdv.users.length > 0
+                                ? item.pdv.users.map(data => data.name)
+                                : undefined,
                             actions: (
                               <React.Fragment>
                                 <div

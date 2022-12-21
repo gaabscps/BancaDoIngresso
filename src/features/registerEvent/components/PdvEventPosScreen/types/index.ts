@@ -22,6 +22,7 @@ export interface formPosConfigProps {
   formData: FormData;
   formErrors: FormErrors;
   onChangeFormInput: OnChangeFormInput;
+  onSave: () => void;
   isFormValid: IsFormValid;
 }
 
@@ -36,7 +37,7 @@ export interface posStatesProps {
 
 export interface posActionsProps {
   // onSave: () => Promise<void>;
-  onGet: (posSelected: Pos) => void;
+  onGet: (posSelected: EventPdvPos) => void;
   onCancelEdit: () => void;
   onReturnTap: () => void;
   onNextTap: () => Promise<void>;
@@ -45,7 +46,7 @@ export interface posActionsProps {
 export interface onShouldShowPosSettingsProps {
   value: ShouldShowModal;
   newTitleModal: string | React.ReactNode;
-  pos?: Pos;
+  pos: EventPdvPos;
 }
 
 export interface modalConfigPosSettingsProps {

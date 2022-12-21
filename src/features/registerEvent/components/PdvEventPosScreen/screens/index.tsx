@@ -11,6 +11,7 @@ import { TabPdvActionsProps } from '@/features/registerEvent/screens/Pdv/ui';
 import { useParams } from 'react-router-dom';
 import EventPdvPos from '@/model/EventPdvPos';
 import Pdv from '@/model/Pdv';
+import CardFees from '@/model/CardFees';
 import {
   formPosConfigProps,
   formPosProps,
@@ -21,6 +22,7 @@ import {
 } from '../types';
 import { States, PdvEventPosContainer, ShouldShowModal, FormInputName } from './ui';
 import { FormInputName as FormInputNameRegister } from '../components/PosContent';
+import { FormInputName as FormInputNameConfig } from '../components/PosConfigContent';
 
 type UrlParams = {
   id: string;
@@ -88,6 +90,7 @@ export const PdvEventPosScreen: React.FC<Omit<PdvEventPosScreen, 'firstTab'>> = 
     formErrors: formErrorsPosConfig,
     onChangeFormInput: onChangeFormInputPosConfig,
     isFormValid: isFormValidPosConfig,
+    resetForm: resetFormPosConfig,
   } = useForm({
     initialData: {
       physicalSaleAllowCreditCardPayment: '',
@@ -108,12 +111,35 @@ export const PdvEventPosScreen: React.FC<Omit<PdvEventPosScreen, 'firstTab'>> = 
     newTitleModal,
     pos: posSelected,
   }: onShouldShowPosSettingsProps): void => {
+    if (posSelected.cardFees) {
+      onChangeFormInputPosConfig(FormInputNameConfig.physicalSaleAllowCreditCardPayment)(
+        posSelected.cardFees.allowCreditCardPayment ? 'true' : 'false',
+      );
+      onChangeFormInputPosConfig(FormInputNameConfig.physicalSaleDebit)(
+        posSelected.cardFees.debit ? String(posSelected.cardFees.debit) : '',
+      );
+      onChangeFormInputPosConfig(FormInputNameConfig.physicalSaleCredit)(
+        posSelected.cardFees.credit ? String(posSelected.cardFees.credit) : '',
+      );
+      onChangeFormInputPosConfig(FormInputNameConfig.physicalSalePix)(
+        posSelected.cardFees.pix ? String(posSelected.cardFees.pix) : '',
+      );
+      onChangeFormInputPosConfig(FormInputNameConfig.physicalSaleAdministrateTax)(
+        posSelected.cardFees.administrateTax ? String(posSelected.cardFees.administrateTax) : '',
+      );
+      onChangeFormInputPosConfig(FormInputNameConfig.physicalSaleInstallments)(
+        posSelected.cardFees.installments ? String(posSelected.cardFees.installments) : '',
+      );
+      onChangeFormInputPosConfig(FormInputNameConfig.physicalSaleFee)(
+        posSelected.cardFees.fee ? String(posSelected.cardFees.fee) : '',
+      );
+    }
     setShouldShowModal(value);
     onChangeTitle(newTitleModal);
     onToggle();
 
-    if (posSelected?.id && value === ShouldShowModal.configProduct) {
-      setPos(posSelected);
+    if (posSelected.pos.id && value === ShouldShowModal.configProduct) {
+      setPos(posSelected.pos);
     }
   };
   const handleOnConfirmDelete = async (posSelected: Pos): Promise<void> => {
@@ -192,14 +218,14 @@ export const PdvEventPosScreen: React.FC<Omit<PdvEventPosScreen, 'firstTab'>> = 
     backTab();
   };
 
-  const handleOnGetPos = async (posSelected: Pos): Promise<void> => {
-    try {
-      if (posSelected) {
-        setPos(posSelected);
-      }
-    } catch (error) {
-      const err = error as AxiosError;
-      toast.error(err.message);
+  const handleOnGetPos = async (posSelected: EventPdvPos): Promise<void> => {
+    if (posSelected) {
+      setPos(posSelected.pos);
+
+      onChangeFormInputPosRegister(FormInputNameRegister.name)(posSelected.pos.id as string);
+      onChangeFormInputPosRegister(FormInputNameRegister.partialPayment)(
+        String(posSelected.waiter),
+      );
     }
   };
 
@@ -223,14 +249,46 @@ export const PdvEventPosScreen: React.FC<Omit<PdvEventPosScreen, 'firstTab'>> = 
         const posReq = {
           id: formDataPosRegister[FormInputNameRegister.name],
         } as Pos;
-        const request: EventPdvPos = {
+        const request = {
           pdv,
           pos: posReq,
           waiter: formDataPosRegister[FormInputNameRegister.partialPayment] as unknown as number,
-        };
+        } as EventPdvPos;
 
         await api.post<EventPdvPos>(`/event/pdv/${params.id}/pos/`, request);
         resetFormPosRegister();
+        await getPoss();
+      } catch (error) {
+        const err = error as AxiosError;
+        toast.error(err.message);
+      } finally {
+        setState(States.default);
+      }
+    }
+  };
+
+  const handleOnSavePosConfg = async (): Promise<void> => {
+    if (isFormValidPosConfig()) {
+      try {
+        setState(States.loading);
+        const cardFees = {
+          allowCreditCardPayment:
+            formDataPosConfig[FormInputNameConfig.physicalSaleAllowCreditCardPayment] === 'true',
+          debit: Number(formDataPosConfig[FormInputNameConfig.physicalSaleDebit]),
+          credit: Number(formDataPosConfig[FormInputNameConfig.physicalSaleCredit]),
+          pix: Number(formDataPosConfig[FormInputNameConfig.physicalSalePix]),
+          administrateTax: Number(
+            formDataPosConfig[FormInputNameConfig.physicalSaleAdministrateTax],
+          ),
+          installments: Number(formDataPosConfig[FormInputNameConfig.physicalSaleInstallments]),
+          fee: Number(formDataPosConfig[FormInputNameConfig.physicalSaleFee]),
+        } as CardFees;
+
+        await api.post(`/event/pdv/${params.id}/pos/${pdvId}/fee/${pos?.id}`, cardFees);
+
+        resetFormPosConfig();
+        handleOnCancelEditPos();
+        onToggle();
         await getPoss();
       } catch (error) {
         const err = error as AxiosError;
@@ -260,6 +318,7 @@ export const PdvEventPosScreen: React.FC<Omit<PdvEventPosScreen, 'firstTab'>> = 
     formData: formDataPosConfig,
     formErrors: formErrorsPosConfig,
     onChangeFormInput: onChangeFormInputPosConfig,
+    onSave: handleOnSavePosConfg,
     isFormValid: isFormValidPosConfig,
   };
 
@@ -280,6 +339,10 @@ export const PdvEventPosScreen: React.FC<Omit<PdvEventPosScreen, 'firstTab'>> = 
     onReturnTap: handleBackTab,
     onNextTap: handleNextTab,
   };
+
+  useEffect(() => {
+    getPoss();
+  }, [pdvId]);
 
   useEffect(() => {
     handleGetAllPos();

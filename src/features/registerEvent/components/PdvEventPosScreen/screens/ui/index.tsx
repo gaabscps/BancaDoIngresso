@@ -10,6 +10,7 @@ import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
 import TicketIcon from '@/assets/images/svg/Ticket';
 import { ActionProps } from '@/components/Dialog';
+import dayjs from 'dayjs';
 import {
   formPosConfigProps,
   formPosProps,
@@ -77,7 +78,7 @@ export const PdvEventPosContainer: React.FC<PosContainerProps> = ({
           {
             [ShouldShowModal.configProduct]: {
               title: posStates?.pos && 'Salvar',
-              onClick: (): void => undefined,
+              onClick: (): void => formPosConfig.onSave(),
             },
           }[modalConfig.shouldShowModal],
         ]}
@@ -136,7 +137,9 @@ export const PdvEventPosContainer: React.FC<PosContainerProps> = ({
                           {
                             id: item.pos.id,
                             numberPos: item.pos.serialNumber,
-                            expirationDate: item.pos.expirationDate,
+                            expirationDate: dayjs(item.pos.expirationDate).format(
+                              'YYYY-DD-MM hh:mm:ss',
+                            ),
                             partialPayment: item.waiter,
                             actions: (
                               <React.Fragment>
@@ -149,13 +152,13 @@ export const PdvEventPosContainer: React.FC<PosContainerProps> = ({
                                           modalConfig.onShouldShowModal({
                                             value: ShouldShowModal.configProduct,
                                             newTitleModal: 'Configurações da POS',
-                                            pos: item.pos,
+                                            pos: item,
                                           });
                                         }}
                                       />
                                       <Pen
                                         className="mr-4 svg-icon action-icon"
-                                        onClick={(): void => posActions.onGet(item.pos)}
+                                        onClick={(): void => posActions.onGet(item)}
                                       />
                                       <Trash
                                         className="svg-icon svg-icon-trash"

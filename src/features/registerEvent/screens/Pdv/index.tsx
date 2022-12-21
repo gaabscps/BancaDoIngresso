@@ -118,6 +118,7 @@ export const PdvEventScreen: React.FC = (): JSX.Element => {
     try {
       if (mainPdvSelected) {
         setMainPdv(mainPdvSelected);
+        handleChangeSelectedPdv(mainPdvSelected.id as string);
       }
     } catch (error) {
       const err = error as AxiosError;
