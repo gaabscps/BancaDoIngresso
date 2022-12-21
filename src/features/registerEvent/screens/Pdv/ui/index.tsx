@@ -88,7 +88,7 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
       <PdvEventTickScreen pdvId={pdvId} nextTab={handleNextTab} backTab={handleBackTab} />
     </>,
     <>
-      <PdvEventPosScreen nextTab={handleNextTab} backTab={handleBackTab} />
+      <PdvEventPosScreen pdvId={pdvId} nextTab={handleNextTab} backTab={handleBackTab} />
     </>,
     <>
       <PdvProductScreen nextTab={handleNextTab} backTab={handleBackTab} />
@@ -175,12 +175,12 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
                                     <div className="ml-4">
                                       <Pen
                                         className="mr-4 svg-icon action-icon"
-                                        onClick={(): void => mainPdvActions.onGet(item as any)}
+                                        onClick={(): void => mainPdvActions.onGet(item.pdv)}
                                       />
                                       <Trash
                                         className="svg-icon svg-icon-trash"
                                         onClick={() => {
-                                          mainPdvActions.onShowModalDelete(item as any);
+                                          mainPdvActions.onShowModalDelete(item.pdv);
                                         }}
                                       />
                                     </div>

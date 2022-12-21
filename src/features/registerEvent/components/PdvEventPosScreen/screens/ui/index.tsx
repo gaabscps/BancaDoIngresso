@@ -55,16 +55,7 @@ export const PdvEventPosContainer: React.FC<PosContainerProps> = ({
   posActions,
   modalConfig,
 }) => {
-  const { formData, formErrors, onChangeFormInput } = formPos;
-
-  const posListMock = [
-    {
-      id: '1',
-      numberPos: '123456',
-      expirationDate: '01/01/2021',
-      partialPayment: '3%',
-    },
-  ];
+  const { formData, formErrors, onInsertPos, onChangeFormInput } = formPos;
 
   const renderActionDialogToCancel: ActionProps = {
     title: 'Cancelar',
@@ -120,19 +111,21 @@ export const PdvEventPosContainer: React.FC<PosContainerProps> = ({
             <div className="card-ligth-color mb-5">
               <PosContent formPosRegister={formPosRegister} posStates={posStates} />
               <div className="d-flex justify-content-end">
-                <div className="mr-5 link-green">Inserir POS</div>
+                <div className="mr-5 link-green" onClick={() => onInsertPos()}>
+                  Inserir POS
+                </div>
               </div>
             </div>
             <SuperCollapse
               title={`POS’s inseridos`}
               content={
-                posListMock.length > 0 ? (
-                  posListMock.map((item, index) => (
+                posStates.posList.length > 0 ? (
+                  posStates.posList.map((item, index) => (
                     <React.Fragment key={index}>
                       <div className="mb-5">
                         <span className="secondary-table-title">POS #{index + 1}</span>
                         <span className="secondary-table-title font-weight-bold">
-                          <b> ·</b> Maquininha do Seu Zé
+                          <b> ·</b> {item.pos.name}
                         </span>
                       </div>
                       <CustomTable
@@ -141,10 +134,10 @@ export const PdvEventPosContainer: React.FC<PosContainerProps> = ({
                         columns={columnsPosEvent}
                         data={[
                           {
-                            id: item.id,
-                            numberPos: item.numberPos,
-                            expirationDate: item.expirationDate,
-                            partialPayment: item.partialPayment,
+                            id: item.pos.id,
+                            numberPos: item.pos.serialNumber,
+                            expirationDate: item.pos.expirationDate,
+                            partialPayment: item.waiter,
                             actions: (
                               <React.Fragment>
                                 <div className={`${posStates.pos ? 'disabled-content' : null}`}>
@@ -156,18 +149,18 @@ export const PdvEventPosContainer: React.FC<PosContainerProps> = ({
                                           modalConfig.onShouldShowModal({
                                             value: ShouldShowModal.configProduct,
                                             newTitleModal: 'Configurações da POS',
-                                            pos: item,
+                                            pos: item.pos,
                                           });
                                         }}
                                       />
                                       <Pen
                                         className="mr-4 svg-icon action-icon"
-                                        onClick={(): void => posActions.onGet(item as any)}
+                                        onClick={(): void => posActions.onGet(item.pos)}
                                       />
                                       <Trash
                                         className="svg-icon svg-icon-trash"
                                         onClick={() => {
-                                          modalConfig.onShowModalDelete(item);
+                                          modalConfig.onShowModalDelete(item.pos);
                                         }}
                                       />
                                     </div>
@@ -187,7 +180,7 @@ export const PdvEventPosContainer: React.FC<PosContainerProps> = ({
                   </div>
                 )
               }
-              count={1}
+              count={posStates.posList.length}
               leftIcon={TicketIcon}
               buttonTitle="Cancelar edição"
               buttonAction={() => posActions.onCancelEdit()}
