@@ -142,14 +142,29 @@ export const PdvEventPosScreen: React.FC<Omit<PdvEventPosScreen, 'firstTab'>> = 
       setPos(posSelected.pos);
     }
   };
+
+  const getPoss = async (): Promise<void> => {
+    if (pdvId) {
+      const response = await api.get<EventPdvPos[]>(`/event/pdv/${params.id}/pos/${pdvId}/`);
+      if (response.data.length > 0) {
+        onChangeFormInputPos(FormInputName.hasPos)('true');
+      }
+      setPosList(response.data);
+    }
+  };
+
   const handleOnConfirmDelete = async (posSelected: Pos): Promise<void> => {
     try {
-      await api.delete(`/event/pdv/${params.id}/${posSelected.id}`);
+      setState(States.loading);
+      await api.delete(`/event/pdv/${params.id}/pos/${pdvId}/${posSelected.id}`);
+      await getPoss();
       toast.success('POS excluída com sucesso!');
       confirmDelete.hide();
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
+    } finally {
+      setState(States.default);
     }
   };
 
@@ -183,16 +198,6 @@ export const PdvEventPosScreen: React.FC<Omit<PdvEventPosScreen, 'firstTab'>> = 
     onShowModalDelete: handleOnShowDeletePos,
   };
   // modal config ------------------------------------------------------------
-
-  const getPoss = async (): Promise<void> => {
-    if (pdvId) {
-      const response = await api.get<EventPdvPos[]>(`/event/pdv/${params.id}/pos/${pdvId}/`);
-      if (response.data.length > 0) {
-        onChangeFormInputPos(FormInputName.hasPos)('true');
-      }
-      setPosList(response.data);
-    }
-  };
 
   const handleGetAllPos = async (): Promise<void> => {
     try {

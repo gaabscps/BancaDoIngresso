@@ -23,7 +23,11 @@ type UrlParams = {
   id: string;
 };
 
-export const PdvEventSubPdvScreen: React.FC<Omit<TabPdvActionsProps, 'nextTab'>> = ({
+interface PdvEventSubPdvScreenProps extends TabPdvActionsProps {
+  pdvId?: string;
+}
+
+export const PdvEventSubPdvScreen: React.FC<Omit<PdvEventSubPdvScreenProps, 'nextTab'>> = ({
   backTab,
   firstTab,
 }): JSX.Element => {
@@ -165,7 +169,7 @@ export const PdvEventSubPdvScreen: React.FC<Omit<TabPdvActionsProps, 'nextTab'>>
   const handleOnConfirmDelete = async (subPdvSelected: SubPdv): Promise<void> => {
     try {
       await api.delete(`/event/pdv/${params.id}/${subPdvSelected.id}`);
-      toast.success('SubPdv excluído com sucesso!');
+      toast.success('PDV excluído com sucesso!');
       confirmDelete.hide();
     } catch (error) {
       const err = error as AxiosError;

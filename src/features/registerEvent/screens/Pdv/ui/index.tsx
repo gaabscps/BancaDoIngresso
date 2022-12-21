@@ -22,6 +22,7 @@ import { PdvUserScreen } from '@/features/registerEvent/components/PdvUserScreen
 import { PdvEventSubPdvScreen } from '@/features/registerEvent/components/PdvEventSubPdvScreen/screens';
 import TicketIcon from '../../../../../assets/images/svg/Ticket';
 import { columnsEventPdv } from './table';
+import { EventTicketPDVLine } from '..';
 
 // eslint-disable-next-line no-shadow
 export enum States {
@@ -32,12 +33,16 @@ export enum States {
 export interface PdvContainerProps {
   state: States;
   pdvId?: string;
+  eventTicketsPDV: EventTicketPDVLine[];
   numberTab: number;
   formPdv: formPdvProductProps;
   formMainPdv: formMainPdvProductProps;
   mainPdvActions: mainPdvActionsProps;
   mainPdvStates: mainPdvStatesProps;
   onChangeSelectedPdv: (value: string) => void;
+  getEventPdvTickets: () => void;
+  handleOnGetTickets: () => void;
+  handleCheckTicket: (ticketId: string) => void;
   setNumberTab: (value: number) => void;
   nextTab: () => void;
 }
@@ -56,6 +61,7 @@ export type TabPdvActionsProps = {
 export const PdvEventContainer: React.FC<PdvContainerProps> = ({
   state,
   pdvId,
+  eventTicketsPDV,
   numberTab,
   formPdv,
   formMainPdv,
@@ -63,6 +69,9 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
   mainPdvStates,
   setNumberTab,
   onChangeSelectedPdv,
+  getEventPdvTickets,
+  handleOnGetTickets,
+  handleCheckTicket,
   nextTab,
 }) => {
   const { formData, formErrors, onChangeFormInput } = formPdv;
@@ -85,19 +94,27 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
 
   const contentTabs = [
     <>
-      <PdvEventTickScreen pdvId={pdvId} nextTab={handleNextTab} backTab={handleBackTab} />
+      <PdvEventTickScreen
+        pdvId={pdvId}
+        eventTicketsPDV={eventTicketsPDV}
+        getEventPdvTickets={getEventPdvTickets}
+        handleOnGetTickets={handleOnGetTickets}
+        handleCheckTicket={handleCheckTicket}
+        nextTab={handleNextTab}
+        backTab={handleBackTab}
+      />
     </>,
     <>
       <PdvEventPosScreen pdvId={pdvId} nextTab={handleNextTab} backTab={handleBackTab} />
     </>,
     <>
-      <PdvProductScreen nextTab={handleNextTab} backTab={handleBackTab} />
+      <PdvProductScreen pdvId={pdvId} nextTab={handleNextTab} backTab={handleBackTab} />
     </>,
     <>
-      <PdvUserScreen nextTab={handleNextTab} backTab={handleBackTab} />
+      <PdvUserScreen pdvId={pdvId} nextTab={handleNextTab} backTab={handleBackTab} />
     </>,
     <>
-      <PdvEventSubPdvScreen backTab={handleNextTab} firstTab={handleOnFirstTab} />
+      <PdvEventSubPdvScreen pdvId={pdvId} backTab={handleNextTab} firstTab={handleOnFirstTab} />
     </>,
   ];
 

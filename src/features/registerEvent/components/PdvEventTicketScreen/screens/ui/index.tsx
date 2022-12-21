@@ -2,7 +2,7 @@
 import React, { Fragment } from 'react';
 import { Button, Loading } from '@/components';
 import { Col, Container, Input, Row } from 'reactstrap';
-import { EventTicketPDVLine } from '..';
+import { EventTicketPDVLine } from '@/features/registerEvent/screens/Pdv';
 
 // eslint-disable-next-line no-shadow
 export enum States {

@@ -24,7 +24,11 @@ interface SectorProductPosContainerProps {
   nextTab: () => void;
   backTab: () => void;
 }
-export const PdvProductScreen: React.FC<SectorProductPosContainerProps> = ({
+interface PdvProductScreenProps extends SectorProductPosContainerProps {
+  pdvId?: string;
+}
+
+export const PdvProductScreen: React.FC<PdvProductScreenProps> = ({
   // state,
   nextTab,
   backTab,
