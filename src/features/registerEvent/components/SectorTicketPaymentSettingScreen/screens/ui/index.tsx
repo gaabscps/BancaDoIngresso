@@ -10,6 +10,7 @@ import { ActionProps } from '@/components/Dialog';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { CustomTable } from '@/components/Table';
 import { X } from 'react-feather';
+import BackOnTop from '@/components/sharedComponents/BackOnTop';
 import { formPaymentSettingsProps, PaymentSettingsActionsProps } from '../../types';
 import { RegisterDiscountCoupon } from '../../components/RegisterDiscountCoupon';
 import { columnsDiscountCoupon } from './table';
@@ -238,7 +239,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               />
             </FormGroup>
 
-            <label htmlFor="websiteInstallmentLimit" className="ml-3 input-label">
+            <label htmlFor="websiteInstallmentLimit" className="input-label">
               Limite de parcelamento online
             </label>
 
@@ -257,7 +258,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               />
             </FormGroup>
 
-            <label htmlFor="" className="ml-3 input-label">
+            <label htmlFor="" className="input-label">
               Limite de parcelamento POS
             </label>
 
@@ -721,7 +722,10 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               }}
             />
           </div>
-          <div>
+          <div className="d-flex">
+            <div className="m-2 mr-5">
+              <BackOnTop />
+            </div>
             <Button
               title="Voltar etapa"
               theme="noneBorder"

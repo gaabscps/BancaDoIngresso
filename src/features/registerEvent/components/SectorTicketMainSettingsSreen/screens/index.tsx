@@ -17,7 +17,6 @@ import api, { AxiosError } from '@/services/api';
 import { FormInputName as FormInputNameToMainSettings } from '@/features/registerEvent/components/SectorTicketMainSettingsSreen/components/SectorTicketMainSettingsContent';
 import { FormInputName as FormInputNameToSector } from '@/features/registerEvent/components/SectorTicketMainSettingsSreen/components/RegisterSectorContent';
 import { FormInputName as FormInputNameToBatch } from '@/features/registerEvent/components/SectorTicketMainSettingsSreen/components/BatchContent';
-import { unmask as unMaskCash } from '@/helpers/masks/cash';
 import { convertToBoolean } from '@/helpers/common/convertToBoolean';
 import dayjs from 'dayjs';
 import { useParams } from 'react-router-dom';
@@ -351,9 +350,9 @@ export const SectorTicketMainSettingsScreen: React.FC<
           startDate: payloadStartData,
           endDate: payloadEndData,
           commission: +formDataBatchs[FormInputNameToBatch.commission],
-          amount: String(formDataBatchs[FormInputNameToBatch.amount]),
-          unitValue: String(+unMaskCash(formDataBatchs[FormInputNameToBatch.unitValue])),
-          totalValue: String(+unMaskCash(formDataBatchs[FormInputNameToBatch.totalValue])),
+          amount: +formDataBatchs[FormInputNameToBatch.amount],
+          unitValue: formDataBatchs[FormInputNameToBatch.unitValue],
+          totalValue: formDataBatchs[FormInputNameToBatch.totalValue],
           imageUrl: formDataBatchs[FormInputNameToBatch.imageUrl],
         };
 
@@ -392,8 +391,8 @@ export const SectorTicketMainSettingsScreen: React.FC<
 
   const handleOnGetBatch = async (batchSelected: TicketBatch): Promise<void> => {
     try {
-      if (batchSelected) {
-        setBatch(batchSelected);
+      setBatch(batchSelected);
+      if (batchSelected.imageUrl) {
         // genetare string witch 10 random numbers
         const randomNumbers = (): string => {
           let result = '';
@@ -408,6 +407,11 @@ export const SectorTicketMainSettingsScreen: React.FC<
         setFormNameFiles({
           ...formNameFiles,
           [FormInputNameToBatch.imageUrl]: `${randomNumbers()}.JPEG`,
+        });
+      } else {
+        setFormNameFiles({
+          ...formNameFiles,
+          [FormInputNameToBatch.imageUrl]: 'Nenhum arquivo selecionado',
         });
       }
     } catch (error) {
@@ -439,9 +443,9 @@ export const SectorTicketMainSettingsScreen: React.FC<
             startDate: payloadStartData,
             endDate: payloadEndData,
             commission: +formDataBatchs[FormInputNameToBatch.commission],
-            amount: String(formDataBatchs[FormInputNameToBatch.amount]),
-            unitValue: String(+unMaskCash(formDataBatchs[FormInputNameToBatch.unitValue])),
-            totalValue: String(+unMaskCash(formDataBatchs[FormInputNameToBatch.totalValue])),
+            amount: formDataBatchs[FormInputNameToBatch.amount],
+            unitValue: formDataBatchs[FormInputNameToBatch.unitValue],
+            totalValue: formDataBatchs[FormInputNameToBatch.totalValue],
             imageUrl: formDataBatchs[FormInputNameToBatch.imageUrl],
           };
         }
@@ -540,7 +544,9 @@ export const SectorTicketMainSettingsScreen: React.FC<
 
   const handleNextTab = async (): Promise<void> => {
     await handleOnSaveMainSettings();
-    nextTab();
+    if (isFormValidMainSettings()) {
+      nextTab();
+    }
   };
 
   const controllerMainSettingsActions: mainSettingsProps = {

@@ -172,6 +172,7 @@ export const SectorTicketMainSettingsContent: React.FC<
                 name="numbeHalfPrice"
                 label="Quantidade de ingressos meia entrada"
                 placeholder="2000"
+                className="w-input-md"
                 value={formData[FormInputName.amountHalfPrice]}
                 onChange={e =>
                   onChangeFormInput(FormInputName.amountHalfPrice)(

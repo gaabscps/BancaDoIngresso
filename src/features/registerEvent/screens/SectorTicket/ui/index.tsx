@@ -57,7 +57,7 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
   ticketActions,
   ticketStep,
 }) => {
-  const { formData, formErrors, onChangeFormInput } = formSectorTicket;
+  const { formData, formErrors, onChangeFormInput, isFormValid } = formSectorTicket;
   const [numberTab, setNumberTab] = useState(0);
   const titleTabRef = React.useRef<HTMLInputElement>(null);
   const params = useParams<UrlParams>();
@@ -172,14 +172,8 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
                                     name: ticket.name,
                                     batch: batch.name,
                                     commission: batch.commission,
-                                    unitValue: (+batch.unitValue).toLocaleString('pt-br', {
-                                      style: 'currency',
-                                      currency: 'BRL',
-                                    }),
-                                    totalValue: (+batch.totalValue).toLocaleString('pt-br', {
-                                      style: 'currency',
-                                      currency: 'BRL',
-                                    }),
+                                    unitValue: `R$ ${batch.unitValue}`,
+                                    totalValue: `R$ ${batch.totalValue}`,
                                     amount: `${batch.amount} uni`,
                                   }))}
                                   theme="secondaryWithoutBorder"
@@ -209,7 +203,7 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
                           </div>
                         </React.Fragment>
                       ))
-                    : 'Nenhum lote cadastrado. Aqui será exibida uma lista dos lotes cadastrados.'
+                    : 'Nenhum setores e ingressos cadastrado. Aqui será exibida uma lista dos setores e ingressos.'
                 }
                 leftIcon={TicketIcon}
                 count={ticketStates?.ticketList?.length}
@@ -248,7 +242,7 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
           <Button title="Voltar" theme="noneBorder" onClick={() => () => undefined} />
           <Button
             title="Avançar para Setor e produto"
-            onClick={() => undefined}
+            onClick={() => isFormValid()}
             disabled={!(ticketStates.ticketList.length > 0)}
           />
         </div>

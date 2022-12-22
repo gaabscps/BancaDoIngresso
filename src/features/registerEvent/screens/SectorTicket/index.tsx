@@ -34,6 +34,7 @@ export const SectorTicketScreen: React.FC = (): JSX.Element => {
     formData: formDataSectorTicket,
     formErrors: formErrorsSectorTicket,
     onChangeFormInput: onChangeFormInputSectorTicket,
+    isFormValid: isFormValidSectorTicket,
   } = useForm({
     initialData: {
       isTicket: '',
@@ -134,6 +135,7 @@ export const SectorTicketScreen: React.FC = (): JSX.Element => {
     formData: formDataSectorTicket,
     formErrors: formErrorsSectorTicket,
     onChangeFormInput: onChangeFormInputSectorTicket,
+    isFormValid: isFormValidSectorTicket,
   };
 
   const controllerTicketStep: ticketStepProps = {

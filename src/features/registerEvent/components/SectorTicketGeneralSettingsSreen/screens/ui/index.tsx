@@ -5,6 +5,7 @@ import { Button, Loading } from '@/components';
 import { Container } from 'reactstrap';
 import { SectorTicketGeneralSettingsContent } from '@/features/registerEvent/components/SectorTicketGeneralSettingsSreen/components/SectorTicketGeneralSettingsContent';
 
+import BackOnTop from '@/components/sharedComponents/BackOnTop';
 import { formGeneralSettingsProps, generalSettingsProps, ticketStatesProps } from '../../types';
 
 // eslint-disable-next-line no-shadow
@@ -46,6 +47,9 @@ export const SectorTicketGeneralSettingsContainer: React.FC<
           ) : null}
         </div>
         <div>
+          <div className="m-2 mr-5">
+            <BackOnTop />
+          </div>
           <Button
             title="Voltar"
             theme="noneBorder"
