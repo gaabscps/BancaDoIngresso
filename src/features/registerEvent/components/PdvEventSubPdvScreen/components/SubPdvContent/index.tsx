@@ -37,7 +37,7 @@ export const SubPdvContent: React.FC<
     }
   };
 
-  const dataTableUser = appendUser.usersSelected?.map((item, index) => ({
+  const dataTableUser = appendUser.usersSelected?.map(item => ({
     id: item.id,
     name: item.name,
     login: item.cpf,
@@ -45,7 +45,7 @@ export const SubPdvContent: React.FC<
       <CloseX
         className="mr-2 svg-icon action-icon"
         onClick={() => {
-          appendUser.handleRemoveUser(index);
+          appendUser.handleRemoveUser(item);
         }}
       />
     ),

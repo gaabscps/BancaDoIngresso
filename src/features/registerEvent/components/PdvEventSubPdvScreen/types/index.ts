@@ -42,7 +42,7 @@ export interface subPdvActionsProps {
 export interface onShouldShowSubPdvSettingsProps {
   value: ShouldShowModal;
   newTitleModal: string | React.ReactNode;
-  subPdv?: any;
+  subPdv: SubPdv;
 }
 
 export interface modalConfigSubPdvSettingsProps {
@@ -52,13 +52,13 @@ export interface modalConfigSubPdvSettingsProps {
   onToggle: () => void;
   onShouldShowModal: (props: onShouldShowSubPdvSettingsProps) => void;
   shouldShowModal: ShouldShowModal;
-  onShowModalDelete: (subPdvsector: any) => void;
+  onShowModalDelete: (subPdvsector: SubPdv) => void;
 }
 
 export type ContractorControllerUser = {
   listUsers: User[];
   usersSelected: User[];
   handleAddUser(userId: string): void;
-  handleRemoveUser(index: number): void;
+  handleRemoveUser(user: User): void;
   handleGetUsers: () => Promise<void>;
 };

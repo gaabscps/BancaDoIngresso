@@ -106,13 +106,17 @@ export const PdvUserScreen: React.FC<PdvUserScreenProps> = ({ pdvId, nextTab, ba
   const getPdvUsers = async (users: User[]): Promise<void> => {
     try {
       setState(States.loading);
-      const { data } = await api.get<User[]>(`/event/pdv/${params.id}/user/${pdvId}`);
+      let usersVar: User[] = [];
+      if (pdvId) {
+        const { data } = await api.get<User[]>(`/event/pdv/${params.id}/user/${pdvId}`);
+        usersVar = data;
+      }
 
       const newListUsers = users.filter(item => {
         let found = false;
         // eslint-disable-next-line no-plusplus
-        for (let i = 0; i < data.length; i++) {
-          if (item.id === data[i].id) {
+        for (let i = 0; i < usersVar.length; i++) {
+          if (item.id === usersVar[i].id) {
             found = true;
             break;
           }
@@ -123,7 +127,7 @@ export const PdvUserScreen: React.FC<PdvUserScreenProps> = ({ pdvId, nextTab, ba
         return false;
       });
       setListUsers(newListUsers);
-      setUsersSelected(data);
+      setUsersSelected(usersVar);
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
