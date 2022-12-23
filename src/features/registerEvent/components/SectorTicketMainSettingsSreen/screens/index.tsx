@@ -284,7 +284,7 @@ export const SectorTicketMainSettingsScreen: React.FC<
           return;
         }
 
-        const payload = {
+        const payload: any = {
           id: ticketStates.ticket?.id,
           eventSection: {
             id: formDataMainSettings[FormInputNameToMainSettings.eventSection],
@@ -316,6 +316,10 @@ export const SectorTicketMainSettingsScreen: React.FC<
           observation: formDataMainSettings[FormInputNameToMainSettings.observation],
           batchs: payloadBatchs,
         };
+
+        if (!payload.printer.id) {
+          delete payload.printer;
+        }
 
         if (!payload.id) {
           delete payload.id;
@@ -643,7 +647,7 @@ export const SectorTicketMainSettingsScreen: React.FC<
       onChangeFormInputMainSettings(FormInputNameToMainSettings.printImageBase64)(
         ticket.printImageBase64,
       );
-      onChangeFormInputMainSettings(FormInputNameToMainSettings.printer)(ticket.printer.id);
+      onChangeFormInputMainSettings(FormInputNameToMainSettings.printer)(ticket?.printer?.id);
       onChangeFormInputMainSettings(FormInputNameToMainSettings.copies)(String(ticket.copies));
       onChangeFormInputMainSettings(FormInputNameToMainSettings.reprint)(String(ticket.reprint));
       onChangeFormInputMainSettings(FormInputNameToMainSettings.printBatchNumber)(
