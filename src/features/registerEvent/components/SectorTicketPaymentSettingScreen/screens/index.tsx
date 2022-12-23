@@ -222,7 +222,11 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
     }
   };
 
-  const handleOnSaveSectorTicketPayment = async (): Promise<void> => {
+  const handleOnSaveSectorTicketPayment = async ({
+    isBntNext,
+  }: {
+    isBntNext: boolean;
+  }): Promise<void> => {
     try {
       if (isFormValidtPaymentSettings()) {
         const payloadDiscountCoupon = listDiscountCoupon.map(item => ({
@@ -323,6 +327,8 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
           delete payload.id;
         }
         const response = await api.post(`/event/ticket/${params.id}/payment`, payload);
+
+        if (response && isBntNext) nextTab();
         if (response) toast.success('Dados salvos com sucesso!');
       }
     } catch (error) {
@@ -331,21 +337,14 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
     }
   };
 
-  const handleNextTab = async (): Promise<void> => {
-    await handleOnSaveSectorTicketPayment();
-    if (isFormValidtPaymentSettings()) {
-      nextTab();
-    }
-  };
-
   const handleBackTab = (): void => {
     backTab();
   };
 
   const controllerPaymentSettingsActions: PaymentSettingsActionsProps = {
-    onSave: handleOnSaveSectorTicketPayment,
+    onSave: () => handleOnSaveSectorTicketPayment({ isBntNext: false }),
     onReturnTab: handleBackTab,
-    onNextTap: handleNextTab,
+    onNextTap: () => handleOnSaveSectorTicketPayment({ isBntNext: true }),
   };
 
   const handleOnShouldShowModal = ({

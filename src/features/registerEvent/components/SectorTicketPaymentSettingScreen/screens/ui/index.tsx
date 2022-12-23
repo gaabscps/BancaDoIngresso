@@ -738,7 +738,6 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               theme="outlineDark"
               className="ml-3"
               onClick={async () => {
-                console.log('TODO: Realizar integração da fase de pagamento ');
                 await paymentSettingsActions.onNextTap();
               }}
             />

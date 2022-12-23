@@ -255,7 +255,7 @@ export const SectorTicketMainSettingsScreen: React.FC<
     }
   };
 
-  const handleOnSaveMainSettings = async (): Promise<void> => {
+  const handleOnSaveMainSettings = async ({ isBntNext }: { isBntNext: boolean }): Promise<void> => {
     try {
       if (isFormValidMainSettings()) {
         const payloadBatchs = batchList.map((batch: TicketBatch) => {
@@ -321,8 +321,11 @@ export const SectorTicketMainSettingsScreen: React.FC<
           delete payload.id;
         }
         const response = await api.post(`/event/ticket/${params.id}/main-settings`, payload);
+
+        if (response && isBntNext) nextTab();
         if (response) toast.success('Dados salvos com sucesso!');
         ticketStep.setTicketState(response.data);
+        ticketStates.setTicket(response.data);
       }
     } catch (error) {
       const err = error as AxiosError;
@@ -542,16 +545,9 @@ export const SectorTicketMainSettingsScreen: React.FC<
     setPrinterList,
   };
 
-  const handleNextTab = async (): Promise<void> => {
-    await handleOnSaveMainSettings();
-    if (isFormValidMainSettings()) {
-      nextTab();
-    }
-  };
-
   const controllerMainSettingsActions: mainSettingsProps = {
-    onSave: handleOnSaveMainSettings,
-    onNextTab: handleNextTab,
+    onSave: () => handleOnSaveMainSettings({ isBntNext: false }),
+    onNextTab: () => handleOnSaveMainSettings({ isBntNext: true }),
   };
 
   const controllerSectorActions: sectorActionsProps = {
