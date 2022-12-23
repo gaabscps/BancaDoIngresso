@@ -100,11 +100,12 @@ export const SectorTicketGeneralSettingsScreen: React.FC<
             +formDataGeneralSettings[FormInputNameToGeneralSettings.purchaseLimitCpf],
         };
 
-        // if (!payload.id) {
-        //   delete payload.id;
-        // }
         const response = await api.post(`/event/ticket/${params.id}/general-settings`, payload);
-        if (response) toast.success('Dados salvos com sucesso!');
+        if (response) {
+          ticketStep.setTicketState(undefined as any);
+          ticketStates.setTicket(undefined);
+        }
+        if (response) toast.success('Ingresso adicionado com sucesso!');
       }
     } catch (error) {
       const err = error as AxiosError;
@@ -114,10 +115,6 @@ export const SectorTicketGeneralSettingsScreen: React.FC<
 
   const handleNextTab = async (): Promise<void> => {
     await handleOnSaveGeneralSettings();
-    if (isFormValidGeneralSettings()) {
-      console.log('TODO : adicionar aqui a ação do ultimo botão');
-      // TODO : adicionar aqui a ação do ultimo botão
-    }
   };
 
   const handleBackTab = (): void => {

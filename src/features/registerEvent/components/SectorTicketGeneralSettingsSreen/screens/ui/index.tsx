@@ -46,7 +46,7 @@ export const SectorTicketGeneralSettingsContainer: React.FC<
             />
           ) : null}
         </div>
-        <div>
+        <div className="d-flex">
           <div className="m-2 mr-5">
             <BackOnTop />
           </div>

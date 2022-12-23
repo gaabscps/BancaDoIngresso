@@ -328,8 +328,8 @@ export const SectorTicketMainSettingsScreen: React.FC<
 
         if (response && isBntNext) nextTab();
         if (response) toast.success('Dados salvos com sucesso!');
-        ticketStep.setTicketState(response.data);
-        ticketStates.setTicket(response.data);
+        ticketStates.setTicket({ ...ticketStates.ticket, ...response.data });
+        ticketStep.setTicketState({ ...ticketStates.ticket, ...response.data });
       }
     } catch (error) {
       const err = error as AxiosError;

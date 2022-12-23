@@ -113,9 +113,7 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
 
   // focus on tab
   React.useEffect(() => {
-    if (ticketStates?.ticket) {
-      titleTabRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }
+    titleTabRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [ticketStates?.ticket]);
 
   return (
