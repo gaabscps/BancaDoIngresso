@@ -70,7 +70,7 @@ export const SubPdvContent: React.FC<
               <SelectCustom
                 name="name"
                 label="Nome do Sub PDV"
-                placeholder="Digite o nome do Sub PDV"
+                placeholder="Digite ou selecione nome do Sub PDV"
                 value={formData[FormInputName.name]}
                 onChange={e => onChangeFormInput(FormInputName.name)(e?.value as string)}
                 error={formErrors.name && formErrors.name[0]}

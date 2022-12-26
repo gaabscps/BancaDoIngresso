@@ -134,19 +134,11 @@ export const SubPdvContainer: React.FC<PdvContainerProps> = ({
           <div
             className="link-grey"
             onClick={(): void => {
-              console.log('subPdvDropdownSelected :>> ', subPdvDropdownSelected);
               if (!subPdvDropdownSelected) {
-                toast.warn('Selecione um PDV para editar');
+                toast.warn('Selecione um Sub PDV para editar');
               } else {
                 onToggle();
                 onShowEditSubPdv(subPdvDropdownSelected);
-                // onShouldShowModal({
-                //   value: ShouldShowModal.subpdvRegister,
-                //   newTitleModal: subPdvDropdownSelected?.id
-                //     ? subPdvDropdownSelected?.name
-                //     : 'Cadastrar novo Sub PDV',
-                //   subPdv: subPdvDropdownSelected,
-                // });
               }
             }}
           >
