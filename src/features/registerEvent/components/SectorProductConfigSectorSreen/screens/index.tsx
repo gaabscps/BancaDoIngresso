@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 /* eslint-disable array-callback-return */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -120,6 +121,8 @@ export const SectorProductConfigSectorScreen: React.FC<
 
   const handleOnSaveConfigSector = async (): Promise<void> => {
     try {
+      setState(States.loading);
+
       if (isFormValidConfigSector()) {
         const productChecked = form.products?.map((value: any) => {
           const productId = value.split('_')[2];
@@ -135,17 +138,27 @@ export const SectorProductConfigSectorScreen: React.FC<
           };
         });
 
-        const payload = {
-          section: {
-            id: formDataConfigSector[FormInputNameConfigSector.section],
-            imageBase64: formDataConfigSector[FormInputNameConfigSector.imageBase64Sector],
-          },
+        const payloadSection = {
+          id: formDataConfigSector[FormInputNameConfigSector.section],
+          imageBase64: formDataConfigSector[FormInputNameConfigSector.imageBase64Sector],
+        };
+
+        const reponseSection = await api.post(
+          `/event/section-product/${params.id}/section`,
+          payloadSection,
+        );
+
+        const payloadSectionProducts = {
+          section: reponseSection.data,
           products: productChecked || [],
           combos: combosChecked || [],
         };
 
-        const reponse = await api.post(`/event/section-product/${params.id}/section`, payload);
-        if (reponse) toast.success('Dados salvos com sucesso!');
+        const reponseSectionProducts = await api.post(
+          `/event/section-product/${params.id}/section/products`,
+          payloadSectionProducts,
+        );
+        if (reponseSectionProducts) toast.success('Dados salvos com sucesso!');
 
         handleGetSectorList(params.id);
         setSector(undefined);
@@ -154,6 +167,8 @@ export const SectorProductConfigSectorScreen: React.FC<
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
+    } finally {
+      setState(States.default);
     }
   };
 
@@ -320,24 +335,32 @@ export const SectorProductConfigSectorScreen: React.FC<
   useEffect(() => {
     // verify if sector not array empty
     if (sector) {
+      const _subgroup: any[] = [];
       const _products: any[] = [];
+      const _combos: any[] = [];
+
+      // push products by sectionGroup[].subGroups[].products[]
       sector.sectionGroup.map(({ categoryGroupId, categoryGroupName, subGroups }: any) => {
         subGroups.map((subgroup: any) => {
-          _products.push({ categoryGroupId, categoryGroupName, ...subgroup });
+          _subgroup.push({ categoryGroupId, categoryGroupName, ...subgroup });
         });
       });
 
-      const { products, combos, categoryGroupId, categorySubGroupId }: any = _products[0];
-      const newProducts = products.map(
-        ({ id }: any) => `${categoryGroupId}_${categorySubGroupId}_${id}`,
-      );
-      const newCombos = combos.map(
-        ({ id }: any) => `${categoryGroupId}_${categorySubGroupId}_${id}`,
-      );
+      _subgroup.map(({ products, combos, categoryGroupId, categorySubGroupId }: any) => {
+        const newProducts = products.map(
+          ({ id }: any) => `${categoryGroupId}_${categorySubGroupId}_${id}`,
+        );
+        const newCombos = combos.map(
+          ({ id }: any) => `${categoryGroupId}_${categorySubGroupId}_${id}`,
+        );
+
+        _products.push(...newProducts);
+        _combos.push(...newCombos);
+      });
 
       setForm({
-        products: newProducts,
-        combos: newCombos,
+        products: _products,
+        combos: _combos,
       });
 
       onChangeFormInputConfigSector(FormInputNameConfigSector.section)(sector.sectionId);

@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-shadow */
 /* eslint-disable import/no-unresolved */
 import React, { Fragment } from 'react';
@@ -155,18 +156,28 @@ export const SectorProductConfigSectorContainer: React.FC<
           content={
             configSectorStates.sectorTableList.length > 0
               ? configSectorStates.sectorTableList.map(
-                  ({ sectionId, sectionNome, sectionGroup }, index) => (
-                    <React.Fragment key={index}>
-                      {index > 0 ? <hr style={{ margin: '15px -30px 30px -50px' }} /> : null}
-                      {sectionGroup.map(({ subGroups }: any, index: number) => (
-                        <div
-                          key={index}
-                          // className={`${
-                          //   configSectorStates.sector.sectionId === sectionId
-                          //     ? 'disabled-content'
-                          //     : null
-                          // }`}
-                        >
+                  ({ sectionId, sectionNome, sectionGroup }, index) => {
+                    // total products by sectionGroup[].subGroups[].products[]
+                    const totalProducts = sectionGroup.reduce((acc: any, { subGroups }: any) => {
+                      const totalProductsBySubGroup = subGroups.reduce(
+                        (acc: any, { products }: any) => acc + products.length,
+                        0,
+                      );
+                      return acc + totalProductsBySubGroup;
+                    }, 0);
+                    // total combos by sectionGroup[].subGroups[].combos[]
+                    const totalCombos = sectionGroup.reduce((acc: any, { subGroups }: any) => {
+                      const totalCombosBySubGroup = subGroups.reduce(
+                        (acc: any, { combos }: any) => acc + combos.length,
+                        0,
+                      );
+                      return acc + totalCombosBySubGroup;
+                    }, 0);
+
+                    return (
+                      <React.Fragment key={index}>
+                        {index > 0 ? <hr style={{ margin: '15px -30px 30px -50px' }} /> : null}
+                        <div key={index}>
                           <div className="d-flex justify-content-between">
                             <div className="mb-3">
                               <span className="secondary-table-title">Setor #{index + 1}</span>
@@ -225,17 +236,19 @@ export const SectorProductConfigSectorContainer: React.FC<
                             numberRowsPerPage={0}
                             progressPending={false}
                             columns={columnsSectors}
-                            data={subGroups.map(({ products, combos }: any, index: number) => ({
-                              id: index,
-                              products: products.length,
-                              combos: combos.length,
-                            }))}
+                            data={[
+                              {
+                                id: sectionId,
+                                products: totalProducts,
+                                combos: totalCombos,
+                              },
+                            ]}
                             theme="secondaryWithoutBorder"
                           />
                         </div>
-                      ))}
-                    </React.Fragment>
-                  ),
+                      </React.Fragment>
+                    );
+                  },
                 )
               : 'Nenhum setor cadastrado. Aqui será exibida uma lista dos setores cadastrados'
           }
