@@ -1,13 +1,14 @@
 import React from 'react';
 import { Loading, Dialog } from '@/components';
-import { ActionProps } from '@/components/Dialog';
 import Pdv from '@/model/Pdv';
+import SubPdv from '@/model/SubPdv';
 import { FormData, FormErrors, OnChangeFormInput } from '@/hooks/useForm';
 import { ContractorControllerUser } from '@/features/pdv/types';
-import { RegisterContent } from '@/features/pdv/components/RegisterContent';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
+
+import { RegisterContentSubPdv } from '@/features/core/SubPdvScreen/components/RegisterContentSubPdv';
 import { toast } from 'react-toastify';
-import { NameFiles } from '..';
+import { ActionProps } from '@/components/Dialog';
 
 // eslint-disable-next-line no-shadow
 export enum States {
@@ -17,34 +18,34 @@ export enum States {
 
 // eslint-disable-next-line no-shadow
 export enum ShouldShowModal {
-  pdv = 'pdv',
+  subpdvRegister = 'subpdvRegister',
 }
 
 interface PdvContainerProps {
   state: States;
-  pdvDropdownSelected: Pdv | undefined;
-  pdvState?: Pdv;
-  nameFiles: NameFiles;
+  subPdvState?: SubPdv;
   title: string | React.ReactNode;
   visible: boolean;
   shouldShowModal: ShouldShowModal;
-  formDataPdv: FormData;
-  formErrorsPdv: FormErrors;
-  setErrorsPdv: (errors: FormErrors) => void;
-  onChangeFormInputPdv: OnChangeFormInput;
+  formDataSubPdv: FormData;
+  formErrorsSubPdv: FormErrors;
+  onChangeFormInputSubPdv: OnChangeFormInput;
   onToggle: () => void;
   onShouldShowModal: ({
     value,
     newTitleModal,
     pdv,
+    subPdv,
   }: {
     value: ShouldShowModal;
     newTitleModal: string | React.ReactNode;
     pdv?: Pdv;
+    subPdv?: SubPdv;
   }) => void;
-  onSavePdv: () => Promise<void>;
-  onChangeFileInput: (inputName: string) => (file: File | undefined) => void;
+  onSaveSubPdv: () => Promise<void>;
   controllerAppendUser: ContractorControllerUser;
+  subPdvDropdownSelected: SubPdv | undefined;
+  onShowEditSubPdv: (subPdv: SubPdv) => void;
 }
 
 export interface DataRow {
@@ -58,23 +59,21 @@ export interface DataRow {
   status: string;
 }
 
-export const PdvContainer: React.FC<PdvContainerProps> = ({
+export const SubPdvContainer: React.FC<PdvContainerProps> = ({
   state,
-  pdvDropdownSelected,
-  pdvState,
-  nameFiles,
+  subPdvState,
   title,
   visible,
   shouldShowModal,
-  formDataPdv,
-  formErrorsPdv,
-  setErrorsPdv,
-  onChangeFormInputPdv,
+  formDataSubPdv,
+  formErrorsSubPdv,
+  onChangeFormInputSubPdv,
   onToggle,
   onShouldShowModal,
-  onSavePdv,
-  onChangeFileInput,
+  onSaveSubPdv,
   controllerAppendUser,
+  subPdvDropdownSelected,
+  onShowEditSubPdv,
 }) => {
   const renderActionDialogToCancel: ActionProps = {
     title: 'Cancelar',
@@ -94,26 +93,23 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
         isContentWithCard={true}
         actions={[
           {
-            [ShouldShowModal.pdv]: renderActionDialogToCancel,
+            [ShouldShowModal.subpdvRegister]: renderActionDialogToCancel,
           }[shouldShowModal],
           {
-            [ShouldShowModal.pdv]: {
-              title: pdvState?.id ? 'Salvar' : 'Cadastrar novo PDV',
-              onClick: (): Promise<void> => onSavePdv(),
+            [ShouldShowModal.subpdvRegister]: {
+              title: subPdvState?.id ? 'Salvar' : 'Cadastrar novo SubPDV',
+              onClick: (): Promise<void> => onSaveSubPdv(),
             },
           }[shouldShowModal],
         ]}
       >
         {
           {
-            [ShouldShowModal.pdv]: (
-              <RegisterContent
-                formData={formDataPdv}
-                formErrors={formErrorsPdv}
-                onChangeFormInput={onChangeFormInputPdv}
-                onChangeFileInput={onChangeFileInput}
-                nameFiles={nameFiles}
-                setErrorsPdv={setErrorsPdv}
+            [ShouldShowModal.subpdvRegister]: (
+              <RegisterContentSubPdv
+                formData={formDataSubPdv}
+                formErrors={formErrorsSubPdv}
+                onChangeFormInput={onChangeFormInputSubPdv}
                 controllerAppendUser={controllerAppendUser}
               />
             ),
@@ -129,26 +125,28 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
               onToggle();
               onShouldShowModal({
                 newTitleModal: 'Cadastrar novo Sub PDV',
-                value: ShouldShowModal.pdv,
+                value: ShouldShowModal.subpdvRegister,
               });
             }}
           >
-            + cadastrar novo PDV
+            + cadastrar novo Sub PDV
           </div>
           <div
             className="link-grey"
             onClick={(): void => {
-              if (!pdvDropdownSelected) {
+              console.log('subPdvDropdownSelected :>> ', subPdvDropdownSelected);
+              if (!subPdvDropdownSelected) {
                 toast.warn('Selecione um PDV para editar');
               } else {
                 onToggle();
-                onShouldShowModal({
-                  value: ShouldShowModal.pdv,
-                  newTitleModal: pdvDropdownSelected?.id
-                    ? pdvDropdownSelected?.name
-                    : 'Cadastrar novo PDV',
-                  pdv: pdvDropdownSelected,
-                });
+                onShowEditSubPdv(subPdvDropdownSelected);
+                // onShouldShowModal({
+                //   value: ShouldShowModal.subpdvRegister,
+                //   newTitleModal: subPdvDropdownSelected?.id
+                //     ? subPdvDropdownSelected?.name
+                //     : 'Cadastrar novo Sub PDV',
+                //   subPdv: subPdvDropdownSelected,
+                // });
               }
             }}
           >

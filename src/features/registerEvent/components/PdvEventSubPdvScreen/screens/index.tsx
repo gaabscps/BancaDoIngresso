@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 import React, { useEffect, useState } from 'react';
 import useForm from '@/hooks/useForm';
 import { useConfirmDelete } from '@/hooks/useConfirmDelete';
@@ -41,6 +42,7 @@ export const PdvEventSubPdvScreen: React.FC<Omit<PdvEventSubPdvScreenProps, 'nex
 
   const [subPdv, setSubPdv] = useState<SubPdv>();
   const [subPdvList, setSubPdvList] = useState<SubPdv[]>([]);
+  const [subPdvOptions, setSubPdvOptions] = useState<SubPdv[]>([]);
   const [originalUsers, setOriginalUsers] = useState<User[]>([]);
   const [listUsers, setListUsers] = useState<User[]>([]);
   const [listUsersDefault, setListUsersDefault] = useState<User[]>([]);
@@ -307,6 +309,21 @@ export const PdvEventSubPdvScreen: React.FC<Omit<PdvEventSubPdvScreenProps, 'nex
   };
   // modal config ------------------------------------------------------------
 
+  const handleGetSubPdvOptions = async (pdvId: string | undefined): Promise<void> => {
+    try {
+      setState(States.loading);
+      const { data } = await api.get<SubPdv[]>(`/sub-pdv/pdv/${pdvId}`);
+      if (data) {
+        setSubPdvOptions(data);
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
   const handleOnGetSubPdv = async (subPdvSelected: SubPdv): Promise<void> => {
     try {
       if (subPdvSelected) {
@@ -348,18 +365,23 @@ export const PdvEventSubPdvScreen: React.FC<Omit<PdvEventSubPdvScreenProps, 'nex
     setSubPdv,
     subPdvList,
     setSubPdvList,
+    subPdvOptions,
   };
 
   const controllerSubPdvActions: subPdvActionsProps = {
     // onSave: () => Promise<void>;
     onGet: handleOnGetSubPdv,
+    onGetSubPdv: () => handleGetSubPdvOptions(pdvId),
     onCancelEdit: handleOnCancelEditSubPdv,
     onFirstTab: firstTab,
     onReturnTap: handleBackTab,
   };
 
   useEffect(() => {
-    handleGetSubPdvs(originalUsers);
+    if (pdvId) {
+      handleGetSubPdvs(originalUsers);
+      handleGetSubPdvOptions(pdvId);
+    }
   }, [pdvId]);
 
   useEffect(() => {

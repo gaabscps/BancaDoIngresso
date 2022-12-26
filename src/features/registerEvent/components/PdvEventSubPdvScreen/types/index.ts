@@ -1,4 +1,5 @@
 import { FormData, FormErrors, OnChangeFormInput, IsFormValid } from '@/hooks';
+import Pdv from '@/model/Pdv';
 import SubPdv from '@/model/SubPdv';
 import User from '@/model/User';
 import { ShouldShowModal } from '../screens/ui';
@@ -29,11 +30,13 @@ export interface subPdvStatesProps {
   setSubPdv: React.Dispatch<React.SetStateAction<SubPdv | undefined>>;
   subPdvList: SubPdv[];
   setSubPdvList: React.Dispatch<React.SetStateAction<SubPdv[]>>;
+  subPdvOptions: SubPdv[];
 }
 
 export interface subPdvActionsProps {
   // onSave: () => Promise<void>;
   onGet: (subPdvSelected: SubPdv) => void;
+  onGetSubPdv: (pdvSelected: Pdv) => void;
   onCancelEdit: () => void;
   onFirstTab: () => void;
   onReturnTap: () => void;
