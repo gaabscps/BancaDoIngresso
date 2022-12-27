@@ -473,15 +473,20 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               options={optionCount}
             />
             <span className="mt-5 mr-3 ml-3 input-label"> + </span>
-            <SelectCustom
+            <InputText
               name="physicalSaleFee"
               label="Juros ao mês"
               className="w-input-sm"
+              addon="%"
               placeholder="Ex: 4"
+              maxLength={5}
               value={formData[FormInputName.physicalSaleFee]}
-              onChange={e => onChangeFormInput(FormInputName.physicalSaleFee)(e?.value as string)}
+              onChange={e =>
+                onChangeFormInput(FormInputName.physicalSaleFee)(
+                  e.target.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1'),
+                )
+              }
               error={formErrors.physicalSaleFee && formErrors.physicalSaleFee[0]}
-              options={optionLimiteCount}
             />
           </div>
 
@@ -583,15 +588,20 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               options={optionCount}
             />
             <span className="mt-5 mr-3 ml-3 input-label"> + </span>
-            <SelectCustom
+            <InputText
               name="websiteSaleFee"
               label="Juros ao mês"
               className="w-input-sm"
+              addon="%"
               placeholder="Ex: 4"
+              maxLength={5}
               value={formData[FormInputName.websiteSaleFee]}
-              onChange={e => onChangeFormInput(FormInputName.websiteSaleFee)(e?.value as string)}
+              onChange={e =>
+                onChangeFormInput(FormInputName.websiteSaleFee)(
+                  e.target.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1'),
+                )
+              }
               error={formErrors.websiteSaleFee && formErrors.websiteSaleFee[0]}
-              options={optionLimiteCount}
             />
           </div>
           <div className="container-event mb-4">

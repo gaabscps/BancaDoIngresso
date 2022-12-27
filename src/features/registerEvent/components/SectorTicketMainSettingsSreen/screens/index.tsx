@@ -27,6 +27,7 @@ import {
   SectorTicketContainerProps,
   TabSectorTicketActionsProps,
 } from '@/features/registerEvent/screens/SectorTicket/ui';
+import { unmask as unmaskCash } from '@/helpers/masks/cashNumber';
 import {
   batchActionsProps,
   batchStatesProps,
@@ -264,8 +265,8 @@ export const SectorTicketMainSettingsScreen: React.FC<
               ...batch,
               commission: +batch.commission,
               amount: +batch.amount,
-              unitValue: +batch.unitValue,
-              totalValue: +batch.totalValue,
+              unitValue: +unmaskCash(String(batch.unitValue)),
+              totalValue: +unmaskCash(String(batch.totalValue)),
             };
           }
           delete batch.id;
@@ -273,8 +274,8 @@ export const SectorTicketMainSettingsScreen: React.FC<
             ...batch,
             commission: +batch.commission,
             amount: +batch.amount,
-            unitValue: +batch.unitValue,
-            totalValue: +batch.totalValue,
+            unitValue: +unmaskCash(String(batch.unitValue)),
+            totalValue: +unmaskCash(String(batch.totalValue)),
           };
         });
 
@@ -611,7 +612,7 @@ export const SectorTicketMainSettingsScreen: React.FC<
       onChangeFormInputBatchs(FormInputNameToBatch.amount)(String(batch.amount));
       onChangeFormInputBatchs(FormInputNameToBatch.unitValue)(String(batch.unitValue));
       onChangeFormInputBatchs(FormInputNameToBatch.totalValue)(String(batch.totalValue));
-      onChangeFormInputBatchs(FormInputNameToBatch.imageUrl)(String(batch.imageUrl));
+      onChangeFormInputBatchs(FormInputNameToBatch.imageUrl)(String(batch.imageUrl ?? ''));
     }
   }, [batch]);
 

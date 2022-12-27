@@ -18,6 +18,8 @@ import TicketIcon from '@/assets/images/svg/Ticket';
 import { SectorTicketGeneralSettingsScreen } from '@/features/registerEvent/components/SectorTicketGeneralSettingsSreen/screens';
 import { SectorTicketPaymentSettingsScreen } from '@/features/registerEvent/components/SectorTicketPaymentSettingScreen/screens';
 import { useParams } from 'react-router-dom';
+import { updateMask as updateMaskCash } from '@/helpers/masks/cashNumber';
+import { useEvent } from '@/features/registerEvent/hook/useEvent';
 import { formSectorTicketProps, ticketStepProps } from '../types';
 import { columnsTickets } from './table';
 
@@ -61,6 +63,8 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
   const [numberTab, setNumberTab] = useState(0);
   const titleTabRef = React.useRef<HTMLInputElement>(null);
   const params = useParams<UrlParams>();
+
+  const { eventState, onChange: onChangeEvent } = useEvent();
 
   const handleNextTab = (): void => {
     if (numberTab <= contentTabs.length) {
@@ -170,8 +174,8 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
                                     name: ticket.name,
                                     batch: batch.name,
                                     commission: batch.commission,
-                                    unitValue: `R$ ${batch.unitValue}`,
-                                    totalValue: `R$ ${batch.totalValue}`,
+                                    unitValue: `R$ ${updateMaskCash(String(batch.unitValue))}`,
+                                    totalValue: `R$ ${updateMaskCash(String(batch.totalValue))}`,
                                     amount: `${batch.amount} uni`,
                                   }))}
                                   theme="secondaryWithoutBorder"
@@ -240,8 +244,11 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
           <Button title="Voltar" theme="noneBorder" onClick={() => () => undefined} />
           <Button
             title="Avançar para Setor e produto"
-            onClick={() => isFormValid()}
-            disabled={!(ticketStates.ticketList.length > 0)}
+            onClick={() => {
+              if (isFormValid()) {
+                onChangeEvent({ ...eventState, currentStep: eventState.currentStep + 1 });
+              }
+            }}
           />
         </div>
       </Container>
