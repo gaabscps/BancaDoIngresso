@@ -1,7 +1,7 @@
 import CodeType from './CodeType';
 import EventTicketSimple from './EventTicketSimple';
 import PrintType from './PrintType';
-import Ticket from './Ticket';
+import Tickets from './Tickets';
 
 export default interface EventTicketGeneralSettings {
   eventTickets: EventTicketSimple[];
@@ -18,7 +18,7 @@ export default interface EventTicketGeneralSettings {
 }
 
 export const parseTicketGeneralSettings = (
-  tickets: Ticket[] | undefined,
+  tickets: Tickets[] | undefined,
 ): EventTicketGeneralSettings[] | undefined => {
   if (tickets && tickets.length > 0) {
     const list: EventTicketGeneralSettings[] = [];

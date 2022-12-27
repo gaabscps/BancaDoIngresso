@@ -2,8 +2,9 @@ import { NameFiles } from '@/features/registerEvent/types';
 import { FormData, FormErrors, OnChangeFormInput, IsFormValid } from '@/hooks';
 import Printer from '@/model/Printer';
 import Section from '@/model/Section';
-import Ticket from '@/model/Ticket';
+import Tickets from '@/model/Tickets';
 import TicketBatch from '@/model/TicketBatch';
+import Ticket from '@/model/Ticket';
 import { ShouldShowModal } from '../screens/ui';
 
 export interface formMainSettingsProps {
@@ -65,7 +66,7 @@ export interface ticketActionsProps {
   onGetById: (ticketSelected: Ticket) => void;
   onGetAll: (eventId: string) => void;
   onCancelEdit: () => void;
-  onShowDelete: (ticketSelected: Ticket) => void;
+  onShowDelete: (ticketSelected: Tickets) => void;
 }
 
 export interface sectorStatesProps {

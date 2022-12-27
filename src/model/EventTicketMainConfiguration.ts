@@ -1,6 +1,6 @@
 import Printer from './Printer';
 import Section from './Section';
-import Ticket from './Ticket';
+import Tickets from './Tickets';
 import TicketBatch from './TicketBatch';
 
 export default interface EventTicketMainConfiguration {
@@ -24,7 +24,7 @@ export default interface EventTicketMainConfiguration {
 }
 
 export const parseTicketMainConfigurations = (
-  tickets: Ticket[] | undefined,
+  tickets: Tickets[] | undefined,
 ): EventTicketMainConfiguration[] | undefined => {
   if (tickets && tickets.length > 0) {
     const list: EventTicketMainConfiguration[] = [];

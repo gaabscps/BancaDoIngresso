@@ -2,7 +2,7 @@ import CardFees from './CardFees';
 import DiscountCoupon from './DiscountCoupon';
 import EventTicketSimple from './EventTicketSimple';
 import PaymentGateway from './PaymentGateway';
-import Ticket from './Ticket';
+import Tickets from './Tickets';
 
 export default interface TicketPayment {
   id: string;
@@ -27,7 +27,9 @@ export default interface TicketPayment {
   discountCoupons: DiscountCoupon[];
 }
 
-export const parseTicketPayments = (tickets: Ticket[] | undefined): TicketPayment[] | undefined => {
+export const parseTicketPayments = (
+  tickets: Tickets[] | undefined,
+): TicketPayment[] | undefined => {
   if (tickets && tickets.length > 0) {
     const list: TicketPayment[] = [];
     tickets.forEach(data => {

@@ -9,7 +9,7 @@ import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
 import { CustomTable } from '@/components/Table';
 import { ReactComponent as CloseX } from '@/assets/images/svg/closeX.svg';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
-import Ticket from '@/model/Ticket';
+import Tickets from '@/model/Tickets';
 import {
   ticketActionsProps,
   ticketStatesProps,
@@ -148,7 +148,7 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
                 title="Setores e ingressos adicionados"
                 content={
                   ticketStates?.ticketList?.length > 0
-                    ? ticketStates?.ticketList?.map((ticket: Ticket, index: number) => (
+                    ? ticketStates?.ticketList?.map((ticket: Tickets, index: number) => (
                         <React.Fragment key={ticket.id}>
                           {index > 0 ? <hr style={{ margin: '25px -30px 30px -50px' }} /> : null}
 
