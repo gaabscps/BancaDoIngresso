@@ -9,7 +9,8 @@ import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
 import { useConfirmDelete } from '@/hooks/useConfirmDelete';
 import { DeleteContent } from '@/components/DeleteContent';
-import { formSectorTicketProps } from './types';
+import Ticket from '@/model/Ticket';
+import { formSectorTicketProps, ticketStepProps } from './types';
 import {
   ticketActionsProps,
   ticketStatesProps,
@@ -22,8 +23,9 @@ type UrlParams = {
 export const SectorTicketScreen: React.FC = (): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
 
-  const [ticket, setTicket] = useState<Tickets>();
-  const [ticketList, setTicketList] = useState<Tickets[]>([]);
+  const [ticket, setTicket] = useState<Ticket>();
+  const [ticketState, setTicketState] = useState<Ticket>();
+  const [ticketList, setTicketList] = useState<Ticket[]>([]);
 
   const params = useParams<UrlParams>();
 
@@ -33,6 +35,7 @@ export const SectorTicketScreen: React.FC = (): JSX.Element => {
     formData: formDataSectorTicket,
     formErrors: formErrorsSectorTicket,
     onChangeFormInput: onChangeFormInputSectorTicket,
+    isFormValid: isFormValidSectorTicket,
   } = useForm({
     initialData: {
       isTicket: '',
@@ -47,7 +50,7 @@ export const SectorTicketScreen: React.FC = (): JSX.Element => {
     try {
       type TicketsResponse = {
         idEvent: string;
-        tickets: Tickets[];
+        tickets: Ticket[];
       };
       setState(States.loading);
       const { data } = await api.get<TicketsResponse>(`event/ticket/${id}`);
@@ -62,7 +65,7 @@ export const SectorTicketScreen: React.FC = (): JSX.Element => {
     }
   };
 
-  const handleOnGetTicket = (ticketSelected: Tickets): void => {
+  const handleOnGetTicket = (ticketSelected: Ticket): void => {
     try {
       setTicket(ticketSelected);
     } catch (error) {
@@ -82,7 +85,10 @@ export const SectorTicketScreen: React.FC = (): JSX.Element => {
 
   const handleOnConfirmDeleteToTicket = async (ticketSelected: Tickets): Promise<void> => {
     try {
-      console.log('TODO: Fetch delete ticket:>> ', ticketSelected);
+      await api.delete(`/event/ticket/${params?.id}/${ticketSelected.id}`);
+      toast.success('Ticket excluído com sucesso!');
+      confirmDelete.hide();
+      handleFecthTicketsList(params?.id);
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
@@ -112,6 +118,7 @@ export const SectorTicketScreen: React.FC = (): JSX.Element => {
   const controllerTicketStates: ticketStatesProps = {
     ticket,
     ticketList,
+    setTicket,
   };
 
   const controllerTicketActions: ticketActionsProps = {
@@ -129,6 +136,12 @@ export const SectorTicketScreen: React.FC = (): JSX.Element => {
     formData: formDataSectorTicket,
     formErrors: formErrorsSectorTicket,
     onChangeFormInput: onChangeFormInputSectorTicket,
+    isFormValid: isFormValidSectorTicket,
+  };
+
+  const controllerTicketStep: ticketStepProps = {
+    ticketState,
+    setTicketState,
   };
 
   return (
@@ -137,6 +150,7 @@ export const SectorTicketScreen: React.FC = (): JSX.Element => {
       state={state}
       ticketStates={controllerTicketStates}
       ticketActions={controllerTicketActions}
+      ticketStep={controllerTicketStep}
     />
   );
 };

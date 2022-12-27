@@ -4,6 +4,7 @@ import Printer from '@/model/Printer';
 import Section from '@/model/Section';
 import Tickets from '@/model/Tickets';
 import TicketBatch from '@/model/TicketBatch';
+import Ticket from '@/model/Ticket';
 import { ShouldShowModal } from '../screens/ui';
 
 export interface formMainSettingsProps {
@@ -62,7 +63,7 @@ export interface batchActionsProps {
 }
 
 export interface ticketActionsProps {
-  onGetById: (ticketSelected: Tickets) => void;
+  onGetById: (ticketSelected: Ticket) => void;
   onGetAll: (eventId: string) => void;
   onCancelEdit: () => void;
   onShowDelete: (ticketSelected: Tickets) => void;
@@ -88,6 +89,7 @@ export interface printerStatesProps {
 }
 
 export interface ticketStatesProps {
-  ticket: Tickets | undefined;
-  ticketList: Tickets[];
+  ticket: Ticket | undefined;
+  ticketList: Ticket[];
+  setTicket: React.Dispatch<React.SetStateAction<Ticket | undefined>>;
 }

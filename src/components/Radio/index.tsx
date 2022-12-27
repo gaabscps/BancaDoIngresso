@@ -41,7 +41,7 @@ export const Radio: FC<RadioProps> = ({
       </div>
     )}
     <br />
-    <div className="d-flex flex-column radio">
+    <div className="d-flex flex-column radio radio-custom">
       {options.map((option: OptionProps) => {
         const idRandom = Math.random().toString(36).substr(2, 9);
         return (

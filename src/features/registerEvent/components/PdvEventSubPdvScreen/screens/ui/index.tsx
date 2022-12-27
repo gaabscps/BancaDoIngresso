@@ -9,6 +9,7 @@ import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
 import TicketIcon from '@/assets/images/svg/Ticket';
 import { ActionProps } from '@/components/Dialog';
+import SubPdv from '@/model/SubPdv';
 import {
   ContractorControllerUser,
   formSubPdvProps,
@@ -55,15 +56,6 @@ export const PdvEventSubPdvContainer: React.FC<SubPdvContainerProps> = ({
 }) => {
   const { formData, formErrors, onChangeFormInput } = formSubPdv;
 
-  const subPdvListMock = [
-    {
-      id: '1',
-      name: 'Promoter Ronaldo MOCK',
-      users: '123.456.789-00, 987.654.321-00',
-      link: 'bit.ly/linkvenda/L1-88-3-...',
-    },
-  ];
-
   const renderActionDialogToCancel: ActionProps = {
     title: 'Cancelar',
     onClick: (): void => modalConfig.onToggle(),
@@ -84,7 +76,7 @@ export const PdvEventSubPdvContainer: React.FC<SubPdvContainerProps> = ({
           {
             [ShouldShowModal.configProduct]: {
               title: subPdvStates?.subPdv ? 'Salvar' : 'Cadastrar novo Sub PDV',
-              onClick: (): void => undefined,
+              onClick: (): void => modalConfig.onToggle(),
             },
           }[modalConfig.shouldShowModal],
         ]}
@@ -92,7 +84,12 @@ export const PdvEventSubPdvContainer: React.FC<SubPdvContainerProps> = ({
         {
           {
             [ShouldShowModal.configProduct]: (
-              <SubPdvContent formSubPdvRegister={formSubPdvRegister} appendUser={appendUser} />
+              <SubPdvContent
+                subPdvActions={subPdvActions}
+                subPdvStates={subPdvStates}
+                formSubPdvRegister={formSubPdvRegister}
+                appendUser={appendUser}
+              />
             ),
           }[modalConfig.shouldShowModal]
         }
@@ -121,6 +118,7 @@ export const PdvEventSubPdvContainer: React.FC<SubPdvContainerProps> = ({
               modalConfig.onShouldShowModal({
                 value: ShouldShowModal.configProduct,
                 newTitleModal: 'Cadastrar novo Sub PDV',
+                subPdv: {} as SubPdv,
               })
             }
           >
@@ -133,8 +131,8 @@ export const PdvEventSubPdvContainer: React.FC<SubPdvContainerProps> = ({
             <SuperCollapse
               title={`Sub PDV’s cadastrados`}
               content={
-                subPdvListMock.length > 0 ? (
-                  subPdvListMock.map((item, index) => (
+                subPdvStates.subPdvList.length > 0 ? (
+                  subPdvStates.subPdvList.map((item, index) => (
                     <React.Fragment key={index}>
                       <div className="mb-5">
                         <span className="secondary-table-title">Sub PDV’s #{index + 1}</span>
@@ -149,8 +147,8 @@ export const PdvEventSubPdvContainer: React.FC<SubPdvContainerProps> = ({
                         data={[
                           {
                             id: item.id,
-                            users: item.name,
-                            link: 'bit.ly/linkvenda/L1-88-3-...',
+                            users: item.users.map(data => data.name),
+                            link: '',
                             actions: (
                               <React.Fragment>
                                 <div>

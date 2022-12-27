@@ -17,7 +17,6 @@ import api, { AxiosError } from '@/services/api';
 import { FormInputName as FormInputNameToMainSettings } from '@/features/registerEvent/components/SectorTicketMainSettingsSreen/components/SectorTicketMainSettingsContent';
 import { FormInputName as FormInputNameToSector } from '@/features/registerEvent/components/SectorTicketMainSettingsSreen/components/RegisterSectorContent';
 import { FormInputName as FormInputNameToBatch } from '@/features/registerEvent/components/SectorTicketMainSettingsSreen/components/BatchContent';
-import { unmask as unMaskCash } from '@/helpers/masks/cash';
 import { convertToBoolean } from '@/helpers/common/convertToBoolean';
 import dayjs from 'dayjs';
 import { useParams } from 'react-router-dom';
@@ -47,8 +46,10 @@ type UrlParams = {
 };
 
 export const SectorTicketMainSettingsScreen: React.FC<
-  Pick<SectorTicketContainerProps, 'ticketStates'> & Omit<TabSectorTicketActionsProps, 'backTab'>
-> = ({ ticketStates, nextTab, onFirstTab }): JSX.Element => {
+  Pick<SectorTicketContainerProps, 'ticketStates'> &
+    Pick<SectorTicketContainerProps, 'ticketStep'> &
+    Omit<TabSectorTicketActionsProps, 'backTab'>
+> = ({ ticketStates, ticketStep, nextTab, onFirstTab }): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
   const [formNameFiles, setFormNameFiles] = useState<NameFiles>({});
 
@@ -254,7 +255,7 @@ export const SectorTicketMainSettingsScreen: React.FC<
     }
   };
 
-  const handleOnSaveMainSettings = async (): Promise<void> => {
+  const handleOnSaveMainSettings = async ({ isBntNext }: { isBntNext: boolean }): Promise<void> => {
     try {
       if (isFormValidMainSettings()) {
         const payloadBatchs = batchList.map((batch: TicketBatch) => {
@@ -283,7 +284,7 @@ export const SectorTicketMainSettingsScreen: React.FC<
           return;
         }
 
-        const payload = {
+        const payload: any = {
           id: ticketStates.ticket?.id,
           eventSection: {
             id: formDataMainSettings[FormInputNameToMainSettings.eventSection],
@@ -316,11 +317,19 @@ export const SectorTicketMainSettingsScreen: React.FC<
           batchs: payloadBatchs,
         };
 
+        if (!payload.printer.id) {
+          delete payload.printer;
+        }
+
         if (!payload.id) {
           delete payload.id;
         }
-        const reponse = await api.post(`/event/ticket/${params.id}/main-settings`, payload);
-        if (reponse) toast.success('Dados salvos com sucesso!');
+        const response = await api.post(`/event/ticket/${params.id}/main-settings`, payload);
+
+        if (response && isBntNext) nextTab();
+        if (response) toast.success('Dados salvos com sucesso!');
+        ticketStates.setTicket({ ...ticketStates.ticket, ...response.data });
+        ticketStep.setTicketState({ ...ticketStates.ticket, ...response.data });
       }
     } catch (error) {
       const err = error as AxiosError;
@@ -348,9 +357,9 @@ export const SectorTicketMainSettingsScreen: React.FC<
           startDate: payloadStartData,
           endDate: payloadEndData,
           commission: +formDataBatchs[FormInputNameToBatch.commission],
-          amount: String(formDataBatchs[FormInputNameToBatch.amount]),
-          unitValue: String(+unMaskCash(formDataBatchs[FormInputNameToBatch.unitValue])),
-          totalValue: String(+unMaskCash(formDataBatchs[FormInputNameToBatch.totalValue])),
+          amount: +formDataBatchs[FormInputNameToBatch.amount],
+          unitValue: formDataBatchs[FormInputNameToBatch.unitValue],
+          totalValue: formDataBatchs[FormInputNameToBatch.totalValue],
           imageUrl: formDataBatchs[FormInputNameToBatch.imageUrl],
         };
 
@@ -389,8 +398,8 @@ export const SectorTicketMainSettingsScreen: React.FC<
 
   const handleOnGetBatch = async (batchSelected: TicketBatch): Promise<void> => {
     try {
-      if (batchSelected) {
-        setBatch(batchSelected);
+      setBatch(batchSelected);
+      if (batchSelected.imageUrl) {
         // genetare string witch 10 random numbers
         const randomNumbers = (): string => {
           let result = '';
@@ -405,6 +414,11 @@ export const SectorTicketMainSettingsScreen: React.FC<
         setFormNameFiles({
           ...formNameFiles,
           [FormInputNameToBatch.imageUrl]: `${randomNumbers()}.JPEG`,
+        });
+      } else {
+        setFormNameFiles({
+          ...formNameFiles,
+          [FormInputNameToBatch.imageUrl]: 'Nenhum arquivo selecionado',
         });
       }
     } catch (error) {
@@ -436,9 +450,9 @@ export const SectorTicketMainSettingsScreen: React.FC<
             startDate: payloadStartData,
             endDate: payloadEndData,
             commission: +formDataBatchs[FormInputNameToBatch.commission],
-            amount: String(formDataBatchs[FormInputNameToBatch.amount]),
-            unitValue: String(+unMaskCash(formDataBatchs[FormInputNameToBatch.unitValue])),
-            totalValue: String(+unMaskCash(formDataBatchs[FormInputNameToBatch.totalValue])),
+            amount: formDataBatchs[FormInputNameToBatch.amount],
+            unitValue: formDataBatchs[FormInputNameToBatch.unitValue],
+            totalValue: formDataBatchs[FormInputNameToBatch.totalValue],
             imageUrl: formDataBatchs[FormInputNameToBatch.imageUrl],
           };
         }
@@ -535,16 +549,9 @@ export const SectorTicketMainSettingsScreen: React.FC<
     setPrinterList,
   };
 
-  const handleNextTab = async (): Promise<void> => {
-    await handleOnSaveMainSettings();
-    if (isFormValidMainSettings()) {
-      nextTab();
-    }
-  };
-
   const controllerMainSettingsActions: mainSettingsProps = {
-    onSave: handleOnSaveMainSettings,
-    onNextTab: handleNextTab,
+    onSave: () => handleOnSaveMainSettings({ isBntNext: false }),
+    onNextTab: () => handleOnSaveMainSettings({ isBntNext: true }),
   };
 
   const controllerSectorActions: sectorActionsProps = {
@@ -640,7 +647,7 @@ export const SectorTicketMainSettingsScreen: React.FC<
       onChangeFormInputMainSettings(FormInputNameToMainSettings.printImageBase64)(
         ticket.printImageBase64,
       );
-      onChangeFormInputMainSettings(FormInputNameToMainSettings.printer)(ticket.printer.id);
+      onChangeFormInputMainSettings(FormInputNameToMainSettings.printer)(ticket?.printer?.id);
       onChangeFormInputMainSettings(FormInputNameToMainSettings.copies)(String(ticket.copies));
       onChangeFormInputMainSettings(FormInputNameToMainSettings.reprint)(String(ticket.reprint));
       onChangeFormInputMainSettings(FormInputNameToMainSettings.printBatchNumber)(

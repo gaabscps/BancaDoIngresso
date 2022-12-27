@@ -14,7 +14,7 @@ export enum States {
 // eslint-disable-next-line no-shadow
 export enum FormInputName {
   section = 'section',
-  imageBase64 = 'imageBase64',
+  imageBase64Sector = 'imageBase64Sector',
 }
 
 export const SectorProductConfigSectorContent: React.FC<
@@ -44,7 +44,17 @@ export const SectorProductConfigSectorContent: React.FC<
             label="Nome do setor"
             placeholder="Digite ou selecione o nome do setor"
             value={formData[FormInputName.section]}
-            onChange={e => onChangeFormInput(FormInputName.section)(e?.value as string)}
+            onChange={e => {
+              const verifySectorExists = configSectorStates.sectorTableList.find(
+                value => value.sectionId === e?.value,
+              );
+              if (verifySectorExists) {
+                configSectorStates.setSector(verifySectorExists);
+              } else {
+                configSectorStates.setSector(undefined);
+              }
+              onChangeFormInput(FormInputName.section)(e?.value as string);
+            }}
             error={formErrors.section && formErrors.section[0]}
             options={configSectorStates.sectorDropdown.map(sector => ({
               value: sector.id,
@@ -58,15 +68,15 @@ export const SectorProductConfigSectorContent: React.FC<
         </FormGroup>
         <FormGroup className="mb-2">
           <InputFile
-            name="imageBase64"
+            name="imageBase64Sector"
             label="Imagem do setor (opcional)"
-            fileName={formNameFiles?.imageBase64}
+            fileName={formNameFiles?.imageBase64Sector}
             onChange={e =>
-              onChangeFormFileInput(FormInputName.imageBase64)(
+              onChangeFormFileInput(FormInputName.imageBase64Sector)(
                 (e.target as HTMLInputElement)?.files?.[0],
               )
             }
-            error={formErrors.imageBase64 && formErrors.imageBase64[0]}
+            error={formErrors.imageBase64Sector && formErrors.imageBase64Sector[0]}
           />
         </FormGroup>
       </Form>

@@ -7,6 +7,7 @@ interface CheckboxProps {
   label?: string;
   wrapperClass?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onClick?: (e: React.MouseEvent<HTMLInputElement>) => void;
   checked?: boolean;
   error?: string;
   disabled?: boolean;
@@ -18,12 +19,13 @@ export const Checkbox: FC<CheckboxProps> = ({
   label,
   wrapperClass,
   onChange,
+  onClick,
   checked,
   error,
   disabled,
   value,
 }) => (
-  <div className={`mb-4 d-flex ${wrapperClass}`}>
+  <div className={`mb-3 d-flex ${wrapperClass}`}>
     <label className="checkbox style-d" htmlFor={name}>
       <input
         type="checkbox"
@@ -31,6 +33,7 @@ export const Checkbox: FC<CheckboxProps> = ({
         id={name}
         checked={checked}
         onChange={onChange}
+        onClick={onClick}
         disabled={disabled}
         value={value}
       />

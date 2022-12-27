@@ -174,7 +174,7 @@ export const SectorTicketGeneralSettingsContent: React.FC<
             name="purchaseLimitCpf"
             label="Limite de compra por CPF (max: 50)"
             placeholder="Ex: 10"
-            className="w-25"
+            className="w-input-sm"
             maxLength={2}
             value={formData[FormInputName.purchaseLimitCpf]}
             onChange={e =>

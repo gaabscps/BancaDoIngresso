@@ -26,8 +26,8 @@ export const RegisterDiscountCoupon: React.FC<RegisterContentProps> = ({
       }}
     >
       {discountCoupon.map((item, index) => (
-        <>
-          <div className="modal__main-container" key={index}>
+        <React.Fragment key={index}>
+          <div className="modal__main-container">
             <Row>
               <Col md={6}>
                 <FormGroup className="mb-2">
@@ -63,7 +63,13 @@ export const RegisterDiscountCoupon: React.FC<RegisterContentProps> = ({
                     label="Quant. cupons"
                     placeholder="0"
                     value={String(item.amount)}
-                    onChange={e => handleChangeDiscountCoupon('amount', index, e?.target.value)}
+                    onChange={e =>
+                      handleChangeDiscountCoupon(
+                        'amount',
+                        index,
+                        e?.target.value.replace(/\D/g, ''),
+                      )
+                    }
                     error={undefined}
                   />
                 </FormGroup>
@@ -75,8 +81,15 @@ export const RegisterDiscountCoupon: React.FC<RegisterContentProps> = ({
                     type="number"
                     label="Desconto (%)"
                     placeholder="0"
+                    maxLength={2}
                     value={String(item.discount)}
-                    onChange={e => handleChangeDiscountCoupon('discount', index, e?.target.value)}
+                    onChange={e =>
+                      handleChangeDiscountCoupon(
+                        'discount',
+                        index,
+                        e.target.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1'),
+                      )
+                    }
                     error={undefined}
                   />
                 </FormGroup>
@@ -92,7 +105,7 @@ export const RegisterDiscountCoupon: React.FC<RegisterContentProps> = ({
           {discountCoupon.length > 1 ? (
             <div className="p-4" style={{ backgroundColor: '#f8f8f8' }}></div>
           ) : null}
-        </>
+        </React.Fragment>
       ))}
     </Form>
     <div

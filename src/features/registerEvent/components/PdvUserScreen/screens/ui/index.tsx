@@ -1,5 +1,6 @@
 import {
   Button,
+  Loading,
   // Loading,
   SelectCustom,
 } from '@/components';
@@ -25,13 +26,14 @@ export enum FormInputName {
 }
 
 interface SectorProductUserProps {
+  state: States;
   controllerFormUser: formPdvUserProps;
   controllerAppendUser: appendPdvUserProps;
   nextTab: () => void;
   backTab: () => void;
 }
 export const PdvUserContainer: React.FC<SectorProductUserProps> = ({
-  // state,
+  state,
   controllerFormUser,
   controllerAppendUser,
   nextTab,
@@ -39,6 +41,7 @@ export const PdvUserContainer: React.FC<SectorProductUserProps> = ({
 }) => {
   const { formData, formErrors, onChangeFormInput } = controllerFormUser;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const refSelectUser = useRef<any>(null);
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   const onClearSelectUser = () => {
@@ -51,7 +54,7 @@ export const PdvUserContainer: React.FC<SectorProductUserProps> = ({
     (item: User) => item.id === formData.user,
   );
 
-  const dataTableUser = controllerAppendUser.usersSelected?.map((item: any, index: any) => ({
+  const dataTableUser = controllerAppendUser.usersSelected?.map(item => ({
     id: item.id,
     name: item.name,
     login: item.cpf,
@@ -59,7 +62,7 @@ export const PdvUserContainer: React.FC<SectorProductUserProps> = ({
       <CloseX
         className="mr-2 svg-icon action-icon"
         onClick={() => {
-          controllerAppendUser.handleRemoveUser(index);
+          controllerAppendUser.handleRemoveUser(item.id);
         }}
       />
     ),
@@ -67,8 +70,7 @@ export const PdvUserContainer: React.FC<SectorProductUserProps> = ({
 
   return (
     <>
-      {/* <Loading isVisible={state === States.loading} /> */}
-
+      <Loading isVisible={state === States.loading} />
       <Container className="mainContainer" fluid={true}>
         <Form>
           <FormGroup>

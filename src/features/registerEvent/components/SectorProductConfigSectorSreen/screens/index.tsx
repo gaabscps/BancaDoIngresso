@@ -1,6 +1,9 @@
+/* eslint-disable no-shadow */
+/* eslint-disable array-callback-return */
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
 import useForm from '@/hooks/useForm';
-import validators from '@/helpers/validators';
 import { toast } from 'react-toastify';
 import api, { AxiosError } from '@/services/api';
 import { TabSectorProductActionsProps } from '@/features/registerEvent/screens/SectorProduct/ui';
@@ -14,12 +17,15 @@ import { useDialog } from '@/hooks/useDialog';
 import { DeleteContent } from '@/components/DeleteContent';
 import { useConfirmDelete } from '@/hooks/useConfirmDelete';
 import Section from '@/model/Section';
+import { FormInputName as FormInputNameConfigSector } from '@/features/registerEvent/components/SectorProductConfigSectorSreen/components/SectorTicketConfigSectorContent';
+import validators from '@/helpers/validators';
 import {
   formConfigSectorProps,
   configSectorActions,
   modalConfigSectorSettingsProps,
   onShouldShowModalSectorSettingsProps,
   sectorStatesProps,
+  dataConfigStatesProps,
 } from '../types';
 
 export interface NameFiles {
@@ -35,13 +41,18 @@ export const SectorProductConfigSectorScreen: React.FC<
 > = ({ backTab, nextTab }): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
   const [formNameFiles, setFormNameFiles] = useState<NameFiles>({});
+  const [form, setForm] = useState<any>({});
 
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(
     ShouldShowModal.configProduct,
   );
 
-  const [sector, setSector] = useState<Section>();
+  const [sector, setSector] = useState<any>();
+  // const [sectorConfig, setSectorConfig] = useState([]);
   const [sectorList, setSectorList] = useState<Section[]>([]);
+  const [sectorTableList, setSectorTableList] = useState<Section[]>([]);
+
+  const [configList, setConfigList] = useState<Section[]>([]);
 
   const [sectorDropdown, setSectorDropdown] = useState<Section[]>([]);
 
@@ -59,42 +70,105 @@ export const SectorProductConfigSectorScreen: React.FC<
     resetForm: resetFormConfigSector,
   } = useForm({
     initialData: {
-      sendTicketWhatsApp: '',
-      codeType: '',
-      printType: '',
-      entranceGate: '',
-      nameBeforePurchase: '',
-      printNameTicket: '',
-      requestCpf: '',
-      printCpfTicket: '',
-      validateCpf: '',
-      purchaseLimitCpf: '',
+      section: '',
+      imageBase64Sector: '',
     },
     validators: {
-      sendTicketWhatsApp: [validators.required],
-      codeType: [validators.required],
-      printType: [validators.required],
-      nameBeforePurchase: [validators.required],
-      printNameTicket: [validators.required],
-      requestCpf: [validators.required],
-      printCpfTicket: [validators.required],
-      validateCpf: [validators.required],
-      purchaseLimitCpf: [validators.required, validators.between(1, 50)],
+      section: [validators.required],
     },
-    formatters: {},
   });
+
+  const handleGetProducComboConfigList = async (id: string): Promise<void> => {
+    try {
+      setState(States.loading);
+      const { data } = await api.get(`/event/section-product/${id}/product/section`);
+
+      setConfigList(data ?? []);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
+  const handleGetSectorList = async (id: string): Promise<void> => {
+    try {
+      setState(States.loading);
+      const { data } = await api.get(`/event/section-product/${id}/section`);
+
+      setSectorTableList(data ?? []);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
+  const handleOnConfirmDeleteSector = async (sectorSelected: any): Promise<void> => {
+    try {
+      await api.delete(`/event/section-product/${params?.id}/section/${sectorSelected.sectionId}`);
+      toast.success('Setor desviculado ao evento');
+      handleGetSectorList(params.id);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      confirmDelete.hide();
+    }
+  };
 
   const handleOnSaveConfigSector = async (): Promise<void> => {
     try {
-      if (isFormValidConfigSector()) {
-        const payload = {};
+      setState(States.loading);
 
-        const reponse = await api.post(`/event/ticket/${params.id}/general-settings`, payload);
-        if (reponse) toast.success('Dados salvos com sucesso!');
+      if (isFormValidConfigSector()) {
+        const productChecked = form.products?.map((value: any) => {
+          const productId = value.split('_')[2];
+          return {
+            id: productId,
+          };
+        });
+
+        const combosChecked = form.combos?.map((value: any) => {
+          const comboId = value.split('_')[2];
+          return {
+            id: comboId,
+          };
+        });
+
+        const payloadSection = {
+          id: formDataConfigSector[FormInputNameConfigSector.section],
+          imageBase64: formDataConfigSector[FormInputNameConfigSector.imageBase64Sector],
+        };
+
+        const reponseSection = await api.post(
+          `/event/section-product/${params.id}/section`,
+          payloadSection,
+        );
+
+        const payloadSectionProducts = {
+          section: reponseSection.data,
+          products: productChecked || [],
+          combos: combosChecked || [],
+        };
+
+        const reponseSectionProducts = await api.post(
+          `/event/section-product/${params.id}/section/products`,
+          payloadSectionProducts,
+        );
+        if (reponseSectionProducts) toast.success('Dados salvos com sucesso!');
+
+        handleGetSectorList(params.id);
+        setSector(undefined);
+        onToggle();
       }
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
+    } finally {
+      setState(States.default);
     }
   };
 
@@ -158,8 +232,12 @@ export const SectorProductConfigSectorScreen: React.FC<
     onChangeTitle(newTitleModal);
     onToggle();
 
-    if (sectorSelected?.id && value === ShouldShowModal.configProduct) {
-      setSector(sectorSelected);
+    if (value === ShouldShowModal.configProduct) {
+      if (sectorSelected) {
+        setSector(sectorSelected);
+      } else {
+        setForm({});
+      }
     }
   };
 
@@ -175,9 +253,7 @@ export const SectorProductConfigSectorScreen: React.FC<
         },
         {
           title: 'Sim, quero excluir',
-          onClick: (): void => {
-            console.log('TODO: Add function exclud item :>> ', sectorSelected);
-          },
+          onClick: (): Promise<void> => handleOnConfirmDeleteSector(sectorSelected),
         },
       ],
     });
@@ -213,7 +289,14 @@ export const SectorProductConfigSectorScreen: React.FC<
     shouldShowModal,
     onShowModalDelete: handleOnShowDeleteProduct,
   };
+
   // modal config ------------------------------------------------------------
+
+  const controllerDataConfig: dataConfigStatesProps = {
+    form,
+    setForm,
+    configList,
+  };
 
   const controllerFormConfigSector: formConfigSectorProps = {
     formData: formDataConfigSector,
@@ -240,11 +323,52 @@ export const SectorProductConfigSectorScreen: React.FC<
     setSectorList,
     sectorDropdown,
     setSectorDropdown,
+    sectorTableList,
   };
 
   useEffect(() => {
     handleFecthSectorList();
+    handleGetSectorList(params.id);
+    handleGetProducComboConfigList(params.id);
   }, []);
+
+  useEffect(() => {
+    // verify if sector not array empty
+    if (sector) {
+      const _subgroup: any[] = [];
+      const _products: any[] = [];
+      const _combos: any[] = [];
+
+      // push products by sectionGroup[].subGroups[].products[]
+      sector.sectionGroup.map(({ categoryGroupId, categoryGroupName, subGroups }: any) => {
+        subGroups.map((subgroup: any) => {
+          _subgroup.push({ categoryGroupId, categoryGroupName, ...subgroup });
+        });
+      });
+
+      _subgroup.map(({ products, combos, categoryGroupId, categorySubGroupId }: any) => {
+        const newProducts = products.map(
+          ({ id }: any) => `${categoryGroupId}_${categorySubGroupId}_${id}`,
+        );
+        const newCombos = combos.map(
+          ({ id }: any) => `${categoryGroupId}_${categorySubGroupId}_${id}`,
+        );
+
+        _products.push(...newProducts);
+        _combos.push(...newCombos);
+      });
+
+      setForm({
+        products: _products,
+        combos: _combos,
+      });
+
+      onChangeFormInputConfigSector(FormInputNameConfigSector.section)(sector.sectionId);
+      onChangeFormInputConfigSector(FormInputNameConfigSector.imageBase64Sector)(
+        sector.imageBase64Sector,
+      );
+    }
+  }, [sector]);
 
   return (
     <SectorProductConfigSectorContainer
@@ -253,6 +377,7 @@ export const SectorProductConfigSectorScreen: React.FC<
       configSectorStates={controllerSectorStates}
       configSectorActions={controllerConfigSectorActions}
       modalConfig={controllerModalConfig}
+      dataConfig={controllerDataConfig}
     />
   );
 };

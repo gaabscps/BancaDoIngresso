@@ -28,7 +28,7 @@ export interface modalConfigTicketMainSettingsProps {
   title: string | React.ReactNode;
   visible: boolean;
   onChangeTitle: (title: string) => void;
-  onToggle: () => void;
+  handleOnTougleModal: () => void;
   onShouldShowModal: (props: onShouldShowModalSectorProductProps) => void;
   shouldShowModal: ShouldShowModal;
   onShowModalDelete: any;
@@ -36,16 +36,22 @@ export interface modalConfigTicketMainSettingsProps {
 
 export interface productActionsProps {
   onSave: () => Promise<void>;
+  onSaveConfig: (productSelected: any) => Promise<void>;
   onGet: (productSelected: any) => Promise<void>;
   onFirstTab: () => void;
   onReturnTab: () => void;
   onNextTab: () => Promise<void>;
   onCancelEdit: () => void;
+  onChangeAllowOnline: (productSelected: any) => Promise<void>;
 }
 
 export interface productStatesProps {
   product: any | undefined;
   setProduct: React.Dispatch<React.SetStateAction<any>>;
+  productList: any[];
+  setProductList: React.Dispatch<React.SetStateAction<any[]>>;
+  groupList: any[];
+  optionProduct: any[];
 }
 
 export interface FormDiscountCouponProps {

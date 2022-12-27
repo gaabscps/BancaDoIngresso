@@ -1,5 +1,5 @@
 // type ComboGroup any
 export default interface ComboGroup {
-  id: string;
+  id?: string;
   name: string;
 }

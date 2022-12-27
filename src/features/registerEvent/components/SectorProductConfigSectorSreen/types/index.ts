@@ -39,10 +39,16 @@ export interface configSectorActions {
 }
 
 export interface sectorStatesProps {
-  sector: Section | undefined;
-  setSector: React.Dispatch<React.SetStateAction<Section | undefined>>;
+  sector: any | undefined;
+  setSector: React.Dispatch<React.SetStateAction<any | undefined>>;
   sectorList: Section[];
   setSectorList: React.Dispatch<React.SetStateAction<Section[]>>;
   sectorDropdown: Section[];
   setSectorDropdown: React.Dispatch<React.SetStateAction<Section[]>>;
+  sectorTableList: any[];
+}
+export interface dataConfigStatesProps {
+  form: any | undefined;
+  setForm: React.Dispatch<React.SetStateAction<any | undefined>>;
+  configList: any[];
 }

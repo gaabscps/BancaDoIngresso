@@ -58,7 +58,7 @@ export const SelectCustom = (props: SelectAutoCompleteProps) => {
           styles={customStyles(props)}
           className={props.className}
           noOptionsMessage={() => 'Nenhum resultado encontrado'}
-          value={props.options.find((option: OptionProps) => option.value === props.value)}
+          value={props.options.find((option: OptionProps) => option.value === props.value) ?? null}
           defaultValue={props.defaultValue}
           ref={props.refSelect}
           isDisabled={props.disabled}

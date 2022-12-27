@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import api, { AxiosError } from '@/services/api';
 import { useParams } from 'react-router-dom';
 import { FormInputName as FormInputNameToProduct } from '@/features/registerEvent/components/SectorProductScreen/components/ProductRegisterContent';
+import { FormInputName as FormInputNameToConfigProduct } from '@/features/registerEvent/components/SectorProductScreen/components/ProductConfigContent';
 import { useDialog } from '@/hooks/useDialog';
 import {
   ShouldShowModal,
@@ -18,6 +19,11 @@ import DiscountCoupon from '@/model/DiscountCoupon';
 import { useConfirmDelete } from '@/hooks/useConfirmDelete';
 import { DeleteContent } from '@/components/DeleteContent';
 import { TabSectorProductActionsProps } from '@/features/registerEvent/screens/SectorProduct/ui';
+import validators from '@/helpers/validators';
+import { convertToBoolean } from '@/helpers/common/convertToBoolean';
+import Product from '@/model/Product';
+import GroupProduct from '@/model/SubgruopProduct';
+import EventProduct from '@/model/EventProduct';
 import {
   formConfigProductProps,
   formProductProps,
@@ -40,15 +46,21 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
   nextTab,
   onFirstTab,
 }): JSX.Element => {
-  const [state] = useState<States>(States.default);
+  const [state, setState] = useState<States>(States.default);
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(
     ShouldShowModal.configProduct,
   );
   const [nameFiles, setNameFiles] = useState<NameFiles>({});
 
-  const [product, setProduct] = useState<any>();
+  const [product, setProduct] = useState<EventProduct>();
+  const [productList, setProductList] = useState<EventProduct[]>([]);
+
+  const [groupList, setGroupList] = useState<GroupProduct[]>([]);
+
+  const [optionProduct, setOptionProduct] = useState<Product[]>([]);
 
   const [discountCoupon, setDiscountCoupon] = useState<DiscountCoupon[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [listDiscountCoupon, setListDiscountCoupon] = useState<DiscountCoupon[]>([]);
 
   const { title, visible, onChangeTitle, onToggle } = useDialog();
@@ -73,9 +85,17 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
       amount: '',
       unitValue: '',
       totalValue: '',
-      imageBase64: '',
+      imageBase64Product: '',
     },
-    validators: {},
+    validators: {
+      group: [validators.required],
+      subgroup: [validators.required],
+      name: [validators.required],
+      allowOnline: [validators.required],
+      unitMeasurement: [validators.required],
+      amount: [validators.required],
+      unitValue: [validators.required],
+    },
     formatters: {},
   });
 
@@ -84,6 +104,7 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
     formErrors: formErrorsConfigProduct,
     onChangeFormInput: onChangeFormInputConfigProduct,
     isFormValid: isFormValidConfigProduct,
+    resetForm: resetFormConfigProduct,
   } = useForm({
     initialData: {
       physicalSaleAllowCreditCardPayment: '',
@@ -94,18 +115,55 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
       physicalSaleInstallments: '',
       physicalSaleFee: '',
       websiteSaleAllowCreditCardPayment: '',
-      websiteSaleDebit: '',
       websiteSaleCredit: '',
       websiteSalePix: '',
       websiteSaleAdministrateTax: '',
+      websiteSaleBankSlip: '',
       websiteSaleInstallments: '',
       websiteSaleFee: '',
-      allowDiscount: '',
       allowDiscountCoupon: '',
+      waiter: '',
+      partialPayment: '',
     },
-    validators: {},
+    validators: {
+      physicalSaleAllowCreditCardPayment: [validators.required],
+      physicalSaleDebit: [validators.required],
+      physicalSaleCredit: [validators.required],
+      physicalSalePix: [validators.required],
+      physicalSaleAdministrateTax: [validators.required],
+      physicalSaleInstallments: [validators.required],
+      physicalSaleFee: [validators.required],
+      websiteSaleAllowCreditCardPayment: [validators.required],
+      websiteSaleCredit: [validators.required],
+      websiteSalePix: [validators.required],
+      websiteSaleAdministrateTax: [validators.required],
+      websiteSaleBankSlip: [validators.required],
+      websiteSaleInstallments: [validators.required],
+      websiteSaleFee: [validators.required],
+      allowDiscountCoupon: [validators.required],
+      waiter: [validators.required],
+      partialPayment: [validators.required],
+    },
     formatters: {},
   });
+
+  const handleOnTougleModal = (): void => {
+    onToggle();
+    setProduct(undefined);
+  };
+
+  // validate if all filds of array object contains key object physicalSale and websiteSale
+  const handleValidateAllFields = (data: any[]): boolean => {
+    const physicalSale = data.filter(item => item?.physicalSale === true);
+    const websiteSale = data.filter(item => item?.websiteSale === true);
+
+    if (!physicalSale && !websiteSale) {
+      toast.error('É necessário configurar as taxas de todos os produtos');
+      return false;
+    }
+
+    return true;
+  };
 
   // modal config ------------------------------------------------------------
   const handleOnShouldShowModal = ({
@@ -115,10 +173,23 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
   }: onShouldShowModalSectorProductProps): void => {
     setShouldShowModal(value);
     onChangeTitle(newTitleModal);
-    onToggle();
+    handleOnTougleModal();
 
     if (productSelected?.id && value === ShouldShowModal.configProduct) {
       setProduct(productSelected);
+    }
+  };
+
+  const handleOnConfirmDeleteTopProduct = async (productSelected: any): Promise<void> => {
+    try {
+      await api.delete(`/event/section-product/${params?.id}/product/${productSelected.id}`);
+      toast.success('Produto excluído com sucesso!');
+      handleGetProductList(params.id);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      confirmDelete.hide();
     }
   };
 
@@ -134,9 +205,7 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
         },
         {
           title: 'Sim, quero excluir',
-          onClick: (): void => {
-            console.log('TODO: Add function exclude item :>> ', productSelected);
-          },
+          onClick: (): Promise<void> => handleOnConfirmDeleteTopProduct(productSelected),
         },
       ],
     });
@@ -146,7 +215,7 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
     title,
     visible,
     onChangeTitle,
-    onToggle,
+    handleOnTougleModal,
     onShouldShowModal: handleOnShouldShowModal,
     shouldShowModal,
     onShowModalDelete: handleOnShowDeleteProduct,
@@ -193,7 +262,7 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
           return;
         }
         setListDiscountCoupon(discountCoupon);
-        onToggle();
+        handleOnTougleModal();
       } catch (error) {
         const err = error as AxiosError;
         toast.error(err.message);
@@ -223,23 +292,72 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
       }
     };
 
+  const handleGetProductList = async (id: string): Promise<void> => {
+    try {
+      setState(States.loading);
+      const { data } = await api.get(`/event/section-product/${id}/product/section`);
+
+      setProductList(data ?? []);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
+  const handleGettOptionProduct = async (): Promise<void> => {
+    try {
+      setState(States.loading);
+      const { data } = await api.get('product/find');
+
+      setOptionProduct(data ?? []);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
+  const handleGetGroupList = async (id: string): Promise<void> => {
+    try {
+      setState(States.loading);
+      const { data } = await api.get(`event/section-product/${id}/group`);
+
+      setGroupList(data ?? []);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
   const handleOnSaveProduct = async (): Promise<void> => {
     try {
       if (isFormValidProduct()) {
-        const payloadDiscountCoupon = listDiscountCoupon.map(item => ({
-          id: item.id,
-          name: item.name,
-          code: item.code,
-          amount: item.amount,
-          discountType: item.discountType,
-          discount: item.discount ?? 0,
-        }));
-
-        console.log('Payload Cupons de desconto :>> ', payloadDiscountCoupon);
-
-        const payload = {};
-        const reponse = await api.post(`/event/ticket/${params.id}/general-settings`, payload);
+        const payload = {
+          id: formDataProduct[FormInputNameToProduct.id] ?? '',
+          group: {
+            id: formDataProduct[FormInputNameToProduct.group], // TODO: add group id when is selected
+          },
+          subgroup: {
+            id: formDataProduct[FormInputNameToProduct.subgroup], // TODO: add subgroup id when is selected
+          },
+          unitMeasurement: formDataProduct[FormInputNameToProduct.unitMeasurement] ?? '',
+          allowSellingWebsite: formDataProduct[FormInputNameToProduct.allowOnline] ?? true,
+          name: formDataProduct[FormInputNameToProduct.name] ?? '',
+          amount: +formDataProduct[FormInputNameToProduct.amount] ?? 0,
+          unitValue: +formDataProduct[FormInputNameToProduct.unitValue] ?? 0,
+          totalValue: +formDataProduct[FormInputNameToProduct.totalValue] ?? 0,
+          imageBase64: formDataProduct[FormInputNameToProduct.imageBase64Product] ?? '',
+        };
+        const reponse = await api.post(`/event/section-product/${params.id}/product`, payload);
         if (reponse) toast.success('Dados salvos com sucesso!');
+
+        handleOnCancelEditProduct();
+        handleGetProductList(params.id);
       }
     } catch (error) {
       const err = error as AxiosError;
@@ -247,10 +365,106 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
     }
   };
 
+  const handleOnSaveConfigProduct = async (productSelected: any): Promise<void> => {
+    try {
+      if (isFormValidConfigProduct()) {
+        const payloadDiscountCoupon = discountCoupon.map(item => ({
+          id: item.id,
+          name: item.name,
+          code: item.code,
+          amount: item.amount && +item.amount,
+          discountType: item.discountType && +item.discountType,
+          discount: item.discount && +item.discount,
+        }));
+
+        const payload = {
+          id: productSelected?.id,
+          physicalSale: {
+            id: productSelected?.physicalSale?.id,
+            allowCreditCardPayment:
+              convertToBoolean(
+                formDataConfigProduct[
+                  FormInputNameToConfigProduct.physicalSaleAllowCreditCardPayment
+                ],
+              ) ?? true,
+            debit: +formDataConfigProduct[FormInputNameToConfigProduct.physicalSaleDebit] ?? 0,
+            credit: +formDataConfigProduct[FormInputNameToConfigProduct.physicalSaleCredit] ?? 0,
+            pix: +formDataConfigProduct[FormInputNameToConfigProduct.physicalSalePix] ?? 0,
+            administrateTax:
+              +formDataConfigProduct[FormInputNameToConfigProduct.physicalSaleAdministrateTax] ?? 0,
+            installments:
+              +formDataConfigProduct[FormInputNameToConfigProduct.physicalSaleInstallments] ?? 0,
+            fee: +formDataConfigProduct[FormInputNameToConfigProduct.physicalSaleFee] ?? 0,
+          },
+          websiteSale: {
+            id: productSelected?.websiteSale?.id,
+            allowCreditCardPayment:
+              convertToBoolean(
+                formDataConfigProduct[
+                  FormInputNameToConfigProduct.websiteSaleAllowCreditCardPayment
+                ],
+              ) ?? true,
+            credit: +formDataConfigProduct[FormInputNameToConfigProduct.websiteSaleCredit] ?? 0,
+            bankSlip: +formDataConfigProduct[FormInputNameToConfigProduct.websiteSaleBankSlip] ?? 0,
+            pix: +formDataConfigProduct[FormInputNameToConfigProduct.websiteSalePix] ?? 0,
+            administrateTax:
+              +formDataConfigProduct[FormInputNameToConfigProduct.websiteSaleAdministrateTax] ?? 0,
+            installments:
+              +formDataConfigProduct[FormInputNameToConfigProduct.websiteSaleInstallments] ?? 0,
+            fee: +formDataConfigProduct[FormInputNameToConfigProduct.websiteSaleFee] ?? 0,
+          },
+          waiter: +formDataConfigProduct[FormInputNameToConfigProduct.waiter] ?? 0,
+          partialPayment:
+            convertToBoolean(formDataConfigProduct[FormInputNameToConfigProduct.partialPayment]) ??
+            true,
+          allowDiscountCoupon:
+            convertToBoolean(
+              formDataConfigProduct[FormInputNameToConfigProduct.allowDiscountCoupon],
+            ) ?? true,
+          discountCoupons: payloadDiscountCoupon,
+        };
+        const reponse = await api.post(
+          `/event/section-product/${params.id}/product/config`,
+          payload,
+        );
+        if (reponse) toast.success('Dados salvos com sucesso!');
+
+        handleOnTougleModal();
+        handleOnCancelEditProduct();
+        handleGetProductList(params.id);
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    }
+  };
+
+  const handleOnChangeAllowOnline = async (productSelected: any): Promise<void> => {
+    try {
+      setState(States.loading);
+      const activedInput = productSelected.allowSellingWebsite;
+
+      await api.patch(
+        `event/section-product/${params.id}/product/${String(productSelected.id).trim()}${
+          activedInput ? '/disable-online' : '/enable-online'
+        }`,
+      );
+
+      handleGetProductList(params.id);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
   const handleNextTab = async (): Promise<void> => {
-    if (isFormValidProduct()) {
+    // if (isFormValidProduct()) {
+    if (handleValidateAllFields(productList)) {
       nextTab();
     }
+    // }
   };
 
   const handleBackTab = (): void => {
@@ -270,8 +484,11 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
 
   const handleOnCancelEditProduct = (): void => {
     try {
-      setProduct(undefined);
-      resetFormProduct();
+      setTimeout(() => {
+        setProduct(undefined);
+        resetFormProduct();
+        resetFormConfigProduct();
+      }, 500);
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
@@ -296,28 +513,110 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
 
   const controllerProductActions: productActionsProps = {
     onSave: handleOnSaveProduct,
+    onSaveConfig: handleOnSaveConfigProduct,
     onGet: handleOnGetProduct,
     onFirstTab,
     onReturnTab: handleBackTab,
     onNextTab: handleNextTab,
     onCancelEdit: handleOnCancelEditProduct,
+    onChangeAllowOnline: handleOnChangeAllowOnline,
   };
 
   const controllerProductStates: productStatesProps = {
     product,
     setProduct,
+    productList,
+    setProductList,
+    groupList,
+    optionProduct,
   };
 
   useEffect(() => {
-    resetFormProduct();
-    if (product) {
-      // TODO: Add states when to get API return
+    handleGetProductList(params.id);
+    handleGetGroupList(params.id);
+    handleGettOptionProduct();
+  }, []);
 
-      onChangeFormInputProduct(FormInputNameToProduct.name)(String(product.product));
-      onChangeFormInputProduct(FormInputNameToProduct.allowOnline)(String(product.allowOnline));
-      onChangeFormInputProduct(FormInputNameToProduct.unitMeasurement)(String(product.amount));
+  useEffect(() => {
+    resetFormProduct();
+    resetFormConfigProduct();
+
+    if (product) {
+      onChangeFormInputProduct(FormInputNameToProduct.group)(String(product.group?.id));
+      onChangeFormInputProduct(FormInputNameToProduct.subgroup)(String(product.subgroup?.id));
+      onChangeFormInputProduct(FormInputNameToProduct.id)(String(product.id));
+      onChangeFormInputProduct(FormInputNameToProduct.allowOnline)(
+        String(product.allowSellingWebsite),
+      );
+      onChangeFormInputProduct(FormInputNameToProduct.unitMeasurement)(
+        String(product.unitMeasurement),
+      );
+      onChangeFormInputProduct(FormInputNameToProduct.amount)(String(product.amount));
       onChangeFormInputProduct(FormInputNameToProduct.unitValue)(String(product.unitValue));
       onChangeFormInputProduct(FormInputNameToProduct.totalValue)(String(product.totalValue));
+      onChangeFormInputProduct(FormInputNameToProduct.imageBase64Product)(
+        String(product.imageBase64),
+      );
+
+      onChangeFormInputConfigProduct(
+        FormInputNameToConfigProduct.physicalSaleAllowCreditCardPayment,
+      )(String(product.physicalSale?.allowCreditCardPayment));
+      onChangeFormInputConfigProduct(FormInputNameToConfigProduct.physicalSaleDebit)(
+        String(product.physicalSale?.debit ?? ''),
+      );
+      onChangeFormInputConfigProduct(FormInputNameToConfigProduct.physicalSaleCredit)(
+        String(product.physicalSale?.credit ?? ''),
+      );
+      onChangeFormInputConfigProduct(FormInputNameToConfigProduct.physicalSalePix)(
+        String(product.physicalSale?.pix ?? ''),
+      );
+      onChangeFormInputConfigProduct(FormInputNameToConfigProduct.physicalSaleAdministrateTax)(
+        String(product.physicalSale?.administrateTax ?? ''),
+      );
+      onChangeFormInputConfigProduct(FormInputNameToConfigProduct.physicalSaleInstallments)(
+        String(product.physicalSale?.installments ?? ''),
+      );
+      onChangeFormInputConfigProduct(FormInputNameToConfigProduct.physicalSaleFee)(
+        String(product.physicalSale?.fee ?? ''),
+      );
+      onChangeFormInputConfigProduct(
+        FormInputNameToConfigProduct.websiteSaleAllowCreditCardPayment,
+      )(String(product.websiteSale?.allowCreditCardPayment));
+      onChangeFormInputConfigProduct(FormInputNameToConfigProduct.websiteSaleCredit)(
+        String(product.websiteSale?.credit ?? ''),
+      );
+      onChangeFormInputConfigProduct(FormInputNameToConfigProduct.websiteSalePix)(
+        String(product.websiteSale?.pix ?? ''),
+      );
+      onChangeFormInputConfigProduct(FormInputNameToConfigProduct.websiteSaleAdministrateTax)(
+        String(product.websiteSale?.administrateTax ?? ''),
+      );
+      onChangeFormInputConfigProduct(FormInputNameToConfigProduct.websiteSaleBankSlip)(
+        String(product.websiteSale?.bankSlip ?? ''),
+      );
+      onChangeFormInputConfigProduct(FormInputNameToConfigProduct.websiteSaleInstallments)(
+        String(product.websiteSale?.installments ?? ''),
+      );
+      onChangeFormInputConfigProduct(FormInputNameToConfigProduct.websiteSaleFee)(
+        String(product.websiteSale?.fee ?? ''),
+      );
+      onChangeFormInputConfigProduct(FormInputNameToConfigProduct.waiter)(
+        String(product?.waiter ?? ''),
+      );
+      onChangeFormInputConfigProduct(FormInputNameToConfigProduct.partialPayment)(
+        String(product?.partialPayment ?? ''),
+      );
+      onChangeFormInputConfigProduct(FormInputNameToConfigProduct.allowDiscountCoupon)(
+        String(product?.allowDiscountCoupon ?? ''),
+      );
+
+      setDiscountCoupon(product.discountCoupons ?? []);
+
+      const productEdit = optionProduct.find((item: any) => item.id === product.id);
+      if (productEdit) {
+        onChangeFormInputProduct(FormInputNameToProduct.id)(product.id as string);
+        onChangeFormInputProduct(FormInputNameToProduct.name)(product.name as string);
+      }
     }
   }, [product]);
 

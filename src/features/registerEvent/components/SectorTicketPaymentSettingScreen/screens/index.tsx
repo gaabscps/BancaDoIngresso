@@ -69,8 +69,10 @@ type UrlParams = {
 };
 
 export const SectorTicketPaymentSettingsScreen: React.FC<
-  Pick<SectorTicketContainerProps, 'ticketStates'> & TabSectorTicketActionsProps
-> = ({ ticketStates, nextTab, backTab, onFirstTab }): JSX.Element => {
+  Pick<SectorTicketContainerProps, 'ticketStates'> &
+    Pick<SectorTicketContainerProps, 'ticketStep'> &
+    TabSectorTicketActionsProps
+> = ({ ticketStates, ticketStep, nextTab, backTab }): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
   const [paymentGatewayList, setPaymentGatewayList] = useState<PaymentGateway[]>([]);
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(
@@ -134,19 +136,19 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
       allowSellingPos: [validators.required],
       printReceipt: [validators.required],
       physicalSaleAllowCreditCardPayment: [validators.required],
-      physicalSaleDebit: [validators.required, validators.between(0, 10)],
-      physicalSaleCredit: [validators.required, validators.between(0, 10)],
-      physicalSalePix: [validators.required, validators.between(0, 10)],
-      physicalSaleAdministrateTax: [validators.required, validators.between(0, 10)],
-      physicalSaleInstallments: [validators.required],
-      physicalSaleFee: [validators.required, validators.between(0, 10)],
+      physicalSaleDebit: [validators.required, validators.between(0.1, 10)],
+      physicalSaleCredit: [validators.required, validators.between(1, 10)],
+      physicalSalePix: [validators.required],
+      physicalSaleAdministrateTax: [validators.required, validators.between(1, 10)],
+      physicalSaleInstallments: [validators.required, validators.between(1, 12)],
+      physicalSaleFee: [validators.required, validators.between(1, 10)],
       websiteSaleAllowCreditCardPayment: [validators.required],
-      websiteSaleDebit: [validators.required, validators.between(0, 10)],
-      websiteSaleCredit: [validators.required, validators.between(0, 10)],
-      websiteSalePix: [validators.required, validators.between(0, 10)],
-      websiteSaleAdministrateTax: [validators.required, validators.between(0, 10)],
-      websiteSaleInstallments: [validators.required],
-      websiteSaleFee: [validators.required, validators.between(0, 10)],
+      websiteSaleBankSlip: [validators.required, validators.between(0.1, 10)],
+      websiteSaleCredit: [validators.required, validators.between(1, 10)],
+      websiteSalePix: [validators.required],
+      websiteSaleAdministrateTax: [validators.required, validators.between(1, 10)],
+      websiteSaleInstallments: [validators.required, validators.between(1, 12)],
+      websiteSaleFee: [validators.required, validators.between(1, 10)],
       allowDiscount: [validators.required],
       allowDiscountCoupon: [validators.required],
     },
@@ -189,7 +191,7 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
   const handleFecthGateway = async (): Promise<void> => {
     try {
       setState(States.loading);
-      const { data } = await api.get<PaymentGateway[]>('/charge-setup/find');
+      const { data } = await api.get<PaymentGateway[]>('/payment-gateway/find');
       setPaymentGatewayList(data ?? []);
     } catch (error) {
       const err = error as AxiosError;
@@ -220,7 +222,11 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
     }
   };
 
-  const handleOnSaveSectorTicketPayment = async (): Promise<void> => {
+  const handleOnSaveSectorTicketPayment = async ({
+    isBntNext,
+  }: {
+    isBntNext: boolean;
+  }): Promise<void> => {
     try {
       if (isFormValidtPaymentSettings()) {
         const payloadDiscountCoupon = listDiscountCoupon.map(item => ({
@@ -233,18 +239,17 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
         }));
 
         const payload = {
-          id: ticketStates.ticket?.payment?.id,
+          id: ticketStep?.ticketState?.payment?.id,
           eventTickets: [
             {
-              // id: ticketStates.ticket?.id,
-              id: '3ac4a6a2-0703-4dc3-a747-336b3afb8c02',
+              id: ticketStep.ticketState?.id,
             },
           ],
           posGateway: {
-            id: 'ebca4cf5-c5fc-4a34-bdca-3c6654270bf8',
+            id: formDataPaymentSettings[FormInputNameToPaymentSettings.posGateway],
           },
           websiteGateway: {
-            id: 'ebca4cf5-c5fc-4a34-bdca-3c6654270bf8',
+            id: formDataPaymentSettings[FormInputNameToPaymentSettings.websiteGateway],
           },
           websiteInstallmentLimit:
             +formDataPaymentSettings[FormInputNameToPaymentSettings.websiteInstallmentLimit],
@@ -285,7 +290,6 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
             ),
             debit: +formDataPaymentSettings[FormInputNameToPaymentSettings.physicalSaleDebit],
             credit: +formDataPaymentSettings[FormInputNameToPaymentSettings.physicalSaleCredit],
-            // bankSlip: +formDataPaymentSettings[FormInputNameToPaymentSettings.physicalSaleBankSlip],
             bankSlip: 0,
             pix: +formDataPaymentSettings[FormInputNameToPaymentSettings.physicalSalePix],
             administrateTax:
@@ -300,10 +304,9 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
                 FormInputNameToPaymentSettings.websiteSaleAllowCreditCardPayment
               ],
             ),
-            debit: +formDataPaymentSettings[FormInputNameToPaymentSettings.websiteSaleDebit],
             credit: +formDataPaymentSettings[FormInputNameToPaymentSettings.websiteSaleCredit],
-            // bankSlip: +formDataPaymentSettings[FormInputNameToPaymentSettings.websiteSaleBankSlip],
-            bankSlip: 0,
+            bankSlip: +formDataPaymentSettings[FormInputNameToPaymentSettings.websiteSaleBankSlip],
+            debit: 0,
             pix: +formDataPaymentSettings[FormInputNameToPaymentSettings.websiteSalePix],
             administrateTax:
               +formDataPaymentSettings[FormInputNameToPaymentSettings.websiteSaleAdministrateTax],
@@ -323,8 +326,10 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
         if (!payload.id) {
           delete payload.id;
         }
-        const reponse = await api.post(`/event/ticket/${params.id}/payment`, payload);
-        if (reponse) toast.success('Dados salvos com sucesso!');
+        const response = await api.post(`/event/ticket/${params.id}/payment`, payload);
+
+        if (response && isBntNext) nextTab();
+        if (response) toast.success('Dados salvos com sucesso!');
       }
     } catch (error) {
       const err = error as AxiosError;
@@ -332,22 +337,14 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
     }
   };
 
-  const handleNextTab = async (): Promise<void> => {
-    await handleOnSaveSectorTicketPayment();
-    // if (isFormValidtPaymentSettings()) {
-    nextTab();
-    // }
-  };
-
   const handleBackTab = (): void => {
     backTab();
   };
 
   const controllerPaymentSettingsActions: PaymentSettingsActionsProps = {
-    onSave: handleOnSaveSectorTicketPayment,
-    onFirstTab,
+    onSave: () => handleOnSaveSectorTicketPayment({ isBntNext: false }),
     onReturnTab: handleBackTab,
-    onNextTap: handleNextTab,
+    onNextTap: () => handleOnSaveSectorTicketPayment({ isBntNext: true }),
   };
 
   const handleOnShouldShowModal = ({
@@ -370,7 +367,6 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
   useEffect(() => {
     const { ticket } = ticketStates;
 
-    onFirstTab();
     resetFormPaymentSettings();
 
     if (ticket?.payment) {
@@ -413,14 +409,49 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
       onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.printReceipt)(
         String(ticket.payment.printReceipt),
       );
-      // onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.physicalSale)(
-      //   String(ticket.payment.physicalSale.id ?? ''),
-      // );
-      // onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.websiteSale)(
-      //   String(ticket.payment.websiteSale.id ?? ''),
-      // );
-      onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.allowDiscount)(
-        String(ticket.payment.allowDiscount),
+
+      onChangeFormInputPaymentSettings(
+        FormInputNameToPaymentSettings.physicalSaleAllowCreditCardPayment,
+      )(String(ticket.payment.physicalSale.allowCreditCardPayment));
+      onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.physicalSaleDebit)(
+        String(ticket.payment.physicalSale.debit),
+      );
+      onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.physicalSaleCredit)(
+        String(ticket.payment.physicalSale.credit),
+      );
+      onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.physicalSalePix)(
+        String(ticket.payment.physicalSale.pix),
+      );
+      onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.physicalSaleAdministrateTax)(
+        String(ticket.payment.physicalSale.administrateTax),
+      );
+      onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.physicalSaleInstallments)(
+        String(ticket.payment.physicalSale.installments),
+      );
+      onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.physicalSaleFee)(
+        String(ticket.payment.physicalSale.fee),
+      );
+
+      onChangeFormInputPaymentSettings(
+        FormInputNameToPaymentSettings.websiteSaleAllowCreditCardPayment,
+      )(String(ticket.payment.websiteSale.allowCreditCardPayment));
+      onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.websiteSaleBankSlip)(
+        String(ticket.payment.websiteSale.bankSlip),
+      );
+      onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.websiteSaleCredit)(
+        String(ticket.payment.websiteSale.credit),
+      );
+      onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.websiteSalePix)(
+        String(ticket.payment.websiteSale.pix),
+      );
+      onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.websiteSaleAdministrateTax)(
+        String(ticket.payment.websiteSale.administrateTax),
+      );
+      onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.websiteSaleInstallments)(
+        String(ticket.payment.websiteSale.installments),
+      );
+      onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.websiteSaleFee)(
+        String(ticket.payment.websiteSale.fee),
       );
       onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.allowDiscount)(
         String(ticket.payment.allowDiscount),
@@ -428,9 +459,8 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
       onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.allowDiscountCoupon)(
         String(ticket.payment.allowDiscountCoupon),
       );
-      // onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.discountCoupons)(
-      //   String(ticket.payment.discountCoupons ?? ''),
-      // );
+      setDiscountCoupon(ticket.payment?.discountCoupons || []);
+      setListDiscountCoupon(ticket.payment?.discountCoupons || []);
     }
   }, [ticketStates.ticket]);
 

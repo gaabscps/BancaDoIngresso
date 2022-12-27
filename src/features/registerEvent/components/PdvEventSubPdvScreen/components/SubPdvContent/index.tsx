@@ -1,11 +1,13 @@
 /* eslint-disable import/no-unresolved */
 import React, { Fragment, useRef } from 'react';
-import { Button, InputText, SelectCustom } from '@/components';
+import { Button, SelectCustom } from '@/components';
 import { Col, Form, FormGroup, Row } from 'reactstrap';
 import { CustomTable } from '@/components/Table';
 import { ReactComponent as CloseX } from '@/assets/images/svg/closeX.svg';
 import { UserScreen } from '@/features/core/UserScreen/screens/List';
 import User from '@/model/User';
+import { SubPdvScreen } from '@/features/core/SubPdvScreen/screens/List';
+import SubPdv from '@/model/SubPdv';
 import { SubPdvContainerProps } from '../../screens/ui';
 
 import { columnsUser } from '../../screens/ui/table';
@@ -23,11 +25,14 @@ export enum FormInputName {
 }
 
 export const SubPdvContent: React.FC<
-  Pick<SubPdvContainerProps, 'formSubPdvRegister' | 'appendUser'>
-> = ({ formSubPdvRegister, appendUser }) => {
+  Pick<SubPdvContainerProps, 'formSubPdvRegister' | 'appendUser' | 'subPdvStates' | 'subPdvActions'>
+> = ({ formSubPdvRegister, appendUser, subPdvStates, subPdvActions }) => {
   const { formData, formErrors, onChangeFormInput } = formSubPdvRegister;
 
   const userDataSelected = appendUser?.listUsers.find((item: User) => item.id === formData.user);
+  const subPdvDataSelected = subPdvStates?.subPdvOptions.find(
+    (item: SubPdv) => item.id === formData.name,
+  );
 
   const refSelectUser = useRef<any>(null);
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -37,7 +42,7 @@ export const SubPdvContent: React.FC<
     }
   };
 
-  const dataTableUser = appendUser.usersSelected?.map((item, index) => ({
+  const dataTableUser = appendUser.usersSelected?.map(item => ({
     id: item.id,
     name: item.name,
     login: item.cpf,
@@ -45,7 +50,7 @@ export const SubPdvContent: React.FC<
       <CloseX
         className="mr-2 svg-icon action-icon"
         onClick={() => {
-          appendUser.handleRemoveUser(index);
+          appendUser.handleRemoveUser(item);
         }}
       />
     ),
@@ -62,15 +67,20 @@ export const SubPdvContent: React.FC<
         <Row>
           <Col md={8}>
             <FormGroup className="mb-2">
-              <InputText
+              <SelectCustom
                 name="name"
                 label="Nome do Sub PDV"
-                maxLength={18}
-                placeholder="Digite o nome do Sub PDV"
+                placeholder="Digite ou selecione nome do Sub PDV"
                 value={formData[FormInputName.name]}
-                onChange={e => onChangeFormInput(FormInputName.name)(e.target.value)}
+                onChange={e => onChangeFormInput(FormInputName.name)(e?.value as string)}
                 error={formErrors.name && formErrors.name[0]}
+                options={subPdvStates.subPdvOptions.map(itemSubPdv => ({
+                  label: itemSubPdv.name,
+                  value: itemSubPdv.id,
+                }))}
+                isClearable
               />
+              <SubPdvScreen subPdvSelected={subPdvDataSelected} subPdvActions={subPdvActions} />
             </FormGroup>
           </Col>
           <Col md={4} />

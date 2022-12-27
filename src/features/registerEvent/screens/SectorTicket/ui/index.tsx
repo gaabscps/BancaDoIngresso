@@ -18,7 +18,7 @@ import TicketIcon from '@/assets/images/svg/Ticket';
 import { SectorTicketGeneralSettingsScreen } from '@/features/registerEvent/components/SectorTicketGeneralSettingsSreen/screens';
 import { SectorTicketPaymentSettingsScreen } from '@/features/registerEvent/components/SectorTicketPaymentSettingScreen/screens';
 import { useParams } from 'react-router-dom';
-import { formSectorTicketProps } from '../types';
+import { formSectorTicketProps, ticketStepProps } from '../types';
 import { columnsTickets } from './table';
 
 // eslint-disable-next-line no-shadow
@@ -32,6 +32,7 @@ export interface SectorTicketContainerProps {
   formSectorTicket: formSectorTicketProps;
   ticketStates: ticketStatesProps;
   ticketActions: ticketActionsProps;
+  ticketStep: ticketStepProps;
 }
 
 // eslint-disable-next-line no-shadow
@@ -54,8 +55,9 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
   formSectorTicket,
   ticketStates,
   ticketActions,
+  ticketStep,
 }) => {
-  const { formData, formErrors, onChangeFormInput } = formSectorTicket;
+  const { formData, formErrors, onChangeFormInput, isFormValid } = formSectorTicket;
   const [numberTab, setNumberTab] = useState(0);
   const titleTabRef = React.useRef<HTMLInputElement>(null);
   const params = useParams<UrlParams>();
@@ -83,6 +85,7 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
     <>
       <SectorTicketMainSettingsScreen
         ticketStates={ticketStates}
+        ticketStep={ticketStep}
         nextTab={handleNextTab}
         onFirstTab={handleOnFirstTab}
       />
@@ -90,6 +93,7 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
     <>
       <SectorTicketPaymentSettingsScreen
         ticketStates={ticketStates}
+        ticketStep={ticketStep}
         nextTab={handleNextTab}
         backTab={handleBackTab}
         onFirstTab={handleOnFirstTab}
@@ -99,6 +103,7 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
     <>
       <SectorTicketGeneralSettingsScreen
         ticketStates={ticketStates}
+        ticketStep={ticketStep}
         nextTab={handleNextTab}
         backTab={handleBackTab}
         onFirstTab={handleOnFirstTab}
@@ -108,9 +113,7 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
 
   // focus on tab
   React.useEffect(() => {
-    if (ticketStates?.ticket) {
-      titleTabRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }
+    titleTabRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [ticketStates?.ticket]);
 
   return (
@@ -167,14 +170,8 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
                                     name: ticket.name,
                                     batch: batch.name,
                                     commission: batch.commission,
-                                    unitValue: (+batch.unitValue).toLocaleString('pt-br', {
-                                      style: 'currency',
-                                      currency: 'BRL',
-                                    }),
-                                    totalValue: (+batch.totalValue).toLocaleString('pt-br', {
-                                      style: 'currency',
-                                      currency: 'BRL',
-                                    }),
+                                    unitValue: `R$ ${batch.unitValue}`,
+                                    totalValue: `R$ ${batch.totalValue}`,
                                     amount: `${batch.amount} uni`,
                                   }))}
                                   theme="secondaryWithoutBorder"
@@ -204,7 +201,7 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
                           </div>
                         </React.Fragment>
                       ))
-                    : 'Nenhum lote cadastrado. Aqui será exibida uma lista dos lotes cadastrados.'
+                    : 'Nenhum setores e ingressos cadastrado. Aqui será exibida uma lista dos setores e ingressos.'
                 }
                 leftIcon={TicketIcon}
                 count={ticketStates?.ticketList?.length}
@@ -243,7 +240,7 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
           <Button title="Voltar" theme="noneBorder" onClick={() => () => undefined} />
           <Button
             title="Avançar para Setor e produto"
-            onClick={() => undefined}
+            onClick={() => isFormValid()}
             disabled={!(ticketStates.ticketList.length > 0)}
           />
         </div>

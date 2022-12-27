@@ -1,10 +1,10 @@
 /* eslint-disable import/no-unresolved */
-import React, { Fragment } from 'react';
+import React, { Fragment, useRef } from 'react';
 import { ButtonGroup, InputFile, InputText, SelectCustom } from '@/components';
 import { Col, Form, FormGroup, Row } from 'reactstrap';
-import { updateMask as updateMaskCash, unmask as unMaskCash } from '@/helpers/masks/cash';
 import ReactTooltip from 'react-tooltip';
 import { ReactComponent as Info } from '@/assets/images/svg/infoTooltip.svg';
+import { SelectCreateable } from '@/components/SelectCreateable';
 import { SectorProductContainerProps } from '../../screens/ui';
 
 // eslint-disable-next-line no-shadow
@@ -17,20 +17,37 @@ export enum States {
 export enum FormInputName {
   group = 'group',
   subgroup = 'subgroup',
+  id = 'id',
   name = 'name',
   allowOnline = 'allowOnline',
   unitMeasurement = 'unitMeasurement',
   amount = 'amount',
   unitValue = 'unitValue',
   totalValue = 'totalValue',
-  imageBase64 = 'imageBase64',
+  imageBase64Product = 'imageBase64Product',
 }
 
-export const ProductRegisterContent: React.FC<Pick<SectorProductContainerProps, 'formProduct'>> = ({
-  formProduct,
-}) => {
+export const ProductRegisterContent: React.FC<
+  Pick<SectorProductContainerProps, 'formProduct' | 'productStates'>
+> = ({ formProduct, productStates }) => {
   const { formData, formErrors, onChangeFormInput, onChangeFormFileInput, formNameFiles } =
     formProduct;
+
+  const refSelectSubGroup = useRef<any>(null);
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  const onClearSelectSubGroup = () => {
+    if (refSelectSubGroup) {
+      refSelectSubGroup?.current.clearValue();
+    }
+  };
+
+  const subGruopOptions =
+    productStates.groupList
+      ?.find(group => group?.id === formData[FormInputName.group])
+      ?.subGroups?.map((subGroup: { id: string; name: string }) => ({
+        value: subGroup.id,
+        label: subGroup.name,
+      })) ?? [];
 
   return (
     <Fragment>
@@ -46,29 +63,50 @@ export const ProductRegisterContent: React.FC<Pick<SectorProductContainerProps, 
             label="Grupo do produto"
             placeholder="Digite ou selecione o grupo do produto"
             value={formData[FormInputName.group]}
-            onChange={e => onChangeFormInput(FormInputName.group)(e?.value as string)}
+            onChange={e => {
+              onChangeFormInput(FormInputName.group)(e?.value as string);
+              onClearSelectSubGroup();
+            }}
             error={formErrors.group && formErrors.group[0]}
-            options={[]}
+            options={productStates.groupList.map(group => ({
+              value: group.id,
+              label: group.name,
+            }))}
           />
         </FormGroup>
         <FormGroup className="mb-2">
           <SelectCustom
+            refSelect={refSelectSubGroup}
             name="subgroup"
             label="Subgrupo do produto"
             placeholder="Digite ou selecione o subgrupo do produto"
             value={formData[FormInputName.subgroup]}
             onChange={e => onChangeFormInput(FormInputName.subgroup)(e?.value as string)}
             error={formErrors.subgroup && formErrors.subgroup[0]}
-            options={[]}
+            options={subGruopOptions}
+            disabled={formData[FormInputName.group] === ''}
           />
         </FormGroup>
         <FormGroup className="mb-2">
-          <InputText
-            name="name"
+          <SelectCreateable
             label="Nome do produto"
-            placeholder="Digite  o nome do grupo"
-            value={formData[FormInputName.name]}
-            onChange={e => onChangeFormInput(FormInputName.name)(e.target.value)}
+            placeholder="Digite ou selecione nome do produto"
+            name="name"
+            onChange={e => {
+              const product = productStates.optionProduct.find(item => item.id === e?.value);
+              if (product) {
+                onChangeFormInput(FormInputName.id)(e?.value as string);
+                onChangeFormInput(FormInputName.name)(product.name as string);
+              } else {
+                onChangeFormInput(FormInputName.id)('' as string);
+                onChangeFormInput(FormInputName.name)(e?.value as string);
+              }
+            }}
+            value={formData[FormInputName.id]}
+            options={productStates.optionProduct.map(item => ({
+              value: item.id,
+              label: item.name,
+            }))}
             error={formErrors.name && formErrors.name[0]}
           />
         </FormGroup>
@@ -97,10 +135,10 @@ export const ProductRegisterContent: React.FC<Pick<SectorProductContainerProps, 
                 onChangeFormInput(FormInputName.unitMeasurement)(e.target.value);
               }}
               options={[
-                { value: '0', label: 'Unitário' },
-                { value: '1', label: 'Quilo' },
+                { value: 'Unitário', label: 'Unitário' },
+                { value: 'Quilo', label: 'Quilo' },
                 {
-                  value: '2',
+                  value: 'Variável',
                   label: (
                     <>
                       Variável
@@ -130,7 +168,7 @@ export const ProductRegisterContent: React.FC<Pick<SectorProductContainerProps, 
                 onChange={e => {
                   onChangeFormInput(FormInputName.amount)(e.target.value.replace(/\D/g, ''));
                   onChangeFormInput(FormInputName.totalValue)(
-                    String(+e.target.value * +unMaskCash(formData[FormInputName.unitValue])),
+                    String((+e.target.value * +formData[FormInputName.unitValue]).toFixed(2)),
                   );
                 }}
                 error={formErrors.amount && formErrors.amount[0]}
@@ -144,13 +182,14 @@ export const ProductRegisterContent: React.FC<Pick<SectorProductContainerProps, 
                 label="Valor unitário"
                 placeholder="Ex: 20,00"
                 addon="R$"
-                value={updateMaskCash(formData[FormInputName.unitValue])}
+                value={formData[FormInputName.unitValue]}
                 onChange={e => {
-                  onChangeFormInput(FormInputName.unitValue)(
-                    String(updateMaskCash(e.target.value)),
-                  );
+                  const unitValueDecimal = e.target.value
+                    .replace(/\D/g, '')
+                    .replace(/(\d{2})$/, '.$1');
+                  onChangeFormInput(FormInputName.unitValue)(unitValueDecimal);
                   onChangeFormInput(FormInputName.totalValue)(
-                    String(+unMaskCash(e.target.value) * +formData[FormInputName.amount]),
+                    String((+unitValueDecimal * +formData[FormInputName.amount]).toFixed(2)),
                   );
                 }}
                 error={formErrors.unitValue && formErrors.unitValue[0]}
@@ -162,26 +201,31 @@ export const ProductRegisterContent: React.FC<Pick<SectorProductContainerProps, 
           <InputText
             name="totalValue"
             label="Valor total"
-            placeholder=""
-            value={updateMaskCash(formData[FormInputName.totalValue])}
+            placeholder="Ex: 200,00"
+            addon="R$"
+            value={formData[FormInputName.totalValue]}
             onChange={() => undefined}
             error={formErrors.totalValue && formErrors.totalValue[0]}
             disabled
           />
         </FormGroup>
         <FormGroup className="mb-2">
-          <InputFile
-            name="imageBase64"
-            label="Imagem do produto (opcional)"
-            placeholder=""
-            fileName={formNameFiles?.imageBase64}
-            onChange={e => {
-              onChangeFormFileInput(FormInputName.imageBase64)(
-                (e.target as HTMLInputElement)?.files?.[0],
-              );
-            }}
-            error={formErrors.imageBase64 && formErrors.imageBase64[0]}
-          />
+          {formData[FormInputName.id] === '' ? (
+            <InputFile
+              name="imageBase64Product"
+              label="Imagem do produto (opcional)"
+              placeholder=""
+              fileName={formNameFiles?.imageBase64Product}
+              onChange={e => {
+                onChangeFormFileInput(FormInputName.imageBase64Product)(
+                  (e.target as HTMLInputElement)?.files?.[0],
+                );
+              }}
+              error={formErrors.imageBase64Product && formErrors.imageBase64Product[0]}
+            />
+          ) : (
+            ''
+          )}
         </FormGroup>
       </Form>
     </Fragment>

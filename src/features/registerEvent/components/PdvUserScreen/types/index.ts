@@ -11,7 +11,7 @@ export interface formPdvUserProps {
 export interface appendPdvUserProps {
   listUsers: User[];
   usersSelected: User[];
-  handleRemoveUser(index: number): void;
+  handleRemoveUser(userId: string): void;
   handleAddUser(userId: string): void;
   handleGetUsers(): void;
 }

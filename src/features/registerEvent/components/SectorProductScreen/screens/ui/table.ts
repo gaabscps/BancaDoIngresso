@@ -28,6 +28,7 @@ export const columnsProducts: TableColumn<DataRowProducts>[] = [
   {
     name: '',
     selector: row => row.actions,
+    width: '300px',
     right: true,
   },
 ];

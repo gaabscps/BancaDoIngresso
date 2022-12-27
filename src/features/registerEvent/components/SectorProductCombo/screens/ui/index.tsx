@@ -1,10 +1,12 @@
 import React from 'react';
+import { Col, Container, Form, FormGroup, Row } from 'reactstrap';
+import { X } from 'react-feather';
+import ReactTooltip from 'react-tooltip';
 import { Button, ButtonGroup, Dialog, InputFile, InputText, Loading, Switch } from '@/components';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
 import TicketIcon from '@/assets/images/svg/Ticket';
 // import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 // import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
-import { Col, Container, Form, FormGroup, Row } from 'reactstrap';
 import { SelectCreateable } from '@/components/SelectCreateable';
 import ProductSubgroup from '@/model/ProductSubgroup';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
@@ -12,13 +14,11 @@ import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { ReactComponent as ItemConfig } from '@/assets/images/svg/ItemConfig.svg';
 import { ReactComponent as Info } from '@/assets/images/svg/infoTooltip.svg';
 import ProductGroup from '@/model/ProductGroup';
-import { X } from 'react-feather';
 import { CustomTable } from '@/components/Table';
 import { ActionProps } from '@/components/Dialog';
 import DiscountCoupon from '@/model/DiscountCoupon';
 import SectorProductComboProduct from '@/model/SectorProductComboProduct';
 import SectorProductCombo from '@/model/SectorProductCombo';
-import ReactTooltip from 'react-tooltip';
 import { comboActionsProps, formComboConfigProps, formComboProps } from '../../types';
 import { States } from '../../../ContractorScreen/screens/ui';
 import { ShouldShowModal } from '..';
@@ -37,6 +37,7 @@ interface SectorProductComboContainerProps {
   listProductSubGroup: ProductSubgroup[];
   listProductGroup: ProductGroup[];
   combo: SectorProductCombo[];
+  comboList: SectorProductCombo[];
   handleAddDiscountCoupon: () => void;
   handleChangeDiscountCoupon: (name: string, index: number, value: string) => void;
   handleRemoveDiscountCoupon: (index: number) => void;
@@ -54,6 +55,9 @@ interface SectorProductComboContainerProps {
   addProduct: (index: string) => void;
   removeProduct: (index: number) => void;
   handleFecthProductSubGroupList: (id: string) => Promise<void>;
+  onChangeAllowOnlineSwitch: (comboSelected: any) => Promise<void>;
+  onChangeComboSwitch: (comboSelected: any) => Promise<void>;
+  onShowDeleteCombo: (comboSelected: any) => void;
 }
 
 export interface DataRowDiscountCoupon {
@@ -88,6 +92,7 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
   listProductSubGroup,
   discountCoupon,
   combo,
+  // comboList,
   controllerProductActions,
   handleAddDiscountCoupon,
   handleChangeDiscountCoupon,
@@ -99,6 +104,9 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
   handleAddProduct,
   addProduct,
   removeProduct,
+  onChangeAllowOnlineSwitch,
+  onChangeComboSwitch,
+  onShowDeleteCombo,
 }): JSX.Element => {
   const renderActionDialogToCancel: ActionProps = {
     title: 'Cancelar',
@@ -319,61 +327,56 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                 </Row>
 
                 {product.map((sub, index) => (
-                  <>
-                    <div key={sub.id}>
-                      <Row>
-                        <Col md={6}>
-                          <SelectCreateable
-                            label="Produto"
-                            name="product"
-                            value={sub.name}
-                            onChange={e => {
-                              handleChangeProduct('name', index, e?.value as string);
+                  <div key={index}>
+                    <Row>
+                      <Col md={6}>
+                        <SelectCreateable
+                          label="Produto"
+                          name="product"
+                          value={sub.name}
+                          onChange={e => {
+                            handleChangeProduct('name', index, e?.value as string);
+                          }}
+                          placeholder="Digite ou selecione o produto"
+                          options={listProductSubGroup.map(item => ({
+                            value: item.name,
+                            label: item.name,
+                          }))}
+                          noPadding={true}
+                        />
+                      </Col>
+                      <Col md={2}>
+                        <InputText
+                          type="number"
+                          label="Quantidade"
+                          name="amount"
+                          value={String(sub.amount)}
+                          onChange={e => {
+                            handleChangeProduct('amount', index, e?.target.value as string);
+                          }}
+                          placeholder="Ex: 100"
+                        />
+                      </Col>
+                      {index === product.length - 1 ? (
+                        <Col md={4}>
+                          <div
+                            className="mt-5 action-icon"
+                            onClick={() => {
+                              addProduct(String(index));
                             }}
-                            placeholder="Digite ou selecione o produto"
-                            options={listProductSubGroup.map(item => ({
-                              value: item.name,
-                              label: item.name,
-                            }))}
-                            noPadding={true}
-                          />
+                          >
+                            adicionar novo produto no combo
+                          </div>
                         </Col>
-                        <Col md={2}>
-                          <InputText
-                            type="number"
-                            label="Quantidade"
-                            name="amount"
-                            value={String(sub.amount)}
-                            onChange={e => {
-                              handleChangeProduct('amount', index, e?.target.value as string);
-                            }}
-                            placeholder="Ex: 100"
-                          />
+                      ) : (
+                        <Col>
+                          {index !== product.length - 1 && (
+                            <X onClick={() => removeProduct(index)} className="mt-5 action-icon" />
+                          )}
                         </Col>
-                        {index === product.length - 1 ? (
-                          <Col md={4}>
-                            <div
-                              className="mt-5 action-icon"
-                              onClick={() => {
-                                addProduct(String(index));
-                              }}
-                            >
-                              adicionar novo produto no combo
-                            </div>
-                          </Col>
-                        ) : (
-                          <Col>
-                            {index !== product.length - 1 && (
-                              <X
-                                onClick={() => removeProduct(index)}
-                                className="mt-5 action-icon"
-                              />
-                            )}
-                          </Col>
-                        )}
-                      </Row>
-                    </div>
-                  </>
+                      )}
+                    </Row>
+                  </div>
                 ))}
                 <div className="d-flex justify-content-end register-buttom">
                   <span
@@ -396,85 +399,93 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                     content={
                       combo.length > 0 ? (
                         combo.map((combos, index) => (
-                          <>
-                            <div>
-                              <div className="ml-3 mt-3 d-flex align-items-center" key={index}>
-                                {combo.length > 0 ? (
-                                  <>
-                                    <span
-                                      style={{ whiteSpace: 'nowrap', fontWeight: '300' }}
-                                      className="secondary-table-title"
-                                    >
-                                      Combo # {index + 1}{' '}
-                                      <span style={{ transform: 'scale(5)' }}> · </span>
-                                      <span style={{ fontWeight: '500' }}>
-                                        {controllerFormCombo.formDataCombo.name}
-                                      </span>
+                          <div key={index}>
+                            <div className="ml-3 mt-3 d-flex align-items-center">
+                              {combo.length > 0 ? (
+                                <>
+                                  <span
+                                    style={{ whiteSpace: 'nowrap', fontWeight: '300' }}
+                                    className="secondary-table-title"
+                                  >
+                                    Combo # {index + 1}{' '}
+                                    <span style={{ transform: 'scale(5)' }}> · </span>
+                                    <span style={{ fontWeight: '500' }}>
+                                      {controllerFormCombo.formDataCombo.name}
                                     </span>
-                                    <div className="mt-4 d-flex w-100 justify-content-end">
-                                      <Switch
-                                        label="Vender online"
-                                        className="ml-5 action-icon"
-                                        name={''}
-                                        onChange={() => undefined}
-                                        checked={undefined}
-                                      />
-                                    </div>
-                                  </>
-                                ) : null}
-                              </div>
-
-                              <CustomTable
-                                theme="secondary"
-                                numberRowsPerPage={0}
-                                progressPending={false}
-                                columns={[
-                                  {
-                                    name: 'Produtos',
-                                    width: '35%',
-                                    selector: row => row.name,
-                                  },
-                                  {
-                                    name: 'Quantidade',
-                                    width: '20%',
-                                    selector: row => row.amount,
-                                  },
-                                  {
-                                    name: 'Valor do Combo',
-                                    width: '20%',
-                                    selector: row => row.totalValue,
-                                  },
-                                  {
-                                    name: (
-                                      <>
-                                        <ItemConfig
-                                          onClick={(): void => {
-                                            onToggle();
-                                            onShouldShowModal({
-                                              value: ShouldShowModal.comboConfig,
-                                              newTitleModal: `Configurações do combo #${index + 1}`,
-                                            });
-                                          }}
-                                          className="mr-3 action-icon"
-                                        />
-                                        <Pen className="mr-3 action-icon" />
-                                        <Trash className="action-icon" />
-                                      </>
-                                    ),
-                                    selector: row => row.action,
-                                    right: true,
-                                  },
-                                ]}
-                                data={combos.products.map((products, productIndex) => ({
-                                  id: products.id,
-                                  name: products.name,
-                                  amount: `${products.amount} un`,
-                                  totalValue: productIndex === 0 ? `R$ ${combos.totalValue}` : null,
-                                  action: '',
-                                }))}
-                              />
+                                  </span>
+                                  <div className="mt-4 d-flex w-100 justify-content-end">
+                                    <Switch
+                                      label="Vender online"
+                                      className="ml-5 action-icon"
+                                      name="allowSellingWebsite"
+                                      onChange={() => onChangeAllowOnlineSwitch(combos)}
+                                      checked={!!combos.allowSellingWebsite}
+                                    />
+                                    <Switch
+                                      label="Combo ativo"
+                                      className="ml-5 action-icon"
+                                      name="status"
+                                      onChange={() => onChangeComboSwitch(combos)}
+                                      checked={!!combos.status}
+                                    />
+                                  </div>
+                                </>
+                              ) : null}
                             </div>
-                          </>
+
+                            <CustomTable
+                              theme="secondary"
+                              numberRowsPerPage={0}
+                              progressPending={false}
+                              columns={[
+                                {
+                                  name: 'Produtos',
+                                  width: '35%',
+                                  selector: row => row.name,
+                                },
+                                {
+                                  name: 'Quantidade',
+                                  width: '20%',
+                                  selector: row => row.amount,
+                                },
+                                {
+                                  name: 'Valor do Combo',
+                                  width: '20%',
+                                  selector: row => row.totalValue,
+                                },
+                                {
+                                  name: (
+                                    <>
+                                      <ItemConfig
+                                        onClick={(): void => {
+                                          onToggle();
+                                          onShouldShowModal({
+                                            value: ShouldShowModal.comboConfig,
+                                            newTitleModal: `Configurações do combo #${index + 1}`,
+                                          });
+                                        }}
+                                        className="mr-3 action-icon"
+                                      />
+                                      <Pen className="mr-3 action-icon" />
+                                      <Trash
+                                        className="action-icon"
+                                        onClick={() => onShowDeleteCombo(combos)}
+                                      />
+                                    </>
+                                  ),
+                                  selector: row => row.action,
+                                  right: true,
+                                },
+                              ]}
+                              data={combos.products.map((products, productIndex) => ({
+                                id: products.id,
+                                name: products.name,
+                                amount: `${products.amount} un`,
+                                totalValue: productIndex === 0 ? `R$ ${combos.totalValue}` : null,
+                                action: '',
+                              }))}
+                            />
+                          </div>
                         ))
                       ) : (
                         <div>

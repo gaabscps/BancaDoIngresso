@@ -10,6 +10,8 @@ import User from '@/model/User';
 import { AxiosError } from 'axios';
 import api from '@/services/api';
 import { toast } from 'react-toastify';
+import { useParams } from 'react-router-dom';
+import PdvUser from '@/model/PdvUser';
 import { PdvUserContainer } from './ui';
 import { formPdvUserProps } from '../types';
 // import { formPdvProductProps } from '../types';
@@ -55,8 +57,19 @@ interface SectorProductPosContainerProps {
   nextTab: () => void;
   backTab: () => void;
 }
-export const PdvUserScreen: React.FC<SectorProductPosContainerProps> = ({ nextTab, backTab }) => {
-  // const [state, setState] = useState<States>(States.default);
+
+type UrlParams = {
+  id: string;
+};
+
+interface PdvUserScreenProps extends SectorProductPosContainerProps {
+  pdvId?: string;
+}
+
+export const PdvUserScreen: React.FC<PdvUserScreenProps> = ({ pdvId, nextTab, backTab }) => {
+  const params = useParams<UrlParams>();
+  const [state, setState] = useState<States>(States.default);
+  const [originalUsers, setOriginalUsers] = useState<User[]>([]);
   const [listUsers, setListUsers] = useState<User[]>([]);
   const [usersSelected, setUsersSelected] = useState<User[]>([]);
 
@@ -89,21 +102,51 @@ export const PdvUserScreen: React.FC<SectorProductPosContainerProps> = ({ nextTa
       telephone: updateMaskMobilePhone,
     },
   });
-  const handleGetUsers = async (): Promise<void> => {
-    try {
-      // setState(States.loading);
-      const { data } = await api.get<User[]>('/user/find');
 
-      if (data) {
-        setListUsers(data);
-        // setListUsersDefault(data);
-        setUsersSelected([]);
+  const getPdvUsers = async (users: User[]): Promise<void> => {
+    try {
+      setState(States.loading);
+      let usersVar: User[] = [];
+      if (pdvId) {
+        const { data } = await api.get<User[]>(`/event/pdv/${params.id}/user/${pdvId}`);
+        usersVar = data;
       }
+
+      const newListUsers = users.filter(item => {
+        let found = false;
+        // eslint-disable-next-line no-plusplus
+        for (let i = 0; i < usersVar.length; i++) {
+          if (item.id === usersVar[i].id) {
+            found = true;
+            break;
+          }
+        }
+        if (!found) {
+          return true;
+        }
+        return false;
+      });
+      setListUsers(newListUsers);
+      setUsersSelected(usersVar);
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
     } finally {
-      // setState(States.default);
+      setState(States.default);
+    }
+  };
+
+  const handleGetUsers = async (): Promise<void> => {
+    try {
+      setState(States.loading);
+      const { data } = await api.get<User[]>('/user/find');
+      setOriginalUsers(data);
+      await getPdvUsers(data);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
     }
   };
 
@@ -114,30 +157,52 @@ export const PdvUserScreen: React.FC<SectorProductPosContainerProps> = ({ nextTa
     isFormValid: isFormValidUser,
   };
 
+  const handleAddUser = async (userId: string): Promise<void> => {
+    const newUsersSelected = listUsers.filter(item => item.id === userId)[0];
+    if (usersSelected.find(item => item.id === newUsersSelected.id)) {
+      return;
+    }
+    try {
+      setState(States.loading);
+      const request: PdvUser = {
+        pdvId: pdvId as string,
+        users: [],
+      };
+      request.users.push(userId);
+      await api.post(`/event/pdv/${params.id}/user`, request);
+      await getPdvUsers(originalUsers);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
+  const handleRemoveUser = async (userId: string): Promise<void> => {
+    try {
+      setState(States.loading);
+      await api.delete(`/event/pdv/${params.id}/user/${pdvId}/${userId}`);
+      await getPdvUsers(originalUsers);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
   const controllerAppendUser = {
     listUsers,
     usersSelected,
-    handleAddUser(userId: string): void {
-      const newUsersSelected = listUsers.filter(item => item.id === userId)[0];
-      // not add user if already exists
-      if (usersSelected.find(item => item.id === newUsersSelected.id)) {
-        return;
-      }
-      setUsersSelected([...usersSelected, newUsersSelected]);
-      // remove user selected from list
-      const newListUsers = listUsers.filter(item => item.id !== userId);
-      setListUsers(newListUsers);
-    },
-    handleRemoveUser(index: number): void {
-      const values = [...usersSelected];
-      values.splice(index, 1);
-      setUsersSelected(values);
-      // add user removed to list
-      const newUser = listUsers.concat(usersSelected[index]);
-      setListUsers(newUser);
-    },
+    handleAddUser,
+    handleRemoveUser,
     handleGetUsers,
   };
+
+  useEffect(() => {
+    handleGetUsers();
+  }, [pdvId]);
 
   useEffect(() => {
     handleGetUsers();
@@ -146,6 +211,7 @@ export const PdvUserScreen: React.FC<SectorProductPosContainerProps> = ({ nextTa
   return (
     <>
       <PdvUserContainer
+        state={state}
         controllerFormUser={controllerFormUser}
         nextTab={nextTab}
         backTab={backTab}
