@@ -12,7 +12,9 @@ export enum States {
 
 interface StateProps {
   state: States;
+  pdvId: string | undefined;
   eventTicketsPDV: EventTicketPDVLine[];
+  link: string;
 }
 
 interface DispatchProps {
@@ -26,7 +28,9 @@ type Props = StateProps & DispatchProps;
 
 export const PdvEventTicketContainer: React.FC<Props> = ({
   state,
+  pdvId,
   eventTicketsPDV,
+  link,
   onCheckTicket,
   onGenerateSalesLink,
   onReturnTap,
@@ -35,15 +39,25 @@ export const PdvEventTicketContainer: React.FC<Props> = ({
   <Fragment>
     <Loading isVisible={state === States.loading} />
     <Container className="mainContainer" fluid={true}>
-      <div style={{ float: 'right' }}>
-        <h4
-          className="subtitle"
-          style={{ color: '#3CAFC8', textDecoration: 'underline', cursor: 'pointer' }}
-          onClick={() => onGenerateSalesLink()}
-        >
-          Gerar link de venda
-        </h4>
-      </div>
+      {pdvId && pdvId.length > 0 && (
+        <div style={{ float: 'right' }}>
+          <button
+            style={{ border: '0' }}
+            onClick={() => onGenerateSalesLink()}
+            disabled={link !== undefined && link.length > 0}
+          >
+            <h4
+              className="subtitle"
+              style={{ color: '#3CAFC8', textDecoration: 'underline', cursor: 'pointer' }}
+            >
+              Gerar link de venda
+            </h4>
+          </button>
+
+          {link && link.length > 0 && <p>{link}</p>}
+        </div>
+      )}
+
       {eventTicketsPDV &&
         eventTicketsPDV.length > 0 &&
         eventTicketsPDV.map((line, index) => (

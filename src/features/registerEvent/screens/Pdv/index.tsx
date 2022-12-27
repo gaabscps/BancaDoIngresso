@@ -52,6 +52,7 @@ export const PdvEventScreen: React.FC = (): JSX.Element => {
   const [mainPdv, setMainPdv] = useState<Pdv>();
   const [eventPDVs, setEventPDVs] = useState<EventPdv[]>([]);
   const [mainPdvList, setMainPdvList] = useState<Pdv[]>([]);
+  const [link, setLink] = useState<string>(undefined as unknown as string);
 
   const {
     formData: formDataPdv,
@@ -144,6 +145,9 @@ export const PdvEventScreen: React.FC = (): JSX.Element => {
           const { data } = await api.get<Pdv[]>(`/pdv/find`);
           setMainPdvList(data ?? []);
         }
+        if (!pdvId) {
+          setLink(undefined as unknown as string);
+        }
       } catch (error) {
         const err = error as AxiosError;
         toast.error(err.message);
@@ -210,6 +214,7 @@ export const PdvEventScreen: React.FC = (): JSX.Element => {
     // eslint-disable-next-line no-plusplus
     for (let i = 0; i < eventPDVs.length; i++) {
       if (eventPDVs[i].pdv.id === value) {
+        setLink(eventPDVs[i].link as string);
         onChangeFormInputPdv(FormInputName.isPdv)('true');
         onChangeFormInputMainPdv(FormInputMainName.pdv)(eventPDVs[i].pdv.id as string);
         onChangeFormInputMainPdv(FormInputMainName.allowMoney)(
@@ -348,6 +353,10 @@ export const PdvEventScreen: React.FC = (): JSX.Element => {
     }
   };
 
+  const handleSetPdvLink = (linkSelected: string): void => {
+    setLink(linkSelected);
+  };
+
   const handleOnGetTickets = async (): Promise<void> => {
     if (params.id) {
       try {
@@ -483,6 +492,7 @@ export const PdvEventScreen: React.FC = (): JSX.Element => {
       state={state}
       pdvId={pdvId}
       eventTicketsPDV={eventTicketsPDV}
+      link={link}
       numberTab={numberTab}
       formPdv={controllerFormPdv}
       formMainPdv={controllerFormMainPdv}
@@ -490,6 +500,7 @@ export const PdvEventScreen: React.FC = (): JSX.Element => {
       mainPdvStates={controllerMainPdvStates}
       onChangeSelectedPdv={handleChangeSelectedPdv}
       getEventPdvTickets={getEventPdvTickets}
+      handleSetPdvLink={handleSetPdvLink}
       handleOnGetTickets={handleOnGetTickets}
       handleCheckTicket={handleCheckTicket}
       setNumberTab={setNumberTab}

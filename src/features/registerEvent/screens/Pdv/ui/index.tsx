@@ -34,6 +34,7 @@ export interface PdvContainerProps {
   state: States;
   pdvId?: string;
   eventTicketsPDV: EventTicketPDVLine[];
+  link: string;
   numberTab: number;
   formPdv: formPdvProductProps;
   formMainPdv: formMainPdvProductProps;
@@ -41,6 +42,7 @@ export interface PdvContainerProps {
   mainPdvStates: mainPdvStatesProps;
   onChangeSelectedPdv: (value: string) => void;
   getEventPdvTickets: () => void;
+  handleSetPdvLink: (link: string) => void;
   handleOnGetTickets: () => void;
   handleCheckTicket: (ticketId: string) => void;
   setNumberTab: (value: number) => void;
@@ -62,6 +64,7 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
   state,
   pdvId,
   eventTicketsPDV,
+  link,
   numberTab,
   formPdv,
   formMainPdv,
@@ -70,6 +73,7 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
   setNumberTab,
   onChangeSelectedPdv,
   getEventPdvTickets,
+  handleSetPdvLink,
   handleOnGetTickets,
   handleCheckTicket,
   nextTab,
@@ -97,7 +101,9 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
       <PdvEventTickScreen
         pdvId={pdvId}
         eventTicketsPDV={eventTicketsPDV}
+        link={link}
         getEventPdvTickets={getEventPdvTickets}
+        handleSetPdvLink={handleSetPdvLink}
         handleOnGetTickets={handleOnGetTickets}
         handleCheckTicket={handleCheckTicket}
         nextTab={handleNextTab}
