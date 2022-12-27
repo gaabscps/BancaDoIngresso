@@ -39,6 +39,7 @@ export enum FormInputNameComboConfig {
   waiter = 'waiter',
   partialPayment = 'partialPayment',
   allowDiscountCoupon = 'allowDiscountCoupon',
+  discountType = 'discountType',
   discountsName = 'discountsName',
   discountsCode = 'discountsCode',
   discountsAmount = 'discountsAmount',
@@ -454,10 +455,14 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                   <Col className="ml-4 mr-2" md={3}>
                     <ButtonGroup
                       style={{ width: 'fit-content' }}
-                      name=""
+                      name="discountType"
                       label="Tipo"
-                      value={0}
-                      onChange={() => undefined}
+                      value={formDataComboConfig[FormInputNameComboConfig.discountType]}
+                      onChange={e =>
+                        onChangeFormInputComboConfig(FormInputNameComboConfig.discountType)(
+                          e?.target?.value as string,
+                        )
+                      }
                       options={[
                         { value: 0, label: 'R$' },
                         { value: 1, label: '%' },

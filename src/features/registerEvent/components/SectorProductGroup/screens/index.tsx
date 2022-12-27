@@ -204,6 +204,7 @@ export const SectorProductGroupScreen: React.FC<
           delete payload.id;
         }
 
+        // condição para remover o subgrupo caso o campo esteja vazio
         payload.subGroups = payload.subGroups.filter(sub => sub.name !== '');
 
         // Condição para remover o id do subgrupo caso seja um novo subgrupo
@@ -370,29 +371,6 @@ export const SectorProductGroupScreen: React.FC<
     onGetGroup: handleOnGetGroup,
     onCancelEdit: handleOnCancelEditGroup,
   };
-
-  useEffect(() => {
-    if (group) {
-      const groupEdit = groupOptions.find((item: any) => item.id === group.id);
-      if (groupEdit) {
-        onChangeFormInputGroup(FormInputName.id)(group.id);
-        onChangeFormInputGroup(FormInputName.name)(group.name);
-        onChangeFormInputGroup(FormInputName.imageBase64Group)(group.imageBase64);
-
-        setNameFiles(filesValues => ({
-          ...filesValues,
-          [FormInputName.imageBase64Group]: group?.imageBase64?.split('/').pop(),
-        }));
-        subGroup.map((item: any, index) => {
-          setNameFilesSub(filesValues => ({
-            ...filesValues,
-            [`imageBase64SubGroup-${index}`]: item?.imageBase64?.split('/').pop(),
-          }));
-        });
-      }
-      handleFecthProductSubGroupList(group.id);
-    }
-  }, [group]);
 
   useEffect(() => {
     if (group) {

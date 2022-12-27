@@ -28,20 +28,26 @@ export interface comboStatesProps {
   state: string;
   listProductSubGroup: ProductSubgroup[];
   listProductGroup: EventGroupSubgroup[];
+  listProduct: EventProduct[];
   product: SectorProductComboProduct[];
-  productList: SectorProductComboProduct[];
-  combo: SectorProductCombo[];
+  comboState: any;
   comboList: SectorProductCombo[];
   productGet: EventProduct[];
 }
+
 export interface comboActionsProps {
   onFirstTab: () => void;
   onReturnTab: () => void;
   onNextTab: () => Promise<void>;
 }
+
 export interface comboRequestProps {
   saveCombo: () => Promise<void>;
+  saveComboConfig: () => Promise<void>;
   getProductSubGroupList: (id: string) => Promise<void>;
   onChangeAllowOnlineSwitch: (comboSelected: any) => Promise<void>;
   onChangeComboSwitch: (comboSelected: any) => Promise<void>;
+  getComboSelected: (comboSelected: any) => Promise<void>;
+  onCancelEdit: () => void;
+  getProductList: (group: string, subGroup: string) => Promise<void>;
 }
