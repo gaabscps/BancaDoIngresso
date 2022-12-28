@@ -153,6 +153,7 @@ export const SectorTicketMainSettingsContent: React.FC<
                 placeholder="0"
                 addon="%"
                 className="w-input-sm"
+                maxLength={3}
                 value={formData[FormInputName.percentageHalfPrice]}
                 onChange={e =>
                   onChangeFormInput(FormInputName.percentageHalfPrice)(
