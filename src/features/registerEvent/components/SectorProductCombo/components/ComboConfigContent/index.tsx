@@ -5,6 +5,7 @@ import { ButtonGroup, InputText } from '@/components';
 import DiscountCoupon from '@/model/DiscountCoupon';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { Card, Col, Form, FormGroup, Row } from 'reactstrap';
+import { CustomTable } from '@/components/Table';
 import { formComboConfigProps } from '../../types';
 
 export interface DataRow {
@@ -496,6 +497,7 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
             </>
           ))}
         </Form>
+        <CustomTable numberRowsPerPage={0} progressPending={false} columns={[]} data={[]} />
       </Card>
     </>
   );

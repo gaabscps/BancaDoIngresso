@@ -43,7 +43,7 @@ export interface comboActionsProps {
 
 export interface comboRequestProps {
   saveCombo: () => Promise<void>;
-  saveComboConfig: () => Promise<void>;
+  saveComboConfig: (comboSelected: any) => Promise<void>;
   getProductSubGroupList: (id: string) => Promise<void>;
   onChangeAllowOnlineSwitch: (comboSelected: any) => Promise<void>;
   onChangeComboSwitch: (comboSelected: any) => Promise<void>;

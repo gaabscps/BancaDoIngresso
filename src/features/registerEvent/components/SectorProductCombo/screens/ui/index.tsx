@@ -53,9 +53,11 @@ interface SectorProductComboContainerProps {
   onShouldShowModal: ({
     value,
     newTitleModal,
+    comboSelected,
   }: {
     value: ShouldShowModal;
     newTitleModal: string | React.ReactNode;
+    comboSelected?: any;
   }) => void;
   onToggle: () => void;
   onShowDeleteCombo: (comboSelected: any) => void;
@@ -143,7 +145,10 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
           {
             [ShouldShowModal.comboConfig]: {
               title: 'Salvar',
-              onClick: () => saveComboConfig(),
+              onClick: () => {
+                console.log(comboState);
+                saveComboConfig(comboState);
+              },
             },
           }[shouldShowModal],
         ]}
@@ -357,7 +362,6 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                           value={prod.id}
                           onChange={e => {
                             const products = listProduct.find(item => item.id === e?.value);
-                            console.log(products);
                             if (products?.id) {
                               onChangeProduct('id', index, e?.value as string);
                               onChangeProduct('name', index, products?.name as string);
@@ -499,7 +503,9 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                                           onShouldShowModal({
                                             value: ShouldShowModal.comboConfig,
                                             newTitleModal: `Configurações do combo #${index + 1}`,
+                                            comboSelected,
                                           });
+                                          console.log(comboSelected);
                                         }}
                                         className={
                                           controllerFormComboConfig.formDataComboConfig

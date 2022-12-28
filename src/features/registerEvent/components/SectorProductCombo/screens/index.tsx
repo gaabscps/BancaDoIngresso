@@ -296,15 +296,15 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
     }
   };
 
-  const handleOnSaveComboConfig = async (): Promise<void> => {
+  const handleOnSaveComboConfig = async (comboSelected: any): Promise<void> => {
     try {
-      const discountData = discountCoupon.map(disc => ({
-        name: disc.name,
-        code: disc.code,
-        amount: Number(disc.amount),
-        discountType: disc.discountType,
-        discount: Number(disc.discount),
-      }));
+      // const discountData = discountCoupon.map(disc => ({
+      //   name: disc.name,
+      //   code: disc.code,
+      //   amount: Number(disc.amount),
+      //   discountType: disc.discountType,
+      //   discount: Number(disc.discount),
+      // }));
 
       const payloadComboConfig = {
         formPrinting: +formDataComboConfig[FormInputNameComboConfig.formPrinting],
@@ -340,12 +340,11 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
         allowDiscountCoupon: convertToBoolean(
           formDataComboConfig[FormInputNameComboConfig.allowDiscountCoupon],
         ),
-        discounts: discountData,
       };
+      // discounts: discountData,
 
-      // Ainda não temos este endpoint
       const reponse = await api.post(
-        `/event/section-product/${params.id}/combo/config`,
+        `/event/section-product/${params.id}/combo/${comboSelected.id}/config`,
         payloadComboConfig,
       );
       if (reponse) toast.success('Dados salvos com sucesso!');
@@ -541,15 +540,16 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
   const handleOnShouldShowModal = ({
     value,
     newTitleModal,
-  }: // comboConfig: comboSelected,
-  {
+    comboSelected,
+  }: {
     value: ShouldShowModal;
     newTitleModal: string | React.ReactNode;
     comboConfig?: SectorProductGroup;
-    comboSelected?: SectorProductGroup;
+    comboSelected?: any;
   }): void => {
     setShouldShowModal(value);
     onChangeTitle(newTitleModal);
+    setComboState(comboSelected);
   };
 
   const controllerComboStates: comboStatesProps = {
@@ -608,10 +608,11 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
   useEffect(() => {
     if (comboState) {
       const comboEdit = listProductGroup.find((item: any) => item.id === comboState.group);
+      console.log(comboState.id);
       if (comboEdit) {
         onChangeFormInputCombo(FormInputNameCombo.id)(comboState.id);
-        onChangeFormInputCombo(FormInputNameCombo.group)(comboState.group);
-        onChangeFormInputCombo(FormInputNameCombo.subGroup)(comboState.subGroup);
+        onChangeFormInputCombo(FormInputNameCombo.group)(comboState.group.name);
+        onChangeFormInputCombo(FormInputNameCombo.subGroup)(comboState.subgroup.id);
         onChangeFormInputCombo(FormInputNameCombo.name)(comboState.name);
         onChangeFormInputCombo(FormInputNameCombo.allowSellingWebsite)(
           comboState.allowSellingWebsite,
