@@ -2,6 +2,7 @@ import TicketIcon from '@/assets/images/svg/Ticket';
 import {
   Button,
   ButtonGroup,
+  Loading,
   // Loading,
   SelectCustom,
 } from '@/components';
@@ -33,99 +34,32 @@ export enum FormInputName {
 }
 
 interface SectorProductPosContainerProps {
-  // state: States;
+  state: States;
   controllerFormPos: formPdvProductProps;
   nextTab: () => void;
   backTab: () => void;
-  handleOnShowDeleteProduct: (id: any) => void;
+  onChangeSection: (sectionId: string) => void;
+  onAddAll: () => void;
+  onAddProduct: () => void;
+  onEditProduct: (sectionId: string, productId: string) => void;
+  onShowDeleteProduct: (sectionId: string, productId: string) => void;
 }
 export const PdvProductContainer: React.FC<SectorProductPosContainerProps> = ({
-  // state,
+  state,
   controllerFormPos,
-  handleOnShowDeleteProduct,
+  onChangeSection,
+  onAddAll,
+  onAddProduct,
+  onEditProduct,
+  onShowDeleteProduct,
   nextTab,
   backTab,
 }) => {
-  const { formData, formErrors, onChangeFormInput, isFormValid } = controllerFormPos;
-
-  const eventSectionsProductListMock = [
-    {
-      eventSections: [
-        {
-          section: {
-            id: 12314,
-            name: 'Setor 1',
-          },
-          products: [
-            {
-              id: 1,
-              name: 'Produto 1',
-              categorySubGroup: {
-                id: 1,
-                name: 'Categoria 1',
-                categoryGroup: {
-                  id: 1,
-                  name: 'Grupo 1',
-                },
-              },
-            },
-            {
-              id: 2,
-              name: 'Produto 2',
-              categorySubGroup: {
-                id: 2,
-                name: 'Categoria 2',
-                categoryGroup: {
-                  id: 2,
-                  name: 'Grupo 2',
-                },
-              },
-            },
-          ],
-        },
-      ],
-    },
-    {
-      eventSections: [
-        {
-          section: {
-            id: 1,
-            name: 'Setor 1',
-          },
-          products: [
-            {
-              id: 1,
-              name: 'Produto 1',
-              categorySubGroup: {
-                id: 1,
-                name: 'Categoria 1',
-                categoryGroup: {
-                  id: 1,
-                  name: 'Grupo 1',
-                },
-              },
-            },
-            {
-              id: 2,
-              name: 'Produto 2',
-              categorySubGroup: {
-                id: 2,
-                name: 'Categoria 2',
-                categoryGroup: {
-                  id: 2,
-                  name: 'Grupo 2',
-                },
-              },
-            },
-          ],
-        },
-      ],
-    },
-  ];
-
+  const { formData, formErrors, sections, productsAndCombos, tableContent, onChangeFormInput } =
+    controllerFormPos;
   return (
     <>
-      {/* <Loading isVisible={state === States.loading} /> */}
+      <Loading isVisible={state === States.loading} />
       <Container className="mainContainer" fluid={true}>
         <Row>
           <Col>
@@ -160,8 +94,14 @@ export const PdvProductContainer: React.FC<SectorProductPosContainerProps> = ({
                         name="sector"
                         label="Setor"
                         value={formData[FormInputName.sector]}
-                        onChange={e => onChangeFormInput(FormInputName.sector)(e?.value as string)}
-                        options={[{ value: '1', label: 'Setor 1' }]}
+                        onChange={e => {
+                          onChangeFormInput(FormInputName.sector)(e?.value as string);
+                          onChangeSection(e?.value as string);
+                        }}
+                        options={sections.map(data => ({
+                          value: data.sectionId,
+                          label: data.sectionNome,
+                        }))}
                         error={formErrors.sector && formErrors.sector[0]}
                       />
                     </Col>
@@ -171,7 +111,10 @@ export const PdvProductContainer: React.FC<SectorProductPosContainerProps> = ({
                         label="Produtos"
                         value={formData[FormInputName.product]}
                         onChange={e => onChangeFormInput(FormInputName.product)(e?.value as string)}
-                        options={[{ value: '1', label: 'Produto 1' }]}
+                        options={productsAndCombos.map(data => ({
+                          value: data.id,
+                          label: data.product,
+                        }))}
                         error={formErrors.product && formErrors.product[0]}
                         disabled={formData[FormInputName.sector] === ''}
                       />
@@ -182,11 +125,7 @@ export const PdvProductContainer: React.FC<SectorProductPosContainerProps> = ({
                     <Col>
                       <div className="d-flex justify-content-between mt-5">
                         <div
-                          onClick={() => {
-                            if (isFormValid()) {
-                              console.log('adicionar todos os produto');
-                            }
-                          }}
+                          onClick={() => onAddAll()}
                           className={`action-icon link-green ${
                             formData[FormInputName.sector] === ''
                               ? 'disable-text input-action-disabled '
@@ -196,11 +135,7 @@ export const PdvProductContainer: React.FC<SectorProductPosContainerProps> = ({
                           Inserir TODOS produtos desse setor
                         </div>
                         <div
-                          onClick={() => {
-                            if (isFormValid()) {
-                              console.log('adicionar produto');
-                            }
-                          }}
+                          onClick={() => onAddProduct()}
                           className={`action-icon link-green ${
                             formData[FormInputName.product] === ''
                               ? 'disable-text input-action-disabled '
@@ -227,78 +162,78 @@ export const PdvProductContainer: React.FC<SectorProductPosContainerProps> = ({
             <SuperCollapse
               disabled={formData[FormInputName.allowProduct] !== 'true'}
               title="Setores e produtos inseridos"
-              content={
-                // change 0 to index
-                eventSectionsProductListMock.map(eventSectionProduct =>
-                  eventSectionProduct.eventSections.map((eventSection, index) => (
-                    <>
-                      <div className="d-flex w-100 justify-content-between">
-                        <div className="mb-3 w-100">
-                          <span className="secondary-table-title light-text">
-                            Setor{index + 1}{' '}
-                          </span>
-                          <span className="secondary-table-title name">
-                            • {eventSection.section.name}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="mb-5">
-                        <CustomTable
-                          theme="secondaryWithoutBorder"
-                          numberRowsPerPage={0}
-                          progressPending={false}
-                          columns={[
-                            {
-                              name: 'Produto',
-                              selector: row => row.product,
-                            },
-                            {
-                              name: 'Grupo',
-                              selector: row => row.group,
-                            },
-                            {
-                              name: 'Subgrupo',
-                              selector: row => row.subGroup,
-                            },
-                            {
-                              name: 'Quantidade',
-                              selector: row => row.amount,
-                            },
-                            {
-                              name: 'Valor unitário',
-                              selector: row => row.value,
-                            },
-                            {
-                              name: (
-                                <>
-                                  <Pen
-                                    className="mr-4 svg-icon action-icon"
-                                    onClick={() => undefined}
-                                  />
-                                  <X
-                                    className="action-icon svg-icon-trash"
-                                    onClick={() => handleOnShowDeleteProduct(eventSection.section)}
-                                  />
-                                </>
-                              ),
-                              selector: row => row.actions,
-                              right: true,
-                            },
-                          ]}
-                          data={eventSection.products.map(product => ({
-                            product: product.name,
-                            group: product.categorySubGroup.categoryGroup.name,
-                            subGroup: product.categorySubGroup.name,
-                            amount: 'falta endpoint de quantidade',
-                            value: 'falta endpoint de valor unitário',
-                            actions: '',
-                          }))}
-                        />
-                      </div>
-                    </>
-                  )),
-                )
-              }
+              content={tableContent.map((eventSectionProduct, index) => (
+                <>
+                  <div className="d-flex w-100 justify-content-between">
+                    <div className="mb-3 w-100">
+                      <span className="secondary-table-title light-text">Setor{index + 1} </span>
+                      <span className="secondary-table-title name">
+                        • {eventSectionProduct.sectionNome}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="mb-5">
+                    <CustomTable
+                      theme="secondaryWithoutBorder"
+                      numberRowsPerPage={0}
+                      progressPending={false}
+                      columns={[
+                        {
+                          name: 'Produto',
+                          selector: row => row.product,
+                        },
+                        {
+                          name: 'Grupo',
+                          selector: row => row.group,
+                        },
+                        {
+                          name: 'Subgrupo',
+                          selector: row => row.subGroup,
+                        },
+                        {
+                          name: 'Quantidade',
+                          selector: row => row.amount,
+                        },
+                        {
+                          name: 'Valor unitário',
+                          selector: row => row.value,
+                        },
+                        {
+                          name: '',
+                          selector: row => row.actions,
+                          right: true,
+                        },
+                      ]}
+                      data={eventSectionProduct.productsAndCombos.map(productAndCombo => ({
+                        product: productAndCombo.product,
+                        group: productAndCombo.group,
+                        subGroup: productAndCombo.subGroup,
+                        amount: productAndCombo.amount,
+                        value: productAndCombo.value,
+                        actions: (
+                          <>
+                            <Pen
+                              className="mr-4 svg-icon action-icon"
+                              onClick={() =>
+                                onEditProduct(eventSectionProduct.sectionId, productAndCombo.id)
+                              }
+                            />
+                            <X
+                              className="action-icon svg-icon-trash"
+                              onClick={() =>
+                                onShowDeleteProduct(
+                                  eventSectionProduct.sectionId,
+                                  productAndCombo.id,
+                                )
+                              }
+                            />
+                          </>
+                        ),
+                      }))}
+                    />
+                  </div>
+                </>
+              ))}
               leftIcon={TicketIcon}
             />
           </Col>
