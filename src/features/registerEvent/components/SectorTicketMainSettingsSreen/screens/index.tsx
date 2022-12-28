@@ -27,7 +27,7 @@ import {
   SectorTicketContainerProps,
   TabSectorTicketActionsProps,
 } from '@/features/registerEvent/screens/SectorTicket/ui';
-import { unmask as unmaskCash } from '@/helpers/masks/cashNumber';
+// import { unmask as unmaskCash } from '@/helpers/masks/cashNumber';
 import {
   batchActionsProps,
   batchStatesProps,
@@ -258,26 +258,46 @@ export const SectorTicketMainSettingsScreen: React.FC<
 
   const handleOnSaveMainSettings = async ({ isBntNext }: { isBntNext: boolean }): Promise<void> => {
     try {
-      if (isFormValidMainSettings()) {
-        const payloadBatchs = batchList.map((batch: TicketBatch) => {
-          if (batch.id) {
-            return {
-              ...batch,
-              commission: +batch.commission,
-              amount: +batch.amount,
-              unitValue: +unmaskCash(String(batch.unitValue)),
-              totalValue: +unmaskCash(String(batch.totalValue)),
-            };
-          }
-          delete batch.id;
-          return {
-            ...batch,
-            commission: +batch.commission,
-            amount: +batch.amount,
-            unitValue: +unmaskCash(String(batch.unitValue)),
-            totalValue: +unmaskCash(String(batch.totalValue)),
-          };
-        });
+      const isFormValid = isFormValidMainSettings();
+      // validate percentageHalfPrice and amountHalfPrice if hasHalfPrice is true
+      if (
+        isFormValid &&
+        convertToBoolean(formDataMainSettings[FormInputNameToMainSettings.hasHalfPrice])
+      ) {
+        const percentageHalfPrice =
+          +formDataMainSettings[FormInputNameToMainSettings.percentageHalfPrice];
+        const amountHalfPrice = +formDataMainSettings[FormInputNameToMainSettings.amountHalfPrice];
+        if (percentageHalfPrice <= 0 || percentageHalfPrice > 100) {
+          setErrorsMainSettings({
+            [FormInputNameToMainSettings.percentageHalfPrice]: ['O valor deve ser entre 1 e 100'],
+          });
+          return;
+        }
+
+        if (amountHalfPrice <= 0) {
+          setErrorsMainSettings({
+            [FormInputNameToMainSettings.amountHalfPrice]: ['O valor deve ser maior que 0'],
+          });
+          return;
+        }
+      }
+
+      // validate amountCourtesy if hasHalfPrice is true
+      if (
+        isFormValid &&
+        convertToBoolean(formDataMainSettings[FormInputNameToMainSettings.hasCourtesy])
+      ) {
+        const amountCourtesy = +formDataMainSettings[FormInputNameToMainSettings.amountCourtesy];
+        if (amountCourtesy <= 0) {
+          setErrorsMainSettings({
+            [FormInputNameToMainSettings.amountCourtesy]: ['O valor deve ser maior que 0'],
+          });
+          return;
+        }
+      }
+
+      if (isFormValid) {
+        const payloadBatchs = batchList;
 
         // continue someone batchList is not array empty
         if (payloadBatchs.length === 0) {
@@ -451,7 +471,7 @@ export const SectorTicketMainSettingsScreen: React.FC<
             startDate: payloadStartData,
             endDate: payloadEndData,
             commission: +formDataBatchs[FormInputNameToBatch.commission],
-            amount: formDataBatchs[FormInputNameToBatch.amount],
+            amount: +formDataBatchs[FormInputNameToBatch.amount],
             unitValue: formDataBatchs[FormInputNameToBatch.unitValue],
             totalValue: formDataBatchs[FormInputNameToBatch.totalValue],
             imageUrl: formDataBatchs[FormInputNameToBatch.imageUrl],
