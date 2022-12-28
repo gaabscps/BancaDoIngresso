@@ -5,6 +5,7 @@ import React, { Fragment, useState } from 'react';
 import { Button, ButtonGroup, Loading, Tab } from '@/components';
 import { Container, FormGroup } from 'reactstrap';
 import { SectorTicketMainSettingsScreen } from '@/features/registerEvent/components/SectorTicketMainSettingsSreen/screens';
+import validators from '@/helpers/validators';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
 import { CustomTable } from '@/components/Table';
 import { ReactComponent as CloseX } from '@/assets/images/svg/closeX.svg';
@@ -174,8 +175,12 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
                                     name: ticket.name,
                                     batch: batch.name,
                                     commission: batch.commission,
-                                    unitValue: `R$ ${updateMaskCash(String(batch.unitValue))}`,
-                                    totalValue: `R$ ${updateMaskCash(String(batch.totalValue))}`,
+                                    unitValue: `R$ ${updateMaskCash(
+                                      validators.applyDecimalMask(String(batch.unitValue)),
+                                    )}`,
+                                    totalValue: `R$ ${updateMaskCash(
+                                      validators.applyDecimalMask(String(batch.totalValue)),
+                                    )}`,
                                     amount: `${batch.amount} uni`,
                                   }))}
                                   theme="secondaryWithoutBorder"

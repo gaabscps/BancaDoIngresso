@@ -225,6 +225,11 @@ const hasSpecialCharacters = (value: ValidatorInputType): ValidatorReturnType =>
   return 'Digite nomes contendo apenas letras. Não é permitido uso de caracteres especiais.';
 };
 
+const applyDecimalMask = (value: string): string => {
+  const decimalValue = Number(value).toFixed(2);
+  return decimalValue;
+};
+
 export default {
   applyUnmask,
   between,
@@ -253,4 +258,5 @@ export default {
   validDate,
   hasPasswordOnlyNumberCharacteres,
   isChecked,
+  applyDecimalMask,
 };

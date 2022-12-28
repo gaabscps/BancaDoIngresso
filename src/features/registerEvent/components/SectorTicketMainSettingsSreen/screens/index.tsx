@@ -676,7 +676,19 @@ export const SectorTicketMainSettingsScreen: React.FC<
       );
       onChangeFormInputMainSettings(FormInputNameToMainSettings.observation)(ticket.observation);
 
-      setBatchList(ticket.batchs);
+      setBatchList(
+        ticket.batchs.map((item): any => ({
+          id: item.id,
+          name: item.name,
+          startDate: item.startDate,
+          endDate: item.endDate,
+          commission: item.commission,
+          amount: item.amount,
+          unitValue: validators.applyDecimalMask(String(item.unitValue)),
+          totalValue: validators.applyDecimalMask(String(item.totalValue)),
+          imageUrl: item.imageUrl,
+        })),
+      );
     }
   }, [ticketStates.ticket]);
 

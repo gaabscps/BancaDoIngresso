@@ -256,7 +256,6 @@ export const SubPdvScreen: React.FC<PdvSelectedProps> = ({
         onToggle();
       }
     } catch (error) {
-      console.log('error :>> ', error);
       const err = error as AxiosError;
       toast.error(err.message);
     }
