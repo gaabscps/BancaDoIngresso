@@ -252,7 +252,13 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
         )}
         <hr className="mt-5" />
         <div className="footer-register-event">
-          <Button title="Voltar" theme="noneBorder" onClick={() => () => undefined} />
+          <Button
+            title="Voltar"
+            theme="noneBorder"
+            onClick={() => {
+              onChangeEvent({ ...eventState, currentStep: eventState.currentStep - 1 });
+            }}
+          />
           <Button
             title="Avançar para Setor e produto"
             onClick={() => {
