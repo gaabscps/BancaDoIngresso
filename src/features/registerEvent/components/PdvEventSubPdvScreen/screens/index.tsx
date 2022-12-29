@@ -175,9 +175,8 @@ export const PdvEventSubPdvScreen: React.FC<Omit<PdvEventSubPdvScreenProps, 'nex
         id: userId,
       } as User;
       users.push(user);
-
       const request = {
-        id: subPdv?.id,
+        id: formDataSubPdvRegister[FormInputNameSubPdv.name],
         users,
       } as SubPdv;
       await api.post(
@@ -243,7 +242,7 @@ export const PdvEventSubPdvScreen: React.FC<Omit<PdvEventSubPdvScreenProps, 'nex
     subPdv: subPdvSelected,
   }: onShouldShowSubPdvSettingsProps): void => {
     if (subPdvSelected && subPdvSelected.id) {
-      onChangeFormInputSubPdvRegister(FormInputNameSubPdv.name)(subPdvSelected.name);
+      onChangeFormInputSubPdvRegister(FormInputNameSubPdv.name)(subPdvSelected.id);
       setUsersSelected(subPdvSelected.users);
     }
 
