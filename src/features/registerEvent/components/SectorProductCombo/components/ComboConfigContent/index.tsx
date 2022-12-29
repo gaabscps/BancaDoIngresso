@@ -68,7 +68,7 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
   controllerFormComboConfig: {
     onChangeFormInputComboConfig,
     formDataComboConfig,
-    // formErrorsComboConfig,
+    formErrorsComboConfig,
   },
 }) => {
   return (
@@ -90,6 +90,7 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                   { value: 0, label: 'Item' },
                   { value: 1, label: 'Total' },
                 ]}
+                error={formErrorsComboConfig.formPrinting && formErrorsComboConfig.formPrinting[0]}
               />
               <ButtonGroup
                 name="hasCourtesy"
@@ -104,6 +105,7 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                   { value: true, label: 'Sim' },
                   { value: false, label: 'Não' },
                 ]}
+                error={formErrorsComboConfig.hasCourtesy && formErrorsComboConfig.hasCourtesy[0]}
               />
               <div className="mb-4 border-bottom-title w-100">
                 <h5 className="mb-2mb-5">Taxas de cartão</h5>
@@ -126,6 +128,10 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                   { value: true, label: 'Sim' },
                   { value: false, label: 'Não' },
                 ]}
+                error={
+                  formErrorsComboConfig.physicalSaleAllowCreditCardPayment &&
+                  formErrorsComboConfig.physicalSaleAllowCreditCardPayment[0]
+                }
               />
             </FormGroup>
           </Col>
@@ -144,6 +150,10 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                   )
                 }
                 placeholder="0"
+                error={
+                  formErrorsComboConfig.physicalSaleDebit &&
+                  formErrorsComboConfig.physicalSaleDebit[0]
+                }
               />
               <InputText
                 name="physicalSaleCredit"
@@ -156,6 +166,10 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                   )
                 }
                 placeholder="0"
+                error={
+                  formErrorsComboConfig.physicalSaleCredit &&
+                  formErrorsComboConfig.physicalSaleCredit[0]
+                }
               />
               <InputText
                 name="physicalSalePix"
@@ -168,6 +182,9 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                   )
                 }
                 placeholder="0"
+                error={
+                  formErrorsComboConfig.physicalSalePix && formErrorsComboConfig.physicalSalePix[0]
+                }
               />
               <InputText
                 name="physicalSaleAdministrateTax"
@@ -180,6 +197,10 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                   )(e?.target?.value as string)
                 }
                 placeholder="0"
+                error={
+                  formErrorsComboConfig.physicalSaleAdministrateTax &&
+                  formErrorsComboConfig.physicalSaleAdministrateTax[0]
+                }
               />
             </FormGroup>
           </Col>
@@ -198,6 +219,10 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                   )
                 }
                 placeholder="Ex: 2"
+                error={
+                  formErrorsComboConfig.physicalSaleInstallments &&
+                  formErrorsComboConfig.physicalSaleInstallments[0]
+                }
               />
             </FormGroup>
           </Col>
@@ -214,6 +239,9 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                   )
                 }
                 placeholder="Ex: 4"
+                error={
+                  formErrorsComboConfig.physicalSaleFee && formErrorsComboConfig.physicalSaleFee[0]
+                }
               />
             </FormGroup>
           </Col>
@@ -239,6 +267,10 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                   { value: true, label: 'Sim' },
                   { value: false, label: 'Não' },
                 ]}
+                error={
+                  formErrorsComboConfig.websiteSaleAllowCreditCardPayment &&
+                  formErrorsComboConfig.websiteSaleAllowCreditCardPayment[0]
+                }
               />
             </FormGroup>
           </Col>
@@ -257,6 +289,10 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                   )
                 }
                 placeholder="0"
+                error={
+                  formErrorsComboConfig.websiteSaleBankSlip &&
+                  formErrorsComboConfig.websiteSaleBankSlip[0]
+                }
               />
               <InputText
                 name="websiteSaleCredit"
@@ -269,6 +305,10 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                   )
                 }
                 placeholder="0"
+                error={
+                  formErrorsComboConfig.websiteSaleCredit &&
+                  formErrorsComboConfig.websiteSaleCredit[0]
+                }
               />
               <InputText
                 name="websiteSalePix"
@@ -281,6 +321,9 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                   )
                 }
                 placeholder="0"
+                error={
+                  formErrorsComboConfig.websiteSalePix && formErrorsComboConfig.websiteSalePix[0]
+                }
               />
               <InputText
                 name="websiteSaleAdministrateTax"
@@ -293,6 +336,10 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                   )
                 }
                 placeholder="0"
+                error={
+                  formErrorsComboConfig.websiteSaleAdministrateTax &&
+                  formErrorsComboConfig.websiteSaleAdministrateTax[0]
+                }
               />
             </FormGroup>
           </Col>
@@ -311,6 +358,10 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                   )
                 }
                 placeholder="Ex: 2"
+                error={
+                  formErrorsComboConfig.websiteSaleInstallments &&
+                  formErrorsComboConfig.websiteSaleInstallments[0]
+                }
               />
             </FormGroup>
           </Col>
@@ -327,6 +378,9 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                   )
                 }
                 placeholder="Ex: 4"
+                error={
+                  formErrorsComboConfig.websiteSaleFee && formErrorsComboConfig.websiteSaleFee[0]
+                }
               />
             </FormGroup>
           </Col>
@@ -353,6 +407,7 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                   )
                 }
                 placeholder="0"
+                error={formErrorsComboConfig.waiter && formErrorsComboConfig.waiter[0]}
               />
               <ButtonGroup
                 name="partialPayment"
@@ -367,6 +422,9 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                   { value: true, label: 'Sim' },
                   { value: false, label: 'Não' },
                 ]}
+                error={
+                  formErrorsComboConfig.partialPayment && formErrorsComboConfig.partialPayment[0]
+                }
               />
               <ButtonGroup
                 name="allowDiscountCoupon"
@@ -381,6 +439,10 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                   { value: true, label: 'Sim' },
                   { value: false, label: 'Não' },
                 ]}
+                error={
+                  formErrorsComboConfig.allowDiscountCoupon &&
+                  formErrorsComboConfig.allowDiscountCoupon[0]
+                }
               />
             </FormGroup>
           </Col>

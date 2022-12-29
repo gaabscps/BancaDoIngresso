@@ -4,12 +4,15 @@ import EventProduct from '@/model/EventProduct';
 import ProductSubgroup from '@/model/ProductSubgroup';
 import SectorProductCombo from '@/model/SectorProductCombo';
 import SectorProductComboProduct from '@/model/SectorProductComboProduct';
+import { NameFiles } from '../screens';
 
 export interface formComboProps {
   onChangeFormInputCombo: OnChangeFormInput;
+  onClearSelectSubGroup: (ref: any) => void;
+  onChangeFileInput: (inputName: string) => (file: File | undefined) => void;
   formDataCombo: FormData;
   formErrorsCombo: FormErrors;
-  onClearSelectSubGroup: (ref: any) => void;
+  nameFiles: NameFiles | undefined;
 }
 
 export interface formAppendProductsProps {
@@ -31,6 +34,7 @@ export interface comboStatesProps {
   listProduct: EventProduct[];
   product: SectorProductComboProduct[];
   comboState: any;
+  comboConfig: any;
   comboList: SectorProductCombo[];
   productGet: EventProduct[];
 }
@@ -44,10 +48,10 @@ export interface comboActionsProps {
 export interface comboRequestProps {
   saveCombo: () => Promise<void>;
   saveComboConfig: (comboSelected: any) => Promise<void>;
-  getProductSubGroupList: (id: string) => Promise<void>;
   onChangeAllowOnlineSwitch: (comboSelected: any) => Promise<void>;
   onChangeComboSwitch: (comboSelected: any) => Promise<void>;
   getComboSelected: (comboSelected: any) => Promise<void>;
   onCancelEdit: () => void;
   getProductList: (group: string, subGroup: string) => Promise<void>;
+  getComboConfig: (comboSelected: any) => Promise<void>;
 }

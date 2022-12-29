@@ -17,7 +17,7 @@ export interface SelectAutoCompleteProps {
   label?: any;
   error?: any;
   onChange?: (newValue: SingleValue<OptionProps>, actionMeta: ActionMeta<OptionProps>) => void;
-  value: string;
+  value: string | undefined;
   options: OptionProps[];
   placeholder?: string;
   id?: string;
