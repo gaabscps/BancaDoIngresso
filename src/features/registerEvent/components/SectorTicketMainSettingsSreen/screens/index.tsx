@@ -397,6 +397,7 @@ export const SectorTicketMainSettingsScreen: React.FC<
         if (!batchExists) {
           setBatchList([...batchList, payload]);
           onChangeFormInputBatchs(FormInputNameToBatch.name)('');
+          toast.success('Lote adicionado com sucesso!');
         } else {
           toast.error('Lote com o mesmo nome já existe');
         }
