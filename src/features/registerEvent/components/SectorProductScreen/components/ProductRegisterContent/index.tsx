@@ -28,16 +28,23 @@ export enum FormInputName {
 }
 
 export const ProductRegisterContent: React.FC<
-  Pick<SectorProductContainerProps, 'formProduct' | 'productStates'>
-> = ({ formProduct, productStates }) => {
+  Pick<SectorProductContainerProps, 'formProduct' | 'productStates' | 'productActions'>
+> = ({ formProduct, productStates, productActions }) => {
   const { formData, formErrors, onChangeFormInput, onChangeFormFileInput, formNameFiles } =
     formProduct;
 
   const refSelectSubGroup = useRef<any>(null);
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  const onClearSelectSubGroup = () => {
+  const refSelectProduct = useRef<any>(null);
+
+  const onClearSelectSubGroup = (): void => {
     if (refSelectSubGroup) {
       refSelectSubGroup?.current.clearValue();
+    }
+  };
+
+  const onClearSelectProduct = (): void => {
+    if (refSelectProduct) {
+      refSelectProduct?.current.clearValue();
     }
   };
 
@@ -66,6 +73,7 @@ export const ProductRegisterContent: React.FC<
             onChange={e => {
               onChangeFormInput(FormInputName.group)(e?.value as string);
               onClearSelectSubGroup();
+              onClearSelectProduct();
             }}
             error={formErrors.group && formErrors.group[0]}
             options={productStates.groupList.map(group => ({
@@ -81,7 +89,17 @@ export const ProductRegisterContent: React.FC<
             label="Subgrupo do produto"
             placeholder="Digite ou selecione o subgrupo do produto"
             value={formData[FormInputName.subgroup]}
-            onChange={e => onChangeFormInput(FormInputName.subgroup)(e?.value as string)}
+            onChange={e => {
+              onChangeFormInput(FormInputName.subgroup)(e?.value as string);
+              onClearSelectProduct();
+
+              if (e?.value !== undefined) {
+                productActions.onProductByCategory(
+                  formData[FormInputName.group],
+                  e?.value as unknown as string,
+                );
+              }
+            }}
             error={formErrors.subgroup && formErrors.subgroup[0]}
             options={subGruopOptions}
             disabled={formData[FormInputName.group] === ''}
@@ -89,6 +107,7 @@ export const ProductRegisterContent: React.FC<
         </FormGroup>
         <FormGroup className="mb-2">
           <SelectCreateable
+            refSelect={refSelectProduct}
             label="Nome do produto"
             placeholder="Digite ou selecione nome do produto"
             name="name"
@@ -108,6 +127,7 @@ export const ProductRegisterContent: React.FC<
               label: item.name,
             }))}
             error={formErrors.name && formErrors.name[0]}
+            disabled={formData[FormInputName.subgroup] === ''}
           />
         </FormGroup>
         <FormGroup className="mb-2">

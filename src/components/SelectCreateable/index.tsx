@@ -53,6 +53,7 @@ export const SelectCreateable = (props: SelectAutoCompleteProps) => {
           </label>
         )}
         <CreatableSelect
+          ref={props.refSelect}
           options={props.options}
           placeholder={props.placeholder}
           onChange={props.onChange}

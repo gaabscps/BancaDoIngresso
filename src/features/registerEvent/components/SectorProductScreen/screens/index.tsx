@@ -306,10 +306,15 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
     }
   };
 
-  const handleGettOptionProduct = async (): Promise<void> => {
+  const handleGetOptionProductByCategory = async (
+    groupId: string,
+    subgroupId: string,
+  ): Promise<void> => {
     try {
       setState(States.loading);
-      const { data } = await api.get('product/find');
+      const { data } = await api.get(
+        `event/section-product/${params.id}/group/${groupId}/sub-group/${subgroupId}/product`,
+      );
 
       setOptionProduct(data ?? []);
     } catch (error) {
@@ -520,6 +525,7 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
     onNextTab: handleNextTab,
     onCancelEdit: handleOnCancelEditProduct,
     onChangeAllowOnline: handleOnChangeAllowOnline,
+    onProductByCategory: handleGetOptionProductByCategory,
   };
 
   const controllerProductStates: productStatesProps = {
@@ -534,7 +540,6 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
   useEffect(() => {
     handleGetProductList(params.id);
     handleGetGroupList(params.id);
-    handleGettOptionProduct();
   }, []);
 
   useEffect(() => {
