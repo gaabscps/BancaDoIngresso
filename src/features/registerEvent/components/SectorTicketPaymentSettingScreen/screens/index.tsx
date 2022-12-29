@@ -71,7 +71,7 @@ type UrlParams = {
 export const SectorTicketPaymentSettingsScreen: React.FC<
   Pick<SectorTicketContainerProps, 'ticketStates'> &
     Pick<SectorTicketContainerProps, 'ticketStep'> &
-    TabSectorTicketActionsProps
+    Omit<TabSectorTicketActionsProps, 'reloadTickets'>
 > = ({ ticketStates, ticketStep, nextTab, backTab }): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
   const [paymentGatewayList, setPaymentGatewayList] = useState<PaymentGateway[]>([]);
