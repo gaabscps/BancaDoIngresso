@@ -50,7 +50,7 @@ export const SectorTicketMainSettingsScreen: React.FC<
   Pick<SectorTicketContainerProps, 'ticketStates'> &
     Pick<SectorTicketContainerProps, 'ticketStep'> &
     Omit<TabSectorTicketActionsProps, 'backTab'>
-> = ({ ticketStates, ticketStep, nextTab, onFirstTab }): JSX.Element => {
+> = ({ ticketStates, ticketStep, nextTab, onFirstTab, reloadTickets }): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
   const [formNameFiles, setFormNameFiles] = useState<NameFiles>({});
 
@@ -347,7 +347,12 @@ export const SectorTicketMainSettingsScreen: React.FC<
         }
         const response = await api.post(`/event/ticket/${params.id}/main-settings`, payload);
 
-        if (response && isBntNext) nextTab();
+        if (response && isBntNext) {
+          nextTab();
+        }
+        if (!isBntNext) {
+          reloadTickets();
+        }
         if (response) toast.success('Dados salvos com sucesso!');
         ticketStates.setTicket({ ...ticketStates.ticket, ...response.data });
         ticketStep.setTicketState({ ...ticketStates.ticket, ...response.data });

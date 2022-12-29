@@ -47,6 +47,7 @@ export type TabSectorTicketActionsProps = {
   nextTab: () => void;
   backTab: () => void;
   onFirstTab: () => void;
+  reloadTickets: () => void;
 };
 
 type UrlParams = {
@@ -86,6 +87,10 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
     ticketActions.onGetAll(params.id);
   };
 
+  const handleReloadTickets = (): void => {
+    ticketActions.onGetAll(params.id);
+  };
+
   const contentTabs = [
     <>
       <SectorTicketMainSettingsScreen
@@ -93,6 +98,7 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
         ticketStep={ticketStep}
         nextTab={handleNextTab}
         onFirstTab={handleOnFirstTab}
+        reloadTickets={handleReloadTickets}
       />
     </>,
     <>

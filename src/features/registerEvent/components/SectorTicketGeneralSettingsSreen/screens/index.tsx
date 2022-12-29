@@ -27,7 +27,7 @@ type UrlParams = {
 export const SectorTicketGeneralSettingsScreen: React.FC<
   Pick<SectorTicketContainerProps, 'ticketStates'> &
     Pick<SectorTicketContainerProps, 'ticketStep'> &
-    TabSectorTicketActionsProps
+    Omit<TabSectorTicketActionsProps, 'reloadTickets'>
 > = ({ ticketStates, ticketStep, backTab }): JSX.Element => {
   const [state] = useState<States>(States.default);
 
