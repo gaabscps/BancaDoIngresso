@@ -30,9 +30,13 @@ import {
   formAppendProductsProps,
   formComboConfigProps,
   formComboProps,
+  formDiscountCouponProps,
 } from '../types';
 import { States } from '../../ContractorScreen/screens/ui';
-import { FormInputNameComboConfig } from '../components/ComboConfigContent';
+import {
+  FormInputNameComboConfig,
+  FormInputNameDiscountCoupon,
+} from '../components/ComboConfigContent';
 
 // eslint-disable-next-line no-shadow
 export enum ShouldShowModal {
@@ -54,7 +58,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
 }): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
   const [nameFiles, setNameFiles] = useState<NameFiles | undefined>({});
-  const [discountCoupon, setDiscountCoupon] = useState<DiscountCoupon[]>([]);
+  const [discountCouponList, setDiscountCouponList] = useState<DiscountCoupon[]>([]);
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(
     ShouldShowModal.comboConfig,
   );
@@ -147,21 +151,45 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
     },
     validators: {
       physicalSaleAllowCreditCardPayment: [validators.required],
-      physicalSaleDebit: [validators.required, validators.between(0, 10)],
-      physicalSaleCredit: [validators.required, validators.between(0, 10)],
-      physicalSalePix: [validators.required, validators.between(0, 10)],
-      physicalSaleAdministrateTax: [validators.required, validators.between(0, 10)],
-      physicalSaleInstallments: [validators.required],
-      physicalSaleFee: [validators.required, validators.between(0, 10)],
+      physicalSaleDebit: [validators.required, validators.between(0, 99)],
+      physicalSaleCredit: [validators.required, validators.between(0, 99)],
+      physicalSalePix: [validators.required, validators.between(0, 99)],
+      physicalSaleAdministrateTax: [validators.required, validators.between(0, 99)],
+      physicalSaleInstallments: [validators.required, validators.between(0, 10)],
+      physicalSaleFee: [validators.required, validators.between(0, 99)],
       websiteSaleAllowCreditCardPayment: [validators.required],
-      websiteSaleBankSlip: [validators.required, validators.between(0, 10)],
-      websiteSaleCredit: [validators.required, validators.between(0, 10)],
-      websiteSalePix: [validators.required, validators.between(0, 10)],
-      websiteSaleAdministrateTax: [validators.required, validators.between(0, 10)],
-      websiteSaleInstallments: [validators.required],
-      websiteSaleFee: [validators.required, validators.between(0, 10)],
-      waiter: [validators.required, validators.between(0, 10)],
+      websiteSaleBankSlip: [validators.required, validators.between(0, 99)],
+      websiteSaleCredit: [validators.required, validators.between(0, 99)],
+      websiteSalePix: [validators.required, validators.between(0, 99)],
+      websiteSaleAdministrateTax: [validators.required, validators.between(0, 99)],
+      websiteSaleInstallments: [validators.required, validators.between(0, 10)],
+      websiteSaleFee: [validators.required, validators.between(0, 99)],
+      waiter: [validators.required, validators.between(0, 99)],
       partialPayment: [validators.required],
+    },
+    formatters: {},
+  });
+
+  const {
+    formData: formDataDiscount,
+    formErrors: formErrorsDiscount,
+    onChangeFormInput: onChangeFormInputDiscount,
+    isFormValid: isFormValidDiscount,
+    resetForm: resetFormDiscount,
+  } = useForm({
+    initialData: {
+      id: '',
+      name: '',
+      code: '',
+      amount: '',
+      discount: '',
+    },
+    validators: {
+      discountsName: [validators.required],
+      discountsCode: [validators.required],
+      discountsAmount: [validators.required, validators.between(0, 99)],
+      discountsDiscount: [validators.required, validators.between(0, 99)],
+      discountType: [validators.required],
     },
     formatters: {},
   });
@@ -185,33 +213,35 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
 
   // Começo DiscountCoupon form control
 
-  // Adiciona um novo campo de cupom no formulário
-  const handleAddDiscountCoupon = (): void => {
-    setDiscountCoupon([
-      ...discountCoupon,
-      {
-        id: '',
-        name: '',
-        code: '',
-        amount: null,
-        discountType: 0,
-        discount: null,
-      },
-    ]);
+  // Payload envio cupom de desconto para o backend
+  const handleSaveDiscountCoupon = async (comboSelected: any): Promise<void> => {
+    try {
+      if (isFormValidDiscount()) {
+        const payloadDiscountCoupon = {
+          name: formDataDiscount[FormInputNameDiscountCoupon.discountsName],
+          code: formDataDiscount[FormInputNameDiscountCoupon.discountsCode],
+          amount: +formDataDiscount[FormInputNameDiscountCoupon.discountsAmount],
+          discount: +formDataDiscount[FormInputNameDiscountCoupon.discountsDiscount],
+          discountType: +formDataDiscount[FormInputNameDiscountCoupon.discountType],
+        };
+
+        const reponse = await api.post(
+          `/event/section-product/${params.id}/combo/${comboSelected.id}/discount`,
+          payloadDiscountCoupon,
+        );
+        if (reponse) toast.success('Dados salvos com sucesso!');
+
+        resetFormDiscount();
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    }
   };
 
-  // onChange do valor do campo de cupom no formulário
-  const handleChangeDiscountCoupon = (inputName: string, index: number, value: string): void => {
-    const newFormValues = [...discountCoupon] as any;
-    newFormValues[index][inputName] = value;
-    setDiscountCoupon(newFormValues);
-  };
-
-  // Remove um campo de cupom do formulário
-  const handleRemoveDiscountCoupon = (index: number): void => {
-    const values = [...discountCoupon];
-    values.splice(index, 1);
-    setDiscountCoupon(values);
+  // Remove um campo de cupom da lista de cupons
+  const handleRemoveDiscountCoupon = (): void => {
+    // delete backend
   };
 
   // Fim DiscountCoupon form control
@@ -326,13 +356,6 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
 
   const handleOnSaveComboConfig = async (comboSelected: any): Promise<void> => {
     try {
-      // const discountData = discountCoupon.map(disc => ({
-      //   name: disc.name,
-      //   code: disc.code,
-      //   amount: Number(disc.amount),
-      //   discountType: disc.discountType,
-      //   discount: Number(disc.discount),
-      // }));
       if (isFormValidComboConfig()) {
         const payloadComboConfig = {
           formPrinting: +formDataComboConfig[FormInputNameComboConfig.formPrinting],
@@ -472,6 +495,21 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
     }
   };
 
+  const handleGetDiscount = async (comboSelected: any): Promise<void> => {
+    try {
+      setState(States.loading);
+      const { data } = await api.get(
+        `event/section-product/${params.id}/combo/${comboSelected.id}/discount`,
+      );
+      setDiscountCouponList(data ?? []);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
   // GET para montar cenário de edição apos setar combo selecionado
   const handleOnGetCombo = async (comboSelected: any): Promise<void> => {
     try {
@@ -537,7 +575,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
 
       await api.patch(
         `event/section-product/${params.id}/combo/${comboSelected.id}${
-          activedInput ? ' /disable' : '/enable'
+          activedInput === 0 ? '/disable' : '/enable'
         }`,
       );
 
@@ -632,6 +670,12 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
     onChangeFormInputComboConfig,
   };
 
+  const controllerFormDiscountCoupon: formDiscountCouponProps = {
+    onChangeFormInputDiscount,
+    formDataDiscount,
+    formErrorsDiscount,
+  };
+
   const controllerProductActions: comboActionsProps = {
     onFirstTab,
     onReturnTab: handleBackTab,
@@ -641,12 +685,14 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
   const controllerComboRequests: comboRequestProps = {
     saveCombo: handleSaveCombo,
     saveComboConfig: handleOnSaveComboConfig,
+    saveDiscountCoupon: handleSaveDiscountCoupon,
     onChangeAllowOnlineSwitch: handleOnChangeAllowOnlineSwitch,
     onChangeComboSwitch: handleOnChangeComboSwitch,
     getComboSelected: handleOnGetCombo,
     onCancelEdit: handleOnCancelEditCombo,
     getProductList: handleGetProductList,
     getComboConfig: handleGetComboConfig,
+    getDiscount: handleGetDiscount,
   };
 
   useEffect(() => {
@@ -761,13 +807,12 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
       controllerProductActions={controllerProductActions}
       controllerFormCombo={controllerFormCombo}
       controllerFormComboConfig={controllerFormComboConfig}
+      controllerFormDiscountCoupon={controllerFormDiscountCoupon}
       comboRequests={controllerComboRequests}
       onToggle={onToggle}
       shouldShowModal={shouldShowModal}
       onShouldShowModal={handleOnShouldShowModal}
-      handleAddDiscountCoupon={handleAddDiscountCoupon}
-      discountCoupon={discountCoupon}
-      handleChangeDiscountCoupon={handleChangeDiscountCoupon}
+      discountCouponList={discountCouponList}
       handleRemoveDiscountCoupon={handleRemoveDiscountCoupon}
       onShowDeleteCombo={handleOnShowDeleteCombo}
     />

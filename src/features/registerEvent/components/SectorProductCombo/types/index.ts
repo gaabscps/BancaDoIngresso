@@ -27,6 +27,12 @@ export interface formComboConfigProps {
   formErrorsComboConfig: FormErrors;
 }
 
+export interface formDiscountCouponProps {
+  onChangeFormInputDiscount: OnChangeFormInput;
+  formDataDiscount: FormData;
+  formErrorsDiscount: FormErrors;
+}
+
 export interface comboStatesProps {
   state: string;
   listProductSubGroup: ProductSubgroup[];
@@ -48,10 +54,12 @@ export interface comboActionsProps {
 export interface comboRequestProps {
   saveCombo: () => Promise<void>;
   saveComboConfig: (comboSelected: any) => Promise<void>;
+  saveDiscountCoupon: (comboSelected: any) => Promise<void>;
   onChangeAllowOnlineSwitch: (comboSelected: any) => Promise<void>;
   onChangeComboSwitch: (comboSelected: any) => Promise<void>;
   getComboSelected: (comboSelected: any) => Promise<void>;
   onCancelEdit: () => void;
   getProductList: (group: string, subGroup: string) => Promise<void>;
   getComboConfig: (comboSelected: any) => Promise<void>;
+  getDiscount: (comboSelected: any) => Promise<void>;
 }

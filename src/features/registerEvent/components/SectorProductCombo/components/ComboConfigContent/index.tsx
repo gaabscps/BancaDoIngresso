@@ -6,7 +6,10 @@ import DiscountCoupon from '@/model/DiscountCoupon';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { Card, Col, Form, FormGroup, Row } from 'reactstrap';
 import { CustomTable } from '@/components/Table';
-import { formComboConfigProps } from '../../types';
+import { X } from 'react-feather';
+import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
+import TicketIcon from '@/assets/images/svg/Ticket';
+import { comboRequestProps, formComboConfigProps, formDiscountCouponProps } from '../../types';
 
 export interface DataRow {
   id: string;
@@ -40,18 +43,24 @@ export enum FormInputNameComboConfig {
   waiter = 'waiter',
   partialPayment = 'partialPayment',
   allowDiscountCoupon = 'allowDiscountCoupon',
+}
+
+// eslint-disable-next-line no-shadow
+export enum FormInputNameDiscountCoupon {
   discountType = 'discountType',
   discountsName = 'discountsName',
   discountsCode = 'discountsCode',
   discountsAmount = 'discountsAmount',
   discountsDiscount = 'discountsDiscount',
 }
+
 interface RegisterContentProps {
-  handleAddDiscountCoupon: () => void;
-  handleChangeDiscountCoupon: (name: string, index: number, value: string) => void;
   handleRemoveDiscountCoupon: (index: number) => void;
-  discountCoupon: DiscountCoupon[];
+  discountCouponList: DiscountCoupon[];
   controllerFormComboConfig: formComboConfigProps;
+  controllerFormDiscountCoupon: formDiscountCouponProps;
+  comboRequests: comboRequestProps;
+  comboStates: any;
 }
 
 // eslint-disable-next-line no-shadow
@@ -61,15 +70,16 @@ export enum FormInputName {
 }
 
 export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
-  handleAddDiscountCoupon,
-  handleChangeDiscountCoupon,
-  handleRemoveDiscountCoupon,
-  discountCoupon,
+  controllerFormDiscountCoupon: { onChangeFormInputDiscount, formDataDiscount, formErrorsDiscount },
   controllerFormComboConfig: {
     onChangeFormInputComboConfig,
     formDataComboConfig,
     formErrorsComboConfig,
   },
+  comboRequests: { saveDiscountCoupon },
+
+  comboStates,
+  discountCouponList,
 }) => {
   return (
     <>
@@ -142,11 +152,11 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
               <InputText
                 name="physicalSaleDebit"
                 label="Debito %"
-                maxLength={2}
+                maxLength={5}
                 value={formDataComboConfig[FormInputNameComboConfig.physicalSaleDebit]}
                 onChange={e =>
                   onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSaleDebit)(
-                    e?.target?.value as string,
+                    e?.target?.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1') as string,
                   )
                 }
                 placeholder="0"
@@ -158,11 +168,11 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
               <InputText
                 name="physicalSaleCredit"
                 label="Crédito %"
-                maxLength={2}
+                maxLength={5}
                 value={formDataComboConfig[FormInputNameComboConfig.physicalSaleCredit]}
                 onChange={e =>
                   onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSaleCredit)(
-                    e?.target?.value as string,
+                    e?.target?.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1') as string,
                   )
                 }
                 placeholder="0"
@@ -174,11 +184,11 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
               <InputText
                 name="physicalSalePix"
                 label="PIX"
-                maxLength={2}
+                maxLength={5}
                 value={formDataComboConfig[FormInputNameComboConfig.physicalSalePix]}
                 onChange={e =>
                   onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSalePix)(
-                    e?.target?.value as string,
+                    e?.target?.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1') as string,
                   )
                 }
                 placeholder="0"
@@ -189,12 +199,12 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
               <InputText
                 name="physicalSaleAdministrateTax"
                 label="Taxa administrativa"
-                maxLength={2}
+                maxLength={5}
                 value={formDataComboConfig[FormInputNameComboConfig.physicalSaleAdministrateTax]}
                 onChange={e =>
                   onChangeFormInputComboConfig(
                     FormInputNameComboConfig.physicalSaleAdministrateTax,
-                  )(e?.target?.value as string)
+                  )(e?.target?.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1') as string)
                 }
                 placeholder="0"
                 error={
@@ -231,11 +241,11 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
               <InputText
                 name="physicalSaleFee"
                 label="Juros ao mês"
-                maxLength={2}
+                maxLength={5}
                 value={formDataComboConfig[FormInputNameComboConfig.physicalSaleFee]}
                 onChange={e =>
                   onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSaleFee)(
-                    e?.target?.value as string,
+                    e?.target?.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1') as string,
                   )
                 }
                 placeholder="Ex: 4"
@@ -281,11 +291,11 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
               <InputText
                 name="websiteSaleBankSlip"
                 label="Boleto %"
-                maxLength={2}
+                maxLength={5}
                 value={formDataComboConfig[FormInputNameComboConfig.websiteSaleBankSlip]}
                 onChange={e =>
                   onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSaleBankSlip)(
-                    e?.target?.value as string,
+                    e?.target?.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1') as string,
                   )
                 }
                 placeholder="0"
@@ -297,11 +307,11 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
               <InputText
                 name="websiteSaleCredit"
                 label="Crédito %"
-                maxLength={2}
+                maxLength={5}
                 value={formDataComboConfig[FormInputNameComboConfig.websiteSaleCredit]}
                 onChange={e =>
                   onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSaleCredit)(
-                    e?.target?.value as string,
+                    e?.target?.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1') as string,
                   )
                 }
                 placeholder="0"
@@ -313,11 +323,11 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
               <InputText
                 name="websiteSalePix"
                 label="PIX"
-                maxLength={2}
+                maxLength={5}
                 value={formDataComboConfig[FormInputNameComboConfig.websiteSalePix]}
                 onChange={e =>
                   onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSalePix)(
-                    e?.target?.value as string,
+                    e?.target?.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1') as string,
                   )
                 }
                 placeholder="0"
@@ -328,11 +338,11 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
               <InputText
                 name="websiteSaleAdministrateTax"
                 label="Taxa administrativa"
-                maxLength={2}
+                maxLength={5}
                 value={formDataComboConfig[FormInputNameComboConfig.websiteSaleAdministrateTax]}
                 onChange={e =>
                   onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSaleAdministrateTax)(
-                    e?.target?.value as string,
+                    e?.target?.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1') as string,
                   )
                 }
                 placeholder="0"
@@ -370,11 +380,11 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
               <InputText
                 name="websiteSaleFee"
                 label="Juros ao mês"
-                maxLength={2}
+                maxLength={5}
                 value={formDataComboConfig[FormInputNameComboConfig.websiteSaleFee]}
                 onChange={e =>
                   onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSaleFee)(
-                    e?.target?.value as string,
+                    e?.target?.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1') as string,
                   )
                 }
                 placeholder="Ex: 4"
@@ -399,11 +409,11 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                 name="waiter"
                 label="Porcentagem do Garçom (%)"
                 addon="%"
-                maxLength={2}
+                maxLength={5}
                 value={formDataComboConfig[FormInputNameComboConfig.waiter]}
                 onChange={e =>
                   onChangeFormInputComboConfig(FormInputNameComboConfig.waiter)(
-                    e?.target?.value as string,
+                    e?.target?.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1') as string,
                   )
                 }
                 placeholder="0"
@@ -447,120 +457,208 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
             </FormGroup>
           </Col>
         </Row>
-        <Row>
-          <Col>
-            <div
-              onClick={() => {
-                handleAddDiscountCoupon();
-              }}
-              className="action-icon mb-5 register-buttom"
-            >
-              + adicionar cupom de desconto
-            </div>
-          </Col>
-        </Row>
       </Form>
-      <Card className="card__main-container">
-        <Form
-          style={{ backgroundColor: '#f1f1f1' }}
-          noValidate={true}
-          onSubmit={(e): void => {
-            e.preventDefault();
-          }}
-        >
-          {discountCoupon.map((item, index) => (
-            <>
-              <div
-                className="p-3 pt-5"
-                style={{ backgroundColor: '#fff', borderRadius: '5px' }}
-                key={index}
-              >
-                <Row>
-                  <Col md={6}>
-                    <FormGroup className="mb-2">
-                      <InputText
-                        name="name"
-                        label="Nome do código"
-                        placeholder="Digite o nome do cógio. Ex: Whisky para João"
-                        value={item.name}
-                        onChange={e => handleChangeDiscountCoupon('name', index, e?.target.value)}
-                        error={undefined}
-                      />
-                    </FormGroup>
-                  </Col>
-                  <Col md={6}>
-                    <FormGroup className="mb-2">
-                      <InputText
-                        name="code"
-                        label="Código do desconto"
-                        placeholder="Ex: JAO50"
-                        value={item.code}
-                        onChange={e => handleChangeDiscountCoupon('code', index, e?.target.value)}
-                        error={undefined}
-                      />
-                    </FormGroup>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col className="mb-2 mr-5" md={2} sm={4}>
-                    <FormGroup>
-                      <InputText
-                        name="amount"
-                        type="number"
-                        label="Quant. código"
-                        placeholder="0"
-                        value={String(item.amount)}
-                        onChange={e => handleChangeDiscountCoupon('amount', index, e?.target.value)}
-                        error={undefined}
-                      />
-                    </FormGroup>
-                  </Col>
-                  <Col className="ml-4 mr-2" md={3}>
-                    <ButtonGroup
-                      style={{ width: 'fit-content' }}
-                      name="discountType"
-                      label="Tipo"
-                      value={formDataComboConfig[FormInputNameComboConfig.discountType]}
-                      onChange={e =>
-                        onChangeFormInputComboConfig(FormInputNameComboConfig.discountType)(
-                          e?.target?.value as string,
-                        )
-                      }
-                      options={[
-                        { value: 0, label: 'R$' },
-                        { value: 1, label: '%' },
-                      ]}
-                    />
-                  </Col>
-                  <Col md={4} sm={4}>
-                    <FormGroup className="mb-2">
-                      <InputText
-                        name="discount"
-                        type="number"
-                        label="Valor do desconto"
-                        placeholder="R$40,00 ou 50% "
-                        value={String(item.discount)}
+      {formDataComboConfig.allowDiscountCoupon === 'true' || discountCouponList.length > 0 ? (
+        <>
+          <Card className="card__main-container">
+            <Form
+              style={{ backgroundColor: '#f1f1f1' }}
+              noValidate={true}
+              onSubmit={(e): void => {
+                e.preventDefault();
+              }}
+            >
+              <>
+                <div className="p-3 pt-5" style={{ backgroundColor: '#fff', borderRadius: '5px' }}>
+                  <Row>
+                    <Col md={6}>
+                      <FormGroup className="mb-2">
+                        <InputText
+                          name="name"
+                          label="Nome do código"
+                          placeholder="Digite o nome do cógio. Ex: Whisky para João"
+                          value={formDataDiscount[FormInputNameDiscountCoupon.discountsName]}
+                          onChange={e =>
+                            onChangeFormInputDiscount(FormInputNameDiscountCoupon.discountsName)(
+                              e?.target?.value as string,
+                            )
+                          }
+                          error={
+                            formErrorsDiscount.discountsName && formErrorsDiscount.discountsName[0]
+                          }
+                        />
+                      </FormGroup>
+                    </Col>
+                    <Col md={6}>
+                      <FormGroup className="mb-2">
+                        <InputText
+                          name="code"
+                          label="Código do desconto"
+                          placeholder="Ex: JAO50"
+                          value={formDataDiscount[FormInputNameDiscountCoupon.discountsCode]}
+                          onChange={e =>
+                            onChangeFormInputDiscount(FormInputNameDiscountCoupon.discountsCode)(
+                              e?.target?.value as string,
+                            )
+                          }
+                          error={
+                            formErrorsDiscount.discountsCode && formErrorsDiscount.discountsCode[0]
+                          }
+                        />
+                      </FormGroup>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col className="mb-2 mr-5" md={2} sm={4}>
+                      <FormGroup>
+                        <InputText
+                          name="amount"
+                          type="number"
+                          label="Quant. código"
+                          placeholder="0"
+                          value={formDataDiscount[FormInputNameDiscountCoupon.discountsAmount]}
+                          onChange={e =>
+                            onChangeFormInputDiscount(FormInputNameDiscountCoupon.discountsAmount)(
+                              e?.target?.value as string,
+                            )
+                          }
+                          error={
+                            formErrorsDiscount.discountsAmount &&
+                            formErrorsDiscount.discountsAmount[0]
+                          }
+                        />
+                      </FormGroup>
+                    </Col>
+                    <Col className="ml-4 mr-2" md={3}>
+                      <ButtonGroup
+                        style={{ width: 'fit-content' }}
+                        name="discountType"
+                        label="Tipo"
+                        value={formDataDiscount[FormInputNameDiscountCoupon.discountType]}
                         onChange={e =>
-                          handleChangeDiscountCoupon('discount', index, e?.target.value)
+                          onChangeFormInputDiscount(FormInputNameDiscountCoupon.discountType)(
+                            e?.target?.value as string,
+                          )
                         }
-                        error={undefined}
+                        error={
+                          formErrorsDiscount.discountType && formErrorsDiscount.discountType[0]
+                        }
+                        options={[
+                          { value: 0, label: 'R$' },
+                          { value: 1, label: '%' },
+                        ]}
                       />
-                    </FormGroup>
-                  </Col>
-                  <Col className="d-flex justify-content-center align-items-center w-100 mr-3 mb-4">
-                    <Trash
-                      className="svg-icon action-icon"
-                      onClick={() => handleRemoveDiscountCoupon(index)}
-                    />
-                  </Col>
-                </Row>
-              </div>
-              <div className="p-3" />
-            </>
-          ))}
-        </Form>
-        <CustomTable numberRowsPerPage={0} progressPending={false} columns={[]} data={[]} />
-      </Card>
+                    </Col>
+                    <Col md={4} sm={4}>
+                      <FormGroup className="mb-2">
+                        <InputText
+                          className={
+                            !formDataDiscount[FormInputNameDiscountCoupon.discountType]
+                              ? 'input__disabled'
+                              : ''
+                          }
+                          name="discount"
+                          type="number"
+                          label="Valor do desconto"
+                          placeholder="R$40,00 ou 50% "
+                          value={formDataDiscount[FormInputNameDiscountCoupon.discountsDiscount]}
+                          onChange={e =>
+                            onChangeFormInputDiscount(
+                              FormInputNameDiscountCoupon.discountsDiscount,
+                            )(
+                              e?.target?.value
+                                .replace(/\D/g, '')
+                                .replace(/(\d{2})$/, '.$1') as string,
+                            )
+                          }
+                          error={
+                            formErrorsDiscount.discountsDiscount &&
+                            formErrorsDiscount.discountsDiscount[0]
+                          }
+                          disabled={!formDataDiscount[FormInputNameDiscountCoupon.discountType]}
+                        />
+                      </FormGroup>
+                    </Col>
+                    <Col className="d-flex justify-content-center align-items-center w-100 mr-3 mb-4">
+                      <Trash className="svg-icon action-icon" />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <div
+                        onClick={() => {
+                          console.log(comboStates);
+                          saveDiscountCoupon(comboStates.comboState);
+                        }}
+                        className="action-icon mb-3 register-buttom d-flex justify-content-end align-items-center"
+                      >
+                        + adicionar cupom de desconto
+                      </div>
+                    </Col>
+                  </Row>
+                </div>
+
+                <div className="p-3" />
+              </>
+            </Form>
+          </Card>
+          <SuperCollapse
+            title={`Produtos cadastrados`}
+            count={discountCouponList.length}
+            leftIcon={TicketIcon}
+            content={discountCouponList.map((discount: any, index) => (
+              <>
+                {index > 0 ? <hr style={{ margin: '25px -30px 30px -50px' }} /> : null}
+                <div className="mb-4">
+                  <span className="secondary-table-title" style={{ fontWeight: '300' }}>
+                    Código de desconto #{index + 1}
+                  </span>
+                  <span className="secondary-table-title" style={{ fontWeight: '500' }}>
+                    <b> • </b> {discount.code}
+                  </span>
+                </div>
+                <CustomTable
+                  numberRowsPerPage={0}
+                  progressPending={false}
+                  theme="secondaryWithoutBorder"
+                  columns={[
+                    {
+                      name: 'Código do desconto',
+                      selector: row => row.code,
+                    },
+                    {
+                      name: 'Quant. código',
+                      selector: row => row.amount,
+                    },
+                    {
+                      name: 'Valor do desconto',
+                      selector: row => row.discount,
+                    },
+                    {
+                      name: (
+                        <div className="d-flex justify-content-center align-items-center">
+                          <X size={20} className="svg-icon action-icon" />
+                        </div>
+                      ),
+                      selector: row => row.actions,
+                      right: true,
+                    },
+                  ]}
+                  data={
+                    discountCouponList.map((item: any) => {
+                      return {
+                        code: item.code,
+                        amount: item.amount,
+                        discount: item.discount,
+                      };
+                    }) || []
+                  }
+                />
+              </>
+            ))}
+          />
+        </>
+      ) : null}
     </>
   );
 };
