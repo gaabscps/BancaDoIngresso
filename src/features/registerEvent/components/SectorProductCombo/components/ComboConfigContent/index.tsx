@@ -605,63 +605,72 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
             title={`Produtos cadastrados`}
             count={discountCouponList.length}
             leftIcon={TicketIcon}
-            content={discountCouponList.map((discount: any, index) => (
-              <>
-                {index > 0 ? <hr style={{ margin: '25px -30px 30px -50px' }} /> : null}
-                <div className="mb-4">
-                  <span className="secondary-table-title" style={{ fontWeight: '300' }}>
-                    Código de desconto #{index + 1}
-                  </span>
-                  <span className="secondary-table-title" style={{ fontWeight: '500' }}>
-                    <b> • </b> {discount.code}
-                  </span>
+            content={
+              discountCouponList.length > 0 ? (
+                discountCouponList.map((discount: any, index) => (
+                  <>
+                    {index > 0 ? <hr style={{ margin: '25px -30px 30px -50px' }} /> : null}
+                    <div className="mb-4">
+                      <span className="secondary-table-title" style={{ fontWeight: '300' }}>
+                        Código de desconto #{index + 1}
+                      </span>
+                      <span className="secondary-table-title" style={{ fontWeight: '500' }}>
+                        <b> • </b> {discount.code}
+                      </span>
+                    </div>
+                    <CustomTable
+                      numberRowsPerPage={0}
+                      progressPending={false}
+                      theme="secondaryWithoutBorder"
+                      columns={[
+                        {
+                          name: 'Código do desconto',
+                          selector: row => row.code,
+                        },
+                        {
+                          name: 'Quant. código',
+                          selector: row => row.amount,
+                        },
+                        {
+                          name: 'Valor do desconto',
+                          selector: row => row.discount,
+                        },
+                        {
+                          name: (
+                            <div className="d-flex justify-content-center align-items-center">
+                              <X
+                                onClick={() => {
+                                  console.log(comboStates);
+                                  removeDiscountCoupon(comboStates.comboState, discount);
+                                }}
+                                size={20}
+                                className="svg-icon action-icon"
+                              />
+                            </div>
+                          ),
+                          selector: row => row.actions,
+                          right: true,
+                        },
+                      ]}
+                      data={
+                        discountCouponList.map((item: any) => {
+                          return {
+                            code: item.code,
+                            amount: item.amount,
+                            discount: item.discount,
+                          };
+                        }) || []
+                      }
+                    />
+                  </>
+                ))
+              ) : (
+                <div>
+                  Nenhum cupom de desconto cadastrado. Aqui será exibida uma lista dos cupons de
+                  desconto cadastrados
                 </div>
-                <CustomTable
-                  numberRowsPerPage={0}
-                  progressPending={false}
-                  theme="secondaryWithoutBorder"
-                  columns={[
-                    {
-                      name: 'Código do desconto',
-                      selector: row => row.code,
-                    },
-                    {
-                      name: 'Quant. código',
-                      selector: row => row.amount,
-                    },
-                    {
-                      name: 'Valor do desconto',
-                      selector: row => row.discount,
-                    },
-                    {
-                      name: (
-                        <div className="d-flex justify-content-center align-items-center">
-                          <X
-                            onClick={() => {
-                              console.log(comboStates);
-                              removeDiscountCoupon(comboStates.comboState, discount);
-                            }}
-                            size={20}
-                            className="svg-icon action-icon"
-                          />
-                        </div>
-                      ),
-                      selector: row => row.actions,
-                      right: true,
-                    },
-                  ]}
-                  data={
-                    discountCouponList.map((item: any) => {
-                      return {
-                        code: item.code,
-                        amount: item.amount,
-                        discount: item.discount,
-                      };
-                    }) || []
-                  }
-                />
-              </>
-            ))}
+              )
+            }
           />
         </>
       ) : null}

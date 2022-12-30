@@ -434,117 +434,110 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                   <SuperCollapse
                     overflow={true}
                     title="Combos cadastrados"
+                    count={comboList.length}
                     content={
                       comboList.length > 0 ? (
-                        comboList.map((selected, indexCombo) => {
-                          console.log(selected);
-                          return (
-                            <div className={comboState ? 'disabled-content' : ''} key={indexCombo}>
-                              <div className="ml-3 mt-3 d-flex align-items-center">
-                                {comboList.length > 0 ? (
-                                  <>
-                                    <span
-                                      style={{ whiteSpace: 'nowrap', fontWeight: '300' }}
-                                      className="secondary-table-title"
-                                    >
-                                      Combo # {indexCombo + 1}
-                                      <span style={{ transform: 'scale(5)' }}> · </span>
-                                      <span style={{ fontWeight: '500' }}>{selected.name}</span>
-                                    </span>
-                                    <div className="mt-4 d-flex w-100 justify-content-end">
-                                      <Switch
-                                        label="Vender online"
-                                        className="ml-5 action-icon"
-                                        name="allowSellingWebsite"
-                                        onChange={() => {
-                                          onChangeAllowOnlineSwitch(selected);
-                                        }}
-                                        checked={!!selected.allowSellingWebsite}
-                                      />
-                                      <Switch
-                                        label="Combo ativo"
-                                        className="ml-5 action-icon"
-                                        name="status"
-                                        onChange={() => {
-                                          onChangeComboSwitch(selected);
-                                        }}
-                                        checked={selected.status !== 0}
-                                      />
-                                    </div>
-                                  </>
-                                ) : null}
+                        comboList.map((selected, indexCombo) => (
+                          <div className={comboState ? 'disabled-content' : ''} key={indexCombo}>
+                            <div className="ml-3 mt-3 d-flex align-items-center">
+                              <span
+                                style={{ whiteSpace: 'nowrap', fontWeight: '300' }}
+                                className="secondary-table-title"
+                              >
+                                Combo # {indexCombo + 1}
+                                <span style={{ transform: 'scale(5)' }}> · </span>
+                                <span style={{ fontWeight: '500' }}>{selected.name}</span>
+                              </span>
+                              <div className="mt-4 d-flex w-100 justify-content-end">
+                                <Switch
+                                  label="Vender online"
+                                  className="ml-5 action-icon"
+                                  name={`allowSellingWebsite-${selected.id}`}
+                                  onChange={() => {
+                                    onChangeAllowOnlineSwitch(selected);
+                                  }}
+                                  checked={!!selected.allowSellingWebsite}
+                                />
+                                <Switch
+                                  label="Combo ativo"
+                                  className="ml-5 action-icon"
+                                  name={`status-${selected.id}`}
+                                  onChange={() => {
+                                    onChangeComboSwitch(selected);
+                                  }}
+                                  checked={selected.status !== 0}
+                                />
                               </div>
-                              <CustomTable
-                                theme="secondary"
-                                numberRowsPerPage={0}
-                                progressPending={false}
-                                columns={[
-                                  {
-                                    name: 'Produtos',
-                                    width: '35%',
-                                    selector: row => row.name,
-                                  },
-                                  {
-                                    name: 'Quantidade',
-                                    width: '20%',
-                                    selector: row => row.amount,
-                                  },
-                                  {
-                                    name: 'Valor do Combo',
-                                    width: '20%',
-                                    selector: row => row.totalValue,
-                                  },
-                                  {
-                                    name: (
-                                      <>
-                                        <ItemConfig
-                                          onClick={(): void => {
-                                            getComboConfig(selected);
-                                            getDiscount(selected);
-                                            onToggle();
-                                            onShouldShowModal({
-                                              value: ShouldShowModal.comboConfig,
-                                              newTitleModal: `Configurações do combo #${
-                                                indexCombo + 1
-                                              }`,
-                                              comboSelected: selected,
-                                            });
-                                          }}
-                                          className={
-                                            comboConfig?.physicalSale
-                                              ? 'mr-3 action-icon '
-                                              : 'mr-3 action-icon svg-icon-error'
-                                          }
-                                        />
-                                        <Pen
-                                          onClick={() => {
-                                            getComboConfig(selected);
-                                            getComboSelected(selected);
-                                          }}
-                                          className="mr-3 action-icon"
-                                        />
-                                        <Trash
-                                          className="action-icon"
-                                          onClick={() => onShowDeleteCombo(selected)}
-                                        />
-                                      </>
-                                    ),
-                                    selector: row => row.action,
-                                    right: true,
-                                  },
-                                ]}
-                                data={selected.products.map((products, productIndex) => ({
-                                  id: products.id,
-                                  name: products.name,
-                                  amount: `${products.amount} un`,
-                                  totalValue:
-                                    productIndex === 0 ? `R$ ${selected.totalValue}` : null,
-                                  action: '',
-                                }))}
-                              />
                             </div>
-                          );
-                        })
+                            <CustomTable
+                              theme="secondary"
+                              numberRowsPerPage={0}
+                              progressPending={false}
+                              columns={[
+                                {
+                                  name: 'Produtos',
+                                  width: '35%',
+                                  selector: row => row.name,
+                                },
+                                {
+                                  name: 'Quantidade',
+                                  width: '20%',
+                                  selector: row => row.amount,
+                                },
+                                {
+                                  name: 'Valor do Combo',
+                                  width: '20%',
+                                  selector: row => row.totalValue,
+                                },
+                                {
+                                  name: (
+                                    <>
+                                      <ItemConfig
+                                        onClick={(): void => {
+                                          getComboConfig(selected);
+                                          getDiscount(selected);
+                                          onToggle();
+                                          onShouldShowModal({
+                                            value: ShouldShowModal.comboConfig,
+                                            newTitleModal: `Configurações do combo #${
+                                              indexCombo + 1
+                                            }`,
+                                            comboSelected: selected,
+                                          });
+                                        }}
+                                        className={
+                                          comboConfig?.physicalSale
+                                            ? 'mr-3 action-icon '
+                                            : 'mr-3 action-icon svg-icon-error'
+                                        }
+                                      />
+                                      <Pen
+                                        onClick={() => {
+                                          getComboConfig(selected);
+                                          getComboSelected(selected);
+                                        }}
+                                        className="mr-3 action-icon"
+                                      />
+                                      <Trash
+                                        className="action-icon"
+                                        onClick={() => onShowDeleteCombo(selected)}
+                                      />
+                                    </>
+                                  ),
+                                  selector: row => row.action,
+                                  right: true,
+                                },
+                              ]}
+                              data={selected.products.map((products, productIndex) => ({
+                                id: products.id,
+                                name: products.name,
+                                amount: `${products.amount} un`,
+                                totalValue: productIndex === 0 ? `R$ ${selected.totalValue}` : null,
+                                action: '',
+                              }))}
+                            />
+                          </div>
+                        ))
                       ) : (
                         <div>
                           Nenhum combo cadastrado. Aqui será exibida uma lista dos combos
