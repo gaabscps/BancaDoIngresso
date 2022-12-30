@@ -404,6 +404,12 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({ back
     handleGetProducComboConfigList(params.id);
   }, []);
 
+  useEffect(() => {
+    if (!visible) {
+      handleOnCancelEditPos();
+    }
+  }, [visible]);
+
   return (
     <>
       <SectorPosContainer

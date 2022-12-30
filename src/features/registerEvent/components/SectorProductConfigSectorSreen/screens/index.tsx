@@ -333,6 +333,12 @@ export const SectorProductConfigSectorScreen: React.FC<
   }, []);
 
   useEffect(() => {
+    if (!visible) {
+      handleOnCancelEditSector();
+    }
+  }, [visible]);
+
+  useEffect(() => {
     // verify if sector not array empty
     if (sector) {
       const _subgroup: any[] = [];
