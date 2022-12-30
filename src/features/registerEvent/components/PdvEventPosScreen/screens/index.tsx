@@ -143,7 +143,7 @@ export const PdvEventPosScreen: React.FC<Omit<PdvEventPosScreen, 'firstTab'>> = 
     }
   };
 
-  const getPoss = async (): Promise<void> => {
+  const getPos = async (): Promise<void> => {
     if (pdvId) {
       const response = await api.get<EventPdvPos[]>(`/event/pdv/${params.id}/pos/${pdvId}/`);
       if (response.data.length > 0) {
@@ -157,7 +157,7 @@ export const PdvEventPosScreen: React.FC<Omit<PdvEventPosScreen, 'firstTab'>> = 
     try {
       setState(States.loading);
       await api.delete(`/event/pdv/${params.id}/pos/${pdvId}/${posSelected.id}`);
-      await getPoss();
+      await getPos();
       toast.success('POS excluída com sucesso!');
       confirmDelete.hide();
     } catch (error) {
@@ -202,7 +202,7 @@ export const PdvEventPosScreen: React.FC<Omit<PdvEventPosScreen, 'firstTab'>> = 
   const handleGetAllPos = async (): Promise<void> => {
     try {
       setState(States.loading);
-      await getPoss();
+      await getPos();
       const { data } = await api.get<Pos[]>('/pos/find');
       setPosOptions(data ?? []);
     } catch (error) {
@@ -262,7 +262,7 @@ export const PdvEventPosScreen: React.FC<Omit<PdvEventPosScreen, 'firstTab'>> = 
 
         await api.post<EventPdvPos>(`/event/pdv/${params.id}/pos/`, request);
         resetFormPosRegister();
-        await getPoss();
+        await getPos();
       } catch (error) {
         const err = error as AxiosError;
         toast.error(err.message);
@@ -294,7 +294,7 @@ export const PdvEventPosScreen: React.FC<Omit<PdvEventPosScreen, 'firstTab'>> = 
         resetFormPosConfig();
         handleOnCancelEditPos();
         onToggle();
-        await getPoss();
+        await getPos();
       } catch (error) {
         const err = error as AxiosError;
         toast.error(err.message);
@@ -346,7 +346,7 @@ export const PdvEventPosScreen: React.FC<Omit<PdvEventPosScreen, 'firstTab'>> = 
   };
 
   useEffect(() => {
-    getPoss();
+    getPos();
   }, [pdvId]);
 
   useEffect(() => {

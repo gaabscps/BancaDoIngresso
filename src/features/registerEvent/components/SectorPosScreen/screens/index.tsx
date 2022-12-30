@@ -375,18 +375,18 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({ back
 
       const _products: any[] = [];
       const _combos: any[] = [];
-      pos?.eventSections?.forEach((item: any) => {
-        item?.products?.forEach(({ categorySubGroup, id }: any) => {
+      pos?.eventSections?.forEach(({ products, section }: any) => {
+        products?.forEach(({ categorySubGroup, id }: any) => {
           _products.push(
-            `${item?.section?.id}_${categorySubGroup?.categoryGroup?.id}_${categorySubGroup?.id}_${id}`,
+            `${section?.id}_${categorySubGroup?.categoryGroup?.id}_${categorySubGroup?.id}_${id}`,
           );
         });
       });
 
-      pos?.eventSections?.forEach((item: any) => {
-        item?.combos?.forEach(({ categorySubGroup, id }: any) => {
+      pos?.eventSections?.forEach(({ combos, section }: any) => {
+        combos?.forEach(({ categorySubGroup, id }: any) => {
           _combos.push(
-            `${item?.section?.id}_${categorySubGroup?.categoryGroup?.id}_${categorySubGroup?.id}_${id}`,
+            `${section?.id}_${categorySubGroup?.categoryGroup?.id}_${categorySubGroup?.id}_${id}`,
           );
         });
       });
