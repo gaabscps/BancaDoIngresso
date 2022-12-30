@@ -179,10 +179,11 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
   } = useForm({
     initialData: {
       id: '',
-      name: '',
-      code: '',
-      amount: '',
-      discount: '',
+      discountsName: '',
+      discountsCode: '',
+      discountsAmount: '',
+      discountsDiscount: '',
+      discountType: '',
     },
     validators: {
       discountsName: [validators.required],
@@ -232,6 +233,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
         if (reponse) toast.success('Dados salvos com sucesso!');
 
         resetFormDiscount();
+        handleGetDiscount(comboSelected);
       }
     } catch (error) {
       const err = error as AxiosError;
@@ -239,9 +241,22 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
     }
   };
 
-  // Remove um campo de cupom da lista de cupons
-  const handleRemoveDiscountCoupon = (): void => {
-    // delete backend
+  const handleRemoveDiscountCoupon = async (
+    comboSelected: any,
+    discountCouponSelected: any,
+  ): Promise<void> => {
+    try {
+      await api.delete(
+        `/event/section-product/${params?.id}/combo/${comboSelected.id}/discount/${discountCouponSelected.id}`,
+      );
+      toast.success('Combo excluído com sucesso!');
+      handleGetDiscount(comboSelected);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      confirmDelete.hide();
+    }
   };
 
   // Fim DiscountCoupon form control
@@ -693,7 +708,14 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
     getProductList: handleGetProductList,
     getComboConfig: handleGetComboConfig,
     getDiscount: handleGetDiscount,
+    removeDiscountCoupon: handleRemoveDiscountCoupon,
   };
+
+  useEffect(() => {
+    if (!visible) {
+      handleOnCancelEditCombo();
+    }
+  }, [visible]);
 
   useEffect(() => {
     handleGetComboList(params.id);
@@ -813,7 +835,6 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
       shouldShowModal={shouldShowModal}
       onShouldShowModal={handleOnShouldShowModal}
       discountCouponList={discountCouponList}
-      handleRemoveDiscountCoupon={handleRemoveDiscountCoupon}
       onShowDeleteCombo={handleOnShowDeleteCombo}
     />
   );

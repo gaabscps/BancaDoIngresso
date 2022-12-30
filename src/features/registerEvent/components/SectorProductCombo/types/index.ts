@@ -62,4 +62,5 @@ export interface comboRequestProps {
   getProductList: (group: string, subGroup: string) => Promise<void>;
   getComboConfig: (comboSelected: any) => Promise<void>;
   getDiscount: (comboSelected: any) => Promise<void>;
+  removeDiscountCoupon: (comboSelected: any, discountCouponSelected: any) => Promise<void>;
 }

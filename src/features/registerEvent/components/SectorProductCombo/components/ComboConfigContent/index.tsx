@@ -55,7 +55,6 @@ export enum FormInputNameDiscountCoupon {
 }
 
 interface RegisterContentProps {
-  handleRemoveDiscountCoupon: (index: number) => void;
   discountCouponList: DiscountCoupon[];
   controllerFormComboConfig: formComboConfigProps;
   controllerFormDiscountCoupon: formDiscountCouponProps;
@@ -76,7 +75,7 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
     formDataComboConfig,
     formErrorsComboConfig,
   },
-  comboRequests: { saveDiscountCoupon },
+  comboRequests: { saveDiscountCoupon, removeDiscountCoupon },
 
   comboStates,
   discountCouponList,
@@ -637,7 +636,14 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                     {
                       name: (
                         <div className="d-flex justify-content-center align-items-center">
-                          <X size={20} className="svg-icon action-icon" />
+                          <X
+                            onClick={() => {
+                              console.log(comboStates);
+                              removeDiscountCoupon(comboStates.comboState, discount);
+                            }}
+                            size={20}
+                            className="svg-icon action-icon"
+                          />
                         </div>
                       ),
                       selector: row => row.actions,

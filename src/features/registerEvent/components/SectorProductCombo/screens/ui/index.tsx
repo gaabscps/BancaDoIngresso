@@ -48,7 +48,6 @@ interface SectorProductComboContainerProps {
   comboStates: comboStatesProps;
   formAppendProducts: formAppendProductsProps;
   comboRequests: comboRequestProps;
-  handleRemoveDiscountCoupon: (index: number) => void;
   discountCouponList: DiscountCoupon[];
   onShouldShowModal: ({
     value,
@@ -94,7 +93,6 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
   comboRequests,
   discountCouponList,
   controllerProductActions,
-  handleRemoveDiscountCoupon,
   onToggle,
   onShouldShowModal,
   onShowDeleteCombo,
@@ -151,7 +149,6 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
           {
             [ShouldShowModal.comboConfig]: (
               <RegisterContentComboConfig
-                handleRemoveDiscountCoupon={handleRemoveDiscountCoupon}
                 discountCouponList={discountCouponList}
                 controllerFormComboConfig={controllerFormComboConfig}
                 controllerFormDiscountCoupon={controllerFormDiscountCoupon}
@@ -460,7 +457,6 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                                         className="ml-5 action-icon"
                                         name="allowSellingWebsite"
                                         onChange={() => {
-                                          console.log(selected);
                                           onChangeAllowOnlineSwitch(selected);
                                         }}
                                         checked={!!selected.allowSellingWebsite}
@@ -470,7 +466,6 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                                         className="ml-5 action-icon"
                                         name="status"
                                         onChange={() => {
-                                          console.log(selected);
                                           onChangeComboSwitch(selected);
                                         }}
                                         checked={selected.status !== 0}
