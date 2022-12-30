@@ -1,5 +1,5 @@
 /* eslint-disable import/no-unresolved */
-import React, { Fragment, useRef } from 'react';
+import React, { Fragment, useEffect, useRef } from 'react';
 import { ButtonGroup, InputFile, InputText, SelectCustom } from '@/components';
 import { Col, Form, FormGroup, Row } from 'reactstrap';
 import ReactTooltip from 'react-tooltip';
@@ -47,6 +47,15 @@ export const ProductRegisterContent: React.FC<
       refSelectProduct?.current.clearValue();
     }
   };
+
+  useEffect(() => {
+    if (formData[FormInputName.subgroup]) {
+      productActions.onProductByCategory(
+        formData[FormInputName.group],
+        formData[FormInputName.subgroup],
+      );
+    }
+  }, [formData[FormInputName.subgroup]]);
 
   const subGruopOptions =
     productStates.groupList

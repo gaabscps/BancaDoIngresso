@@ -421,6 +421,7 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({ back
         handleOnGetPos={handleOnGetPos}
         handleOnCancelEditPos={handleOnCancelEditPos}
         posState={pos}
+        setPosState={setPos}
       />
     </>
   );

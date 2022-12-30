@@ -64,6 +64,7 @@ export interface SectorProductPosContainerProps {
   handleOnGetPos: (comboSelected: any) => void;
   handleOnCancelEditPos: () => void;
   posState: any;
+  setPosState: React.Dispatch<React.SetStateAction<any>>;
 }
 export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
   state,
@@ -80,6 +81,7 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
   handleOnGetPos,
   handleOnCancelEditPos,
   posState,
+  setPosState,
 }) => {
   const { formData, formErrors, onChangeFormInput } = controllerFormPos;
   const { shouldShowModal, title, visible, onToggle, onShouldShowModal } = controllerModalConfig;
@@ -94,7 +96,10 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
 
   const renderActionDialogToCancel: ActionProps = {
     title: 'Cancelar',
-    onClick: (): void => onToggle(),
+    onClick: (): void => {
+      handleOnCancelEditPos();
+      onToggle();
+    },
     theme: 'noneBorder',
   };
 
@@ -160,13 +165,21 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
               <Row>
                 <div className="card-ligth-color mb-5 w-100">
                   <Row>
-                    <Col md={7}>
+                    <Col md={8}>
                       <SelectCustom
                         name="pos"
                         label="POS"
                         placeholder="Digite ou selecione a POS"
                         value={formData[FormInputName.pos]}
-                        onChange={e => onChangeFormInput(FormInputName.pos)(e?.value as string)}
+                        onChange={e => {
+                          const verifyPosExists = posList.find(value => value.pos.id === e?.value);
+                          if (verifyPosExists) {
+                            setPosState(verifyPosExists);
+                          } else {
+                            setPosState(undefined);
+                          }
+                          onChangeFormInput(FormInputName.pos)(e?.value as string);
+                        }}
                         options={posOptions.map(item => ({
                           value: item.id,
                           label: item.name,
@@ -174,7 +187,7 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
                         error={formErrors.pos && formErrors.pos[0]}
                       />
                     </Col>
-                    <Col md={3}>
+                    <Col md={4}>
                       <InputText
                         type="number"
                         name="waiter"
@@ -189,10 +202,7 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
                     </Col>
                   </Row>
                   <Row>
-                    <Col>{/* <div className="link-green mb-5">+ cadastrar produto</div> */}</Col>
-                  </Row>
-                  <Row>
-                    <Col className="mr-5" md={3}>
+                    <Col md={4}>
                       <InputText
                         type="number"
                         name="commission"
@@ -205,7 +215,7 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
                         error={formErrors.commission && formErrors.commission[0]}
                       />
                     </Col>
-                    <Col md={3}>
+                    <Col md={8}>
                       <ButtonGroup
                         label="Aceita desconto?"
                         name="allowDiscount"

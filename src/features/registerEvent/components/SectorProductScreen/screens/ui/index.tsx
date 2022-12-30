@@ -69,7 +69,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
   const renderActionDialogToCancel: ActionProps = {
     title: 'Cancelar',
     onClick: (): void => {
-      productStates.setProduct(undefined);
+      productActions.onCancelEdit();
       modalConfig.handleOnTougleModal();
     },
     theme: 'noneBorder',
