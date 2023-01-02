@@ -101,6 +101,7 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
       textSize: '',
       ticketPhrase: '',
       websiteDescription: '',
+      discountDescription: '',
     },
     validators: {
       name: [validators.required],
@@ -113,6 +114,8 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
       startDate: [validators.required],
       endDate: [validators.required],
       startTime: [validators.required],
+      websiteStartSaleDate: [validators.required],
+      websiteEndSaleDate: [validators.required],
       endTime: [validators.required],
       eventCategory: [validators.required],
       censure: [validators.required],
@@ -361,6 +364,14 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
           }`,
         ).format('YYYY-MM-DDTHH:mm');
 
+        const payloadWebsiteStartSaleDate = dayjs(
+          formDataGeneralInformation[FormInputNameToSaveGeneralInformation.websiteStartSaleDate],
+        ).format('YYYY-MM-DDTHH:mm');
+
+        const payloadWebsiteEndSaleDate = dayjs(
+          formDataGeneralInformation[FormInputNameToSaveGeneralInformation.websiteEndSaleDate],
+        ).format('YYYY-MM-DDTHH:mm');
+
         const payload: any = {
           id: dataCurrentStep?.id,
           fatherEvent: childrenType ? fatherEvent : '',
@@ -391,6 +402,8 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
           },
           startDate: payloadStartData,
           endDate: payloadEndData,
+          websiteStartSaleDate: payloadWebsiteStartSaleDate,
+          websiteEndSaleDate: payloadWebsiteEndSaleDate,
           eventCategory: {
             id: formDataGeneralInformation[FormInputNameToSaveGeneralInformation.eventCategory],
           },
@@ -414,6 +427,8 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
             formDataGeneralInformation[FormInputNameToSaveGeneralInformation.ticketPhrase],
           websiteDescription:
             formDataGeneralInformation[FormInputNameToSaveGeneralInformation.websiteDescription],
+          discountDescription:
+            formDataGeneralInformation[FormInputNameToSaveGeneralInformation.discountDescription],
         };
 
         if (!payload.id) {
@@ -527,7 +542,12 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
       onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.startDate)(
         dayjs(dataCurrentStep?.startDate).format('YYYY-MM-DD') ?? '',
       );
-
+      onChangeFormInputGeneralInformation(
+        FormInputNameToSaveGeneralInformation.websiteStartSaleDate,
+      )(dayjs(dataCurrentStep?.websiteStartSaleDate).format('YYYY-MM-DD') ?? '');
+      onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.websiteEndSaleDate)(
+        dayjs(dataCurrentStep?.websiteEndSaleDate).format('YYYY-MM-DD') ?? '',
+      );
       onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.endDate)(
         dayjs(dataCurrentStep?.endDate).format('YYYY-MM-DD') ?? '',
       );
@@ -564,6 +584,9 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
       onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.websiteDescription)(
         String(dataCurrentStep?.websiteDescription) ?? '',
       );
+      onChangeFormInputGeneralInformation(
+        FormInputNameToSaveGeneralInformation.discountDescription,
+      )(String(dataCurrentStep?.discountDescription) ?? '');
       onChangeFormInputGeneralInformation(FormInputNameToSaveGeneralInformation.imageBase64)(
         dataCurrentStep?.imageBase64 ?? '',
       );
