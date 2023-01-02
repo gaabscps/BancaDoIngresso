@@ -5,6 +5,7 @@ import React, { Fragment } from 'react';
 import { Button, Dialog, Loading, Switch } from '@/components';
 import { Container } from 'reactstrap';
 import { ProductRegisterContent } from '@/features/registerEvent/components/SectorProductScreen/components/ProductRegisterContent';
+import { updateMask as updateMaskCash } from '@/helpers/masks/cashNumber';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
 import TicketIcon from '@/assets/images/svg/Ticket';
 import { CustomTable } from '@/components/Table';
@@ -182,10 +183,14 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
                                   >{`${product?.amount} unidades`}</div>
                                 ),
                                 unitValue: (
-                                  <div className={disabledRows}>{`R$ ${product?.unitValue}`}</div>
+                                  <div className={disabledRows}>{`R$ ${updateMaskCash(
+                                    String(product?.unitValue),
+                                  )}`}</div>
                                 ),
                                 totalValue: (
-                                  <div className={disabledRows}>{`R$ ${product?.totalValue}`}</div>
+                                  <div className={disabledRows}>{`R$ ${updateMaskCash(
+                                    String(product?.totalValue),
+                                  )}`}</div>
                                 ),
                                 actions: (
                                   <React.Fragment>

@@ -36,6 +36,8 @@ export enum FormInputName {
   endDate = 'endDate',
   startTime = 'startTime',
   endTime = 'endTime',
+  websiteStartSaleDate = 'websiteStartSaleDate',
+  websiteEndSaleDate = 'websiteEndSaleDate',
   eventCategory = 'eventCategory',
   contractor = 'contractor',
   censure = 'censure',
@@ -47,6 +49,7 @@ export enum FormInputName {
   textSize = 'textSize',
   ticketPhrase = 'ticketPhrase',
   websiteDescription = 'websiteDescription',
+  discountDescription = 'discountDescription',
   latitude = 'latitude',
   longitude = 'longitude',
 }
@@ -87,6 +90,8 @@ export const GeneralInformationContent: React.FC<
   const eventTypeRef = React.useRef<HTMLSelectElement>(null);
   const startDateRef = React.useRef<HTMLInputElement>(null);
   const endDateRef = React.useRef<HTMLInputElement>(null);
+  const websiteStartSaleDateRef = React.useRef<HTMLInputElement>(null);
+  const websiteEndSaleDateRef = React.useRef<HTMLInputElement>(null);
   const startTimeRef = React.useRef<HTMLInputElement>(null);
   const endTimeRef = React.useRef<HTMLInputElement>(null);
   const eventCategoryRef = React.useRef<HTMLSelectElement>(null);
@@ -453,6 +458,38 @@ export const GeneralInformationContent: React.FC<
             </FormGroup>
           </Col>
         </Row>
+        <Row>
+          <Col md={6} className="pl-0">
+            <FormGroup className="mb-2">
+              <InputText
+                refInput={websiteStartSaleDateRef}
+                type="date"
+                name="websiteStartSaleDate"
+                label="Data início venda site"
+                maxLength={5}
+                value={formData[FormInputName.websiteStartSaleDate]}
+                onChange={e =>
+                  onChangeFormInput(FormInputName.websiteStartSaleDate)(e.target.value)
+                }
+                error={formErrors.websiteStartSaleDate && formErrors.websiteStartSaleDate[0]}
+              />
+            </FormGroup>
+          </Col>
+          <Col md={6} className="pr-0">
+            <FormGroup className="mb-2">
+              <InputText
+                refInput={websiteEndSaleDateRef}
+                type="date"
+                name="websiteEndSaleDate"
+                label="Data fim venda site"
+                maxLength={5}
+                value={formData[FormInputName.websiteEndSaleDate]}
+                onChange={e => onChangeFormInput(FormInputName.websiteEndSaleDate)(e.target.value)}
+                error={formErrors.websiteEndSaleDate && formErrors.websiteEndSaleDate[0]}
+              />
+            </FormGroup>
+          </Col>
+        </Row>
         <FormGroup className="mb-2">
           <SelectCustom
             refSelect={eventCategoryRef}
@@ -651,12 +688,23 @@ export const GeneralInformationContent: React.FC<
         <FormGroup className="mb-2">
           <TextArea
             name="websiteDescription"
-            label="Descrição para o site (opcional)"
-            placeholder="Digite aqui a descrição que irá aparecer no site"
+            label="Descrição para o site - Sobre (opcional)"
+            placeholder="Digite aqui a descrição que irá aparecer no site - Sobre"
             rows={13}
             value={formData[FormInputName.websiteDescription]}
             onChange={e => onChangeFormInput(FormInputName.websiteDescription)(e.target.value)}
             error={formErrors.websiteDescription && formErrors.websiteDescription[0]}
+          />
+        </FormGroup>
+        <FormGroup className="mb-2">
+          <TextArea
+            name="discountDescription"
+            label="Descrição para o site - Descontos (opcional)"
+            placeholder="Digite aqui a descrição que irá aparecer no site - Descontos"
+            rows={13}
+            value={formData[FormInputName.discountDescription]}
+            onChange={e => onChangeFormInput(FormInputName.discountDescription)(e.target.value)}
+            error={formErrors.discountDescription && formErrors.discountDescription[0]}
           />
         </FormGroup>
       </div>
