@@ -92,16 +92,10 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
       allowCombo: 'true',
       id: '',
       name: '',
+      allowSellingWebsite: `true`,
       amount: '',
       totalValue: '',
       imageBase64: '',
-      groupId: '',
-      group: '',
-      groupImageBase64: '',
-      subgroup: '',
-      subgroupImageBase64: '',
-      product: '',
-      productAmount: '',
     },
     validators: {
       group: [validators.required],
@@ -335,7 +329,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
             ),
             amount: +formDataCombo[FormInputNameCombo.amount],
             totalValue: +formDataCombo[FormInputNameCombo.totalValue],
-            imageBase64: formDataCombo[FormInputNameCombo.imageBase64] ?? undefined,
+            imageBase64: formDataCombo[FormInputNameCombo.imageBase64],
             products: productData,
           };
 
@@ -357,7 +351,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
           const reponse = await api.post(`/event/section-product/${params.id}/combo`, payload);
           if (reponse) toast.success('Dados salvos com sucesso!');
 
-          resetFormCombo();
+          handleOnCancelEditCombo();
           setCombo(payload);
         } else {
           toast.error('É necessário adicionar ao menos um produto!');
@@ -722,7 +716,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
     handleFecthProductGroupList(params.id);
     handleGetProductSubGroupList(params.id);
     handleFecthProductList(params.id);
-  }, [combo]);
+  }, [combo || comboConfig]);
 
   useEffect(() => {
     if (comboState) {

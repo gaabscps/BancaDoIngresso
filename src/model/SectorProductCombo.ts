@@ -62,4 +62,5 @@ export default interface SectorProductCombo {
     },
   ];
   status: StatusType;
+  wasConfig?: boolean;
 }

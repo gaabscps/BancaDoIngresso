@@ -103,8 +103,7 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
     theme: 'noneBorder',
   };
 
-  const { state, comboList, listProductGroup, product, comboState, listProduct, comboConfig } =
-    comboStates;
+  const { state, comboList, listProductGroup, product, comboState, listProduct } = comboStates;
   const { addProduct, onChangeProduct, removeProduct } = formAppendProducts;
   const {
     onChangeComboSwitch,
@@ -506,8 +505,8 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                                           });
                                         }}
                                         className={
-                                          comboConfig?.physicalSale
-                                            ? 'mr-3 action-icon '
+                                          selected.wasConfig
+                                            ? 'mr-3 action-icon'
                                             : 'mr-3 action-icon svg-icon-error'
                                         }
                                       />
