@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 import TicketIcon from '@/assets/images/svg/Ticket';
 import {
   Button,
@@ -18,70 +19,89 @@ import React from 'react';
 import { Col, Container, Form, FormGroup, Row } from 'reactstrap';
 import { ActionProps } from '@/components/Dialog';
 import Pos from '@/model/Pos';
-import { formPosProps, modalConfigPosProps } from '../../types';
+import dayjs from 'dayjs';
+import {
+  dataConfigStatesProps,
+  formAllowPosProps,
+  formPosProps,
+  modalConfigPosProps,
+} from '../../types';
 import { PosConfigContent } from '../../components/PosConfigContent';
 import { columnsPos } from './table';
 
-// eslint-disable-next-line no-shadow
 export enum States {
   default = 'default',
   loading = 'loading',
 }
 
-// eslint-disable-next-line no-shadow
 export enum ShouldShowModal {
   configPos = 'configPos',
 }
 
-// eslint-disable-next-line no-shadow
-export enum FormInputName {
+export enum FormInputNameAllowPos {
   allowPos = 'allowPos',
+}
+
+export enum FormInputName {
   pos = 'pos',
   waiter = 'waiter',
   commission = 'commission',
   allowDiscount = 'allowDiscount',
 }
 
-interface SectorProductPosContainerProps {
+export interface SectorProductPosContainerProps {
   state: States;
   controllerFormPos: formPosProps;
+  controllerFormAllowPos: formAllowPosProps;
   controllerModalConfig: modalConfigPosProps;
   handleOnSavePos: () => Promise<void>;
-  nextTab: () => void;
   backTab: () => void;
-  posList: any;
+  posList: any[];
   posOptions: Pos[];
   handleOnShowDeletePos: (posSelected: Pos) => void;
+  dataConfig: dataConfigStatesProps;
+  handleOnChangePosSwitch: (comboSelected: any) => void;
+  handleOnGetPos: (comboSelected: any) => void;
+  handleOnCancelEditPos: () => void;
+  posState: any;
+  setPosState: React.Dispatch<React.SetStateAction<any>>;
 }
 export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
   state,
   controllerFormPos,
+  controllerFormAllowPos,
   controllerModalConfig,
   handleOnSavePos,
-  nextTab,
   backTab,
+  posList,
   posOptions,
+  dataConfig,
   handleOnShowDeletePos,
+  handleOnChangePosSwitch,
+  handleOnGetPos,
+  handleOnCancelEditPos,
+  posState,
+  setPosState,
 }) => {
   const { formData, formErrors, onChangeFormInput } = controllerFormPos;
   const { shouldShowModal, title, visible, onToggle, onShouldShowModal } = controllerModalConfig;
 
+  const titleRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    if (posState) {
+      titleRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [posState]);
+
   const renderActionDialogToCancel: ActionProps = {
     title: 'Cancelar',
-    onClick: (): void => onToggle(),
+    onClick: (): void => {
+      handleOnCancelEditPos();
+      onToggle();
+    },
     theme: 'noneBorder',
   };
-
-  const posListMock = [
-    {
-      id: 1,
-      name: 'Máquininha do Seu Zé',
-      serialNumber: '098765',
-      date: '01/05/2022',
-      waiter: '3%',
-      commission: '5%',
-    },
-  ];
 
   return (
     <>
@@ -96,8 +116,6 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
           }[shouldShowModal],
           {
             [ShouldShowModal.configPos]: {
-              // title: productStates?.product ? 'Salvar' : 'Cadastrar novo setor',
-              // onClick: (): Promise<void> => productActions.onSave(),
               title: 'Salvar',
               onClick: () => handleOnSavePos(),
             },
@@ -106,7 +124,7 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
       >
         {
           {
-            [ShouldShowModal.configPos]: <PosConfigContent />,
+            [ShouldShowModal.configPos]: <PosConfigContent dataConfig={dataConfig} />,
           }[shouldShowModal]
         }
       </Dialog>
@@ -114,39 +132,54 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
       <Container className="mainContainer" fluid={true}>
         <Row>
           <Col>
-            <h6 className="mb-5">Configurando POS</h6>
+            <h6 ref={titleRef} className="mb-5">
+              {posState ? `Editando ${posState.pos.name}` : 'Configurando POS'}
+            </h6>
             <Form>
               <FormGroup>
                 <ButtonGroup
                   label="Permitir POS?"
                   name="allowPos"
-                  value={formData[FormInputName.allowPos]}
+                  value={controllerFormAllowPos.formData[FormInputNameAllowPos.allowPos]}
                   onChange={e =>
-                    onChangeFormInput(FormInputName.allowPos)(e?.target?.value as string)
+                    controllerFormAllowPos.onChangeFormInput(FormInputNameAllowPos.allowPos)(
+                      e?.target?.value as string,
+                    )
                   }
                   options={[
                     { value: true, label: 'Sim' },
                     { value: false, label: 'Não' },
                   ]}
-                  error={formErrors.allowPos && formErrors.allowPos[0]}
+                  error={
+                    controllerFormAllowPos.formErrors.allowPos &&
+                    controllerFormAllowPos.formErrors.allowPos[0]
+                  }
                 />
               </FormGroup>
             </Form>
           </Col>
         </Row>
-        {formData[FormInputName.allowPos] === 'true' ? (
+        {controllerFormAllowPos.formData[FormInputNameAllowPos.allowPos] === 'true' ? (
           <>
             <Col>
               <Row>
                 <div className="card-ligth-color mb-5 w-100">
                   <Row>
-                    <Col md={7}>
+                    <Col md={8}>
                       <SelectCustom
                         name="pos"
                         label="POS"
                         placeholder="Digite ou selecione a POS"
                         value={formData[FormInputName.pos]}
-                        onChange={e => onChangeFormInput(FormInputName.pos)(e?.value as string)}
+                        onChange={e => {
+                          const verifyPosExists = posList.find(value => value.pos.id === e?.value);
+                          if (verifyPosExists) {
+                            setPosState(verifyPosExists);
+                          } else {
+                            setPosState(undefined);
+                          }
+                          onChangeFormInput(FormInputName.pos)(e?.value as string);
+                        }}
                         options={posOptions.map(item => ({
                           value: item.id,
                           label: item.name,
@@ -154,7 +187,7 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
                         error={formErrors.pos && formErrors.pos[0]}
                       />
                     </Col>
-                    <Col md={3}>
+                    <Col md={4}>
                       <InputText
                         type="number"
                         name="waiter"
@@ -169,10 +202,7 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
                     </Col>
                   </Row>
                   <Row>
-                    <Col>{/* <div className="link-green mb-5">+ cadastrar produto</div> */}</Col>
-                  </Row>
-                  <Row>
-                    <Col className="mr-5" md={3}>
+                    <Col md={4}>
                       <InputText
                         type="number"
                         name="commission"
@@ -185,7 +215,7 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
                         error={formErrors.commission && formErrors.commission[0]}
                       />
                     </Col>
-                    <Col md={3}>
+                    <Col md={8}>
                       <ButtonGroup
                         label="Aceita desconto?"
                         name="allowDiscount"
@@ -203,17 +233,38 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
                   </Row>
                   <Row>
                     <Col>
-                      <div
+                      {/* <div
                         className="action-icon d-flex justify-content-end"
                         onClick={(): void => {
                           onShouldShowModal({
                             value: ShouldShowModal.configPos,
                             newTitleModal: 'Configuração de setores e produtos da POS',
-                            // product: item,
                           });
                         }}
                       >
                         Inserir POS
+                      </div> */}
+                      <div className="d-flex justify-content-end">
+                        <div
+                          className="cursor-pointer mr-3"
+                          onClick={() => {
+                            handleOnCancelEditPos();
+                          }}
+                        >
+                          {posState ? 'Cancelar' : null}
+                        </div>
+                        <div
+                          className="link-green"
+                          onClick={(): void => {
+                            onShouldShowModal({
+                              value: ShouldShowModal.configPos,
+                              newTitleModal: 'Configuração de setores e produtos da POS',
+                              pos: posState,
+                            });
+                          }}
+                        >
+                          {posState ? 'Salvar edição' : 'Inserir POS'}
+                        </div>
                       </div>
                     </Col>
                   </Row>
@@ -223,89 +274,134 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
             <Row>
               <Col></Col>
             </Row>
+
+            <Row>
+              <Col>
+                <SuperCollapse
+                  title="POS’s inseridos"
+                  content={
+                    // change 0 to index
+                    posList.length > 0
+                      ? posList.map(
+                          (
+                            { pos, waiter, commission, actived, eventSections, allowDiscount },
+                            indexPos,
+                          ) => (
+                            <React.Fragment key={indexPos}>
+                              {indexPos > 0 ? (
+                                <hr style={{ margin: '25px -30px 30px -50px' }} />
+                              ) : null}
+                              <div
+                                className={`${
+                                  posState?.pos && posState?.pos?.id !== pos?.id
+                                    ? 'disabled-content'
+                                    : null
+                                }`}
+                              >
+                                <div className="d-flex w-100 justify-content-between">
+                                  <div className="mb-3 w-100">
+                                    <span className="secondary-table-title">
+                                      POS # {indexPos + 1}
+                                    </span>
+                                    <span className="secondary-table-title font-weight-bold">
+                                      • {pos.name}
+                                    </span>
+                                  </div>
+                                  <Switch
+                                    name={`allowSellingWebsite-${pos.id}`}
+                                    label={`POS ${actived ? 'Ativo' : 'Inativo'}`}
+                                    onChange={() =>
+                                      handleOnChangePosSwitch({
+                                        pos,
+                                        waiter,
+                                        commission,
+                                        allowDiscount,
+                                        actived,
+                                        eventSections,
+                                      })
+                                    }
+                                    checked={actived}
+                                  />
+                                </div>
+                                <CustomTable
+                                  theme="secondaryWithoutBorder"
+                                  numberRowsPerPage={0}
+                                  progressPending={false}
+                                  columns={columnsPos}
+                                  data={[
+                                    {
+                                      serialNumber: pos.serialNumber,
+                                      date: dayjs(pos.expirationDate).format('DD/MM/YYYY'),
+                                      waiter: `${waiter}%`,
+                                      commission: `${commission}%`,
+                                      actions: (
+                                        <div
+                                          className={`${
+                                            posState?.pos && posState?.pos?.id === pos?.id
+                                              ? 'disabled-content'
+                                              : null
+                                          }`}
+                                        >
+                                          <Config
+                                            className="mr-4 svg-icon action-icon"
+                                            onClick={(): void => {
+                                              onShouldShowModal({
+                                                value: ShouldShowModal.configPos,
+                                                newTitleModal:
+                                                  'Configuração de setores e produtos da POS',
+                                                pos: {
+                                                  pos,
+                                                  waiter,
+                                                  commission,
+                                                  allowDiscount,
+                                                  actived,
+                                                  eventSections,
+                                                },
+                                              });
+                                            }}
+                                          />
+                                          <Pen
+                                            width={15}
+                                            className="mr-4 svg-icon action-icon"
+                                            onClick={() =>
+                                              handleOnGetPos({
+                                                pos,
+                                                waiter,
+                                                commission,
+                                                allowDiscount,
+                                                actived,
+                                                eventSections,
+                                              })
+                                            }
+                                          />
+                                          <Trash
+                                            width={13}
+                                            className="action-icon svg-icon-trash"
+                                            onClick={() =>
+                                              handleOnShowDeletePos(pos as unknown as Pos)
+                                            }
+                                          />
+                                        </div>
+                                      ),
+                                    },
+                                  ]}
+                                />
+                              </div>
+                            </React.Fragment>
+                          ),
+                        )
+                      : 'Nenhuma POS cadastrada. Aqui será exibida uma lista de POS'
+                  }
+                  leftIcon={TicketIcon}
+                />
+              </Col>
+            </Row>
           </>
         ) : (
-          <div className="pb-4"></div>
+          ''
         )}
-        <Row>
-          <Col>
-            <SuperCollapse
-              title="POS’s inseridos"
-              content={
-                // change 0 to index
-                posListMock.length > 0
-                  ? posListMock.map((pos, index) => (
-                      <React.Fragment key={index}>
-                        <div className="d-flex w-100 justify-content-between">
-                          <div className="mb-3 w-100">
-                            <span className="secondary-table-title">POS # {index + 1}</span>
-                            <span className="secondary-table-title font-weight-bold">
-                              • {pos.name}
-                            </span>
-                          </div>
-                          <Switch
-                            label={`POS  ativa`}
-                            name=""
-                            onChange={() => undefined}
-                            checked={true}
-                          />
-                        </div>
-                        <CustomTable
-                          theme="secondaryWithoutBorder"
-                          numberRowsPerPage={0}
-                          progressPending={false}
-                          columns={columnsPos}
-                          data={[
-                            {
-                              serialNumber: '098765',
-                              date: '01/05/2022',
-                              waiter: '3%',
-                              commission: '5%',
-                              actions: (
-                                <>
-                                  <Config
-                                    className="mr-4 svg-icon action-icon"
-                                    onClick={(): void => {
-                                      onShouldShowModal({
-                                        value: ShouldShowModal.configPos,
-                                        newTitleModal: 'Configuração de setores e produtos da POS',
-                                        // product: item,
-                                      });
-                                    }}
-                                  />
-                                  <Pen
-                                    width={15}
-                                    className="mr-4 svg-icon action-icon"
-                                    onClick={() => undefined}
-                                  />
-                                  <Trash
-                                    width={13}
-                                    className="action-icon svg-icon-trash"
-                                    onClick={() => handleOnShowDeletePos(pos as any)}
-                                  />
-                                </>
-                              ),
-                            },
-                          ]}
-                        />
-                      </React.Fragment>
-                    ))
-                  : 'Nenhuma pos cadastrada. Aqui será exibida uma lista de pos'
-              }
-              leftIcon={TicketIcon}
-            />
-          </Col>
-        </Row>
         <div className="d-flex justify-content-end">
           <Button title="Voltar etapa" theme="noneBorder" onClick={() => backTab()} />
-          <Button
-            title="Próxima etapa"
-            theme="outlineDark"
-            className="ml-3"
-            onClick={async () => {
-              await nextTab();
-            }}
-          />
         </div>
       </Container>
     </>

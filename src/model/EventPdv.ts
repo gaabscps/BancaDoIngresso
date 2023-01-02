@@ -1,7 +1,8 @@
+import EventPdvPos from './EventPdvPos';
 import EventSection from './EventSection';
 import EventSubPdv from './EventSubPdv';
 import Pdv from './Pdv';
-import Ticket from './Ticket';
+import Tickets from './Tickets';
 
 export default interface EventPdv {
   pdv: Pdv;
@@ -13,8 +14,9 @@ export default interface EventPdv {
   allowPix: boolean;
   allowSellingWebsite: boolean;
   allowDiscount: boolean;
-  tickets?: Ticket[];
+  tickets?: Tickets[];
   sections?: EventSection[];
   subPdvs?: EventSubPdv[];
+  poss?: EventPdvPos[];
   link?: string;
 }

@@ -146,7 +146,7 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
                   value: ShouldShowModal.pdv,
                   newTitleModal: pdvDropdownSelected?.id
                     ? pdvDropdownSelected?.name
-                    : 'Cadastrar novo Sub PDV',
+                    : 'Cadastrar novo PDV',
                   pdv: pdvDropdownSelected,
                 });
               }

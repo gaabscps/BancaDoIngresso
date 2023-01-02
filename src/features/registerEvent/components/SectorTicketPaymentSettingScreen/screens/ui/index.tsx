@@ -10,6 +10,7 @@ import { ActionProps } from '@/components/Dialog';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { CustomTable } from '@/components/Table';
 import { X } from 'react-feather';
+import BackOnTop from '@/components/sharedComponents/BackOnTop';
 import { formPaymentSettingsProps, PaymentSettingsActionsProps } from '../../types';
 import { RegisterDiscountCoupon } from '../../components/RegisterDiscountCoupon';
 import { columnsDiscountCoupon } from './table';
@@ -238,7 +239,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               />
             </FormGroup>
 
-            <label htmlFor="websiteInstallmentLimit" className="ml-3 input-label">
+            <label htmlFor="websiteInstallmentLimit" className="input-label">
               Limite de parcelamento online
             </label>
 
@@ -246,7 +247,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               <SelectCustom
                 name="websiteInstallmentLimit"
                 label=""
-                placeholder="0"
+                placeholder="Ex: 1"
                 className="w-input-sm"
                 value={formData[FormInputName.websiteInstallmentLimit]}
                 onChange={e =>
@@ -257,7 +258,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               />
             </FormGroup>
 
-            <label htmlFor="" className="ml-3 input-label">
+            <label htmlFor="" className="input-label">
               Limite de parcelamento POS
             </label>
 
@@ -265,7 +266,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               <SelectCustom
                 name="posInstallmentLimit"
                 label=""
-                placeholder="0"
+                placeholder="Ex: 1"
                 className="w-input-sm"
                 value={formData[FormInputName.posInstallmentLimit]}
                 onChange={e =>
@@ -402,7 +403,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               addon="%"
               maxLength={5}
               value={formData[FormInputName.physicalSaleDebit]}
-              placeholder="0"
+              placeholder="Ex: 1"
               onChange={e =>
                 onChangeFormInput(FormInputName.physicalSaleDebit)(
                   e.target.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1'),
@@ -417,7 +418,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               addon="%"
               maxLength={5}
               value={formData[FormInputName.physicalSaleCredit]}
-              placeholder="0"
+              placeholder="Ex: 1"
               onChange={e =>
                 onChangeFormInput(FormInputName.physicalSaleCredit)(
                   e.target.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1'),
@@ -432,7 +433,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               addon="%"
               maxLength={5}
               value={formData[FormInputName.physicalSalePix]}
-              placeholder="0"
+              placeholder="Ex: 1"
               onChange={e =>
                 onChangeFormInput(FormInputName.physicalSalePix)(
                   e.target.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1'),
@@ -447,7 +448,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               addon="%"
               maxLength={5}
               value={formData[FormInputName.physicalSaleAdministrateTax]}
-              placeholder="0"
+              placeholder="Ex: 1"
               onChange={e =>
                 onChangeFormInput(FormInputName.physicalSaleAdministrateTax)(
                   e.target.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1'),
@@ -472,15 +473,20 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               options={optionCount}
             />
             <span className="mt-5 mr-3 ml-3 input-label"> + </span>
-            <SelectCustom
+            <InputText
               name="physicalSaleFee"
               label="Juros ao mês"
               className="w-input-sm"
+              addon="%"
               placeholder="Ex: 4"
+              maxLength={5}
               value={formData[FormInputName.physicalSaleFee]}
-              onChange={e => onChangeFormInput(FormInputName.physicalSaleFee)(e?.value as string)}
+              onChange={e =>
+                onChangeFormInput(FormInputName.physicalSaleFee)(
+                  e.target.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1'),
+                )
+              }
               error={formErrors.physicalSaleFee && formErrors.physicalSaleFee[0]}
-              options={optionLimiteCount}
             />
           </div>
 
@@ -512,7 +518,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               addon="%"
               maxLength={5}
               value={formData[FormInputName.websiteSaleBankSlip]}
-              placeholder="0"
+              placeholder="Ex: 1"
               onChange={e =>
                 onChangeFormInput(FormInputName.websiteSaleBankSlip)(
                   e.target.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1'),
@@ -527,7 +533,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               addon="%"
               maxLength={5}
               value={formData[FormInputName.websiteSaleCredit]}
-              placeholder="0"
+              placeholder="Ex: 1"
               onChange={e =>
                 onChangeFormInput(FormInputName.websiteSaleCredit)(
                   e.target.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1'),
@@ -542,7 +548,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               addon="%"
               maxLength={5}
               value={formData[FormInputName.websiteSalePix]}
-              placeholder="0"
+              placeholder="Ex: 1"
               onChange={e =>
                 onChangeFormInput(FormInputName.websiteSalePix)(
                   e.target.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1'),
@@ -557,7 +563,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               addon="%"
               maxLength={5}
               value={formData[FormInputName.websiteSaleAdministrateTax]}
-              placeholder="0"
+              placeholder="Ex: 1"
               onChange={e =>
                 onChangeFormInput(FormInputName.websiteSaleAdministrateTax)(
                   e.target.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1'),
@@ -582,15 +588,20 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               options={optionCount}
             />
             <span className="mt-5 mr-3 ml-3 input-label"> + </span>
-            <SelectCustom
+            <InputText
               name="websiteSaleFee"
               label="Juros ao mês"
               className="w-input-sm"
+              addon="%"
               placeholder="Ex: 4"
+              maxLength={5}
               value={formData[FormInputName.websiteSaleFee]}
-              onChange={e => onChangeFormInput(FormInputName.websiteSaleFee)(e?.value as string)}
+              onChange={e =>
+                onChangeFormInput(FormInputName.websiteSaleFee)(
+                  e.target.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1'),
+                )
+              }
               error={formErrors.websiteSaleFee && formErrors.websiteSaleFee[0]}
-              options={optionLimiteCount}
             />
           </div>
           <div className="container-event mb-4">
@@ -721,7 +732,10 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               }}
             />
           </div>
-          <div>
+          <div className="d-flex">
+            <div className="m-2 mr-5">
+              <BackOnTop />
+            </div>
             <Button
               title="Voltar etapa"
               theme="noneBorder"
@@ -734,7 +748,6 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               theme="outlineDark"
               className="ml-3"
               onClick={async () => {
-                console.log('TODO: Realizar integração da fase de pagamento ');
                 await paymentSettingsActions.onNextTap();
               }}
             />

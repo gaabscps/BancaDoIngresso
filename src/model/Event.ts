@@ -9,8 +9,9 @@ import EventSectionGet from './EventSectionGet';
 import EventStatus from './EventStatus';
 import EventType from './EventType';
 import TextSize from './TextSize';
-import Ticket from './Ticket';
+import Tickets from './Tickets';
 import Voucher from './Voucher';
+import Section from './Section';
 
 export default interface Event {
   id: string;
@@ -19,6 +20,7 @@ export default interface Event {
   posName: string;
   establishmentName: string;
   eventType: EventType;
+  eventPlace: string;
   address: Address;
   startDate: Date;
   endDate: Date;
@@ -35,9 +37,10 @@ export default interface Event {
   websiteDescription: string;
   eventStatus: EventStatus;
   vouchers?: Voucher[];
-  tickets?: Ticket[];
+  tickets?: Tickets[];
   products?: EventProduct[];
   combos?: EventProductCombo[];
+  eventSection?: Section[];
   sectionproductsAndCombos?: EventSectionGet[];
   poss?: EventPos[];
   pdvs?: EventPdv[];

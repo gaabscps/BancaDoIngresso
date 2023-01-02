@@ -71,7 +71,7 @@ type UrlParams = {
 export const SectorTicketPaymentSettingsScreen: React.FC<
   Pick<SectorTicketContainerProps, 'ticketStates'> &
     Pick<SectorTicketContainerProps, 'ticketStep'> &
-    TabSectorTicketActionsProps
+    Omit<TabSectorTicketActionsProps, 'reloadTickets'>
 > = ({ ticketStates, ticketStep, nextTab, backTab }): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
   const [paymentGatewayList, setPaymentGatewayList] = useState<PaymentGateway[]>([]);
@@ -136,19 +136,19 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
       allowSellingPos: [validators.required],
       printReceipt: [validators.required],
       physicalSaleAllowCreditCardPayment: [validators.required],
-      physicalSaleDebit: [validators.required, validators.between(0.1, 10)],
-      physicalSaleCredit: [validators.required, validators.between(1, 10)],
-      physicalSalePix: [validators.required, validators.between(1, 10)],
-      physicalSaleAdministrateTax: [validators.required, validators.between(1, 10)],
+      physicalSaleDebit: [validators.required, validators.between(0.1, 99.99)],
+      physicalSaleCredit: [validators.required, validators.between(1, 99.99)],
+      physicalSalePix: [validators.required, validators.between(1, 99.999)],
+      physicalSaleAdministrateTax: [validators.required, validators.between(1, 99.99)],
       physicalSaleInstallments: [validators.required, validators.between(1, 12)],
-      physicalSaleFee: [validators.required, validators.between(1, 10)],
+      physicalSaleFee: [validators.required, validators.between(1, 99.99)],
       websiteSaleAllowCreditCardPayment: [validators.required],
-      websiteSaleBankSlip: [validators.required, validators.between(0.1, 10)],
-      websiteSaleCredit: [validators.required, validators.between(1, 10)],
-      websiteSalePix: [validators.required, validators.between(1, 10)],
-      websiteSaleAdministrateTax: [validators.required, validators.between(1, 10)],
+      websiteSaleBankSlip: [validators.required, validators.between(0.1, 99.99)],
+      websiteSaleCredit: [validators.required, validators.between(1, 99.99)],
+      websiteSalePix: [validators.required, validators.between(1, 99.99)],
+      websiteSaleAdministrateTax: [validators.required, validators.between(1, 99.99)],
       websiteSaleInstallments: [validators.required, validators.between(1, 12)],
-      websiteSaleFee: [validators.required, validators.between(1, 10)],
+      websiteSaleFee: [validators.required, validators.between(1, 99.99)],
       allowDiscount: [validators.required],
       allowDiscountCoupon: [validators.required],
     },
@@ -222,7 +222,11 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
     }
   };
 
-  const handleOnSaveSectorTicketPayment = async (): Promise<void> => {
+  const handleOnSaveSectorTicketPayment = async ({
+    isBntNext,
+  }: {
+    isBntNext: boolean;
+  }): Promise<void> => {
     try {
       if (isFormValidtPaymentSettings()) {
         const payloadDiscountCoupon = listDiscountCoupon.map(item => ({
@@ -323,6 +327,8 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
           delete payload.id;
         }
         const response = await api.post(`/event/ticket/${params.id}/payment`, payload);
+
+        if (response && isBntNext) nextTab();
         if (response) toast.success('Dados salvos com sucesso!');
       }
     } catch (error) {
@@ -331,21 +337,14 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
     }
   };
 
-  const handleNextTab = async (): Promise<void> => {
-    await handleOnSaveSectorTicketPayment();
-    if (isFormValidtPaymentSettings()) {
-      nextTab();
-    }
-  };
-
   const handleBackTab = (): void => {
     backTab();
   };
 
   const controllerPaymentSettingsActions: PaymentSettingsActionsProps = {
-    onSave: handleOnSaveSectorTicketPayment,
+    onSave: () => handleOnSaveSectorTicketPayment({ isBntNext: false }),
     onReturnTab: handleBackTab,
-    onNextTap: handleNextTab,
+    onNextTap: () => handleOnSaveSectorTicketPayment({ isBntNext: true }),
   };
 
   const handleOnShouldShowModal = ({

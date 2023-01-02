@@ -43,6 +43,7 @@ export interface productActionsProps {
   onNextTab: () => Promise<void>;
   onCancelEdit: () => void;
   onChangeAllowOnline: (productSelected: any) => Promise<void>;
+  onProductByCategory: (groupId: string, subgroupId: string) => Promise<void>;
 }
 
 export interface productStatesProps {

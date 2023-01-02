@@ -11,7 +11,8 @@ import { ReactComponent as CloseX } from '@/assets/images/svg/closeX.svg';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import dayjs from 'dayjs';
 import TicketsIcon from '@/assets/images/svg/Tickets';
-import { updateMask } from '@/helpers/masks/cash';
+import BackOnTop from '@/components/sharedComponents/BackOnTop';
+import { updateMask as updateMaskCash } from '@/helpers/masks/cashNumber';
 import {
   batchActionsProps,
   batchStatesProps,
@@ -174,7 +175,10 @@ export const SectorTicketMainSettingsContainer: React.FC<
                             <p className="content-collapse-title content-collapse-title-index">
                               Lote #{String(index + 1)}{' '}
                             </p>
-                            <p className="content-collapse-title subpvd-title-name">
+                            <p
+                              className="content-collapse-title subpvd-title-name"
+                              style={{ fontWeight: '500' }}
+                            >
                               • {batch.name}
                             </p>
                           </div>
@@ -188,9 +192,8 @@ export const SectorTicketMainSettingsContainer: React.FC<
                               }`,
                               startDate: dayjs(batch.startDate).format('DD/MM/YYYY'),
                               endDate: dayjs(batch.endDate).format('DD/MM/YYYY'),
-                              totalValue: updateMask(String(+batch.totalValue)),
-                              unitValue: updateMask(String(+batch.unitValue)),
-
+                              totalValue: `R$ ${updateMaskCash(String(batch.totalValue))}`,
+                              unitValue: `R$ ${updateMaskCash(String(batch.unitValue))}`,
                               actions: (
                                 <div className={`${batchStates.batch ? 'disabled-content' : null}`}>
                                   <Pen
@@ -232,14 +235,19 @@ export const SectorTicketMainSettingsContainer: React.FC<
               />
             ) : null}
           </div>
-          <div>
-            <Button
-              title="Próxima etapa"
-              theme="outlineDark"
-              onClick={async () => {
-                await mainSettingsActions.onNextTab();
-              }}
-            />
+          <div className="d-flex">
+            <div className="m-2 mr-5">
+              <BackOnTop />
+            </div>
+            <div>
+              <Button
+                title="Próxima etapa"
+                theme="outlineDark"
+                onClick={async () => {
+                  await mainSettingsActions.onNextTab();
+                }}
+              />
+            </div>
           </div>
         </div>
       </Container>

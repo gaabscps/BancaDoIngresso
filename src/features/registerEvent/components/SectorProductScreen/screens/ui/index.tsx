@@ -69,7 +69,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
   const renderActionDialogToCancel: ActionProps = {
     title: 'Cancelar',
     onClick: (): void => {
-      productStates.setProduct(undefined);
+      productActions.onCancelEdit();
       modalConfig.handleOnTougleModal();
     },
     theme: 'noneBorder',
@@ -114,7 +114,11 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
         </h6>
         <div className="card-ligth-color mb-5">
           <div className="container-event ">
-            <ProductRegisterContent formProduct={formProduct} productStates={productStates} />
+            <ProductRegisterContent
+              formProduct={formProduct}
+              productStates={productStates}
+              productActions={productActions}
+            />
           </div>
           <div className="d-flex justify-content-end">
             <div

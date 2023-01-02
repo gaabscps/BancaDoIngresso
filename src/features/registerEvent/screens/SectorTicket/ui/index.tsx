@@ -5,11 +5,12 @@ import React, { Fragment, useState } from 'react';
 import { Button, ButtonGroup, Loading, Tab } from '@/components';
 import { Container, FormGroup } from 'reactstrap';
 import { SectorTicketMainSettingsScreen } from '@/features/registerEvent/components/SectorTicketMainSettingsSreen/screens';
+import validators from '@/helpers/validators';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
 import { CustomTable } from '@/components/Table';
 import { ReactComponent as CloseX } from '@/assets/images/svg/closeX.svg';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
-import Ticket from '@/model/Ticket';
+import Tickets from '@/model/Tickets';
 import {
   ticketActionsProps,
   ticketStatesProps,
@@ -18,6 +19,8 @@ import TicketIcon from '@/assets/images/svg/Ticket';
 import { SectorTicketGeneralSettingsScreen } from '@/features/registerEvent/components/SectorTicketGeneralSettingsSreen/screens';
 import { SectorTicketPaymentSettingsScreen } from '@/features/registerEvent/components/SectorTicketPaymentSettingScreen/screens';
 import { useParams } from 'react-router-dom';
+import { updateMask as updateMaskCash } from '@/helpers/masks/cashNumber';
+import { useEvent } from '@/features/registerEvent/hook/useEvent';
 import { formSectorTicketProps, ticketStepProps } from '../types';
 import { columnsTickets } from './table';
 
@@ -44,6 +47,7 @@ export type TabSectorTicketActionsProps = {
   nextTab: () => void;
   backTab: () => void;
   onFirstTab: () => void;
+  reloadTickets: () => void;
 };
 
 type UrlParams = {
@@ -57,10 +61,12 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
   ticketActions,
   ticketStep,
 }) => {
-  const { formData, formErrors, onChangeFormInput } = formSectorTicket;
+  const { formData, formErrors, onChangeFormInput, isFormValid } = formSectorTicket;
   const [numberTab, setNumberTab] = useState(0);
   const titleTabRef = React.useRef<HTMLInputElement>(null);
   const params = useParams<UrlParams>();
+
+  const { eventState, onChange: onChangeEvent } = useEvent();
 
   const handleNextTab = (): void => {
     if (numberTab <= contentTabs.length) {
@@ -81,6 +87,10 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
     ticketActions.onGetAll(params.id);
   };
 
+  const handleReloadTickets = (): void => {
+    ticketActions.onGetAll(params.id);
+  };
+
   const contentTabs = [
     <>
       <SectorTicketMainSettingsScreen
@@ -88,6 +98,7 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
         ticketStep={ticketStep}
         nextTab={handleNextTab}
         onFirstTab={handleOnFirstTab}
+        reloadTickets={handleReloadTickets}
       />
     </>,
     <>
@@ -113,9 +124,7 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
 
   // focus on tab
   React.useEffect(() => {
-    if (ticketStates?.ticket) {
-      titleTabRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }
+    titleTabRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [ticketStates?.ticket]);
 
   return (
@@ -146,7 +155,7 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
                 title="Setores e ingressos adicionados"
                 content={
                   ticketStates?.ticketList?.length > 0
-                    ? ticketStates?.ticketList?.map((ticket: Ticket, index: number) => (
+                    ? ticketStates?.ticketList?.map((ticket: Tickets, index: number) => (
                         <React.Fragment key={ticket.id}>
                           {index > 0 ? <hr style={{ margin: '25px -30px 30px -50px' }} /> : null}
 
@@ -172,14 +181,12 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
                                     name: ticket.name,
                                     batch: batch.name,
                                     commission: batch.commission,
-                                    unitValue: (+batch.unitValue).toLocaleString('pt-br', {
-                                      style: 'currency',
-                                      currency: 'BRL',
-                                    }),
-                                    totalValue: (+batch.totalValue).toLocaleString('pt-br', {
-                                      style: 'currency',
-                                      currency: 'BRL',
-                                    }),
+                                    unitValue: `R$ ${updateMaskCash(
+                                      validators.applyDecimalMask(String(batch.unitValue)),
+                                    )}`,
+                                    totalValue: `R$ ${updateMaskCash(
+                                      validators.applyDecimalMask(String(batch.totalValue)),
+                                    )}`,
                                     amount: `${batch.amount} uni`,
                                   }))}
                                   theme="secondaryWithoutBorder"
@@ -209,7 +216,7 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
                           </div>
                         </React.Fragment>
                       ))
-                    : 'Nenhum lote cadastrado. Aqui será exibida uma lista dos lotes cadastrados.'
+                    : 'Nenhum setores e ingressos cadastrado. Aqui será exibida uma lista dos setores e ingressos.'
                 }
                 leftIcon={TicketIcon}
                 count={ticketStates?.ticketList?.length}
@@ -245,11 +252,20 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
         )}
         <hr className="mt-5" />
         <div className="footer-register-event">
-          <Button title="Voltar" theme="noneBorder" onClick={() => () => undefined} />
+          <Button
+            title="Voltar"
+            theme="noneBorder"
+            onClick={() => {
+              onChangeEvent({ ...eventState, currentStep: eventState.currentStep - 1 });
+            }}
+          />
           <Button
             title="Avançar para Setor e produto"
-            onClick={() => undefined}
-            disabled={!(ticketStates.ticketList.length > 0)}
+            onClick={() => {
+              if (isFormValid()) {
+                onChangeEvent({ ...eventState, currentStep: eventState.currentStep + 1 });
+              }
+            }}
           />
         </div>
       </Container>

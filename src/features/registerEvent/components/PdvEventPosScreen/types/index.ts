@@ -1,4 +1,5 @@
 import { FormData, FormErrors, OnChangeFormInput, IsFormValid } from '@/hooks';
+import EventPdvPos from '@/model/EventPdvPos';
 import Pos from '@/model/Pos';
 import { ShouldShowModal } from '../screens/ui';
 
@@ -6,6 +7,7 @@ export interface formPosProps {
   formData: FormData;
   formErrors: FormErrors;
   onChangeFormInput: OnChangeFormInput;
+  onInsertPos: () => void;
   isFormValid: IsFormValid;
 }
 
@@ -20,13 +22,14 @@ export interface formPosConfigProps {
   formData: FormData;
   formErrors: FormErrors;
   onChangeFormInput: OnChangeFormInput;
+  onSave: () => void;
   isFormValid: IsFormValid;
 }
 
 export interface posStatesProps {
   pos: Pos | undefined;
   setPos: React.Dispatch<React.SetStateAction<Pos | undefined>>;
-  posList: Pos[];
+  posList: EventPdvPos[];
   setPosList: React.Dispatch<React.SetStateAction<Pos[]>>;
   posOptions: Pos[];
   setPosOptions: React.Dispatch<React.SetStateAction<Pos[]>>;
@@ -34,7 +37,7 @@ export interface posStatesProps {
 
 export interface posActionsProps {
   // onSave: () => Promise<void>;
-  onGet: (posSelected: Pos) => void;
+  onGet: (posSelected: EventPdvPos) => void;
   onCancelEdit: () => void;
   onReturnTap: () => void;
   onNextTap: () => Promise<void>;
@@ -43,7 +46,7 @@ export interface posActionsProps {
 export interface onShouldShowPosSettingsProps {
   value: ShouldShowModal;
   newTitleModal: string | React.ReactNode;
-  pos?: any;
+  pos: EventPdvPos;
 }
 
 export interface modalConfigPosSettingsProps {
@@ -53,5 +56,5 @@ export interface modalConfigPosSettingsProps {
   onToggle: () => void;
   onShouldShowModal: (props: onShouldShowPosSettingsProps) => void;
   shouldShowModal: ShouldShowModal;
-  onShowModalDelete: (sector: any) => void;
+  onShowModalDelete: (sector: Pos) => void;
 }

@@ -19,8 +19,11 @@ export enum FormInputName {
 }
 
 export const MainPdvContent: React.FC<
-  Pick<PdvContainerProps, 'formMainPdv' | 'mainPdvActions' | 'mainPdvStates'>
-> = ({ formMainPdv, mainPdvActions, mainPdvStates }) => {
+  Pick<
+    PdvContainerProps,
+    'onChangeSelectedPdv' | 'formMainPdv' | 'mainPdvActions' | 'mainPdvStates'
+  >
+> = ({ onChangeSelectedPdv, formMainPdv, mainPdvActions, mainPdvStates }) => {
   const { formData, formErrors, onChangeFormInput } = formMainPdv;
 
   const pdvDataSelected = mainPdvStates?.mainPdvList.find((item: Pdv) => item.id === formData.pdv);
@@ -37,7 +40,10 @@ export const MainPdvContent: React.FC<
           name="pdv"
           label="PDV"
           placeholder="Digite ou selecione o PDV"
-          onChange={e => onChangeFormInput(FormInputName.pdv)(e?.value as string)}
+          onChange={e => {
+            onChangeFormInput(FormInputName.pdv)(e?.value as string);
+            onChangeSelectedPdv(e?.value as string);
+          }}
           error={formErrors.pdv && formErrors.pdv[0]}
           value={formData[FormInputName.pdv]}
           options={mainPdvStates.mainPdvList.map(item => ({

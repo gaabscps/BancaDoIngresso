@@ -1,7 +1,7 @@
 import Section from './Section';
-import Ticket from './Ticket';
+import Tickets from './Tickets';
 
 export default interface EventSectionTicket {
   section: Section;
-  tickets: Ticket[];
+  tickets: Tickets[];
 }

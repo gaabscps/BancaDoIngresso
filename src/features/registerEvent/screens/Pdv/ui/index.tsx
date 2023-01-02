@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import React, { Fragment, useState } from 'react';
+import React, { Fragment } from 'react';
 import { ButtonGroup, Loading, Tab } from '@/components';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
@@ -14,13 +14,15 @@ import {
   mainPdvActionsProps,
   mainPdvStatesProps,
 } from '@/features/registerEvent/components/PdvScreen/types';
+import ReactTooltip from 'react-tooltip';
+import { PdvEventTickScreen } from '@/features/registerEvent/components/PdvEventTicketScreen/screens';
 import { PdvEventPosScreen } from '@/features/registerEvent/components/PdvEventPosScreen/screens';
 import { PdvProductScreen } from '@/features/registerEvent/components/PdvProductsScreen/screens';
-import { PdvEventSubPdvScreen } from '@/features/registerEvent/components/PdvEventSubPdvScreen/screens';
-import ReactTooltip from 'react-tooltip';
 import { PdvUserScreen } from '@/features/registerEvent/components/PdvUserScreen/screens';
-import { columnsEventPdv } from './table';
+import { PdvEventSubPdvScreen } from '@/features/registerEvent/components/PdvEventSubPdvScreen/screens';
 import TicketIcon from '../../../../../assets/images/svg/Ticket';
+import { columnsEventPdv } from './table';
+import { EventTicketPDVLine } from '..';
 
 // eslint-disable-next-line no-shadow
 export enum States {
@@ -30,10 +32,21 @@ export enum States {
 
 export interface PdvContainerProps {
   state: States;
+  pdvId?: string;
+  eventTicketsPDV: EventTicketPDVLine[];
+  link: string;
+  numberTab: number;
   formPdv: formPdvProductProps;
   formMainPdv: formMainPdvProductProps;
   mainPdvActions: mainPdvActionsProps;
   mainPdvStates: mainPdvStatesProps;
+  onChangeSelectedPdv: (value: string) => void;
+  getEventPdvTickets: () => void;
+  handleSetPdvLink: (link: string) => void;
+  handleOnGetTickets: () => void;
+  handleCheckTicket: (ticketId: string) => void;
+  setNumberTab: (value: number) => void;
+  nextTab: () => void;
 }
 
 // eslint-disable-next-line no-shadow
@@ -49,17 +62,27 @@ export type TabPdvActionsProps = {
 
 export const PdvEventContainer: React.FC<PdvContainerProps> = ({
   state,
+  pdvId,
+  eventTicketsPDV,
+  link,
+  numberTab,
   formPdv,
   formMainPdv,
   mainPdvActions,
   mainPdvStates,
+  setNumberTab,
+  onChangeSelectedPdv,
+  getEventPdvTickets,
+  handleSetPdvLink,
+  handleOnGetTickets,
+  handleCheckTicket,
+  nextTab,
 }) => {
   const { formData, formErrors, onChangeFormInput } = formPdv;
-  const [numberTab, setNumberTab] = useState(1);
 
-  const handleNextTab = (): void => {
+  const handleNextTab = async (): Promise<void> => {
     if (numberTab <= contentTabs.length) {
-      setNumberTab(numberTab + 1);
+      nextTab();
     }
   };
 
@@ -73,29 +96,34 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
     setNumberTab(0);
   };
 
-  const listDiscountCoupon = [
-    {
-      id: '1',
-      pos: 'Máquininha do seu Zé ',
-      users: 'José123, Fernando456',
-    },
+  const contentTabs = [
+    <>
+      <PdvEventTickScreen
+        pdvId={pdvId}
+        eventTicketsPDV={eventTicketsPDV}
+        link={link}
+        getEventPdvTickets={getEventPdvTickets}
+        handleSetPdvLink={handleSetPdvLink}
+        handleOnGetTickets={handleOnGetTickets}
+        handleCheckTicket={handleCheckTicket}
+        nextTab={handleNextTab}
+        backTab={handleBackTab}
+      />
+    </>,
+    <>
+      <PdvEventPosScreen pdvId={pdvId} nextTab={handleNextTab} backTab={handleBackTab} />
+    </>,
+    <>
+      <PdvProductScreen pdvId={pdvId} nextTab={handleNextTab} backTab={handleBackTab} />
+    </>,
+    <>
+      <PdvUserScreen pdvId={pdvId} nextTab={handleNextTab} backTab={handleBackTab} />
+    </>,
+    <>
+      <PdvEventSubPdvScreen pdvId={pdvId} backTab={handleNextTab} firstTab={handleOnFirstTab} />
+    </>,
   ];
 
-  const contentTabs = [
-    'Conteudo 1',
-    <>
-      <PdvEventPosScreen nextTab={handleNextTab} backTab={handleBackTab} />
-    </>,
-    <>
-      <PdvProductScreen nextTab={handleNextTab} backTab={handleBackTab} />
-    </>,
-    <>
-      <PdvUserScreen nextTab={handleNextTab} backTab={handleBackTab} />
-    </>,
-    <>
-      <PdvEventSubPdvScreen backTab={handleBackTab} firstTab={handleOnFirstTab} />
-    </>,
-  ];
   return (
     <Fragment>
       <Loading isVisible={state === States.loading} />
@@ -113,7 +141,7 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
                 </a>
               </>
             }
-            name="isProduct"
+            name="isPdv"
             value={formData[FormInputName.isPdv]}
             onChange={e => onChangeFormInput(FormInputName.isPdv)(e.target.value)}
             options={[
@@ -131,6 +159,7 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
           <>
             <div className="container-event">
               <MainPdvContent
+                onChangeSelectedPdv={onChangeSelectedPdv}
                 formMainPdv={formMainPdv}
                 mainPdvActions={mainPdvActions}
                 mainPdvStates={mainPdvStates}
@@ -140,13 +169,13 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
             <SuperCollapse
               title={`PDV’s adicionados`}
               content={
-                listDiscountCoupon.length > 0 ? (
-                  listDiscountCoupon.map((item, index) => (
+                mainPdvStates.eventPDVs.length > 0 ? (
+                  mainPdvStates.eventPDVs.map((item, index) => (
                     <React.Fragment key={index}>
                       <div className="mb-5">
                         <span className="secondary-table-title">PDV #{index + 1}</span>
                         <span className="secondary-table-title font-weight-bold">
-                          <b> ·</b> Loginha do Zé
+                          <b> ·</b> {item.pdv.name}
                         </span>
                       </div>
                       <CustomTable
@@ -155,9 +184,15 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
                         columns={columnsEventPdv}
                         data={[
                           {
-                            id: item.id,
-                            pos: item.pos,
-                            users: item.users,
+                            id: item.pdv.id,
+                            pos:
+                              item.poss && item.poss.length > 0
+                                ? item.poss.map(data => data.pos.name)
+                                : undefined,
+                            users:
+                              item.pdv.users && item.pdv.users.length > 0
+                                ? item.pdv.users.map(data => data.name)
+                                : undefined,
                             actions: (
                               <React.Fragment>
                                 <div
@@ -169,12 +204,12 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
                                     <div className="ml-4">
                                       <Pen
                                         className="mr-4 svg-icon action-icon"
-                                        onClick={(): void => mainPdvActions.onGet(item as any)}
+                                        onClick={(): void => mainPdvActions.onGet(item.pdv)}
                                       />
                                       <Trash
                                         className="svg-icon svg-icon-trash"
                                         onClick={() => {
-                                          mainPdvActions.onShowModalDelete(item as any);
+                                          mainPdvActions.onShowModalDelete(item.pdv);
                                         }}
                                       />
                                     </div>
@@ -192,7 +227,7 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
                   <span>Nenhum PDV adicionado</span>
                 )
               }
-              count={1}
+              count={mainPdvStates.eventPDVs.length}
               leftIcon={TicketIcon}
               buttonTitle="Cancelar edição"
               buttonAction={() => mainPdvActions.onCancelEdit()}

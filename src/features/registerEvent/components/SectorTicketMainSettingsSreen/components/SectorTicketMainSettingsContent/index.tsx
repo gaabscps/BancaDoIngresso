@@ -45,6 +45,7 @@ export const SectorTicketMainSettingsContent: React.FC<
   );
 
   const copiesOptions = [
+    { value: 0, label: '0' },
     { value: 1, label: '1' },
     { value: 2, label: '2' },
     { value: 3, label: '3' },
@@ -152,6 +153,7 @@ export const SectorTicketMainSettingsContent: React.FC<
                 placeholder="0"
                 addon="%"
                 className="w-input-sm"
+                maxLength={3}
                 value={formData[FormInputName.percentageHalfPrice]}
                 onChange={e =>
                   onChangeFormInput(FormInputName.percentageHalfPrice)(
@@ -171,7 +173,8 @@ export const SectorTicketMainSettingsContent: React.FC<
               <InputText
                 name="numbeHalfPrice"
                 label="Quantidade de ingressos meia entrada"
-                placeholder="2000"
+                placeholder="Ex: 20000"
+                className="w-input-md"
                 value={formData[FormInputName.amountHalfPrice]}
                 onChange={e =>
                   onChangeFormInput(FormInputName.amountHalfPrice)(
@@ -279,7 +282,7 @@ export const SectorTicketMainSettingsContent: React.FC<
           <SelectCustom
             name="copies"
             label="Número de vias (opcional)"
-            placeholder="1"
+            placeholder="Ex: 1"
             className="w-input-sm"
             value={formData[FormInputName.copies]}
             onChange={e => onChangeFormInput(FormInputName.copies)(e?.value as string)}

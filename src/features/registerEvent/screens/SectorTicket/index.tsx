@@ -3,12 +3,13 @@ import React, { useEffect, useState } from 'react';
 import { SectorTicketContainer, States } from '@/features/registerEvent/screens/SectorTicket/ui';
 import useForm from '@/hooks/useForm';
 import validators from '@/helpers/validators';
-import Ticket from '@/model/Ticket';
+import Tickets from '@/model/Tickets';
 import api, { AxiosError } from '@/services/api';
 import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
 import { useConfirmDelete } from '@/hooks/useConfirmDelete';
 import { DeleteContent } from '@/components/DeleteContent';
+import Ticket from '@/model/Ticket';
 import { formSectorTicketProps, ticketStepProps } from './types';
 import {
   ticketActionsProps,
@@ -34,6 +35,7 @@ export const SectorTicketScreen: React.FC = (): JSX.Element => {
     formData: formDataSectorTicket,
     formErrors: formErrorsSectorTicket,
     onChangeFormInput: onChangeFormInputSectorTicket,
+    isFormValid: isFormValidSectorTicket,
   } = useForm({
     initialData: {
       isTicket: '',
@@ -81,7 +83,7 @@ export const SectorTicketScreen: React.FC = (): JSX.Element => {
     }
   };
 
-  const handleOnConfirmDeleteToTicket = async (ticketSelected: Ticket): Promise<void> => {
+  const handleOnConfirmDeleteToTicket = async (ticketSelected: Tickets): Promise<void> => {
     try {
       await api.delete(`/event/ticket/${params?.id}/${ticketSelected.id}`);
       toast.success('Ticket excluído com sucesso!');
@@ -93,7 +95,7 @@ export const SectorTicketScreen: React.FC = (): JSX.Element => {
     }
   };
 
-  const handleOnShowDeleteTicket = (ticketSelected: Ticket): void => {
+  const handleOnShowDeleteTicket = (ticketSelected: Tickets): void => {
     confirmDelete.show({
       title: '',
       children: <DeleteContent />,
@@ -134,6 +136,7 @@ export const SectorTicketScreen: React.FC = (): JSX.Element => {
     formData: formDataSectorTicket,
     formErrors: formErrorsSectorTicket,
     onChangeFormInput: onChangeFormInputSectorTicket,
+    isFormValid: isFormValidSectorTicket,
   };
 
   const controllerTicketStep: ticketStepProps = {
