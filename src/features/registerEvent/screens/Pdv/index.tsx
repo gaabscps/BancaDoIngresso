@@ -248,7 +248,7 @@ export const PdvEventScreen: React.FC = (): JSX.Element => {
     const list: EventTicketPDV[] = [];
 
     if (eventTickets && eventTickets.tickets && eventTickets.tickets.length > 0) {
-      eventTickets.tickets.forEach((eventTicket: any) => {
+      eventTickets.tickets.forEach(eventTicket => {
         let found = false;
         // eslint-disable-next-line no-plusplus
         for (let i = 0; i < list.length; i++) {
