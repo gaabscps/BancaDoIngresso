@@ -21,6 +21,81 @@ export const SectorConfigContent: React.FC<
   const [arrProducts, setArrProducts] = useState([]);
   const [selectedAll, setSelectedAll] = useState([]);
 
+  // useEffect(() => {
+  //   console.log('object :>> ', dataConfig.form);
+  // }, [dataConfig.form]);
+
+  // const damockedArr: any = [
+  //   {
+  //     categoryGroupId: 'id-group-1',
+  //     categoryGroupName: 'group 1',
+  //     subGroups: [
+  //       {
+  //         categorySubGroupId: 'id-subgroup-1',
+  //         categorySubGroupName: 'SubGrou 1',
+  //         products: [
+  //           {
+  //             id: 'id-product-1',
+  //             name: 'product 1',
+  //           },
+  //           {
+  //             id: 'id-product-2',
+  //             name: 'product 2',
+  //           },
+  //         ],
+  //         combos: [
+  //           {
+  //             id: 'id-combo-1',
+  //             name: 'combo 1',
+  //           },
+  //           {
+  //             id: 'id-combo-2',
+  //             name: 'combo 2',
+  //           },
+  //         ],
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     categoryGroupId: 'id-group-2',
+  //     categoryGroupName: 'group 2',
+  //     subGroups: [
+  //       {
+  //         categorySubGroupId: 'id-subgroup-2',
+  //         categorySubGroupName: 'SubGrou 2',
+  //         products: [
+  //           {
+  //             id: 'id-product-1',
+  //             name: 'product 1',
+  //           },
+  //           {
+  //             id: 'id-product-2',
+  //             name: 'product 2',
+  //           },
+  //           {
+  //             id: 'id-product-3',
+  //             name: 'product 3',
+  //           },
+  //         ],
+  //         combos: [
+  //           {
+  //             id: 'id-combo-1',
+  //             name: 'combo 1',
+  //           },
+  //           {
+  //             id: 'id-combo-2',
+  //             name: 'combo 2',
+  //           },
+  //           {
+  //             id: 'id-combo-3',
+  //             name: 'combo 3',
+  //           },
+  //         ],
+  //       },
+  //     ],
+  //   },
+  // ];
+
   const checkSelectedAll = (value: string) => {
     const { subGroups } = dataConfig.configList.find(({ categoryGroupId }) =>
       value.includes(categoryGroupId),
@@ -128,108 +203,107 @@ export const SectorConfigContent: React.FC<
   return (
     <Fragment>
       <h6 className="mb-4">Selecione os produtos e combos que este setor poderá vender</h6>
-      {arrProducts.length
-        ? arrProducts.map(
-            (
-              {
-                categoryGroupId,
-                categoryGroupName,
-                categorySubGroupId,
-                categorySubGroupName,
-                combos,
-                products,
-              }: any,
-              index,
-            ) => (
-              <Fragment key={index}>
-                <SuperCollapse
-                  title={`${categoryGroupName} // ${categorySubGroupName}`}
-                  leftIcon={() => (
-                    <Checkbox
-                      name={`${categoryGroupName} + ${categorySubGroupName}`}
-                      checked={selectedAll.includes(categorySubGroupId as never)}
-                      onChange={() => {
-                        selectAll(index);
-                      }}
-                      onClick={e => e.stopPropagation()}
-                    />
-                  )}
-                  content={
-                    <>
-                      {!!products.length && (
-                        <div className="mb-3">
-                          <div className="mb-4">
-                            <span className="text-dark">Produtos</span>
-                          </div>
-                          <div
-                            style={{
-                              display: 'grid',
-                              gridTemplateColumns: '1fr 1fr 1fr',
-                              alignItems: 'center',
-                            }}
-                          >
-                            {!!products.length &&
-                              products.map(({ id, name }: { id: string; name: string }) => (
-                                <div className="dataConfig.form-check" key={id}>
-                                  <Checkbox
-                                    label={name}
-                                    name={name}
-                                    checked={dataConfig.form?.products?.includes(
-                                      `${categoryGroupId}_${categorySubGroupId}_${id}`,
-                                    )}
-                                    onChange={() =>
-                                      handleChange(
-                                        'products',
-                                        `${categoryGroupId}_${categorySubGroupId}_${id}`,
-                                      )
-                                    }
-                                  />
-                                </div>
-                              ))}
-                          </div>
+      {!!arrProducts.length &&
+        arrProducts.map(
+          (
+            {
+              categoryGroupId,
+              categoryGroupName,
+              categorySubGroupId,
+              categorySubGroupName,
+              combos,
+              products,
+            }: any,
+            index,
+          ) => (
+            <Fragment key={index}>
+              <SuperCollapse
+                title={`${categoryGroupName} // ${categorySubGroupName}`}
+                leftIcon={() => (
+                  <Checkbox
+                    name={`${categoryGroupName} + ${categorySubGroupName}`}
+                    checked={selectedAll.includes(categorySubGroupId as never)}
+                    onChange={() => {
+                      selectAll(index);
+                    }}
+                    onClick={e => e.stopPropagation()}
+                  />
+                )}
+                content={
+                  <>
+                    {!!products.length && (
+                      <div className="mb-3">
+                        <div className="mb-4">
+                          <span className="text-dark">Produtos</span>
                         </div>
-                      )}
-                      {!!combos.length && (
-                        <div>
-                          <div className="mb-4">
-                            <span className="text-dark">Combos</span>
-                          </div>
-                          <div
-                            style={{
-                              display: 'grid',
-                              gridTemplateColumns: '1fr 1fr 1fr',
-                              alignItems: 'center',
-                            }}
-                          >
-                            {combos.map(({ id, name }: { id: string; name: string }) => (
-                              <>
-                                <div className="dataConfig.form-check" key={id}>
-                                  <Checkbox
-                                    label={name}
-                                    name={name}
-                                    checked={dataConfig.form?.combos?.includes(
+                        <div
+                          style={{
+                            display: 'grid',
+                            gridTemplateColumns: '1fr 1fr 1fr',
+                            alignItems: 'center',
+                          }}
+                        >
+                          {!!products.length &&
+                            products.map(({ id, name }: { id: string; name: string }) => (
+                              <div className="dataConfig.form-check" key={id}>
+                                <Checkbox
+                                  label={name}
+                                  name={name}
+                                  checked={dataConfig.form?.products?.includes(
+                                    `${categoryGroupId}_${categorySubGroupId}_${id}`,
+                                  )}
+                                  onChange={() =>
+                                    handleChange(
+                                      'products',
                                       `${categoryGroupId}_${categorySubGroupId}_${id}`,
-                                    )}
-                                    onChange={() =>
-                                      handleChange(
-                                        'combos',
-                                        `${categoryGroupId}_${categorySubGroupId}_${id}`,
-                                      )
-                                    }
-                                  />
-                                </div>
-                              </>
+                                    )
+                                  }
+                                />
+                              </div>
                             ))}
-                          </div>
                         </div>
-                      )}
-                    </>
-                  }
-                />
-              </Fragment>
-            ),
-          )
-        : 'Nenhum produto ou combo encontrado'}
+                      </div>
+                    )}
+                    {!!combos.length && (
+                      <div>
+                        <div className="mb-4">
+                          <span className="text-dark">Combos</span>
+                        </div>
+                        <div
+                          style={{
+                            display: 'grid',
+                            gridTemplateColumns: '1fr 1fr 1fr',
+                            alignItems: 'center',
+                          }}
+                        >
+                          {combos.map(({ id, name }: { id: string; name: string }) => (
+                            <>
+                              <div className="dataConfig.form-check" key={id}>
+                                <Checkbox
+                                  label={name}
+                                  name={name}
+                                  checked={dataConfig.form?.combos?.includes(
+                                    `${categoryGroupId}_${categorySubGroupId}_${id}`,
+                                  )}
+                                  onChange={() =>
+                                    handleChange(
+                                      'combos',
+                                      `${categoryGroupId}_${categorySubGroupId}_${id}`,
+                                    )
+                                  }
+                                />
+                              </div>
+                            </>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </>
+                }
+              />
+            </Fragment>
+          ),
+        )}
     </Fragment>
   );
 };

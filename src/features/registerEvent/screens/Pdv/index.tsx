@@ -16,6 +16,7 @@ import Section from '@/model/Section';
 import Ticket from '@/model/Ticket';
 import EventSectionTicket from '@/model/EventSectionTicket';
 import EventPdvTicket from '@/model/EventPdvTicket';
+
 import EventTicket from '@/model/EventTicket';
 import { FormInputName as FormInputMainName } from '../../components/MainPdvContent';
 import { mainPdvStatesProps } from '../../components/PdvScreen/types';
@@ -247,7 +248,7 @@ export const PdvEventScreen: React.FC = (): JSX.Element => {
     const list: EventTicketPDV[] = [];
 
     if (eventTickets && eventTickets.tickets && eventTickets.tickets.length > 0) {
-      eventTickets.tickets.forEach(eventTicket => {
+      eventTickets.tickets.forEach((eventTicket: any) => {
         let found = false;
         // eslint-disable-next-line no-plusplus
         for (let i = 0; i < list.length; i++) {

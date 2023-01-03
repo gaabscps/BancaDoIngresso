@@ -78,7 +78,7 @@ export const SectorProductConfigSectorScreen: React.FC<
     },
   });
 
-  const handleGetProducComboConfigList = async (id: string): Promise<void> => {
+  const handleGetProducComboConfigtList = async (id: string): Promise<void> => {
     try {
       setState(States.loading);
       const { data } = await api.get(`/event/section-product/${id}/product/section`);
@@ -107,6 +107,7 @@ export const SectorProductConfigSectorScreen: React.FC<
   };
 
   const handleOnConfirmDeleteSector = async (sectorSelected: any): Promise<void> => {
+    console.log('sectorSelected :>> ', sectorSelected);
     try {
       await api.delete(`/event/section-product/${params?.id}/section/${sectorSelected.sectionId}`);
       toast.success('Setor desviculado ao evento');
@@ -239,6 +240,7 @@ export const SectorProductConfigSectorScreen: React.FC<
     onChangeTitle(newTitleModal);
     onToggle();
 
+    console.log('sectorSelected :>> ', sectorSelected);
     if (value === ShouldShowModal.configProduct) {
       if (sectorSelected) {
         setSector(sectorSelected);
@@ -336,8 +338,33 @@ export const SectorProductConfigSectorScreen: React.FC<
   useEffect(() => {
     handleFecthSectorList();
     handleGetSectorList(params.id);
-    handleGetProducComboConfigList(params.id);
+    handleGetProducComboConfigtList(params.id);
   }, []);
+
+  // useEffect(() => {
+  //   // verify if sector not array empty
+  //   if (sectorConfig.length > 0) {
+  //     const _products: any[] = [];
+  //     sectorConfig.map(({ categoryGroupId, categoryGroupName, subGroups }: any) => {
+  //       subGroups.map((subgroup: any) => {
+  //         _products.push({ categoryGroupId, categoryGroupName, ...subgroup });
+  //       });
+  //     });
+
+  //     const { products, combos, categoryGroupId, categorySubGroupId }: any = _products[0];
+  //     const newProducts = products.map(
+  //       ({ id }: any) => `${categoryGroupId}_${categorySubGroupId}_${id}`,
+  //     );
+  //     const newCombos = combos.map(
+  //       ({ id }: any) => `${categoryGroupId}_${categorySubGroupId}_${id}`,
+  //     );
+
+  //     setForm({
+  //       products: newProducts,
+  //       combos: newCombos,
+  //     });
+  //   }
+  // }, [sectorConfig]);
 
   useEffect(() => {
     if (!visible) {

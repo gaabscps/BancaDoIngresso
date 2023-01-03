@@ -50,7 +50,7 @@ const Pagination: React.FC<PaginationProps> = (props: PaginationProps) => {
       {paginationRange?.map(pageNumber => {
         if (pageNumber === DOTS) {
           return (
-            <li key={pageNumber}>
+            <li>
               <span className="disabled" aria-disabled>
                 &#8230;
               </span>

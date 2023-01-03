@@ -132,7 +132,7 @@ export const SectorTicketMainSettingsContainer: React.FC<
           </div>
           <div className="d-flex justify-content-end">
             <div
-              className="cursor-pointer mr-3"
+              className="mr-3"
               onClick={() => {
                 batchActions.onCancelEdit();
               }}

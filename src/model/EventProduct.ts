@@ -18,6 +18,4 @@ export default interface EventProduct {
   partialPayment: boolean;
   allowDiscountCoupon: boolean;
   discountCoupons: DiscountCoupon[];
-  allowSellingWebsite: boolean;
-  unitMeasurement: any;
 }

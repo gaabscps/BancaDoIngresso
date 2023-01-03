@@ -52,10 +52,10 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
   modalConfig,
   formDiscountCoupon,
 }) => {
-  const titleRef = React.useRef<HTMLDivElement>(null);
+  const titleRef = React.useRef<HTMLInputElement>(null);
 
   // sum of all products within subGroups
-  const countProducts = productStates.productList?.reduce((acc, { subGroups }) => {
+  const countProducts = productStates.productList.reduce((acc, { subGroups }) => {
     const count = subGroups.reduce((acc: any, { products }: any) => acc + products.length, 0);
     return acc + count;
   }, 0);
@@ -123,7 +123,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
           </div>
           <div className="d-flex justify-content-end">
             <div
-              className="cursor-pointer mr-3"
+              className="mr-3"
               onClick={() => {
                 productActions.onCancelEdit();
               }}
@@ -155,7 +155,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
                               Grupo #{indexSubGroup + 1}
                             </span>
                             <span className="secondary-table-title font-weight-bold">
-                              <b> ·</b> {group.categoryGroupName} //
+                              <b> ·</b> {subGroup.categorySubGroupName} //
                             </span>
                             <span className="secondary-table-title">
                               {' '}

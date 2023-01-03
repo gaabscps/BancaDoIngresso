@@ -17,7 +17,7 @@ export interface SelectAutoCompleteProps {
   label?: any;
   error?: any;
   onChange?: (newValue: SingleValue<OptionProps>, actionMeta: ActionMeta<OptionProps>) => void;
-  value: string;
+  value: string | undefined;
   options: OptionProps[];
   placeholder?: string;
   id?: string;
@@ -58,7 +58,7 @@ export const SelectCustom = (props: SelectAutoCompleteProps) => {
           styles={customStyles(props)}
           className={props.className}
           noOptionsMessage={() => 'Nenhum resultado encontrado'}
-          value={props.options.find((option: OptionProps) => option.value === props.value) ?? null}
+          value={props.options.find((option: OptionProps) => option.value === props.value)}
           defaultValue={props.defaultValue}
           ref={props.refSelect}
           isDisabled={props.disabled}

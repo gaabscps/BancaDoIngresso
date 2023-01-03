@@ -9,9 +9,9 @@ import { useDialog } from '@/hooks/useDialog';
 import { DeleteContent } from '@/components/DeleteContent';
 import { TabPdvActionsProps } from '@/features/registerEvent/screens/Pdv/ui';
 import { useParams } from 'react-router-dom';
-import EventPdvPos from '@/model/EventPdvPos';
 import Pdv from '@/model/Pdv';
 import CardFees from '@/model/CardFees';
+import EventPdvPos from '@/model/EventPdvPos';
 import {
   formPosConfigProps,
   formPosProps,

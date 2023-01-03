@@ -60,7 +60,7 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
     setErrorsGroup,
   } = controllerFormGroup;
   const { onGetProductSubGroupList, onSaveGroup, onGetGroup, onCancelEdit } = controllerRequest;
-  const titleRef = React.useRef<HTMLDivElement>(null);
+  const titleRef = React.useRef<HTMLInputElement>(null);
 
   return (
     <>
@@ -197,7 +197,7 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
             ))}
             <div className="d-flex justify-content-end">
               <div
-                className="cursor-pointer mr-3"
+                className="mr-3"
                 onClick={() => {
                   onCancelEdit();
                 }}
