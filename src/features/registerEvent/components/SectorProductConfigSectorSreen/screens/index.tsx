@@ -107,7 +107,6 @@ export const SectorProductConfigSectorScreen: React.FC<
   };
 
   const handleOnConfirmDeleteSector = async (sectorSelected: any): Promise<void> => {
-    console.log('sectorSelected :>> ', sectorSelected);
     try {
       await api.delete(`/event/section-product/${params?.id}/section/${sectorSelected.sectionId}`);
       toast.success('Setor desviculado ao evento');
@@ -240,7 +239,6 @@ export const SectorProductConfigSectorScreen: React.FC<
     onChangeTitle(newTitleModal);
     onToggle();
 
-    console.log('sectorSelected :>> ', sectorSelected);
     if (value === ShouldShowModal.configProduct) {
       if (sectorSelected) {
         setSector(sectorSelected);

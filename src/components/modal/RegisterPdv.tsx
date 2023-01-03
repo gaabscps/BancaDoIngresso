@@ -121,27 +121,8 @@ const RegisterPdv = (props: Props): JSX.Element => {
     }
   }, [props.show]);
 
-  // const fileToBase64 = (file: File): Promise<string> =>
-  //   new Promise((resolve, reject) => {
-  //     const reader = new FileReader();
-  //     reader.readAsDataURL(file);
-  //     reader.onload = () => resolve(reader.result as string);
-  //     reader.onerror = error => reject(error);
-  //   });
-
   const onSubmit = async (data: Pdv): Promise<void> => {
-    //   try {
-    //     const dataFetch = { ...data };
-
-    //     if (_id) updatePdv(dataFetch);
-    //     else createPdv(dataFetch);
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // };
     try {
-      // if (idPos) props.saveRequest({ ...data, id: idPos });
-      // else await props.saveRequest(data);
       await props.saveRequest(data);
       await props.reload();
       props.setShow(false);
@@ -149,10 +130,6 @@ const RegisterPdv = (props: Props): JSX.Element => {
       console.log(error);
     }
   };
-
-  useEffect(() => {
-    console.log(errors);
-  }, [errors]);
 
   return (
     <ModalCustom

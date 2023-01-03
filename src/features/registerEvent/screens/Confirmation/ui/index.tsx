@@ -29,7 +29,6 @@ export const ConfirmationEventContainer: React.FC<ConfirmationEventContainerProp
   ticket,
 }) => {
   // Confirmação de dados
-  console.log(event);
   const dataConfirmation = [
     {
       title: 'Nome do evento:',
