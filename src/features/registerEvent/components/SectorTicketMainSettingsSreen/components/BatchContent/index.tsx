@@ -125,6 +125,7 @@ export const BatchContent: React.FC<Pick<SectorTicketMainSettingsContainerProps,
                 label="Quantidade de ingressos"
                 placeholder="Ex: 200"
                 value={formData[FormInputName.amount]}
+                maxLength={6}
                 onChange={e => {
                   const amountValue = e.target.value.replace(/\D/g, '');
                   onChangeFormInput(FormInputName.amount)(amountValue);

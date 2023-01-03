@@ -153,11 +153,11 @@ export const SectorTicketMainSettingsContent: React.FC<
                 placeholder="0"
                 addon="%"
                 className="w-input-sm"
-                maxLength={3}
+                maxLength={5}
                 value={formData[FormInputName.percentageHalfPrice]}
                 onChange={e =>
                   onChangeFormInput(FormInputName.percentageHalfPrice)(
-                    e?.target.value.replace(/\D/g, '') as string,
+                    e?.target?.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1') as string,
                   )
                 }
                 error={formErrors.percentageHalfPrice && formErrors.percentageHalfPrice[0]}
@@ -175,6 +175,7 @@ export const SectorTicketMainSettingsContent: React.FC<
                 label="Quantidade de ingressos meia entrada"
                 placeholder="Ex: 20000"
                 className="w-input-md"
+                maxLength={6}
                 value={formData[FormInputName.amountHalfPrice]}
                 onChange={e =>
                   onChangeFormInput(FormInputName.amountHalfPrice)(
@@ -213,10 +214,13 @@ export const SectorTicketMainSettingsContent: React.FC<
             name="amountCourtesy"
             label="Quantidade de ingressos cortesia"
             placeholder="Ex: 20000"
+            maxLength={6}
             className="w-input-sm"
             value={formData[FormInputName.amountCourtesy]}
             onChange={e =>
-              onChangeFormInput(FormInputName.amountCourtesy)(e?.target.value as string)
+              onChangeFormInput(FormInputName.amountCourtesy)(
+                e?.target.value.replace(/\D/g, '') as string,
+              )
             }
             error={formErrors.amountCourtesy && formErrors.amountCourtesy[0]}
             disabled={
