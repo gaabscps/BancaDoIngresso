@@ -165,8 +165,15 @@ export const SectorProductConfigSectorScreen: React.FC<
         onToggle();
       }
     } catch (error) {
-      const err = error as AxiosError;
-      toast.error(err.message);
+      const err = error as AxiosError | any;
+      // return errors in details
+      if (err.response?.data?.details.length > 0) {
+        err.response?.data.details.forEach((error: any) => {
+          toast.error(error);
+        });
+      } else {
+        toast.error(err.message);
+      }
     } finally {
       setState(States.default);
     }
