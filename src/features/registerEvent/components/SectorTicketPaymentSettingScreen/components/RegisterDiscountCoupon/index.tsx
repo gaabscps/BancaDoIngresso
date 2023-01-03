@@ -57,12 +57,11 @@ export const RegisterDiscountCoupon: React.FC<RegisterContentProps> = ({
               <Col md={2} sm={4}>
                 <FormGroup className="mb-2">
                   <InputText
-                    name="amount"
-                    type="number"
+                    name={`amount-${index}`}
                     label="Quant. cupons"
                     placeholder="0"
                     maxLength={6}
-                    value={String(item.amount)}
+                    value={String(item.amount || '')}
                     onChange={e =>
                       handleChangeDiscountCoupon(
                         'amount',
@@ -77,13 +76,12 @@ export const RegisterDiscountCoupon: React.FC<RegisterContentProps> = ({
               <Col className="ml-5" md={2} sm={4}>
                 <FormGroup className="mb-2">
                   <InputText
-                    name="discount"
-                    type="number"
+                    name={`discount-${index}`}
                     label="Desconto (%)"
                     addon="%"
                     placeholder="0"
-                    maxLength={2}
-                    value={String(item.discount)}
+                    maxLength={5}
+                    value={String(item.discount || '')}
                     onChange={e =>
                       handleChangeDiscountCoupon(
                         'discount',
