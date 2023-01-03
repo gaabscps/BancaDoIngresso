@@ -44,7 +44,7 @@ export const PdvEventTicketContainer: React.FC<Props> = ({
           <button
             style={{ border: '0' }}
             onClick={() => onGenerateSalesLink()}
-            disabled={link !== undefined && link.length > 0}
+            disabled={link !== undefined && link !== null && link.length > 0}
           >
             <h4
               className="subtitle"

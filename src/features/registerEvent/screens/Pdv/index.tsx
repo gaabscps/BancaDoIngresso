@@ -139,12 +139,12 @@ export const PdvEventScreen: React.FC = (): JSX.Element => {
     if (params.id) {
       try {
         setState(States.loading);
+        const { data } = await api.get<Pdv[]>(`/pdv/find`);
+        setMainPdvList(data ?? []);
         const responseEventPDVs = await api.get<EventPdv[]>(`/event/pdv/${params.id}`);
         if (responseEventPDVs.data && responseEventPDVs.data.length > 0) {
-          onChangeFormInputPdv(FormInputName.isPdv)('true');
           setEventPDVs(responseEventPDVs.data);
-          const { data } = await api.get<Pdv[]>(`/pdv/find`);
-          setMainPdvList(data ?? []);
+          onChangeFormInputPdv(FormInputName.isPdv)('true');
         }
         if (!pdvId) {
           setLink(undefined as unknown as string);
