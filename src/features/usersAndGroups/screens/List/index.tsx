@@ -265,7 +265,6 @@ export const UserScreen: React.FC = (): JSX.Element => {
       pageUser.entity = { cpf: onlyNumbers(formDataUser[FormInputUser.cpf]) } as User;
       const response = await api.post<Page<User, User>>('/user/page', pageUser);
       if (response.data.total && response.data.total > 0) {
-        window.console.log(response.data.list);
         setErrorsUser({
           cpf: ['CPF já existente'],
           name: [undefined as unknown as string],

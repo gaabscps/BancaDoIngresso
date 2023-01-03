@@ -411,7 +411,6 @@ export const UserScreen: React.FC<any> = ({
   const onSaveUser = async (): Promise<void> => {
     try {
       if (isFormValidUser()) {
-        console.log(formDataUser[FormInputUser.userType]);
         if (
           formDataUser[FormInputUser.userType] === '0' ||
           formDataUser[FormInputUser.userType] === '1' ||

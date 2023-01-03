@@ -79,6 +79,7 @@ export const RegisterDiscountCoupon: React.FC<RegisterContentProps> = ({
                     name="discount"
                     type="number"
                     label="Desconto (%)"
+                    addon="%"
                     placeholder="0"
                     maxLength={2}
                     value={String(item.discount)}

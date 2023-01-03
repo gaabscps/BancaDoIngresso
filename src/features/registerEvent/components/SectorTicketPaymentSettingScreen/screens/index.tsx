@@ -214,6 +214,26 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
         );
         return;
       }
+
+      // sum total amount of discount coupon
+      const totalAmountDiscountCoupon = discountCoupon.reduce(
+        (acc, cupom) => acc + (cupom.amount as number),
+        0,
+      );
+      // sum total amount of tickets
+      const totalAmountTickets = ticketStates.ticket?.batchs.reduce(
+        (acc, batch) => acc + batch.amount,
+        0,
+      ) as number;
+
+      // verify if the total amount of discount coupon is greater than the total amount of the event
+      if (totalAmountDiscountCoupon > totalAmountTickets) {
+        toast.warn(
+          'A quantidade de cupons digitadas é maior do que a quantidade total de ingressos cadastrados',
+        );
+        return;
+      }
+
       setListDiscountCoupon(discountCoupon);
       onToggle();
     } catch (error) {

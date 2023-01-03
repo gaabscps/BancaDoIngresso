@@ -107,7 +107,6 @@ export const SectorProductConfigSectorScreen: React.FC<
   };
 
   const handleOnConfirmDeleteSector = async (sectorSelected: any): Promise<void> => {
-    console.log('sectorSelected :>> ', sectorSelected);
     try {
       await api.delete(`/event/section-product/${params?.id}/section/${sectorSelected.sectionId}`);
       toast.success('Setor desviculado ao evento');
@@ -166,8 +165,15 @@ export const SectorProductConfigSectorScreen: React.FC<
         onToggle();
       }
     } catch (error) {
-      const err = error as AxiosError;
-      toast.error(err.message);
+      const err = error as AxiosError | any;
+      // return errors in details
+      if (err.response?.data?.details.length > 0) {
+        err.response?.data.details.forEach((error: any) => {
+          toast.error(error);
+        });
+      } else {
+        toast.error(err.message);
+      }
     } finally {
       setState(States.default);
     }
@@ -233,7 +239,6 @@ export const SectorProductConfigSectorScreen: React.FC<
     onChangeTitle(newTitleModal);
     onToggle();
 
-    console.log('sectorSelected :>> ', sectorSelected);
     if (value === ShouldShowModal.configProduct) {
       if (sectorSelected) {
         setSector(sectorSelected);

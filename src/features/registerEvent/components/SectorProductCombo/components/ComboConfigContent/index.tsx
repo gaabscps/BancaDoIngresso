@@ -586,7 +586,6 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                     <Col>
                       <div
                         onClick={() => {
-                          console.log(comboStates);
                           saveDiscountCoupon(comboStates.comboState);
                         }}
                         className="action-icon mb-3 register-buttom d-flex justify-content-end align-items-center"
@@ -640,7 +639,6 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                             <div className="d-flex justify-content-center align-items-center">
                               <X
                                 onClick={() => {
-                                  console.log(comboStates);
                                   removeDiscountCoupon(comboStates.comboState, discount);
                                 }}
                                 size={20}
