@@ -11,6 +11,7 @@ import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { ReactComponent as Config } from '@/assets/images/svg/config.svg';
 import { ActionProps } from '@/components/Dialog';
+import SectorIcon from '@/assets/images/svg/Sector';
 import { columnsSectors } from './table';
 import {
   formConfigSectorProps,
@@ -19,8 +20,6 @@ import {
   modalConfigSectorSettingsProps,
   dataConfigStatesProps,
 } from '../../types';
-import TicketIcon from '../../../../../../assets/images/svg/Ticket';
-
 import { SectorConfigContent } from '../../components/SectorConfigContent';
 
 // eslint-disable-next-line no-shadow
@@ -253,7 +252,7 @@ export const SectorProductConfigSectorContainer: React.FC<
               : 'Nenhum setor cadastrado. Aqui será exibida uma lista dos setores cadastrados'
           }
           count={configSectorStates.sectorTableList.length}
-          leftIcon={TicketIcon}
+          leftIcon={SectorIcon}
         />
         <div className="d-flex justify-content-end">
           <Button

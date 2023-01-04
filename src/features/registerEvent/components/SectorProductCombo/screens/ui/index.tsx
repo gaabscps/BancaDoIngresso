@@ -10,9 +10,6 @@ import {
   Switch,
 } from '@/components';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
-import TicketIcon from '@/assets/images/svg/Ticket';
-// import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
-// import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { Col, Container, Form, FormGroup, Row } from 'reactstrap';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
@@ -23,6 +20,7 @@ import { CustomTable } from '@/components/Table';
 import { ActionProps } from '@/components/Dialog';
 import DiscountCoupon from '@/model/DiscountCoupon';
 import ReactTooltip from 'react-tooltip';
+import ComboIcon from '@/assets/images/svg/Combo';
 import {
   comboActionsProps,
   comboRequestProps,
@@ -544,7 +542,7 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                         </div>
                       )
                     }
-                    leftIcon={TicketIcon}
+                    leftIcon={ComboIcon}
                   />
                 </Col>
               </Row>

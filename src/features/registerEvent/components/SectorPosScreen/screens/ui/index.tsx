@@ -1,5 +1,4 @@
 /* eslint-disable no-shadow */
-import TicketIcon from '@/assets/images/svg/Ticket';
 import {
   Button,
   ButtonGroup,
@@ -20,6 +19,7 @@ import { Col, Container, Form, FormGroup, Row } from 'reactstrap';
 import { ActionProps } from '@/components/Dialog';
 import Pos from '@/model/Pos';
 import dayjs from 'dayjs';
+import POSIcon from '@/assets/images/svg/Pos';
 import {
   dataConfigStatesProps,
   formAllowPosProps,
@@ -392,7 +392,7 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
                         )
                       : 'Nenhuma POS cadastrada. Aqui será exibida uma lista de POS'
                   }
-                  leftIcon={TicketIcon}
+                  leftIcon={POSIcon}
                 />
               </Col>
             </Row>
