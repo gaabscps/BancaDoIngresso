@@ -159,6 +159,7 @@ export const PdvContainer: React.FC<PdvContainerProps> = ({
                         onShouldShowModal({
                           newTitleModal: 'Cadastrar Sub PDV',
                           value: ShouldShowModal.subpdvRegister,
+                          // eslint-disable-next-line @typescript-eslint/no-explicit-any
                           subPdv: { pdv: { ...pdv } } as any,
                         })
                       }

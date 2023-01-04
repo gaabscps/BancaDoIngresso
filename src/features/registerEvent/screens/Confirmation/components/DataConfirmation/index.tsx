@@ -2,6 +2,7 @@ import React from 'react';
 import { DataList } from '@/components/DataList';
 
 interface DataConfirmationProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any;
 }
 

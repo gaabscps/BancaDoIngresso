@@ -10,6 +10,7 @@ export const CodeConfirmScreen: React.FC = (): JSX.Element => {
   const history = useHistory();
   const [state] = useState<States>(States.default);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { state: stateLocation }: any = useLocation();
 
   const handleGoToLogin = (): void => history.push(path.Initial.Login);

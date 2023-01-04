@@ -20,6 +20,7 @@ export enum FormInputName {
   physicalSaleFee = 'physicalSaleFee',
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const PosConfigContent: React.FC<any> = ({ formPosConfig }) => {
   const { formData, onChangeFormInput, formErrors } = formPosConfig;
 

@@ -56,14 +56,19 @@ export interface SectorProductPosContainerProps {
   controllerModalConfig: modalConfigPosProps;
   handleOnSavePos: () => Promise<void>;
   backTab: () => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   posList: any[];
   posOptions: Pos[];
   handleOnShowDeletePos: (posSelected: Pos) => void;
   dataConfig: dataConfigStatesProps;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleOnChangePosSwitch: (comboSelected: any) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleOnGetPos: (comboSelected: any) => void;
   handleOnCancelEditPos: () => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   posState: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setPosState: React.Dispatch<React.SetStateAction<any>>;
 }
 export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({

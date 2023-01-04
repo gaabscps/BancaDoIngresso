@@ -26,6 +26,7 @@ interface TablePropsCustom {
 interface TableCustomProps extends TableProps<TablePropsCustom | any> {
   numberRowsPerPage: number;
   progressPending: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getRowId?: (row: any) => void;
 }
 

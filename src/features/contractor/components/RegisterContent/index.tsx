@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useRef } from 'react';
 import { Col, Form, FormGroup, Row } from 'reactstrap';
 import { Button, InputText, SelectCustom, Switch } from '@/components';

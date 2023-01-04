@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
 import { EventContainer, States, ShouldShowModal } from '@/features/events/screens/list/ui';
 import EventStatus from '@/model/EventStatus';
@@ -203,6 +204,7 @@ export const EventScreen: React.FC = () => {
   }: {
     value: ShouldShowModal;
     newTitleModal: string | React.ReactNode;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     event?: Event | any;
   }): void => {
     setShouldShowModal(value);
@@ -274,6 +276,7 @@ export const EventScreen: React.FC = () => {
     await handleFetch({
       ...currentPage,
       entity: {},
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
     onToggle();
   };

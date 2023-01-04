@@ -25,6 +25,7 @@ export enum ShouldShowModal {
 
 export interface SectorRegisterContainerProps {
   state: States;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   sectorSelectedStates: any;
   formSector: formSectorProps;
   sectorStates: sectorStatesProps;

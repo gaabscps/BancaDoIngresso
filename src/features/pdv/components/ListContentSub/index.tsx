@@ -3,8 +3,10 @@ import SubPdv from '@/model/SubPdv';
 import LoteCollapse from '@/components/sharedComponents/collapse/LoteCollapse';
 
 interface PdvContainerProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onShowEditSubPdv: (value: any) => void;
   onShowDeleteSubPdv: (subPdv: SubPdv) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   dataList?: any;
 }
 

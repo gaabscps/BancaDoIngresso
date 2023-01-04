@@ -16,8 +16,8 @@ const ConfirmDeleteContext = createContext<ConfirmDeleteProviderValue>({
 });
 
 export const ConfirmDeleteProvider = ({ children }: ConfirmDeleteProps): JSX.Element => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [options, setOptions] = useState<
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     Omit<ConfirmDeleteProviderValue, 'onClose' | 'visible'> | any
   >({});
   const [visible, setVisible] = useState(false);

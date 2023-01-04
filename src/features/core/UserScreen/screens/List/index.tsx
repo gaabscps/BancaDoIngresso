@@ -102,6 +102,7 @@ export interface CheckBoxData {
   name: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const UserScreen: React.FC<any> = ({
   getUsersDropdown,
   userDropdownSelected,

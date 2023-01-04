@@ -34,6 +34,7 @@ export const SubPdvContent: React.FC<
     (item: SubPdv) => item.id === formData.name,
   );
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const refSelectUser = useRef<any>(null);
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   const onClearSelectUser = () => {

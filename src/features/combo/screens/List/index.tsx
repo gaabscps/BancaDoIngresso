@@ -101,6 +101,7 @@ export const ComboScreen: React.FC = (): JSX.Element => {
       setProductQuantity([...productQuantity, { productId: '', productName: '', quantity: '' }]);
     },
     handleChangeProduct(inputName: string, index: number, value: string): void {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const newFormValues = [...productQuantity] as any;
       newFormValues[index][inputName] = value;
       setProductQuantity(newFormValues);
@@ -181,6 +182,7 @@ export const ComboScreen: React.FC = (): JSX.Element => {
     }
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleFecthComboSubGroupList = async (dataSubgGroup: any): Promise<void> => {
     try {
       setState(States.loading);
@@ -340,6 +342,7 @@ export const ComboScreen: React.FC = (): JSX.Element => {
     await handleFetch({
       ...currentPage,
       entity: {},
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
     onToggle();
   };
@@ -366,6 +369,7 @@ export const ComboScreen: React.FC = (): JSX.Element => {
       onChangeFormInputCombo(FormInputNameToSaveCombo.imageBase64)(combo.imageBase64);
       setProductQuantity((): ProductQuantity[] => {
         if (combo.products.length !== 0) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           return combo.products.map((item): any => ({
             productId: item.id,
             productName: item.name,

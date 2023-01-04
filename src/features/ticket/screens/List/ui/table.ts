@@ -53,6 +53,6 @@ export const columns: TableColumn<DataRow>[] = [
   {
     name: 'Ações',
     selector: row => row.actions,
-    width: '190px',
+    width: '210px',
   },
 ];

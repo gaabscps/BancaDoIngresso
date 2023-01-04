@@ -141,6 +141,7 @@ export const ProductScreen: React.FC = (): JSX.Element => {
     }
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleFecthProductSubGroupList = async (dataSubgGroup: any): Promise<void> => {
     try {
       setState(States.loading);
@@ -280,6 +281,7 @@ export const ProductScreen: React.FC = (): JSX.Element => {
     await handleFetch({
       ...currentPage,
       entity: {},
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
     onToggle();
   };

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import EventSectionGet from '@/model/EventSectionGet';
 import { DataList } from '@/components/DataList';
 import React from 'react';

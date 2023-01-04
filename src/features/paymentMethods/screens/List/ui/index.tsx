@@ -49,6 +49,7 @@ interface PaymentMethodsContainerProps {
   formErrorsPaymentMethods: FormErrors;
   formDataFilter: FormData;
   formErrorsFilter: FormErrors;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   listChargeSetup: any[];
   clearFilter: () => void;
   onSavePaymentMethods: () => Promise<void>;

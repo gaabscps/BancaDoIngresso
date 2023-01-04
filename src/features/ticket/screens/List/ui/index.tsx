@@ -11,17 +11,19 @@ import { ActionProps, Dialog } from '@/components/Dialog';
 import { CustomTable } from '@/components/Table';
 import Pagination from '@/components/Utils/Pagination';
 import { FormErrors, OnChangeFormInput, FormData } from '@/hooks/useForm';
-import { ClientCommentController } from '@/features/client/types';
 import { FilterContent } from '@/features/client/components/FilterContent';
 import { updateMask as updateMaskCPF } from '@/helpers/masks/cpf';
-import { RegisterCommentContent } from '@/features/client/components/RegisterCommentContent';
 import OrderTicket from '@/model/OrderTicket';
-import { TicketRequestParams } from '@/features/ticket/types';
+import { TicketCommentController, TicketRequestParams } from '@/features/ticket/types';
 import dayjs from 'dayjs';
 import formatValueToCurrency from '@/helpers/common/mask';
 import OrderPayment from '@/model/OrderPayment';
 import PaymentType from '@/model/PaymentType';
 import StatusType from '@/model/StatusType';
+import PaymentStatus from '@/model/PaymentStatus';
+import { RegisterCommentContent } from '@/features/ticket/components/RegisterCommentContent';
+import { TicketDetailContent } from '@/features/ticket/components/TicketDetailContent';
+import OrderTicketDetail from '@/model/OrderTicketDetail';
 import { columns } from './table';
 
 // eslint-disable-next-line no-shadow
@@ -52,6 +54,7 @@ export interface DataRow {
 export enum ShouldShowModal {
   filter = 'filter',
   comment = 'comment',
+  detail = 'detail',
 }
 
 interface StateProps {
@@ -63,7 +66,8 @@ interface StateProps {
   currentPage: TicketRequestParams;
   formDataFilter: FormData;
   formErrorsFilter: FormErrors;
-  controllerComment: ClientCommentController;
+  controllerComment: TicketCommentController;
+  ticketDetail: OrderTicketDetail;
 }
 
 interface DispatchProps {
@@ -71,10 +75,9 @@ interface DispatchProps {
   onPaginationChange: (page: number) => void;
   onChangeFormInputFilter: OnChangeFormInput;
   onShowReversePayment: (orderTicket: OrderTicket) => void;
-  onShowDeleteClient: (orderTicket: OrderTicket) => void;
+  onShowCancelTicket: (orderTicket: OrderTicket) => void;
   onFilter: () => Promise<void>;
   clearFilter: () => void;
-  onAlterFraudAlert: (orderTicket: OrderTicket) => void;
   onShouldShowModal: ({
     value,
     newTitleModal,
@@ -98,19 +101,26 @@ export const TicketContainer: React.FC<Props> = ({
   formDataFilter,
   formErrorsFilter,
   controllerComment,
+  ticketDetail,
   clearFilter,
   onPaginationChange,
   onChangeFormInputFilter,
   onToggle,
   onFilter,
   onShowReversePayment,
-  onShowDeleteClient,
+  onShowCancelTicket,
   onShouldShowModal,
-  onAlterFraudAlert,
 }) => {
-  const fromPaymentStatus = (paymentStatus: StatusType): string => {
+  const getClassName = (isRed: boolean): string => {
+    let className = 'mr-4 svg-icon action-icon';
+    if (isRed) {
+      className = 'mr-4 svg-icon-error action-icon';
+    }
+    return className;
+  };
+  const fromStatusType = (statusType: StatusType): string => {
     let s = '';
-    switch (paymentStatus) {
+    switch (statusType) {
       case StatusType.ACTIVE:
         s = 'Aprovado';
         break;
@@ -119,6 +129,31 @@ export const TicketContainer: React.FC<Props> = ({
         break;
       default:
         s = 'Extornado';
+        break;
+    }
+    return s;
+  };
+
+  const fromPaymentStatus = (paymentStatus: PaymentStatus): string => {
+    let s = '';
+    switch (paymentStatus) {
+      case PaymentStatus.APPROVED:
+        s = 'Aprovado';
+        break;
+      case PaymentStatus.DISAPPROVED:
+        s = 'Reprovado';
+        break;
+      case PaymentStatus.AWAITING_PAYMENT:
+        s = 'Aguardando Pagamento';
+        break;
+      case PaymentStatus.CANCELED:
+        s = 'Cancelado';
+        break;
+      case PaymentStatus.CANCELLATION_ANALYSIS:
+        s = 'Aguardando analise do cancelamento';
+        break;
+      default:
+        s = '';
         break;
     }
     return s;
@@ -183,7 +218,10 @@ export const TicketContainer: React.FC<Props> = ({
       : item.sectionName,
     cpf: updateMaskCPF(item.clientCPF),
     saleDate: dayjs(item.saleDate).locale('pt-br').format('DD/MM/YYYY [às] HH:mm'),
-    paymentStatus: fromPaymentStatus(item.paymentStatus),
+    paymentStatus:
+      item.ticketStatus === StatusType.EXCLUDED
+        ? fromStatusType(item.ticketStatus)
+        : fromPaymentStatus(item.orderPaymentStatus),
     saleValue: formatValueToCurrency(`${item.saleValue}`).masked,
     paymentType:
       // eslint-disable-next-line no-nested-ternary
@@ -207,13 +245,21 @@ export const TicketContainer: React.FC<Props> = ({
     actions: (
       <React.Fragment>
         <Transfer
-          className="mr-2 svg-icon action-icon svg-icon-trash"
+          className={getClassName(item.reverseDate !== undefined || item.reverseDate !== null)}
           onClick={() => {
             onShowReversePayment(item);
           }}
         />
+        {item.comments && item.comments.length > 0 && (
+          <span
+            className="badge badge-custom position-absolute top-0 start-100 translate-middle rounded-pill bg-danger"
+            style={{ marginLeft: '12px' }}
+          >
+            {item.comments.length}
+          </span>
+        )}
         <Comment
-          className={'mr-4 svg-icon action-icon'}
+          className={getClassName(item.comments && item.comments.length > 0)}
           onClick={(): void =>
             onShouldShowModal({
               value: ShouldShowModal.comment,
@@ -222,12 +268,20 @@ export const TicketContainer: React.FC<Props> = ({
             })
           }
         />
-
-        <Detail className={'mr-4 svg-icon action-icon'} onClick={() => onAlterFraudAlert(item)} />
+        <Detail
+          className={'mr-4 svg-icon action-icon'}
+          onClick={() =>
+            onShouldShowModal({
+              value: ShouldShowModal.detail,
+              newTitleModal: 'Ver dados',
+              orderTicket: item,
+            })
+          }
+        />
         <X
-          className="mr-2 svg-icon action-icon svg-icon-trash"
+          className={getClassName(item.cancelDate !== undefined || item.cancelDate !== null)}
           onClick={() => {
-            onShowDeleteClient(item);
+            onShowCancelTicket(item);
           }}
         />
       </React.Fragment>
@@ -258,6 +312,7 @@ export const TicketContainer: React.FC<Props> = ({
           {
             [ShouldShowModal.filter]: renderActionDialogToFilter,
             [ShouldShowModal.comment]: renderActionDialogToCancel,
+            [ShouldShowModal.detail]: renderActionDialogToCancel,
           }[shouldShowModal],
           {
             [ShouldShowModal.filter]: {
@@ -268,6 +323,9 @@ export const TicketContainer: React.FC<Props> = ({
               title: 'Publicar',
               onClick: (): Promise<void> => controllerComment.onAdd(),
               disabled: controllerComment.formData.comment === '',
+            },
+            [ShouldShowModal.detail]: {
+              title: 'OK',
             },
           }[shouldShowModal],
         ]}
@@ -289,6 +347,7 @@ export const TicketContainer: React.FC<Props> = ({
                 onChangeFormInput={controllerComment.onChange}
               />
             ),
+            [ShouldShowModal.detail]: <TicketDetailContent detail={ticketDetail} />,
           }[shouldShowModal]
         }
       </Dialog>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ReactComponent as ArrowDown } from '@/assets/images/svg/ArrowDown.svg';
 import { SelectAutoCompleteProps } from '.';
 

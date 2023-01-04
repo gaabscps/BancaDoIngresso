@@ -285,6 +285,7 @@ export const PosScreen: React.FC = (): JSX.Element => {
     await handleFetch({
       ...currentPage,
       entity: {},
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
     onToggle();
   };

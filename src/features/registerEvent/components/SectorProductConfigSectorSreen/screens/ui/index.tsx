@@ -161,16 +161,20 @@ export const SectorProductConfigSectorContainer: React.FC<
               ? configSectorStates.sectorTableList.map(
                   ({ sectionId, sectionNome, sectionGroup }, index) => {
                     // total products by sectionGroup[].subGroups[].products[]
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     const totalProducts = sectionGroup.reduce((acc: any, { subGroups }: any) => {
                       const totalProductsBySubGroup = subGroups.reduce(
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         (acc: any, { products }: any) => acc + products.length,
                         0,
                       );
                       return acc + totalProductsBySubGroup;
                     }, 0);
                     // total combos by sectionGroup[].subGroups[].combos[]
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     const totalCombos = sectionGroup.reduce((acc: any, { subGroups }: any) => {
                       const totalCombosBySubGroup = subGroups.reduce(
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         (acc: any, { combos }: any) => acc + combos.length,
                         0,
                       );

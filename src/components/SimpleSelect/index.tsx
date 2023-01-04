@@ -24,9 +24,11 @@ interface SimpleSelectProps {
   id?: string;
   style?: React.CSSProperties;
   wrapperClass?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   control?: any;
   defaultValue?: OptionProps;
   onBlur?: () => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ref?: any;
 }
 

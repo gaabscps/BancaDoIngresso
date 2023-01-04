@@ -174,6 +174,7 @@ export const ContractorScreen: React.FC<ContractorSelectedProps> = ({
       ]);
     },
     handleChangeBanckAccount(inputName: string, index: number, value: string): void {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const newFormValues = [...bankAccount] as any;
       newFormValues[index][inputName] = value;
       setBankAccount(newFormValues);
@@ -204,6 +205,7 @@ export const ContractorScreen: React.FC<ContractorSelectedProps> = ({
       ]);
     },
     handleChangePix(inputName: string, index: number, value: string): void {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const newFormValues = [...pix] as any;
       newFormValues[index][inputName] = value;
       setPix(newFormValues);
@@ -494,6 +496,7 @@ export const ContractorScreen: React.FC<ContractorSelectedProps> = ({
       const statusBooleanString = {
         0: 'true',
         1: 'false',
+        2: 'false',
       }[contractor.status];
 
       onChangeFormInputContractor(FormInputNameToSaveContractor.name)(contractor.name);

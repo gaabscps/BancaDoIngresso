@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import React from 'react';
 
 interface SectorTicketProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ticket: any;
 }
 

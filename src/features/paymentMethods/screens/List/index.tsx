@@ -119,6 +119,7 @@ export const PaymentMethodsScreen: React.FC = (): JSX.Element => {
     ({
       0: colors.green,
       1: colors.red,
+      2: colors.red,
     }[status] || colors.grey);
 
   const handleOnShouldShowModal = ({
@@ -268,6 +269,7 @@ export const PaymentMethodsScreen: React.FC = (): JSX.Element => {
     await handleFetch({
       ...currentPage,
       entity: {},
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
     onToggle();
   };
@@ -284,6 +286,7 @@ export const PaymentMethodsScreen: React.FC = (): JSX.Element => {
       const statusBooleanString = {
         0: 'true',
         1: 'false',
+        2: 'false',
       }[paymentMethods.status];
 
       onChangeFormInputPaymentMethods(FormInputNameToSavePaymentMethods.name)(paymentMethods.name);

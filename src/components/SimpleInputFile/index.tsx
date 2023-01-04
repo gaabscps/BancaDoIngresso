@@ -8,6 +8,7 @@ interface InputFileProps {
   style?: React.CSSProperties;
   placeholder?: string;
   ref?: React.Ref<HTMLInputElement>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   error?: any;
   label?: string | React.ReactNode;
   wrapperClass?: string;

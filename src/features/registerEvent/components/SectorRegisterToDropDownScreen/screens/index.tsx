@@ -18,6 +18,7 @@ import {
   sectorActionsProps,
 } from '../types';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const SectorRegisterToDropDownScreen: React.FC<any> = ({
   sectorActions: sectorSelectedActions,
   sectorStates: sectorSelectedStates,
@@ -108,6 +109,7 @@ export const SectorRegisterToDropDownScreen: React.FC<any> = ({
     onChangeFormInput: onChangeFormInputSector,
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const controllerSectorStates: any = {
     sector,
     setSector,

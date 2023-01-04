@@ -176,6 +176,7 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
   };
 
   const handleChangeDiscountCoupon = (inputName: string, index: number, value: string): void => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const newFormValues = [...discountCoupon] as any;
     newFormValues[index][inputName] = value;
     setDiscountCoupon(newFormValues);
@@ -373,6 +374,7 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
   }: {
     value: ShouldShowModal;
     newTitleModal: string | React.ReactNode;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     event?: Event | any;
   }): void => {
     setShouldShowModal(value);

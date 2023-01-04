@@ -1,15 +1,16 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { useDialog } from '@/hooks/useDialog';
 import api, { AxiosError } from '@/services/api';
-import { toast } from 'react-toastify';
 import useForm from '@/hooks/useForm';
 import validators from '@/helpers/validators';
 import { useConfirmDelete } from '@/hooks/useConfirmDelete';
 import { FormInputName as FormInputNameToFilter } from '@/features/combo/components/FilterContent';
-import ClientComment from '@/model/ClientComment';
-import { useParams } from 'react-router-dom';
 import OrderTicket from '@/model/OrderTicket';
+import OrderItemComment from '@/model/OrderItemComment';
+import OrderTicketDetail from '@/model/OrderTicketDetail';
 import { TicketContainer, ShouldShowModal, States } from './ui';
 import { FormInputComment } from '../../components/RegisterCommentContent';
 import { TicketCommentController, TicketRequestParams, TicketResponse } from '../../types';
@@ -30,7 +31,8 @@ export const TicketScreen: React.FC = (): JSX.Element => {
     page: 1,
     pageSize: 10,
   });
-  const [comments, setComments] = useState<ClientComment[]>([]);
+  const [comments, setComments] = useState<OrderItemComment[]>([]);
+  const [ticketDetail, setTicketDetail] = useState<OrderTicketDetail>();
   const { title, visible, onChangeTitle, onToggle } = useDialog();
   const confirmReversePayment = useConfirmDelete();
   const confirmDelete = useConfirmDelete();
@@ -47,6 +49,9 @@ export const TicketScreen: React.FC = (): JSX.Element => {
     if (orderTicketSelected?.orderItemId && value === ShouldShowModal.comment) {
       setOrderTicket(orderTicketSelected);
       await handleFetchComment(orderTicketSelected);
+    } else if (orderTicketSelected?.orderItemId && value === ShouldShowModal.detail) {
+      setOrderTicket(orderTicketSelected);
+      await handleFetchDetail(orderTicketSelected);
     }
     setShouldShowModal(value);
     onChangeTitle(newTitleModal);
@@ -105,10 +110,25 @@ export const TicketScreen: React.FC = (): JSX.Element => {
   const handleFetchComment = async (selectedOrderTicket: OrderTicket): Promise<void> => {
     try {
       setState(States.loading);
-      const { data } = await api.get<ClientComment[]>(
-        `/client/${selectedOrderTicket.orderItemId}/comment`,
+      const { data } = await api.get<OrderItemComment[]>(
+        `/ticket/${params.id}/comment/${selectedOrderTicket.orderItemId}`,
       );
       setComments(data);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
+  const handleFetchDetail = async (selectedOrderTicket: OrderTicket): Promise<void> => {
+    try {
+      setState(States.loading);
+      const { data } = await api.get<OrderTicketDetail>(
+        `/ticket/${params.id}/ticket/${selectedOrderTicket.orderItemId}`,
+      );
+      setTicketDetail(data);
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
@@ -123,8 +143,8 @@ export const TicketScreen: React.FC = (): JSX.Element => {
         setState(States.loading);
         const payload = {
           comment: formDataComment[FormInputComment.comment],
-        } as ClientComment;
-        await api.post(`/client/${orderTicket?.orderItemId}/comment`, payload);
+        } as OrderItemComment;
+        await api.post(`/ticket/${params.id}/comment/${orderTicket?.orderItemId}`, payload);
         await handleFetchComment(orderTicket as OrderTicket);
         await handleFetch(currentPage);
         toast.success('Comentário adcionado com sucesso!');
@@ -146,22 +166,6 @@ export const TicketScreen: React.FC = (): JSX.Element => {
     formErrors: formErrorsComment,
     onChange: onChangeFormInputComment,
     onAdd: handleOnAddComment,
-  };
-
-  const handleAlterFraudAlert = async (orderTicketSelected: OrderTicket): Promise<void> => {
-    try {
-      setState(States.loading);
-
-      await api.patch(`/client/fraud/${orderTicketSelected?.orderItemId}/add`);
-      toast.success('Alerta de fraude adcionado com sucesso!');
-
-      await handleFetch(currentPage);
-    } catch (error) {
-      const err = error as AxiosError;
-      toast.error(err.message);
-    } finally {
-      setState(States.default);
-    }
   };
 
   const handleOnCloseReversePayment = (): void => confirmReversePayment.hide();
@@ -201,19 +205,22 @@ export const TicketScreen: React.FC = (): JSX.Element => {
 
   const handleOnClose = (): void => confirmDelete.hide();
 
-  const handleOnConfirmDeleteToClient = async (orderTicketSelected: OrderTicket): Promise<void> => {
+  const handleOnConfirmCancelTicket = async (orderTicketSelected: OrderTicket): Promise<void> => {
     try {
-      await api.delete(`/client/${orderTicketSelected?.orderItemId}`);
-      toast.success('Cliente excluído com sucesso!');
+      setState(States.loading);
+      await api.patch(`/ticket/${params.id}/cancel/${orderTicketSelected.orderItemId}`);
+      toast.success('Ingresso cancelado com sucesso!');
       handleOnClose();
       handleFetch(currentPage);
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
+    } finally {
+      setState(States.default);
     }
   };
 
-  const handleOnShowDeleteClient = (orderTicketSelected: OrderTicket): void => {
+  const handleOnShowCancelTicket = (orderTicketSelected: OrderTicket): void => {
     confirmDelete.show({
       title: '',
       children: <CancelContent />,
@@ -225,7 +232,7 @@ export const TicketScreen: React.FC = (): JSX.Element => {
         },
         {
           title: 'Sim, quero cancelar',
-          onClick: (): Promise<void> => handleOnConfirmDeleteToClient(orderTicketSelected),
+          onClick: (): Promise<void> => handleOnConfirmCancelTicket(orderTicketSelected),
         },
       ],
     });
@@ -288,15 +295,15 @@ export const TicketScreen: React.FC = (): JSX.Element => {
       formDataFilter={formDataFilter}
       formErrorsFilter={formErrorsFilter}
       controllerComment={controllerComment}
+      ticketDetail={ticketDetail as OrderTicketDetail}
       onShouldShowModal={handleOnShouldShowModal}
       onToggle={onToggle}
       onPaginationChange={handleOnPaginationChange}
       onChangeFormInputFilter={onChangeFormInputFilter}
       onShowReversePayment={handleOnShowReversePayment}
-      onShowDeleteClient={handleOnShowDeleteClient}
+      onShowCancelTicket={handleOnShowCancelTicket}
       onFilter={handleOnFilter}
       clearFilter={clearFilter}
-      onAlterFraudAlert={handleAlterFraudAlert}
     />
   );
 };
