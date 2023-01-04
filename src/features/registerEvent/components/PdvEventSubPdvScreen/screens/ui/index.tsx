@@ -7,9 +7,9 @@ import { CustomTable } from '@/components/Table';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
-import TicketIcon from '@/assets/images/svg/Ticket';
 import { ActionProps } from '@/components/Dialog';
 import SubPdv from '@/model/SubPdv';
+import SubPdvIcon from '@/assets/images/svg/SubPdv';
 import {
   ContractorControllerUser,
   formSubPdvProps,
@@ -186,7 +186,7 @@ export const PdvEventSubPdvContainer: React.FC<SubPdvContainerProps> = ({
                 )
               }
               count={subPdvStates.subPdvList.length}
-              leftIcon={TicketIcon}
+              leftIcon={SubPdvIcon}
             />
           </>
         )}

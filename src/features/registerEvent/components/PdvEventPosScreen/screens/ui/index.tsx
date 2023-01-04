@@ -8,9 +8,9 @@ import { ReactComponent as Config } from '@/assets/images/svg/config.svg';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
-import TicketIcon from '@/assets/images/svg/Ticket';
 import { ActionProps } from '@/components/Dialog';
 import dayjs from 'dayjs';
+import POSIcon from '@/assets/images/svg/Pos';
 import {
   formPosConfigProps,
   formPosProps,
@@ -120,71 +120,69 @@ export const PdvEventPosContainer: React.FC<PosContainerProps> = ({
             <SuperCollapse
               title={`POS’s inseridos`}
               content={
-                posStates.posList.length > 0 ? (
-                  posStates.posList.map((item, index) => (
-                    <React.Fragment key={index}>
-                      <div className="mb-5">
-                        <span className="secondary-table-title">POS #{index + 1}</span>
-                        <span className="secondary-table-title font-weight-bold">
-                          <b> ·</b> {item.pos.name}
-                        </span>
-                      </div>
-                      <CustomTable
-                        numberRowsPerPage={0}
-                        progressPending={false}
-                        columns={columnsPosEvent}
-                        data={[
-                          {
-                            id: item.pos.id,
-                            numberPos: item.pos.serialNumber,
-                            expirationDate: dayjs(item.pos.expirationDate).format(
-                              'YYYY-DD-MM hh:mm:ss',
-                            ),
-                            partialPayment: item.waiter,
-                            actions: (
-                              <React.Fragment>
-                                <div className={`${posStates.pos ? 'disabled-content' : null}`}>
-                                  <div className="d-flex align-items-center">
-                                    <div className="ml-4">
-                                      <Config
-                                        className="mr-4 svg-icon action-icon"
-                                        onClick={(): void => {
-                                          modalConfig.onShouldShowModal({
-                                            value: ShouldShowModal.configProduct,
-                                            newTitleModal: 'Configurações da POS',
-                                            pos: item,
-                                          });
-                                        }}
-                                      />
-                                      <Pen
-                                        className="mr-4 svg-icon action-icon"
-                                        onClick={(): void => posActions.onGet(item)}
-                                      />
-                                      <Trash
-                                        className="svg-icon svg-icon-trash"
-                                        onClick={() => {
-                                          modalConfig.onShowModalDelete(item.pos);
-                                        }}
-                                      />
+                posStates.posList.length > 0
+                  ? posStates.posList.map((item, index) => (
+                      <React.Fragment key={index}>
+                        <div className="mb-5">
+                          <span className="secondary-table-title">POS #{index + 1}</span>
+                          <span className="secondary-table-title font-weight-bold">
+                            <b> ·</b> {item.pos.name}
+                          </span>
+                        </div>
+                        <CustomTable
+                          numberRowsPerPage={0}
+                          progressPending={false}
+                          columns={columnsPosEvent}
+                          data={[
+                            {
+                              id: item.pos.id,
+                              numberPos: item.pos.serialNumber,
+                              expirationDate: dayjs(item.pos.expirationDate).format(
+                                'YYYY-DD-MM hh:mm:ss',
+                              ),
+                              partialPayment: item.waiter,
+                              actions: (
+                                <React.Fragment>
+                                  <div className={`${posStates.pos ? 'disabled-content' : null}`}>
+                                    <div className="d-flex align-items-center">
+                                      <div className="ml-4">
+                                        <Config
+                                          className="mr-4 svg-icon action-icon"
+                                          onClick={(): void => {
+                                            modalConfig.onShouldShowModal({
+                                              value: ShouldShowModal.configProduct,
+                                              newTitleModal: 'Configurações da POS',
+                                              pos: item,
+                                            });
+                                          }}
+                                        />
+                                        <Pen
+                                          className="mr-4 svg-icon action-icon"
+                                          onClick={(): void => posActions.onGet(item)}
+                                        />
+                                        <Trash
+                                          className="svg-icon svg-icon-trash"
+                                          onClick={() => {
+                                            modalConfig.onShowModalDelete(item.pos);
+                                          }}
+                                        />
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
-                              </React.Fragment>
-                            ),
-                          },
-                        ]}
-                        theme="secondaryWithoutBorder"
-                      />
-                    </React.Fragment>
-                  ))
-                ) : (
-                  <div className="collapseTableText">
-                    Nenhuma POS cadastrado. Aqui será exibida uma lista das POS cadastrados
-                  </div>
-                )
+                                </React.Fragment>
+                              ),
+                            },
+                          ]}
+                          theme="secondaryWithoutBorder"
+                        />
+                      </React.Fragment>
+                    ))
+                  : // <div className="collapseTableText">
+                    'Nenhuma POS cadastrado. Aqui será exibida uma lista das POS cadastrados'
+                // </div>
               }
               count={posStates.posList.length}
-              leftIcon={TicketIcon}
+              leftIcon={POSIcon}
               buttonTitle="Cancelar edição"
               buttonAction={() => posActions.onCancelEdit()}
               showButtonOnTitle={!!posStates?.pos}

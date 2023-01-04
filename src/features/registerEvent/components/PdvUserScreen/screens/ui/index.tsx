@@ -74,7 +74,7 @@ export const PdvUserContainer: React.FC<SectorProductUserProps> = ({
       <Container className="mainContainer" fluid={true}>
         <Form>
           <FormGroup>
-            <Row>
+            <Row className="no-gutters">
               <Col md={8}>
                 <FormGroup className="mb-2">
                   <SelectCustom
@@ -115,7 +115,7 @@ export const PdvUserContainer: React.FC<SectorProductUserProps> = ({
                 </div>
               </Col>
             </Row>
-            <Row>
+            <Row className="no-gutters">
               <Col md={5}>
                 <h5 className="mb-4 border-bottom-title fw-400">Usuários inseridos no PDV</h5>
                 {controllerAppendUser.usersSelected.length > 0 ? (

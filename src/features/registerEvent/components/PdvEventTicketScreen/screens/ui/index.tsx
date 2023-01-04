@@ -1,7 +1,7 @@
 /* eslint-disable no-shadow */
 import React, { Fragment } from 'react';
-import { Button, Loading } from '@/components';
-import { Col, Container, Input, Row } from 'reactstrap';
+import { Button, Checkbox, Loading } from '@/components';
+import { Col, Container, Row } from 'reactstrap';
 import { EventTicketPDVLine } from '@/features/registerEvent/screens/Pdv';
 
 // eslint-disable-next-line no-shadow
@@ -33,7 +33,6 @@ export const PdvEventTicketContainer: React.FC<Props> = ({
   link,
   onCheckTicket,
   onGenerateSalesLink,
-  onReturnTap,
   onNextTap,
 }): JSX.Element => (
   <Fragment>
@@ -65,7 +64,7 @@ export const PdvEventTicketContainer: React.FC<Props> = ({
             {line.events.map(data => (
               <Col key={data.eventSection.id} md={6}>
                 <h4 className="subtitle">{data.eventSection.name}</h4>
-                <table style={{ marginLeft: '20px', marginBottom: '27px' }}>
+                <table style={{ marginBottom: '27px' }}>
                   <tbody>
                     {data.list.map((list, index) => (
                       <tr key={index}>
@@ -78,13 +77,12 @@ export const PdvEventTicketContainer: React.FC<Props> = ({
                               id={`${index}`}
                             >
                               <div key={index} id={`${index}`} className="checkbox-list">
-                                <Input
-                                  name="group"
-                                  type="checkbox"
+                                <Checkbox
+                                  label={ticket.ticket.name}
+                                  name={`group-${index}-${ticket.ticket.id}`}
                                   checked={ticket.check}
                                   onChange={() => onCheckTicket(ticket.ticket.id)}
                                 />
-                                <span className="checkbox-list-label">{ticket.ticket.name}</span>
                               </div>
                             </div>
                           </td>
@@ -100,7 +98,6 @@ export const PdvEventTicketContainer: React.FC<Props> = ({
 
       <div className="d-flex justify-content-end">
         <div>
-          <Button title="Voltar etapa" theme="noneBorder" onClick={() => onReturnTap()} />
           <Button
             title="Proxima etapa"
             theme="outlineDark"
