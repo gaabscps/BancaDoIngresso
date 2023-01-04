@@ -200,6 +200,10 @@ export const EventContainer: React.FC<EventContainerProps> = ({
           {
             title: 'Gestão de ingressos',
             icon: <TicketManagement />,
+            action: () => {
+              onChangeEvent({ ...eventStateContext, currentStep: 0 });
+              history.push(`/dashboard/event/ticket/${event.id}`);
+            },
           },
           {
             title: 'Voucher de desconto',

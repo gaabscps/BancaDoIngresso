@@ -1,22 +1,23 @@
 import { AUTH_ROUTES } from '@/features/auth/navigation';
+import { CLIENT_ROUTES } from '@/features/client/navigation';
+import { COMBO_ROUTES } from '@/features/combo/navigation';
+import { COMPANY_ROUTES } from '@/features/contractor/navigation';
 import { DASHBOARD_ROUTES } from '@/features/dashboard/navigation';
 import { EVENTS_ROUTES } from '@/features/events/navigation';
-import { PDV_ROUTES } from '@/features/pdv/navigation';
-import { POS_ROUTES } from '@/features/pos/navigation';
-import { PAYMENTGATEWAY_ROUTES } from '@/features/paymentGateway/navigation';
-import { PRODUTCTSCOMBOS_ROUTES } from '@/features/productsAndCombos/navigation';
-import { USER_ROUTES } from '@/features/usersAndGroups/screens/navigation';
 import { GROUPSUBGROUPPRODUCT_ROUTES } from '@/features/groupSubgroupProduct/navigation';
-import { COMPANY_ROUTES } from '@/features/contractor/navigation';
-import { MODULE_ROUTES } from '@/features/module/screens/navigation';
-import { PERMISSION_ROUTES } from '@/features/permission/screens/navigation';
 import { MENU_ROUTES } from '@/features/menu/screens/navigation';
-import { SUB_MENU_ROUTES } from '@/features/submenu/screens/navigation';
+import { MODULE_ROUTES } from '@/features/module/screens/navigation';
 import { PAYMENT_ROUTES } from '@/features/paymentMethods/navigation';
+import { PAYMENTGATEWAY_ROUTES } from '@/features/paymentGateway/navigation';
+import { PDV_ROUTES } from '@/features/pdv/navigation';
+import { PERMISSION_ROUTES } from '@/features/permission/screens/navigation';
+import { POS_ROUTES } from '@/features/pos/navigation';
 import { PRODUTCT_ROUTES } from '@/features/product/navigation';
-import { COMBO_ROUTES } from '@/features/combo/navigation';
+import { PRODUTCTSCOMBOS_ROUTES } from '@/features/productsAndCombos/navigation';
 import { REGISTEREVENT_ROUTES } from '@/features/registerEvent/navigation';
-import { CLIENT_ROUTES } from '@/features/client/navigation';
+import { SUB_MENU_ROUTES } from '@/features/submenu/screens/navigation';
+import { TICKET_ROUTES } from '@/features/ticket/navigation';
+import { USER_ROUTES } from '@/features/usersAndGroups/screens/navigation';
 
 const path = {
   Initial: {
@@ -30,6 +31,9 @@ const path = {
     },
     Event: {
       ...REGISTEREVENT_ROUTES,
+    },
+    Ticket: {
+      ...TICKET_ROUTES,
     },
     UsersGroups: {
       itself: '/dashboard/users-groups',

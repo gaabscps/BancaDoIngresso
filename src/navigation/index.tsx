@@ -22,6 +22,7 @@ import { SubMenuNavigation } from '@/features/submenu/screens/navigation';
 import { RegisterEventNavigation } from '@/features/registerEvent/navigation';
 import { EventsNavigation } from '@/features/events/navigation';
 import { EventProvider } from '@/features/registerEvent/hook/useEvent';
+import { TicketNavigation } from '@/features/ticket/navigation';
 import { renderRoutes } from './utils';
 import { Route } from './Route';
 import { path } from './path';
@@ -46,6 +47,7 @@ const Navigation: React.FC = (): JSX.Element => {
   const GroupSubgroupProductRoutes = renderRoutes(GroupSubgroupProductNavigation);
   const CompanyRoutes = renderRoutes(ContractorNavigation);
   const RegisterEventRoutes = renderRoutes(RegisterEventNavigation);
+  const TicketRoutes = renderRoutes(TicketNavigation);
 
   return (
     <EventProvider>
@@ -69,6 +71,7 @@ const Navigation: React.FC = (): JSX.Element => {
           {GroupSubgroupProductRoutes}
           {CompanyRoutes}
           {RegisterEventRoutes}
+          {TicketRoutes}
           {eventsRoutes}
           <Route path={path.Initial.All} component={Error404} />
         </Switch>
