@@ -179,11 +179,7 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
         {controllerFormCombo.formDataCombo[FormInputNameCombo.allowCombo] === 'true' && (
           <>
             <h6 className="mb-4">Cadastrando combos</h6>
-            <Container
-              style={{ backgroundColor: 'white', borderRadius: '5px' }}
-              className="mainContainer"
-              fluid={true}
-            >
+            <div className="card-ligth-color mb-5">
               <Form>
                 <Row>
                   <Col md={8}>
@@ -424,7 +420,7 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                   </span>
                 </div>
               </Form>
-            </Container>
+            </div>
             <div className="mt-5">
               <Row>
                 <Col style={{ padding: '0' }}>
