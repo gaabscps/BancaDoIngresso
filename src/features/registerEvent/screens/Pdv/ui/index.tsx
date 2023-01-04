@@ -20,7 +20,7 @@ import { PdvEventPosScreen } from '@/features/registerEvent/components/PdvEventP
 import { PdvProductScreen } from '@/features/registerEvent/components/PdvProductsScreen/screens';
 import { PdvUserScreen } from '@/features/registerEvent/components/PdvUserScreen/screens';
 import { PdvEventSubPdvScreen } from '@/features/registerEvent/components/PdvEventSubPdvScreen/screens';
-import TicketIcon from '../../../../../assets/images/svg/Ticket';
+import PDVIcon from '@/assets/images/svg/Pdv';
 import { columnsEventPdv } from './table';
 import { EventTicketPDVLine } from '..';
 
@@ -120,7 +120,7 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
       <PdvUserScreen pdvId={pdvId} nextTab={handleNextTab} backTab={handleBackTab} />
     </>,
     <>
-      <PdvEventSubPdvScreen pdvId={pdvId} backTab={handleNextTab} firstTab={handleOnFirstTab} />
+      <PdvEventSubPdvScreen pdvId={pdvId} backTab={handleBackTab} firstTab={handleOnFirstTab} />
     </>,
   ];
 
@@ -228,7 +228,7 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
                 )
               }
               count={mainPdvStates.eventPDVs.length}
-              leftIcon={TicketIcon}
+              leftIcon={PDVIcon}
               buttonTitle="Cancelar edição"
               buttonAction={() => mainPdvActions.onCancelEdit()}
               showButtonOnTitle={!!mainPdvStates?.mainPdv}

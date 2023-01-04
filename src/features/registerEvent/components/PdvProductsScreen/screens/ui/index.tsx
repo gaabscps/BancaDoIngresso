@@ -1,4 +1,3 @@
-import TicketIcon from '@/assets/images/svg/Ticket';
 import {
   Button,
   ButtonGroup,
@@ -13,6 +12,7 @@ import React from 'react';
 import { Col, Container, Form, FormGroup, Row } from 'reactstrap';
 import { X } from 'react-feather';
 
+import ProductIcon from '@/assets/images/svg/Product';
 import { formPdvProductProps } from '../../types';
 
 // eslint-disable-next-line no-shadow
@@ -87,6 +87,7 @@ export const PdvProductContainer: React.FC<SectorProductPosContainerProps> = ({
                   <SelectCustom
                     name="sector"
                     label="Setor"
+                    placeholder="Digite ou selecione o setor"
                     value={formData[FormInputName.sector]}
                     onChange={e => {
                       onChangeFormInput(FormInputName.sector)(e?.value as string);
@@ -103,6 +104,7 @@ export const PdvProductContainer: React.FC<SectorProductPosContainerProps> = ({
                   <SelectCustom
                     name="product"
                     label="Produtos"
+                    placeholder="Digite ou selecione o produto"
                     value={formData[FormInputName.product]}
                     onChange={e => onChangeFormInput(FormInputName.product)(e?.value as string)}
                     options={productsAndCombos.map(data => ({
@@ -221,7 +223,7 @@ export const PdvProductContainer: React.FC<SectorProductPosContainerProps> = ({
               </div>
             </>
           ))}
-          leftIcon={TicketIcon}
+          leftIcon={ProductIcon}
         />
 
         <div className="d-flex justify-content-end">
