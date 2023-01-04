@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import Select, { SingleValue, ActionMeta } from 'react-select';
 import { customStyles } from './style';
 
-interface OptionProps {
+export interface OptionProps {
   value?: string | number;
   label: string;
   target?: HTMLInputElement;

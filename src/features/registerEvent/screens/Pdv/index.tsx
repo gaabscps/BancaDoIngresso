@@ -139,12 +139,12 @@ export const PdvEventScreen: React.FC = (): JSX.Element => {
     if (params.id) {
       try {
         setState(States.loading);
+        const { data } = await api.get<Pdv[]>(`/pdv/find`);
+        setMainPdvList(data ?? []);
         const responseEventPDVs = await api.get<EventPdv[]>(`/event/pdv/${params.id}`);
         if (responseEventPDVs.data && responseEventPDVs.data.length > 0) {
-          onChangeFormInputPdv(FormInputName.isPdv)('true');
           setEventPDVs(responseEventPDVs.data);
-          const { data } = await api.get<Pdv[]>(`/pdv/find`);
-          setMainPdvList(data ?? []);
+          onChangeFormInputPdv(FormInputName.isPdv)('true');
         }
         if (!pdvId) {
           setLink(undefined as unknown as string);
@@ -248,7 +248,7 @@ export const PdvEventScreen: React.FC = (): JSX.Element => {
     const list: EventTicketPDV[] = [];
 
     if (eventTickets && eventTickets.tickets && eventTickets.tickets.length > 0) {
-      eventTickets.tickets.forEach((eventTicket: any) => {
+      eventTickets.tickets.forEach(eventTicket => {
         let found = false;
         // eslint-disable-next-line no-plusplus
         for (let i = 0; i < list.length; i++) {

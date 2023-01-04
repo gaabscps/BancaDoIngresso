@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 const isValid = (date: string): boolean => {
   const regex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
   return regex.test(date);
@@ -32,4 +34,12 @@ const updateMask = (value: string): string =>
     return '';
   });
 
-export { isValid, format, unmask, updateMask };
+const dateToString = (date: Date): string => {
+  let s = '';
+  if (date) {
+    s = dayjs(date).locale('pt-br').format('DD/MM/YYYY');
+  }
+  return s;
+};
+
+export { isValid, format, unmask, updateMask, dateToString };

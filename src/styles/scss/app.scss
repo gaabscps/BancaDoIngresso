@@ -1556,3 +1556,19 @@ body
 .cursor-pointer {
   cursor: pointer;
 }
+
+.text-area-comment {
+  width: 100%;
+  background: transparent;
+  color: #828282 !important;
+  border: 0;
+  resize: none;
+}
+
+.text-area-comment:focus   {
+  background-color: transparent;
+}
+
+.text-area-comment:hover   {
+  background-color: transparent;
+}
