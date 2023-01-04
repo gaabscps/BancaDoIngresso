@@ -15,9 +15,12 @@ import { updateMask as updateMaskDate, unmask, dateToString } from '@/helpers/ma
 import { updateMask as updateMaskCEP } from '@/helpers/masks/cep';
 import Gender from '@/model/Gender';
 import Address from '@/model/Address';
-import { ClientRequestParams, ClientResponse } from '../../types';
+import ClientComment from '@/model/ClientComment';
+import StatusType from '@/model/StatusType';
+import { ClientCommentController, ClientRequestParams, ClientResponse } from '../../types';
 import { ClientContainer, ShouldShowModal, States } from './ui';
 import { FormInputName } from '../../components/RegisterContent';
+import { FormInputComment } from '../../components/RegisterCommentContent';
 
 export const ClientScreen: React.FC = (): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
@@ -31,7 +34,7 @@ export const ClientScreen: React.FC = (): JSX.Element => {
     order: 'DESC',
     total: 1,
   });
-
+  const [comments, setComments] = useState<ClientComment[]>([]);
   const { title, visible, onChangeTitle, onToggle } = useDialog();
   const confirmDelete = useConfirmDelete();
 
@@ -95,6 +98,21 @@ export const ClientScreen: React.FC = (): JSX.Element => {
     },
   });
 
+  const {
+    formData: formDataComment,
+    formErrors: formErrorsComment,
+    onChangeFormInput: onChangeFormInputComment,
+    isFormValid: isFormValidComment,
+    resetForm: resetFormComment,
+  } = useForm({
+    initialData: {
+      comment: '',
+    },
+    validators: {
+      comment: [validators.required],
+    },
+  });
+
   const handleFetch = async (params: ClientRequestParams): Promise<void> => {
     try {
       setState(States.loading);
@@ -135,7 +153,20 @@ export const ClientScreen: React.FC = (): JSX.Element => {
     return s;
   };
 
-  const handleOnShouldShowModal = ({
+  const handleFetchComment = async (selectedClient: Client): Promise<void> => {
+    try {
+      setState(States.loading);
+      const { data } = await api.get<ClientComment[]>(`/client/${selectedClient.id}/comment`);
+      setComments(data);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
+  const handleOnShouldShowModal = async ({
     value,
     newTitleModal,
     client: clientSelected,
@@ -143,11 +174,7 @@ export const ClientScreen: React.FC = (): JSX.Element => {
     value: ShouldShowModal;
     newTitleModal: string | React.ReactNode;
     client?: Client;
-  }): void => {
-    setShouldShowModal(value);
-    onChangeTitle(newTitleModal);
-    onToggle();
-
+  }): Promise<void> => {
     if (clientSelected?.id && value === ShouldShowModal.client) {
       setClient(clientSelected);
       onChangeFormInputClient(FormInputName.name)(clientSelected.name);
@@ -171,7 +198,13 @@ export const ClientScreen: React.FC = (): JSX.Element => {
         );
         onChangeFormInputClient(FormInputName.number)(clientSelected.address.number as string);
       }
+    } else if (clientSelected?.id && value === ShouldShowModal.comment) {
+      setClient(clientSelected);
+      await handleFetchComment(clientSelected);
     }
+    setShouldShowModal(value);
+    onChangeTitle(newTitleModal);
+    onToggle();
   };
 
   const toGender = (value: string): Gender => {
@@ -196,6 +229,7 @@ export const ClientScreen: React.FC = (): JSX.Element => {
   const handleOnSaveClient = async (): Promise<void> => {
     try {
       if (isFormValidClient()) {
+        setState(States.loading);
         const birthDate = unmask(formDataClient[FormInputName.birthDate]);
         const address: Address = {
           id: client?.address?.id as string,
@@ -209,7 +243,7 @@ export const ClientScreen: React.FC = (): JSX.Element => {
           latitude: client?.address?.latitude,
           longitude: client?.address?.longitude,
         };
-        const payload: Client = {
+        const payload = {
           id: client?.id as string,
           name: formDataClient[FormInputName.name],
           cpf: formDataClient[FormInputName.cpf],
@@ -222,7 +256,7 @@ export const ClientScreen: React.FC = (): JSX.Element => {
           motherName: formDataClient[FormInputName.motherName],
           imageBase64: formDataClient[FormInputName.imageBase64],
           address,
-        };
+        } as Client;
         await api.put('/client', payload);
         await handleFetch(currentPage);
         toast.success('Cliente atualizado com sucesso!');
@@ -232,6 +266,77 @@ export const ClientScreen: React.FC = (): JSX.Element => {
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
+  const handleOnAddComment = async (): Promise<void> => {
+    try {
+      if (isFormValidComment()) {
+        setState(States.loading);
+        const payload = {
+          comment: formDataComment[FormInputComment.comment],
+        } as ClientComment;
+        await api.post(`/client/${client?.id}/comment`, payload);
+        await handleFetchComment(client as Client);
+        await handleFetch(currentPage);
+        toast.success('Comentário adcionado com sucesso!');
+        resetFormComment();
+        onToggle();
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
+  const controllerComment: ClientCommentController = {
+    client,
+    comments,
+    formData: formDataComment,
+    formErrors: formErrorsComment,
+    onChange: onChangeFormInputComment,
+    onAdd: handleOnAddComment,
+  };
+
+  const handleAlterFraudAlert = async (clientSelected: Client): Promise<void> => {
+    try {
+      setState(States.loading);
+      if (clientSelected.fraudAlert) {
+        await api.patch(`/client/fraud/${clientSelected?.id}/remove`);
+        toast.success('Alerta de fraude removido com sucesso!');
+      } else {
+        await api.patch(`/client/fraud/${clientSelected?.id}/add`);
+        toast.success('Alerta de fraude adcionado com sucesso!');
+      }
+      await handleFetch(currentPage);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
+  const handleBockClient = async (clientSelected: Client): Promise<void> => {
+    try {
+      setState(States.loading);
+      if (clientSelected.status === StatusType.ACTIVE) {
+        await api.patch(`/client/inactivate/${clientSelected?.id}`);
+        toast.success('Cliente bloqueado com sucesso!');
+      } else {
+        await api.patch(`/client/activate/${clientSelected?.id}`);
+        toast.success('Cliente desbloqueado com sucesso!');
+      }
+      await handleFetch(currentPage);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
     }
   };
 
@@ -326,6 +431,7 @@ export const ClientScreen: React.FC = (): JSX.Element => {
       formErrorsClient={formErrorsClient}
       formDataFilter={formDataFilter}
       formErrorsFilter={formErrorsFilter}
+      controllerComment={controllerComment}
       onToggle={onToggle}
       onPaginationChange={handleOnPaginationChange}
       onSaveClient={handleOnSaveClient}
@@ -335,6 +441,8 @@ export const ClientScreen: React.FC = (): JSX.Element => {
       onShowDeleteClient={handleOnShowDeleteClient}
       onFilter={handleOnFilter}
       clearFilter={clearFilter}
+      onAlterFraudAlert={handleAlterFraudAlert}
+      onBockClient={handleBockClient}
     />
   );
 };

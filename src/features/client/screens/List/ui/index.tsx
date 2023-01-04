@@ -5,16 +5,21 @@ import { Loading } from '@/components';
 import { Container, Label } from 'reactstrap';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
+import { ReactComponent as Fraud } from '@/assets/images/svg/SvgExample.svg';
+import { ReactComponent as Comment } from '@/assets/images/svg/comment.svg';
+import { ReactComponent as X } from '@/assets/images/svg/x.svg';
 import { ActionProps, Dialog } from '@/components/Dialog';
 import { CustomTable } from '@/components/Table';
 import Pagination from '@/components/Utils/Pagination';
 import { FormErrors, OnChangeFormInput, FormData } from '@/hooks/useForm';
 import Client from '@/model/Client';
-import { ClientRequestParams } from '@/features/client/types';
+import { ClientCommentController, ClientRequestParams } from '@/features/client/types';
 import { FilterContent } from '@/features/client/components/FilterContent';
 import { RegisterContent } from '@/features/client/components/RegisterContent';
 import { updateMask as updateMaskCPF } from '@/helpers/masks/cpf';
 import { updateMask as updateMaskPhone } from '@/helpers/masks/mobilePhone';
+import StatusType from '@/model/StatusType';
+import { RegisterCommentContent } from '@/features/client/components/RegisterCommentContent';
 import { columns } from './table';
 
 // eslint-disable-next-line no-shadow
@@ -35,6 +40,7 @@ export interface DataRow {
 export enum ShouldShowModal {
   filter = 'filter',
   client = 'client',
+  comment = 'comment',
 }
 
 interface StateProps {
@@ -49,6 +55,7 @@ interface StateProps {
   formErrorsClient: FormErrors;
   formDataFilter: FormData;
   formErrorsFilter: FormErrors;
+  controllerComment: ClientCommentController;
 }
 
 interface DispatchProps {
@@ -69,6 +76,8 @@ interface DispatchProps {
     newTitleModal: string | React.ReactNode;
     client?: Client;
   }) => void;
+  onAlterFraudAlert: (client: Client) => void;
+  onBockClient: (client: Client) => void;
 }
 
 type Props = StateProps & DispatchProps;
@@ -85,6 +94,7 @@ export const ClientContainer: React.FC<Props> = ({
   formErrorsClient,
   formDataFilter,
   formErrorsFilter,
+  controllerComment,
   clearFilter,
   onSaveClient,
   onPaginationChange,
@@ -94,7 +104,16 @@ export const ClientContainer: React.FC<Props> = ({
   onChangeFormInputClient,
   onShowDeleteClient,
   onShouldShowModal,
+  onAlterFraudAlert,
+  onBockClient,
 }) => {
+  const getClassName = (isRed: boolean): string => {
+    let className = 'mr-4 svg-icon action-icon';
+    if (isRed) {
+      className = 'mr-4 svg-icon-error action-icon';
+    }
+    return className;
+  };
   const dataTableClient = listClient?.map(item => ({
     id: item.id,
     name: item.name,
@@ -103,6 +122,31 @@ export const ClientContainer: React.FC<Props> = ({
     email: item.email,
     actions: (
       <React.Fragment>
+        {item.comments && item.comments.length > 0 && (
+          <span
+            className="badge badge-custom position-absolute top-0 start-100 translate-middle rounded-pill bg-danger"
+            style={{ marginLeft: '12px' }}
+          >
+            {item.comments.length}
+          </span>
+        )}
+
+        <Comment
+          className={getClassName(item.comments && item.comments.length > 0)}
+          onClick={(): void =>
+            onShouldShowModal({
+              value: ShouldShowModal.comment,
+              newTitleModal: 'Comentários',
+              client: item,
+            })
+          }
+        />
+
+        <Fraud className={getClassName(item.fraudAlert)} onClick={() => onAlterFraudAlert(item)} />
+        <X
+          className={getClassName(item.status === StatusType.INACTIVE)}
+          onClick={() => onBockClient(item)}
+        />
         <Pen
           className="mr-4 svg-icon action-icon"
           onClick={(): void =>
@@ -142,11 +186,12 @@ export const ClientContainer: React.FC<Props> = ({
         visible={visible}
         onClose={onToggle}
         position={shouldShowModal === ShouldShowModal.filter ? 'right' : 'center'}
-        isContentWithCard={shouldShowModal !== ShouldShowModal.filter}
+        isContentWithCard={shouldShowModal === ShouldShowModal.client}
         actions={[
           {
             [ShouldShowModal.filter]: renderActionDialogToFilter,
             [ShouldShowModal.client]: renderActionDialogToCancel,
+            [ShouldShowModal.comment]: renderActionDialogToCancel,
           }[shouldShowModal],
           {
             [ShouldShowModal.filter]: {
@@ -169,6 +214,11 @@ export const ClientContainer: React.FC<Props> = ({
                 formDataClient.district === '' ||
                 formDataClient.street === '',
             },
+            [ShouldShowModal.comment]: {
+              title: 'Publicar',
+              onClick: (): Promise<void> => controllerComment.onAdd(),
+              disabled: controllerComment.formData.comment === '',
+            },
           }[shouldShowModal],
         ]}
       >
@@ -186,6 +236,14 @@ export const ClientContainer: React.FC<Props> = ({
                 formData={formDataClient}
                 formErrors={formErrorsClient}
                 onChangeFormInput={onChangeFormInputClient}
+              />
+            ),
+            [ShouldShowModal.comment]: (
+              <RegisterCommentContent
+                formData={controllerComment.formData}
+                formErrors={controllerComment.formErrors}
+                comments={controllerComment.comments}
+                onChangeFormInput={controllerComment.onChange}
               />
             ),
           }[shouldShowModal]

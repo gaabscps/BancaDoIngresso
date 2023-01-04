@@ -1,5 +1,7 @@
 import Address from './Address';
+import ClientComment from './ClientComment';
 import Gender from './Gender';
+import StatusType from './StatusType';
 
 export default interface Client {
   id: string;
@@ -12,6 +14,9 @@ export default interface Client {
   gender: Gender;
   birthDate: Date;
   motherName: string;
+  fraudAlert: boolean;
   imageBase64?: string;
   address?: Address;
+  comments: ClientComment[];
+  status: StatusType;
 }

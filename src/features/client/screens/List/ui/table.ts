@@ -15,16 +15,16 @@ export const columns: TableColumn<DataRow>[] = [
   {
     name: 'Celular',
     selector: row => row.cellPhone,
-    minWidth: '150px',
+    minWidth: '100px',
   },
   {
     name: 'E-mail',
     selector: row => row.email,
-    minWidth: '200px',
+    minWidth: '150px',
   },
   {
     name: 'Ações',
     selector: row => row.actions,
-    width: '121px',
+    width: '230px',
   },
 ];
