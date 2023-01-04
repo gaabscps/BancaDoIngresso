@@ -8,7 +8,7 @@ import { Card, Col, Form, FormGroup, Row } from 'reactstrap';
 import { CustomTable } from '@/components/Table';
 import { X } from 'react-feather';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
-import TicketIcon from '@/assets/images/svg/Ticket';
+import ProductIcon from '@/assets/images/svg/Product';
 import { comboRequestProps, formComboConfigProps, formDiscountCouponProps } from '../../types';
 
 export interface DataRow {
@@ -603,7 +603,7 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
           <SuperCollapse
             title={`Produtos cadastrados`}
             count={discountCouponList.length}
-            leftIcon={TicketIcon}
+            leftIcon={ProductIcon}
             content={
               discountCouponList.length > 0 ? (
                 discountCouponList.map((discount: any, index) => (

@@ -73,11 +73,7 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
             </h6>
           </Col>
         </Row>
-        <Container
-          style={{ backgroundColor: 'white', borderRadius: '5px' }}
-          className="mainContainer"
-          fluid={true}
-        >
+        <div className="card-ligth-color mb-5">
           <Form>
             <Row>
               <Col md={8}>
@@ -214,7 +210,7 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
               </div>
             </div>
           </Form>
-        </Container>
+        </div>
         <div className="mt-5">
           <Row>
             <Col style={{ padding: '0' }}>

@@ -7,12 +7,12 @@ import { Container } from 'reactstrap';
 import { ProductRegisterContent } from '@/features/registerEvent/components/SectorProductScreen/components/ProductRegisterContent';
 import { updateMask as updateMaskCash } from '@/helpers/masks/cashNumber';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
-import TicketIcon from '@/assets/images/svg/Ticket';
 import { CustomTable } from '@/components/Table';
 import { ActionProps } from '@/components/Dialog';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { ReactComponent as Config } from '@/assets/images/svg/config.svg';
+import ProductIcon from '@/assets/images/svg/Product';
 import { columnsProducts } from './table';
 import {
   formConfigProductProps,
@@ -256,7 +256,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
               : 'Nenhum produto cadastrado. Aqui será exibida uma lista dos produtos cadastrados'
           }
           count={countProducts}
-          leftIcon={TicketIcon}
+          leftIcon={ProductIcon}
         />
         <div className="d-flex justify-content-end">
           <Button

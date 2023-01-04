@@ -62,6 +62,7 @@ export const RegisterDiscountCoupon: React.FC<RegisterContentProps> = ({ formDis
                       label="Quant. cupons"
                       placeholder="0"
                       className="w-input-sm"
+                      maxLength={6}
                       value={String(item.amount)}
                       onChange={e =>
                         handleChangeDiscountCoupon(
