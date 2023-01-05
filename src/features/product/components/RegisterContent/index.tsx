@@ -38,6 +38,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
   onChangeFormInput,
   onChangeFileInput,
 }) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const refSelectSubGroup = useRef<any>(null);
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   const onClearSelectSubGroup = () => {

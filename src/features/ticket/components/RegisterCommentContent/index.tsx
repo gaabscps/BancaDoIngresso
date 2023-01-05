@@ -2,17 +2,17 @@ import React from 'react';
 import { Col, Form, FormGroup, Row } from 'reactstrap';
 import { TextArea } from '@/components';
 import { FormData, FormErrors, OnChangeFormInput } from '@/hooks/useForm';
-import ClientComment from '@/model/ClientComment';
 import { getItem } from '@/helpers/common/localStorage';
 import { REACT_APP_USER } from '@/utils/config';
 import avatar from '@/assets/images/avatar/avatar.png';
 import { AuthUser } from '@/model/AuthUser';
 import dayjs from 'dayjs';
+import OrderItemComment from '@/model/OrderItemComment';
 
 interface RegisterCommentContentProps {
   formData: FormData;
   formErrors: FormErrors;
-  comments: ClientComment[];
+  comments: OrderItemComment[];
   onChangeFormInput: OnChangeFormInput;
 }
 

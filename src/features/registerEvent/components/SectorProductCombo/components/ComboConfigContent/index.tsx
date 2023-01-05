@@ -59,6 +59,7 @@ interface RegisterContentProps {
   controllerFormComboConfig: formComboConfigProps;
   controllerFormDiscountCoupon: formDiscountCouponProps;
   comboRequests: comboRequestProps;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   comboStates: any;
 }
 
@@ -606,6 +607,7 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
             leftIcon={ProductIcon}
             content={
               discountCouponList.length > 0 ? (
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 discountCouponList.map((discount: any, index) => (
                   <>
                     {index > 0 ? <hr style={{ margin: '25px -30px 30px -50px' }} /> : null}
@@ -651,6 +653,7 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                         },
                       ]}
                       data={
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         discountCouponList.map((item: any) => {
                           return {
                             code: item.code,

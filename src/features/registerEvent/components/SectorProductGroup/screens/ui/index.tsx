@@ -18,6 +18,7 @@ interface SectorProductGroupContainerProps {
   controllerRequest: requestProps;
   groupState: groupStateProps;
   onNextTab: () => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onShowDeleteProduct: (groupSelected: any) => void;
 }
 
@@ -117,14 +118,14 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
                 </FormGroup>
               </Col>
             </Row>
-            {subGroup.map((sub: any, index: any) => (
+            {subGroup.map((sub, index) => (
               <div key={index}>
                 <Row>
                   <Col md={8}>
                     <SelectCreateable
                       label="Nome do subgrupo"
                       name="productSubGroupName"
-                      value={sub.id}
+                      value={sub.id as string}
                       onChange={e => {
                         const subGroups = subGroupOptions.find(item => item.id === e?.value);
                         if (subGroups?.id) {
@@ -244,7 +245,7 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
                                 style={{ flexWrap: 'nowrap' }}
                               >
                                 <span
-                                  onClick={() => console.log('item', group)}
+                                  onClick={() => window.console.log('item', group)}
                                   className="secondary-table-title ml-5 mr-2"
                                 >
                                   Subgrupo

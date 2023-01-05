@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { FC, InputHTMLAttributes } from 'react';
 
 interface RadioProps extends InputHTMLAttributes<HTMLInputElement> {

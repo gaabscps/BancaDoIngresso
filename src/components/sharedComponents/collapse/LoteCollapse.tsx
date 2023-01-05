@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
 import { Card, Collapse } from 'reactstrap';
 import SubPdv from '@/model/SubPdv';

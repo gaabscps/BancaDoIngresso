@@ -40,6 +40,7 @@ export interface SectorProductContainerProps {
   productActions: productActionsProps;
   productStates: productStatesProps;
   modalConfig: modalConfigTicketMainSettingsProps;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   formDiscountCoupon: any;
 }
 
@@ -56,6 +57,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
 
   // sum of all products within subGroups
   const countProducts = productStates.productList.reduce((acc, { subGroups }) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const count = subGroups.reduce((acc: any, { products }: any) => acc + products.length, 0);
     return acc + count;
   }, 0);
@@ -140,6 +142,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
           content={
             productStates.productList.length > 0
               ? productStates.productList.map((group, indexGroup) =>
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   group.subGroups.map((subGroup: any, indexSubGroup: any) => {
                     const disabledProduct =
                       productStates.product &&
@@ -169,6 +172,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
                             numberRowsPerPage={0}
                             progressPending={false}
                             columns={columnsProducts}
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
                             data={subGroup.products.map((product: any) => {
                               const disabledRows =
                                 productStates.product && product.id !== productStates.product?.id

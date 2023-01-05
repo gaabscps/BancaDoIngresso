@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
 import { ReactComponent as Status } from '@/assets/images/svg/status.svg';
 import './styles.scss';

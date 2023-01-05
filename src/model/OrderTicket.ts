@@ -1,4 +1,6 @@
+import OrderItemComment from './OrderItemComment';
 import OrderPayment from './OrderPayment';
+import PaymentStatus from './PaymentStatus';
 import StatusType from './StatusType';
 
 export default interface OrderTicket {
@@ -9,9 +11,13 @@ export default interface OrderTicket {
   isHalfPrice: boolean;
   clientCPF: string;
   saleDate: Date;
-  paymentStatus: StatusType;
+  orderPaymentStatus: PaymentStatus;
+  ticketStatus: StatusType;
   saleValue: number;
   payments: OrderPayment[];
+  comments: OrderItemComment[];
+  reverseDate: Date;
+  cancelDate: Date;
   ticketId?: string;
   productId?: string;
   comboId?: string;

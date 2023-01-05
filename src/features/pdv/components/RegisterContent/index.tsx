@@ -59,6 +59,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
   onChangeFileInput,
   controllerAppendUser,
 }) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const refSelectUser = useRef<any>(null);
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   const onClearSelectUser = () => {

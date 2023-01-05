@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable import/extensions */
 /* eslint-disable array-callback-return */
 /* eslint-disable react/prop-types */

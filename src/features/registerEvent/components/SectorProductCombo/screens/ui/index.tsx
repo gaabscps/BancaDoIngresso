@@ -54,9 +54,11 @@ interface SectorProductComboContainerProps {
   }: {
     value: ShouldShowModal;
     newTitleModal: string | React.ReactNode;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     comboSelected?: any;
   }) => void;
   onToggle: () => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onShowDeleteCombo: (comboSelected: any) => void;
 }
 
@@ -117,6 +119,7 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
   const { onClearSelectSubGroup, onChangeFileInput, nameFiles, formErrorsCombo } =
     controllerFormCombo;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const refSelectSubGroup = useRef<any>(null);
 
   return (
@@ -354,6 +357,7 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                             onChangeProduct('name', index, products?.name as string);
                           }}
                           placeholder="Digite ou selecione o produto"
+                          // eslint-disable-next-line @typescript-eslint/no-explicit-any
                           options={listProduct?.map((item: any) => ({
                             value: item.id,
                             label: item.name,

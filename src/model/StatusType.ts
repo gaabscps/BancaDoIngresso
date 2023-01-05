@@ -2,5 +2,6 @@
 enum StatusType {
   ACTIVE,
   INACTIVE,
+  EXCLUDED,
 }
 export default StatusType;

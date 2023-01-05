@@ -1,7 +1,7 @@
 import Page from '@/model/Page';
-import ClientComment from '@/model/ClientComment';
 import { FormData, FormErrors, OnChangeFormInput } from '@/hooks';
 import OrderTicket from '@/model/OrderTicket';
+import OrderItemComment from '@/model/OrderItemComment';
 
 export type TicketResponse = Page<OrderTicket, OrderTicket>;
 
@@ -12,7 +12,7 @@ export type TicketRequestParams = Pick<
 
 export type TicketCommentController = {
   orderTicket?: OrderTicket;
-  comments: ClientComment[];
+  comments: OrderItemComment[];
   formData: FormData;
   formErrors: FormErrors;
   onChange: OnChangeFormInput;

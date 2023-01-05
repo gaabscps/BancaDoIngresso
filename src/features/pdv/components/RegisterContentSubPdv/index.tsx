@@ -16,6 +16,7 @@ interface RegisterContentProps {
   formData: FormData;
   formErrors: FormErrors;
   onChangeFormInput: OnChangeFormInput;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setErrorsPdv: (errors: any) => void;
   controllerAppendUser: ContractorControllerUser;
 }
@@ -55,6 +56,7 @@ export const RegisterContentSubPdv: React.FC<RegisterContentProps> = ({
   setErrorsPdv,
   controllerAppendUser,
 }) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const refSelectUser = useRef<any>(null);
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   const onClearSelectUser = () => {

@@ -36,6 +36,7 @@ interface RegisterContentProps {
   copyToClipboard: (code: string) => void;
   isFormValidVoucher: IsFormValid;
   handleOnShowDeleteProduct: (eventSelected: string, voucherSelected: string) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   eventState: Event | any;
   formDataVoucher: FormData;
   formErrorsVoucher: FormErrors;
