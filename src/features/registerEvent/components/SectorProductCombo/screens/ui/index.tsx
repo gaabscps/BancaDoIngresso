@@ -8,6 +8,7 @@ import {
   Loading,
   SelectCustom,
   Switch,
+  TooltipCustom,
 } from '@/components';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
 import { Col, Container, Form, FormGroup, Row } from 'reactstrap';
@@ -19,7 +20,6 @@ import { X } from 'react-feather';
 import { CustomTable } from '@/components/Table';
 import { ActionProps } from '@/components/Dialog';
 import DiscountCoupon from '@/model/DiscountCoupon';
-import ReactTooltip from 'react-tooltip';
 import ComboIcon from '@/assets/images/svg/Combo';
 import {
   comboActionsProps,
@@ -296,15 +296,9 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                         }
                         error={formErrorsCombo.amount && formErrorsCombo.amount[0]}
                       />
-                      <ReactTooltip
-                        id="soclose"
-                        effect="solid"
-                        place={'right'}
-                        border={true}
-                        type={'light'}
-                      >
+                      <TooltipCustom id="soclose">
                         Ao digitar a quantidade 0 (zero), o combo se torna ilimitado.
-                      </ReactTooltip>
+                      </TooltipCustom>
                     </FormGroup>
                   </Col>
                   <Col md={4}>

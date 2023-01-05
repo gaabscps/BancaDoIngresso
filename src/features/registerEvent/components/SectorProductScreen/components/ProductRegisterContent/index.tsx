@@ -1,9 +1,8 @@
 /* eslint-disable import/no-unresolved */
 import React, { Fragment, useEffect, useRef } from 'react';
-import { ButtonGroup, InputFile, InputText, SelectCustom } from '@/components';
+import { ButtonGroup, InputFile, InputText, SelectCustom, TooltipCustom } from '@/components';
 import { updateMask as updateMaskCash, unmask as unmaskCash } from '@/helpers/masks/cashNumber';
 import { Col, Form, FormGroup, Row } from 'reactstrap';
-import ReactTooltip from 'react-tooltip';
 import { ReactComponent as Info } from '@/assets/images/svg/infoTooltip.svg';
 import { SelectCreateable } from '@/components/SelectCreateable';
 import { SectorProductContainerProps } from '../../screens/ui';
@@ -182,16 +181,9 @@ export const ProductRegisterContent: React.FC<
                 ]}
                 error={formErrors.unitMeasurement && formErrors.unitMeasurement[0]}
               />
-
-              <ReactTooltip
-                id="soclose"
-                effect="solid"
-                place={'right'}
-                border={true}
-                type={'light'}
-              >
+              <TooltipCustom id="soclose">
                 Quando o valor for definido no momento da venda.
-              </ReactTooltip>
+              </TooltipCustom>
             </div>
           </FormGroup>
           <Row>

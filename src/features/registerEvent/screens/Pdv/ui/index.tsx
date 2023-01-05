@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { Fragment } from 'react';
-import { ButtonGroup, Loading, Tab } from '@/components';
+import { ButtonGroup, Loading, Tab, TooltipCustom } from '@/components';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { ReactComponent as Info } from '@/assets/images/svg/infoTooltip.svg';
@@ -14,7 +14,6 @@ import {
   mainPdvActionsProps,
   mainPdvStatesProps,
 } from '@/features/registerEvent/components/PdvScreen/types';
-import ReactTooltip from 'react-tooltip';
 import { PdvEventTickScreen } from '@/features/registerEvent/components/PdvEventTicketScreen/screens';
 import { PdvEventPosScreen } from '@/features/registerEvent/components/PdvEventPosScreen/screens';
 import { PdvProductScreen } from '@/features/registerEvent/components/PdvProductsScreen/screens';
@@ -150,9 +149,9 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
             ]}
             error={formErrors.isPdv && formErrors.isPdv[0]}
           />
-          <ReactTooltip id="pdvInfo" effect="solid" place={'right'} border={true} type={'light'}>
+          <TooltipCustom id="pdvInfo">
             Comece escolhendo o PDV que você quer adicionar ao evento.
-          </ReactTooltip>
+          </TooltipCustom>
         </FormGroup>
         <hr className="mt-5" />
         {formData[FormInputName.isPdv] === 'true' && (
