@@ -245,10 +245,10 @@ export const TicketContainer: React.FC<Props> = ({
     actions: (
       <React.Fragment>
         <Transfer
-          className={getClassName(item.reverseDate !== undefined || item.reverseDate !== null)}
-          onClick={() => {
-            onShowReversePayment(item);
-          }}
+          className={getClassName(item.reverseDate !== null)}
+          onClick={e =>
+            item.cancelDate === null ? onShowReversePayment(item) : e.stopPropagation()
+          }
         />
         {item.comments && item.comments.length > 0 && (
           <span
@@ -279,10 +279,8 @@ export const TicketContainer: React.FC<Props> = ({
           }
         />
         <X
-          className={getClassName(item.cancelDate !== undefined || item.cancelDate !== null)}
-          onClick={() => {
-            onShowCancelTicket(item);
-          }}
+          className={getClassName(item.cancelDate !== null)}
+          onClick={e => (item.cancelDate === null ? onShowCancelTicket(item) : e.stopPropagation())}
         />
       </React.Fragment>
     ),
