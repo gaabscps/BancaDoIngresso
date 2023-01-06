@@ -28,8 +28,21 @@ export const ConfirmationEventContainer: React.FC<ConfirmationEventContainerProp
   event,
   ticket,
 }) => {
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  const handeEventType = (type: number) => {
+    switch (type) {
+      case 0:
+        return 'Mono';
+      case 1:
+        return 'Pai';
+      case 2:
+        return 'Filho';
+      default:
+        return '--';
+    }
+  };
+
   // Confirmação de dados
-  console.log(event);
   const dataConfirmation = [
     {
       title: 'Nome do evento:',
@@ -37,7 +50,7 @@ export const ConfirmationEventContainer: React.FC<ConfirmationEventContainerProp
     },
     {
       title: 'Tipo do evento:',
-      content: event?.eventType || '--',
+      content: handeEventType(Number(event?.eventType)),
     },
     // Preciso achar o endpoint para listagem de eventos filhos
     {
@@ -83,73 +96,53 @@ export const ConfirmationEventContainer: React.FC<ConfirmationEventContainerProp
   const dataSectorProduct = [
     {
       title: 'Produto',
-      content:
-        event?.sectionproductsAndCombos?.map(item =>
-          item.products.map(products => products.name),
-        ) || '--',
+      content: event?.products?.map(item => item.name) || '--',
     },
     {
       title: 'Qtd',
-      content:
-        event?.sectionproductsAndCombos?.map(item =>
-          item.products.map(products => products.amount),
-        ) || '--',
+      content: event?.products?.map(item => item.amount) || '--',
     },
     {
       title: 'Valor un',
-      content:
-        event?.sectionproductsAndCombos?.map(item =>
-          item.products.map(products => products.unitValue),
-        ) || '--',
+      content: event?.products?.map(item => item.unitValue) || '--',
     },
     {
       title: 'Total estimado',
-      content:
-        event?.sectionproductsAndCombos?.map(item =>
-          item.products.map(products => products.totalValue),
-        ) || '--',
+      content: event?.products?.map(item => item.totalValue) || '--',
     },
     {
       title: 'Tx Deb',
-      content:
-        event?.sectionproductsAndCombos?.map(item =>
-          item.products.map(products => products.physicalSale.debit),
-        ) || '--',
+      content: event?.products?.map(
+        item => `${Number(item.physicalSale?.debit).toFixed(2)}%` || '--',
+      ),
     },
     {
       title: 'Tx Cred',
-      content:
-        event?.sectionproductsAndCombos?.map(item =>
-          item.products.map(products => products.physicalSale.credit),
-        ) || '--',
+      content: event?.products?.map(
+        item => `${Number(item.physicalSale?.credit).toFixed(2)}%` || '--',
+      ),
     },
     {
       title: 'Tx Pix ',
-      content:
-        event?.sectionproductsAndCombos?.map(item =>
-          item.products.map(products => products.physicalSale.pix),
-        ) || '--',
+      content: event?.products?.map(
+        item => `${Number(item.physicalSale?.pix).toFixed(2)}%` || '--',
+      ),
     },
     {
       title: 'Tx Admin',
-      content:
-        event?.sectionproductsAndCombos?.map(item =>
-          item.products.map(products => products.physicalSale.administrateTax),
-        ) || '--',
+      content: event?.products?.map(
+        item => `${Number(item.physicalSale?.administrateTax).toFixed(2)}%` || '--',
+      ),
     },
     {
       title: 'Parcelas',
-      content:
-        event?.sectionproductsAndCombos?.map(item =>
-          item.products.map(products => products.physicalSale.installments),
-        ) || '--',
+      content: event?.products?.map(item => item.physicalSale?.installments || '--'),
     },
     {
       title: 'Jur mês',
-      content:
-        event?.sectionproductsAndCombos?.map(item =>
-          item.products.map(products => products.physicalSale.fee),
-        ) || '--',
+      content: event?.products?.map(
+        item => `${Number(item.physicalSale?.fee).toFixed(2)}%` || '--',
+      ),
     },
   ];
 
@@ -163,9 +156,7 @@ export const ConfirmationEventContainer: React.FC<ConfirmationEventContainerProp
 
             {event?.tickets && <SectorTicket ticket={ticket} />}
 
-            {event?.sectionproductsAndCombos && (
-              <SectorProduct event={event} data={dataSectorProduct} />
-            )}
+            {event?.products && <SectorProduct event={event} data={dataSectorProduct} />}
             <h5 className="mb-2 border-bottom-title mb-5 container-event">PDV’s</h5>
             {event?.pdvs?.map(item => (
               <>
@@ -179,28 +170,31 @@ export const ConfirmationEventContainer: React.FC<ConfirmationEventContainerProp
                     columnGap: '30px',
                   }}
                 >
-                  <DataList
-                    data={[
-                      {
-                        title: 'Nome da POS:',
-                        content: 'não achei esse endpoint',
-                      },
-                      {
-                        title: 'Nº de série:',
-                        content: 'não achei esse endpoint',
-                      },
-                      {
-                        title: '% do Garçom:',
-                        content: 'não achei esse endpoint',
-                      },
-                    ]}
-                  />
+                  {item?.poss?.map(pos => (
+                    <DataList
+                      data={[
+                        {
+                          title: 'Nome da POS:',
+                          content: pos?.pos?.name,
+                        },
+                        {
+                          title: 'Nº de série:',
+                          content: pos?.pos?.serialNumber,
+                        },
+                        {
+                          title: '% do Garçom:',
+                          content: pos?.waiter,
+                        },
+                      ]}
+                    />
+                  ))}
                 </div>
+
                 <DataList
                   data={[
                     {
                       title: 'Usuários do PDV:',
-                      content: item.pdv.users.map(user => user.name),
+                      content: item.pdv.users.map(user => user?.name),
                     },
                   ]}
                 />
@@ -208,7 +202,7 @@ export const ConfirmationEventContainer: React.FC<ConfirmationEventContainerProp
                   data={[
                     {
                       title: 'SubPDV’s:',
-                      content: item?.subPdvs?.map(subPdv => subPdv.subPdv.name),
+                      content: item?.subPdvs?.map(subPdv => subPdv?.subPdv?.name),
                     },
                   ]}
                 />

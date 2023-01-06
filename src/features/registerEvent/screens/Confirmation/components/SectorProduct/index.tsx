@@ -1,10 +1,12 @@
+/* eslint-disable react/jsx-key */
 import EventSectionGet from '@/model/EventSectionGet';
 import { DataList } from '@/components/DataList';
 import React from 'react';
+import Event from '@/model/Event';
 
 interface SectorProductProps {
   data: any;
-  event: any;
+  event: Event;
 }
 
 export const SectorProduct: React.FC<SectorProductProps> = ({ event, data }) => (
@@ -13,10 +15,9 @@ export const SectorProduct: React.FC<SectorProductProps> = ({ event, data }) => 
     {event?.sectionproductsAndCombos?.map(
       (section: EventSectionGet, index: React.Key | null | undefined) => (
         <>
-          <div className="mb-4">Nome do setor:</div>
-          <div>{section.section.name}</div>
+          <div className="dataListTitle">Nome do setor:</div>
+          <div className="mb-4">{section.section.name}</div>
           <div
-            className="mb-4"
             style={{
               display: 'grid',
               gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr',
@@ -27,17 +28,12 @@ export const SectorProduct: React.FC<SectorProductProps> = ({ event, data }) => 
               data={[
                 {
                   title: 'Grupo:',
-                  content:
-                    event?.sectionproductsAndCombos?.map((item: { products: any[] }) =>
-                      item.products.map(products => products.group.name),
-                    ) || '--',
+                  content: section.products.find(item => item?.group?.name)?.group.name || '--',
                 },
                 {
                   title: 'Subgrupo:',
                   content:
-                    event?.sectionproductsAndCombos?.map((item: { products: any[] }) =>
-                      item.products.map(products => products.subgroup.name),
-                    ) || '--',
+                    section.products.find(item => item?.subgroup?.name)?.subgroup.name || '--',
                 },
               ]}
             />

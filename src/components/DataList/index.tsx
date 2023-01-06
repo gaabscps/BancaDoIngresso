@@ -11,7 +11,7 @@ export const DataList: React.FC<DataListProps> = ({ data }) =>
 
       {Array.isArray(item.content) && item.content.length > 0 ? (
         item.content.map((content: any, key: any) => (
-          <div key={key} className="dataListContent">
+          <div key={key} className="dataListContent mb-3">
             {content}
           </div>
         ))
