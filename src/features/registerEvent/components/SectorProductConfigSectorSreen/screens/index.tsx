@@ -112,8 +112,8 @@ export const SectorProductConfigSectorScreen: React.FC<
       toast.success('Setor desviculado ao evento');
       handleGetSectorList(params.id);
     } catch (error) {
-      const err = error as AxiosError;
-      toast.error(err.message);
+      const err = error as AxiosError | any;
+      toast.error(err.response?.data.message);
     } finally {
       confirmDelete.hide();
     }

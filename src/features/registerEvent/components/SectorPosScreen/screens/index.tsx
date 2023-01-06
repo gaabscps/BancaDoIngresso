@@ -341,8 +341,8 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({ back
       confirmDelete.hide();
       handleGetPosList(params.id);
     } catch (error) {
-      const err = error as AxiosError;
-      toast.error(err.message);
+      const err = error as AxiosError | any;
+      toast.error(err.response?.data.message);
     }
   };
 

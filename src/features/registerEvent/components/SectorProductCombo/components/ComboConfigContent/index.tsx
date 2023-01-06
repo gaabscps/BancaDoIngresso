@@ -602,7 +602,7 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
             </Form>
           </Card>
           <SuperCollapse
-            title={`Produtos cadastrados`}
+            title={`Códigos de desconto adicionados`}
             count={discountCouponList.length}
             leftIcon={ProductIcon}
             content={

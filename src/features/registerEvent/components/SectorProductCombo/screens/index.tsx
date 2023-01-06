@@ -244,7 +244,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
       await api.delete(
         `/event/section-product/${params?.id}/combo/${comboSelected.id}/discount/${discountCouponSelected.id}`,
       );
-      toast.success('Combo excluído com sucesso!');
+      toast.success('Cupom de desconto excluído com sucesso!');
       handleGetDiscount(comboSelected);
     } catch (error) {
       const err = error as AxiosError;
@@ -605,8 +605,8 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
       toast.success('Combo excluído com sucesso!');
       handleGetComboList(params.id);
     } catch (error) {
-      const err = error as AxiosError;
-      toast.error(err.message);
+      const err = error as AxiosError | any;
+      toast.error(err.response?.data.message);
     } finally {
       confirmDelete.hide();
     }

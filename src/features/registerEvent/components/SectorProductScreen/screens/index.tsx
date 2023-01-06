@@ -183,8 +183,8 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
       toast.success('Produto excluído com sucesso!');
       handleGetProductList(params.id);
     } catch (error) {
-      const err = error as AxiosError;
-      toast.error(err.message);
+      const err = error as AxiosError | any;
+      toast.error(err.response?.data.message);
     } finally {
       confirmDelete.hide();
     }
