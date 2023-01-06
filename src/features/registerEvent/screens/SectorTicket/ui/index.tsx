@@ -5,6 +5,7 @@ import React, { Fragment, useState } from 'react';
 import { Button, ButtonGroup, Loading, Tab } from '@/components';
 import { Container, FormGroup } from 'reactstrap';
 import { SectorTicketMainSettingsScreen } from '@/features/registerEvent/components/SectorTicketMainSettingsSreen/screens';
+import validators from '@/helpers/validators';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
 import { CustomTable } from '@/components/Table';
 import { ReactComponent as CloseX } from '@/assets/images/svg/closeX.svg';
@@ -18,6 +19,8 @@ import TicketIcon from '@/assets/images/svg/Ticket';
 import { SectorTicketGeneralSettingsScreen } from '@/features/registerEvent/components/SectorTicketGeneralSettingsSreen/screens';
 import { SectorTicketPaymentSettingsScreen } from '@/features/registerEvent/components/SectorTicketPaymentSettingScreen/screens';
 import { useParams } from 'react-router-dom';
+import { updateMask as updateMaskCash } from '@/helpers/masks/cashNumber';
+import { useEvent } from '@/features/registerEvent/hook/useEvent';
 import { formSectorTicketProps, ticketStepProps } from '../types';
 import { columnsTickets } from './table';
 
@@ -44,6 +47,7 @@ export type TabSectorTicketActionsProps = {
   nextTab: () => void;
   backTab: () => void;
   onFirstTab: () => void;
+  reloadTickets: () => void;
 };
 
 type UrlParams = {
@@ -61,6 +65,8 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
   const [numberTab, setNumberTab] = useState(0);
   const titleTabRef = React.useRef<HTMLInputElement>(null);
   const params = useParams<UrlParams>();
+
+  const { eventState, onChange: onChangeEvent } = useEvent();
 
   const handleNextTab = (): void => {
     if (numberTab <= contentTabs.length) {
@@ -81,6 +87,10 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
     ticketActions.onGetAll(params.id);
   };
 
+  const handleReloadTickets = (): void => {
+    ticketActions.onGetAll(params.id);
+  };
+
   const contentTabs = [
     <>
       <SectorTicketMainSettingsScreen
@@ -88,6 +98,7 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
         ticketStep={ticketStep}
         nextTab={handleNextTab}
         onFirstTab={handleOnFirstTab}
+        reloadTickets={handleReloadTickets}
       />
     </>,
     <>
@@ -170,8 +181,12 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
                                     name: ticket.name,
                                     batch: batch.name,
                                     commission: batch.commission,
-                                    unitValue: `R$ ${batch.unitValue}`,
-                                    totalValue: `R$ ${batch.totalValue}`,
+                                    unitValue: `R$ ${updateMaskCash(
+                                      validators.applyDecimalMask(String(batch.unitValue)),
+                                    )}`,
+                                    totalValue: `R$ ${updateMaskCash(
+                                      validators.applyDecimalMask(String(batch.totalValue)),
+                                    )}`,
                                     amount: `${batch.amount} uni`,
                                   }))}
                                   theme="secondaryWithoutBorder"
@@ -237,11 +252,20 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
         )}
         <hr className="mt-5" />
         <div className="footer-register-event">
-          <Button title="Voltar" theme="noneBorder" onClick={() => () => undefined} />
+          <Button
+            title="Voltar"
+            theme="noneBorder"
+            onClick={() => {
+              onChangeEvent({ ...eventState, currentStep: eventState.currentStep - 1 });
+            }}
+          />
           <Button
             title="Avançar para Setor e produto"
-            onClick={() => isFormValid()}
-            disabled={!(ticketStates.ticketList.length > 0)}
+            onClick={() => {
+              if (isFormValid()) {
+                onChangeEvent({ ...eventState, currentStep: eventState.currentStep + 1 });
+              }
+            }}
           />
         </div>
       </Container>

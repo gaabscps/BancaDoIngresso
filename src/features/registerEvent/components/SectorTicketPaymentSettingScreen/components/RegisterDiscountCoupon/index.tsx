@@ -19,15 +19,14 @@ export const RegisterDiscountCoupon: React.FC<RegisterContentProps> = ({
 }) => (
   <>
     <Form
-      style={{ backgroundColor: '#f1f1f1' }}
       noValidate={true}
       onSubmit={(e): void => {
         e.preventDefault();
       }}
     >
       {discountCoupon.map((item, index) => (
-        <React.Fragment key={index}>
-          <div className="modal__main-container">
+        <div key={index} style={{ backgroundColor: '#f1f1f1' }}>
+          <div className="m-4 pt-5">
             <Row>
               <Col md={6}>
                 <FormGroup className="mb-2">
@@ -58,11 +57,11 @@ export const RegisterDiscountCoupon: React.FC<RegisterContentProps> = ({
               <Col md={2} sm={4}>
                 <FormGroup className="mb-2">
                   <InputText
-                    name="amount"
-                    type="number"
+                    name={`amount-${index}`}
                     label="Quant. cupons"
                     placeholder="0"
-                    value={String(item.amount)}
+                    maxLength={6}
+                    value={String(item.amount || '')}
                     onChange={e =>
                       handleChangeDiscountCoupon(
                         'amount',
@@ -77,12 +76,12 @@ export const RegisterDiscountCoupon: React.FC<RegisterContentProps> = ({
               <Col className="ml-5" md={2} sm={4}>
                 <FormGroup className="mb-2">
                   <InputText
-                    name="discount"
-                    type="number"
+                    name={`discount-${index}`}
                     label="Desconto (%)"
+                    addon="%"
                     placeholder="0"
-                    maxLength={2}
-                    value={String(item.discount)}
+                    maxLength={5}
+                    value={String(item.discount || '')}
                     onChange={e =>
                       handleChangeDiscountCoupon(
                         'discount',
@@ -94,18 +93,18 @@ export const RegisterDiscountCoupon: React.FC<RegisterContentProps> = ({
                   />
                 </FormGroup>
               </Col>
-              <div className="d-flex justify-content-end align-items-center w-100 mr-3">
+              <Col className="d-flex justify-content-end align-items-center">
                 <Trash
                   className="svg-icon action-icon"
                   onClick={() => handleRemoveDiscountCoupon(index)}
                 />
-              </div>
+              </Col>
             </Row>
           </div>
           {discountCoupon.length > 1 ? (
-            <div className="p-4" style={{ backgroundColor: '#f8f8f8' }}></div>
+            <div className="pb-4" style={{ backgroundColor: '#f8f8f8' }}></div>
           ) : null}
-        </React.Fragment>
+        </div>
       ))}
     </Form>
     <div

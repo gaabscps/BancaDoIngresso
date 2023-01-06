@@ -2,6 +2,7 @@
 import React, { Fragment } from 'react';
 import { InputFile, InputText } from '@/components';
 import { Col, Form, FormGroup, Row } from 'reactstrap';
+import { updateMask as updateMaskCash, unmask as unmaskCash } from '@/helpers/masks/cashNumber';
 import { SectorTicketMainSettingsContainerProps } from '../../screens/ui';
 
 // eslint-disable-next-line no-shadow
@@ -106,10 +107,12 @@ export const BatchContent: React.FC<Pick<SectorTicketMainSettingsContainerProps,
             label="Porcentagem de Comissão (%)"
             placeholder="0"
             addon="%"
-            maxLength={3}
+            maxLength={5}
             value={formData[FormInputName.commission]}
             onChange={e =>
-              onChangeFormInput(FormInputName.commission)(e.target.value.replace(/\D/g, ''))
+              onChangeFormInput(FormInputName.commission)(
+                e.target.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1'),
+              )
             }
             error={formErrors.commission && formErrors.commission[0]}
           />
@@ -122,10 +125,12 @@ export const BatchContent: React.FC<Pick<SectorTicketMainSettingsContainerProps,
                 label="Quantidade de ingressos"
                 placeholder="Ex: 200"
                 value={formData[FormInputName.amount]}
+                maxLength={6}
                 onChange={e => {
-                  onChangeFormInput(FormInputName.amount)(e.target.value.replace(/\D/g, ''));
+                  const amountValue = e.target.value.replace(/\D/g, '');
+                  onChangeFormInput(FormInputName.amount)(amountValue);
                   onChangeFormInput(FormInputName.totalValue)(
-                    String((+e.target.value * +formData[FormInputName.unitValue]).toFixed(2)),
+                    String((+amountValue * +formData[FormInputName.unitValue]).toFixed(2)),
                   );
                 }}
                 error={formErrors.amount && formErrors.amount[0]}
@@ -139,14 +144,14 @@ export const BatchContent: React.FC<Pick<SectorTicketMainSettingsContainerProps,
                 label="Valor unitário"
                 placeholder="Ex: 20,00"
                 addon="R$"
-                value={formData[FormInputName.unitValue]}
+                value={updateMaskCash(formData[FormInputName.unitValue])}
                 onChange={e => {
-                  const unitValueDecimal = e.target.value
-                    .replace(/\D/g, '')
-                    .replace(/(\d{2})$/, '.$1');
-                  onChangeFormInput(FormInputName.unitValue)(unitValueDecimal);
+                  const unitValueMoney = updateMaskCash(e.target.value);
+                  onChangeFormInput(FormInputName.unitValue)(unmaskCash(unitValueMoney));
                   onChangeFormInput(FormInputName.totalValue)(
-                    String((+unitValueDecimal * +formData[FormInputName.amount]).toFixed(2)),
+                    String(
+                      (+unmaskCash(unitValueMoney) * +formData[FormInputName.amount]).toFixed(2),
+                    ),
                   );
                 }}
                 error={formErrors.unitValue && formErrors.unitValue[0]}
@@ -160,7 +165,7 @@ export const BatchContent: React.FC<Pick<SectorTicketMainSettingsContainerProps,
             label="Valor total"
             placeholder="Ex: 200,00"
             addon="R$"
-            value={formData[FormInputName.totalValue]}
+            value={updateMaskCash(formData[FormInputName.totalValue])}
             onChange={() => undefined}
             error={formErrors.totalValue && formErrors.totalValue[0]}
             disabled

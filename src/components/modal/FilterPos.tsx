@@ -26,6 +26,7 @@ const Filter = (props: FilterCustomProps): JSX.Element => {
   const dispatch = useDispatch();
 
   const posStorage = useSelector<ApplicationState, PosState>(store => store.pos);
+  // console.log('posStorage', posStorage);
 
   const optionName =
     posStorage.data?.page?.list?.map(item => ({

@@ -121,14 +121,6 @@ const RegisterPdv = (props: Props): JSX.Element => {
     }
   }, [props.show]);
 
-  // const fileToBase64 = (file: File): Promise<string> =>
-  //   new Promise((resolve, reject) => {
-  //     const reader = new FileReader();
-  //     reader.readAsDataURL(file);
-  //     reader.onload = () => resolve(reader.result as string);
-  //     reader.onerror = error => reject(error);
-  //   });
-
   const onSubmit = async (data: Pdv): Promise<void> => {
     try {
       await props.saveRequest(data);

@@ -23,6 +23,44 @@ export default interface SectorProductCombo {
   totalValue: number;
   imageBase64: string;
   products: SectorProductComboProduct[];
-  status: StatusType;
+  formPrinting: number;
+  hasCourtesy: boolean;
+  physicalSale: {
+    id?: string;
+    allowCreditCardPayment: boolean;
+    debit: number;
+    credit: number;
+    bankSlip: number;
+    pix: number;
+    administrateTax: number;
+    installments: number;
+    fee: number;
+  };
   allowSellingWebsite: boolean;
+  websiteSale: {
+    id?: string;
+    allowCreditCardPayment: boolean;
+    debit: number;
+    credit: number;
+    bankSlip: number;
+    pix: number;
+    administrateTax: number;
+    installments: number;
+    fee: number;
+  };
+  waiter: number;
+  partialPayment: true;
+  allowDiscountCoupon: true;
+  discounts: [
+    {
+      id?: string;
+      name: string;
+      code: string;
+      amount: number;
+      discountType: number;
+      discount: number;
+    },
+  ];
+  status: StatusType;
+  wasConfig?: boolean;
 }

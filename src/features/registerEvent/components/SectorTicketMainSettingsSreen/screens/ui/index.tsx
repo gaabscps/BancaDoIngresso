@@ -12,6 +12,7 @@ import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import dayjs from 'dayjs';
 import TicketsIcon from '@/assets/images/svg/Tickets';
 import BackOnTop from '@/components/sharedComponents/BackOnTop';
+import { updateMask as updateMaskCash } from '@/helpers/masks/cashNumber';
 import {
   batchActionsProps,
   batchStatesProps,
@@ -131,7 +132,7 @@ export const SectorTicketMainSettingsContainer: React.FC<
           </div>
           <div className="d-flex justify-content-end">
             <div
-              className="cursor-pointer mr-3"
+              className="mr-3"
               onClick={() => {
                 batchActions.onCancelEdit();
               }}
@@ -191,8 +192,8 @@ export const SectorTicketMainSettingsContainer: React.FC<
                               }`,
                               startDate: dayjs(batch.startDate).format('DD/MM/YYYY'),
                               endDate: dayjs(batch.endDate).format('DD/MM/YYYY'),
-                              totalValue: `R$ ${batch.totalValue}`,
-                              unitValue: `R$ ${batch.unitValue}`,
+                              totalValue: `R$ ${updateMaskCash(String(batch.totalValue))}`,
+                              unitValue: `R$ ${updateMaskCash(String(batch.unitValue))}`,
                               actions: (
                                 <div className={`${batchStates.batch ? 'disabled-content' : null}`}>
                                   <Pen

@@ -71,7 +71,7 @@ type UrlParams = {
 export const SectorTicketPaymentSettingsScreen: React.FC<
   Pick<SectorTicketContainerProps, 'ticketStates'> &
     Pick<SectorTicketContainerProps, 'ticketStep'> &
-    TabSectorTicketActionsProps
+    Omit<TabSectorTicketActionsProps, 'reloadTickets'>
 > = ({ ticketStates, ticketStep, nextTab, backTab }): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
   const [paymentGatewayList, setPaymentGatewayList] = useState<PaymentGateway[]>([]);
@@ -136,19 +136,19 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
       allowSellingPos: [validators.required],
       printReceipt: [validators.required],
       physicalSaleAllowCreditCardPayment: [validators.required],
-      physicalSaleDebit: [validators.required, validators.between(0.1, 10)],
-      physicalSaleCredit: [validators.required, validators.between(1, 10)],
-      physicalSalePix: [validators.required],
-      physicalSaleAdministrateTax: [validators.required, validators.between(1, 10)],
+      physicalSaleDebit: [validators.required, validators.between(0.1, 99.99)],
+      physicalSaleCredit: [validators.required, validators.between(1, 99.99)],
+      physicalSalePix: [validators.required, validators.between(1, 99.999)],
+      physicalSaleAdministrateTax: [validators.required, validators.between(1, 99.99)],
       physicalSaleInstallments: [validators.required, validators.between(1, 12)],
-      physicalSaleFee: [validators.required, validators.between(1, 10)],
+      physicalSaleFee: [validators.required, validators.between(1, 99.99)],
       websiteSaleAllowCreditCardPayment: [validators.required],
-      websiteSaleBankSlip: [validators.required, validators.between(0.1, 10)],
-      websiteSaleCredit: [validators.required, validators.between(1, 10)],
-      websiteSalePix: [validators.required],
-      websiteSaleAdministrateTax: [validators.required, validators.between(1, 10)],
+      websiteSaleBankSlip: [validators.required, validators.between(0.1, 99.99)],
+      websiteSaleCredit: [validators.required, validators.between(1, 99.99)],
+      websiteSalePix: [validators.required, validators.between(1, 99.99)],
+      websiteSaleAdministrateTax: [validators.required, validators.between(1, 99.99)],
       websiteSaleInstallments: [validators.required, validators.between(1, 12)],
-      websiteSaleFee: [validators.required, validators.between(1, 10)],
+      websiteSaleFee: [validators.required, validators.between(1, 99.99)],
       allowDiscount: [validators.required],
       allowDiscountCoupon: [validators.required],
     },
@@ -214,6 +214,26 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
         );
         return;
       }
+
+      // sum total amount of discount coupon
+      const totalAmountDiscountCoupon = discountCoupon.reduce(
+        (acc, cupom) => acc + (cupom.amount as number),
+        0,
+      );
+      // sum total amount of tickets
+      const totalAmountTickets = ticketStates.ticket?.batchs.reduce(
+        (acc, batch) => acc + batch.amount,
+        0,
+      ) as number;
+
+      // verify if the total amount of discount coupon is greater than the total amount of the event
+      if (totalAmountDiscountCoupon > totalAmountTickets) {
+        toast.warn(
+          'A quantidade de cupons digitadas é maior do que a quantidade total de ingressos cadastrados',
+        );
+        return;
+      }
+
       setListDiscountCoupon(discountCoupon);
       onToggle();
     } catch (error) {

@@ -3,6 +3,7 @@
 
   .tab-list {
     display: flex;
+    justify-content: space-around;
     list-style: none;
     font-size: 18px;
     padding: 0;
@@ -19,7 +20,6 @@
 
   .tabs {
     height: 135px;
-    width: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -62,7 +62,7 @@
   }
 }
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 1500px) {
   .tab-component {
     .tab-list {
       display: flex;

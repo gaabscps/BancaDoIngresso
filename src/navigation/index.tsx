@@ -2,6 +2,7 @@ import React from 'react';
 import { Switch } from 'react-router-dom';
 import { Error404 } from '@/components';
 import { AuthNavigation } from '@/features/auth/navigation';
+import { ClientNavigation } from '@/features/client/navigation';
 import { DashboardNavigation } from '@/features/dashboard/navigation';
 import { PdvNavigation } from '@/features/pdv/navigation';
 import { PaymentGatewayNavigation } from '@/features/paymentGateway/navigation';
@@ -27,6 +28,7 @@ import { path } from './path';
 
 const Navigation: React.FC = (): JSX.Element => {
   const authRoutes = renderRoutes(AuthNavigation);
+  const clientRoutes = renderRoutes(ClientNavigation);
   const dashboardRoutes = renderRoutes(DashboardNavigation);
   const eventsRoutes = renderRoutes(EventsNavigation);
   const moduleRoutes = renderRoutes(ModuleNavigation);
@@ -50,6 +52,7 @@ const Navigation: React.FC = (): JSX.Element => {
       <PdvProvider>
         <Switch>
           {authRoutes}
+          {clientRoutes}
           {dashboardRoutes}
           {moduleRoutes}
           {permissionRoutes}

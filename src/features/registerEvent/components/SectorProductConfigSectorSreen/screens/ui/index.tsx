@@ -3,7 +3,7 @@
 /* eslint-disable import/no-unresolved */
 import React, { Fragment } from 'react';
 import { Button, Dialog, Loading } from '@/components';
-import { Container } from 'reactstrap';
+import { Col, Container, Row } from 'reactstrap';
 import { SectorProductConfigSectorContent } from '@/features/registerEvent/components/SectorProductConfigSectorSreen/components/SectorTicketConfigSectorContent';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
 import { CustomTable } from '@/components/Table';
@@ -11,6 +11,7 @@ import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { ReactComponent as Config } from '@/assets/images/svg/config.svg';
 import { ActionProps } from '@/components/Dialog';
+import SectorIcon from '@/assets/images/svg/Sector';
 import { columnsSectors } from './table';
 import {
   formConfigSectorProps,
@@ -19,8 +20,6 @@ import {
   modalConfigSectorSettingsProps,
   dataConfigStatesProps,
 } from '../../types';
-import TicketIcon from '../../../../../../assets/images/svg/Ticket';
-
 import { SectorConfigContent } from '../../components/SectorConfigContent';
 
 // eslint-disable-next-line no-shadow
@@ -63,7 +62,7 @@ export const SectorProductConfigSectorContainer: React.FC<
   const renderActionDialogToCancel: ActionProps = {
     title: 'Cancelar',
     onClick: (): void => {
-      configSectorStates.setSector(undefined);
+      configSectorActions.onCancelEdit();
       modalConfig.onToggle();
     },
     theme: 'noneBorder',
@@ -99,57 +98,61 @@ export const SectorProductConfigSectorContainer: React.FC<
         <h6 ref={titleRef} className="mb-4">
           {configSectorStates.sector
             ? `Editando ${configSectorStates.sector.sectionNome}`
-            : 'Cadastrando produtos'}
+            : 'Configurando setores'}
         </h6>
         <div className="card-ligth-color mb-5">
-          <div className="container-event">
-            <SectorProductConfigSectorContent
-              formConfigSector={formConfigSector}
-              configSectorActions={configSectorActions}
-              configSectorStates={configSectorStates}
-            />
-          </div>
-          <div className="d-flex justify-content-end">
-            <div
-              className="cursor-pointer mr-3"
-              onClick={() => {
-                configSectorActions.onCancelEdit();
-              }}
-            >
-              {configSectorStates.sector ? 'Cancelar' : null}
-            </div>
-            {configSectorStates.sector ? (
-              <div
-                className="link-green"
-                onClick={(): void => {
-                  if (formConfigSector.isFormValid()) {
-                    modalConfig.onShouldShowModal({
-                      value: ShouldShowModal.configProduct,
-                      newTitleModal: 'Configurações do sector',
-                      sector: configSectorStates.sector,
-                    });
-                  }
-                }}
-              >
-                Salvar edição
+          <Row>
+            <Col>
+              <div className="container-event">
+                <SectorProductConfigSectorContent
+                  formConfigSector={formConfigSector}
+                  configSectorActions={configSectorActions}
+                  configSectorStates={configSectorStates}
+                />
               </div>
-            ) : (
-              <div
-                className="link-green"
-                onClick={(): void => {
-                  if (formConfigSector.isFormValid()) {
-                    modalConfig.onShouldShowModal({
-                      value: ShouldShowModal.configProduct,
-                      newTitleModal: 'Configurações do sector',
-                      sector: configSectorStates.sector,
-                    });
-                  }
-                }}
-              >
-                + inserir setor
+              <div className="d-flex justify-content-end">
+                <div
+                  className="cursor-pointer mr-3"
+                  onClick={() => {
+                    configSectorActions.onCancelEdit();
+                  }}
+                >
+                  {configSectorStates.sector ? 'Cancelar' : null}
+                </div>
+                {configSectorStates.sector ? (
+                  <div
+                    className="link-green"
+                    onClick={(): void => {
+                      if (formConfigSector.isFormValid()) {
+                        modalConfig.onShouldShowModal({
+                          value: ShouldShowModal.configProduct,
+                          newTitleModal: 'Configurações do sector',
+                          sector: configSectorStates.sector,
+                        });
+                      }
+                    }}
+                  >
+                    Salvar edição
+                  </div>
+                ) : (
+                  <div
+                    className="link-green"
+                    onClick={(): void => {
+                      if (formConfigSector.isFormValid()) {
+                        modalConfig.onShouldShowModal({
+                          value: ShouldShowModal.configProduct,
+                          newTitleModal: 'Configurações do sector',
+                          sector: configSectorStates.sector,
+                        });
+                      }
+                    }}
+                  >
+                    + inserir setor
+                  </div>
+                )}
               </div>
-            )}
-          </div>
+            </Col>
+          </Row>
         </div>
         <SuperCollapse
           title={`Setores inseridos`}
@@ -253,7 +256,7 @@ export const SectorProductConfigSectorContainer: React.FC<
               : 'Nenhum setor cadastrado. Aqui será exibida uma lista dos setores cadastrados'
           }
           count={configSectorStates.sectorTableList.length}
-          leftIcon={TicketIcon}
+          leftIcon={SectorIcon}
         />
         <div className="d-flex justify-content-end">
           <Button

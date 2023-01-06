@@ -27,6 +27,7 @@ import {
   SectorTicketContainerProps,
   TabSectorTicketActionsProps,
 } from '@/features/registerEvent/screens/SectorTicket/ui';
+// import { unmask as unmaskCash } from '@/helpers/masks/cashNumber';
 import {
   batchActionsProps,
   batchStatesProps,
@@ -49,7 +50,7 @@ export const SectorTicketMainSettingsScreen: React.FC<
   Pick<SectorTicketContainerProps, 'ticketStates'> &
     Pick<SectorTicketContainerProps, 'ticketStep'> &
     Omit<TabSectorTicketActionsProps, 'backTab'>
-> = ({ ticketStates, ticketStep, nextTab, onFirstTab }): JSX.Element => {
+> = ({ ticketStates, ticketStep, nextTab, onFirstTab, reloadTickets }): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
   const [formNameFiles, setFormNameFiles] = useState<NameFiles>({});
 
@@ -257,26 +258,46 @@ export const SectorTicketMainSettingsScreen: React.FC<
 
   const handleOnSaveMainSettings = async ({ isBntNext }: { isBntNext: boolean }): Promise<void> => {
     try {
-      if (isFormValidMainSettings()) {
-        const payloadBatchs = batchList.map((batch: TicketBatch) => {
-          if (batch.id) {
-            return {
-              ...batch,
-              commission: +batch.commission,
-              amount: +batch.amount,
-              unitValue: +batch.unitValue,
-              totalValue: +batch.totalValue,
-            };
-          }
-          delete batch.id;
-          return {
-            ...batch,
-            commission: +batch.commission,
-            amount: +batch.amount,
-            unitValue: +batch.unitValue,
-            totalValue: +batch.totalValue,
-          };
-        });
+      const isFormValid = isFormValidMainSettings();
+      // validate percentageHalfPrice and amountHalfPrice if hasHalfPrice is true
+      if (
+        isFormValid &&
+        convertToBoolean(formDataMainSettings[FormInputNameToMainSettings.hasHalfPrice])
+      ) {
+        const percentageHalfPrice =
+          +formDataMainSettings[FormInputNameToMainSettings.percentageHalfPrice];
+        const amountHalfPrice = +formDataMainSettings[FormInputNameToMainSettings.amountHalfPrice];
+        if (percentageHalfPrice <= 0 || percentageHalfPrice > 100) {
+          setErrorsMainSettings({
+            [FormInputNameToMainSettings.percentageHalfPrice]: ['O valor deve ser entre 1 e 100'],
+          });
+          return;
+        }
+
+        if (amountHalfPrice <= 0) {
+          setErrorsMainSettings({
+            [FormInputNameToMainSettings.amountHalfPrice]: ['O valor deve ser maior que 0'],
+          });
+          return;
+        }
+      }
+
+      // validate amountCourtesy if hasHalfPrice is true
+      if (
+        isFormValid &&
+        convertToBoolean(formDataMainSettings[FormInputNameToMainSettings.hasCourtesy])
+      ) {
+        const amountCourtesy = +formDataMainSettings[FormInputNameToMainSettings.amountCourtesy];
+        if (amountCourtesy <= 0) {
+          setErrorsMainSettings({
+            [FormInputNameToMainSettings.amountCourtesy]: ['O valor deve ser maior que 0'],
+          });
+          return;
+        }
+      }
+
+      if (isFormValid) {
+        const payloadBatchs = batchList;
 
         // continue someone batchList is not array empty
         if (payloadBatchs.length === 0) {
@@ -326,7 +347,12 @@ export const SectorTicketMainSettingsScreen: React.FC<
         }
         const response = await api.post(`/event/ticket/${params.id}/main-settings`, payload);
 
-        if (response && isBntNext) nextTab();
+        if (response && isBntNext) {
+          nextTab();
+        }
+        if (!isBntNext) {
+          reloadTickets();
+        }
         if (response) toast.success('Dados salvos com sucesso!');
         ticketStates.setTicket({ ...ticketStates.ticket, ...response.data });
         ticketStep.setTicketState({ ...ticketStates.ticket, ...response.data });
@@ -371,6 +397,7 @@ export const SectorTicketMainSettingsScreen: React.FC<
         if (!batchExists) {
           setBatchList([...batchList, payload]);
           onChangeFormInputBatchs(FormInputNameToBatch.name)('');
+          toast.success('Lote adicionado com sucesso!');
         } else {
           toast.error('Lote com o mesmo nome já existe');
         }
@@ -450,7 +477,7 @@ export const SectorTicketMainSettingsScreen: React.FC<
             startDate: payloadStartData,
             endDate: payloadEndData,
             commission: +formDataBatchs[FormInputNameToBatch.commission],
-            amount: formDataBatchs[FormInputNameToBatch.amount],
+            amount: +formDataBatchs[FormInputNameToBatch.amount],
             unitValue: formDataBatchs[FormInputNameToBatch.unitValue],
             totalValue: formDataBatchs[FormInputNameToBatch.totalValue],
             imageUrl: formDataBatchs[FormInputNameToBatch.imageUrl],
@@ -611,7 +638,7 @@ export const SectorTicketMainSettingsScreen: React.FC<
       onChangeFormInputBatchs(FormInputNameToBatch.amount)(String(batch.amount));
       onChangeFormInputBatchs(FormInputNameToBatch.unitValue)(String(batch.unitValue));
       onChangeFormInputBatchs(FormInputNameToBatch.totalValue)(String(batch.totalValue));
-      onChangeFormInputBatchs(FormInputNameToBatch.imageUrl)(String(batch.imageUrl));
+      onChangeFormInputBatchs(FormInputNameToBatch.imageUrl)(String(batch.imageUrl ?? ''));
     }
   }, [batch]);
 
@@ -655,7 +682,19 @@ export const SectorTicketMainSettingsScreen: React.FC<
       );
       onChangeFormInputMainSettings(FormInputNameToMainSettings.observation)(ticket.observation);
 
-      setBatchList(ticket.batchs);
+      setBatchList(
+        ticket.batchs.map((item): any => ({
+          id: item.id,
+          name: item.name,
+          startDate: item.startDate,
+          endDate: item.endDate,
+          commission: item.commission,
+          amount: item.amount,
+          unitValue: validators.applyDecimalMask(String(item.unitValue)),
+          totalValue: validators.applyDecimalMask(String(item.totalValue)),
+          imageUrl: item.imageUrl,
+        })),
+      );
     }
   }, [ticketStates.ticket]);
 

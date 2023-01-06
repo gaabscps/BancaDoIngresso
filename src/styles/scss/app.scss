@@ -870,7 +870,7 @@ textarea {
 
 .input-disabled {
   cursor: not-allowed;
-
+  
   label {
     color: #c4c4c4;
   }
@@ -882,6 +882,7 @@ textarea {
     background: #ececec !important;
     border-color: #ececec !important;
     color: #c4c4c4 !important;
+    border-radius: 5px;
     cursor: not-allowed;
     &:hover {
       background-color: none !important;
@@ -1524,7 +1525,7 @@ body
 .card-ligth-color {
   background: #fff;
   border-radius: 5px;
-  padding: 50px 30px;
+  padding: 50px 15px;
 }
 
 .light-text {
@@ -1555,4 +1556,20 @@ body
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.text-area-comment {
+  width: 100%;
+  background: transparent;
+  color: #828282 !important;
+  border: 0;
+  resize: none;
+}
+
+.text-area-comment:focus   {
+  background-color: transparent;
+}
+
+.text-area-comment:hover   {
+  background-color: transparent;
 }

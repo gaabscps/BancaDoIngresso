@@ -16,6 +16,7 @@ import Section from '@/model/Section';
 import Ticket from '@/model/Ticket';
 import EventSectionTicket from '@/model/EventSectionTicket';
 import EventPdvTicket from '@/model/EventPdvTicket';
+
 import EventTicket from '@/model/EventTicket';
 import { FormInputName as FormInputMainName } from '../../components/MainPdvContent';
 import { mainPdvStatesProps } from '../../components/PdvScreen/types';
@@ -52,6 +53,7 @@ export const PdvEventScreen: React.FC = (): JSX.Element => {
   const [mainPdv, setMainPdv] = useState<Pdv>();
   const [eventPDVs, setEventPDVs] = useState<EventPdv[]>([]);
   const [mainPdvList, setMainPdvList] = useState<Pdv[]>([]);
+  const [link, setLink] = useState<string>(undefined as unknown as string);
 
   const {
     formData: formDataPdv,
@@ -137,12 +139,15 @@ export const PdvEventScreen: React.FC = (): JSX.Element => {
     if (params.id) {
       try {
         setState(States.loading);
+        const { data } = await api.get<Pdv[]>(`/pdv/find`);
+        setMainPdvList(data ?? []);
         const responseEventPDVs = await api.get<EventPdv[]>(`/event/pdv/${params.id}`);
         if (responseEventPDVs.data && responseEventPDVs.data.length > 0) {
-          onChangeFormInputPdv(FormInputName.isPdv)('true');
           setEventPDVs(responseEventPDVs.data);
-          const { data } = await api.get<Pdv[]>(`/pdv/find`);
-          setMainPdvList(data ?? []);
+          onChangeFormInputPdv(FormInputName.isPdv)('true');
+        }
+        if (!pdvId) {
+          setLink(undefined as unknown as string);
         }
       } catch (error) {
         const err = error as AxiosError;
@@ -210,6 +215,7 @@ export const PdvEventScreen: React.FC = (): JSX.Element => {
     // eslint-disable-next-line no-plusplus
     for (let i = 0; i < eventPDVs.length; i++) {
       if (eventPDVs[i].pdv.id === value) {
+        setLink(eventPDVs[i].link as string);
         onChangeFormInputPdv(FormInputName.isPdv)('true');
         onChangeFormInputMainPdv(FormInputMainName.pdv)(eventPDVs[i].pdv.id as string);
         onChangeFormInputMainPdv(FormInputMainName.allowMoney)(
@@ -348,6 +354,10 @@ export const PdvEventScreen: React.FC = (): JSX.Element => {
     }
   };
 
+  const handleSetPdvLink = (linkSelected: string): void => {
+    setLink(linkSelected);
+  };
+
   const handleOnGetTickets = async (): Promise<void> => {
     if (params.id) {
       try {
@@ -483,6 +493,7 @@ export const PdvEventScreen: React.FC = (): JSX.Element => {
       state={state}
       pdvId={pdvId}
       eventTicketsPDV={eventTicketsPDV}
+      link={link}
       numberTab={numberTab}
       formPdv={controllerFormPdv}
       formMainPdv={controllerFormMainPdv}
@@ -490,6 +501,7 @@ export const PdvEventScreen: React.FC = (): JSX.Element => {
       mainPdvStates={controllerMainPdvStates}
       onChangeSelectedPdv={handleChangeSelectedPdv}
       getEventPdvTickets={getEventPdvTickets}
+      handleSetPdvLink={handleSetPdvLink}
       handleOnGetTickets={handleOnGetTickets}
       handleCheckTicket={handleCheckTicket}
       setNumberTab={setNumberTab}

@@ -5,13 +5,14 @@ import React, { Fragment } from 'react';
 import { Button, Dialog, Loading, Switch } from '@/components';
 import { Container } from 'reactstrap';
 import { ProductRegisterContent } from '@/features/registerEvent/components/SectorProductScreen/components/ProductRegisterContent';
+import { updateMask as updateMaskCash } from '@/helpers/masks/cashNumber';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
-import TicketIcon from '@/assets/images/svg/Ticket';
 import { CustomTable } from '@/components/Table';
 import { ActionProps } from '@/components/Dialog';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { ReactComponent as Config } from '@/assets/images/svg/config.svg';
+import ProductIcon from '@/assets/images/svg/Product';
 import { columnsProducts } from './table';
 import {
   formConfigProductProps,
@@ -51,10 +52,10 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
   modalConfig,
   formDiscountCoupon,
 }) => {
-  const titleRef = React.useRef<HTMLDivElement>(null);
+  const titleRef = React.useRef<HTMLInputElement>(null);
 
   // sum of all products within subGroups
-  const countProducts = productStates.productList?.reduce((acc, { subGroups }) => {
+  const countProducts = productStates.productList.reduce((acc, { subGroups }) => {
     const count = subGroups.reduce((acc: any, { products }: any) => acc + products.length, 0);
     return acc + count;
   }, 0);
@@ -69,7 +70,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
   const renderActionDialogToCancel: ActionProps = {
     title: 'Cancelar',
     onClick: (): void => {
-      productStates.setProduct(undefined);
+      productActions.onCancelEdit();
       modalConfig.handleOnTougleModal();
     },
     theme: 'noneBorder',
@@ -114,11 +115,15 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
         </h6>
         <div className="card-ligth-color mb-5">
           <div className="container-event ">
-            <ProductRegisterContent formProduct={formProduct} productStates={productStates} />
+            <ProductRegisterContent
+              formProduct={formProduct}
+              productStates={productStates}
+              productActions={productActions}
+            />
           </div>
           <div className="d-flex justify-content-end">
             <div
-              className="cursor-pointer mr-3"
+              className="mr-3"
               onClick={() => {
                 productActions.onCancelEdit();
               }}
@@ -150,7 +155,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
                               Grupo #{indexSubGroup + 1}
                             </span>
                             <span className="secondary-table-title font-weight-bold">
-                              <b> ·</b> {group.categoryGroupName} //
+                              <b> ·</b> {subGroup.categorySubGroupName} //
                             </span>
                             <span className="secondary-table-title">
                               {' '}
@@ -178,10 +183,14 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
                                   >{`${product?.amount} unidades`}</div>
                                 ),
                                 unitValue: (
-                                  <div className={disabledRows}>{`R$ ${product?.unitValue}`}</div>
+                                  <div className={disabledRows}>{`R$ ${updateMaskCash(
+                                    String(product?.unitValue),
+                                  )}`}</div>
                                 ),
                                 totalValue: (
-                                  <div className={disabledRows}>{`R$ ${product?.totalValue}`}</div>
+                                  <div className={disabledRows}>{`R$ ${updateMaskCash(
+                                    String(product?.totalValue),
+                                  )}`}</div>
                                 ),
                                 actions: (
                                   <React.Fragment>
@@ -247,7 +256,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
               : 'Nenhum produto cadastrado. Aqui será exibida uma lista dos produtos cadastrados'
           }
           count={countProducts}
-          leftIcon={TicketIcon}
+          leftIcon={ProductIcon}
         />
         <div className="d-flex justify-content-end">
           <Button

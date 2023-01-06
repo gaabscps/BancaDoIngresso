@@ -16,6 +16,7 @@ import { PAYMENT_ROUTES } from '@/features/paymentMethods/navigation';
 import { PRODUTCT_ROUTES } from '@/features/product/navigation';
 import { COMBO_ROUTES } from '@/features/combo/navigation';
 import { REGISTEREVENT_ROUTES } from '@/features/registerEvent/navigation';
+import { CLIENT_ROUTES } from '@/features/client/navigation';
 
 const path = {
   Initial: {
@@ -33,6 +34,9 @@ const path = {
     UsersGroups: {
       itself: '/dashboard/users-groups',
       edit: '/dashboard/users-groups/edit/:id',
+    },
+    Clients: {
+      ...CLIENT_ROUTES,
     },
     Module: {
       ...MODULE_ROUTES,

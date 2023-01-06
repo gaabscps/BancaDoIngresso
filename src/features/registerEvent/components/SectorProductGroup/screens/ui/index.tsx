@@ -60,7 +60,7 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
     setErrorsGroup,
   } = controllerFormGroup;
   const { onGetProductSubGroupList, onSaveGroup, onGetGroup, onCancelEdit } = controllerRequest;
-  const titleRef = React.useRef<HTMLDivElement>(null);
+  const titleRef = React.useRef<HTMLInputElement>(null);
 
   return (
     <>
@@ -73,11 +73,7 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
             </h6>
           </Col>
         </Row>
-        <Container
-          style={{ backgroundColor: 'white', borderRadius: '5px' }}
-          className="mainContainer"
-          fluid={true}
-        >
+        <div className="card-ligth-color mb-5">
           <Form>
             <Row>
               <Col md={8}>
@@ -197,7 +193,7 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
             ))}
             <div className="d-flex justify-content-end">
               <div
-                className="cursor-pointer mr-3"
+                className="mr-3"
                 onClick={() => {
                   onCancelEdit();
                 }}
@@ -214,7 +210,7 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
               </div>
             </div>
           </Form>
-        </Container>
+        </div>
         <div className="mt-5">
           <Row>
             <Col style={{ padding: '0' }}>
