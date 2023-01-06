@@ -184,7 +184,15 @@ export const SectorProductConfigSectorContainer: React.FC<
                     return (
                       <React.Fragment key={index}>
                         {index > 0 ? <hr style={{ margin: '15px -30px 30px -50px' }} /> : null}
-                        <div key={index}>
+                        <div
+                          className={`${
+                            configSectorStates?.sector &&
+                            configSectorStates?.sector?.sectionId !== sectionId
+                              ? 'disabled-content'
+                              : null
+                          }`}
+                          key={index}
+                        >
                           <div className="d-flex justify-content-between">
                             <div className="mb-3">
                               <span className="secondary-table-title">Setor #{index + 1}</span>
