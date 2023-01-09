@@ -351,7 +351,6 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
           });
           const reponse = await api.post(`/event/section-product/${params.id}/combo`, payload);
           if (reponse) toast.success('Dados salvos com sucesso!');
-
           handleOnCancelEditCombo();
           setCombo(payload);
         } else {
@@ -360,7 +359,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
       }
     } catch (error) {
       const err = error as AxiosError;
-      toast.error(err.message);
+      toast.error(err.response?.data.message);
     }
   };
 

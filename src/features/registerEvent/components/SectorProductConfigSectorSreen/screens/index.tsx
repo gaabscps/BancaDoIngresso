@@ -172,7 +172,7 @@ export const SectorProductConfigSectorScreen: React.FC<
           toast.error(error);
         });
       } else {
-        toast.error(err.message);
+        toast.error(err.response?.data.message);
       }
     } finally {
       setState(States.default);

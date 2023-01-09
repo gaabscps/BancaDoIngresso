@@ -74,9 +74,9 @@ export const PdvEventSubPdvScreen: React.FC<Omit<PdvEventSubPdvScreenProps, 'nex
         setState(States.loading);
         const { data } = await api.get<SubPdv[]>(`/event/pdv/${params.id}/sub-pdv/${pdvId}`);
         if (data && data.length > 0) {
-          data.forEach(sub => {
+          data.forEach((sub: any) => {
             if (sub.users && sub.users.length > 0) {
-              sub.users.forEach(u => {
+              sub.users.forEach((u: any) => {
                 usersVar.push(u);
               });
             }

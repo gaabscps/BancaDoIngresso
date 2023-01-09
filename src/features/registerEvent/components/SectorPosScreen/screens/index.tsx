@@ -329,7 +329,7 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({ back
       onToggle();
     } catch (error) {
       const err = error as AxiosError;
-      toast.error(err.message);
+      toast.error(err.response?.data.message);
     }
   };
 

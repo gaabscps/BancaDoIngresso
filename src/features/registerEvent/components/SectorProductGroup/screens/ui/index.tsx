@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, DropdonwFlags, InputFile, Loading } from '@/components';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
-import TicketIcon from '@/assets/images/svg/Ticket';
+import BottleIcon from '@/assets/images/svg/Bottle';
 import { X } from 'react-feather';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
@@ -294,7 +294,7 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
                     </div>
                   )
                 }
-                leftIcon={TicketIcon}
+                leftIcon={BottleIcon}
               />
             </Col>
           </Row>

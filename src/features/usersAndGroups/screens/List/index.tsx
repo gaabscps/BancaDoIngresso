@@ -322,7 +322,7 @@ export const UserScreen: React.FC = (): JSX.Element => {
       const response = await api.post<Page<User, User>>('/user/page', pageUser);
       const listCheckBoxUsers: CheckBoxUser[] = [];
       if (response.data.list) {
-        response.data.list.forEach(data => {
+        response.data.list.forEach((data: any) => {
           const checkBoxUser: CheckBoxUser = {
             ...data,
             check: 'false',
@@ -344,7 +344,7 @@ export const UserScreen: React.FC = (): JSX.Element => {
       const responseGroup = await api.post<Page<Profile, Profile>>('/profile/page', pageGroup);
       const listCheckBoxGroup: CheckBoxGroup[] = [];
       if (responseGroup.data.list) {
-        responseGroup.data.list.forEach(data => {
+        responseGroup.data.list.forEach((data: any) => {
           const checkBoxGroup: CheckBoxGroup = {
             ...data,
             check: 'false',
@@ -392,10 +392,10 @@ export const UserScreen: React.FC = (): JSX.Element => {
       setState(States.loading);
       const response = await api.get<Module[]>('/module/find');
       const listCheckBoxModule: CheckBoxModule[] = [];
-      response.data.forEach(data => {
+      response.data.forEach((data: any) => {
         let count = 0;
         const listCheckBoxPermission: CheckBoxPermission[] = [];
-        data.permissions.forEach(permission => {
+        data.permissions.forEach((permission: any) => {
           let checked = 'false';
           if (selectedGroup) {
             // eslint-disable-next-line no-plusplus
@@ -486,7 +486,7 @@ export const UserScreen: React.FC = (): JSX.Element => {
       const response = await api.get<Profile[]>('/profile/find');
       const list: CheckBoxGroup[] = [];
       if (response.data && response.data.length > 0) {
-        response.data.forEach(data => {
+        response.data.forEach((data: any) => {
           let checked = 'false';
           if (selectedUser && selectedUser.profiles && selectedUser.profiles.length > 0) {
             // eslint-disable-next-line no-plusplus

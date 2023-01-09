@@ -12,6 +12,7 @@ import {
 } from '@/components';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
 import { Col, Container, Form, FormGroup, Row } from 'reactstrap';
+import { updateMask as updateMaskCash, unmask as unmaskCash } from '@/helpers/masks/cashNumber';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { ReactComponent as ItemConfig } from '@/assets/images/svg/ItemConfig.svg';
@@ -116,8 +117,14 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
     getComboConfig,
     getDiscount,
   } = comboRequests;
-  const { onClearSelectSubGroup, onChangeFileInput, nameFiles, formErrorsCombo } =
-    controllerFormCombo;
+  const {
+    onClearSelectSubGroup,
+    onChangeFileInput,
+    nameFiles,
+    formErrorsCombo,
+    formDataCombo,
+    onChangeFormInputCombo,
+  } = controllerFormCombo;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const refSelectSubGroup = useRef<any>(null);
@@ -311,12 +318,14 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                         label="Valor do combo"
                         placeholder="Ex: 160,00"
                         name="totalValue"
-                        value={controllerFormCombo.formDataCombo[FormInputNameCombo.totalValue]}
-                        onChange={e =>
-                          controllerFormCombo.onChangeFormInputCombo(FormInputNameCombo.totalValue)(
-                            e.target.value,
-                          )
-                        }
+                        addon="R$"
+                        value={formDataCombo[FormInputNameCombo.totalValue]}
+                        onChange={e => {
+                          const unitValueMoney = updateMaskCash(e.target.value);
+                          onChangeFormInputCombo(FormInputNameCombo.totalValue)(
+                            unmaskCash(unitValueMoney),
+                          );
+                        }}
                         error={formErrorsCombo.totalValue && formErrorsCombo.totalValue[0]}
                       />
                     </FormGroup>
