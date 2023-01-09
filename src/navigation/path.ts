@@ -18,6 +18,7 @@ import { REGISTEREVENT_ROUTES } from '@/features/registerEvent/navigation';
 import { SUB_MENU_ROUTES } from '@/features/submenu/screens/navigation';
 import { TICKET_ROUTES } from '@/features/ticket/navigation';
 import { USER_ROUTES } from '@/features/usersAndGroups/screens/navigation';
+import { EVENTCLOSE_ROUTES } from '@/features/eventClose/navigation';
 
 const path = {
   Initial: {
@@ -69,10 +70,10 @@ const path = {
     GroupSubgroupProduct: {
       ...GROUPSUBGROUPPRODUCT_ROUTES,
     },
-    Product: {
+    Combo: {
       ...COMBO_ROUTES,
     },
-    Combo: {
+    Product: {
       ...PRODUTCT_ROUTES,
     },
     Payment: {
@@ -83,6 +84,9 @@ const path = {
     },
     Company: {
       ...COMPANY_ROUTES,
+    },
+    EventClose: {
+      ...EVENTCLOSE_ROUTES,
     },
   },
 } as const;
