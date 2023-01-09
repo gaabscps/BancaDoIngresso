@@ -362,7 +362,7 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
         handleGetProductList(params.id);
       }
     } catch (error) {
-      const err = error as AxiosError;
+      const err = error as AxiosError | any;
       toast.error(err.response?.data.message);
     }
   };
