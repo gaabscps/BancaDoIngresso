@@ -231,7 +231,9 @@ export const SectorProductGroupScreen: React.FC<
       }
     } catch (error) {
       const err = error as AxiosError | any;
-      toast.error(err.response?.data.message);
+      toast.error(
+        `${err.response?.data.message} o item "${err.response?.data.details}" está vinculado ao evento`,
+      );
     }
   };
 
