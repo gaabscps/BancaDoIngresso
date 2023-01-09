@@ -23,6 +23,7 @@ import { RegisterEventNavigation } from '@/features/registerEvent/navigation';
 import { EventsNavigation } from '@/features/events/navigation';
 import { EventProvider } from '@/features/registerEvent/hook/useEvent';
 import { TicketNavigation } from '@/features/ticket/navigation';
+import { EventCloseNavigation } from '@/features/eventClose/navigation';
 import { renderRoutes } from './utils';
 import { Route } from './Route';
 import { path } from './path';
@@ -48,6 +49,7 @@ const Navigation: React.FC = (): JSX.Element => {
   const CompanyRoutes = renderRoutes(ContractorNavigation);
   const RegisterEventRoutes = renderRoutes(RegisterEventNavigation);
   const TicketRoutes = renderRoutes(TicketNavigation);
+  const EventCloseRoutes = renderRoutes(EventCloseNavigation);
 
   return (
     <EventProvider>
@@ -73,6 +75,7 @@ const Navigation: React.FC = (): JSX.Element => {
           {RegisterEventRoutes}
           {TicketRoutes}
           {eventsRoutes}
+          {EventCloseRoutes}
           <Route path={path.Initial.All} component={Error404} />
         </Switch>
       </PdvProvider>

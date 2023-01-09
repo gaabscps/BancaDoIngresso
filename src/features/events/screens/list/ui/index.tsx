@@ -219,6 +219,14 @@ export const EventContainer: React.FC<EventContainerProps> = ({
           {
             title: 'Fechamento do evento',
             icon: <EventDeal />,
+            action: () => {
+              history.push({
+                pathname: `/dashboard/event-close/${event.id}`,
+                state: {
+                  event,
+                },
+              });
+            },
           },
           {
             title: 'Bloquear',
