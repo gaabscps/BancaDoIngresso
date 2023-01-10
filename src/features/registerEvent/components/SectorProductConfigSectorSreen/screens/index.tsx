@@ -113,7 +113,7 @@ export const SectorProductConfigSectorScreen: React.FC<
       handleGetSectorList(params.id);
     } catch (error) {
       const err = error as AxiosError | any;
-      toast.error(err.response?.data.message);
+      toast.error(`${err.response?.data.details}`);
     } finally {
       confirmDelete.hide();
     }

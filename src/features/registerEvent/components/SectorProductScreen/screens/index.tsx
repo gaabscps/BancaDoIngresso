@@ -184,7 +184,7 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
       handleGetProductList(params.id);
     } catch (error) {
       const err = error as AxiosError | any;
-      toast.error(err.response?.data.message);
+      throw new Error(err.response?.data.message);
     } finally {
       confirmDelete.hide();
     }
@@ -363,7 +363,7 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
       }
     } catch (error) {
       const err = error as AxiosError | any;
-      toast.error(err.response?.data.message);
+      throw new Error(err.response.data.message);
     }
   };
 

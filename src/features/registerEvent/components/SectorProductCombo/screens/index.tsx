@@ -607,7 +607,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
       handleGetComboList(params.id);
     } catch (error) {
       const err = error as AxiosError | any;
-      toast.error(err.response?.data.message);
+      throw new Error(err.response?.data.message);
     } finally {
       confirmDelete.hide();
     }

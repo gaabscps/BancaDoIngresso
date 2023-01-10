@@ -46,6 +46,12 @@ api.interceptors.response.use(
     const { response } = error;
     const { data } = response;
 
+    if (response.status === 400) {
+      if (!response.data?.details) {
+        toast.error(error.response?.data.message);
+      }
+    }
+
     if (response.status >= 500 && response.status < 600) {
       toast.error('Opss... Erro interno, tente novamente mais tarde!');
 

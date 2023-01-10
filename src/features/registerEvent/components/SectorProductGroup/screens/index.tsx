@@ -231,9 +231,11 @@ export const SectorProductGroupScreen: React.FC<
       }
     } catch (error) {
       const err = error as AxiosError | any;
-      toast.error(
-        `${err.response?.data.message} o item "${err.response?.data.details}" está vinculado ao evento`,
-      );
+      if (err.response.data.details) {
+        toast.error(
+          `${err.response?.data.message} o item "${err.response?.data.details}" está vinculado ao evento`,
+        );
+      }
     }
   };
 
@@ -278,7 +280,7 @@ export const SectorProductGroupScreen: React.FC<
       handleGetGroupSubgroupList(params.id);
     } catch (error) {
       const err = error as AxiosError | any;
-      toast.error(err.response?.data.message);
+      throw new Error(err.response?.data.message);
     } finally {
       confirmDelete.hide();
     }
