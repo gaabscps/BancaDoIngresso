@@ -8,7 +8,7 @@ const isValid = (value: string): boolean => {
   return regex.test(value);
 };
 
-const unmask = (value: string): string => value.replace(/\./g, '').replace(/\,/g, '.');
+const unmask = (value: string): string => value?.replace(/\./g, '').replace(/\,/g, '.');
 
 const updateMask = (value: string): string => {
   const unmasked = unmask(value);

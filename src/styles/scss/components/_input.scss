@@ -71,6 +71,43 @@ input[type='checkbox'] {
   color: #828282;
 }
 
+.input-file-default-custom {
+  padding: 16.75px;
+  background: #e6e6e6;
+  border-radius: 5px;
+}
+
+.button-wrap input[type='file'] {
+  position: absolute;
+  top: 6px;
+  left: 0px;
+  font-size: 15px;
+  color: rgb(153, 153, 153);
+}
+
+.new-button {
+  display: inline-block;
+  padding: 14px 23px;
+  cursor: pointer;
+  border-radius: 4px;
+  background-color: #c4c4c4;
+  color: #222222;
+  position: absolute;
+  z-index: 1;
+  top: 15px;
+  left: 13px;
+  font-size: 12px;
+  line-height: 16px;
+  white-space: nowrap;
+  &:hover {
+    background-color: #A5A5A5;
+  }
+}
+
+.button-wrap {
+  position: relative;
+}
+
 @media screen and (max-width: 1200px) {
   .tbody-container {
     flex-direction: column;

@@ -19,7 +19,7 @@ import TicketIcon from '@/assets/images/svg/Ticket';
 import { SectorTicketGeneralSettingsScreen } from '@/features/registerEvent/components/SectorTicketGeneralSettingsSreen/screens';
 import { SectorTicketPaymentSettingsScreen } from '@/features/registerEvent/components/SectorTicketPaymentSettingScreen/screens';
 import { useParams } from 'react-router-dom';
-import { updateMask as updateMaskCash } from '@/helpers/masks/cashNumber';
+import { updateMask as updateMaskCash } from '@/helpers/masks/cash';
 import { useEvent } from '@/features/registerEvent/hook/useEvent';
 import { formSectorTicketProps, ticketStepProps } from '../types';
 import { columnsTickets } from './table';
