@@ -299,7 +299,7 @@ export const GeneralInformationScreen: React.FC = (): JSX.Element => {
       const { data } = await api.get<any[]>(`/event/find`);
       // filter father event when event type is father
       const fatherEventListFiltered = data.filter(
-        fatherEventValue => fatherEventValue.eventType === 1,
+        (fatherEventValue: any) => fatherEventValue.eventType === 1,
       );
       setFatherEventList(fatherEventListFiltered ?? []);
     } catch (error) {

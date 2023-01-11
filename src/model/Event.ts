@@ -44,4 +44,9 @@ export default interface Event {
   sectionproductsAndCombos?: EventSectionGet[];
   poss?: EventPos[];
   pdvs?: EventPdv[];
+  childs?: [
+    {
+      name: string;
+    },
+  ];
 }
