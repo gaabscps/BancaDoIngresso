@@ -1,23 +1,76 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react/jsx-key */
 import EventSectionGet from '@/model/EventSectionGet';
 import { DataList } from '@/components/DataList';
 import React from 'react';
+import Event from '@/model/Event';
 
 interface SectorProductProps {
-  data: any;
-  event: any;
+  event: Event | undefined;
 }
 
-export const SectorProduct: React.FC<SectorProductProps> = ({ event, data }) => (
-  <>
-    <h5 className="mb-2 border-bottom-title mb-5 container-event">Setores e Produtos</h5>
-    {event?.sectionproductsAndCombos?.map(
-      (section: EventSectionGet, index: React.Key | null | undefined) => (
+export const SectorProduct: React.FC<SectorProductProps> = ({ event }) => {
+  const dataSectorProduct = [
+    {
+      title: 'Produto',
+      content: event?.products?.map(item => item.name) || '--',
+    },
+    {
+      title: 'Qtd',
+      content: event?.products?.map(item => item.amount) || '--',
+    },
+    {
+      title: 'Valor un',
+      content: event?.products?.map(item => item.unitValue) || '--',
+    },
+    {
+      title: 'Total estimado',
+      content: event?.products?.map(item => item.totalValue) || '--',
+    },
+    {
+      title: 'Tx Deb',
+      content: event?.products?.map(
+        item => `${Number(item.physicalSale?.debit).toFixed(2)}%` || '--',
+      ),
+    },
+    {
+      title: 'Tx Cred',
+      content: event?.products?.map(
+        item => `${Number(item.physicalSale?.credit).toFixed(2)}%` || '--',
+      ),
+    },
+    {
+      title: 'Tx Pix ',
+      content: event?.products?.map(
+        item => `${Number(item.physicalSale?.pix).toFixed(2)}%` || '--',
+      ),
+    },
+    {
+      title: 'Tx Admin',
+      content: event?.products?.map(
+        item => `${Number(item.physicalSale?.administrateTax).toFixed(2)}%` || '--',
+      ),
+    },
+    {
+      title: 'Parcelas',
+      content: event?.products?.map(item => item.physicalSale?.installments || '--'),
+    },
+    {
+      title: 'Jur mês',
+      content: event?.products?.map(
+        item => `${Number(item.physicalSale?.fee).toFixed(2)}%` || '--',
+      ),
+    },
+  ];
+
+  return (
+    <>
+      <h5 className="mb-2 border-bottom-title mb-5 container-event">Setores e Produtos</h5>
+      {event?.sectionproductsAndCombos?.map((section: EventSectionGet, indexSector: any) => (
         <>
-          <div className="mb-4">Nome do setor:</div>
-          <div>{section.section.name}</div>
+          {indexSector > 0 ? <hr style={{ margin: '25px 0px 30px 0px' }} /> : null}
+          <div className="dataListTitle">Nome do setor:</div>
+          <div className="mb-4">{section.section.name}</div>
           <div
-            className="mb-4"
             style={{
               display: 'grid',
               gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr',
@@ -28,17 +81,13 @@ export const SectorProduct: React.FC<SectorProductProps> = ({ event, data }) => 
               data={[
                 {
                   title: 'Grupo:',
-                  content:
-                    event?.sectionproductsAndCombos?.map((item: { products: any[] }) =>
-                      item.products.map(products => products.group.name),
-                    ) || '--',
+                  content: section.products.find(item => item?.group?.name)?.group.name || '--',
+                  width: '100%',
                 },
                 {
                   title: 'Subgrupo:',
                   content:
-                    event?.sectionproductsAndCombos?.map((item: { products: any[] }) =>
-                      item.products.map(products => products.subgroup.name),
-                    ) || '--',
+                    section.products.find(item => item?.subgroup?.name)?.subgroup.name || '--',
                 },
               ]}
             />
@@ -52,13 +101,10 @@ export const SectorProduct: React.FC<SectorProductProps> = ({ event, data }) => 
               overflow: 'auto',
             }}
           >
-            <DataList data={data} />
+            <DataList data={dataSectorProduct} />
           </div>
-          {section.section.name.length - 1 !== index && (
-            <div key={index} className="mb-5 mt-5" style={{ borderBottom: 'solid 1px #D9D9D9' }} />
-          )}
         </>
-      ),
-    )}
-  </>
-);
+      ))}
+    </>
+  );
+};

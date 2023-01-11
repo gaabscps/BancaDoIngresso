@@ -53,7 +53,7 @@ export const SectorTicket: React.FC<SectorTicketProps> = ({ ticket }) => (
                   },
                   {
                     title: 'Qtd de ingresso:',
-                    content: item.numberTickets || '--',
+                    content: batch.amount || '--',
                   },
                   {
                     title: 'Qtd cortesia:',
