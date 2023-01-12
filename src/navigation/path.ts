@@ -17,6 +17,7 @@ import { PRODUTCTSCOMBOS_ROUTES } from '@/features/productsAndCombos/navigation'
 import { REGISTEREVENT_ROUTES } from '@/features/registerEvent/navigation';
 import { SUB_MENU_ROUTES } from '@/features/submenu/screens/navigation';
 import { TICKET_ROUTES } from '@/features/ticket/navigation';
+import { REPORTS_ROUTES } from '@/features/reports/navigation';
 import { USER_ROUTES } from '@/features/usersAndGroups/screens/navigation';
 import { EVENTCLOSE_ROUTES } from '@/features/eventClose/navigation';
 
@@ -35,6 +36,9 @@ const path = {
     },
     Ticket: {
       ...TICKET_ROUTES,
+    },
+    Reports: {
+      ...REPORTS_ROUTES,
     },
     UsersGroups: {
       itself: '/dashboard/users-groups',

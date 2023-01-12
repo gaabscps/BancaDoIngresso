@@ -199,7 +199,7 @@ export const ProductContainer: React.FC<ProductContainerProps> = ({
       <Container className="mainContainer" fluid={true}>
         <div className="d-flex justify-content-between" style={{ paddingBottom: '30px' }}>
           <div className="pageTitle d-flex">
-            <Link to={`${process.env.PUBLIC_URL}/dashboard/productscombos`}>
+            <Link to={`${process.env.PUBLIC_URL}dashboard/event`}>
               <ArrowLeft color={colors.black} className="arrow-left" />
             </Link>
             <h5 className="ml-3 mb-0 mt-2 pageTitle">Produtos</h5>
