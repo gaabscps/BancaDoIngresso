@@ -53,10 +53,15 @@ export const PosContent: React.FC<Pick<PosContainerProps, 'formPosRegister' | 'p
                 name="partialPayment"
                 label="Porcentagem do Garçom (%)"
                 addon="%"
+                maxLength={5}
                 placeholder="0"
                 className="w-input-sm"
                 value={formData[FormInputName.partialPayment]}
-                onChange={e => onChangeFormInput(FormInputName.partialPayment)(e.target.value)}
+                onChange={e =>
+                  onChangeFormInput(FormInputName.partialPayment)(
+                    e?.target?.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1') as string,
+                  )
+                }
                 error={formErrors.partialPayment && formErrors.partialPayment[0]}
               />
             </FormGroup>

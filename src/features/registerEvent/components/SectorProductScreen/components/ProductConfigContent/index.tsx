@@ -301,10 +301,12 @@ export const ProductConfigContent: React.FC<
               addon="%"
               placeholder="0"
               className="w-input-sm"
-              maxLength={2}
+              maxLength={5}
               value={formData[FormInputName.waiter]}
               onChange={e =>
-                onChangeFormInput(FormInputName.waiter)(e.target.value.replace(/\D/g, ''))
+                onChangeFormInput(FormInputName.waiter)(
+                  e?.target?.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1') as string,
+                )
               }
               error={formErrors.waiter && formErrors.waiter[0]}
             />

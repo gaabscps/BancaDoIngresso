@@ -189,14 +189,18 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
                 </Col>
                 <Col md={4}>
                   <InputText
-                    type="number"
                     name="waiter"
                     label="Porcentagem do garçom (%)"
                     addon="%"
+                    maxLength={5}
                     placeholder="0"
                     className="w-input-sm"
                     value={formData[FormInputName.waiter]}
-                    onChange={e => onChangeFormInput(FormInputName.waiter)(e.target.value)}
+                    onChange={e =>
+                      onChangeFormInput(FormInputName.waiter)(
+                        e?.target?.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1') as string,
+                      )
+                    }
                     error={formErrors.waiter && formErrors.waiter[0]}
                   />
                 </Col>
@@ -204,14 +208,18 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
               <Row>
                 <Col md={4}>
                   <InputText
-                    type="number"
                     name="commission"
                     label="Porcentagem de comissão(%)"
                     placeholder="0"
                     addon="%"
+                    maxLength={5}
                     className="w-input-sm"
                     value={formData[FormInputName.commission]}
-                    onChange={e => onChangeFormInput(FormInputName.commission)(e.target.value)}
+                    onChange={e =>
+                      onChangeFormInput(FormInputName.commission)(
+                        e?.target?.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1') as string,
+                      )
+                    }
                     error={formErrors.commission && formErrors.commission[0]}
                   />
                 </Col>
