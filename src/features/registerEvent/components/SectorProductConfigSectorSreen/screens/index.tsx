@@ -78,6 +78,17 @@ export const SectorProductConfigSectorScreen: React.FC<
     },
   });
 
+  const handleOnCancelEditSector = (): void => {
+    try {
+      setSector(undefined);
+      setFormNameFiles({});
+      resetFormConfigSector();
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    }
+  };
+
   const handleGetProducComboConfigtList = async (id: string): Promise<void> => {
     try {
       setState(States.loading);
@@ -161,7 +172,7 @@ export const SectorProductConfigSectorScreen: React.FC<
         if (reponseSectionProducts) toast.success('Dados salvos com sucesso!');
 
         handleGetSectorList(params.id);
-        setSector(undefined);
+        handleOnCancelEditSector();
         onToggle();
       }
     } catch (error) {
@@ -277,16 +288,6 @@ export const SectorProductConfigSectorScreen: React.FC<
     }
   };
 
-  const handleOnCancelEditSector = (): void => {
-    try {
-      setSector(undefined);
-      resetFormConfigSector();
-    } catch (error) {
-      const err = error as AxiosError;
-      toast.error(err.message);
-    }
-  };
-
   const controllerModalConfig: modalConfigSectorSettingsProps = {
     title,
     visible,
@@ -338,31 +339,6 @@ export const SectorProductConfigSectorScreen: React.FC<
     handleGetSectorList(params.id);
     handleGetProducComboConfigtList(params.id);
   }, []);
-
-  // useEffect(() => {
-  //   // verify if sector not array empty
-  //   if (sectorConfig.length > 0) {
-  //     const _products: any[] = [];
-  //     sectorConfig.map(({ categoryGroupId, categoryGroupName, subGroups }: any) => {
-  //       subGroups.map((subgroup: any) => {
-  //         _products.push({ categoryGroupId, categoryGroupName, ...subgroup });
-  //       });
-  //     });
-
-  //     const { products, combos, categoryGroupId, categorySubGroupId }: any = _products[0];
-  //     const newProducts = products.map(
-  //       ({ id }: any) => `${categoryGroupId}_${categorySubGroupId}_${id}`,
-  //     );
-  //     const newCombos = combos.map(
-  //       ({ id }: any) => `${categoryGroupId}_${categorySubGroupId}_${id}`,
-  //     );
-
-  //     setForm({
-  //       products: newProducts,
-  //       combos: newCombos,
-  //     });
-  //   }
-  // }, [sectorConfig]);
 
   useEffect(() => {
     if (!visible) {

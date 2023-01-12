@@ -136,7 +136,7 @@ export const PosConfigContent: React.FC<Pick<SectorProductPosContainerProps, 'da
 
   return (
     <Fragment>
-      <h6 className="mb-4">Selecione os produtos e combos que este setor poderá vender</h6>
+      <h6 className="mb-4">Selecione os setores e produtos que esta POS poderá vender</h6>
       {!!arrProducts.length &&
         arrProducts.map(({ sectionId, sectionNome, sectionGroup }: any, index) => (
           <Fragment key={index}>
