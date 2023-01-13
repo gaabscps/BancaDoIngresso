@@ -1,5 +1,4 @@
 import FilterVector from '@/assets/images/svg/FilterVector';
-import PDVIcon from '@/assets/images/svg/Pdv';
 import { DataList } from '@/components/DataList';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
 import { CustomTable } from '@/components/Table';
@@ -7,6 +6,8 @@ import { colors } from '@/styles/colors';
 import React from 'react';
 import { ArrowLeft, X } from 'react-feather';
 import { Link } from 'react-router-dom';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, Chart } from 'chart.js';
+import { Pie } from 'react-chartjs-2';
 import { Card, Container } from 'reactstrap';
 
 export const ReportsContent: React.FC = () => {
@@ -27,6 +28,36 @@ export const ReportsContent: React.FC = () => {
       title: 'Vendas por SubPDV',
     },
   ];
+
+  ChartJS.register(ArcElement, Tooltip, Legend);
+
+  const data = {
+    labels: ['Web', 'PDV`s'],
+    datasets: [
+      {
+        label: '# of Votes',
+        data: [50, 75],
+        backgroundColor: ['#3CAFC8', '#D8413A'],
+        borderWidth: 0,
+      },
+    ],
+  };
+  const data2 = {
+    labels: ['Venda', 'Cortesia'],
+    datasets: [
+      {
+        label: '# of Votes',
+        data: [75, 50],
+        backgroundColor: ['#3CAFC8', '#D8413A'],
+        borderWidth: 0,
+      },
+    ],
+  };
+
+  Chart.overrides.pie.plugins.legend.labels.usePointStyle = true;
+  Chart.overrides.pie.plugins.legend.labels.pointStyle = 'circle';
+  Chart.overrides.pie.plugins.legend.labels.boxHeight = 8;
+  Chart.overrides.pie.plugins.legend.labels.boxWidth = 15;
 
   return (
     <>
@@ -145,13 +176,7 @@ export const ReportsContent: React.FC = () => {
               data={[
                 {
                   image: (
-                    <img
-                      width={80}
-                      height={60}
-                      style={{ borderRadius: '2.06278px' }}
-                      src="https://picsum.photos/200/300"
-                      alt="random"
-                    />
+                    <img width={80} height={60} src="https://picsum.photos/200/300" alt="random" />
                   ),
                   name: 'Revoada do Tatu',
                   venda: '500',
@@ -163,7 +188,7 @@ export const ReportsContent: React.FC = () => {
               ]}
             />
           }
-          leftIcon={PDVIcon}
+          leftIcon={() => <div></div>}
         />
         <hr />
         <div
@@ -194,8 +219,51 @@ export const ReportsContent: React.FC = () => {
             </Card>
           ))}
         </div>
-        <hr />
-        {reportContent === 'Vendas gerais' && <div className="pageTitle">Vendas gerais</div>}
+        <hr className="mb-5" />
+        {reportContent === 'Vendas gerais' && (
+          <>
+            <h5 className="pageTitle">Vendas gerais</h5>
+            <h6 className="mb-4">Canais de venda</h6>
+            <div className="d-flex justify-content-between">
+              <div className="d-flex">
+                <div style={{ width: '200px' }}>
+                  <Pie width={200} height={200} data={data} />
+                </div>
+                <div>
+                  <div className="d-flex justify-content-end flex-column w-100 h-100">
+                    <div className="mb-3">
+                      <span style={{ color: '#828282' }}>Web: </span>R$ 50.000,00 (30%)
+                    </div>
+                    <div className="mb-3">
+                      <span style={{ color: '#828282' }}>Pdvs: </span>R$ 75.000,00 (70%)
+                    </div>
+                    <div className="mb-3">
+                      <span style={{ color: '#828282' }}>App:</span> R$ 0,00 (0%)
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="d-flex mr-5">
+                <div style={{ width: '200px' }}>
+                  <Pie width={200} height={200} data={data2} />
+                </div>
+                <div>
+                  <div className="d-flex justify-content-end flex-column w-100 h-100">
+                    <div className="mb-3">
+                      <span style={{ color: '#828282' }}>Venda: </span>R$ 75.000,00 (70%)
+                    </div>
+                    <div className="mb-3">
+                      <span style={{ color: '#828282' }}>Cortesia: </span>R$ 50.000,00 (30%)
+                    </div>
+                    <div className="mb-3">
+                      <span style={{ color: '#828282' }}>App:</span> R$ 0,00 (0%)
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
+        )}
         {reportContent === 'Vendas por data' && <div className="pageTitle">Vendas por data</div>}
         {reportContent === 'Vendas por PDV' && <div className="pageTitle">Vendas por PDVs</div>}
       </Container>
