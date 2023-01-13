@@ -64,8 +64,12 @@ export const GeneralCollectionContainer: React.FC<GeneralCollectionProps> = ({
       name: item.event.name,
       startDate: dayjs(item.event.startDate).format('DD/MM/YYYY'),
       endDate: dayjs(item.event.endDate).format('DD/MM/YYYY'),
-      amountTickets: item.amount,
-      totalValue: item.value,
+      // amountTickets plural or singular
+      amountTickets: `${item.amount} ingresso${item.amount > 1 ? 's' : ''}`,
+      totalValue: item.value.toLocaleString('pt-br', {
+        style: 'currency',
+        currency: 'BRL',
+      }),
       actions: (
         <Info
           className="svg-icon action-icon"
