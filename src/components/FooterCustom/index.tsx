@@ -25,7 +25,7 @@ export const FooterCustom: React.FC<FooterCustomProps> = ({ data }): JSX.Element
             <span className="font-weight-bold">{value}</span>
           </div>
           {/* circles grey with 18px heigth or weith */}
-          {index !== data.length - 1 && <div className="circle-grey mr-2 my-auto" />}
+          {index !== data.length - 1 && <div className="circle-grey my-auto" />}
         </div>
       </div>
     ))}
