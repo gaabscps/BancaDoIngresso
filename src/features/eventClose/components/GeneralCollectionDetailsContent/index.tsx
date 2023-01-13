@@ -32,9 +32,15 @@ export const GeneralCollectionDetailsContent: React.FC<GeneralCollectionDetailsC
                     ? tickets.map((ticket, indexTicket) => ({
                         id: indexTicket,
                         name: ticket.name,
-                        grossAmount: ticket.grossAmount,
-                        amount: ticket.amount,
-                        averageTicket: ticket.averageTicket,
+                        grossAmount: ticket?.grossAmount?.toLocaleString('pt-BR', {
+                          style: 'currency',
+                          currency: 'BRL',
+                        }),
+                        amount: `${ticket.amount} ingresso${ticket.amount > 1 ? 's' : ''}`,
+                        averageTicket: ticket?.averageTicket?.toLocaleString('pt-BR', {
+                          style: 'currency',
+                          currency: 'BRL',
+                        }),
                       }))
                     : []
                 }
