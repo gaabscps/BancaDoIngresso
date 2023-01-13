@@ -165,7 +165,7 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
           <>
             <div className="card-ligth-color mb-5 w-100">
               <Row>
-                <Col md={8}>
+                <Col lg={6}>
                   <SelectCustom
                     name="pos"
                     label="POS"
@@ -187,7 +187,7 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
                     error={formErrors.pos && formErrors.pos[0]}
                   />
                 </Col>
-                <Col md={4}>
+                <Col lg="auto">
                   <InputText
                     name="waiter"
                     label="Porcentagem do garçom (%)"
@@ -206,7 +206,7 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
                 </Col>
               </Row>
               <Row>
-                <Col md={4}>
+                <Col lg="auto">
                   <InputText
                     name="commission"
                     label="Porcentagem de comissão(%)"
@@ -223,7 +223,7 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
                     error={formErrors.commission && formErrors.commission[0]}
                   />
                 </Col>
-                <Col md={8}>
+                <Col lg={8}>
                   <ButtonGroup
                     label="Aceita desconto?"
                     name="allowDiscount"
@@ -239,17 +239,6 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
               </Row>
               <Row>
                 <Col>
-                  {/* <div
-                        className="action-icon d-flex justify-content-end"
-                        onClick={(): void => {
-                          onShouldShowModal({
-                            value: ShouldShowModal.configPos,
-                            newTitleModal: 'Configuração de setores e produtos da POS',
-                          });
-                        }}
-                      >
-                        Inserir POS
-                      </div> */}
                   <div className="d-flex justify-content-end">
                     <div
                       className="cursor-pointer mr-3"
