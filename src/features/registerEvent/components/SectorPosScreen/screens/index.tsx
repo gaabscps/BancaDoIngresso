@@ -369,8 +369,12 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({ back
 
     if (pos) {
       onChangeFormInputPos(FormInputNamePos.pos)(String(pos.pos?.id));
-      onChangeFormInputPos(FormInputNamePos.waiter)(String(pos?.waiter));
-      onChangeFormInputPos(FormInputNamePos.commission)(String(pos?.commission));
+      onChangeFormInputPos(FormInputNamePos.waiter)(
+        String(pos?.waiter && (+pos.waiter).toFixed(2)),
+      );
+      onChangeFormInputPos(FormInputNamePos.commission)(
+        String(pos?.commission && (+pos.commission).toFixed(2)),
+      );
       onChangeFormInputPos(FormInputNamePos.allowDiscount)(String(pos?.allowDiscount));
 
       const _products: any[] = [];
