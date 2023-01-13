@@ -327,8 +327,8 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
                                 {
                                   serialNumber: pos.serialNumber,
                                   date: dayjs(pos.expirationDate).format('DD/MM/YYYY'),
-                                  waiter: `${waiter}%`,
-                                  commission: `${commission}%`,
+                                  waiter: `${waiter && (+waiter).toFixed(2)}%`,
+                                  commission: `${commission && (+commission).toFixed(2)}%`,
                                   actions: (
                                     <div
                                       className={`${
