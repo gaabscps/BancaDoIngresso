@@ -11,6 +11,7 @@ import { ReactComponent as Info } from '@/assets/images/svg/infoCircle.svg';
 import EventCloseIncome from '@/model/EventCloseIncome';
 // import { GeneralCollectionDetailsContent } from '@/features/eventClose/components/GeneralCollectionDetailsContent';
 // import EventCloseGeneralCollectionDetail from '@/model/EventCloseGeneralCollectionDetail';
+import { FooterCustom } from '@/components/FooterCustom';
 import { columnsIncomeDetails } from './table';
 
 // eslint-disable-next-line no-shadow
@@ -23,6 +24,7 @@ interface IncomeProps {
   state: States;
   eventLocation: any;
   incomeList: EventCloseIncome[];
+  incomeFooter: any;
   incomeDetailsList: any[];
   shouldShowModal: ShouldShowModal;
   title: string | React.ReactNode;
@@ -48,6 +50,7 @@ export const IncomeContainer: React.FC<IncomeProps> = ({
   state,
   eventLocation,
   incomeList,
+  incomeFooter,
   shouldShowModal,
   title,
   visible,
@@ -99,7 +102,7 @@ export const IncomeContainer: React.FC<IncomeProps> = ({
       </Dialog>
       <Container className="mainContainer" fluid={true}>
         <div className="pageTitle d-flex mb-5">
-          <Link to={`${process.env.PUBLIC_URL}/dashboard/event`}>
+          <Link to={`${process.env.PUBLIC_URL}/dashboard/event-close/${eventId}`}>
             <ArrowLeft color={colors.black} className="arrow-left" />
           </Link>
           <h5 className="ml-3 mb-0 mt-2 pageTitle">Receitas {eventLocation?.event?.name}</h5>
@@ -112,6 +115,22 @@ export const IncomeContainer: React.FC<IncomeProps> = ({
           progressPending={state === States.loading}
         />
       </Container>
+      <FooterCustom
+        data={[
+          {
+            title: 'Totais de ítens:',
+            value: incomeFooter?.amount || 'Dado não encontrado',
+          },
+          {
+            title: 'Total de receitas:',
+            value:
+              incomeFooter?.totalValue?.toLocaleString('pt-BR', {
+                style: 'currency',
+                currency: 'BRL',
+              }) || 'Dado não encontrado',
+          },
+        ]}
+      />
     </Fragment>
   );
 };

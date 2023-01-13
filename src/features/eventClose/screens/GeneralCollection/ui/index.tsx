@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { Dialog, Loading } from '@/components';
 import { Container } from 'reactstrap';
 import './style.scss';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft } from 'react-feather';
 import { colors } from '@/styles/colors';
 import { CustomTable } from '@/components/Table';
@@ -11,6 +11,7 @@ import dayjs from 'dayjs';
 import EventCloseGeneralCollection from '@/model/EventCloseGeneralCollection';
 import { GeneralCollectionDetailsContent } from '@/features/eventClose/components/GeneralCollectionDetailsContent';
 import EventCloseGeneralCollectionDetail from '@/model/EventCloseGeneralCollectionDetail';
+import { FooterCustom } from '@/components/FooterCustom';
 import { columnsGeneralColletion } from './table';
 
 // eslint-disable-next-line no-shadow
@@ -24,6 +25,7 @@ interface GeneralCollectionProps {
   eventLocation: any;
   generalCollectionList: EventCloseGeneralCollection[];
   generalCollectionDetailsList: EventCloseGeneralCollectionDetail[];
+  incomeFooter: any;
   shouldShowModal: ShouldShowModal;
   title: string | React.ReactNode;
   visible: boolean;
@@ -47,12 +49,15 @@ export const GeneralCollectionContainer: React.FC<GeneralCollectionProps> = ({
   eventLocation,
   generalCollectionList,
   generalCollectionDetailsList,
+  incomeFooter,
   shouldShowModal,
   onShouldShowModal,
   title,
   visible,
   onToggle,
 }) => {
+  const { id: eventId } = useParams<{ id: string }>();
+
   const dataTableGeneralCollection = generalCollectionList.map(
     (item: EventCloseGeneralCollection) => ({
       id: item.event.id,
@@ -100,7 +105,7 @@ export const GeneralCollectionContainer: React.FC<GeneralCollectionProps> = ({
       </Dialog>
       <Container className="mainContainer" fluid={true}>
         <div className="pageTitle d-flex mb-5">
-          <Link to={`${process.env.PUBLIC_URL}/dashboard/event`}>
+          <Link to={`${process.env.PUBLIC_URL}/dashboard/event-close/${eventId}`}>
             <ArrowLeft color={colors.black} className="arrow-left" />
           </Link>
           <h5 className="ml-3 mb-0 mt-2 pageTitle">
@@ -115,6 +120,22 @@ export const GeneralCollectionContainer: React.FC<GeneralCollectionProps> = ({
           progressPending={state === States.loading}
         />
       </Container>
+      <FooterCustom
+        data={[
+          {
+            title: 'Totais de ítens:',
+            value: incomeFooter?.amount || 'Dado não encontrado',
+          },
+          {
+            title: 'Total de receitas:',
+            value:
+              incomeFooter?.value?.toLocaleString('pt-BR', {
+                style: 'currency',
+                currency: 'BRL',
+              }) || 'Dado não encontrado',
+          },
+        ]}
+      />
     </Fragment>
   );
 };

@@ -100,7 +100,7 @@ export const HomeContainer: React.FC<HomeContainerProps> = ({
           <Link to={`${process.env.PUBLIC_URL}/dashboard/event-close/income/${eventId}`}>
             Receitas
           </Link>
-          <Link to={`${process.env.PUBLIC_URL}/dashboard/event-close/expenses/${eventId}`}>
+          <Link to={`${process.env.PUBLIC_URL}/dashboard/event-close/expense/${eventId}`}>
             Despesas
           </Link>
           <Link to={`${process.env.PUBLIC_URL}/dashboard/event-close/machines/${eventId}`}>

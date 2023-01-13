@@ -9,14 +9,13 @@ import { CustomTable } from '@/components/Table';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { ReactComponent as Attachments } from '@/assets/images/svg/Attachments.svg';
-import EventCloseIncome from '@/model/EventCloseIncome';
-import { IncomeManualEntriesRegister } from '@/features/eventClose/components/IncomeManualEntriesRegister';
+import EventCloseExpense from '@/model/EventCloseExpense';
 import { FormData, FormErrors, OnChangeFormInput } from '@/hooks';
 import { updateMask as updateMaskCash } from '@/helpers/masks/cash';
 import { DropdownMenuAttachment } from '@/features/eventClose/components/DropdownMenuAttachment';
 import { ReactComponent as Download } from '@/assets/images/svg/download.svg';
-import { FooterCustom } from '@/components/FooterCustom';
-import { columnsIncomeDetails } from './table';
+import { ExpenseManualEntriesRegister } from '@/features/eventClose/components/ExpenseManualEntriesRegister';
+import { columnsExpenseDetails } from './table';
 
 // eslint-disable-next-line no-shadow
 export enum States {
@@ -24,11 +23,10 @@ export enum States {
   loading = 'loading',
 }
 
-interface IncomeProps {
+interface ExpenseProps {
   state: States;
   eventLocation: any;
-  incomeList: EventCloseIncome[];
-  incomeFooter: any;
+  expenseList: EventCloseExpense[];
   shouldShowModal: ShouldShowModal;
   title: string | React.ReactNode;
   visible: boolean;
@@ -36,41 +34,40 @@ interface IncomeProps {
   onShouldShowModal: ({
     value,
     newTitleModal,
-    incomeManualEntries,
+    expenseManualEntries,
   }: {
     value: ShouldShowModal;
     newTitleModal: string;
-    incomeManualEntries?: any;
+    expenseManualEntries?: any;
   }) => void;
-  formIncome: {
+  formExpense: {
     formData: FormData;
     formErrors: FormErrors;
     onChangeFormInput: OnChangeFormInput;
   };
-  onSaveIncome: () => Promise<void>;
-  controllerInputAppendIncomeAttachments: any;
-  handleDeleteIncome: (income: EventCloseIncome) => void;
+  onSaveExpense: () => Promise<void>;
+  controllerInputAppendExpenseAttachments: any;
+  handleDeleteExpense: (expense: EventCloseExpense) => void;
 }
 
 // eslint-disable-next-line no-shadow
 export enum ShouldShowModal {
-  incomeRegister = 'incomeRegister',
+  expenseRegister = 'expenseRegister',
 }
 
-export const IncomeManualEntriesContainer: React.FC<IncomeProps> = ({
+export const ExpenseManualEntriesContainer: React.FC<ExpenseProps> = ({
   state,
   // eventLocation,
-  incomeList,
-  incomeFooter,
+  expenseList,
   shouldShowModal,
   onShouldShowModal,
   title,
   visible,
   onToggle,
-  formIncome,
-  onSaveIncome,
-  controllerInputAppendIncomeAttachments,
-  handleDeleteIncome,
+  formExpense,
+  onSaveExpense,
+  controllerInputAppendExpenseAttachments,
+  handleDeleteExpense,
 }) => {
   const { id: eventId } = useParams<{ id: string }>();
 
@@ -83,11 +80,11 @@ export const IncomeManualEntriesContainer: React.FC<IncomeProps> = ({
     document.body.removeChild(link);
   };
 
-  const dataTableIncome = incomeList?.map((item: any, index) => ({
+  const dataTableExpense = expenseList?.map((item: any, index) => ({
     id: index,
     item: index < 10 ? `0${index + 1}` : index + 1,
     description: item.description,
-    value: updateMaskCash(item.totalValue),
+    value: updateMaskCash(item.value || 0),
     actions: (
       <div className="mt-3">
         {item.attachments?.length > 0 && (
@@ -122,9 +119,9 @@ export const IncomeManualEntriesContainer: React.FC<IncomeProps> = ({
                   height={18}
                   className="svg-icon action-icon"
                   onClick={() =>
-                    controllerInputAppendIncomeAttachments.handleOnShowDelete(
-                      controllerInputAppendIncomeAttachments.handleDeleteIncomeAttachments,
-                      { ...attachment, incomeId: item.id },
+                    controllerInputAppendExpenseAttachments.handleOnShowDelete(
+                      controllerInputAppendExpenseAttachments.handleDeleteExpenseAttachments,
+                      { ...attachment, expenseId: item.id },
                     )
                   }
                 />
@@ -138,16 +135,16 @@ export const IncomeManualEntriesContainer: React.FC<IncomeProps> = ({
           className="mr-4 svg-icon action-icon"
           onClick={(): void =>
             onShouldShowModal({
-              value: ShouldShowModal.incomeRegister,
+              value: ShouldShowModal.expenseRegister,
               newTitleModal: `${item.description}`,
-              incomeManualEntries: item,
+              expenseManualEntries: item,
             })
           }
         />
         <Trash
           className="mr-2 svg-icon action-icon svg-icon-trash"
           onClick={() =>
-            controllerInputAppendIncomeAttachments.handleOnShowDelete(handleDeleteIncome, item)
+            controllerInputAppendExpenseAttachments.handleOnShowDelete(handleDeleteExpense, item)
           }
         />
       </div>
@@ -171,16 +168,16 @@ export const IncomeManualEntriesContainer: React.FC<IncomeProps> = ({
           },
           {
             title: 'Inserir',
-            onClick: (): Promise<void> => onSaveIncome(),
+            onClick: (): Promise<void> => onSaveExpense(),
           },
         ]}
       >
         {
           {
-            [ShouldShowModal.incomeRegister]: (
-              <IncomeManualEntriesRegister
-                formIncome={formIncome}
-                controllerInputAppendIncomeAttachments={controllerInputAppendIncomeAttachments}
+            [ShouldShowModal.expenseRegister]: (
+              <ExpenseManualEntriesRegister
+                formExpense={formExpense}
+                controllerInputAppendExpenseAttachments={controllerInputAppendExpenseAttachments}
               />
             ),
           }[shouldShowModal]
@@ -189,17 +186,17 @@ export const IncomeManualEntriesContainer: React.FC<IncomeProps> = ({
       <Container className="mainContainer" fluid={true}>
         <div className="pageTitle d-flex justify-content-between mb-5">
           <div className="d-flex">
-            <Link to={`${process.env.PUBLIC_URL}/dashboard/event-close/income/${eventId}`}>
+            <Link to={`${process.env.PUBLIC_URL}/dashboard/event-close/${eventId}`}>
               <ArrowLeft color={colors.black} className="arrow-left" />
             </Link>
-            <h5 className="ml-3 mb-0 pageTitle">Receitas - Lançamentos Manuais</h5>
+            <h5 className="ml-3 mb-0 pageTitle">Despesas</h5>
           </div>
           <div>
             <Button
               title="+ Inserir item"
               onClick={(): void => {
                 onShouldShowModal({
-                  value: ShouldShowModal.incomeRegister,
+                  value: ShouldShowModal.expenseRegister,
                   newTitleModal: `Inserir item`,
                 });
               }}
@@ -207,29 +204,13 @@ export const IncomeManualEntriesContainer: React.FC<IncomeProps> = ({
           </div>
         </div>
         <CustomTable
-          columns={columnsIncomeDetails}
-          data={dataTableIncome}
+          columns={columnsExpenseDetails}
+          data={dataTableExpense}
           numberRowsPerPage={10}
           theme="primary"
           progressPending={state === States.loading}
         />
       </Container>
-      <FooterCustom
-        data={[
-          {
-            title: 'Totais de ítens:',
-            value: incomeFooter?.amount || 'Dado não encontrado',
-          },
-          {
-            title: 'Total de receitas:',
-            value:
-              incomeFooter?.totalValue?.toLocaleString('pt-BR', {
-                style: 'currency',
-                currency: 'BRL',
-              }) || 'Dado não encontrado',
-          },
-        ]}
-      />
     </Fragment>
   );
 };

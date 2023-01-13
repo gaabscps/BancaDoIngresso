@@ -10,36 +10,35 @@ import { useDialog } from '@/hooks/useDialog';
 import { updateMask as updateMaskCash, unmask as unmaskCash } from '@/helpers/masks/cashNumber';
 import useForm from '@/hooks/useForm';
 import validators from '@/helpers/validators';
-import { FormInputName as FormInputNameIncome } from '@/features/eventClose/components/IncomeManualEntriesRegister';
 import { NameFiles } from '@/features/events/types';
 import { useConfirmDelete } from '@/hooks/useConfirmDelete';
 import { DeleteContent } from '@/components/DeleteContent';
-import { IncomeManualEntriesContainer, ShouldShowModal, States } from './ui';
+import { FormInputName as FormInputNameExpense } from '@/features/eventClose/components/ExpenseManualEntriesRegister';
+import { ExpenseManualEntriesContainer, ShouldShowModal, States } from './ui';
 
-export const IncomeManualEntriesScreen: React.FC = (): JSX.Element => {
+export const ExpenseManualEntriesScreen: React.FC = (): JSX.Element => {
   const { state: eventLocation } = useLocation();
   const { id: eventId } = useParams<{ id: string }>();
   const [state, setState] = useState<States>(States.default);
-  const [incomeAttachments, setIncomeAttachments] = useState<
+  const [expenseAttachments, setExpenseAttachments] = useState<
     { id: string; attachmentsDescription: string; attachmentsFileURL: string }[] | any[]
   >([]);
   const [nameFiles, setNameFiles] = useState<NameFiles>({});
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(
-    ShouldShowModal.incomeRegister,
+    ShouldShowModal.expenseRegister,
   );
-  const [incomeList, setIncomeList] = useState([]);
-  const [income, setIncome] = useState<any>({});
-  const [incomeFooter, setIncomeFooter] = useState<any>({});
+  const [expenseList, setExpenseList] = useState([]);
+  const [expense, setExpense] = useState<any>({});
 
   const { title, visible, onChangeTitle, onToggle } = useDialog();
   const confirmDelete = useConfirmDelete();
 
   const {
-    formData: formDataIncome,
-    formErrors: formErrorsIncome,
-    onChangeFormInput: onChangeFormInputIncome,
-    isFormValid: isFormValidIncome,
-    resetForm: resetFormIncome,
+    formData: formDataExpense,
+    formErrors: formErrorsExpense,
+    onChangeFormInput: onChangeFormInputExpense,
+    isFormValid: isFormValidExpense,
+    resetForm: resetFormExpense,
   } = useForm({
     initialData: {
       description: '',
@@ -68,10 +67,10 @@ export const IncomeManualEntriesScreen: React.FC = (): JSX.Element => {
             const newNameFiles = { ...nameFiles };
             newNameFiles[index] = file.name;
             setNameFiles(newNameFiles);
-            // set income Attachments to index
-            const newFormValues = [...incomeAttachments];
+            // set expense Attachments to index
+            const newFormValues = [...expenseAttachments];
             newFormValues[index][inputName] = base64;
-            setIncomeAttachments(newFormValues);
+            setExpenseAttachments(newFormValues);
           }
         };
       } else {
@@ -97,20 +96,20 @@ export const IncomeManualEntriesScreen: React.FC = (): JSX.Element => {
     });
   };
 
-  const handleDeleteIncomeAttachments = async (incomeAttachmentSelected: any): Promise<void> => {
+  const handleDeleteExpenseAttachments = async (expenseAttachmentSelected: any): Promise<void> => {
     try {
       setState(States.loading);
       await api.delete(
-        `/event/close/${eventId}/income/${
-          income?.id ?? incomeAttachmentSelected?.incomeId
-        }/attachment/${incomeAttachmentSelected?.id}`,
+        `/event/close/${eventId}/expense/${
+          expense?.id ?? expenseAttachmentSelected?.expenseId
+        }/attachment/${expenseAttachmentSelected?.id}`,
       );
       toast.success('Anexo excluído com sucesso');
       confirmDelete.hide();
-      if (income) {
-        handleGetIncomeManualEntries(income);
+      if (expense) {
+        handleGetExpenseManualEntries(expense);
       }
-      handleGetAllIncomeManualEntries();
+      handleGetAllExpenseManualEntries();
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
@@ -119,13 +118,13 @@ export const IncomeManualEntriesScreen: React.FC = (): JSX.Element => {
     }
   };
 
-  const handleDeleteIncome = async (incomeSelected: any): Promise<void> => {
+  const handleDeleteExpense = async (expenseSelected: any): Promise<void> => {
     try {
       setState(States.loading);
-      await api.delete(`/event/close/${eventId}/income/${incomeSelected?.id}`);
+      await api.delete(`/event/close/${eventId}/expense/${expenseSelected?.id}`);
       toast.success('Anexo excluído com sucesso');
       confirmDelete.hide();
-      handleGetAllIncomeManualEntries();
+      handleGetAllExpenseManualEntries();
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
@@ -134,14 +133,14 @@ export const IncomeManualEntriesScreen: React.FC = (): JSX.Element => {
     }
   };
 
-  const controllerInputAppendIncomeAttachments = {
+  const controllerInputAppendExpenseAttachments = {
     nameFiles,
     onChangeFileInput: handleOnChangeFileInput,
-    incomeAttachments,
-    setIncomeAttachments,
-    handleAddIncomeAttachments(): void {
-      setIncomeAttachments([
-        ...incomeAttachments,
+    expenseAttachments,
+    setExpenseAttachments,
+    handleAddExpenseAttachments(): void {
+      setExpenseAttachments([
+        ...expenseAttachments,
         {
           id: '',
           attachmentsDescription: '',
@@ -149,31 +148,30 @@ export const IncomeManualEntriesScreen: React.FC = (): JSX.Element => {
         },
       ]);
     },
-    handleChangeIncomeAttachments(inputName: string, index: number, value: string): void {
+    handleChangeExpenseAttachments(inputName: string, index: number, value: string): void {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const newFormValues = [...incomeAttachments] as any;
+      const newFormValues = [...expenseAttachments] as any;
       newFormValues[index][inputName] = value;
-      setIncomeAttachments(newFormValues);
+      setExpenseAttachments(newFormValues);
     },
-    handleRemoveIncomeAttachments(index: number): void {
-      const values = [...incomeAttachments];
+    handleRemoveExpenseAttachments(index: number): void {
+      const values = [...expenseAttachments];
       values.splice(index, 1);
-      setIncomeAttachments(values);
+      setExpenseAttachments(values);
       // clear name to index
       const newNameFiles = { ...nameFiles };
       delete newNameFiles[index];
       setNameFiles(newNameFiles);
     },
-    handleDeleteIncomeAttachments,
+    handleDeleteExpenseAttachments,
     handleOnShowDelete,
   };
 
-  const handleGetAllIncomeManualEntries = async (): Promise<void> => {
+  const handleGetAllExpenseManualEntries = async (): Promise<void> => {
     try {
       setState(States.loading);
-      const { data } = await api.get(`/event/close/${eventId}/income/find`);
-      setIncomeList(data.incomes ?? []);
-      setIncomeFooter(data);
+      const { data } = await api.get(`/event/close/${eventId}/expense`);
+      setExpenseList(data.incomes ?? []);
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
@@ -182,11 +180,11 @@ export const IncomeManualEntriesScreen: React.FC = (): JSX.Element => {
     }
   };
 
-  const handleGetIncomeManualEntries = async (incomeSelected: any): Promise<void> => {
+  const handleGetExpenseManualEntries = async (expenseSelected: any): Promise<void> => {
     try {
       setState(States.loading);
-      const { data } = await api.get(`/event/close/${eventId}/income/${incomeSelected?.id}`);
-      setIncome(data ?? []);
+      const { data } = await api.get(`/event/close/${eventId}/expense/${expenseSelected?.id}`);
+      setExpense(data ?? []);
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
@@ -195,49 +193,52 @@ export const IncomeManualEntriesScreen: React.FC = (): JSX.Element => {
     }
   };
 
-  const handleOnSaveIncome = async (): Promise<void> => {
+  const handleOnSaveExpense = async (): Promise<void> => {
     try {
       setState(States.loading);
-      const payloadIcomeAttachments = incomeAttachments.map((incomeAttachment, indexAtt) => ({
-        id: incomeAttachment?.id,
-        description: incomeAttachment.attachmentsDescription,
+      const payloadIcomeAttachments = expenseAttachments.map((expenseAttachment, indexAtt) => ({
+        id: expenseAttachment?.id,
+        description: expenseAttachment.attachmentsDescription,
         fileURL:
-          incomeAttachment.attachmentsFileURL ||
-          incomeAttachment['attachmentsFileURL-'.concat(indexAtt.toString())],
+          expenseAttachment.attachmentsFileURL ||
+          expenseAttachment['attachmentsFileURL-'.concat(indexAtt.toString())],
       }));
 
       // if payloadIcomeAttachments.id is empty, delete key
-      payloadIcomeAttachments.forEach(incomeAttachment => {
-        if (!incomeAttachment?.id) {
-          delete incomeAttachment.id;
+      payloadIcomeAttachments.forEach(expenseAttachment => {
+        if (!expenseAttachment?.id) {
+          delete expenseAttachment.id;
         }
       });
 
-      if (isFormValidIncome()) {
+      if (isFormValidExpense()) {
         const payload = {
-          id: income?.id,
-          description: formDataIncome[FormInputNameIncome.description],
-          totalValue:
-            formDataIncome[FormInputNameIncome.value] &&
-            unmaskCash(formDataIncome[FormInputNameIncome.value]),
+          id: expense?.id,
+          description: formDataExpense[FormInputNameExpense.description],
+          value:
+            formDataExpense[FormInputNameExpense.value] &&
+            unmaskCash(formDataExpense[FormInputNameExpense.value]),
         };
 
         if (!payload.id) {
           delete payload.id;
         }
 
-        const { data } = await api.post(`/event/close/${eventId}/income`, payload);
+        const { data } = await api.post(`/event/close/${eventId}/expense`, payload);
 
         // fetch loop to save attachments
         for (let index = 0; index < payloadIcomeAttachments.length; index += 1) {
-          const incomeAttachment = payloadIcomeAttachments[index];
-          await api.post(`/event/close/${eventId}/income/${data?.id}/attachment`, incomeAttachment);
+          const expenseAttachment = payloadIcomeAttachments[index];
+          await api.post(
+            `/event/close/${eventId}/expense/${data?.id}/attachment`,
+            expenseAttachment,
+          );
         }
 
         toast.success('Registro salvo com sucesso!');
 
         onToggle();
-        handleGetAllIncomeManualEntries();
+        handleGetAllExpenseManualEntries();
       }
     } catch (error) {
       const err = error as AxiosError;
@@ -250,71 +251,70 @@ export const IncomeManualEntriesScreen: React.FC = (): JSX.Element => {
   const handleOnShouldShowModal = ({
     value,
     newTitleModal,
-    incomeManualEntries: incomeManualEntriesSelected,
+    expenseManualEntries: expenseManualEntriesSelected,
   }: {
     value: ShouldShowModal;
     newTitleModal: string;
-    incomeManualEntries?: any;
+    expenseManualEntries?: any;
   }): void => {
     setShouldShowModal(value);
     onChangeTitle(newTitleModal);
     onToggle();
 
-    setIncome(incomeManualEntriesSelected);
-    if (incomeManualEntriesSelected) handleGetIncomeManualEntries(incomeManualEntriesSelected);
+    setExpense(expenseManualEntriesSelected);
+    // if (expenseManualEntriesSelected) handleGetExpenseManualEntries(expenseManualEntriesSelected);
   };
 
-  const controllerFormIncome = {
-    formData: formDataIncome,
-    formErrors: formErrorsIncome,
-    onChangeFormInput: onChangeFormInputIncome,
+  const controllerFormExpense = {
+    formData: formDataExpense,
+    formErrors: formErrorsExpense,
+    onChangeFormInput: onChangeFormInputExpense,
   };
 
   useEffect(() => {
-    handleGetAllIncomeManualEntries();
+    handleGetAllExpenseManualEntries();
   }, []);
 
   useEffect(() => {
     if (!visible) {
       setTimeout(() => {
-        resetFormIncome();
-        setIncome(undefined);
-        setIncomeAttachments([]);
+        resetFormExpense();
+        setExpense(undefined);
+        setExpenseAttachments([]);
         setNameFiles({});
       }, 500);
     }
   }, [visible]);
 
   useEffect(() => {
-    if (income?.id) {
-      onChangeFormInputIncome(FormInputNameIncome.description)(income.description);
-      onChangeFormInputIncome(FormInputNameIncome.value)(income?.totalValue ?? '');
+    if (expense?.id) {
+      onChangeFormInputExpense(FormInputNameExpense.description)(expense.description);
+      onChangeFormInputExpense(FormInputNameExpense.value)(expense?.value ?? '');
 
-      setIncomeAttachments(
-        income.attachments.map((item: any) => ({
+      setExpenseAttachments(
+        expense.attachments.map((item: any) => ({
           id: item.id,
           attachmentsDescription: item.description,
           attachmentsFileURL: item.fileURL,
         })),
       );
     }
-  }, [income]);
+  }, [expense]);
 
   return (
-    <IncomeManualEntriesContainer
+    <ExpenseManualEntriesContainer
       state={state}
       eventLocation={eventLocation}
-      incomeList={incomeList}
-      incomeFooter={incomeFooter}
+      expenseList={expenseList}
       title={title}
       visible={visible}
       onToggle={onToggle}
       onShouldShowModal={handleOnShouldShowModal}
       shouldShowModal={shouldShowModal}
-      formIncome={controllerFormIncome}
-      onSaveIncome={handleOnSaveIncome}
-      controllerInputAppendIncomeAttachments={controllerInputAppendIncomeAttachments}
-      handleDeleteIncome={handleDeleteIncome}
+      formExpense={controllerFormExpense}
+      onSaveExpense={handleOnSaveExpense}
+      controllerInputAppendExpenseAttachments={controllerInputAppendExpenseAttachments}
+      handleDeleteExpense={handleDeleteExpense}
     />
   );
 };

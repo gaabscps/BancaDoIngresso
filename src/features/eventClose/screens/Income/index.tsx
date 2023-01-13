@@ -16,6 +16,7 @@ export const IncomeScreen: React.FC = (): JSX.Element => {
   );
   const [incomeList, setIncomeList] = useState([]);
   const [incomeDetailsList, setIncomeDetailsList] = useState([]);
+  const [incomeFooter, setIncomeFooter] = useState([]);
 
   const { title, visible, onChangeTitle, onToggle } = useDialog();
 
@@ -24,6 +25,7 @@ export const IncomeScreen: React.FC = (): JSX.Element => {
       setState(States.loading);
       const { data } = await api.get(`/event/close/${eventId}/income`);
       setIncomeList(data.incomes ?? []);
+      setIncomeFooter(data);
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
@@ -70,6 +72,7 @@ export const IncomeScreen: React.FC = (): JSX.Element => {
       state={state}
       eventLocation={eventLocation}
       incomeList={incomeList}
+      incomeFooter={incomeFooter}
       incomeDetailsList={incomeDetailsList}
       title={title}
       visible={visible}

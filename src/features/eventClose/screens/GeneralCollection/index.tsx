@@ -20,6 +20,7 @@ export const GeneralCollectionScreen: React.FC = (): JSX.Element => {
   );
   const [generalCollectionList, setGeneralCollectionList] = useState([]);
   const [generalCollectionDetailsList, setGeneralCollectionDetailsList] = useState([]);
+  const [incomeFooter, setIncomeFooter] = useState([]);
 
   const { title, visible, onChangeTitle, onToggle } = useDialog();
 
@@ -28,6 +29,7 @@ export const GeneralCollectionScreen: React.FC = (): JSX.Element => {
       setState(States.loading);
       const { data } = await api.get(`/event/close/${eventId}/general-collection`);
       setGeneralCollectionList(data ?? []);
+      setIncomeFooter(data[0]);
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
@@ -73,6 +75,7 @@ export const GeneralCollectionScreen: React.FC = (): JSX.Element => {
       eventLocation={eventLocation}
       generalCollectionList={generalCollectionList}
       generalCollectionDetailsList={generalCollectionDetailsList}
+      incomeFooter={incomeFooter}
       title={title}
       visible={visible}
       onToggle={onToggle}
