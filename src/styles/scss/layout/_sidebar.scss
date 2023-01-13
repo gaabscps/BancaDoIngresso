@@ -89,6 +89,7 @@ button {
     font-weight: 500;
     margin-bottom: 6px;
     .submenu-container {
+      width: fit-content;
       .sidebar-submenu {
         transform-origin: top;
         transition: transform 0.2s linear;
