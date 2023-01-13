@@ -235,6 +235,11 @@ export const EventContainer: React.FC<EventContainerProps> = ({
           {
             title: 'Relatórios',
             icon: <Report />,
+            action: () => {
+              history.push({
+                pathname: `/dashboard/event/reports/${event.id}`,
+              });
+            },
           },
           event.eventStatus === 1
             ? {
