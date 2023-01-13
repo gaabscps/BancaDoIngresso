@@ -78,7 +78,7 @@ export enum FormInputNameCombo {
   allowSellingWebsite = 'allowSellingWebsite',
   amount = 'amount',
   totalValue = 'totalValue',
-  imageBase64 = 'imageBase64',
+  imageBase64Combo = 'imageBase64Combo',
 }
 
 export const SectorProductComboContainer: React.FC<SectorProductComboContainerProps> = ({
@@ -287,7 +287,6 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                   <Col md={4}>
                     <FormGroup>
                       <InputText
-                        type="number"
                         label={
                           <>
                             Quantidade
@@ -299,11 +298,10 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                         placeholder="Ex: 200"
                         name="amount"
                         value={controllerFormCombo.formDataCombo[FormInputNameCombo.amount]}
-                        onChange={e =>
-                          controllerFormCombo.onChangeFormInputCombo(FormInputNameCombo.amount)(
-                            e.target.value,
-                          )
-                        }
+                        onChange={e => {
+                          const amountValue = e.target.value.replace(/\D/g, '');
+                          onChangeFormInputCombo(FormInputNameCombo.amount)(amountValue);
+                        }}
                         error={formErrorsCombo.amount && formErrorsCombo.amount[0]}
                       />
                       <TooltipCustom id="soclose">
@@ -314,12 +312,11 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                   <Col md={4}>
                     <FormGroup>
                       <InputText
-                        type="number"
                         label="Valor do combo"
                         placeholder="Ex: 160,00"
                         name="totalValue"
                         addon="R$"
-                        value={formDataCombo[FormInputNameCombo.totalValue]}
+                        value={updateMaskCash(formDataCombo[FormInputNameCombo.totalValue])}
                         onChange={e => {
                           const unitValueMoney = updateMaskCash(e.target.value);
                           onChangeFormInputCombo(FormInputNameCombo.totalValue)(
@@ -333,22 +330,23 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                 </Row>
                 <Row>
                   <Col md={8}>
-                    <FormGroup>
-                      <InputFile
-                        label="Imagem do combo (opcional)"
-                        name="imageBase64"
-                        fileName={nameFiles?.imageBase64}
-                        onChange={e => {
-                          onChangeFileInput(FormInputNameCombo.imageBase64)(
-                            (e.target as HTMLInputElement)?.files?.[0],
-                          );
-                        }}
-                        error={formErrorsCombo.imageBase64 && formErrorsCombo.imageBase64[0]}
-                      />
-                      <div className="mb-4 border-bottom-title w-100">
-                        <h5 className="mb-2mb-5">Produtos do combo</h5>
-                      </div>
-                    </FormGroup>
+                    <InputFile
+                      label="Imagem do combo (opcional)"
+                      name="imageBase64Combo"
+                      placeholder=""
+                      fileName={nameFiles?.imageBase64Combo}
+                      onChange={e => {
+                        onChangeFileInput('imageBase64Combo')(
+                          (e.target as HTMLInputElement)?.files?.[0],
+                        );
+                      }}
+                      error={
+                        formErrorsCombo.imageBase64Combo && formErrorsCombo.imageBase64Combo[0]
+                      }
+                    />
+                    <div className="mb-4 border-bottom-title w-100">
+                      <h5 className="mb-2mb-5">Produtos do combo</h5>
+                    </div>
                   </Col>
                 </Row>
 
@@ -376,12 +374,12 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                       </Col>
                       <Col md={2}>
                         <InputText
-                          type="number"
                           label="Quantidade"
                           name="amount"
                           value={String(prod.amount)}
                           onChange={e => {
-                            onChangeProduct('amount', index, e?.target.value as string);
+                            const amountValue = e.target.value.replace(/\D/g, '');
+                            onChangeProduct('amount', index, amountValue as string);
                           }}
                           placeholder="Ex: 100"
                           error={formErrorsCombo.number && formErrorsCombo.number[0]}

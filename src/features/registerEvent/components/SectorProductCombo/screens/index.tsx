@@ -83,11 +83,11 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
 
   const {
     formData: formDataCombo,
+    isFormValid: isFormValidCombo,
     formErrors: formErrorsCombo,
     onChangeFormInput: onChangeFormInputCombo,
-    isFormValid: isFormValidCombo,
     resetForm: resetFormCombo,
-    setErrors: setErrorsCombo,
+    setFormErrors: setErrorsCombo,
   } = useForm({
     initialData: {
       allowCombo: 'true',
@@ -96,7 +96,6 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
       allowSellingWebsite: `true`,
       amount: '',
       totalValue: '',
-      imageBase64: '',
     },
     validators: {
       group: [validators.required],
@@ -183,8 +182,8 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
     validators: {
       discountsName: [validators.required],
       discountsCode: [validators.required],
-      discountsAmount: [validators.required, validators.between(0, 99)],
-      discountsDiscount: [validators.required, validators.between(0, 99)],
+      discountsAmount: [validators.required, validators.between(0, 9999)],
+      discountsDiscount: [validators.required],
       discountType: [validators.required],
     },
     formatters: {},
@@ -330,7 +329,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
             ),
             amount: +formDataCombo[FormInputNameCombo.amount],
             totalValue: +formDataCombo[FormInputNameCombo.totalValue],
-            imageBase64: formDataCombo[FormInputNameCombo.imageBase64],
+            imageBase64: formDataCombo[FormInputNameCombo.imageBase64Combo],
             products: productData,
           };
 
@@ -484,6 +483,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
       const { data } = await api.get(`event/section-product/${id}/combo`);
 
       setComboList(data ?? []);
+      console.log(comboList);
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
@@ -525,6 +525,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
   const handleOnGetCombo = async (comboSelected: any): Promise<void> => {
     try {
       if (comboSelected) {
+        console.log(comboSelected);
         resetFormCombo();
         handleOnChangeFileInput(comboSelected.image)(undefined);
         setNameFiles(undefined);
@@ -551,6 +552,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
       resetFormCombo();
       resetFormComboConfig();
       setProduct([{ id: '', name: '', amount: 0 }]);
+      setNameFiles(undefined);
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
@@ -734,10 +736,10 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
         );
         onChangeFormInputCombo(FormInputNameCombo.amount)(String(comboState.amount));
         onChangeFormInputCombo(FormInputNameCombo.totalValue)(String(comboState.totalValue));
-        onChangeFormInputCombo(FormInputNameCombo.imageBase64)(String(comboState.imageBase64));
+        onChangeFormInputCombo(FormInputNameCombo.imageBase64Combo)(comboState.imageBase64);
         setNameFiles(filesValues => ({
           ...filesValues,
-          [FormInputNameCombo.imageBase64]: comboState?.imageBase64?.split('/').pop(),
+          [FormInputNameCombo.imageBase64Combo]: comboState?.imageBase64?.split('/').pop(),
         }));
       }
     }
@@ -758,59 +760,60 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
         String(comboConfig?.physicalSale?.allowCreditCardPayment || 'false'),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSaleDebit)(
-        String(comboConfig?.physicalSale?.debit || ''),
+        String(comboConfig?.physicalSale?.debit && (+comboConfig.physicalSale.debit).toFixed(2)),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSaleCredit)(
-        String(comboConfig?.physicalSale?.credit || ''),
-      );
-      onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSaleBankSlip)(
-        String(comboConfig?.physicalSale?.bankSlip || ''),
+        String(comboConfig?.physicalSale?.credit && (+comboConfig.physicalSale.credit).toFixed(2)),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSalePix)(
-        String(comboConfig?.physicalSale?.pix || ''),
+        String(comboConfig?.physicalSale?.pix && (+comboConfig.physicalSale.pix).toFixed(2)),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSaleAdministrateTax)(
-        String(comboConfig?.physicalSale?.administrateTax || ''),
+        String(
+          comboConfig?.physicalSale?.administrateTax &&
+            (+comboConfig.physicalSale.administrateTax).toFixed(2),
+        ),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSaleInstallments)(
         String(comboConfig?.physicalSale?.installments || ''),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSaleFee)(
-        String(comboConfig?.physicalSale?.fee || ''),
+        String(comboConfig?.physicalSale?.fee && (+comboConfig.physicalSale.fee).toFixed(2)),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSaleAllowCreditCardPayment)(
         String(comboConfig?.websiteSale?.allowCreditCardPayment || 'false'),
       );
-      onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSaleDebit)(
-        String(comboConfig?.websiteSale?.debit || ''),
-      );
       onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSaleCredit)(
-        String(comboConfig?.websiteSale?.credit || ''),
+        String(comboConfig?.websiteSale?.credit && (+comboConfig.websiteSale.credit).toFixed(2)),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSaleBankSlip)(
-        String(comboConfig?.websiteSale?.bankSlip || ''),
+        String(
+          comboConfig?.websiteSale?.bankSlip && (+comboConfig.websiteSale.bankSlip).toFixed(2),
+        ),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSalePix)(
-        String(comboConfig?.websiteSale?.pix || ''),
+        String(comboConfig?.websiteSale?.pix && (+comboConfig.websiteSale.pix).toFixed(2)),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSaleAdministrateTax)(
-        String(comboConfig?.websiteSale?.administrateTax || ''),
+        String(
+          comboConfig?.websiteSale?.administrateTax &&
+            (+comboConfig.websiteSale.administrateTax).toFixed(2),
+        ),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSaleInstallments)(
-        String(comboConfig?.websiteSale?.installments || ''),
+        String(comboConfig.websiteSale.installments),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSaleFee)(
-        String(comboConfig?.websiteSale?.fee || ''),
+        String(comboConfig?.websiteSale?.fee && (+comboConfig.websiteSale.fee).toFixed(2)),
       );
-      onChangeFormInputComboConfig(FormInputNameComboConfig.waiter)(String(comboConfig.waiter));
+      onChangeFormInputComboConfig(FormInputNameComboConfig.waiter)(
+        String(comboConfig.waiter && (+comboConfig.waiter).toFixed(2)),
+      );
       onChangeFormInputComboConfig(FormInputNameComboConfig.partialPayment)(
         String(comboConfig.partialPayment || 'false'),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.allowDiscountCoupon)(
         String(comboConfig.allowDiscountCoupon || 'false'),
-      );
-      onChangeFormInputComboConfig(FormInputNameComboConfig.waiter)(
-        String(comboConfig.waiter || ''),
       );
     }
   }, [comboConfig]);

@@ -20,11 +20,11 @@ export const SectorProduct: React.FC<SectorProductProps> = ({ event }) => {
     },
     {
       title: 'Valor un',
-      content: event?.products?.map(item => item.unitValue) || '--',
+      content: event?.products?.map(item => `R$ ${item.unitValue}`) || '--',
     },
     {
       title: 'Total estimado',
-      content: event?.products?.map(item => item.totalValue) || '--',
+      content: event?.products?.map(item => `R$ ${item.totalValue}`) || '--',
     },
     {
       title: 'Tx Deb',

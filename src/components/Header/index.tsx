@@ -83,7 +83,7 @@ export const Header: React.FC = () => {
     },
     {
       route: path.Dashboard.Payment.itself,
-      title: 'Formas de Pagamento',
+      title: 'Formas de pagamento',
       subTitle: 'Administração / Formas de pagamento',
     },
     {
