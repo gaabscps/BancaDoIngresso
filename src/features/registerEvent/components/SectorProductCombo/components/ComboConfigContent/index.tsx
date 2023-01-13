@@ -4,6 +4,7 @@ import React from 'react';
 import { ButtonGroup, InputText } from '@/components';
 import DiscountCoupon from '@/model/DiscountCoupon';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
+import { updateMask as updateMaskCash, unmask as unmaskCash } from '@/helpers/masks/cashNumber';
 import { Card, Col, Form, FormGroup, Row } from 'reactstrap';
 import { CustomTable } from '@/components/Table';
 import { X } from 'react-feather';
@@ -223,11 +224,12 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                 label="Qtd parcelas"
                 maxLength={2}
                 value={formDataComboConfig[FormInputNameComboConfig.physicalSaleInstallments]}
-                onChange={e =>
+                onChange={e => {
+                  const amountValue = e.target.value.replace(/\D/g, '');
                   onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSaleInstallments)(
-                    e?.target?.value as string,
-                  )
-                }
+                    amountValue as string,
+                  );
+                }}
                 placeholder="Ex: 2"
                 error={
                   formErrorsComboConfig.physicalSaleInstallments &&
@@ -362,11 +364,12 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                 label="Qtd parcelas"
                 maxLength={2}
                 value={formDataComboConfig[FormInputNameComboConfig.websiteSaleInstallments]}
-                onChange={e =>
+                onChange={e => {
+                  const amountValue = e.target.value.replace(/\D/g, '');
                   onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSaleInstallments)(
-                    e?.target?.value as string,
-                  )
-                }
+                    amountValue as string,
+                  );
+                }}
                 placeholder="Ex: 2"
                 error={
                   formErrorsComboConfig.websiteSaleInstallments &&
@@ -513,15 +516,15 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                       <FormGroup>
                         <InputText
                           name="amount"
-                          type="number"
                           label="Quant. código"
                           placeholder="0"
                           value={formDataDiscount[FormInputNameDiscountCoupon.discountsAmount]}
-                          onChange={e =>
+                          onChange={e => {
+                            const amountValue = e.target.value.replace(/\D/g, '');
                             onChangeFormInputDiscount(FormInputNameDiscountCoupon.discountsAmount)(
-                              e?.target?.value as string,
-                            )
-                          }
+                              amountValue,
+                            );
+                          }}
                           error={
                             formErrorsDiscount.discountsAmount &&
                             formErrorsDiscount.discountsAmount[0]
@@ -535,11 +538,14 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                         name="discountType"
                         label="Tipo"
                         value={formDataDiscount[FormInputNameDiscountCoupon.discountType]}
-                        onChange={e =>
+                        onChange={e => {
+                          onChangeFormInputDiscount(FormInputNameDiscountCoupon.discountsDiscount)(
+                            '0',
+                          );
                           onChangeFormInputDiscount(FormInputNameDiscountCoupon.discountType)(
                             e?.target?.value as string,
-                          )
-                        }
+                          );
+                        }}
                         error={
                           formErrorsDiscount.discountType && formErrorsDiscount.discountType[0]
                         }
@@ -558,19 +564,31 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                               : ''
                           }
                           name="discount"
-                          type="number"
                           label="Valor do desconto"
                           placeholder="R$40,00 ou 50% "
-                          value={formDataDiscount[FormInputNameDiscountCoupon.discountsDiscount]}
-                          onChange={e =>
-                            onChangeFormInputDiscount(
-                              FormInputNameDiscountCoupon.discountsDiscount,
-                            )(
-                              e?.target?.value
-                                .replace(/\D/g, '')
-                                .replace(/(\d{2})$/, '.$1') as string,
-                            )
+                          maxLength={
+                            formDataDiscount[FormInputNameDiscountCoupon.discountType] === '0'
+                              ? 10
+                              : 5
                           }
+                          value={
+                            formDataDiscount.discountType === '0'
+                              ? updateMaskCash(
+                                  formDataDiscount[FormInputNameDiscountCoupon.discountsDiscount],
+                                )
+                              : formDataDiscount[FormInputNameDiscountCoupon.discountsDiscount]
+                          }
+                          onChange={e => {
+                            const unitValueMoney = updateMaskCash(e.target.value);
+                            // eslint-disable-next-line no-unused-expressions
+                            formDataDiscount.discountType === '0'
+                              ? onChangeFormInputDiscount(
+                                  FormInputNameDiscountCoupon.discountsDiscount,
+                                )(unmaskCash(unitValueMoney))
+                              : onChangeFormInputDiscount(
+                                  FormInputNameDiscountCoupon.discountsDiscount,
+                                )(unmaskCash(unitValueMoney));
+                          }}
                           error={
                             formErrorsDiscount.discountsDiscount &&
                             formErrorsDiscount.discountsDiscount[0]
@@ -652,16 +670,16 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                           right: true,
                         },
                       ]}
-                      data={
-                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        discountCouponList.map((item: any) => {
-                          return {
-                            code: item.code,
-                            amount: item.amount,
-                            discount: item.discount,
-                          };
-                        }) || []
-                      }
+                      data={[
+                        {
+                          code: discount.code,
+                          amount: discount.amount,
+                          discount:
+                            discount.discountType === 0
+                              ? `R$ ${updateMaskCash(String(discount.discount))}`
+                              : `${discount.discount}%`,
+                        },
+                      ]}
                     />
                   </>
                 ))
