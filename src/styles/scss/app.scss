@@ -870,7 +870,7 @@ textarea {
 
 .input-disabled {
   cursor: not-allowed;
-  
+
   label {
     color: #c4c4c4;
   }
@@ -1566,10 +1566,25 @@ body
   resize: none;
 }
 
-.text-area-comment:focus   {
+.text-area-comment:focus {
   background-color: transparent;
 }
 
-.text-area-comment:hover   {
+.text-area-comment:hover {
   background-color: transparent;
+}
+
+.report-menu-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  grid-column-gap: 38px;
+  grid-row-gap: 30px;
+  .report-menu-card {
+    min-width: 182px;
+    width: fit-content;
+    align-items: center;
+    padding: 26px 30px;
+    border-radius: 10px;
+    cursor: pointer;
+  }
 }

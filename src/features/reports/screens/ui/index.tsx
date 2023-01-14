@@ -2,16 +2,27 @@ import FilterVector from '@/assets/images/svg/FilterVector';
 import { DataList } from '@/components/DataList';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
 import { CustomTable } from '@/components/Table';
+import empty from '@/assets/images/other-images/imgvazio.svg';
 import { colors } from '@/styles/colors';
 import React from 'react';
 import { ArrowLeft, X } from 'react-feather';
 import { Link } from 'react-router-dom';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend, Chart } from 'chart.js';
-import { Pie } from 'react-chartjs-2';
-import { Card, Container } from 'reactstrap';
 
-export const ReportsContent: React.FC = () => {
-  console.log('Reports Content');
+import { Card, Container } from 'reactstrap';
+import { updateMask } from '@/helpers/masks/cash';
+import { StyledPie } from '../../components/StyledPie';
+
+export interface ReportsContentProps {
+  event: any;
+  eventChild: any;
+  generalSale: any;
+}
+
+export const ReportsContent: React.FC<ReportsContentProps> = ({
+  event,
+  eventChild,
+  generalSale,
+}) => {
   const [reportContent, setReportContent] = React.useState('');
 
   const reports = [
@@ -29,35 +40,7 @@ export const ReportsContent: React.FC = () => {
     },
   ];
 
-  ChartJS.register(ArcElement, Tooltip, Legend);
-
-  const data = {
-    labels: ['Web', 'PDV`s'],
-    datasets: [
-      {
-        label: '# of Votes',
-        data: [50, 75],
-        backgroundColor: ['#3CAFC8', '#D8413A'],
-        borderWidth: 0,
-      },
-    ],
-  };
-  const data2 = {
-    labels: ['Venda', 'Cortesia'],
-    datasets: [
-      {
-        label: '# of Votes',
-        data: [75, 50],
-        backgroundColor: ['#3CAFC8', '#D8413A'],
-        borderWidth: 0,
-      },
-    ],
-  };
-
-  Chart.overrides.pie.plugins.legend.labels.usePointStyle = true;
-  Chart.overrides.pie.plugins.legend.labels.pointStyle = 'circle';
-  Chart.overrides.pie.plugins.legend.labels.boxHeight = 8;
-  Chart.overrides.pie.plugins.legend.labels.boxWidth = 15;
+  console.log(generalSale.geographicRanking);
 
   return (
     <>
@@ -67,7 +50,7 @@ export const ReportsContent: React.FC = () => {
             <Link to={`${process.env.PUBLIC_URL}/dashboard/event`}>
               <ArrowLeft color={colors.black} className="arrow-left" />
             </Link>
-            <h5 className="ml-3 mb-0 mt-2 pageTitle">Revoada do Tatu - 01/04/2022</h5>
+            <h5 className="ml-3 mb-0 mt-2 pageTitle">{event.name}</h5>
           </div>
           <div className="button-filter-container">
             <div className="filter-container">
@@ -99,44 +82,47 @@ export const ReportsContent: React.FC = () => {
             alignItems: 'end',
           }}
         >
-          <img
-            width={120}
-            height={80}
-            style={{ borderRadius: '10px' }}
-            src="https://picsum.photos/200/300"
-            alt="random"
-          />
+          <img style={{ borderRadius: '10px', transform: 'scaleY(0.8)' }} width={120} src={empty} />
           <DataList
             data={[
               {
                 title: 'Local:',
-                content: 'Rio Claro',
+                content: event.city || '-----',
               },
               {
                 title: 'Venda',
-                content: '500',
+                content: event.amountSale || '-----',
               },
               {
                 title: 'Cortesia',
-                content: '500',
+                content: event.amountCourtesy || '-----',
               },
               {
                 title: 'Total de vendas:',
-                content: '1.000',
+                content: event.totalSales || '-----',
               },
               {
                 title: 'Arrecadação:',
-                content: 'R$ 200.000,00',
+                content: event.saleValue
+                  ? `R$${String(event.saleValue && +event.saleValue.toFixed(2)).replace('.', ',')}`
+                  : '-----',
               },
               {
                 title: 'Ticket médio:',
-                content: 'R$ 60,00',
+                content: event.averageTicket
+                  ? `R$${String(event.averageTicket && +event.averageTicket.toFixed(2)).replace(
+                      '.',
+                      ',',
+                    )}`
+                  : '-----',
               },
             ]}
           />
         </div>
         <SuperCollapse
+          className={eventChild ? ' ' : 'collapse-disabled collapse-disable-text'}
           title="Eventos filhos"
+          disabled={!eventChild}
           content={
             <CustomTable
               numberRowsPerPage={0}
@@ -173,45 +159,36 @@ export const ReportsContent: React.FC = () => {
                   selector: row => row.ticketMedio,
                 },
               ]}
-              data={[
-                {
-                  image: (
-                    <img width={80} height={60} src="https://picsum.photos/200/300" alt="random" />
-                  ),
-                  name: 'Revoada do Tatu',
-                  venda: '500',
-                  cortesia: '500',
-                  totalVendas: '1.000',
-                  arrecadacao: 'R$ 200.000,00',
-                  ticketMedio: 'R$ 60,00',
-                },
-              ]}
+              data={
+                eventChild?.map &&
+                eventChild?.map((child: any) => ({
+                  image: child?.image || '---',
+                  name: child?.name || '---',
+                  venda: child?.amountSale || '---',
+                  cortesia: child?.amountCourtesy || '---',
+                  totalVendas: child?.totalSales || '---',
+                  arrecadacao: `R$${
+                    String(child.saleValue && +child.saleValue.toFixed(2)).replace('.', ',') ||
+                    '---'
+                  }}`,
+                  ticketMedio: `R$${String(
+                    child.averageTicket && +child.averageTicket.toFixed(2),
+                  ).replace('.', ',')}`,
+                }))
+              }
             />
           }
           leftIcon={() => <div></div>}
         />
         <hr />
-        <div
-          className="mb-5 mt-5"
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(210px, 1fr))',
-            gridColumnGap: '38px',
-            gridRowGap: '30px',
-          }}
-        >
+        <div className="mb-5 mt-5 report-menu-container">
           {reports.map((report, index) => (
             <Card
               key={index}
+              className="report-menu-card"
               style={{
                 backgroundColor: report.title === reportContent ? '#3CAFC8' : '#FFFFFF',
                 color: report.title === reportContent ? '#FFFFFF' : '#000000',
-                minWidth: '182px',
-                width: 'fit-content',
-                alignItems: 'center',
-                padding: '26px 30px',
-                borderRadius: '10px',
-                cursor: 'pointer',
               }}
               onClick={() => setReportContent(report.title)}
             >
@@ -225,43 +202,127 @@ export const ReportsContent: React.FC = () => {
             <h5 className="pageTitle">Vendas gerais</h5>
             <h6 className="mb-4">Canais de venda</h6>
             <div className="d-flex justify-content-between">
-              <div className="d-flex">
-                <div style={{ width: '200px' }}>
-                  <Pie width={200} height={200} data={data} />
-                </div>
-                <div>
-                  <div className="d-flex justify-content-end flex-column w-100 h-100">
-                    <div className="mb-3">
-                      <span style={{ color: '#828282' }}>Web: </span>R$ 50.000,00 (30%)
-                    </div>
-                    <div className="mb-3">
-                      <span style={{ color: '#828282' }}>Pdvs: </span>R$ 75.000,00 (70%)
-                    </div>
-                    <div className="mb-3">
-                      <span style={{ color: '#828282' }}>App:</span> R$ 0,00 (0%)
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="d-flex mr-5">
-                <div style={{ width: '200px' }}>
-                  <Pie width={200} height={200} data={data2} />
-                </div>
-                <div>
-                  <div className="d-flex justify-content-end flex-column w-100 h-100">
-                    <div className="mb-3">
-                      <span style={{ color: '#828282' }}>Venda: </span>R$ 75.000,00 (70%)
-                    </div>
-                    <div className="mb-3">
-                      <span style={{ color: '#828282' }}>Cortesia: </span>R$ 50.000,00 (30%)
-                    </div>
-                    <div className="mb-3">
-                      <span style={{ color: '#828282' }}>App:</span> R$ 0,00 (0%)
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <StyledPie generalSale={generalSale?.salesChannel} />
+              <StyledPie generalSale={generalSale?.ticketTypes} />
             </div>
+            <hr className="mb-5 mt-5" />
+            <h6>Ranking Geográfico (Top 10 Cidades)</h6>
+            <CustomTable
+              columns={[
+                {
+                  name: 'Cidade',
+                  selector: row => row.city,
+                  minWidth: '33%',
+                },
+                {
+                  name: 'Estado',
+                  selector: row => row.state,
+                  minWidth: '33%',
+                },
+                {
+                  name: 'Quantidade',
+                  selector: row => row.amount,
+                  width: '200px',
+                },
+              ]}
+              data={generalSale?.geographicRanking?.map((item: any) => ({
+                city: item.city,
+                state: item.state,
+                amount: item.amount,
+              }))}
+              numberRowsPerPage={10}
+              progressPending={false}
+            />
+            <hr className="mb-5 mt-5" />
+            {/* {generalSale?.sections.length > 0 && ( */}
+            <>
+              <p>{generalSale?.sections.map((section: any) => section.name)}</p>
+              <Card style={{ border: 'none', overflow: 'auto' }}>
+                <CustomTable
+                  theme="secondary"
+                  numberRowsPerPage={0}
+                  progressPending={false}
+                  columns={[
+                    {
+                      name: 'Lote',
+                      selector: row => row.name,
+                    },
+                    {
+                      name: 'Ingressos vendidos',
+                      selector: row => row.totalSale,
+                    },
+                    {
+                      name: 'Ingressos emitidos',
+                      selector: row => row.totalIssuede,
+                    },
+                    {
+                      name: 'Ingressos disponíveis',
+                      selector: row => row.totalAvailable,
+                    },
+                    {
+                      name: 'Cortesias',
+                      selector: row => row.amountCourtesy,
+                    },
+                    {
+                      name: 'Valor do ingresso',
+                      selector: row => row.ticketValue,
+                    },
+                    {
+                      name: 'Valor total',
+                      selector: row => row.totalValue,
+                    },
+                  ]}
+                  data={generalSale?.section?.map((item: any) => ({
+                    name: item?.batchs?.name,
+                    totalSale: item?.batchs?.totalSale,
+                    totalIssuede: item?.batchs?.totalIssued,
+                    totalAvailable: item?.batchs?.totalAvailable,
+                    amountCourtesy: item?.batchs?.amountCourtesy,
+                    ticketValue: `R$+${updateMask(
+                      item?.batchs?.ticketValue && String(+item.batchs.ticketValue.toFixed(2)),
+                    )}`,
+                    totalValue: `R$+${updateMask(
+                      item?.batchs?.totalValue && +item.batchs.totalValue.toFixed(2),
+                    )}`,
+                  }))}
+                />
+                <hr className="mb-0" />
+                <div
+                  style={{
+                    padding: '30px 40px',
+                    gap: '40px',
+                  }}
+                  className="d-flex justify-content-center"
+                >
+                  <div className="d-flex">
+                    <div>Total vendidos:</div>
+                    <div>100</div>
+                  </div>
+
+                  <div className="d-flex">
+                    <div>Total emitidos:</div>
+                    <div>100</div>
+                  </div>
+
+                  <div className="d-flex">
+                    <div>Total disponíveis:</div>
+                    <div>100</div>
+                  </div>
+
+                  <div className="d-flex">
+                    <div>Cortesias:</div>
+                    <div>100</div>
+                  </div>
+
+                  <div className="d-flex">
+                    <div>Total arrecadado:</div>
+                    <div>R$100</div>
+                  </div>
+                </div>
+              </Card>
+            </>
+            {/* )
+            } */}
           </>
         )}
         {reportContent === 'Vendas por data' && <div className="pageTitle">Vendas por data</div>}
