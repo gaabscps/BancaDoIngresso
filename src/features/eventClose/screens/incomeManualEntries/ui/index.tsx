@@ -114,7 +114,7 @@ export const IncomeManualEntriesContainer: React.FC<IncomeProps> = ({
           <Checkbox
             theme="secondary"
             name={`income-${index}-${item.id}`}
-            checked={true}
+            checked={item.checked}
             onChange={() => onCheckIncome(item.id)}
           />
         </div>

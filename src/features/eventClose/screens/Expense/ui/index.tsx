@@ -111,7 +111,7 @@ export const ExpenseManualEntriesContainer: React.FC<ExpenseManualEntriesContain
           <Checkbox
             theme="secondary"
             name={`income-${index}-${item.id}`}
-            checked={true}
+            checked={item.checked}
             onChange={() => onCheckExpense(item.id)}
           />
         </div>

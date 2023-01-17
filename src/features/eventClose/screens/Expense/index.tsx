@@ -195,7 +195,7 @@ export const ExpenseManualEntriesScreen: React.FC = (): JSX.Element => {
   const handleOnCheckExpense = async (incomeId: string): Promise<void> => {
     try {
       setState(States.loading);
-      await api.patch(`/event/close/${eventId}/exepense/${incomeId}/check`);
+      await api.patch(`/event/close/${eventId}/expense/${incomeId}/check`);
       toast.success('Recebimento confirmado com sucesso');
       handleGetAllExpenseManualEntries();
     } catch (error) {
