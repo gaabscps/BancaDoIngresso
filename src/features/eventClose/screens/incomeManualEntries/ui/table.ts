@@ -87,6 +87,7 @@ export const columnsIncomeDetails: TableColumn<columnsIncomeDetails>[] = [
   {
     name: 'Ações',
     selector: row => row.actions,
-    maxWidth: '150px',
+    allowOverflow: true,
+    maxWidth: '220px',
   },
 ];

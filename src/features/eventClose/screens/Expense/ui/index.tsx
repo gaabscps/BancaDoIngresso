@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { Button, Dialog, Loading } from '@/components';
+import { Button, Checkbox, Dialog, Loading } from '@/components';
 import { Container } from 'reactstrap';
 import './style.scss';
 import { Link, useParams } from 'react-router-dom';
@@ -67,6 +67,7 @@ export interface ExpenseManualEntriesContainerProps {
     handleOnShowDelete: any;
   };
   handleDeleteExpense: (expense: ExpenseAttachments) => void;
+  onCheckExpense: (expenseId: string) => void;
 }
 
 // eslint-disable-next-line no-shadow
@@ -86,6 +87,7 @@ export const ExpenseManualEntriesContainer: React.FC<ExpenseManualEntriesContain
   onSaveExpense,
   controllerInputAppendExpenseAttachments,
   handleDeleteExpense,
+  onCheckExpense,
 }) => {
   const { id: eventId } = useParams<{ id: string }>();
 
@@ -104,67 +106,81 @@ export const ExpenseManualEntriesContainer: React.FC<ExpenseManualEntriesContain
     description: item.description,
     value: updateMaskCash(item.value || 0),
     actions: (
-      <div className="mt-3">
-        {item.attachments?.length > 0 && (
-          <span
-            className="badge badge-custom position-absolute top-0 start-100 translate-middle rounded-pill bg-danger"
-            style={{ marginLeft: '12px' }}
-          >
-            {item.attachments?.length}
-          </span>
-        )}
-        <DropdownMenuAttachment
-          actions={item.attachments?.map((attachment: any) => ({
-            title: (
-              <div className="d-flex align-items-center">
-                <span className="mr-5">{attachment.description}</span>
-                {
-                  // verificar se é um arquivo ou url
-                  attachment.fileURL?.includes('http') ? (
-                    <Download
-                      height={15}
-                      className="svg-icon action-icon mr-3"
-                      onClick={() =>
-                        downloadURI(attachment.fileURL, attachment.fileURL.split('/').pop())
-                      }
-                    />
-                  ) : (
-                    ''
-                  )
-                }
-
-                <X
-                  height={18}
-                  className="svg-icon action-icon"
-                  onClick={() =>
-                    controllerInputAppendExpenseAttachments.handleOnShowDelete(
-                      controllerInputAppendExpenseAttachments.handleDeleteExpenseAttachments,
-                      { ...attachment, expenseId: item.id },
+      <div className="mt-3 d-flex">
+        <div className="mr-4" style={{ overflow: 'unset' }}>
+          <Checkbox
+            theme="secondary"
+            name={`income-${index}-${item.id}`}
+            checked={true}
+            onChange={() => onCheckExpense(item.id)}
+          />
+        </div>
+        <div>
+          {item.attachments?.length > 0 && (
+            <span
+              className="badge badge-custom position-absolute top-0 start-100 translate-middle rounded-pill bg-danger"
+              style={{ marginLeft: '12px' }}
+            >
+              {item.attachments?.length}
+            </span>
+          )}
+          <DropdownMenuAttachment
+            actions={item.attachments?.map((attachment: any) => ({
+              title: (
+                <div className="d-flex align-items-center">
+                  <span className="mr-5">{attachment.description}</span>
+                  {
+                    // verificar se é um arquivo ou url
+                    attachment.fileURL?.includes('http') ? (
+                      <Download
+                        height={15}
+                        className="svg-icon action-icon mr-3"
+                        onClick={() =>
+                          downloadURI(attachment.fileURL, attachment.fileURL.split('/').pop())
+                        }
+                      />
+                    ) : (
+                      ''
                     )
                   }
-                />
-              </div>
-            ),
-            onClick: (): void => undefined,
-          }))}
-          title={<Attachments className="mr-4 svg-icon action-icon" />}
-        />
-        <Pen
-          className="mr-4 svg-icon action-icon"
-          onClick={(): void =>
-            onShouldShowModal({
-              value: ShouldShowModal.expenseRegister,
-              newTitleModal: `${item.description}`,
-              expenseManualEntries: item,
-            })
-          }
-        />
-        <Trash
-          className="mr-2 svg-icon action-icon svg-icon-trash"
-          onClick={() =>
-            controllerInputAppendExpenseAttachments.handleOnShowDelete(handleDeleteExpense, item)
-          }
-        />
+
+                  <X
+                    height={18}
+                    className="svg-icon action-icon"
+                    onClick={() =>
+                      controllerInputAppendExpenseAttachments.handleOnShowDelete(
+                        controllerInputAppendExpenseAttachments.handleDeleteExpenseAttachments,
+                        { ...attachment, expenseId: item.id },
+                      )
+                    }
+                  />
+                </div>
+              ),
+              onClick: (): void => undefined,
+            }))}
+            title={<Attachments className="mr-4 svg-icon action-icon" />}
+          />
+        </div>
+        <div>
+          <Pen
+            className="mr-4 svg-icon action-icon"
+            onClick={(): void =>
+              onShouldShowModal({
+                value: ShouldShowModal.expenseRegister,
+                newTitleModal: `${item.description}`,
+                expenseManualEntries: item,
+              })
+            }
+          />
+        </div>
+        <div>
+          <Trash
+            className="mr-2 svg-icon action-icon svg-icon-trash"
+            onClick={() =>
+              controllerInputAppendExpenseAttachments.handleOnShowDelete(handleDeleteExpense, item)
+            }
+          />
+        </div>
       </div>
     ),
   }));

@@ -192,6 +192,20 @@ export const ExpenseManualEntriesScreen: React.FC = (): JSX.Element => {
     }
   };
 
+  const handleOnCheckExpense = async (incomeId: string): Promise<void> => {
+    try {
+      setState(States.loading);
+      await api.patch(`/event/close/${eventId}/exepense/${incomeId}/check`);
+      toast.success('Recebimento confirmado com sucesso');
+      handleGetAllExpenseManualEntries();
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
   const handleOnSaveExpense = async (): Promise<void> => {
     try {
       setState(States.loading);
@@ -315,6 +329,7 @@ export const ExpenseManualEntriesScreen: React.FC = (): JSX.Element => {
       onSaveExpense={handleOnSaveExpense}
       controllerInputAppendExpenseAttachments={controllerInputAppendExpenseAttachments}
       handleDeleteExpense={handleDeleteExpense}
+      onCheckExpense={handleOnCheckExpense}
     />
   );
 };

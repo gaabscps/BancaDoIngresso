@@ -194,6 +194,20 @@ export const IncomeManualEntriesScreen: React.FC = (): JSX.Element => {
     }
   };
 
+  const handleOnCheckIncome = async (incomeId: string): Promise<void> => {
+    try {
+      setState(States.loading);
+      await api.patch(`/event/close/${eventId}/income/${incomeId}/check`);
+      toast.success('Recebimento confirmado com sucesso');
+      handleGetAllIncomeManualEntries();
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
   const handleOnSaveIncome = async (): Promise<void> => {
     try {
       setState(States.loading);
@@ -313,6 +327,7 @@ export const IncomeManualEntriesScreen: React.FC = (): JSX.Element => {
       onSaveIncome={handleOnSaveIncome}
       controllerInputAppendIncomeAttachments={controllerInputAppendIncomeAttachments}
       handleDeleteIncome={handleDeleteIncome}
+      onCheckIncome={handleOnCheckIncome}
     />
   );
 };

@@ -1,4 +1,16 @@
+$color-primary: #d8413a;
+$color-secondary: #7AD81B;
+
+.color-primary {
+  background-color: $color-primary;
+}
+.color-secondary {
+  background-color: $color-secondary;
+}
+
+
 .checkbox.style-d {
+
   display: inline-block;
   position: relative;
   // padding-left: 30px;
@@ -16,7 +28,6 @@
   cursor: pointer;
 }
 .checkbox.style-d input:checked ~ .checkbox__checkmark {
-  background-color: #d8413a;
   border: none;
   height: 20px;
   width: 20px;
@@ -25,11 +36,9 @@
   opacity: 1;
 }
 .checkbox.style-d:hover input ~ .checkbox__checkmark {
-  // background-color: #eee;
   border: 1.32692px solid #c4c4c4;
 }
 .checkbox.style-d:hover input:checked ~ .checkbox__checkmark {
-  background-color: #d8413a;
   border: none;
   height: 20px;
   width: 20px;
@@ -40,7 +49,6 @@
 .checkbox.style-d .checkbox__checkmark {
   height: 20px;
   width: 20px;
-  // background-color: #eee;
   border: 1px solid #cecece;
   transition: background-color 0.25s ease;
   border-radius: 5px;
