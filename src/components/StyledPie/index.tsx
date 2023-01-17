@@ -33,7 +33,7 @@ export const StyledPie: React.FC<StyledPieProps> = ({
   Chart.overrides.pie.plugins.legend.labels.pointStyle = 'circle';
   Chart.overrides.pie.plugins.legend.labels.boxHeight = 8;
   Chart.overrides.pie.plugins.legend.labels.boxWidth = 15;
-  Chart.defaults.plugins.tooltip.enabled = false;
+  Chart.defaults.plugins.tooltip.enabled = true;
   return (
     <div className="d-flex">
       <div style={{ width: '200px' }}>

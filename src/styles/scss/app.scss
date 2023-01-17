@@ -1542,18 +1542,6 @@ body
   }
 }
 
-.dataListTitle {
-  font-weight: 400;
-  font-size: 16px;
-  color: #828282;
-}
-
-.dataListContent {
-  font-weight: 400;
-  font-size: 16px;
-  color: #222222;
-}
-
 .cursor-pointer {
   cursor: pointer;
 }
@@ -1580,11 +1568,57 @@ body
   grid-column-gap: 38px;
   grid-row-gap: 30px;
   .report-menu-card {
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.02);
     min-width: 182px;
     width: fit-content;
     align-items: center;
     padding: 26px 30px;
     border-radius: 10px;
+    max-height: 76px;
+    border: 0px solid #f1f1f1;
     cursor: pointer;
+    &:hover {
+      transition: ease 0.3s;
+      border: 1px solid #f1f1f1;
+    }
   }
+}
+
+#pageWrapper > div.page-body-wrapper.sidebar-icon > div.page-body > div > div.card > div {
+  min-width: 1040px;
+}
+
+.text-darkgray-regular {
+  font-weight: 400;
+  font-size: 16px;
+  color: #828282;
+}
+
+.text-black-regular {
+  font-weight: 400;
+  font-size: 16px;
+  color: #222222;
+}
+
+.text-small-black-regular {
+  font-weight: 400;
+  font-size: 12px;
+  color: #222;
+}
+.text-small-black-600 {
+  font-weight: 600;
+  font-size: 12px;
+  color: #222;
+}
+.text-small-gray-regular {
+  font-weight: 400;
+  font-size: 12px;
+  color: #a5a5a5;
+}
+
+.card-no-border {
+  border: none;
+  background: #ffffff;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.02);
+  border-radius: 10px;
 }

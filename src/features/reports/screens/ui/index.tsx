@@ -185,7 +185,7 @@ export const ReportsContent: React.FC<ReportsContentProps> = ({
           {reports.map((report, index) => (
             <Card
               key={index}
-              className="report-menu-card"
+              className="report-menu-card card-no-border"
               style={{
                 backgroundColor: report.title === reportContent ? '#3CAFC8' : '#FFFFFF',
                 color: report.title === reportContent ? '#FFFFFF' : '#000000',
@@ -197,8 +197,51 @@ export const ReportsContent: React.FC<ReportsContentProps> = ({
           ))}
         </div>
         <hr className="mb-5" />
+        {
+          // switch case reportContent
+        }
         {reportContent === 'Vendas gerais' && <GeneralSale generalSaleState={generalSale} />}
-        {reportContent === 'Vendas por data' && <div className="pageTitle">Vendas por data</div>}
+
+        {reportContent === 'Vendas por data' && (
+          <>
+            <h5>Vendas por data</h5>
+            <div className="collapseTableText">
+              <div className="d-flex">
+                <div
+                  style={{
+                    marginLeft: '10px',
+                    display: 'grid',
+                    gridTemplateColumns: '1fr 1fr 1fr 1fr',
+                  }}
+                >
+                  <div>Data</div>
+                  <div>Total ingressos vendidos</div>
+                  <div>Cortesias</div>
+                  <div>Valor total</div>
+                </div>
+                <div></div>
+              </div>
+            </div>
+            <SuperCollapse
+              title={
+                <div
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: '1fr 1fr 1fr 1fr',
+                    columnGap: '150px',
+                  }}
+                >
+                  <div>10/12/2022</div>
+                  <div>2.000</div>
+                  <div>5</div>
+                  <div>R$ 20.000,00</div>
+                </div>
+              }
+              content={<GeneralSale generalSaleState={generalSale} />}
+              leftIcon={() => <div></div>}
+            />
+          </>
+        )}
         {reportContent === 'Vendas por PDV' && <div className="pageTitle">Vendas por PDVs</div>}
       </Container>
     </>
