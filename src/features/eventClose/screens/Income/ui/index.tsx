@@ -8,9 +8,7 @@ import { colors } from '@/styles/colors';
 import { CustomTable } from '@/components/Table';
 import { ReactComponent as Info } from '@/assets/images/svg/infoCircle.svg';
 // import dayjs from 'dayjs';
-import EventCloseIncome from '@/model/EventCloseIncome';
-// import { GeneralCollectionDetailsContent } from '@/features/eventClose/components/GeneralCollectionDetailsContent';
-// import EventCloseGeneralCollectionDetail from '@/model/EventCloseGeneralCollectionDetail';
+import { EventCloseIncome } from '@/model/EventCloseIncome';
 import { FooterCustom } from '@/components/FooterCustom';
 import { columnsIncomeDetails } from './table';
 

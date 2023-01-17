@@ -2,7 +2,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import api from '@/services/api';
@@ -17,7 +17,6 @@ import { DeleteContent } from '@/components/DeleteContent';
 import { IncomeManualEntriesContainer, ShouldShowModal, States } from './ui';
 
 export const IncomeManualEntriesScreen: React.FC = (): JSX.Element => {
-  const { state: eventLocation } = useLocation();
   const { id: eventId } = useParams<{ id: string }>();
   const [state, setState] = useState<States>(States.default);
   const [incomeAttachments, setIncomeAttachments] = useState<
@@ -303,7 +302,6 @@ export const IncomeManualEntriesScreen: React.FC = (): JSX.Element => {
   return (
     <IncomeManualEntriesContainer
       state={state}
-      eventLocation={eventLocation}
       incomeList={incomeList}
       incomeFooter={incomeFooter}
       title={title}

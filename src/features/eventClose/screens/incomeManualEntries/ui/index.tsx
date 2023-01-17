@@ -9,13 +9,13 @@ import { CustomTable } from '@/components/Table';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { ReactComponent as Attachments } from '@/assets/images/svg/Attachments.svg';
-import EventCloseIncome from '@/model/EventCloseIncome';
 import { IncomeManualEntriesRegister } from '@/features/eventClose/components/IncomeManualEntriesRegister';
 import { FormData, FormErrors, OnChangeFormInput } from '@/hooks';
 import { updateMask as updateMaskCash } from '@/helpers/masks/cash';
 import { DropdownMenuAttachment } from '@/features/eventClose/components/DropdownMenuAttachment';
 import { ReactComponent as Download } from '@/assets/images/svg/download.svg';
 import { FooterCustom } from '@/components/FooterCustom';
+import { EventCloseIncome } from '@/model/EventCloseIncome';
 import { columnsIncomeDetails } from './table';
 
 // eslint-disable-next-line no-shadow
@@ -26,7 +26,6 @@ export enum States {
 
 interface IncomeProps {
   state: States;
-  eventLocation: any;
   incomeList: EventCloseIncome[];
   incomeFooter: any;
   shouldShowModal: ShouldShowModal;
@@ -48,7 +47,27 @@ interface IncomeProps {
     onChangeFormInput: OnChangeFormInput;
   };
   onSaveIncome: () => Promise<void>;
-  controllerInputAppendIncomeAttachments: any;
+  controllerInputAppendIncomeAttachments: {
+    nameFiles: {
+      [key: string]: string;
+    };
+    onChangeFileInput: (inputName: string, index: number) => (file: File | undefined) => void;
+    incomeAttachments: {
+      id: string;
+      attachmentsDescription: string;
+      attachmentsFileURL: string;
+    }[];
+    setIncomeAttachments: React.Dispatch<
+      React.SetStateAction<
+        { id: string; attachmentsDescription: string; attachmentsFileURL: string }[]
+      >
+    >;
+    handleAddIncomeAttachments: () => void;
+    handleChangeIncomeAttachments: (inputName: string, index: number, value: string) => void;
+    handleRemoveIncomeAttachments: (index: number) => void;
+    handleDeleteIncomeAttachments: (income: any) => void;
+    handleOnShowDelete: any;
+  };
   handleDeleteIncome: (income: EventCloseIncome) => void;
 }
 
@@ -59,7 +78,6 @@ export enum ShouldShowModal {
 
 export const IncomeManualEntriesContainer: React.FC<IncomeProps> = ({
   state,
-  // eventLocation,
   incomeList,
   incomeFooter,
   shouldShowModal,

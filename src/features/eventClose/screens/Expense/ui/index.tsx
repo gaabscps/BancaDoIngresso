@@ -9,7 +9,7 @@ import { CustomTable } from '@/components/Table';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { ReactComponent as Attachments } from '@/assets/images/svg/Attachments.svg';
-import EventCloseExpense from '@/model/EventCloseExpense';
+import { EventCloseExpense, ExpenseAttachments } from '@/model/EventCloseExpense';
 import { FormData, FormErrors, OnChangeFormInput } from '@/hooks';
 import { updateMask as updateMaskCash } from '@/helpers/masks/cash';
 import { DropdownMenuAttachment } from '@/features/eventClose/components/DropdownMenuAttachment';
@@ -23,9 +23,8 @@ export enum States {
   loading = 'loading',
 }
 
-interface ExpenseProps {
+export interface ExpenseManualEntriesContainerProps {
   state: States;
-  eventLocation: any;
   expenseList: EventCloseExpense[];
   shouldShowModal: ShouldShowModal;
   title: string | React.ReactNode;
@@ -46,8 +45,28 @@ interface ExpenseProps {
     onChangeFormInput: OnChangeFormInput;
   };
   onSaveExpense: () => Promise<void>;
-  controllerInputAppendExpenseAttachments: any;
-  handleDeleteExpense: (expense: EventCloseExpense) => void;
+  controllerInputAppendExpenseAttachments: {
+    nameFiles: {
+      [key: string]: string;
+    };
+    onChangeFileInput: (inputName: string, index: number) => (file: File | undefined) => void;
+    expenseAttachments: {
+      id?: string;
+      attachmentsDescription: string;
+      attachmentsFileURL: string;
+    }[];
+    setExpenseAttachments: React.Dispatch<
+      React.SetStateAction<
+        { id?: string; attachmentsDescription: string; attachmentsFileURL: string }[]
+      >
+    >;
+    handleAddExpenseAttachments: () => void;
+    handleChangeExpenseAttachments: (inputName: string, index: number, value: string) => void;
+    handleRemoveExpenseAttachments: (index: number) => void;
+    handleDeleteExpenseAttachments: (expense: ExpenseAttachments) => void;
+    handleOnShowDelete: any;
+  };
+  handleDeleteExpense: (expense: ExpenseAttachments) => void;
 }
 
 // eslint-disable-next-line no-shadow
@@ -55,9 +74,8 @@ export enum ShouldShowModal {
   expenseRegister = 'expenseRegister',
 }
 
-export const ExpenseManualEntriesContainer: React.FC<ExpenseProps> = ({
+export const ExpenseManualEntriesContainer: React.FC<ExpenseManualEntriesContainerProps> = ({
   state,
-  // eventLocation,
   expenseList,
   shouldShowModal,
   onShouldShowModal,

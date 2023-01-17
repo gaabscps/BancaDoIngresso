@@ -1,4 +1,4 @@
-import EventCloseIncome from './EventCloseIncome';
+import { EventCloseIncome } from './EventCloseIncome';
 
 export default interface EventCloseIncomeMain {
   amount: number;
