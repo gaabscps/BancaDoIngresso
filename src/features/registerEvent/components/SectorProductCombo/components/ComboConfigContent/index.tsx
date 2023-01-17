@@ -9,7 +9,7 @@ import { Card, Col, Form, FormGroup, Row } from 'reactstrap';
 import { CustomTable } from '@/components/Table';
 import { X } from 'react-feather';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
-import ProductIcon from '@/assets/images/svg/Product';
+import percentIcon from '@/assets/images/svg/percentIcon';
 import { comboRequestProps, formComboConfigProps, formDiscountCouponProps } from '../../types';
 
 export interface DataRow {
@@ -622,7 +622,7 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
           <SuperCollapse
             title={`Códigos de desconto adicionados`}
             count={discountCouponList.length}
-            leftIcon={ProductIcon}
+            leftIcon={percentIcon}
             content={
               discountCouponList.length > 0 ? (
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any

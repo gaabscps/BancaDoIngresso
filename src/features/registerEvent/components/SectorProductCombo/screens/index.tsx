@@ -204,6 +204,9 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
   const handleOnToggle = (): void => {
     onToggle();
     setComboState(undefined);
+    resetFormCombo();
+    resetFormComboConfig();
+    resetFormDiscount();
   };
 
   // Começo DiscountCoupon form control
@@ -748,72 +751,86 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
   useEffect(() => {
     if (comboConfig) {
       onChangeFormInputComboConfig(FormInputNameComboConfig.formPrinting)(
-        String(comboConfig.formPrinting),
+        String(comboConfig?.formPrinting),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.hasCourtesy)(
-        String(comboConfig.hasCourtesy),
+        String(comboConfig?.hasCourtesy),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.allowDiscountCoupon)(
-        String(comboConfig.allowDiscountCoupon || 'false'),
+        String(comboConfig?.allowDiscountCoupon || 'false'),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSaleAllowCreditCardPayment)(
         String(comboConfig?.physicalSale?.allowCreditCardPayment || 'false'),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSaleDebit)(
-        String(comboConfig?.physicalSale?.debit && (+comboConfig.physicalSale.debit).toFixed(2)),
+        String(
+          (comboConfig?.physicalSale?.debit && (+comboConfig.physicalSale.debit).toFixed(2)) || '',
+        ),
       );
-      onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSaleCredit)(
-        String(comboConfig?.physicalSale?.credit && (+comboConfig.physicalSale.credit).toFixed(2)),
+      onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSaleDebit)(
+        String(
+          (comboConfig?.physicalSale?.credit && (+comboConfig.physicalSale.credit).toFixed(2)) ||
+            '',
+        ),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSalePix)(
-        String(comboConfig?.physicalSale?.pix && (+comboConfig.physicalSale.pix).toFixed(2)),
+        String(
+          (comboConfig?.physicalSale?.pix && (+comboConfig.physicalSale.pix).toFixed(2)) || '',
+        ),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSaleAdministrateTax)(
         String(
-          comboConfig?.physicalSale?.administrateTax &&
-            (+comboConfig.physicalSale.administrateTax).toFixed(2),
+          (comboConfig?.physicalSale?.administrateTax &&
+            (+comboConfig.physicalSale.administrateTax).toFixed(2)) ||
+            '',
         ),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSaleInstallments)(
         String(comboConfig?.physicalSale?.installments || ''),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSaleFee)(
-        String(comboConfig?.physicalSale?.fee && (+comboConfig.physicalSale.fee).toFixed(2)),
+        String(
+          (comboConfig?.physicalSale?.fee && (+comboConfig.physicalSale.fee).toFixed(2)) || '',
+        ),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSaleAllowCreditCardPayment)(
-        String(comboConfig?.websiteSale?.allowCreditCardPayment || 'false'),
+        String(comboConfig?.websiteSale?.allowCreditCardPayment || 'true'),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSaleCredit)(
-        String(comboConfig?.websiteSale?.credit && (+comboConfig.websiteSale.credit).toFixed(2)),
+        String(
+          (comboConfig?.websiteSale?.credit && (+comboConfig.websiteSale.credit).toFixed(2)) || '',
+        ),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSaleBankSlip)(
         String(
-          comboConfig?.websiteSale?.bankSlip && (+comboConfig.websiteSale.bankSlip).toFixed(2),
+          (comboConfig?.websiteSale?.bankSlip && (+comboConfig.websiteSale.bankSlip).toFixed(2)) ||
+            '',
         ),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSalePix)(
-        String(comboConfig?.websiteSale?.pix && (+comboConfig.websiteSale.pix).toFixed(2)),
+        String((comboConfig?.websiteSale?.pix && (+comboConfig.websiteSale.pix).toFixed(2)) || ''),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSaleAdministrateTax)(
         String(
-          comboConfig?.websiteSale?.administrateTax &&
-            (+comboConfig.websiteSale.administrateTax).toFixed(2),
+          (comboConfig?.websiteSale?.administrateTax &&
+            (+comboConfig.websiteSale.administrateTax).toFixed(2)) ||
+            '',
         ),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSaleInstallments)(
-        String(comboConfig.websiteSale.installments),
+        String(comboConfig?.websiteSale?.installments || ''),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSaleFee)(
-        String(comboConfig?.websiteSale?.fee && (+comboConfig.websiteSale.fee).toFixed(2)),
+        String((comboConfig?.websiteSale?.fee && (+comboConfig.websiteSale.fee).toFixed(2)) || ''),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.waiter)(
-        String(comboConfig.waiter && (+comboConfig.waiter).toFixed(2)),
+        String((comboConfig?.waiter && (+comboConfig.waiter).toFixed(2)) || ''),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.partialPayment)(
-        String(comboConfig.partialPayment || 'false'),
+        String(comboConfig?.partialPayment || 'true'),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.allowDiscountCoupon)(
-        String(comboConfig.allowDiscountCoupon || 'false'),
+        String(comboConfig?.allowDiscountCoupon || 'true'),
       );
     }
   }, [comboConfig]);

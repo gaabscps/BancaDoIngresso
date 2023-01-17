@@ -125,7 +125,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
           </div>
           <div className="d-flex justify-content-end">
             <div
-              className="mr-3"
+              className="mr-3 action-icon"
               onClick={() => {
                 productActions.onCancelEdit();
               }}

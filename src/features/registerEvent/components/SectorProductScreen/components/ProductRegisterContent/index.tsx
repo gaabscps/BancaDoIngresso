@@ -14,12 +14,12 @@ export enum States {
 }
 
 // eslint-disable-next-line no-shadow
-export enum FormInputName {
+export enum FormInputNameProduct {
   group = 'group',
   subgroup = 'subgroup',
   id = 'id',
   name = 'name',
-  allowOnline = 'allowOnline',
+  allowSellingWebsite = 'allowOnline',
   unitMeasurement = 'unitMeasurement',
   amount = 'amount',
   unitValue = 'unitValue',
@@ -51,17 +51,17 @@ export const ProductRegisterContent: React.FC<
   };
 
   useEffect(() => {
-    if (formData[FormInputName.subgroup]) {
+    if (formData[FormInputNameProduct.subgroup]) {
       productActions.onProductByCategory(
-        formData[FormInputName.group],
-        formData[FormInputName.subgroup],
+        formData[FormInputNameProduct.group],
+        formData[FormInputNameProduct.subgroup],
       );
     }
-  }, [formData[FormInputName.subgroup]]);
+  }, [formData[FormInputNameProduct.subgroup]]);
 
   const subGruopOptions =
     productStates.groupList
-      ?.find(group => group?.id === formData[FormInputName.group])
+      ?.find(group => group?.id === formData[FormInputNameProduct.group])
       ?.subGroups?.map((subGroup: { id: string; name: string }) => ({
         value: subGroup.id,
         label: subGroup.name,
@@ -81,9 +81,9 @@ export const ProductRegisterContent: React.FC<
               name="group"
               label="Grupo do produto"
               placeholder="Digite ou selecione o grupo do produto"
-              value={formData[FormInputName.group]}
+              value={formData[FormInputNameProduct.group]}
               onChange={e => {
-                onChangeFormInput(FormInputName.group)(e?.value as string);
+                onChangeFormInput(FormInputNameProduct.group)(e?.value as string);
                 onClearSelectSubGroup();
                 onClearSelectProduct();
               }}
@@ -100,21 +100,21 @@ export const ProductRegisterContent: React.FC<
               name="subgroup"
               label="Subgrupo do produto"
               placeholder="Digite ou selecione o subgrupo do produto"
-              value={formData[FormInputName.subgroup]}
+              value={formData[FormInputNameProduct.subgroup]}
               onChange={e => {
-                onChangeFormInput(FormInputName.subgroup)(e?.value as string);
+                onChangeFormInput(FormInputNameProduct.subgroup)(e?.value as string);
                 onClearSelectProduct();
 
                 if (e?.value !== undefined) {
                   productActions.onProductByCategory(
-                    formData[FormInputName.group],
+                    formData[FormInputNameProduct.group],
                     e?.value as unknown as string,
                   );
                 }
               }}
               error={formErrors.subgroup && formErrors.subgroup[0]}
               options={subGruopOptions}
-              disabled={formData[FormInputName.group] === ''}
+              disabled={formData[FormInputNameProduct.group] === ''}
             />
           </FormGroup>
           <FormGroup className="mb-2">
@@ -126,29 +126,29 @@ export const ProductRegisterContent: React.FC<
               onChange={e => {
                 const product = productStates.optionProduct.find(item => item.id === e?.value);
                 if (product) {
-                  onChangeFormInput(FormInputName.id)(e?.value as string);
-                  onChangeFormInput(FormInputName.name)(product.name as string);
+                  onChangeFormInput(FormInputNameProduct.id)(e?.value as string);
+                  onChangeFormInput(FormInputNameProduct.name)(product.name as string);
                 } else {
-                  onChangeFormInput(FormInputName.id)('' as string);
-                  onChangeFormInput(FormInputName.name)(e?.value as string);
+                  onChangeFormInput(FormInputNameProduct.id)('' as string);
+                  onChangeFormInput(FormInputNameProduct.name)(e?.value as string);
                 }
               }}
-              value={formData[FormInputName.id]}
+              value={formData[FormInputNameProduct.id]}
               options={productStates.optionProduct.map(item => ({
                 value: item.id,
                 label: item.name,
               }))}
               error={formErrors.name && formErrors.name[0]}
-              disabled={formData[FormInputName.subgroup] === ''}
+              disabled={formData[FormInputNameProduct.subgroup] === ''}
             />
           </FormGroup>
           <FormGroup className="mb-2">
             <ButtonGroup
               label="Vender online?"
-              name="allowOnline"
-              value={formData[FormInputName.allowOnline]}
+              name="allowSellingWebsite"
+              value={formData[FormInputNameProduct.allowSellingWebsite]}
               onChange={e => {
-                onChangeFormInput(FormInputName.allowOnline)(e.target.value);
+                onChangeFormInput(FormInputNameProduct.allowSellingWebsite)(e.target.value);
               }}
               options={[
                 { value: true, label: 'Sim' },
@@ -162,9 +162,9 @@ export const ProductRegisterContent: React.FC<
               <ButtonGroup
                 label="Unidade de medida"
                 name="unitMeasurement"
-                value={formData[FormInputName.unitMeasurement]}
+                value={formData[FormInputNameProduct.unitMeasurement]}
                 onChange={e => {
-                  onChangeFormInput(FormInputName.unitMeasurement)(e.target.value);
+                  onChangeFormInput(FormInputNameProduct.unitMeasurement)(e.target.value);
                 }}
                 options={[
                   { value: 'Unitário', label: 'Unitário' },
@@ -195,12 +195,12 @@ export const ProductRegisterContent: React.FC<
                   name="amount"
                   label="Quantidade"
                   placeholder="Ex: 200"
-                  value={formData[FormInputName.amount]}
+                  value={formData[FormInputNameProduct.amount]}
                   onChange={e => {
                     const amountValue = e.target.value.replace(/\D/g, '');
-                    onChangeFormInput(FormInputName.amount)(amountValue);
-                    onChangeFormInput(FormInputName.totalValue)(
-                      String((+amountValue * +formData[FormInputName.unitValue]).toFixed(2)),
+                    onChangeFormInput(FormInputNameProduct.amount)(amountValue);
+                    onChangeFormInput(FormInputNameProduct.totalValue)(
+                      String((+amountValue * +formData[FormInputNameProduct.unitValue]).toFixed(2)),
                     );
                   }}
                   error={formErrors.amount && formErrors.amount[0]}
@@ -214,13 +214,15 @@ export const ProductRegisterContent: React.FC<
                   label="Valor unitário"
                   placeholder="Ex: 20,00"
                   addon="R$"
-                  value={updateMaskCash(formData[FormInputName.unitValue])}
+                  value={updateMaskCash(formData[FormInputNameProduct.unitValue])}
                   onChange={e => {
                     const unitValueMoney = updateMaskCash(e.target.value);
-                    onChangeFormInput(FormInputName.unitValue)(unmaskCash(unitValueMoney));
-                    onChangeFormInput(FormInputName.totalValue)(
+                    onChangeFormInput(FormInputNameProduct.unitValue)(unmaskCash(unitValueMoney));
+                    onChangeFormInput(FormInputNameProduct.totalValue)(
                       String(
-                        (+unmaskCash(unitValueMoney) * +formData[FormInputName.amount]).toFixed(2),
+                        (
+                          +unmaskCash(unitValueMoney) * +formData[FormInputNameProduct.amount]
+                        ).toFixed(2),
                       ),
                     );
                   }}
@@ -235,21 +237,21 @@ export const ProductRegisterContent: React.FC<
               label="Valor total"
               placeholder="Ex: 200,00"
               addon="R$"
-              value={updateMaskCash(formData[FormInputName.totalValue])}
+              value={updateMaskCash(formData[FormInputNameProduct.totalValue])}
               onChange={() => undefined}
               error={formErrors.totalValue && formErrors.totalValue[0]}
               disabled
             />
           </FormGroup>
           <FormGroup className="mb-2">
-            {formData[FormInputName.id] === '' ? (
+            {formData[FormInputNameProduct.id] === '' ? (
               <InputFile
                 name="imageBase64Product"
                 label="Imagem do produto (opcional)"
                 placeholder=""
                 fileName={formNameFiles?.imageBase64Product}
                 onChange={e => {
-                  onChangeFormFileInput(FormInputName.imageBase64Product)(
+                  onChangeFormFileInput(FormInputNameProduct.imageBase64Product)(
                     (e.target as HTMLInputElement)?.files?.[0],
                   );
                 }}
