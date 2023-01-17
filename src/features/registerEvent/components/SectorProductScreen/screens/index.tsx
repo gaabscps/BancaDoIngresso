@@ -7,7 +7,7 @@ import useForm from '@/hooks/useForm';
 import { toast } from 'react-toastify';
 import api, { AxiosError } from '@/services/api';
 import { useParams } from 'react-router-dom';
-import { FormInputName as FormInputNameToProduct } from '@/features/registerEvent/components/SectorProductScreen/components/ProductRegisterContent';
+import { FormInputNameProduct } from '@/features/registerEvent/components/SectorProductScreen/components/ProductRegisterContent';
 import { FormInputName as FormInputNameToConfigProduct } from '@/features/registerEvent/components/SectorProductScreen/components/ProductConfigContent';
 import { useDialog } from '@/hooks/useDialog';
 import {
@@ -340,20 +340,22 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
     try {
       if (isFormValidProduct()) {
         const payload = {
-          id: formDataProduct[FormInputNameToProduct.id] ?? '',
+          id: formDataProduct[FormInputNameProduct.id] ?? '',
           group: {
-            id: formDataProduct[FormInputNameToProduct.group], // TODO: add group id when is selected
+            id: formDataProduct[FormInputNameProduct.group], // TODO: add group id when is selected
           },
           subgroup: {
-            id: formDataProduct[FormInputNameToProduct.subgroup], // TODO: add subgroup id when is selected
+            id: formDataProduct[FormInputNameProduct.subgroup], // TODO: add subgroup id when is selected
           },
-          unitMeasurement: formDataProduct[FormInputNameToProduct.unitMeasurement] ?? '',
-          allowSellingWebsite: formDataProduct[FormInputNameToProduct.allowOnline] ?? true,
-          name: formDataProduct[FormInputNameToProduct.name] ?? '',
-          amount: +formDataProduct[FormInputNameToProduct.amount] ?? 0,
-          unitValue: +formDataProduct[FormInputNameToProduct.unitValue] ?? 0,
-          totalValue: +formDataProduct[FormInputNameToProduct.totalValue] ?? 0,
-          imageBase64: formDataProduct[FormInputNameToProduct.imageBase64Product] ?? '',
+          unitMeasurement: formDataProduct[FormInputNameProduct.unitMeasurement] ?? '',
+          allowSellingWebsite: convertToBoolean(
+            formDataProduct[FormInputNameProduct.allowSellingWebsite],
+          ),
+          name: formDataProduct[FormInputNameProduct.name] ?? '',
+          amount: +formDataProduct[FormInputNameProduct.amount] ?? 0,
+          unitValue: +formDataProduct[FormInputNameProduct.unitValue] ?? 0,
+          totalValue: +formDataProduct[FormInputNameProduct.totalValue] ?? 0,
+          imageBase64: formDataProduct[FormInputNameProduct.imageBase64Product] ?? '',
         };
         const reponse = await api.post(`/event/section-product/${params.id}/product`, payload);
         if (reponse) toast.success('Dados salvos com sucesso!');
@@ -544,19 +546,19 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
     resetFormConfigProduct();
 
     if (product) {
-      onChangeFormInputProduct(FormInputNameToProduct.group)(String(product.group?.id));
-      onChangeFormInputProduct(FormInputNameToProduct.subgroup)(String(product.subgroup?.id));
-      onChangeFormInputProduct(FormInputNameToProduct.id)(String(product.id));
-      onChangeFormInputProduct(FormInputNameToProduct.allowOnline)(
+      onChangeFormInputProduct(FormInputNameProduct.group)(String(product.group?.id));
+      onChangeFormInputProduct(FormInputNameProduct.subgroup)(String(product.subgroup?.id));
+      onChangeFormInputProduct(FormInputNameProduct.id)(String(product.id));
+      onChangeFormInputProduct(FormInputNameProduct.allowSellingWebsite)(
         String(product.allowSellingWebsite),
       );
-      onChangeFormInputProduct(FormInputNameToProduct.unitMeasurement)(
+      onChangeFormInputProduct(FormInputNameProduct.unitMeasurement)(
         String(product.unitMeasurement),
       );
-      onChangeFormInputProduct(FormInputNameToProduct.amount)(String(product.amount));
-      onChangeFormInputProduct(FormInputNameToProduct.unitValue)(String(product.unitValue));
-      onChangeFormInputProduct(FormInputNameToProduct.totalValue)(String(product.totalValue));
-      onChangeFormInputProduct(FormInputNameToProduct.imageBase64Product)(
+      onChangeFormInputProduct(FormInputNameProduct.amount)(String(product.amount));
+      onChangeFormInputProduct(FormInputNameProduct.unitValue)(String(product.unitValue));
+      onChangeFormInputProduct(FormInputNameProduct.totalValue)(String(product.totalValue));
+      onChangeFormInputProduct(FormInputNameProduct.imageBase64Product)(
         String(product.imageBase64),
       );
 
@@ -616,8 +618,8 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
 
       const productEdit = optionProduct.find((item: any) => item.id === product.id);
       if (productEdit) {
-        onChangeFormInputProduct(FormInputNameToProduct.id)(product.id as string);
-        onChangeFormInputProduct(FormInputNameToProduct.name)(product.name as string);
+        onChangeFormInputProduct(FormInputNameProduct.id)(product.id as string);
+        onChangeFormInputProduct(FormInputNameProduct.name)(product.name as string);
       }
     }
   }, [product]);

@@ -172,12 +172,8 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
             <ButtonGroup
               label="Este evento terá combos?"
               name="allowCombo"
-              value={controllerFormCombo.formDataCombo[FormInputNameCombo.allowCombo]}
-              onChange={e =>
-                controllerFormCombo.onChangeFormInputCombo(FormInputNameCombo.allowCombo)(
-                  e.target.value,
-                )
-              }
+              value={formDataCombo[FormInputNameCombo.allowCombo]}
+              onChange={e => onChangeFormInputCombo(FormInputNameCombo.allowCombo)(e.target.value)}
               options={[
                 { value: true, label: 'Sim' },
                 { value: false, label: 'Não' },
@@ -186,7 +182,7 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
             />
           </Col>
         </Row>
-        {controllerFormCombo.formDataCombo[FormInputNameCombo.allowCombo] === 'true' && (
+        {formDataCombo[FormInputNameCombo.allowCombo] === 'true' && (
           <>
             <h6 className="mb-4">Cadastrando combos</h6>
             <div className="card-ligth-color mb-5">
@@ -198,17 +194,15 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                         label="Grupo do combo"
                         name="group"
                         onChange={e => {
-                          controllerFormCombo.onChangeFormInputCombo(FormInputNameCombo.group)(
-                            e?.value as string,
-                          );
+                          onChangeFormInputCombo(FormInputNameCombo.group)(e?.value as string);
                           if (
-                            controllerFormCombo.formDataCombo[FormInputNameCombo.group] &&
-                            controllerFormCombo.formDataCombo[FormInputNameCombo.group] !== e?.value
+                            formDataCombo[FormInputNameCombo.group] &&
+                            formDataCombo[FormInputNameCombo.group] !== e?.value
                           ) {
                             onClearSelectSubGroup(refSelectSubGroup);
                           }
                         }}
-                        value={controllerFormCombo.formDataCombo[FormInputNameCombo.group]}
+                        value={formDataCombo[FormInputNameCombo.group]}
                         options={listProductGroup.map(item => ({
                           value: item.id,
                           label: item.name,
@@ -221,18 +215,16 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                         label="Nome do subgrupo"
                         name="subgroup"
                         onChange={e => {
-                          controllerFormCombo.onChangeFormInputCombo(FormInputNameCombo.subGroup)(
-                            e?.value as string,
-                          );
+                          onChangeFormInputCombo(FormInputNameCombo.subGroup)(e?.value as string);
                           getProductList(
-                            controllerFormCombo.formDataCombo[FormInputNameCombo.group],
+                            formDataCombo[FormInputNameCombo.group],
                             e?.value as string,
                           );
                         }}
                         placeholder="Digite ou selecione o subgrupo do combo"
                         options={
                           listProductGroup
-                            ?.find(item => item.id === controllerFormCombo.formDataCombo.group)
+                            ?.find(item => item.id === formDataCombo.group)
                             ?.subGroups.map(item => ({
                               value: item.id,
                               label: item.name,
@@ -242,19 +234,17 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                           //   label: item.name,
                           // }))}
                         }
-                        value={controllerFormCombo.formDataCombo[FormInputNameCombo.subGroup]}
+                        value={formDataCombo[FormInputNameCombo.subGroup]}
                         error={formErrorsCombo.subgroup && formErrorsCombo.subgroup[0]}
-                        disabled={
-                          controllerFormCombo.formDataCombo[FormInputNameCombo.group] === ''
-                        }
+                        disabled={formDataCombo[FormInputNameCombo.group] === ''}
                       />
                       <InputText
                         name="name"
                         label="Nome do combo"
                         placeholder="Digite  o nome do combo"
-                        value={controllerFormCombo.formDataCombo[FormInputNameCombo.name]}
+                        value={formDataCombo[FormInputNameCombo.name]}
                         onChange={e => {
-                          controllerFormCombo.onChangeFormInputCombo(FormInputNameCombo.name)(
+                          onChangeFormInputCombo(FormInputNameCombo.name)(
                             e?.target.value as string,
                           );
                         }}
@@ -263,13 +253,11 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                       <ButtonGroup
                         label="Vender online?"
                         name="allowSellingWebsite"
-                        value={
-                          controllerFormCombo.formDataCombo[FormInputNameCombo.allowSellingWebsite]
-                        }
+                        value={formDataCombo[FormInputNameCombo.allowSellingWebsite]}
                         onChange={e =>
-                          controllerFormCombo.onChangeFormInputCombo(
-                            FormInputNameCombo.allowSellingWebsite,
-                          )(e.target.value)
+                          onChangeFormInputCombo(FormInputNameCombo.allowSellingWebsite)(
+                            e.target.value,
+                          )
                         }
                         options={[
                           { value: true, label: 'Sim' },
@@ -297,7 +285,7 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                         }
                         placeholder="Ex: 200"
                         name="amount"
-                        value={controllerFormCombo.formDataCombo[FormInputNameCombo.amount]}
+                        value={formDataCombo[FormInputNameCombo.amount]}
                         onChange={e => {
                           const amountValue = e.target.value.replace(/\D/g, '');
                           onChangeFormInputCombo(FormInputNameCombo.amount)(amountValue);
@@ -408,7 +396,7 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                 ))}
                 <div className="d-flex justify-content-end">
                   <div
-                    className="mr-3"
+                    className="mr-3 action-icon"
                     onClick={() => {
                       onCancelEdit();
                     }}
