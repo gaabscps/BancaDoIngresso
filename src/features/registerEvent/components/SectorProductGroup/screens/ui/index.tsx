@@ -294,7 +294,7 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
                     </div>
                   )
                 }
-                leftIcon={BottleIcon}
+                leftIcon={BottleIcon()}
               />
             </Col>
           </Row>

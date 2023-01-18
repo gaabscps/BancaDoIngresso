@@ -186,7 +186,7 @@ export const PdvEventSubPdvContainer: React.FC<SubPdvContainerProps> = ({
                 )
               }
               count={subPdvStates.subPdvList.length}
-              leftIcon={SubPdvIcon}
+              leftIcon={SubPdvIcon()}
             />
           </>
         )}

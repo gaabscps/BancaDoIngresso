@@ -227,7 +227,7 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
                 )
               }
               count={mainPdvStates.eventPDVs.length}
-              leftIcon={PDVIcon}
+              leftIcon={PDVIcon()}
               buttonTitle="Cancelar edição"
               buttonAction={() => mainPdvActions.onCancelEdit()}
               showButtonOnTitle={!!mainPdvStates?.mainPdv}

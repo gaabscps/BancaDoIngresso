@@ -15,7 +15,7 @@ export const SectorTicket: React.FC<SectorTicketProps> = ({ ticket }) => (
     {ticket?.tickets?.map((item: Tickets, index: React.Key | null | undefined) => (
       <>
         <div className="mb-4">
-          <div className="mb-2 dataListTitle">Nome do setor:</div>
+          <div className="mb-2 text-darkgray-regular">Nome do setor:</div>
           <div>{item?.name || '--'}</div>
         </div>
         <div className="d-grid">

@@ -161,7 +161,7 @@ export const SectorTicketMainSettingsContainer: React.FC<
               batchStates?.batchList?.length > 0
                 ? batchStates?.batchList?.map((batch, index) => (
                     <React.Fragment key={index}>
-                      {index > 0 ? <hr style={{ margin: '25px -30px 30px -50px' }} /> : null}
+                      {index > 0 ? <hr style={{ margin: '25px -30px 30px -30px' }} /> : null}
 
                       <div
                         className={`${
@@ -219,7 +219,7 @@ export const SectorTicketMainSettingsContainer: React.FC<
                   ))
                 : 'Nenhum lote cadastrado. Aqui será exibida uma lista dos lotes cadastrados.'
             }
-            leftIcon={TicketsIcon}
+            leftIcon={TicketsIcon()}
             count={batchStates?.batchList?.length}
           />
         </div>

@@ -176,7 +176,7 @@ const Sample = (): JSX.Element => {
           <SuperCollapse
             title="Grupos cadastrados"
             content="Nenhum grupo foi cadastrado. Aqui será exibida uma lista dos seus grupos cadastrados"
-            leftIcon={ComboIcon}
+            leftIcon={ComboIcon()}
           />
         </div>
       </Container>

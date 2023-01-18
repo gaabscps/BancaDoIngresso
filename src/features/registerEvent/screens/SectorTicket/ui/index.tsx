@@ -157,7 +157,7 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
                   ticketStates?.ticketList?.length > 0
                     ? ticketStates?.ticketList?.map((ticket: Tickets, index: number) => (
                         <React.Fragment key={ticket.id}>
-                          {index > 0 ? <hr style={{ margin: '25px -30px 30px -50px' }} /> : null}
+                          {index > 0 ? <hr style={{ margin: '25px -30px 30px -30px' }} /> : null}
 
                           <div
                             className={`${
@@ -218,7 +218,7 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
                       ))
                     : 'Nenhum setores e ingressos cadastrado. Aqui será exibida uma lista dos setores e ingressos.'
                 }
-                leftIcon={TicketIcon}
+                leftIcon={TicketIcon()}
                 count={ticketStates?.ticketList?.length}
               />
             </div>

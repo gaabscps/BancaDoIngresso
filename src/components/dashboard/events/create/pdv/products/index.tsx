@@ -68,7 +68,7 @@ const Sample = (): JSX.Element => {
           <SuperCollapse
             title="Setores e produtos inseridos"
             content="Nenhum setor e produto inserido. Aqui será exibida uma lista dos seus setores e produtos inseridos"
-            leftIcon={ProductIcon}
+            leftIcon={ProductIcon()}
           />
         </div>
 
