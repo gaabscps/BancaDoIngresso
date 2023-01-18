@@ -2,6 +2,7 @@ import FilterVector from '@/assets/images/svg/FilterVector';
 import { DataList } from '@/components/DataList';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
 import { CustomTable } from '@/components/Table';
+import { updateMask as updateMaskCash } from '@/helpers/masks/cashNumber';
 import empty from '@/assets/images/other-images/imgvazio.svg';
 import { colors } from '@/styles/colors';
 import React from 'react';
@@ -10,17 +11,21 @@ import { Link } from 'react-router-dom';
 
 import { Card, Container } from 'reactstrap';
 
+import { CollapseTable } from '@/components/CollapseTable';
+import validators from '@/helpers/validators';
 import { GeneralSale } from '../../components/GeneralSale';
 
 export interface ReportsContentProps {
   event: any;
   eventChild: any;
   generalSale: any;
+  saleDate: any;
 }
 
 export const ReportsContent: React.FC<ReportsContentProps> = ({
   event,
   eventChild,
+  saleDate,
   generalSale,
 }) => {
   const [reportContent, setReportContent] = React.useState('');
@@ -40,7 +45,43 @@ export const ReportsContent: React.FC<ReportsContentProps> = ({
     },
   ];
 
-  console.log(generalSale.geographicRanking);
+  const contentColumn = [
+    {
+      title: 'Ingresso',
+      width: 300,
+    },
+    {
+      title: 'Ingressos vendidos',
+      width: 200,
+    },
+    {
+      title: 'Finalidade',
+      width: 100,
+    },
+    {
+      title: 'Valor',
+      width: 200,
+    },
+  ];
+
+  const titleColumn = [
+    {
+      title: 'Data',
+      width: 300,
+    },
+    {
+      title: 'Total ingressos vendidos',
+      width: 200,
+    },
+    {
+      title: 'Cortesias',
+      width: 100,
+    },
+    {
+      title: 'Valor Total',
+      width: 200,
+    },
+  ];
 
   return (
     <>
@@ -178,7 +219,6 @@ export const ReportsContent: React.FC<ReportsContentProps> = ({
               }
             />
           }
-          leftIcon={() => <div></div>}
         />
         <hr />
         <div className="mb-5 mt-5 report-menu-container">
@@ -205,41 +245,52 @@ export const ReportsContent: React.FC<ReportsContentProps> = ({
         {reportContent === 'Vendas por data' && (
           <>
             <h5>Vendas por data</h5>
-            <div className="collapseTableText">
-              <div className="d-flex">
-                <div
-                  style={{
-                    marginLeft: '10px',
-                    display: 'grid',
-                    gridTemplateColumns: '1fr 1fr 1fr 1fr',
-                  }}
-                >
-                  <div>Data</div>
-                  <div>Total ingressos vendidos</div>
-                  <div>Cortesias</div>
-                  <div>Valor total</div>
-                </div>
-                <div></div>
-              </div>
-            </div>
-            <SuperCollapse
-              title={
-                <div
-                  style={{
-                    display: 'grid',
-                    gridTemplateColumns: '1fr 1fr 1fr 1fr',
-                    columnGap: '150px',
-                  }}
-                >
-                  <div>10/12/2022</div>
-                  <div>2.000</div>
-                  <div>5</div>
-                  <div>R$ 20.000,00</div>
-                </div>
-              }
-              content={<GeneralSale generalSaleState={generalSale} />}
-              leftIcon={() => <div></div>}
-            />
+            {saleDate?.dates?.map((date: any, index: any) => (
+              <CollapseTable
+                key={index}
+                titleColumn={titleColumn}
+                titleDataRow={[
+                  {
+                    data: date.date,
+                    width: 300,
+                  },
+                  {
+                    data: date.amountSold,
+                    width: 200,
+                  },
+                  {
+                    data: date.amountCourtesy,
+                    width: 100,
+                  },
+                  {
+                    data: `R$ ${updateMaskCash(validators.applyDecimalMask(String(date.value)))}`,
+                    width: 200,
+                  },
+                ]}
+                contentColumn={contentColumn}
+                contentDataRow={[
+                  {
+                    data: date?.details.map((ticket: any) => ticket.name),
+                    width: 300,
+                  },
+                  {
+                    data: date?.details.map((ticket: any) => ticket.amountSold),
+                    width: 200,
+                  },
+                  {
+                    data: date?.details.map((ticket: any) => ticket.goal),
+                    width: 100,
+                  },
+                  {
+                    data: date?.details.map(
+                      (ticket: any) =>
+                        `R$ ${updateMaskCash(validators.applyDecimalMask(String(ticket.value)))}`,
+                    ),
+                    width: 200,
+                  },
+                ]}
+              />
+            ))}
           </>
         )}
         {reportContent === 'Vendas por PDV' && <div className="pageTitle">Vendas por PDVs</div>}

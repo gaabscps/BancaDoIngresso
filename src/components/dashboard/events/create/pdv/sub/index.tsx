@@ -34,7 +34,7 @@ const Sample = (): JSX.Element => {
           <SuperCollapse
             title="Sub PDV’s cadastrados"
             content="Nenhum sub PDV cadastrado. Aqui será exibida uma lista dos seus sub PDV’s cadastrados"
-            leftIcon={SubPdvIcon}
+            leftIcon={SubPdvIcon()}
           />
         </div>
         <div className="nextPageButton">

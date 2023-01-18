@@ -545,7 +545,7 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                         </div>
                       )
                     }
-                    leftIcon={ComboIcon}
+                    leftIcon={ComboIcon()}
                   />
                 </Col>
               </Row>

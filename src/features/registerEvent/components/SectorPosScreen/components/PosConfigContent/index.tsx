@@ -142,7 +142,7 @@ export const PosConfigContent: React.FC<Pick<SectorProductPosContainerProps, 'da
           <Fragment key={index}>
             <SuperCollapse
               title={sectionNome}
-              leftIcon={() => (
+              leftIcon={
                 <Checkbox
                   name={`${sectionNome}`}
                   checked={selectedAll.includes(sectionId as never)}
@@ -151,7 +151,7 @@ export const PosConfigContent: React.FC<Pick<SectorProductPosContainerProps, 'da
                   }}
                   // onClick={e => e.stopPropagation()}
                 />
-              )}
+              }
               content={
                 <>
                   {sectionGroup?.map(({ categoryGroupId, categoryGroupName, subGroups }: any) =>

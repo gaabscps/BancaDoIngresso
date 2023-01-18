@@ -604,7 +604,7 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
           <SuperCollapse
             title={`Códigos de desconto adicionados`}
             count={discountCouponList.length}
-            leftIcon={ProductIcon}
+            leftIcon={ProductIcon()}
             content={
               discountCouponList.length > 0 ? (
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any

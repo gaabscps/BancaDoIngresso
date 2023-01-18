@@ -15,6 +15,7 @@ export const ReportsScreen: React.FC = () => {
   const [event, setEvent] = React.useState({});
   const [eventChild, setEventChild] = React.useState([]);
   const [generalSale, setGeneralSale] = React.useState({});
+  const [saleDate, setSaleDate] = React.useState({});
 
   const handleGetReport = async (): Promise<void> => {
     try {
@@ -39,11 +40,30 @@ export const ReportsScreen: React.FC = () => {
       toast.error(err.message);
     }
   };
+  const handleGetSaleDate = async (): Promise<void> => {
+    try {
+      const { data } = await api.get(`event/report/${params.id}/sale-date`);
+      if (data) {
+        setSaleDate(data);
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    }
+  };
 
   useEffect(() => {
     handleGetReport();
     handleGetReportGeneral();
+    handleGetSaleDate();
   }, []);
 
-  return <ReportsContent generalSale={generalSale} event={event} eventChild={eventChild} />;
+  return (
+    <ReportsContent
+      generalSale={generalSale}
+      event={event}
+      eventChild={eventChild}
+      saleDate={saleDate}
+    />
+  );
 };

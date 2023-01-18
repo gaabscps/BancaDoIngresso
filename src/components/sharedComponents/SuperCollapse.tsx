@@ -10,12 +10,13 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  leftIcon(): JSX.Element;
+  leftIcon?: JSX.Element;
   buttonAction?(e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void;
   className?: string;
   disabled?: boolean;
   overflow?: boolean;
   noPadding?: boolean;
+  responsive?: boolean;
 }
 
 type Props = StateProps & DispatchProps;
@@ -27,15 +28,16 @@ function SuperCollapse(props: Props): JSX.Element {
 
   return (
     <>
-      <div style={{ marginBottom: '50px' }}>
+      <div className={`${props.disabled ? '' : 'card-no-border'}`} style={{ marginBottom: '50px' }}>
         <div
-          className={`collapseTable d-flex justify-content-between collapseTableText position-relative ${
+          style={props.responsive ? { minWidth: '1040px' } : {}}
+          className={`collapseTable d-flex justify-content-between collapseTableText position-relative collapse-no-border  ${
             props.disabled ? 'collapse-disabled' : ''
-          } ${props.className} ${open ? ' border-bottom-collapse' : ''}`}
+          } ${props.className} ${open ? ' border-bottom-collapse' : 'collapse-no-border'}`}
           onClick={() => setOpen(!open)}
         >
           <div className="d-flex">
-            <div className="iconTable">{props?.leftIcon()}</div>
+            {props?.leftIcon ? <div className="iconTable">{props?.leftIcon}</div> : null}
             <div className={`normalText ${props.disabled ? 'disable-text' : ''}`}>
               {props.title}{' '}
               {props.count === undefined ? (
@@ -77,7 +79,7 @@ function SuperCollapse(props: Props): JSX.Element {
         </div>
 
         <Collapse in={open} className={open ? 'show' : ''}>
-          <div className="collapseTable">
+          <div style={props.responsive ? { minWidth: '1040px' } : {}} className="collapseTable">
             <div
               style={props.overflow ? { overflow: 'auto' } : {}}
               className={`${props.noPadding ? 'subTitleMain' : 'collapseTableText subTitleMain'}`}

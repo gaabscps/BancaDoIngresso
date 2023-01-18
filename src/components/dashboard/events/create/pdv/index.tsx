@@ -100,7 +100,7 @@ const Sample = (): JSX.Element => {
           <SuperCollapse
             title="PDV’s adicionados"
             content="Nenhum PDV foi adicionado. Aqui será exibida uma lista dos seus PDV’s adicionados"
-            leftIcon={PDVIcon}
+            leftIcon={PDVIcon()}
           />
         </div>
         {show ? (

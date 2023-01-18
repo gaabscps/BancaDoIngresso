@@ -218,7 +218,7 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
                       ))
                     : 'Nenhum setores e ingressos cadastrado. Aqui será exibida uma lista dos setores e ingressos.'
                 }
-                leftIcon={TicketIcon}
+                leftIcon={TicketIcon()}
                 count={ticketStates?.ticketList?.length}
               />
             </div>

@@ -110,7 +110,7 @@ const Sample = (): JSX.Element => (
         <SuperCollapse
           title="Produtos cadastrados"
           content="Nenhum produto foi cadastrado. Aqui será exibida uma lista dos seus produtos cadastrados"
-          leftIcon={ProductIcon}
+          leftIcon={ProductIcon()}
         />
       </div>
     </Container>

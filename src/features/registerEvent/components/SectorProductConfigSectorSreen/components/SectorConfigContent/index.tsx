@@ -145,7 +145,7 @@ export const SectorConfigContent: React.FC<
             <Fragment key={index}>
               <SuperCollapse
                 title={`${categoryGroupName} // ${categorySubGroupName}`}
-                leftIcon={() => (
+                leftIcon={
                   <Checkbox
                     name={`${categoryGroupName} + ${categorySubGroupName}`}
                     checked={selectedAll.includes(categorySubGroupId as never)}
@@ -154,7 +154,7 @@ export const SectorConfigContent: React.FC<
                     }}
                     onClick={e => e.stopPropagation()}
                   />
-                )}
+                }
                 content={
                   <>
                     {!!products.length && (

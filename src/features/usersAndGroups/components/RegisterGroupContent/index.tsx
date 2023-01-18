@@ -88,7 +88,7 @@ export const RegisterGroupContent: React.FC<Props> = (props: Props) => {
                     'Nenhuma permissão cadastrada. Aqui será exibida uma lista de permissões'
                   )
                 }
-                leftIcon={() => checkBoxAll(data)}
+                leftIcon={checkBoxAll(data)}
               />
             ))}
           </div>

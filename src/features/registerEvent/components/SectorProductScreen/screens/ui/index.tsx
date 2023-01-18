@@ -260,7 +260,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
               : 'Nenhum produto cadastrado. Aqui será exibida uma lista dos produtos cadastrados'
           }
           count={countProducts}
-          leftIcon={ProductIcon}
+          leftIcon={ProductIcon()}
         />
         <div className="d-flex justify-content-end">
           <Button

@@ -79,7 +79,7 @@ const Sample = (): JSX.Element => {
             <SuperCollapse
               title="Setores e ingressos adicionados"
               content="Nenhum setor e ingresso foi adicionado. Aqui será exibida uma lista dos seus setores e ingressos adicionados"
-              leftIcon={TicketIcon}
+              leftIcon={TicketIcon()}
             />
             <div className="secondPageTitle">Adicionando setor e ingresso</div>
             <div className="infoSubTitle">

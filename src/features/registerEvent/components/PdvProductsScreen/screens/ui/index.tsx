@@ -223,7 +223,7 @@ export const PdvProductContainer: React.FC<SectorProductPosContainerProps> = ({
               </div>
             </>
           ))}
-          leftIcon={ProductIcon}
+          leftIcon={ProductIcon()}
         />
 
         <div className="d-flex justify-content-end">

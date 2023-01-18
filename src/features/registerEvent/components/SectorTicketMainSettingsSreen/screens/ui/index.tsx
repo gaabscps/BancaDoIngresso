@@ -219,7 +219,7 @@ export const SectorTicketMainSettingsContainer: React.FC<
                   ))
                 : 'Nenhum lote cadastrado. Aqui será exibida uma lista dos lotes cadastrados.'
             }
-            leftIcon={TicketsIcon}
+            leftIcon={TicketsIcon()}
             count={batchStates?.batchList?.length}
           />
         </div>

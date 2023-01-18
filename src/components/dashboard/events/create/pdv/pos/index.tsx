@@ -68,7 +68,7 @@ const Sample = (): JSX.Element => {
           <SuperCollapse
             title="POS’s inseridos"
             content="Nenhum PDV foi adicionado. Aqui será exibida uma lista dos seus POS’s inseridos"
-            leftIcon={POSIcon}
+            leftIcon={POSIcon()}
           />
         </div>
 

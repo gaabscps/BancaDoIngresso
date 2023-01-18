@@ -268,7 +268,7 @@ export const SectorProductConfigSectorContainer: React.FC<
               : 'Nenhum setor cadastrado. Aqui será exibida uma lista dos setores cadastrados'
           }
           count={configSectorStates.sectorTableList.length}
-          leftIcon={SectorIcon}
+          leftIcon={SectorIcon()}
         />
         <div className="d-flex justify-content-end">
           <Button

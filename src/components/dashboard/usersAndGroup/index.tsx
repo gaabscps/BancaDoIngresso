@@ -48,12 +48,12 @@ const Sample = (): JSX.Element => {
             <SuperCollapse
               title="Usuários cadastrados"
               content="Nenhum usuário cadastrado. Aqui será exibida uma lista dos usuários cadastrados"
-              leftIcon={UserIcon}
+              leftIcon={UserIcon()}
             />
             <SuperCollapse
               title="Grupos cadastrados"
               content="Nenhum grupo cadastrado. Aqui será exibida uma lista dos grupos cadastrados"
-              leftIcon={UserGroupIcon}
+              leftIcon={UserGroupIcon()}
             />
           </Col>
         </Row>

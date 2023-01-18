@@ -106,7 +106,7 @@ const Sample = (): JSX.Element => {
           <SuperCollapse
             title="POS’s inseridos"
             content="Nenhum POS foi inserido. Aqui será exibida uma lista dos seus POS's inseridos"
-            leftIcon={POSIcon}
+            leftIcon={POSIcon()}
           />
         </div>
       </Container>

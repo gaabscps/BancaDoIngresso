@@ -377,7 +377,7 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
                     )
                   : 'Nenhuma POS cadastrada. Aqui será exibida uma lista de POS'
               }
-              leftIcon={POSIcon}
+              leftIcon={POSIcon()}
             />
           </>
         ) : (
