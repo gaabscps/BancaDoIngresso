@@ -43,6 +43,7 @@ export interface SubPdvContainerProps {
   subPdvActions: subPdvActionsProps;
   appendUser: ContractorControllerUser;
   modalConfig: modalConfigSubPdvSettingsProps;
+  changeSubPdvModal: (value: string) => void;
 }
 
 export const PdvEventSubPdvContainer: React.FC<SubPdvContainerProps> = ({
@@ -53,6 +54,7 @@ export const PdvEventSubPdvContainer: React.FC<SubPdvContainerProps> = ({
   subPdvActions,
   appendUser,
   modalConfig,
+  changeSubPdvModal,
 }) => {
   const { formData, formErrors, onChangeFormInput } = formSubPdv;
 
@@ -89,6 +91,7 @@ export const PdvEventSubPdvContainer: React.FC<SubPdvContainerProps> = ({
                 subPdvStates={subPdvStates}
                 formSubPdvRegister={formSubPdvRegister}
                 appendUser={appendUser}
+                changeSubPdvModal={changeSubPdvModal}
               />
             ),
           }[modalConfig.shouldShowModal]
