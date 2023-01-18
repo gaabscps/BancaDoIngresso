@@ -11,6 +11,7 @@ import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
 import { ActionProps } from '@/components/Dialog';
 import dayjs from 'dayjs';
 import POSIcon from '@/assets/images/svg/Pos';
+import { toPercentage } from '@/helpers/common/amount';
 import {
   formPosConfigProps,
   formPosProps,
@@ -138,9 +139,11 @@ export const PdvEventPosContainer: React.FC<PosContainerProps> = ({
                               id: item.pos.id,
                               numberPos: item.pos.serialNumber,
                               expirationDate: dayjs(item.pos.expirationDate).format(
-                                'YYYY-DD-MM hh:mm:ss',
+                                'DD/MM/YYYY HH:mm:ss',
                               ),
-                              partialPayment: item.waiter,
+                              partialPayment: item.waiter
+                                ? `${toPercentage(item.waiter)} %`
+                                : `${toPercentage(0)} %`,
                               actions: (
                                 <React.Fragment>
                                   <div className={`${posStates.pos ? 'disabled-content' : null}`}>

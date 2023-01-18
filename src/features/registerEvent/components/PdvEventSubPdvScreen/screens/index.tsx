@@ -268,12 +268,16 @@ export const PdvEventSubPdvScreen: React.FC<Omit<PdvEventSubPdvScreenProps, 'nex
 
   const handleOnConfirmDelete = async (subPdvSelected: SubPdv): Promise<void> => {
     try {
-      await api.delete(`/event/pdv/${params.id}/${subPdvSelected.id}`);
+      setState(States.loading);
+      await api.delete(`/event/pdv/${params.id}/sub-pdv/${pdvId}/${subPdvSelected.id}`);
+      await handleFirstGet();
       toast.success('PDV excluído com sucesso!');
       confirmDelete.hide();
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
+    } finally {
+      setState(States.default);
     }
   };
 
@@ -331,6 +335,13 @@ export const PdvEventSubPdvScreen: React.FC<Omit<PdvEventSubPdvScreenProps, 'nex
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
+    }
+  };
+
+  const handleChangeSubPdvModal = (value: string): void => {
+    const selected = subPdvOptions.find(data => data.id === value);
+    if (selected && selected.users && selected.users.length > 0) {
+      setUsersSelected(selected.users);
     }
   };
 
@@ -396,6 +407,7 @@ export const PdvEventSubPdvScreen: React.FC<Omit<PdvEventSubPdvScreenProps, 'nex
       subPdvActions={controllerSubPdvActions}
       modalConfig={controllerModalConfig}
       appendUser={controllerAppendUser}
+      changeSubPdvModal={handleChangeSubPdvModal}
     />
   );
 };

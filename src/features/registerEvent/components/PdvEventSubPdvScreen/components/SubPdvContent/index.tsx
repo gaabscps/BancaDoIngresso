@@ -25,8 +25,11 @@ export enum FormInputName {
 }
 
 export const SubPdvContent: React.FC<
-  Pick<SubPdvContainerProps, 'formSubPdvRegister' | 'appendUser' | 'subPdvStates' | 'subPdvActions'>
-> = ({ formSubPdvRegister, appendUser, subPdvStates, subPdvActions }) => {
+  Pick<
+    SubPdvContainerProps,
+    'formSubPdvRegister' | 'appendUser' | 'subPdvStates' | 'subPdvActions' | 'changeSubPdvModal'
+  >
+> = ({ formSubPdvRegister, appendUser, subPdvStates, subPdvActions, changeSubPdvModal }) => {
   const { formData, formErrors, onChangeFormInput } = formSubPdvRegister;
 
   const userDataSelected = appendUser?.listUsers.find((item: User) => item.id === formData.user);
@@ -43,7 +46,7 @@ export const SubPdvContent: React.FC<
     }
   };
 
-  const dataTableUser = appendUser.usersSelected?.map(item => ({
+  const dataTableUser = appendUser.usersSelected.map(item => ({
     id: item.id,
     name: item.name,
     login: item.cpf,
@@ -73,7 +76,10 @@ export const SubPdvContent: React.FC<
                 label="Nome do Sub PDV"
                 placeholder="Digite ou selecione nome do Sub PDV"
                 value={formData[FormInputName.name]}
-                onChange={e => onChangeFormInput(FormInputName.name)(e?.value as string)}
+                onChange={e => {
+                  onChangeFormInput(FormInputName.name)(e?.value as string);
+                  changeSubPdvModal(e?.value as string);
+                }}
                 error={formErrors.name && formErrors.name[0]}
                 options={subPdvStates.subPdvOptions.map(itemSubPdv => ({
                   label: itemSubPdv.name,
