@@ -54,7 +54,7 @@ export const CollapseTable: React.FC<CollapseTableProps> = ({
               <div></div>
             </div>
             <div className="d-flex">
-              <div style={{ height: '30px' }} className="collapseTableGrid">
+              <div className="collapseTableGrid">
                 {contentDataRow.map((contentData, index) => (
                   <div key={index} className={`width${contentData.width}`}>
                     {contentData.data.map((item: any) => (
