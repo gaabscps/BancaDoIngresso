@@ -79,7 +79,10 @@ function SuperCollapse(props: Props): JSX.Element {
         </div>
 
         <Collapse in={open} className={open ? 'show' : ''}>
-          <div style={props.responsive ? { minWidth: '1040px' } : {}} className="collapseTable">
+          <div
+            style={props.responsive ? { minWidth: '1040px' } : {}}
+            className="collapseTable collapse-no-border"
+          >
             <div
               style={props.overflow ? { overflow: 'auto' } : {}}
               className={`${props.noPadding ? 'subTitleMain' : 'collapseTableText subTitleMain'}`}
