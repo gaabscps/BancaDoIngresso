@@ -719,7 +719,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
             )
           }
           count={listDiscountCoupon.length}
-          leftIcon={TicketIcon}
+          leftIcon={TicketIcon()}
         />
 
         <div className="d-flex justify-content-between">

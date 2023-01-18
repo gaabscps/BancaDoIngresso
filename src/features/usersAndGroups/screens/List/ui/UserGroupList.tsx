@@ -202,7 +202,7 @@ export const UserGroupList: React.FC<Props> = (props: Props): JSX.Element => (
               'Nenhum usuário cadastrado. Aqui será exibida uma lista dos usuários cadastrados'
             )
           }
-          leftIcon={UserIcon}
+          leftIcon={UserIcon()}
           count={props.users.length}
           showButtonOnTitle={!!(props.userSelectedCount && props.userSelectedCount > 0)}
           buttonTitle="Deletar selecionados"
@@ -225,7 +225,7 @@ export const UserGroupList: React.FC<Props> = (props: Props): JSX.Element => (
               'Nenhum grupo cadastrado. Aqui será exibida uma lista dos grupos cadastrados'
             )
           }
-          leftIcon={UserGroupIcon}
+          leftIcon={UserGroupIcon()}
           count={props.groups.length}
           showButtonOnTitle={!!(props.groupSelectedCount && props.groupSelectedCount > 0)}
           buttonTitle="Deletar selecionados"

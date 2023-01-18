@@ -182,7 +182,7 @@ export const PdvEventPosContainer: React.FC<PosContainerProps> = ({
                 // </div>
               }
               count={posStates.posList.length}
-              leftIcon={POSIcon}
+              leftIcon={POSIcon()}
               buttonTitle="Cancelar edição"
               buttonAction={() => posActions.onCancelEdit()}
               showButtonOnTitle={!!posStates?.pos}

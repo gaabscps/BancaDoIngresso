@@ -2,7 +2,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import api from '@/services/api';
@@ -17,7 +17,6 @@ import { DeleteContent } from '@/components/DeleteContent';
 import { IncomeManualEntriesContainer, ShouldShowModal, States } from './ui';
 
 export const IncomeManualEntriesScreen: React.FC = (): JSX.Element => {
-  const { state: eventLocation } = useLocation();
   const { id: eventId } = useParams<{ id: string }>();
   const [state, setState] = useState<States>(States.default);
   const [incomeAttachments, setIncomeAttachments] = useState<
@@ -195,6 +194,20 @@ export const IncomeManualEntriesScreen: React.FC = (): JSX.Element => {
     }
   };
 
+  const handleOnCheckIncome = async (incomeId: string): Promise<void> => {
+    try {
+      setState(States.loading);
+      await api.patch(`/event/close/${eventId}/income/${incomeId}/check`);
+      toast.success('Recebimento confirmado com sucesso');
+      handleGetAllIncomeManualEntries();
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
   const handleOnSaveIncome = async (): Promise<void> => {
     try {
       setState(States.loading);
@@ -303,7 +316,6 @@ export const IncomeManualEntriesScreen: React.FC = (): JSX.Element => {
   return (
     <IncomeManualEntriesContainer
       state={state}
-      eventLocation={eventLocation}
       incomeList={incomeList}
       incomeFooter={incomeFooter}
       title={title}
@@ -315,6 +327,7 @@ export const IncomeManualEntriesScreen: React.FC = (): JSX.Element => {
       onSaveIncome={handleOnSaveIncome}
       controllerInputAppendIncomeAttachments={controllerInputAppendIncomeAttachments}
       handleDeleteIncome={handleDeleteIncome}
+      onCheckIncome={handleOnCheckIncome}
     />
   );
 };

@@ -2,16 +2,32 @@ import FilterVector from '@/assets/images/svg/FilterVector';
 import { DataList } from '@/components/DataList';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
 import { CustomTable } from '@/components/Table';
+import { updateMask as updateMaskCash } from '@/helpers/masks/cashNumber';
+import empty from '@/assets/images/other-images/imgvazio.svg';
 import { colors } from '@/styles/colors';
 import React from 'react';
 import { ArrowLeft, X } from 'react-feather';
 import { Link } from 'react-router-dom';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend, Chart } from 'chart.js';
-import { Pie } from 'react-chartjs-2';
+
 import { Card, Container } from 'reactstrap';
 
-export const ReportsContent: React.FC = () => {
-  console.log('Reports Content');
+import { CollapseTable } from '@/components/CollapseTable';
+import validators from '@/helpers/validators';
+import { GeneralSale } from '../../components/GeneralSale';
+
+export interface ReportsContentProps {
+  event: any;
+  eventChild: any;
+  generalSale: any;
+  saleDate: any;
+}
+
+export const ReportsContent: React.FC<ReportsContentProps> = ({
+  event,
+  eventChild,
+  saleDate,
+  generalSale,
+}) => {
   const [reportContent, setReportContent] = React.useState('');
 
   const reports = [
@@ -29,35 +45,43 @@ export const ReportsContent: React.FC = () => {
     },
   ];
 
-  ChartJS.register(ArcElement, Tooltip, Legend);
+  const contentColumn = [
+    {
+      title: 'Ingresso',
+      width: 300,
+    },
+    {
+      title: 'Ingressos vendidos',
+      width: 200,
+    },
+    {
+      title: 'Finalidade',
+      width: 100,
+    },
+    {
+      title: 'Valor',
+      width: 200,
+    },
+  ];
 
-  const data = {
-    labels: ['Web', 'PDV`s'],
-    datasets: [
-      {
-        label: '# of Votes',
-        data: [50, 75],
-        backgroundColor: ['#3CAFC8', '#D8413A'],
-        borderWidth: 0,
-      },
-    ],
-  };
-  const data2 = {
-    labels: ['Venda', 'Cortesia'],
-    datasets: [
-      {
-        label: '# of Votes',
-        data: [75, 50],
-        backgroundColor: ['#3CAFC8', '#D8413A'],
-        borderWidth: 0,
-      },
-    ],
-  };
-
-  Chart.overrides.pie.plugins.legend.labels.usePointStyle = true;
-  Chart.overrides.pie.plugins.legend.labels.pointStyle = 'circle';
-  Chart.overrides.pie.plugins.legend.labels.boxHeight = 8;
-  Chart.overrides.pie.plugins.legend.labels.boxWidth = 15;
+  const titleColumn = [
+    {
+      title: 'Data',
+      width: 300,
+    },
+    {
+      title: 'Total ingressos vendidos',
+      width: 200,
+    },
+    {
+      title: 'Cortesias',
+      width: 100,
+    },
+    {
+      title: 'Valor Total',
+      width: 200,
+    },
+  ];
 
   return (
     <>
@@ -67,7 +91,7 @@ export const ReportsContent: React.FC = () => {
             <Link to={`${process.env.PUBLIC_URL}/dashboard/event`}>
               <ArrowLeft color={colors.black} className="arrow-left" />
             </Link>
-            <h5 className="ml-3 mb-0 mt-2 pageTitle">Revoada do Tatu - 01/04/2022</h5>
+            <h5 className="ml-3 mb-0 mt-2 pageTitle">{event.name}</h5>
           </div>
           <div className="button-filter-container">
             <div className="filter-container">
@@ -99,44 +123,47 @@ export const ReportsContent: React.FC = () => {
             alignItems: 'end',
           }}
         >
-          <img
-            width={120}
-            height={80}
-            style={{ borderRadius: '10px' }}
-            src="https://picsum.photos/200/300"
-            alt="random"
-          />
+          <img style={{ borderRadius: '10px', transform: 'scaleY(0.8)' }} width={120} src={empty} />
           <DataList
             data={[
               {
                 title: 'Local:',
-                content: 'Rio Claro',
+                content: event.city || '-----',
               },
               {
                 title: 'Venda',
-                content: '500',
+                content: event.amountSale || '-----',
               },
               {
                 title: 'Cortesia',
-                content: '500',
+                content: event.amountCourtesy || '-----',
               },
               {
                 title: 'Total de vendas:',
-                content: '1.000',
+                content: event.totalSales || '-----',
               },
               {
                 title: 'Arrecadação:',
-                content: 'R$ 200.000,00',
+                content: event.saleValue
+                  ? `R$${String(event.saleValue && +event.saleValue.toFixed(2)).replace('.', ',')}`
+                  : '-----',
               },
               {
                 title: 'Ticket médio:',
-                content: 'R$ 60,00',
+                content: event.averageTicket
+                  ? `R$${String(event.averageTicket && +event.averageTicket.toFixed(2)).replace(
+                      '.',
+                      ',',
+                    )}`
+                  : '-----',
               },
             ]}
           />
         </div>
         <SuperCollapse
+          className={eventChild ? ' ' : 'collapse-disabled collapse-disable-text'}
           title="Eventos filhos"
+          disabled={!eventChild}
           content={
             <CustomTable
               numberRowsPerPage={0}
@@ -173,45 +200,35 @@ export const ReportsContent: React.FC = () => {
                   selector: row => row.ticketMedio,
                 },
               ]}
-              data={[
-                {
-                  image: (
-                    <img width={80} height={60} src="https://picsum.photos/200/300" alt="random" />
-                  ),
-                  name: 'Revoada do Tatu',
-                  venda: '500',
-                  cortesia: '500',
-                  totalVendas: '1.000',
-                  arrecadacao: 'R$ 200.000,00',
-                  ticketMedio: 'R$ 60,00',
-                },
-              ]}
+              data={
+                eventChild?.map &&
+                eventChild?.map((child: any) => ({
+                  image: child?.image || '---',
+                  name: child?.name || '---',
+                  venda: child?.amountSale || '---',
+                  cortesia: child?.amountCourtesy || '---',
+                  totalVendas: child?.totalSales || '---',
+                  arrecadacao: `R$${
+                    String(child.saleValue && +child.saleValue.toFixed(2)).replace('.', ',') ||
+                    '---'
+                  }}`,
+                  ticketMedio: `R$${String(
+                    child.averageTicket && +child.averageTicket.toFixed(2),
+                  ).replace('.', ',')}`,
+                }))
+              }
             />
           }
-          leftIcon={() => <div></div>}
         />
         <hr />
-        <div
-          className="mb-5 mt-5"
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(210px, 1fr))',
-            gridColumnGap: '38px',
-            gridRowGap: '30px',
-          }}
-        >
+        <div className="mb-5 mt-5 report-menu-container">
           {reports.map((report, index) => (
             <Card
               key={index}
+              className="report-menu-card card-no-border"
               style={{
                 backgroundColor: report.title === reportContent ? '#3CAFC8' : '#FFFFFF',
                 color: report.title === reportContent ? '#FFFFFF' : '#000000',
-                minWidth: '182px',
-                width: 'fit-content',
-                alignItems: 'center',
-                padding: '26px 30px',
-                borderRadius: '10px',
-                cursor: 'pointer',
               }}
               onClick={() => setReportContent(report.title)}
             >
@@ -220,51 +237,62 @@ export const ReportsContent: React.FC = () => {
           ))}
         </div>
         <hr className="mb-5" />
-        {reportContent === 'Vendas gerais' && (
+        {
+          // switch case reportContent
+        }
+        {reportContent === 'Vendas gerais' && <GeneralSale generalSaleState={generalSale} />}
+
+        {reportContent === 'Vendas por data' && (
           <>
-            <h5 className="pageTitle">Vendas gerais</h5>
-            <h6 className="mb-4">Canais de venda</h6>
-            <div className="d-flex justify-content-between">
-              <div className="d-flex">
-                <div style={{ width: '200px' }}>
-                  <Pie width={200} height={200} data={data} />
-                </div>
-                <div>
-                  <div className="d-flex justify-content-end flex-column w-100 h-100">
-                    <div className="mb-3">
-                      <span style={{ color: '#828282' }}>Web: </span>R$ 50.000,00 (30%)
-                    </div>
-                    <div className="mb-3">
-                      <span style={{ color: '#828282' }}>Pdvs: </span>R$ 75.000,00 (70%)
-                    </div>
-                    <div className="mb-3">
-                      <span style={{ color: '#828282' }}>App:</span> R$ 0,00 (0%)
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="d-flex mr-5">
-                <div style={{ width: '200px' }}>
-                  <Pie width={200} height={200} data={data2} />
-                </div>
-                <div>
-                  <div className="d-flex justify-content-end flex-column w-100 h-100">
-                    <div className="mb-3">
-                      <span style={{ color: '#828282' }}>Venda: </span>R$ 75.000,00 (70%)
-                    </div>
-                    <div className="mb-3">
-                      <span style={{ color: '#828282' }}>Cortesia: </span>R$ 50.000,00 (30%)
-                    </div>
-                    <div className="mb-3">
-                      <span style={{ color: '#828282' }}>App:</span> R$ 0,00 (0%)
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <h5>Vendas por data</h5>
+            {saleDate?.dates?.map((date: any, index: any) => (
+              <CollapseTable
+                key={index}
+                titleColumn={titleColumn}
+                titleDataRow={[
+                  {
+                    data: date.date,
+                    width: 300,
+                  },
+                  {
+                    data: date.amountSold,
+                    width: 200,
+                  },
+                  {
+                    data: date.amountCourtesy,
+                    width: 100,
+                  },
+                  {
+                    data: `R$ ${updateMaskCash(validators.applyDecimalMask(String(date.value)))}`,
+                    width: 200,
+                  },
+                ]}
+                contentColumn={contentColumn}
+                contentDataRow={[
+                  {
+                    data: date?.details.map((ticket: any) => ticket.name),
+                    width: 300,
+                  },
+                  {
+                    data: date?.details.map((ticket: any) => ticket.amountSold),
+                    width: 200,
+                  },
+                  {
+                    data: date?.details.map((ticket: any) => ticket.goal),
+                    width: 100,
+                  },
+                  {
+                    data: date?.details.map(
+                      (ticket: any) =>
+                        `R$ ${updateMaskCash(validators.applyDecimalMask(String(ticket.value)))}`,
+                    ),
+                    width: 200,
+                  },
+                ]}
+              />
+            ))}
           </>
         )}
-        {reportContent === 'Vendas por data' && <div className="pageTitle">Vendas por data</div>}
         {reportContent === 'Vendas por PDV' && <div className="pageTitle">Vendas por PDVs</div>}
       </Container>
     </>

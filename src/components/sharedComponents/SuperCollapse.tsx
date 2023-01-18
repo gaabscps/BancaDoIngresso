@@ -10,12 +10,13 @@ interface StateProps {
 }
 
 interface DispatchProps {
-  leftIcon(): JSX.Element;
+  leftIcon?: JSX.Element;
   buttonAction?(e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void;
   className?: string;
   disabled?: boolean;
   overflow?: boolean;
   noPadding?: boolean;
+  responsive?: boolean;
 }
 
 type Props = StateProps & DispatchProps;
@@ -27,15 +28,16 @@ function SuperCollapse(props: Props): JSX.Element {
 
   return (
     <>
-      <div style={{ marginBottom: '50px' }}>
+      <div className={`${props.disabled ? '' : 'card-no-border'}`} style={{ marginBottom: '50px' }}>
         <div
-          className={`collapseTable d-flex justify-content-between collapseTableText position-relative ${
+          style={props.responsive ? { minWidth: '1040px' } : {}}
+          className={`collapseTable d-flex justify-content-between collapseTableText position-relative collapse-no-border  ${
             props.disabled ? 'collapse-disabled' : ''
-          } ${props.className} ${open ? ' border-bottom-collapse' : ''}`}
+          } ${props.className} ${open ? ' border-bottom-collapse' : 'collapse-no-border'}`}
           onClick={() => setOpen(!open)}
         >
           <div className="d-flex">
-            <div className="iconTable">{props?.leftIcon()}</div>
+            {props?.leftIcon ? <div className="iconTable">{props?.leftIcon}</div> : null}
             <div className={`normalText ${props.disabled ? 'disable-text' : ''}`}>
               {props.title}{' '}
               {props.count === undefined ? (
@@ -65,16 +67,22 @@ function SuperCollapse(props: Props): JSX.Element {
               width="16"
               height="10"
               viewBox="0 0 16 10"
-              fill="none"
+              fill="currentColor"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <path d="M1.88 0L8 6.10667L14.12 0L16 1.88L8 9.88L0 1.88L1.88 0Z" fill="#222222" />
+              <path
+                d="M1.88 0L8 6.10667L14.12 0L16 1.88L8 9.88L0 1.88L1.88 0Z"
+                fill="currentColor"
+              />
             </svg>
           </div>
         </div>
 
         <Collapse in={open} className={open ? 'show' : ''}>
-          <div className="collapseTable">
+          <div
+            style={props.responsive ? { minWidth: '1040px' } : {}}
+            className="collapseTable collapse-no-border"
+          >
             <div
               style={props.overflow ? { overflow: 'auto' } : {}}
               className={`${props.noPadding ? 'subTitleMain' : 'collapseTableText subTitleMain'}`}

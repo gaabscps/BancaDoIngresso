@@ -151,7 +151,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
                         : '';
                     return (
                       <React.Fragment key={indexSubGroup}>
-                        {indexGroup > 0 ? <hr style={{ margin: '25px -30px 30px -50px' }} /> : null}
+                        {indexGroup > 0 ? <hr style={{ margin: '25px -30px 30px -30px' }} /> : null}
                         <div className={disabledProduct}>
                           <div className="mb-5">
                             <span className="secondary-table-title">
@@ -260,7 +260,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
               : 'Nenhum produto cadastrado. Aqui será exibida uma lista dos produtos cadastrados'
           }
           count={countProducts}
-          leftIcon={ProductIcon}
+          leftIcon={ProductIcon()}
         />
         <div className="d-flex justify-content-end">
           <Button

@@ -87,6 +87,7 @@ export const columnsExpenseDetails: TableColumn<columnsExpenseDetails>[] = [
   {
     name: 'Ações',
     selector: row => row.actions,
-    maxWidth: '150px',
+    allowOverflow: true,
+    maxWidth: '220px',
   },
 ];

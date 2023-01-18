@@ -276,7 +276,7 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
                         indexPos,
                       ) => (
                         <React.Fragment key={indexPos}>
-                          {indexPos > 0 ? <hr style={{ margin: '25px -30px 30px -50px' }} /> : null}
+                          {indexPos > 0 ? <hr style={{ margin: '25px -30px 30px -30px' }} /> : null}
                           <div
                             className={`${
                               posState?.pos && posState?.pos?.id !== pos?.id
@@ -374,7 +374,7 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
                     )
                   : 'Nenhuma POS cadastrada. Aqui será exibida uma lista de POS'
               }
-              leftIcon={POSIcon}
+              leftIcon={POSIcon()}
             />
           </>
         ) : (

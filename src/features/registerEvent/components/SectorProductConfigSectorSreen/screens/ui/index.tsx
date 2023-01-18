@@ -183,7 +183,7 @@ export const SectorProductConfigSectorContainer: React.FC<
 
                     return (
                       <React.Fragment key={index}>
-                        {index > 0 ? <hr style={{ margin: '15px -30px 30px -50px' }} /> : null}
+                        {index > 0 ? <hr style={{ margin: '15px -30px 30px -30px' }} /> : null}
                         <div
                           className={`${
                             configSectorStates?.sector &&
@@ -268,7 +268,7 @@ export const SectorProductConfigSectorContainer: React.FC<
               : 'Nenhum setor cadastrado. Aqui será exibida uma lista dos setores cadastrados'
           }
           count={configSectorStates.sectorTableList.length}
-          leftIcon={SectorIcon}
+          leftIcon={SectorIcon()}
         />
         <div className="d-flex justify-content-end">
           <Button

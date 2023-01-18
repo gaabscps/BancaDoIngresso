@@ -68,7 +68,7 @@ export const SectorProduct: React.FC<SectorProductProps> = ({ event }) => {
       {event?.sectionproductsAndCombos?.map((section: EventSectionGet, indexSector: any) => (
         <>
           {indexSector > 0 ? <hr style={{ margin: '25px 0px 30px 0px' }} /> : null}
-          <div className="dataListTitle">Nome do setor:</div>
+          <div className="text-darkgray-regular">Nome do setor:</div>
           <div className="mb-4">{section.section.name}</div>
           <div
             style={{

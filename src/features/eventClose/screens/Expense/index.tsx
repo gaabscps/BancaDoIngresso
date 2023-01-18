@@ -2,7 +2,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import api from '@/services/api';
@@ -17,11 +17,10 @@ import { FormInputName as FormInputNameExpense } from '@/features/eventClose/com
 import { ExpenseManualEntriesContainer, ShouldShowModal, States } from './ui';
 
 export const ExpenseManualEntriesScreen: React.FC = (): JSX.Element => {
-  const { state: eventLocation } = useLocation();
   const { id: eventId } = useParams<{ id: string }>();
   const [state, setState] = useState<States>(States.default);
   const [expenseAttachments, setExpenseAttachments] = useState<
-    { id: string; attachmentsDescription: string; attachmentsFileURL: string }[] | any[]
+    { id?: string; attachmentsDescription: string; attachmentsFileURL: string }[] | []
   >([]);
   const [nameFiles, setNameFiles] = useState<NameFiles>({});
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(
@@ -68,7 +67,7 @@ export const ExpenseManualEntriesScreen: React.FC = (): JSX.Element => {
             newNameFiles[index] = file.name;
             setNameFiles(newNameFiles);
             // set expense Attachments to index
-            const newFormValues = [...expenseAttachments];
+            const newFormValues = [...expenseAttachments] as any;
             newFormValues[index][inputName] = base64;
             setExpenseAttachments(newFormValues);
           }
@@ -193,6 +192,20 @@ export const ExpenseManualEntriesScreen: React.FC = (): JSX.Element => {
     }
   };
 
+  const handleOnCheckExpense = async (incomeId: string): Promise<void> => {
+    try {
+      setState(States.loading);
+      await api.patch(`/event/close/${eventId}/expense/${incomeId}/check`);
+      toast.success('Recebimento confirmado com sucesso');
+      handleGetAllExpenseManualEntries();
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
   const handleOnSaveExpense = async (): Promise<void> => {
     try {
       setState(States.loading);
@@ -201,7 +214,9 @@ export const ExpenseManualEntriesScreen: React.FC = (): JSX.Element => {
         description: expenseAttachment.attachmentsDescription,
         fileURL:
           expenseAttachment.attachmentsFileURL ||
-          expenseAttachment['attachmentsFileURL-'.concat(indexAtt.toString())],
+          expenseAttachment[
+            'attachmentsFileURL-'.concat(indexAtt.toString()) as keyof typeof expenseAttachment
+          ],
       }));
 
       // if payloadIcomeAttachments.id is empty, delete key
@@ -304,7 +319,6 @@ export const ExpenseManualEntriesScreen: React.FC = (): JSX.Element => {
   return (
     <ExpenseManualEntriesContainer
       state={state}
-      eventLocation={eventLocation}
       expenseList={expenseList}
       title={title}
       visible={visible}
@@ -315,6 +329,7 @@ export const ExpenseManualEntriesScreen: React.FC = (): JSX.Element => {
       onSaveExpense={handleOnSaveExpense}
       controllerInputAppendExpenseAttachments={controllerInputAppendExpenseAttachments}
       handleDeleteExpense={handleDeleteExpense}
+      onCheckExpense={handleOnCheckExpense}
     />
   );
 };

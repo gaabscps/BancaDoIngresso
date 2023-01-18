@@ -50,7 +50,7 @@ const Sample = (): JSX.Element => (
         <SuperCollapse
           title="Setores cadastrados"
           content="Nenhum setor foi cadastrado. Aqui será exibida uma lista dos seus setores cadastrados"
-          leftIcon={SectorIcon}
+          leftIcon={SectorIcon()}
         />
       </div>
     </Container>

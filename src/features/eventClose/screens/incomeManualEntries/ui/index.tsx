@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { Button, Dialog, Loading } from '@/components';
+import { Button, Checkbox, Dialog, Loading } from '@/components';
 import { Container } from 'reactstrap';
 import './style.scss';
 import { Link, useParams } from 'react-router-dom';
@@ -9,13 +9,13 @@ import { CustomTable } from '@/components/Table';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { ReactComponent as Attachments } from '@/assets/images/svg/Attachments.svg';
-import EventCloseIncome from '@/model/EventCloseIncome';
 import { IncomeManualEntriesRegister } from '@/features/eventClose/components/IncomeManualEntriesRegister';
 import { FormData, FormErrors, OnChangeFormInput } from '@/hooks';
 import { updateMask as updateMaskCash } from '@/helpers/masks/cash';
 import { DropdownMenuAttachment } from '@/features/eventClose/components/DropdownMenuAttachment';
 import { ReactComponent as Download } from '@/assets/images/svg/download.svg';
 import { FooterCustom } from '@/components/FooterCustom';
+import { EventCloseIncome } from '@/model/EventCloseIncome';
 import { columnsIncomeDetails } from './table';
 
 // eslint-disable-next-line no-shadow
@@ -26,7 +26,6 @@ export enum States {
 
 interface IncomeProps {
   state: States;
-  eventLocation: any;
   incomeList: EventCloseIncome[];
   incomeFooter: any;
   shouldShowModal: ShouldShowModal;
@@ -48,8 +47,29 @@ interface IncomeProps {
     onChangeFormInput: OnChangeFormInput;
   };
   onSaveIncome: () => Promise<void>;
-  controllerInputAppendIncomeAttachments: any;
+  controllerInputAppendIncomeAttachments: {
+    nameFiles: {
+      [key: string]: string;
+    };
+    onChangeFileInput: (inputName: string, index: number) => (file: File | undefined) => void;
+    incomeAttachments: {
+      id: string;
+      attachmentsDescription: string;
+      attachmentsFileURL: string;
+    }[];
+    setIncomeAttachments: React.Dispatch<
+      React.SetStateAction<
+        { id: string; attachmentsDescription: string; attachmentsFileURL: string }[]
+      >
+    >;
+    handleAddIncomeAttachments: () => void;
+    handleChangeIncomeAttachments: (inputName: string, index: number, value: string) => void;
+    handleRemoveIncomeAttachments: (index: number) => void;
+    handleDeleteIncomeAttachments: (income: any) => void;
+    handleOnShowDelete: any;
+  };
   handleDeleteIncome: (income: EventCloseIncome) => void;
+  onCheckIncome: (incomeId: string) => Promise<void>;
 }
 
 // eslint-disable-next-line no-shadow
@@ -59,7 +79,6 @@ export enum ShouldShowModal {
 
 export const IncomeManualEntriesContainer: React.FC<IncomeProps> = ({
   state,
-  // eventLocation,
   incomeList,
   incomeFooter,
   shouldShowModal,
@@ -71,6 +90,7 @@ export const IncomeManualEntriesContainer: React.FC<IncomeProps> = ({
   onSaveIncome,
   controllerInputAppendIncomeAttachments,
   handleDeleteIncome,
+  onCheckIncome,
 }) => {
   const { id: eventId } = useParams<{ id: string }>();
 
@@ -89,67 +109,81 @@ export const IncomeManualEntriesContainer: React.FC<IncomeProps> = ({
     description: item.description,
     value: updateMaskCash(item.totalValue),
     actions: (
-      <div className="mt-3">
-        {item.attachments?.length > 0 && (
-          <span
-            className="badge badge-custom position-absolute top-0 start-100 translate-middle rounded-pill bg-danger"
-            style={{ marginLeft: '12px' }}
-          >
-            {item.attachments?.length}
-          </span>
-        )}
-        <DropdownMenuAttachment
-          actions={item.attachments?.map((attachment: any) => ({
-            title: (
-              <div className="d-flex align-items-center">
-                <span className="mr-5">{attachment.description}</span>
-                {
-                  // verificar se é um arquivo ou url
-                  attachment.fileURL?.includes('http') ? (
-                    <Download
-                      height={15}
-                      className="svg-icon action-icon mr-3"
-                      onClick={() =>
-                        downloadURI(attachment.fileURL, attachment.fileURL.split('/').pop())
-                      }
-                    />
-                  ) : (
-                    ''
-                  )
-                }
-
-                <X
-                  height={18}
-                  className="svg-icon action-icon"
-                  onClick={() =>
-                    controllerInputAppendIncomeAttachments.handleOnShowDelete(
-                      controllerInputAppendIncomeAttachments.handleDeleteIncomeAttachments,
-                      { ...attachment, incomeId: item.id },
+      <div className="mt-3 d-flex">
+        <div className="mr-4" style={{ overflow: 'unset' }}>
+          <Checkbox
+            theme="secondary"
+            name={`income-${index}-${item.id}`}
+            checked={item.checked}
+            onChange={() => onCheckIncome(item.id)}
+          />
+        </div>
+        <div>
+          {item.attachments?.length > 0 && (
+            <span
+              className="badge badge-custom position-absolute top-0 start-100 translate-middle rounded-pill bg-danger"
+              style={{ marginLeft: '12px' }}
+            >
+              {item.attachments?.length}
+            </span>
+          )}
+          <DropdownMenuAttachment
+            actions={item.attachments?.map((attachment: any) => ({
+              title: (
+                <div className="d-flex align-items-center">
+                  <span className="mr-5">{attachment.description}</span>
+                  {
+                    // verificar se é um arquivo ou url
+                    attachment.fileURL?.includes('http') ? (
+                      <Download
+                        height={15}
+                        className="svg-icon action-icon mr-3"
+                        onClick={() =>
+                          downloadURI(attachment.fileURL, attachment.fileURL.split('/').pop())
+                        }
+                      />
+                    ) : (
+                      ''
                     )
                   }
-                />
-              </div>
-            ),
-            onClick: (): void => undefined,
-          }))}
-          title={<Attachments className="mr-4 svg-icon action-icon" />}
-        />
-        <Pen
-          className="mr-4 svg-icon action-icon"
-          onClick={(): void =>
-            onShouldShowModal({
-              value: ShouldShowModal.incomeRegister,
-              newTitleModal: `${item.description}`,
-              incomeManualEntries: item,
-            })
-          }
-        />
-        <Trash
-          className="mr-2 svg-icon action-icon svg-icon-trash"
-          onClick={() =>
-            controllerInputAppendIncomeAttachments.handleOnShowDelete(handleDeleteIncome, item)
-          }
-        />
+
+                  <X
+                    height={18}
+                    className="svg-icon action-icon"
+                    onClick={() =>
+                      controllerInputAppendIncomeAttachments.handleOnShowDelete(
+                        controllerInputAppendIncomeAttachments.handleDeleteIncomeAttachments,
+                        { ...attachment, incomeId: item.id },
+                      )
+                    }
+                  />
+                </div>
+              ),
+              onClick: (): void => undefined,
+            }))}
+            title={<Attachments className="mr-4 svg-icon action-icon" />}
+          />
+        </div>
+        <div>
+          <Pen
+            className="mr-4 svg-icon action-icon"
+            onClick={(): void =>
+              onShouldShowModal({
+                value: ShouldShowModal.incomeRegister,
+                newTitleModal: `${item.description}`,
+                incomeManualEntries: item,
+              })
+            }
+          />
+        </div>
+        <div>
+          <Trash
+            className="mr-2 svg-icon action-icon svg-icon-trash"
+            onClick={() =>
+              controllerInputAppendIncomeAttachments.handleOnShowDelete(handleDeleteIncome, item)
+            }
+          />
+        </div>
       </div>
     ),
   }));

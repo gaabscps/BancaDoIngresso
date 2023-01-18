@@ -1,9 +1,15 @@
-export default interface EventCloseIncome {
+export interface IncomeAttachments {
+  id: string;
+  description: string;
+  fileURL: string;
+}
+
+export interface EventCloseIncome {
   amount: number;
   description: string;
   value: number;
   isIncome: boolean;
-  attachments?: number;
+  attachments?: IncomeAttachments[];
   groupId?: string;
   sectionId?: string;
 }

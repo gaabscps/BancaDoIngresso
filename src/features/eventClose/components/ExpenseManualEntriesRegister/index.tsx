@@ -1,18 +1,10 @@
 import React from 'react';
 import { Col, Form, FormGroup, Row } from 'reactstrap';
 import { Button, InputFile, InputText } from '@/components';
-import { FormData, FormErrors, OnChangeFormInput } from '@/hooks/useForm';
+// import { FormData, FormErrors, OnChangeFormInput } from '@/hooks/useForm';
 import { ReactComponent as Download } from '@/assets/images/svg/download.svg';
 import { X } from 'react-feather';
-
-interface RegisterContentProps {
-  formExpense: {
-    formData: FormData;
-    formErrors: FormErrors;
-    onChangeFormInput: OnChangeFormInput;
-  };
-  controllerInputAppendExpenseAttachments: any;
-}
+import { ExpenseManualEntriesContainerProps } from '../../screens/Expense/ui';
 
 // eslint-disable-next-line no-shadow
 export enum FormInputName {
@@ -22,10 +14,12 @@ export enum FormInputName {
   attachmentsFileURL = 'attachmentsFileURL',
 }
 
-export const ExpenseManualEntriesRegister: React.FC<RegisterContentProps> = ({
-  formExpense,
-  controllerInputAppendExpenseAttachments,
-}) => {
+export const ExpenseManualEntriesRegister: React.FC<
+  Pick<
+    ExpenseManualEntriesContainerProps,
+    'formExpense' | 'controllerInputAppendExpenseAttachments'
+  >
+> = ({ formExpense, controllerInputAppendExpenseAttachments }) => {
   const { formData, formErrors, onChangeFormInput } = formExpense;
 
   const downloadURI = (uri: string, name: string): void => {
@@ -77,94 +71,92 @@ export const ExpenseManualEntriesRegister: React.FC<RegisterContentProps> = ({
           </Col>
         </Row>
         {controllerInputAppendExpenseAttachments.expenseAttachments.length > 0 ? (
-          controllerInputAppendExpenseAttachments.expenseAttachments.map(
-            (item: any, index: string) => (
-              <Row key={index}>
-                <Col md={5}>
-                  <FormGroup className="mb-2">
-                    <InputText
-                      name="agencia"
-                      label="Descrição"
-                      placeholder="Digite a descrição"
-                      value={item.attachmentsDescription}
-                      maxLength={60}
-                      onChange={e =>
-                        controllerInputAppendExpenseAttachments.handleChangeExpenseAttachments(
-                          FormInputName.attachmentsDescription,
-                          index,
-                          e?.target.value,
-                        )
-                      }
-                      error={
-                        formErrors?.attachmentsDescription && formErrors.attachmentsDescription[0]
-                      }
-                    />
-                  </FormGroup>
-                </Col>
-                <Col md={5}>
-                  <FormGroup className="mb-2">
-                    <InputFile
-                      name={`attachmentsFileURL-${index}`}
-                      label="Arquivo"
-                      fileName={
-                        controllerInputAppendExpenseAttachments?.expenseAttachments[index]
-                          .attachmentsFileURL
-                          ? controllerInputAppendExpenseAttachments.expenseAttachments[
-                              index
-                            ].attachmentsFileURL
-                              .split('/')
-                              .pop()
-                          : controllerInputAppendExpenseAttachments.nameFiles[index]
-                      }
-                      onChange={e => {
-                        controllerInputAppendExpenseAttachments.onChangeFileInput(
-                          `${FormInputName.attachmentsFileURL}-${index}`,
-                          index,
-                        )((e.target as HTMLInputElement)?.files?.[0]);
-                      }}
-                      error={formErrors?.attachmentsFileURL && formErrors.attachmentsFileURL[0]}
-                    />
-                  </FormGroup>
-                </Col>
-                <Col md={2} className="pt-5">
-                  {
-                    // verificar se é um arquivo ou url
-                    item.attachmentsFileURL?.includes('http') ? (
-                      <Download
-                        className="svg-icon action-icon mr-3"
-                        onClick={() =>
-                          downloadURI(
-                            item.attachmentsFileURL,
-                            controllerInputAppendExpenseAttachments.expenseAttachments[
-                              index
-                            ].attachmentsFileURL
-                              .split('/')
-                              .pop(),
-                          )
-                        }
-                      />
-                    ) : (
-                      ''
-                    )
-                  }
-
-                  <X
-                    className="svg-icon action-icon"
-                    onClick={() =>
-                      item.attachmentsFileURL?.includes('http')
-                        ? controllerInputAppendExpenseAttachments.handleOnShowDelete(
-                            controllerInputAppendExpenseAttachments.handleDeleteExpenseAttachments,
-                            { ...item, expenseId: item.id },
-                          )
-                        : controllerInputAppendExpenseAttachments.handleRemoveExpenseAttachments(
-                            index,
-                          )
+          controllerInputAppendExpenseAttachments.expenseAttachments.map((item, index: number) => (
+            <Row key={index}>
+              <Col md={5}>
+                <FormGroup className="mb-2">
+                  <InputText
+                    name="agencia"
+                    label="Descrição"
+                    placeholder="Digite a descrição"
+                    value={item.attachmentsDescription}
+                    maxLength={60}
+                    onChange={e =>
+                      controllerInputAppendExpenseAttachments.handleChangeExpenseAttachments(
+                        FormInputName.attachmentsDescription,
+                        index,
+                        e?.target.value,
+                      )
+                    }
+                    error={
+                      formErrors?.attachmentsDescription && formErrors.attachmentsDescription[0]
                     }
                   />
-                </Col>
-              </Row>
-            ),
-          )
+                </FormGroup>
+              </Col>
+              <Col md={5}>
+                <FormGroup className="mb-2">
+                  <InputFile
+                    name={`attachmentsFileURL-${index}`}
+                    label="Arquivo"
+                    fileName={
+                      controllerInputAppendExpenseAttachments?.expenseAttachments[index]
+                        .attachmentsFileURL
+                        ? controllerInputAppendExpenseAttachments.expenseAttachments[
+                            index
+                          ].attachmentsFileURL
+                            .split('/')
+                            .pop()
+                        : controllerInputAppendExpenseAttachments.nameFiles[index]
+                    }
+                    onChange={e => {
+                      controllerInputAppendExpenseAttachments.onChangeFileInput(
+                        `${FormInputName.attachmentsFileURL}-${index}`,
+                        index,
+                      )((e.target as HTMLInputElement)?.files?.[0]);
+                    }}
+                    error={formErrors?.attachmentsFileURL && formErrors.attachmentsFileURL[0]}
+                  />
+                </FormGroup>
+              </Col>
+              <Col md={2} className="pt-5">
+                {
+                  // verificar se é um arquivo ou url
+                  item.attachmentsFileURL?.includes('http') ? (
+                    <Download
+                      className="svg-icon action-icon mr-3"
+                      onClick={() =>
+                        downloadURI(
+                          item.attachmentsFileURL,
+                          controllerInputAppendExpenseAttachments?.expenseAttachments[
+                            index
+                          ].attachmentsFileURL
+                            .split('/')
+                            .pop() || '',
+                        )
+                      }
+                    />
+                  ) : (
+                    ''
+                  )
+                }
+
+                <X
+                  className="svg-icon action-icon"
+                  onClick={() =>
+                    item.attachmentsFileURL?.includes('http')
+                      ? controllerInputAppendExpenseAttachments.handleOnShowDelete(
+                          controllerInputAppendExpenseAttachments.handleDeleteExpenseAttachments,
+                          { ...item, expenseId: item.id },
+                        )
+                      : controllerInputAppendExpenseAttachments.handleRemoveExpenseAttachments(
+                          index,
+                        )
+                  }
+                />
+              </Col>
+            </Row>
+          ))
         ) : (
           <span className="p-3 text-black-50">Para adicionar anexos, clique no botão abaixo</span>
         )}
