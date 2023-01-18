@@ -146,6 +146,28 @@ export const PosScreen: React.FC = (): JSX.Element => {
     }
   };
 
+  const toStatus = (s: string): PosStatus => {
+    let status = PosStatus.INACTIVE;
+    switch (s) {
+      case '0':
+        status = PosStatus.STOCK;
+        break;
+      case '1':
+        status = PosStatus.USE;
+        break;
+      case '2':
+        status = PosStatus.RESERVED;
+        break;
+      case '3':
+        status = PosStatus.INACTIVE;
+        break;
+      default:
+        status = PosStatus.INACTIVE;
+        break;
+    }
+    return status;
+  };
+
   const handleOnSavePos = async (): Promise<void> => {
     try {
       if (isFormValidPos()) {
@@ -153,7 +175,7 @@ export const PosScreen: React.FC = (): JSX.Element => {
           id: pos?.id,
           name: formDataPos[FormInputNameToSavePos.name],
           serialNumber: formDataPos[FormInputNameToSavePos.serialNumber],
-          status: +formDataPos[FormInputNameToSavePos.status] || 0,
+          status: toStatus(formDataPos[FormInputNameToSavePos.status]),
           pdv: {
             id: formDataPos[FormInputNameToSavePos.pdv] || 'undefined',
           },
@@ -165,9 +187,6 @@ export const PosScreen: React.FC = (): JSX.Element => {
 
         if (payload.model === null) {
           delete payload.model;
-        }
-        if (payload.status === 0) {
-          delete payload.status;
         }
 
         if (payload.cardOperator === null) {
