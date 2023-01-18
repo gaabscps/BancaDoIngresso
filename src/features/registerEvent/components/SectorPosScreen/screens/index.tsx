@@ -229,6 +229,7 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({ back
 
   const handleOnSavePos = async (): Promise<void> => {
     try {
+      setState(States.loading);
       const productSameSection = form.products?.reduce((acc: any, item: any) => {
         const [sectionId, categoryGroupId, categorySubGroupId, productsId] = item.split('_');
 
@@ -330,11 +331,14 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({ back
     } catch (error) {
       const err = error as AxiosError | any;
       toast.error(err.response?.data.message);
+    } finally {
+      setState(States.default);
     }
   };
 
   const handleOnConfirmDeleteToPos = async (posSelected: Pos): Promise<void> => {
     try {
+      setState(States.loading);
       await api.delete(`/event/section-product/${params?.id}/pos/${posSelected.id}`);
 
       toast.success('Pos excluído com sucesso!');
@@ -343,6 +347,8 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({ back
     } catch (error) {
       const err = error as AxiosError | any;
       throw new Error(err.response?.data.message);
+    } finally {
+      setState(States.default);
     }
   };
 

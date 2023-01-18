@@ -158,11 +158,16 @@ export const PosConfigContent: React.FC<Pick<SectorProductPosContainerProps, 'da
                     subGroups?.map(
                       ({ categorySubGroupId, categorySubGroupName, products, combos }: any) => (
                         <Fragment key={categorySubGroupId}>
-                          <p>{`${categoryGroupName} - ${categorySubGroupName}`}</p>
+                          <p className="text-black-regular mb-4">{`${categoryGroupName} - ${categorySubGroupName}`}</p>
                           {!!products.length && (
                             <div className="mb-3">
                               <div className="mb-4">
-                                <span className="text-dark">Produtos</span>
+                                <span
+                                  onClick={() => console.log(products)}
+                                  className="text-black-light"
+                                >
+                                  Produtos
+                                </span>
                               </div>
                               <div
                                 style={{
@@ -195,7 +200,7 @@ export const PosConfigContent: React.FC<Pick<SectorProductPosContainerProps, 'da
                           {!!combos.length && (
                             <div>
                               <div className="mb-4">
-                                <span className="text-dark">Combos</span>
+                                <span className="text-black-light">Combos</span>
                               </div>
                               <div
                                 style={{

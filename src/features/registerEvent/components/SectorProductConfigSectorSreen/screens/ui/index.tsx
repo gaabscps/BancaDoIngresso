@@ -126,7 +126,7 @@ export const SectorProductConfigSectorContainer: React.FC<
                       if (formConfigSector.isFormValid()) {
                         modalConfig.onShouldShowModal({
                           value: ShouldShowModal.configProduct,
-                          newTitleModal: 'Configurações do sector',
+                          newTitleModal: 'Configurações do setor',
                           sector: configSectorStates.sector,
                         });
                       }
@@ -141,7 +141,7 @@ export const SectorProductConfigSectorContainer: React.FC<
                       if (formConfigSector.isFormValid()) {
                         modalConfig.onShouldShowModal({
                           value: ShouldShowModal.configProduct,
-                          newTitleModal: 'Configurações do sector',
+                          newTitleModal: 'Configurações do setor',
                           sector: configSectorStates.sector,
                         });
                       }
@@ -210,7 +210,7 @@ export const SectorProductConfigSectorContainer: React.FC<
                                     onClick={(): void => {
                                       modalConfig.onShouldShowModal({
                                         value: ShouldShowModal.configProduct,
-                                        newTitleModal: 'Configurações do sector',
+                                        newTitleModal: 'Configurações do setor',
                                         sector: {
                                           sectionId,
                                           sectionNome,

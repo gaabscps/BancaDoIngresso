@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable arrow-body-style */
 import React from 'react';
-import { ButtonGroup, InputText } from '@/components';
+import { ButtonGroup, InputText, TooltipCustom } from '@/components';
 import DiscountCoupon from '@/model/DiscountCoupon';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { updateMask as updateMaskCash, unmask as unmaskCash } from '@/helpers/masks/cashNumber';
@@ -9,6 +9,7 @@ import { Card, Col, Form, FormGroup, Row } from 'reactstrap';
 import { CustomTable } from '@/components/Table';
 import { X } from 'react-feather';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
+import { ReactComponent as Info } from '@/assets/images/svg/infoTooltip.svg';
 import percentIcon from '@/assets/images/svg/percentIcon';
 import { comboRequestProps, formComboConfigProps, formDiscountCouponProps } from '../../types';
 
@@ -88,21 +89,35 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
         <Row>
           <Col md={8}>
             <FormGroup className="mb-2">
-              <ButtonGroup
-                name="formPrinting"
-                label="Impressão da ficha por Item ou Total?"
-                value={formDataComboConfig[FormInputNameComboConfig.formPrinting]}
-                onChange={e =>
-                  onChangeFormInputComboConfig(FormInputNameComboConfig.formPrinting)(
-                    e?.target?.value as string,
-                  )
-                }
-                options={[
-                  { value: 0, label: 'Item' },
-                  { value: 1, label: 'Total' },
-                ]}
-                error={formErrorsComboConfig.formPrinting && formErrorsComboConfig.formPrinting[0]}
-              />
+              <div>
+                <ButtonGroup
+                  name="formPrinting"
+                  label={
+                    <>
+                      Impressão da ficha por Item ou Total?
+                      <a data-for="soclose" data-tip="4" className="ml-2">
+                        <Info />
+                      </a>
+                    </>
+                  }
+                  value={formDataComboConfig[FormInputNameComboConfig.formPrinting]}
+                  onChange={e =>
+                    onChangeFormInputComboConfig(FormInputNameComboConfig.formPrinting)(
+                      e?.target?.value as string,
+                    )
+                  }
+                  options={[
+                    { value: 0, label: 'Item' },
+                    { value: 1, label: 'Total' },
+                  ]}
+                  error={
+                    formErrorsComboConfig.formPrinting && formErrorsComboConfig.formPrinting[0]
+                  }
+                />
+                <TooltipCustom id="soclose">
+                  Imprimir a ficha exibindo o valor de cada ITEM do combo ou o valor TOTAL do combo.
+                </TooltipCustom>
+              </div>
               <ButtonGroup
                 name="hasCourtesy"
                 label="Permitir cortesia?"
@@ -152,7 +167,7 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
             <FormGroup>
               <InputText
                 name="physicalSaleDebit"
-                label="Debito %"
+                label="Débito"
                 maxLength={5}
                 value={formDataComboConfig[FormInputNameComboConfig.physicalSaleDebit]}
                 onChange={e =>
@@ -165,10 +180,11 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                   formErrorsComboConfig.physicalSaleDebit &&
                   formErrorsComboConfig.physicalSaleDebit[0]
                 }
+                addon="%"
               />
               <InputText
                 name="physicalSaleCredit"
-                label="Crédito %"
+                label="Crédito"
                 maxLength={5}
                 value={formDataComboConfig[FormInputNameComboConfig.physicalSaleCredit]}
                 onChange={e =>
@@ -181,6 +197,7 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                   formErrorsComboConfig.physicalSaleCredit &&
                   formErrorsComboConfig.physicalSaleCredit[0]
                 }
+                addon="%"
               />
               <InputText
                 name="physicalSalePix"
@@ -196,6 +213,7 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                 error={
                   formErrorsComboConfig.physicalSalePix && formErrorsComboConfig.physicalSalePix[0]
                 }
+                addon="%"
               />
               <InputText
                 name="physicalSaleAdministrateTax"
@@ -212,6 +230,7 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                   formErrorsComboConfig.physicalSaleAdministrateTax &&
                   formErrorsComboConfig.physicalSaleAdministrateTax[0]
                 }
+                addon="%"
               />
             </FormGroup>
           </Col>
@@ -254,6 +273,7 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                 error={
                   formErrorsComboConfig.physicalSaleFee && formErrorsComboConfig.physicalSaleFee[0]
                 }
+                addon="%"
               />
             </FormGroup>
           </Col>
@@ -292,7 +312,7 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
             <FormGroup>
               <InputText
                 name="websiteSaleBankSlip"
-                label="Boleto %"
+                label="Boleto"
                 maxLength={5}
                 value={formDataComboConfig[FormInputNameComboConfig.websiteSaleBankSlip]}
                 onChange={e =>
@@ -305,10 +325,11 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                   formErrorsComboConfig.websiteSaleBankSlip &&
                   formErrorsComboConfig.websiteSaleBankSlip[0]
                 }
+                addon="%"
               />
               <InputText
                 name="websiteSaleCredit"
-                label="Crédito %"
+                label="Crédito"
                 maxLength={5}
                 value={formDataComboConfig[FormInputNameComboConfig.websiteSaleCredit]}
                 onChange={e =>
@@ -321,6 +342,7 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                   formErrorsComboConfig.websiteSaleCredit &&
                   formErrorsComboConfig.websiteSaleCredit[0]
                 }
+                addon="%"
               />
               <InputText
                 name="websiteSalePix"
@@ -336,6 +358,7 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                 error={
                   formErrorsComboConfig.websiteSalePix && formErrorsComboConfig.websiteSalePix[0]
                 }
+                addon="%"
               />
               <InputText
                 name="websiteSaleAdministrateTax"
@@ -352,6 +375,7 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                   formErrorsComboConfig.websiteSaleAdministrateTax &&
                   formErrorsComboConfig.websiteSaleAdministrateTax[0]
                 }
+                addon="%"
               />
             </FormGroup>
           </Col>
@@ -394,6 +418,7 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                 error={
                   formErrorsComboConfig.websiteSaleFee && formErrorsComboConfig.websiteSaleFee[0]
                 }
+                addon="%"
               />
             </FormGroup>
           </Col>
@@ -410,7 +435,7 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
             <FormGroup>
               <InputText
                 name="waiter"
-                label="Porcentagem do Garçom (%)"
+                label="Porcentagem do Garçom"
                 addon="%"
                 maxLength={5}
                 value={formDataComboConfig[FormInputNameComboConfig.waiter]}
@@ -565,7 +590,7 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                           }
                           name="discount"
                           label="Valor do desconto"
-                          placeholder="R$40,00 ou 50% "
+                          placeholder="R$40,00 ou 50%"
                           maxLength={
                             formDataDiscount[FormInputNameDiscountCoupon.discountType] === '0'
                               ? 10
@@ -593,6 +618,7 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                             formErrorsDiscount.discountsDiscount &&
                             formErrorsDiscount.discountsDiscount[0]
                           }
+                          addon={formDataDiscount.discountType === '0' ? 'R$' : '%'}
                           disabled={!formDataDiscount[FormInputNameDiscountCoupon.discountType]}
                         />
                       </FormGroup>
@@ -628,7 +654,7 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 discountCouponList.map((discount: any, index) => (
                   <>
-                    {index > 0 ? <hr style={{ margin: '25px -30px 30px -50px' }} /> : null}
+                    {index > 0 ? <hr style={{ margin: '25px -30px 30px -30px' }} /> : null}
                     <div className="mb-4">
                       <span className="secondary-table-title" style={{ fontWeight: '300' }}>
                         Código de desconto #{index + 1}

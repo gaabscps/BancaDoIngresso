@@ -15,6 +15,8 @@ export const TooltipCustom: React.FC<TooltipCustomProps> = ({ id, children }) =>
     type={'light'}
     borderColor={'#e0e0e0'}
   >
-    {children}
+    <div className="width300" style={{ textAlign: 'center' }}>
+      {children}
+    </div>
   </ReactTooltip>
 );

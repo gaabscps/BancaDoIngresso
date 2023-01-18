@@ -218,7 +218,9 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
               placeholder="Ex: 789"
               maxLength={6}
               value={formData[FormInputName.number]}
-              onChange={e => onChangeFormInput(FormInputName.number)(e.target.value)}
+              onChange={e =>
+                onChangeFormInput(FormInputName.number)(e?.target?.value.replace(/\D/g, ''))
+              }
               error={formErrors.number && formErrors.number[0]}
             />
           </FormGroup>
@@ -389,6 +391,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
                   value={formData[FormInputName.inactivityTimeout]}
                   onChange={e => onChangeFormInput(FormInputName.inactivityTimeout)(e.target.value)}
                   error={formErrors.inactivityTimeout && formErrors.inactivityTimeout[0]}
+                  disabled={formData[FormInputName.askPasswordInactivity] !== 'true'}
                 />
               </FormGroup>
             </Col>

@@ -214,6 +214,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
   // Payload envio cupom de desconto para o backend
   const handleSaveDiscountCoupon = async (comboSelected: any): Promise<void> => {
     try {
+      setState(States.loading);
       if (isFormValidDiscount()) {
         const payloadDiscountCoupon = {
           name: formDataDiscount[FormInputNameDiscountCoupon.discountsName],
@@ -235,6 +236,8 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
+    } finally {
+      setState(States.default);
     }
   };
 
@@ -243,6 +246,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
     discountCouponSelected: any,
   ): Promise<void> => {
     try {
+      setState(States.loading);
       await api.delete(
         `/event/section-product/${params?.id}/combo/${comboSelected.id}/discount/${discountCouponSelected.id}`,
       );
@@ -253,6 +257,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
       toast.error(err.message);
     } finally {
       confirmDelete.hide();
+      setState(States.default);
     }
   };
 
@@ -311,6 +316,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
   // Payload para adicionar um novo combo
   const handleSaveCombo = async (): Promise<void> => {
     try {
+      setState(States.loading);
       if (isFormValidCombo()) {
         const productData = product.map(prod => ({
           id: prod?.id,
@@ -364,11 +370,14 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
       toast.error(
         `${err.response?.data.message} o item ${err.response?.data.details} está vinculado ao evento`,
       );
+    } finally {
+      setState(States.default);
     }
   };
 
   const handleOnSaveComboConfig = async (comboSelected: any): Promise<void> => {
     try {
+      setState(States.loading);
       if (isFormValidComboConfig()) {
         const payloadComboConfig = {
           formPrinting: +formDataComboConfig[FormInputNameComboConfig.formPrinting],
@@ -418,6 +427,8 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
+    } finally {
+      setState(States.default);
     }
   };
 
@@ -527,6 +538,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
   // GET para montar cenário de edição apos setar combo selecionado
   const handleOnGetCombo = async (comboSelected: any): Promise<void> => {
     try {
+      setState(States.loading);
       if (comboSelected) {
         console.log(comboSelected);
         resetFormCombo();
@@ -544,6 +556,8 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
+    } finally {
+      setState(States.default);
     }
   };
 
@@ -607,6 +621,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
   // Delete para excluir um combo
   const handleOnConfirmDeleteCombo = async (comboSelected: any): Promise<void> => {
     try {
+      setState(States.loading);
       await api.delete(`/event/section-product/${params?.id}/combo/${comboSelected.id}`);
       toast.success('Combo excluído com sucesso!');
       handleGetComboList(params.id);
@@ -615,6 +630,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
       throw new Error(err.response?.data.message);
     } finally {
       confirmDelete.hide();
+      setState(States.default);
     }
   };
 
@@ -767,7 +783,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
           (comboConfig?.physicalSale?.debit && (+comboConfig.physicalSale.debit).toFixed(2)) || '',
         ),
       );
-      onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSaleDebit)(
+      onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSaleCredit)(
         String(
           (comboConfig?.physicalSale?.credit && (+comboConfig.physicalSale.credit).toFixed(2)) ||
             '',
