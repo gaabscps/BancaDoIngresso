@@ -295,6 +295,18 @@ export const ReportsContent: React.FC<ReportsContentProps> = ({
         )}
         {reportContent === 'Vendas por PDV' && <div className="pageTitle">Vendas por PDVs</div>}
       </Container>
+      <Card className="report-footer">
+        <div className="d-flex justify-content-between">
+          <div className="report-summary">
+            <span className="text-small-darkgray-regular">Ingressos emitidos: </span>
+            <span className="text-small-darkgray-700 circle-separator">50.000</span>
+          </div>
+          <div className="report-summary">
+            <span className="text-small-darkgray-regular">Ingressos emitidos: </span>
+            <span className="text-small-darkgray-700 circle-separator">50.000</span>
+          </div>
+        </div>
+      </Card>
     </>
   );
 };

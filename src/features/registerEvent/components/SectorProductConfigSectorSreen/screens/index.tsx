@@ -119,6 +119,7 @@ export const SectorProductConfigSectorScreen: React.FC<
 
   const handleOnConfirmDeleteSector = async (sectorSelected: any): Promise<void> => {
     try {
+      setState(States.loading);
       await api.delete(`/event/section-product/${params?.id}/section/${sectorSelected.sectionId}`);
       toast.success('Setor desviculado ao evento');
       handleGetSectorList(params.id);
@@ -127,6 +128,7 @@ export const SectorProductConfigSectorScreen: React.FC<
       toast.error(`${err.response?.data.details}`);
     } finally {
       confirmDelete.hide();
+      setState(States.default);
     }
   };
 
