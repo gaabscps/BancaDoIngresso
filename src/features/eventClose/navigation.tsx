@@ -5,6 +5,10 @@ import { GeneralCollectionScreen } from './screens/GeneralCollection';
 import { IncomeScreen } from './screens/Income';
 import { IncomeManualEntriesScreen } from './screens/incomeManualEntries';
 import { ExpenseManualEntriesScreen } from './screens/Expense';
+import { HomeMachineEventCloseScreen } from './screens/HomeMachine';
+import { MachinesTicketSalesScreen } from './screens/MachinesTicketSales';
+import { MachinesProductSalesScreen } from './screens/MachinesProductSales';
+import { MachinesReportScreen } from './screens/MachinesReport';
 
 export const EVENTCLOSE_ROUTES = {
   itself: '/dashboard/event-close/:id',
@@ -13,6 +17,10 @@ export const EVENTCLOSE_ROUTES = {
   incomeManualEntries: '/dashboard/event-close/income/:id/manual-entries',
   expense: '/dashboard/event-close/expense/:id',
   machines: '/dashboard/event-close/machines/:id',
+  machinesTicketSales: '/dashboard/event-close/machines/ticket-sales/:id',
+  machinesProductSale: '/dashboard/event-close/machines/product-sale/:id',
+  machinesReport: '/dashboard/event-close/machines/report/:id',
+
   finalSettlement: '/dashboard/event-close/final-settlement/:id',
 };
 
@@ -36,6 +44,30 @@ export const EventCloseNavigation = (): JSX.Element => (
       exact
       path={EVENTCLOSE_ROUTES.expense}
       component={ExpenseManualEntriesScreen}
+      isPrivateRoute
+    />
+    <Route
+      exact
+      path={EVENTCLOSE_ROUTES.machines}
+      component={HomeMachineEventCloseScreen}
+      isPrivateRoute
+    />
+    <Route
+      exact
+      path={EVENTCLOSE_ROUTES.machinesTicketSales}
+      component={MachinesTicketSalesScreen}
+      isPrivateRoute
+    />
+    <Route
+      exact
+      path={EVENTCLOSE_ROUTES.machinesProductSale}
+      component={MachinesProductSalesScreen}
+      isPrivateRoute
+    />
+    <Route
+      exact
+      path={EVENTCLOSE_ROUTES.machinesReport}
+      component={MachinesReportScreen}
       isPrivateRoute
     />
   </>

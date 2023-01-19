@@ -37,7 +37,7 @@ export const HomeContainer: React.FC<HomeContainerProps> = ({
             <ArrowLeft color={colors.black} className="arrow-left" />
           </Link>
           <h5 className="ml-3 mb-0 mt-2 pageTitle">
-            Fechamento de evento - {eventLocation?.event?.name}
+            Fechamento de evento {eventLocation?.event?.name && `- ${eventLocation?.event?.name}`}
           </h5>
         </div>
         {childs && childs.length > 0 ? (
