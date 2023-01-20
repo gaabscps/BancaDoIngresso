@@ -133,26 +133,23 @@ export const SectorProductConfigSectorScreen: React.FC<
   };
 
   const handleOnSaveConfigSector = async (): Promise<void> => {
-    try {
-      setState(States.loading);
+    const productChecked = form.products?.map((value: any) => {
+      const productId = value.split('_')[2];
+      return {
+        id: productId,
+      };
+    });
 
-      if (
-        formDataConfigSector[FormInputNameConfigSector.section] !== '' &&
-        sectorTableList.length > 0
-      ) {
-        const productChecked = form.products?.map((value: any) => {
-          const productId = value.split('_')[2];
-          return {
-            id: productId,
-          };
-        });
+    const combosChecked = form.combos?.map((value: any) => {
+      const comboId = value.split('_')[2];
+      return {
+        id: comboId,
+      };
+    });
 
-        const combosChecked = form.combos?.map((value: any) => {
-          const comboId = value.split('_')[2];
-          return {
-            id: comboId,
-          };
-        });
+    if (productChecked?.length > 0 || combosChecked?.length > 0) {
+      try {
+        setState(States.loading);
 
         const payloadSection = {
           id: formDataConfigSector[FormInputNameConfigSector.section],
@@ -179,19 +176,20 @@ export const SectorProductConfigSectorScreen: React.FC<
         handleGetSectorList(params.id);
         handleOnCancelEditSector();
         onToggle();
+      } catch (error) {
+        const err = error as AxiosError | any;
+        if (err.response?.data?.details.length > 0) {
+          err.response?.data.details.forEach((error: any) => {
+            toast.error(error);
+          });
+        } else {
+          toast.error(err.response?.data.message);
+        }
+      } finally {
+        setState(States.default);
       }
-    } catch (error) {
-      const err = error as AxiosError | any;
-      // return errors in details
-      if (err.response?.data?.details.length > 0) {
-        err.response?.data.details.forEach((error: any) => {
-          toast.error(error);
-        });
-      } else {
-        toast.error(err.response?.data.message);
-      }
-    } finally {
-      setState(States.default);
+    } else {
+      toast.error('Preencha os campos obrigatórios');
     }
   };
 
@@ -387,7 +385,6 @@ export const SectorProductConfigSectorScreen: React.FC<
         sector.imageBase64Sector,
       );
     }
-    console.log(controllerEvent.sectorConfig);
   }, [sector]);
 
   return (

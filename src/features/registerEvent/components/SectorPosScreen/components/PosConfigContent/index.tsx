@@ -77,7 +77,7 @@ export const PosConfigContent: React.FC<
   };
 
   const selectAll = (index: number) => {
-    const { sectionGroup, sectionId } = dataConfig.configList[index];
+    const { sectionGroup, sectionId } = controllerEvent.sectionList[index];
 
     const _products = dataConfig.form.products || [];
     const _combos = dataConfig.form.combos || [];

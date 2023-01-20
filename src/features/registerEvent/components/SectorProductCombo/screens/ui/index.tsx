@@ -17,6 +17,7 @@ import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { ReactComponent as ItemConfig } from '@/assets/images/svg/ItemConfig.svg';
 import { ReactComponent as Info } from '@/assets/images/svg/infoTooltip.svg';
+import { toCurrency } from '@/helpers/masks/toCurrency';
 import { X } from 'react-feather';
 import { CustomTable } from '@/components/Table';
 import { ActionProps } from '@/components/Dialog';
@@ -527,7 +528,8 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                                 id: products.id,
                                 name: products.name,
                                 amount: `${products.amount} un`,
-                                totalValue: productIndex === 0 ? `R$ ${selected.totalValue}` : null,
+                                totalValue:
+                                  productIndex === 0 ? toCurrency(selected.totalValue) : null,
                                 action: '',
                               }))}
                             />
