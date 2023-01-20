@@ -136,7 +136,7 @@ const Sample = (): JSX.Element => {
               Voltar
             </Button>
           </div>
-          <SuperButton style={{ width: '278px' }} onClick={nextStep}>
+          <SuperButton style={{ width: '278px' }} onClick={() => nextStep}>
             Avançar para Setor e Produtos
           </SuperButton>
         </div>

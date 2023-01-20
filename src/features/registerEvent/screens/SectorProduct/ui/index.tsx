@@ -3,14 +3,16 @@
 /* eslint-disable no-shadow */
 /* eslint-disable import/no-unresolved */
 import React, { Fragment, useState } from 'react';
-import { ButtonGroup, Loading, Tab } from '@/components';
+import { Button, ButtonGroup, Loading, Tab } from '@/components';
 import { Container, FormGroup } from 'reactstrap';
 import { SectorProductComboScreen } from '@/features/registerEvent/components/SectorProductCombo/screens';
 import { SectorProductGroupScreen } from '@/features/registerEvent/components/SectorProductGroup/screens';
 import { SectorProductScreen } from '@/features/registerEvent/components/SectorProductScreen/screens';
 import { SectorProductConfigSectorScreen } from '@/features/registerEvent/components/SectorProductConfigSectorSreen/screens';
 import { SectorPosScreen } from '@/features/registerEvent/components/SectorPosScreen/screens';
+import { toast } from 'react-toastify';
 import { formSectorProductProps } from '../types';
+import { controllerEventProps } from '../../SectorTicket/types';
 
 // eslint-disable-next-line no-shadow
 export enum States {
@@ -21,6 +23,7 @@ export enum States {
 export interface SectorProductContainerProps {
   state: States;
   formSectorProduct: formSectorProductProps;
+  controllerEvent: controllerEventProps;
 }
 
 // eslint-disable-next-line no-shadow
@@ -32,14 +35,18 @@ export type TabSectorProductActionsProps = {
   nextTab: () => void;
   backTab: () => void;
   onFirstTab: () => void;
+  controllerEvent: controllerEventProps;
 };
 
 export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
   state,
   formSectorProduct,
+  controllerEvent,
 }) => {
-  const { formData, formErrors, onChangeFormInput } = formSectorProduct;
+  const { formData, formErrors, onChangeFormInput, isFormValidSectorProduct } = formSectorProduct;
   const [numberTab, setNumberTab] = useState(0);
+
+  const { eventState, onChangeEvent, lastStep } = controllerEvent;
 
   const handleNextTab = (): void => {
     if (numberTab <= contentTabs.length) {
@@ -58,8 +65,9 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
   };
 
   const contentTabs = [
-    <SectorProductGroupScreen nextTab={handleNextTab} />,
+    <SectorProductGroupScreen nextTab={handleNextTab} controllerEvent={controllerEvent} />,
     <SectorProductScreen
+      controllerEvent={controllerEvent}
       nextTab={handleNextTab}
       backTab={handleBackTab}
       onFirstTab={handleOnFirstTab}
@@ -68,9 +76,18 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
       nextTab={handleNextTab}
       backTab={handleBackTab}
       onFirstTab={handleOnFirstTab}
+      controllerEvent={controllerEvent}
     />,
-    <SectorProductConfigSectorScreen nextTab={handleNextTab} backTab={handleBackTab} />,
-    <SectorPosScreen nextTab={handleNextTab} backTab={handleBackTab} />,
+    <SectorProductConfigSectorScreen
+      nextTab={handleNextTab}
+      backTab={handleBackTab}
+      controllerEvent={controllerEvent}
+    />,
+    <SectorPosScreen
+      nextTab={handleNextTab}
+      backTab={handleBackTab}
+      controllerEvent={controllerEvent}
+    />,
   ];
   return (
     <Fragment>
@@ -115,6 +132,25 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
             />
           </>
         )}
+        <div className="footer-register-event">
+          <Button
+            title="Voltar"
+            theme="noneBorder"
+            onClick={() => {
+              onChangeEvent({ ...eventState, currentStep: eventState.currentStep - 1 });
+            }}
+          />
+          <Button
+            title="Avançar para PDV"
+            onClick={() => {
+              if (isFormValidSectorProduct() && lastStep && lastStep.length > 0) {
+                onChangeEvent({ ...eventState, currentStep: eventState.currentStep + 1 });
+              } else {
+                toast.error('Preencha todas as etapas para avançar para o próximo passo');
+              }
+            }}
+          />
+        </div>
       </Container>
     </Fragment>
   );

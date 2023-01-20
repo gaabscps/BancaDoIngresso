@@ -38,7 +38,7 @@ type UrlParams = {
 
 export const SectorProductConfigSectorScreen: React.FC<
   Omit<TabSectorProductActionsProps, 'onFirstTab'>
-> = ({ backTab, nextTab }): JSX.Element => {
+> = ({ backTab, nextTab, controllerEvent }): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
   const [formNameFiles, setFormNameFiles] = useState<NameFiles>({});
   const [form, setForm] = useState<any>({});
@@ -136,7 +136,10 @@ export const SectorProductConfigSectorScreen: React.FC<
     try {
       setState(States.loading);
 
-      if (isFormValidConfigSector()) {
+      if (
+        formDataConfigSector[FormInputNameConfigSector.section] !== '' &&
+        sectorTableList.length > 0
+      ) {
         const productChecked = form.products?.map((value: any) => {
           const productId = value.split('_')[2];
           return {
@@ -394,6 +397,7 @@ export const SectorProductConfigSectorScreen: React.FC<
       configSectorActions={controllerConfigSectorActions}
       modalConfig={controllerModalConfig}
       dataConfig={controllerDataConfig}
+      controllerEvent={controllerEvent}
     />
   );
 };

@@ -21,6 +21,8 @@ import { DeleteContent } from '@/components/DeleteContent';
 import { TabSectorProductActionsProps } from '@/features/registerEvent/screens/SectorProduct/ui';
 import validators from '@/helpers/validators';
 import { convertToBoolean } from '@/helpers/common/convertToBoolean';
+import { unmask } from '@/helpers/masks/cashNumber';
+import { toPercentage } from '@/helpers/common/amount';
 import {
   formConfigProductProps,
   formProductProps,
@@ -42,6 +44,7 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
   backTab,
   nextTab,
   onFirstTab,
+  controllerEvent,
 }): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(
@@ -128,14 +131,14 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
       physicalSaleCredit: [validators.required],
       physicalSalePix: [validators.required],
       physicalSaleAdministrateTax: [validators.required],
-      physicalSaleInstallments: [validators.required],
+      physicalSaleInstallments: [validators.required, validators.between(0, 24)],
       physicalSaleFee: [validators.required],
       websiteSaleAllowCreditCardPayment: [validators.required],
       websiteSaleCredit: [validators.required],
       websiteSalePix: [validators.required],
       websiteSaleAdministrateTax: [validators.required],
       websiteSaleBankSlip: [validators.required],
-      websiteSaleInstallments: [validators.required],
+      websiteSaleInstallments: [validators.required, validators.between(0, 24)],
       websiteSaleFee: [validators.required],
       allowDiscountCoupon: [validators.required],
       waiter: [validators.required],
@@ -179,6 +182,7 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
 
   const handleOnConfirmDeleteTopProduct = async (productSelected: any): Promise<void> => {
     try {
+      setState(States.loading);
       await api.delete(`/event/section-product/${params?.id}/product/${productSelected.id}`);
       toast.success('Produto excluído com sucesso!');
       handleGetProductList(params.id);
@@ -187,6 +191,7 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
       throw new Error(err.response?.data.message);
     } finally {
       confirmDelete.hide();
+      setState(States.default);
     }
   };
 
@@ -338,6 +343,7 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
 
   const handleOnSaveProduct = async (): Promise<void> => {
     try {
+      setState(States.loading);
       if (isFormValidProduct()) {
         const payload = {
           id: formDataProduct[FormInputNameProduct.id] ?? '',
@@ -366,11 +372,14 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
     } catch (error) {
       const err = error as AxiosError | any;
       throw new Error(err.response.data.message);
+    } finally {
+      setState(States.loading);
     }
   };
 
   const handleOnSaveConfigProduct = async (productSelected: any): Promise<void> => {
     try {
+      setState(States.loading);
       if (isFormValidConfigProduct()) {
         const payloadDiscountCoupon = discountCoupon.map(item => ({
           id: item.id,
@@ -391,14 +400,18 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
                   FormInputNameToConfigProduct.physicalSaleAllowCreditCardPayment
                 ],
               ) ?? true,
-            debit: +formDataConfigProduct[FormInputNameToConfigProduct.physicalSaleDebit] ?? 0,
-            credit: +formDataConfigProduct[FormInputNameToConfigProduct.physicalSaleCredit] ?? 0,
-            pix: +formDataConfigProduct[FormInputNameToConfigProduct.physicalSalePix] ?? 0,
+            debit:
+              +unmask(formDataConfigProduct[FormInputNameToConfigProduct.physicalSaleDebit]) ?? 0,
+            credit:
+              +unmask(formDataConfigProduct[FormInputNameToConfigProduct.physicalSaleCredit]) ?? 0,
+            pix: +unmask(formDataConfigProduct[FormInputNameToConfigProduct.physicalSalePix]) ?? 0,
             administrateTax:
-              +formDataConfigProduct[FormInputNameToConfigProduct.physicalSaleAdministrateTax] ?? 0,
+              +unmask(
+                formDataConfigProduct[FormInputNameToConfigProduct.physicalSaleAdministrateTax],
+              ) ?? 0,
             installments:
               +formDataConfigProduct[FormInputNameToConfigProduct.physicalSaleInstallments] ?? 0,
-            fee: +formDataConfigProduct[FormInputNameToConfigProduct.physicalSaleFee] ?? 0,
+            fee: +unmask(formDataConfigProduct[FormInputNameToConfigProduct.physicalSaleFee]) ?? 0,
           },
           websiteSale: {
             id: productSelected?.websiteSale?.id,
@@ -408,16 +421,20 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
                   FormInputNameToConfigProduct.websiteSaleAllowCreditCardPayment
                 ],
               ) ?? true,
-            credit: +formDataConfigProduct[FormInputNameToConfigProduct.websiteSaleCredit] ?? 0,
-            bankSlip: +formDataConfigProduct[FormInputNameToConfigProduct.websiteSaleBankSlip] ?? 0,
-            pix: +formDataConfigProduct[FormInputNameToConfigProduct.websiteSalePix] ?? 0,
+            credit:
+              +unmask(formDataConfigProduct[FormInputNameToConfigProduct.websiteSaleCredit]) ?? 0,
+            bankSlip:
+              +unmask(formDataConfigProduct[FormInputNameToConfigProduct.websiteSaleBankSlip]) ?? 0,
+            pix: +unmask(formDataConfigProduct[FormInputNameToConfigProduct.websiteSalePix]) ?? 0,
             administrateTax:
-              +formDataConfigProduct[FormInputNameToConfigProduct.websiteSaleAdministrateTax] ?? 0,
+              +unmask(
+                formDataConfigProduct[FormInputNameToConfigProduct.websiteSaleAdministrateTax],
+              ) ?? 0,
             installments:
               +formDataConfigProduct[FormInputNameToConfigProduct.websiteSaleInstallments] ?? 0,
-            fee: +formDataConfigProduct[FormInputNameToConfigProduct.websiteSaleFee] ?? 0,
+            fee: +unmask(formDataConfigProduct[FormInputNameToConfigProduct.websiteSaleFee]) ?? 0,
           },
-          waiter: +formDataConfigProduct[FormInputNameToConfigProduct.waiter] ?? 0,
+          waiter: +unmask(formDataConfigProduct[FormInputNameToConfigProduct.waiter]) ?? 0,
           partialPayment:
             convertToBoolean(formDataConfigProduct[FormInputNameToConfigProduct.partialPayment]) ??
             true,
@@ -440,6 +457,8 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
+    } finally {
+      setState(States.loading);
     }
   };
 
@@ -492,6 +511,7 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
         setProduct(undefined);
         resetFormProduct();
         resetFormConfigProduct();
+        setNameFiles({});
       }, 500);
     } catch (error) {
       const err = error as AxiosError;
@@ -566,46 +586,46 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
         FormInputNameToConfigProduct.physicalSaleAllowCreditCardPayment,
       )(String(product.physicalSale?.allowCreditCardPayment));
       onChangeFormInputConfigProduct(FormInputNameToConfigProduct.physicalSaleDebit)(
-        String(product.physicalSale?.debit ?? ''),
+        toPercentage(product.physicalSale?.debit ?? ''),
       );
       onChangeFormInputConfigProduct(FormInputNameToConfigProduct.physicalSaleCredit)(
-        String(product.physicalSale?.credit ?? ''),
+        toPercentage(product.physicalSale?.credit ?? ''),
       );
       onChangeFormInputConfigProduct(FormInputNameToConfigProduct.physicalSalePix)(
-        String(product.physicalSale?.pix ?? ''),
+        toPercentage(product.physicalSale?.pix ?? ''),
       );
       onChangeFormInputConfigProduct(FormInputNameToConfigProduct.physicalSaleAdministrateTax)(
-        String(product.physicalSale?.administrateTax ?? ''),
+        toPercentage(product.physicalSale?.administrateTax ?? ''),
       );
       onChangeFormInputConfigProduct(FormInputNameToConfigProduct.physicalSaleInstallments)(
         String(product.physicalSale?.installments ?? ''),
       );
       onChangeFormInputConfigProduct(FormInputNameToConfigProduct.physicalSaleFee)(
-        String(product.physicalSale?.fee ?? ''),
+        toPercentage(product.physicalSale?.fee ?? ''),
       );
       onChangeFormInputConfigProduct(
         FormInputNameToConfigProduct.websiteSaleAllowCreditCardPayment,
       )(String(product.websiteSale?.allowCreditCardPayment));
       onChangeFormInputConfigProduct(FormInputNameToConfigProduct.websiteSaleCredit)(
-        String(product.websiteSale?.credit ?? ''),
+        toPercentage(product.websiteSale?.credit ?? ''),
       );
       onChangeFormInputConfigProduct(FormInputNameToConfigProduct.websiteSalePix)(
-        String(product.websiteSale?.pix ?? ''),
+        toPercentage(product.websiteSale?.pix ?? ''),
       );
       onChangeFormInputConfigProduct(FormInputNameToConfigProduct.websiteSaleAdministrateTax)(
-        String(product.websiteSale?.administrateTax ?? ''),
+        toPercentage(product.websiteSale?.administrateTax ?? ''),
       );
       onChangeFormInputConfigProduct(FormInputNameToConfigProduct.websiteSaleBankSlip)(
-        String(product.websiteSale?.bankSlip ?? ''),
+        toPercentage(product.websiteSale?.bankSlip ?? ''),
       );
       onChangeFormInputConfigProduct(FormInputNameToConfigProduct.websiteSaleInstallments)(
         String(product.websiteSale?.installments ?? ''),
       );
       onChangeFormInputConfigProduct(FormInputNameToConfigProduct.websiteSaleFee)(
-        String(product.websiteSale?.fee ?? ''),
+        toPercentage(product.websiteSale?.fee ?? ''),
       );
       onChangeFormInputConfigProduct(FormInputNameToConfigProduct.waiter)(
-        String(product?.waiter ?? ''),
+        toPercentage(product?.waiter ?? ''),
       );
       onChangeFormInputConfigProduct(FormInputNameToConfigProduct.partialPayment)(
         String(product?.partialPayment ?? ''),
@@ -633,6 +653,7 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
       modalConfig={controllerModalConfig}
       productStates={controllerProductStates}
       formDiscountCoupon={controllerFormDiscountCoupon}
+      controllerEvent={controllerEvent}
     />
   );
 };

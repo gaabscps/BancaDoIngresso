@@ -11,6 +11,8 @@ import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { CustomTable } from '@/components/Table';
 import { X } from 'react-feather';
 import BackOnTop from '@/components/sharedComponents/BackOnTop';
+import { updateMask as updateMaskCashNumber } from '@/helpers/masks/cashNumber';
+
 import { formPaymentSettingsProps, PaymentSettingsActionsProps } from '../../types';
 import { RegisterDiscountCoupon } from '../../components/RegisterDiscountCoupon';
 import { columnsDiscountCoupon } from './table';
@@ -154,6 +156,18 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
     { label: '10', value: '10' },
     { label: '11', value: '11' },
     { label: '12', value: '12' },
+    { label: '13', value: '13' },
+    { label: '14', value: '14' },
+    { label: '15', value: '15' },
+    { label: '16', value: '16' },
+    { label: '17', value: '17' },
+    { label: '18', value: '18' },
+    { label: '19', value: '19' },
+    { label: '20', value: '20' },
+    { label: '21', value: '21' },
+    { label: '22', value: '22' },
+    { label: '23', value: '23' },
+    { label: '24', value: '24' },
   ];
 
   const optionLimiteCount = [
@@ -375,7 +389,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
         </div>
 
         <div className="container-event mb-4">
-          <h5 className="mb-2 border-bottom-title mb-5">Taxa de cartão</h5>
+          <h5 className="mb-2 border-bottom-title mb-5">Taxas de cartão</h5>
 
           <p style={{ fontSize: '21px', fontWeight: '500' }}>Venda física</p>
 
@@ -406,7 +420,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               placeholder="Ex: 1"
               onChange={e =>
                 onChangeFormInput(FormInputName.physicalSaleDebit)(
-                  e.target.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1'),
+                  updateMaskCashNumber(e.target.value),
                 )
               }
               error={formErrors.physicalSaleDebit && formErrors.physicalSaleDebit[0]}
@@ -421,7 +435,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               placeholder="Ex: 1"
               onChange={e =>
                 onChangeFormInput(FormInputName.physicalSaleCredit)(
-                  e.target.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1'),
+                  updateMaskCashNumber(e.target.value),
                 )
               }
               error={formErrors.physicalSaleCredit && formErrors.physicalSaleCredit[0]}
@@ -436,7 +450,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               placeholder="Ex: 1"
               onChange={e =>
                 onChangeFormInput(FormInputName.physicalSalePix)(
-                  e.target.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1'),
+                  updateMaskCashNumber(e.target.value),
                 )
               }
               error={formErrors.physicalSalePix && formErrors.physicalSalePix[0]}
@@ -451,7 +465,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               placeholder="Ex: 1"
               onChange={e =>
                 onChangeFormInput(FormInputName.physicalSaleAdministrateTax)(
-                  e.target.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1'),
+                  updateMaskCashNumber(e.target.value),
                 )
               }
               error={
@@ -483,7 +497,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               value={formData[FormInputName.physicalSaleFee]}
               onChange={e =>
                 onChangeFormInput(FormInputName.physicalSaleFee)(
-                  e.target.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1'),
+                  updateMaskCashNumber(e.target.value),
                 )
               }
               error={formErrors.physicalSaleFee && formErrors.physicalSaleFee[0]}
@@ -521,7 +535,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               placeholder="Ex: 1"
               onChange={e =>
                 onChangeFormInput(FormInputName.websiteSaleBankSlip)(
-                  e.target.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1'),
+                  updateMaskCashNumber(e.target.value),
                 )
               }
               error={formErrors.websiteSaleBankSlip && formErrors.websiteSaleBankSlip[0]}
@@ -536,7 +550,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               placeholder="Ex: 1"
               onChange={e =>
                 onChangeFormInput(FormInputName.websiteSaleCredit)(
-                  e.target.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1'),
+                  updateMaskCashNumber(e.target.value),
                 )
               }
               error={formErrors.websiteSaleCredit && formErrors.websiteSaleCredit[0]}
@@ -551,7 +565,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               placeholder="Ex: 1"
               onChange={e =>
                 onChangeFormInput(FormInputName.websiteSalePix)(
-                  e.target.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1'),
+                  updateMaskCashNumber(e.target.value),
                 )
               }
               error={formErrors.websiteSalePix && formErrors.websiteSalePix[0]}
@@ -566,7 +580,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               placeholder="Ex: 1"
               onChange={e =>
                 onChangeFormInput(FormInputName.websiteSaleAdministrateTax)(
-                  e.target.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1'),
+                  updateMaskCashNumber(e.target.value),
                 )
               }
               error={
@@ -598,7 +612,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               value={formData[FormInputName.websiteSaleFee]}
               onChange={e =>
                 onChangeFormInput(FormInputName.websiteSaleFee)(
-                  e.target.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1'),
+                  updateMaskCashNumber(e.target.value),
                 )
               }
               error={formErrors.websiteSaleFee && formErrors.websiteSaleFee[0]}

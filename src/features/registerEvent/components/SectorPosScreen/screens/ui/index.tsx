@@ -13,6 +13,7 @@ import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { ReactComponent as Config } from '@/assets/images/svg/config.svg';
+import { updateMask as updateMaskCash } from '@/helpers/masks/cashNumber';
 import { CustomTable } from '@/components/Table';
 import React from 'react';
 import { Col, Container, Form, FormGroup, Row } from 'reactstrap';
@@ -20,6 +21,7 @@ import { ActionProps } from '@/components/Dialog';
 import Pos from '@/model/Pos';
 import dayjs from 'dayjs';
 import POSIcon from '@/assets/images/svg/Pos';
+import { controllerEventProps } from '@/features/registerEvent/screens/SectorTicket/types';
 import {
   dataConfigStatesProps,
   formAllowPosProps,
@@ -54,6 +56,7 @@ export interface SectorProductPosContainerProps {
   controllerFormPos: formPosProps;
   controllerFormAllowPos: formAllowPosProps;
   controllerModalConfig: modalConfigPosProps;
+  controllerEvent: controllerEventProps;
   handleOnSavePos: () => Promise<void>;
   backTab: () => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -76,6 +79,7 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
   controllerFormPos,
   controllerFormAllowPos,
   controllerModalConfig,
+  controllerEvent,
   handleOnSavePos,
   backTab,
   posList,
@@ -129,7 +133,9 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
       >
         {
           {
-            [ShouldShowModal.configPos]: <PosConfigContent dataConfig={dataConfig} />,
+            [ShouldShowModal.configPos]: (
+              <PosConfigContent dataConfig={dataConfig} controllerEvent={controllerEvent} />
+            ),
           }[shouldShowModal]
         }
       </Dialog>
@@ -190,7 +196,7 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
                 <Col lg="auto">
                   <InputText
                     name="waiter"
-                    label="Porcentagem do garçom (%)"
+                    label="Porcentagem do garçom"
                     addon="%"
                     maxLength={5}
                     placeholder="0"
@@ -198,7 +204,7 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
                     value={formData[FormInputName.waiter]}
                     onChange={e =>
                       onChangeFormInput(FormInputName.waiter)(
-                        e?.target?.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1') as string,
+                        updateMaskCash(e?.target?.value) as string,
                       )
                     }
                     error={formErrors.waiter && formErrors.waiter[0]}
@@ -209,7 +215,7 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
                 <Col lg="auto">
                   <InputText
                     name="commission"
-                    label="Porcentagem de comissão(%)"
+                    label="Porcentagem de comissão"
                     placeholder="0"
                     addon="%"
                     maxLength={5}
@@ -217,7 +223,7 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
                     value={formData[FormInputName.commission]}
                     onChange={e =>
                       onChangeFormInput(FormInputName.commission)(
-                        e?.target?.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1') as string,
+                        updateMaskCash(e?.target?.value) as string,
                       )
                     }
                     error={formErrors.commission && formErrors.commission[0]}

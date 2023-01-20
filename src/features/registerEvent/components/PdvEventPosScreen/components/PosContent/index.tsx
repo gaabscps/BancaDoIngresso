@@ -51,7 +51,7 @@ export const PosContent: React.FC<Pick<PosContainerProps, 'formPosRegister' | 'p
             <FormGroup className="mb-2">
               <InputText
                 name="partialPayment"
-                label="Porcentagem do Garçom (%)"
+                label="Porcentagem do Garçom"
                 addon="%"
                 maxLength={5}
                 placeholder="0"

@@ -28,6 +28,7 @@ export interface requestProps {
   onGetProductSubGroupList: (id: string) => Promise<void>;
   onGetGroup(groupSelected: any): Promise<void>;
   onCancelEdit: () => void;
+  onGetGroupOption: () => void;
 }
 
 export interface groupStateProps {

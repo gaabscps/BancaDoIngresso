@@ -37,6 +37,18 @@ export const PosConfigContent: React.FC<any> = ({ formPosConfig }) => {
     { label: '10', value: '10' },
     { label: '11', value: '11' },
     { label: '12', value: '12' },
+    { label: '13', value: '13' },
+    { label: '14', value: '14' },
+    { label: '15', value: '15' },
+    { label: '16', value: '16' },
+    { label: '17', value: '17' },
+    { label: '18', value: '18' },
+    { label: '19', value: '19' },
+    { label: '20', value: '20' },
+    { label: '21', value: '21' },
+    { label: '22', value: '22' },
+    { label: '23', value: '23' },
+    { label: '24', value: '24' },
   ];
 
   const optionLimiteCount = [

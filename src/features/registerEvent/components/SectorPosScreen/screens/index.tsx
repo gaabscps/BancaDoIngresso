@@ -19,6 +19,9 @@ import {
 } from '@/features/registerEvent/components/SectorPosScreen/screens/ui';
 import { convertToBoolean } from '@/helpers/common/convertToBoolean';
 import ProductSectionEvent from '@/model/SectionProductEvent';
+import { unmask } from '@/helpers/masks/cashNumber';
+import { toPercentage } from '@/helpers/common/amount';
+import { controllerEventProps } from '@/features/registerEvent/screens/SectorTicket/types';
 import {
   dataConfigStatesProps,
   formAllowPosProps,
@@ -36,13 +39,17 @@ export enum States {
 interface SectorProductPosContainerProps {
   nextTab: () => void;
   backTab: () => void;
+  controllerEvent: controllerEventProps;
 }
 
 type UrlParams = {
   id: string;
 };
 
-export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({ backTab }) => {
+export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({
+  backTab,
+  controllerEvent,
+}) => {
   const [state, setState] = useState<States>(States.default);
   const { title, visible, onChangeTitle, onToggle } = useDialog();
   const [shouldShowModal, setShouldShowModal] = useState<ShouldShowModal>(
@@ -67,7 +74,7 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({ back
     isFormValid: isFormValidAllowPos,
   } = useForm({
     initialData: {
-      allowPos: '',
+      allowPos: 'true',
     },
     validators: {
       allowPos: [validators.required],
@@ -317,8 +324,8 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({ back
         pos: {
           id: formDataPos[FormInputNamePos.pos],
         },
-        waiter: +formDataPos[FormInputNamePos.waiter],
-        commission: +formDataPos[FormInputNamePos.commission],
+        waiter: +unmask(formDataPos[FormInputNamePos.waiter]),
+        commission: +unmask(formDataPos[FormInputNamePos.commission]),
         allowDiscount: convertToBoolean(formDataPos[FormInputNamePos.allowDiscount]),
         eventSections: productAndComboSameSection,
       };
@@ -375,12 +382,8 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({ back
 
     if (pos) {
       onChangeFormInputPos(FormInputNamePos.pos)(String(pos.pos?.id));
-      onChangeFormInputPos(FormInputNamePos.waiter)(
-        String(pos?.waiter && (+pos.waiter).toFixed(2)),
-      );
-      onChangeFormInputPos(FormInputNamePos.commission)(
-        String(pos?.commission && (+pos.commission).toFixed(2)),
-      );
+      onChangeFormInputPos(FormInputNamePos.waiter)(toPercentage(pos.waiter));
+      onChangeFormInputPos(FormInputNamePos.commission)(toPercentage(pos.commission));
       onChangeFormInputPos(FormInputNamePos.allowDiscount)(String(pos?.allowDiscount));
 
       const _products: any[] = [];
@@ -427,6 +430,7 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({ back
         controllerModalConfig={controllerModalConfig}
         controllerFormPos={controllerFormPos}
         controllerFormAllowPos={controllerFormAllowPos}
+        controllerEvent={controllerEvent}
         posList={posList}
         posOptions={posOptions}
         dataConfig={controllerDataConfig}

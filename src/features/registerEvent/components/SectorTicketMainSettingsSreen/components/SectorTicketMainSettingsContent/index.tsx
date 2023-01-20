@@ -4,6 +4,7 @@ import { ButtonGroup, InputFile, InputText, SelectCustom, TextArea } from '@/com
 import { Col, Form, FormGroup, Row } from 'reactstrap';
 import { toast } from 'react-toastify';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
+import { updateMask as updateMaskCash } from '@/helpers/masks/cashNumber';
 import { SectorTicketMainSettingsContainerProps, ShouldShowModal } from '../../screens/ui';
 
 // eslint-disable-next-line no-shadow
@@ -149,7 +150,7 @@ export const SectorTicketMainSettingsContent: React.FC<
             <FormGroup className="mb-2">
               <InputText
                 name="percentageHalfPrice"
-                label="Porcentagem de meia entrada (%)"
+                label="Porcentagem de meia entrada"
                 placeholder="0"
                 addon="%"
                 className="w-input-sm"
@@ -157,7 +158,7 @@ export const SectorTicketMainSettingsContent: React.FC<
                 value={formData[FormInputName.percentageHalfPrice]}
                 onChange={e =>
                   onChangeFormInput(FormInputName.percentageHalfPrice)(
-                    e?.target?.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1') as string,
+                    updateMaskCash(e?.target?.value) as string,
                   )
                 }
                 error={formErrors.percentageHalfPrice && formErrors.percentageHalfPrice[0]}

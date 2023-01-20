@@ -104,15 +104,13 @@ export const BatchContent: React.FC<Pick<SectorTicketMainSettingsContainerProps,
         <FormGroup>
           <InputText
             name="commission"
-            label="Porcentagem de Comissão (%)"
+            label="Porcentagem de Comissão"
             placeholder="0"
             addon="%"
             maxLength={5}
             value={formData[FormInputName.commission]}
             onChange={e =>
-              onChangeFormInput(FormInputName.commission)(
-                e.target.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1'),
-              )
+              onChangeFormInput(FormInputName.commission)(updateMaskCash(e.target.value))
             }
             error={formErrors.commission && formErrors.commission[0]}
           />

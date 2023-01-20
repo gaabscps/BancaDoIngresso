@@ -28,8 +28,11 @@ export enum FormInputNameProduct {
 }
 
 export const ProductRegisterContent: React.FC<
-  Pick<SectorProductContainerProps, 'formProduct' | 'productStates' | 'productActions'>
-> = ({ formProduct, productStates, productActions }) => {
+  Pick<
+    SectorProductContainerProps,
+    'formProduct' | 'productStates' | 'productActions' | 'controllerEvent'
+  >
+> = ({ formProduct, productStates, productActions, controllerEvent }) => {
   const { formData, formErrors, onChangeFormInput, onChangeFormFileInput, formNameFiles } =
     formProduct;
 
@@ -60,8 +63,8 @@ export const ProductRegisterContent: React.FC<
   }, [formData[FormInputNameProduct.subgroup]]);
 
   const subGruopOptions =
-    productStates.groupList
-      ?.find(group => group?.id === formData[FormInputNameProduct.group])
+    controllerEvent.groupOptions
+      ?.find((group: any) => group?.id === formData[FormInputNameProduct.group])
       ?.subGroups?.map((subGroup: { id: string; name: string }) => ({
         value: subGroup.id,
         label: subGroup.name,
@@ -88,7 +91,7 @@ export const ProductRegisterContent: React.FC<
                 onClearSelectProduct();
               }}
               error={formErrors.group && formErrors.group[0]}
-              options={productStates.groupList.map(group => ({
+              options={controllerEvent.groupOptions.map((group: any) => ({
                 value: group.id,
                 label: group.name,
               }))}

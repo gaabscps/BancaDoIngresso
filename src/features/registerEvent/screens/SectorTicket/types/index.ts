@@ -12,3 +12,13 @@ export interface ticketStepProps {
   ticketState: Ticket | undefined;
   setTicketState: (ticketStep: Ticket) => void;
 }
+
+export interface controllerEventProps {
+  eventState: any;
+  onChangeEvent: any;
+  lastStep: any;
+  groupOptions: any;
+  handleGetGroupList: any;
+  sectionList: any;
+  handleGetPosSectionList: any;
+}

@@ -60,7 +60,8 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
     onChangeFormInputGroup,
     setErrorsGroup,
   } = controllerFormGroup;
-  const { onGetProductSubGroupList, onSaveGroup, onGetGroup, onCancelEdit } = controllerRequest;
+  const { onGetProductSubGroupList, onSaveGroup, onGetGroup, onCancelEdit, onGetGroupOption } =
+    controllerRequest;
   const titleRef = React.useRef<HTMLInputElement>(null);
 
   return (
@@ -225,7 +226,11 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
                     listGroupSubGroup.map((group, index) => (
                       <React.Fragment key={index}>
                         {index > 0 ? <hr style={{ margin: '25px 0px 30px -50px' }} /> : null}
-                        <div className={groupsState ? 'disabled-content' : ''}>
+                        <div
+                          className={
+                            groupsState && groupsState.id !== group.id ? 'disabled-content' : ''
+                          }
+                        >
                           <div
                             style={{ marginRight: '20px' }}
                             className="mb-3 mt-3 ml-5 d-flex align-items-center "
@@ -244,12 +249,7 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
                                 className="d-flex align-items-center"
                                 style={{ flexWrap: 'nowrap' }}
                               >
-                                <span
-                                  onClick={() => window.console.log('item', group)}
-                                  className="secondary-table-title ml-5 mr-2"
-                                >
-                                  Subgrupo
-                                </span>
+                                <span className="secondary-table-title ml-5 mr-2">Subgrupo</span>
                                 {group.subGroups.length !== 1 ? (
                                   <DropdonwFlags
                                     style={{ color: '#000 !important', fontWeight: '500' }}
@@ -306,6 +306,7 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
             className="ml-3"
             onClick={() => {
               onNextTab();
+              onGetGroupOption();
             }}
           />
         </div>

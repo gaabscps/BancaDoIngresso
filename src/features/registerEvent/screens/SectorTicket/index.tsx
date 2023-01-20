@@ -25,6 +25,7 @@ export const SectorTicketScreen: React.FC = (): JSX.Element => {
 
   const [ticket, setTicket] = useState<Ticket>();
   const [ticketState, setTicketState] = useState<Ticket>();
+
   const [ticketList, setTicketList] = useState<Ticket[]>([]);
 
   const params = useParams<UrlParams>();
@@ -38,7 +39,7 @@ export const SectorTicketScreen: React.FC = (): JSX.Element => {
     isFormValid: isFormValidSectorTicket,
   } = useForm({
     initialData: {
-      isTicket: '',
+      isTicket: 'false',
     },
     validators: {
       isTicket: [validators.required],
@@ -57,6 +58,9 @@ export const SectorTicketScreen: React.FC = (): JSX.Element => {
       // filter father event when event type is father
       const { tickets } = data;
       setTicketList(tickets ?? []);
+      if (tickets && tickets.length > 0) {
+        onChangeFormInputSectorTicket('isTicket')('true');
+      }
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);

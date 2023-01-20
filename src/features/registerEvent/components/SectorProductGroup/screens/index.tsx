@@ -29,7 +29,7 @@ export interface NameFiles {
 
 export const SectorProductGroupScreen: React.FC<
   Omit<TabSectorProductActionsProps, 'onFirstTab' | 'backTab'>
-> = ({ nextTab }): JSX.Element => {
+> = ({ nextTab, controllerEvent }): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
   const [nameFiles, setNameFiles] = useState<NameFiles>({});
   const [nameFilesSub, setNameFilesSub] = useState<NameFiles>({});
@@ -50,7 +50,7 @@ export const SectorProductGroupScreen: React.FC<
     formErrors: formErrorsGroup,
     onChangeFormInput: onChangeFormInputGroup,
     setErrors: setErrorsGroup,
-    resetForm,
+    resetForm: resetFormGroup,
   } = useForm({
     initialData: {
       id: '',
@@ -177,6 +177,7 @@ export const SectorProductGroupScreen: React.FC<
   // Payload para envio de cadastro/edição de grupo
   const handleOnSaveGroup = async (): Promise<void> => {
     try {
+      setState(States.loading);
       const validation =
         !(formDataGroup[FormInputName.name] === '' && formDataGroup[FormInputName.id] === '') ||
         formDataGroup[FormInputName.id] !== '';
@@ -236,6 +237,8 @@ export const SectorProductGroupScreen: React.FC<
           `${err.response?.data.message} o item "${err.response?.data.details}" está vinculado ao evento`,
         );
       }
+    } finally {
+      setState(States.default);
     }
   };
 
@@ -275,6 +278,7 @@ export const SectorProductGroupScreen: React.FC<
   // Deleta um grupo de produtos
   const handleOnConfirmDeleteGroup = async (groupSelected: string): Promise<void> => {
     try {
+      setState(States.loading);
       await api.delete(`/event/section-product/${params?.id}/group/${groupSelected}`);
       toast.success('Produto excluído com sucesso!');
       handleGetGroupSubgroupList(params.id);
@@ -283,6 +287,7 @@ export const SectorProductGroupScreen: React.FC<
       throw new Error(err.response?.data.message);
     } finally {
       confirmDelete.hide();
+      setState(States.default);
     }
   };
 
@@ -321,7 +326,7 @@ export const SectorProductGroupScreen: React.FC<
   const handleOnCancelEditGroup = (): void => {
     try {
       setGroup(undefined);
-      resetForm();
+      resetFormGroup();
       setNameFiles({});
       setSubGroup([{ id: '', name: '', imageBase64: '' }]);
       setNameFilesSub({});
@@ -375,6 +380,7 @@ export const SectorProductGroupScreen: React.FC<
     onGetProductSubGroupList: handleFecthProductSubGroupList,
     onGetGroup: handleOnGetGroup,
     onCancelEdit: handleOnCancelEditGroup,
+    onGetGroupOption: controllerEvent.handleGetGroupList,
   };
 
   useEffect(() => {

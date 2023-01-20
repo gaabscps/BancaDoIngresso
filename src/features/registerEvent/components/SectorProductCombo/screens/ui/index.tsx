@@ -22,6 +22,8 @@ import { CustomTable } from '@/components/Table';
 import { ActionProps } from '@/components/Dialog';
 import DiscountCoupon from '@/model/DiscountCoupon';
 import ComboIcon from '@/assets/images/svg/Combo';
+import { controllerEventProps } from '@/features/registerEvent/screens/SectorTicket/types';
+import EventGroupSubgroup from '@/model/EventGroupSubgroup';
 import {
   comboActionsProps,
   comboRequestProps,
@@ -44,6 +46,7 @@ interface SectorProductComboContainerProps {
   controllerFormComboConfig: formComboConfigProps;
   controllerProductActions: comboActionsProps;
   controllerFormDiscountCoupon: formDiscountCouponProps;
+  controllerEvent: controllerEventProps;
   comboStates: comboStatesProps;
   formAppendProducts: formAppendProductsProps;
   comboRequests: comboRequestProps;
@@ -89,6 +92,7 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
   controllerFormCombo,
   controllerFormComboConfig,
   controllerFormDiscountCoupon,
+  controllerEvent,
   comboStates,
   formAppendProducts,
   comboRequests,
@@ -104,7 +108,7 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
     theme: 'noneBorder',
   };
 
-  const { state, comboList, listProductGroup, product, comboState, listProduct } = comboStates;
+  const { state, comboList, product, comboState, listProduct } = comboStates;
   const { addProduct, onChangeProduct, removeProduct } = formAppendProducts;
   const {
     onChangeComboSwitch,
@@ -203,7 +207,7 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                           }
                         }}
                         value={formDataCombo[FormInputNameCombo.group]}
-                        options={listProductGroup.map(item => ({
+                        options={controllerEvent.groupOptions.map((item: EventGroupSubgroup) => ({
                           value: item.id,
                           label: item.name,
                         }))}
@@ -223,9 +227,9 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                         }}
                         placeholder="Digite ou selecione o subgrupo do combo"
                         options={
-                          listProductGroup
-                            ?.find(item => item.id === formDataCombo.group)
-                            ?.subGroups.map(item => ({
+                          controllerEvent.groupOptions
+                            ?.find((item: any) => item.id === formDataCombo.group)
+                            ?.subGroups.map((item: any) => ({
                               value: item.id,
                               label: item.name,
                             })) || []
@@ -424,7 +428,12 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                     content={
                       comboList.length > 0 ? (
                         comboList.map((selected, indexCombo) => (
-                          <div className={comboState ? 'disabled-content' : ''} key={indexCombo}>
+                          <div
+                            className={
+                              comboState && comboState.id !== selected.id ? 'disabled-content' : ''
+                            }
+                            key={indexCombo}
+                          >
                             <div className="ml-3 mt-3 d-flex align-items-center">
                               <span
                                 style={{ whiteSpace: 'nowrap', fontWeight: '300' }}

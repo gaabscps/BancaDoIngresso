@@ -148,7 +148,19 @@ export const SectorConfigContent: React.FC<
                 leftIcon={
                   <Checkbox
                     name={`${categoryGroupName} + ${categorySubGroupName}`}
-                    checked={selectedAll.includes(categorySubGroupId as never)}
+                    checked={
+                      selectedAll.includes(categorySubGroupId as never) ||
+                      dataConfig.form?.combos?.reduce(
+                        (acc: boolean, name: string) =>
+                          acc || name.includes(categorySubGroupId as never),
+                        false,
+                      ) ||
+                      dataConfig.form?.products?.reduce(
+                        (acc: boolean, name: string) =>
+                          acc || name.includes(categorySubGroupId as never),
+                        false,
+                      )
+                    }
                     onChange={() => {
                       selectAll(index);
                     }}
