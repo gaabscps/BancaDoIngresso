@@ -21,4 +21,6 @@ export interface controllerEventProps {
   handleGetGroupList: any;
   sectionList: any;
   handleGetPosSectionList: any;
+  sectorConfig: any;
+  handleGetSectorConfigList: any;
 }

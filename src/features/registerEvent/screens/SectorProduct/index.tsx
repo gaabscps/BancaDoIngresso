@@ -22,6 +22,7 @@ export const SectorProductScreen: React.FC = (): JSX.Element => {
   const [lastStep, setLastStep] = useState<any>([]);
   const [groupOptions, setGroupOptions] = useState<ProductGroup[]>([]);
   const [sectionList, setSectionList] = useState<ProductSectionEvent[]>([]);
+  const [sectorConfig, setSectorConfig] = useState<any[]>([]);
 
   const params = useParams<UrlParams>();
   const { eventState, onChange: onChangeEvent } = useEvent();
@@ -90,6 +91,20 @@ export const SectorProductScreen: React.FC = (): JSX.Element => {
     }
   };
 
+  const handleGetSectorConfigList = async (): Promise<void> => {
+    try {
+      setState(States.loading);
+      const { data } = await api.get(`/event/section-product/${params.id}/product/section`);
+
+      setSectorConfig(data ?? []);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
   const handleGetPosSectionList = async (): Promise<void> => {
     try {
       setState(States.loading);
@@ -119,6 +134,8 @@ export const SectorProductScreen: React.FC = (): JSX.Element => {
     handleGetGroupList,
     sectionList,
     handleGetPosSectionList,
+    sectorConfig,
+    handleGetSectorConfigList,
   };
 
   useEffect(() => {

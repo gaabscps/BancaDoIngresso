@@ -10,6 +10,8 @@ import {
   updateMask,
 } from '@/helpers/masks/cashNumber';
 import { Card, Col, Form, FormGroup, Row } from 'reactstrap';
+import { toCurrency } from '@/helpers/masks/toCurrency';
+import { toPercentage } from '@/helpers/common/amount';
 import { CustomTable } from '@/components/Table';
 import { X } from 'react-feather';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
@@ -116,403 +118,375 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
   return (
     <>
       <Form>
-        <Row>
-          <Col md={8}>
-            <FormGroup className="mb-2">
-              <div>
-                <ButtonGroup
-                  name="formPrinting"
-                  label={
-                    <>
-                      Impressão da ficha por Item ou Total?
-                      <a data-for="soclose" data-tip="4" className="ml-2">
-                        <Info />
-                      </a>
-                    </>
-                  }
-                  value={formDataComboConfig[FormInputNameComboConfig.formPrinting]}
-                  onChange={e =>
-                    onChangeFormInputComboConfig(FormInputNameComboConfig.formPrinting)(
-                      e?.target?.value as string,
-                    )
-                  }
-                  options={[
-                    { value: 0, label: 'Item' },
-                    { value: 1, label: 'Total' },
-                  ]}
-                  error={
-                    formErrorsComboConfig.formPrinting && formErrorsComboConfig.formPrinting[0]
-                  }
-                />
-                <TooltipCustom id="soclose">
-                  Imprimir a ficha exibindo o valor de cada ITEM do combo ou o valor TOTAL do combo.
-                </TooltipCustom>
-              </div>
-              <ButtonGroup
-                name="hasCourtesy"
-                label="Permitir cortesia?"
-                value={formDataComboConfig[FormInputNameComboConfig.hasCourtesy]}
-                onChange={e =>
-                  onChangeFormInputComboConfig(FormInputNameComboConfig.hasCourtesy)(
-                    e?.target?.value as string,
-                  )
-                }
-                options={[
-                  { value: true, label: 'Sim' },
-                  { value: false, label: 'Não' },
-                ]}
-                error={formErrorsComboConfig.hasCourtesy && formErrorsComboConfig.hasCourtesy[0]}
-              />
-              <div className="mb-4 border-bottom-title w-100">
-                <h5 className="mb-2mb-5">Taxas de cartão</h5>
-              </div>
-              <h6 className="mb-5 mt-5" style={{ fontWeight: '500' }}>
-                Venda física
-              </h6>
-              <ButtonGroup
-                name="physicalSaleAllowCreditCardPayment"
-                label="Permitir venda com cartão? "
-                value={
-                  formDataComboConfig[FormInputNameComboConfig.physicalSaleAllowCreditCardPayment]
-                }
-                onChange={e =>
-                  onChangeFormInputComboConfig(
-                    FormInputNameComboConfig.physicalSaleAllowCreditCardPayment,
-                  )(e?.target?.value as string)
-                }
-                options={[
-                  { value: true, label: 'Sim' },
-                  { value: false, label: 'Não' },
-                ]}
-                error={
-                  formErrorsComboConfig.physicalSaleAllowCreditCardPayment &&
-                  formErrorsComboConfig.physicalSaleAllowCreditCardPayment[0]
-                }
-              />
-            </FormGroup>
-          </Col>
-        </Row>
-        <Row>
-          <Col md={2}>
-            <FormGroup>
-              <InputText
-                name="physicalSaleDebit"
-                label="Débito"
-                maxLength={5}
-                value={formDataComboConfig[FormInputNameComboConfig.physicalSaleDebit]}
-                onChange={e =>
-                  onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSaleDebit)(
-                    updateMask(e?.target?.value) as string,
-                  )
-                }
-                placeholder="0"
-                error={
-                  formErrorsComboConfig.physicalSaleDebit &&
-                  formErrorsComboConfig.physicalSaleDebit[0]
-                }
-                addon="%"
-              />
-              <InputText
-                name="physicalSaleCredit"
-                label="Crédito"
-                maxLength={5}
-                value={formDataComboConfig[FormInputNameComboConfig.physicalSaleCredit]}
-                onChange={e =>
-                  onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSaleCredit)(
-                    updateMask(e?.target?.value) as string,
-                  )
-                }
-                placeholder="0"
-                error={
-                  formErrorsComboConfig.physicalSaleCredit &&
-                  formErrorsComboConfig.physicalSaleCredit[0]
-                }
-                addon="%"
-              />
-              <InputText
-                name="physicalSalePix"
-                label="PIX"
-                maxLength={5}
-                value={formDataComboConfig[FormInputNameComboConfig.physicalSalePix]}
-                onChange={e =>
-                  onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSalePix)(
-                    updateMask(e?.target?.value) as string,
-                  )
-                }
-                placeholder="0"
-                error={
-                  formErrorsComboConfig.physicalSalePix && formErrorsComboConfig.physicalSalePix[0]
-                }
-                addon="%"
-              />
-              <InputText
-                name="physicalSaleAdministrateTax"
-                label="Taxa administrativa"
-                maxLength={5}
-                value={formDataComboConfig[FormInputNameComboConfig.physicalSaleAdministrateTax]}
-                onChange={e =>
-                  onChangeFormInputComboConfig(
-                    FormInputNameComboConfig.physicalSaleAdministrateTax,
-                  )(updateMask(e?.target?.value) as string)
-                }
-                placeholder="0"
-                error={
-                  formErrorsComboConfig.physicalSaleAdministrateTax &&
-                  formErrorsComboConfig.physicalSaleAdministrateTax[0]
-                }
-                addon="%"
-              />
-            </FormGroup>
-          </Col>
-        </Row>
-        <Row>
-          <Col md={2}>
-            <FormGroup>
-              <SelectCustom
-                name="physicalSaleInstallments"
-                label="Qtd parcelas"
-                value={formDataComboConfig[FormInputNameComboConfig.physicalSaleInstallments]}
-                onChange={e => {
-                  onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSaleInstallments)(
-                    e?.value as string,
-                  );
-                }}
-                options={optionCount}
-                placeholder="Ex: 2"
-                error={
-                  formErrorsComboConfig.physicalSaleInstallments &&
-                  formErrorsComboConfig.physicalSaleInstallments[0]
-                }
-              />
-            </FormGroup>
-          </Col>
-          <Col className="ml-5" md={2}>
-            <FormGroup>
-              <InputText
-                name="physicalSaleFee"
-                label="Juros ao mês"
-                maxLength={5}
-                value={formDataComboConfig[FormInputNameComboConfig.physicalSaleFee]}
-                onChange={e =>
-                  onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSaleFee)(
-                    updateMask(e?.target?.value) as string,
-                  )
-                }
-                placeholder="Ex: 4"
-                error={
-                  formErrorsComboConfig.physicalSaleFee && formErrorsComboConfig.physicalSaleFee[0]
-                }
-                addon="%"
-              />
-            </FormGroup>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <h6 className="mb-5 mt-5" style={{ fontWeight: '500' }}>
-              Venda e-commerce
-            </h6>
-            <FormGroup>
-              <ButtonGroup
-                name="websiteSaleAllowCreditCardPayment"
-                label="Permitir venda com cartão? "
-                value={
-                  formDataComboConfig[FormInputNameComboConfig.websiteSaleAllowCreditCardPayment]
-                }
-                onChange={e =>
-                  onChangeFormInputComboConfig(
-                    FormInputNameComboConfig.websiteSaleAllowCreditCardPayment,
-                  )(e?.target?.value as string)
-                }
-                options={[
-                  { value: true, label: 'Sim' },
-                  { value: false, label: 'Não' },
-                ]}
-                error={
-                  formErrorsComboConfig.websiteSaleAllowCreditCardPayment &&
-                  formErrorsComboConfig.websiteSaleAllowCreditCardPayment[0]
-                }
-              />
-            </FormGroup>
-          </Col>
-        </Row>
-        <Row>
-          <Col md={2}>
-            <FormGroup>
-              <InputText
-                name="websiteSaleBankSlip"
-                label="Boleto"
-                maxLength={5}
-                value={formDataComboConfig[FormInputNameComboConfig.websiteSaleBankSlip]}
-                onChange={e =>
-                  onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSaleBankSlip)(
-                    updateMask(e?.target?.value) as string,
-                  )
-                }
-                placeholder="0"
-                error={
-                  formErrorsComboConfig.websiteSaleBankSlip &&
-                  formErrorsComboConfig.websiteSaleBankSlip[0]
-                }
-                addon="%"
-              />
-              <InputText
-                name="websiteSaleCredit"
-                label="Crédito"
-                maxLength={5}
-                value={formDataComboConfig[FormInputNameComboConfig.websiteSaleCredit]}
-                onChange={e =>
-                  onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSaleCredit)(
-                    updateMask(e?.target?.value) as string,
-                  )
-                }
-                placeholder="0"
-                error={
-                  formErrorsComboConfig.websiteSaleCredit &&
-                  formErrorsComboConfig.websiteSaleCredit[0]
-                }
-                addon="%"
-              />
-              <InputText
-                name="websiteSalePix"
-                label="PIX"
-                maxLength={5}
-                value={formDataComboConfig[FormInputNameComboConfig.websiteSalePix]}
-                onChange={e =>
-                  onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSalePix)(
-                    updateMask(e?.target?.value) as string,
-                  )
-                }
-                placeholder="0"
-                error={
-                  formErrorsComboConfig.websiteSalePix && formErrorsComboConfig.websiteSalePix[0]
-                }
-                addon="%"
-              />
-              <InputText
-                name="websiteSaleAdministrateTax"
-                label="Taxa administrativa"
-                maxLength={5}
-                value={formDataComboConfig[FormInputNameComboConfig.websiteSaleAdministrateTax]}
-                onChange={e =>
-                  onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSaleAdministrateTax)(
-                    updateMask(e?.target?.value) as string,
-                  )
-                }
-                placeholder="0"
-                error={
-                  formErrorsComboConfig.websiteSaleAdministrateTax &&
-                  formErrorsComboConfig.websiteSaleAdministrateTax[0]
-                }
-                addon="%"
-              />
-            </FormGroup>
-          </Col>
-        </Row>
-        <Row>
-          <Col md={2}>
-            <FormGroup>
-              <SelectCustom
-                name="websiteSaleInstallments"
-                label="Qtd parcelas"
-                value={formDataComboConfig[FormInputNameComboConfig.websiteSaleInstallments]}
-                onChange={e => {
-                  onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSaleInstallments)(
-                    e?.value as string,
-                  );
-                }}
-                options={optionCount}
-                placeholder="Ex: 2"
-                error={
-                  formErrorsComboConfig.websiteSaleInstallments &&
-                  formErrorsComboConfig.websiteSaleInstallments[0]
-                }
-              />
-            </FormGroup>
-          </Col>
-          <Col className="ml-5" md={2}>
-            <FormGroup>
-              <InputText
-                name="websiteSaleFee"
-                label="Juros ao mês"
-                maxLength={5}
-                value={formDataComboConfig[FormInputNameComboConfig.websiteSaleFee]}
-                onChange={e =>
-                  onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSaleFee)(
-                    updateMask(e?.target?.value) as string,
-                  )
-                }
-                placeholder="Ex: 4"
-                error={
-                  formErrorsComboConfig.websiteSaleFee && formErrorsComboConfig.websiteSaleFee[0]
-                }
-                addon="%"
-              />
-            </FormGroup>
-          </Col>
-        </Row>
-        <Row>
-          <Col md={8}>
-            <div className="mb-4 border-bottom-title w-100">
-              <h5 className="mb-2mb-5">Informações complementares</h5>
-            </div>
-          </Col>
-        </Row>
-        <Row>
-          <Col md={2}>
-            <FormGroup>
-              <InputText
-                name="waiter"
-                label="Porcentagem do Garçom"
-                addon="%"
-                maxLength={5}
-                value={formDataComboConfig[FormInputNameComboConfig.waiter]}
-                onChange={e =>
-                  onChangeFormInputComboConfig(FormInputNameComboConfig.waiter)(
-                    updateMask(e?.target?.value) as string,
-                  )
-                }
-                placeholder="0"
-                error={formErrorsComboConfig.waiter && formErrorsComboConfig.waiter[0]}
-              />
-              <ButtonGroup
-                name="partialPayment"
-                label="Pagamento parcial(rateio)?"
-                value={formDataComboConfig[FormInputNameComboConfig.partialPayment]}
-                onChange={e =>
-                  onChangeFormInputComboConfig(FormInputNameComboConfig.partialPayment)(
-                    e?.target?.value as string,
-                  )
-                }
-                options={[
-                  { value: true, label: 'Sim' },
-                  { value: false, label: 'Não' },
-                ]}
-                error={
-                  formErrorsComboConfig.partialPayment && formErrorsComboConfig.partialPayment[0]
-                }
-              />
-              <ButtonGroup
-                name="allowDiscountCoupon"
-                label="Permitir código de desconto?"
-                value={formDataComboConfig[FormInputNameComboConfig.allowDiscountCoupon]}
-                onChange={e =>
-                  onChangeFormInputComboConfig(FormInputNameComboConfig.allowDiscountCoupon)(
-                    e?.target?.value as string,
-                  )
-                }
-                options={[
-                  { value: true, label: 'Sim' },
-                  { value: false, label: 'Não' },
-                ]}
-                error={
-                  formErrorsComboConfig.allowDiscountCoupon &&
-                  formErrorsComboConfig.allowDiscountCoupon[0]
-                }
-              />
-            </FormGroup>
-          </Col>
-        </Row>
+        <FormGroup className="mb-2">
+          <div>
+            <ButtonGroup
+              name="formPrinting"
+              label={
+                <>
+                  Impressão da ficha por Item ou Total?
+                  <a data-for="soclose" data-tip="4" className="ml-2">
+                    <Info />
+                  </a>
+                </>
+              }
+              value={formDataComboConfig[FormInputNameComboConfig.formPrinting]}
+              onChange={e =>
+                onChangeFormInputComboConfig(FormInputNameComboConfig.formPrinting)(
+                  e?.target?.value as string,
+                )
+              }
+              options={[
+                { value: 0, label: 'Item' },
+                { value: 1, label: 'Total' },
+              ]}
+              error={formErrorsComboConfig.formPrinting && formErrorsComboConfig.formPrinting[0]}
+            />
+            <TooltipCustom id="soclose">
+              Imprimir a ficha exibindo o valor de cada ITEM do combo ou o valor TOTAL do combo.
+            </TooltipCustom>
+          </div>
+          <ButtonGroup
+            name="hasCourtesy"
+            label="Permitir cortesia?"
+            value={formDataComboConfig[FormInputNameComboConfig.hasCourtesy]}
+            onChange={e =>
+              onChangeFormInputComboConfig(FormInputNameComboConfig.hasCourtesy)(
+                e?.target?.value as string,
+              )
+            }
+            options={[
+              { value: true, label: 'Sim' },
+              { value: false, label: 'Não' },
+            ]}
+            error={formErrorsComboConfig.hasCourtesy && formErrorsComboConfig.hasCourtesy[0]}
+          />
+          <div className="mb-4 border-bottom-title w-100">
+            <h5 className="mb-2mb-5">Taxas de cartão</h5>
+          </div>
+          <h6 className="mb-5 mt-5" style={{ fontWeight: '500' }}>
+            Venda física
+          </h6>
+          <ButtonGroup
+            name="physicalSaleAllowCreditCardPayment"
+            label="Permitir venda com cartão? "
+            value={formDataComboConfig[FormInputNameComboConfig.physicalSaleAllowCreditCardPayment]}
+            onChange={e =>
+              onChangeFormInputComboConfig(
+                FormInputNameComboConfig.physicalSaleAllowCreditCardPayment,
+              )(e?.target?.value as string)
+            }
+            options={[
+              { value: true, label: 'Sim' },
+              { value: false, label: 'Não' },
+            ]}
+            error={
+              formErrorsComboConfig.physicalSaleAllowCreditCardPayment &&
+              formErrorsComboConfig.physicalSaleAllowCreditCardPayment[0]
+            }
+          />
+        </FormGroup>
+
+        <FormGroup>
+          <InputText
+            name="physicalSaleDebit"
+            label="Débito"
+            maxLength={5}
+            value={formDataComboConfig[FormInputNameComboConfig.physicalSaleDebit]}
+            onChange={e =>
+              onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSaleDebit)(
+                updateMask(e?.target?.value) as string,
+              )
+            }
+            className="w-input-sm"
+            placeholder="0"
+            error={
+              formErrorsComboConfig.physicalSaleDebit && formErrorsComboConfig.physicalSaleDebit[0]
+            }
+            addon="%"
+          />
+          <InputText
+            name="physicalSaleCredit"
+            label="Crédito"
+            maxLength={5}
+            value={formDataComboConfig[FormInputNameComboConfig.physicalSaleCredit]}
+            onChange={e =>
+              onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSaleCredit)(
+                updateMask(e?.target?.value) as string,
+              )
+            }
+            placeholder="0"
+            className="w-input-sm"
+            error={
+              formErrorsComboConfig.physicalSaleCredit &&
+              formErrorsComboConfig.physicalSaleCredit[0]
+            }
+            addon="%"
+          />
+          <InputText
+            name="physicalSalePix"
+            label="PIX"
+            maxLength={5}
+            value={formDataComboConfig[FormInputNameComboConfig.physicalSalePix]}
+            onChange={e =>
+              onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSalePix)(
+                updateMask(e?.target?.value) as string,
+              )
+            }
+            placeholder="0"
+            className="w-input-sm"
+            error={
+              formErrorsComboConfig.physicalSalePix && formErrorsComboConfig.physicalSalePix[0]
+            }
+            addon="%"
+          />
+          <InputText
+            name="physicalSaleAdministrateTax"
+            label="Taxa administrativa"
+            maxLength={5}
+            value={formDataComboConfig[FormInputNameComboConfig.physicalSaleAdministrateTax]}
+            onChange={e =>
+              onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSaleAdministrateTax)(
+                updateMask(e?.target?.value) as string,
+              )
+            }
+            placeholder="0"
+            className="w-input-sm"
+            error={
+              formErrorsComboConfig.physicalSaleAdministrateTax &&
+              formErrorsComboConfig.physicalSaleAdministrateTax[0]
+            }
+            addon="%"
+          />
+        </FormGroup>
+
+        <FormGroup>
+          <SelectCustom
+            name="physicalSaleInstallments"
+            label="Qtd parcelas"
+            value={formDataComboConfig[FormInputNameComboConfig.physicalSaleInstallments]}
+            onChange={e => {
+              onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSaleInstallments)(
+                e?.value as string,
+              );
+            }}
+            options={optionCount}
+            className="w-input-sm"
+            placeholder="Ex: 2"
+            error={
+              formErrorsComboConfig.physicalSaleInstallments &&
+              formErrorsComboConfig.physicalSaleInstallments[0]
+            }
+          />
+        </FormGroup>
+
+        <FormGroup>
+          <InputText
+            name="physicalSaleFee"
+            label="Juros ao mês"
+            maxLength={5}
+            value={formDataComboConfig[FormInputNameComboConfig.physicalSaleFee]}
+            onChange={e =>
+              onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSaleFee)(
+                updateMask(e?.target?.value) as string,
+              )
+            }
+            placeholder="Ex: 4"
+            className="w-input-sm"
+            error={
+              formErrorsComboConfig.physicalSaleFee && formErrorsComboConfig.physicalSaleFee[0]
+            }
+            addon="%"
+          />
+        </FormGroup>
+
+        <h6 className="mb-5 mt-5" style={{ fontWeight: '500' }}>
+          Venda e-commerce
+        </h6>
+        <FormGroup>
+          <ButtonGroup
+            name="websiteSaleAllowCreditCardPayment"
+            label="Permitir venda com cartão? "
+            value={formDataComboConfig[FormInputNameComboConfig.websiteSaleAllowCreditCardPayment]}
+            onChange={e =>
+              onChangeFormInputComboConfig(
+                FormInputNameComboConfig.websiteSaleAllowCreditCardPayment,
+              )(e?.target?.value as string)
+            }
+            options={[
+              { value: true, label: 'Sim' },
+              { value: false, label: 'Não' },
+            ]}
+            error={
+              formErrorsComboConfig.websiteSaleAllowCreditCardPayment &&
+              formErrorsComboConfig.websiteSaleAllowCreditCardPayment[0]
+            }
+          />
+        </FormGroup>
+
+        <FormGroup>
+          <InputText
+            name="websiteSaleBankSlip"
+            label="Boleto"
+            maxLength={5}
+            value={formDataComboConfig[FormInputNameComboConfig.websiteSaleBankSlip]}
+            onChange={e =>
+              onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSaleBankSlip)(
+                updateMask(e?.target?.value) as string,
+              )
+            }
+            placeholder="0"
+            className="w-input-sm"
+            error={
+              formErrorsComboConfig.websiteSaleBankSlip &&
+              formErrorsComboConfig.websiteSaleBankSlip[0]
+            }
+            addon="%"
+          />
+          <InputText
+            name="websiteSaleCredit"
+            label="Crédito"
+            maxLength={5}
+            className="w-input-sm"
+            value={formDataComboConfig[FormInputNameComboConfig.websiteSaleCredit]}
+            onChange={e =>
+              onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSaleCredit)(
+                updateMask(e?.target?.value) as string,
+              )
+            }
+            placeholder="0"
+            error={
+              formErrorsComboConfig.websiteSaleCredit && formErrorsComboConfig.websiteSaleCredit[0]
+            }
+            addon="%"
+          />
+          <InputText
+            name="websiteSalePix"
+            label="PIX"
+            maxLength={5}
+            value={formDataComboConfig[FormInputNameComboConfig.websiteSalePix]}
+            onChange={e =>
+              onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSalePix)(
+                updateMask(e?.target?.value) as string,
+              )
+            }
+            placeholder="0"
+            error={formErrorsComboConfig.websiteSalePix && formErrorsComboConfig.websiteSalePix[0]}
+            addon="%"
+            className="w-input-sm"
+          />
+          <InputText
+            name="websiteSaleAdministrateTax"
+            label="Taxa administrativa"
+            maxLength={5}
+            className="w-input-sm"
+            value={formDataComboConfig[FormInputNameComboConfig.websiteSaleAdministrateTax]}
+            onChange={e =>
+              onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSaleAdministrateTax)(
+                updateMask(e?.target?.value) as string,
+              )
+            }
+            placeholder="0"
+            error={
+              formErrorsComboConfig.websiteSaleAdministrateTax &&
+              formErrorsComboConfig.websiteSaleAdministrateTax[0]
+            }
+            addon="%"
+          />
+        </FormGroup>
+
+        <FormGroup>
+          <SelectCustom
+            name="websiteSaleInstallments"
+            label="Qtd parcelas"
+            value={formDataComboConfig[FormInputNameComboConfig.websiteSaleInstallments]}
+            className="w-input-sm"
+            onChange={e => {
+              onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSaleInstallments)(
+                e?.value as string,
+              );
+            }}
+            options={optionCount}
+            placeholder="Ex: 2"
+            error={
+              formErrorsComboConfig.websiteSaleInstallments &&
+              formErrorsComboConfig.websiteSaleInstallments[0]
+            }
+          />
+        </FormGroup>
+
+        <FormGroup>
+          <InputText
+            name="websiteSaleFee"
+            label="Juros ao mês"
+            maxLength={5}
+            className="w-input-sm"
+            value={formDataComboConfig[FormInputNameComboConfig.websiteSaleFee]}
+            onChange={e =>
+              onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSaleFee)(
+                updateMask(e?.target?.value) as string,
+              )
+            }
+            placeholder="Ex: 4"
+            error={formErrorsComboConfig.websiteSaleFee && formErrorsComboConfig.websiteSaleFee[0]}
+            addon="%"
+          />
+        </FormGroup>
+
+        <div className="mb-4 border-bottom-title w-100">
+          <h5 className="mb-2mb-5">Informações complementares</h5>
+        </div>
+
+        <FormGroup>
+          <InputText
+            name="waiter"
+            label="Porcentagem do Garçom"
+            className="w-input-sm"
+            addon="%"
+            maxLength={5}
+            value={formDataComboConfig[FormInputNameComboConfig.waiter]}
+            onChange={e =>
+              onChangeFormInputComboConfig(FormInputNameComboConfig.waiter)(
+                updateMask(e?.target?.value) as string,
+              )
+            }
+            placeholder="0"
+            error={formErrorsComboConfig.waiter && formErrorsComboConfig.waiter[0]}
+          />
+          <ButtonGroup
+            name="partialPayment"
+            label="Pagamento parcial(rateio)?"
+            value={formDataComboConfig[FormInputNameComboConfig.partialPayment]}
+            onChange={e =>
+              onChangeFormInputComboConfig(FormInputNameComboConfig.partialPayment)(
+                e?.target?.value as string,
+              )
+            }
+            options={[
+              { value: true, label: 'Sim' },
+              { value: false, label: 'Não' },
+            ]}
+            error={formErrorsComboConfig.partialPayment && formErrorsComboConfig.partialPayment[0]}
+          />
+          <ButtonGroup
+            name="allowDiscountCoupon"
+            label="Permitir código de desconto?"
+            value={formDataComboConfig[FormInputNameComboConfig.allowDiscountCoupon]}
+            onChange={e =>
+              onChangeFormInputComboConfig(FormInputNameComboConfig.allowDiscountCoupon)(
+                e?.target?.value as string,
+              )
+            }
+            options={[
+              { value: true, label: 'Sim' },
+              { value: false, label: 'Não' },
+            ]}
+            error={
+              formErrorsComboConfig.allowDiscountCoupon &&
+              formErrorsComboConfig.allowDiscountCoupon[0]
+            }
+          />
+        </FormGroup>
       </Form>
       {formDataComboConfig.allowDiscountCoupon === 'true' || discountCouponList.length > 0 ? (
         <>
@@ -526,6 +500,7 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
             >
               <>
                 <div className="p-3 pt-5" style={{ backgroundColor: '#fff', borderRadius: '5px' }}>
+                  {' '}
                   <Row>
                     <Col md={6}>
                       <FormGroup className="mb-2">
@@ -730,8 +705,8 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                           amount: discount.amount,
                           discount:
                             discount.discountType === 0
-                              ? `R$ ${updateMaskCash(String(discount.discount))}`
-                              : `${discount.discount}%`,
+                              ? `${toCurrency(discount.discount)}`
+                              : `${toPercentage(discount.discount)}%`,
                         },
                       ]}
                     />

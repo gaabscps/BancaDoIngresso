@@ -1,7 +1,6 @@
 import { NameFiles } from '@/features/events/types';
 import { FormData, FormErrors, OnChangeFormInput, IsFormValid } from '@/hooks';
 import Section from '@/model/Section';
-import Ticket from '@/model/Ticket';
 import { ShouldShowModal } from '../screens/ui';
 
 export interface formConfigSectorProps {

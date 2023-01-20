@@ -785,21 +785,22 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
       onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSaleDebit)(
         String(
           (comboConfig?.physicalSale?.debit && toPercentage(comboConfig?.physicalSale?.debit)) ||
-            '',
+            '0,00',
         ),
       );
+
       onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSaleCredit)(
         String(
           (comboConfig?.physicalSale?.credit && toPercentage(comboConfig?.physicalSale?.credit)) ||
-            '',
+            '0,00',
         ),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSalePix)(
-        toPercentage(comboConfig?.physicalSale?.pix) || '',
+        String(toPercentage(comboConfig?.physicalSale?.pix || '')),
       );
 
       onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSaleAdministrateTax)(
-        toPercentage(comboConfig?.physicalSale?.administrateTax || ''),
+        String(toPercentage(comboConfig?.physicalSale?.administrateTax || '')),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSaleInstallments)(
         comboConfig?.physicalSale?.installments
@@ -807,7 +808,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
           : '',
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSaleFee)(
-        toPercentage(comboConfig?.physicalSale?.fee || ''),
+        String(toPercentage(comboConfig?.physicalSale?.fee || '')),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSaleAllowCreditCardPayment)(
         toPercentage(comboConfig?.websiteSale?.allowCreditCardPayment || 'true'),

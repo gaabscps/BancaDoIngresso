@@ -558,6 +558,7 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
             theme="outlineDark"
             className="ml-3"
             onClick={async () => {
+              controllerEvent.handleGetSectorConfigList();
               await controllerProductActions.onNextTab();
             }}
           />

@@ -17,13 +17,13 @@ export enum States {
 }
 
 export const SectorConfigContent: React.FC<
-  Pick<SectorProductConfigSectorContainerProps, 'dataConfig'>
-> = ({ dataConfig }) => {
+  Pick<SectorProductConfigSectorContainerProps, 'dataConfig' | 'controllerEvent'>
+> = ({ dataConfig, controllerEvent }) => {
   const [arrProducts, setArrProducts] = useState([]);
   const [selectedAll, setSelectedAll] = useState([]);
 
   const checkSelectedAll = (value: string) => {
-    const { subGroups } = dataConfig.configList.find(({ categoryGroupId }) =>
+    const { subGroups } = controllerEvent.sectorConfig.find(({ categoryGroupId }: any) =>
       value.includes(categoryGroupId),
     );
     const {
@@ -117,7 +117,7 @@ export const SectorConfigContent: React.FC<
 
   useEffect(() => {
     const _products: any[] | ((prevState: never[]) => never[]) = [];
-    dataConfig.configList.map(({ categoryGroupId, categoryGroupName, subGroups }) => {
+    controllerEvent.sectorConfig.map(({ categoryGroupId, categoryGroupName, subGroups }: any) => {
       subGroups.map((subgroup: any) => {
         _products.push({ categoryGroupId, categoryGroupName, ...subgroup });
       });

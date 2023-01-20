@@ -387,6 +387,7 @@ export const SectorProductConfigSectorScreen: React.FC<
         sector.imageBase64Sector,
       );
     }
+    console.log(controllerEvent.sectorConfig);
   }, [sector]);
 
   return (

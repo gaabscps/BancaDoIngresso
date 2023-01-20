@@ -92,7 +92,9 @@ export const SectorProductConfigSectorContainer: React.FC<
       >
         {
           {
-            [ShouldShowModal.configProduct]: <SectorConfigContent dataConfig={dataConfig} />,
+            [ShouldShowModal.configProduct]: (
+              <SectorConfigContent controllerEvent={controllerEvent} dataConfig={dataConfig} />
+            ),
           }[modalConfig.shouldShowModal]
         }
       </Dialog>
