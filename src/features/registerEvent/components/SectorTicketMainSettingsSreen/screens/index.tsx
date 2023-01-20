@@ -461,42 +461,44 @@ export const SectorTicketMainSettingsScreen: React.FC<
 
   const handleOnEditBatch = async (batchSelected: TicketBatch): Promise<void> => {
     try {
-      // edit batch from list
-      const newBatchList: any = batchList.map((batch: TicketBatch) => {
-        const payloadStartData = dayjs(
-          `${formDataBatchs[FormInputNameToBatch.startDate]}T${
-            formDataBatchs[FormInputNameToBatch.startTime]
-          }`,
-        ).format('YYYY-MM-DDTHH:mm');
+      if (isFormValidBatchs()) {
+        // edit batch from list
+        const newBatchList: any = batchList.map((batch: TicketBatch) => {
+          const payloadStartData = dayjs(
+            `${formDataBatchs[FormInputNameToBatch.startDate]}T${
+              formDataBatchs[FormInputNameToBatch.startTime]
+            }`,
+          ).format('YYYY-MM-DDTHH:mm');
 
-        const payloadEndData = dayjs(
-          `${formDataBatchs[FormInputNameToBatch.endDate]}T${
-            formDataBatchs[FormInputNameToBatch.endTime]
-          }`,
-        ).format('YYYY-MM-DDTHH:mm');
-        if (batch.name === batchSelected?.name) {
-          return {
-            ...batch,
-            id: batchSelected?.id,
-            name: formDataBatchs[FormInputNameToBatch.name],
-            startDate: payloadStartData,
-            endDate: payloadEndData,
-            commission: toPercentage(+formDataBatchs[FormInputNameToBatch.commission]),
-            amount: +formDataBatchs[FormInputNameToBatch.amount],
-            unitValue: formDataBatchs[FormInputNameToBatch.unitValue],
-            totalValue: formDataBatchs[FormInputNameToBatch.totalValue],
-            imageUrl: formDataBatchs[FormInputNameToBatch.imageUrl],
-          };
-        }
+          const payloadEndData = dayjs(
+            `${formDataBatchs[FormInputNameToBatch.endDate]}T${
+              formDataBatchs[FormInputNameToBatch.endTime]
+            }`,
+          ).format('YYYY-MM-DDTHH:mm');
+          if (batch.name === batchSelected?.name) {
+            return {
+              ...batch,
+              id: batchSelected?.id,
+              name: formDataBatchs[FormInputNameToBatch.name],
+              startDate: payloadStartData,
+              endDate: payloadEndData,
+              commission: toPercentage(+formDataBatchs[FormInputNameToBatch.commission]),
+              amount: +formDataBatchs[FormInputNameToBatch.amount],
+              unitValue: formDataBatchs[FormInputNameToBatch.unitValue],
+              totalValue: formDataBatchs[FormInputNameToBatch.totalValue],
+              imageUrl: formDataBatchs[FormInputNameToBatch.imageUrl],
+            };
+          }
 
-        return batch;
-      });
+          return batch;
+        });
 
-      setBatchList(newBatchList);
-      setBatch(undefined);
-      setFormNameFiles({ ...formNameFiles, [FormInputNameToBatch.imageUrl]: '' });
-      resetFormBatchs();
-      toast.success('Lote editado com sucesso.');
+        setBatchList(newBatchList);
+        setBatch(undefined);
+        setFormNameFiles({ ...formNameFiles, [FormInputNameToBatch.imageUrl]: '' });
+        resetFormBatchs();
+        toast.success('Lote editado com sucesso.');
+      }
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
