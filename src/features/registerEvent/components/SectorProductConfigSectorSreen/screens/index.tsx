@@ -233,10 +233,7 @@ export const SectorProductConfigSectorScreen: React.FC<
   };
 
   const handleNextTab = async (): Promise<void> => {
-    await handleOnSaveConfigSector();
-    // if (isFormValidConfigSector()) {
     nextTab();
-    // }
   };
 
   const handleBackTab = (): void => {
