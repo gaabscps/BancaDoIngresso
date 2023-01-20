@@ -147,18 +147,14 @@ export const PosConfigContent: React.FC<
                   name={`${sectionNome}`}
                   checked={
                     selectedAll.includes(sectionId as never) ||
-                    dataConfig.form?.products?.filter((name: string) => name.includes(sectionId))
-                      .length ===
-                      sectionGroup?.reduce(
-                        (acc: number, { subGroups }: any) =>
-                          acc +
-                          // eslint-disable-next-line no-unsafe-optional-chaining
-                          subGroups?.reduce(
-                            (acc: number, { products }: any) => acc + products.length,
-                            0,
-                          ),
-                        0,
-                      )
+                    dataConfig.form?.combos?.reduce(
+                      (acc: boolean, name: string) => acc || name.includes(sectionId as never),
+                      false,
+                    ) ||
+                    dataConfig.form?.products?.reduce(
+                      (acc: boolean, name: string) => acc || name.includes(sectionId as never),
+                      false,
+                    )
                   }
                   onChange={() => {
                     selectAll(index);

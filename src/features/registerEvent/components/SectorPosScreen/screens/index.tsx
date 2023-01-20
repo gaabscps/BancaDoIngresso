@@ -74,7 +74,7 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({
     isFormValid: isFormValidAllowPos,
   } = useForm({
     initialData: {
-      allowPos: '',
+      allowPos: 'true',
     },
     validators: {
       allowPos: [validators.required],
