@@ -28,6 +28,8 @@ import {
   TabSectorTicketActionsProps,
 } from '@/features/registerEvent/screens/SectorTicket/ui';
 // import { unmask as unmaskCash } from '@/helpers/masks/cashNumber';
+import { unmask } from '@/helpers/masks/cashNumber';
+import { toPercentage } from '@/helpers/common/amount';
 import {
   batchActionsProps,
   batchStatesProps,
@@ -314,8 +316,9 @@ export const SectorTicketMainSettingsScreen: React.FC<
           hasHalfPrice: convertToBoolean(
             formDataMainSettings[FormInputNameToMainSettings.hasHalfPrice],
           ),
-          percentageHalfPrice:
-            +formDataMainSettings[FormInputNameToMainSettings.percentageHalfPrice],
+          percentageHalfPrice: +unmask(
+            formDataMainSettings[FormInputNameToMainSettings.percentageHalfPrice],
+          ),
           amountHalfPrice: +formDataMainSettings[FormInputNameToMainSettings.amountHalfPrice],
           hasCourtesy: convertToBoolean(
             formDataMainSettings[FormInputNameToMainSettings.hasCourtesy],
@@ -382,7 +385,7 @@ export const SectorTicketMainSettingsScreen: React.FC<
           name: formDataBatchs[FormInputNameToBatch.name],
           startDate: payloadStartData,
           endDate: payloadEndData,
-          commission: +formDataBatchs[FormInputNameToBatch.commission],
+          commission: +unmask(formDataBatchs[FormInputNameToBatch.commission]),
           amount: +formDataBatchs[FormInputNameToBatch.amount],
           unitValue: formDataBatchs[FormInputNameToBatch.unitValue],
           totalValue: formDataBatchs[FormInputNameToBatch.totalValue],
@@ -476,7 +479,7 @@ export const SectorTicketMainSettingsScreen: React.FC<
             name: formDataBatchs[FormInputNameToBatch.name],
             startDate: payloadStartData,
             endDate: payloadEndData,
-            commission: +formDataBatchs[FormInputNameToBatch.commission],
+            commission: toPercentage(+formDataBatchs[FormInputNameToBatch.commission]),
             amount: +formDataBatchs[FormInputNameToBatch.amount],
             unitValue: formDataBatchs[FormInputNameToBatch.unitValue],
             totalValue: formDataBatchs[FormInputNameToBatch.totalValue],
@@ -654,7 +657,7 @@ export const SectorTicketMainSettingsScreen: React.FC<
         String(ticket.hasHalfPrice),
       );
       onChangeFormInputMainSettings(FormInputNameToMainSettings.percentageHalfPrice)(
-        String(ticket.percentageHalfPrice),
+        toPercentage(ticket.percentageHalfPrice),
       );
       onChangeFormInputMainSettings(FormInputNameToMainSettings.amountHalfPrice)(
         String(ticket.amountHalfPrice),

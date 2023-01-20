@@ -13,6 +13,7 @@ import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { ReactComponent as Config } from '@/assets/images/svg/config.svg';
 import ProductIcon from '@/assets/images/svg/Product';
+import { controllerEventProps } from '@/features/registerEvent/screens/SectorTicket/types';
 import { columnsProducts } from './table';
 import {
   formConfigProductProps,
@@ -42,6 +43,7 @@ export interface SectorProductContainerProps {
   modalConfig: modalConfigTicketMainSettingsProps;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   formDiscountCoupon: any;
+  controllerEvent: controllerEventProps;
 }
 
 export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
@@ -52,6 +54,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
   productStates,
   modalConfig,
   formDiscountCoupon,
+  controllerEvent,
 }) => {
   const titleRef = React.useRef<HTMLInputElement>(null);
 
@@ -121,6 +124,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
               formProduct={formProduct}
               productStates={productStates}
               productActions={productActions}
+              controllerEvent={controllerEvent}
             />
           </div>
           <div className="d-flex justify-content-end">

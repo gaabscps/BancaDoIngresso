@@ -12,6 +12,7 @@ import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { ReactComponent as Config } from '@/assets/images/svg/config.svg';
 import { ActionProps } from '@/components/Dialog';
 import SectorIcon from '@/assets/images/svg/Sector';
+import { controllerEventProps } from '@/features/registerEvent/screens/SectorTicket/types';
 import { columnsSectors } from './table';
 import {
   formConfigSectorProps,
@@ -39,6 +40,7 @@ export interface SectorProductConfigSectorContainerProps {
   configSectorStates: sectorStatesProps;
   modalConfig: modalConfigSectorSettingsProps;
   dataConfig: dataConfigStatesProps;
+  controllerEvent: controllerEventProps;
 }
 
 export const SectorProductConfigSectorContainer: React.FC<
@@ -50,6 +52,7 @@ export const SectorProductConfigSectorContainer: React.FC<
   configSectorActions,
   modalConfig,
   dataConfig,
+  controllerEvent,
 }) => {
   const titleRef = React.useRef<HTMLDivElement>(null);
 
@@ -282,6 +285,7 @@ export const SectorProductConfigSectorContainer: React.FC<
             className="ml-3"
             onClick={async () => {
               await configSectorActions.onNextTab();
+              controllerEvent.handleGetPosSectionList();
             }}
           />
         </div>

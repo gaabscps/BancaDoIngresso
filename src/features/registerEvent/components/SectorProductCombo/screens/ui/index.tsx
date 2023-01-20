@@ -22,6 +22,7 @@ import { CustomTable } from '@/components/Table';
 import { ActionProps } from '@/components/Dialog';
 import DiscountCoupon from '@/model/DiscountCoupon';
 import ComboIcon from '@/assets/images/svg/Combo';
+import { controllerEventProps } from '@/features/registerEvent/screens/SectorTicket/types';
 import {
   comboActionsProps,
   comboRequestProps,
@@ -44,6 +45,7 @@ interface SectorProductComboContainerProps {
   controllerFormComboConfig: formComboConfigProps;
   controllerProductActions: comboActionsProps;
   controllerFormDiscountCoupon: formDiscountCouponProps;
+  controllerEvent: controllerEventProps;
   comboStates: comboStatesProps;
   formAppendProducts: formAppendProductsProps;
   comboRequests: comboRequestProps;

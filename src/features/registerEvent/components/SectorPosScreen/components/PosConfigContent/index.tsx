@@ -17,15 +17,15 @@ export enum States {
   loading = 'loading',
 }
 
-export const PosConfigContent: React.FC<Pick<SectorProductPosContainerProps, 'dataConfig'>> = ({
-  dataConfig,
-}) => {
+export const PosConfigContent: React.FC<
+  Pick<SectorProductPosContainerProps, 'dataConfig' | 'controllerEvent'>
+> = ({ dataConfig, controllerEvent }) => {
   const [arrProducts, setArrProducts] = useState([]);
   const [selectedAll, setSelectedAll] = useState([]);
 
   const checkSelectedAll = (value: string) => {
-    const { sectionGroup, sectionId }: any = dataConfig.configList.find(({ sectionId }: any) =>
-      value.includes(sectionId),
+    const { sectionGroup, sectionId }: any = controllerEvent.sectionList.find(
+      ({ sectionId }: any) => value.includes(sectionId),
     );
 
     const _products = [];
@@ -127,7 +127,7 @@ export const PosConfigContent: React.FC<Pick<SectorProductPosContainerProps, 'da
 
   useEffect(() => {
     const _products: any[] | ((prevState: never[]) => never[]) = [];
-    dataConfig.configList.map(({ sectionId, sectionNome, sectionGroup }) => {
+    controllerEvent.sectionList.map(({ sectionId, sectionNome, sectionGroup }: any) => {
       _products.push({ sectionId, sectionNome, sectionGroup });
     });
 
@@ -139,17 +139,30 @@ export const PosConfigContent: React.FC<Pick<SectorProductPosContainerProps, 'da
       <h6 className="mb-4">Selecione os setores e produtos que esta POS poderá vender</h6>
       {!!arrProducts.length &&
         arrProducts.map(({ sectionId, sectionNome, sectionGroup }: any, index) => (
-          <Fragment key={index}>
+          <div key={index}>
             <SuperCollapse
               title={sectionNome}
               leftIcon={
                 <Checkbox
                   name={`${sectionNome}`}
-                  checked={selectedAll.includes(sectionId as never)}
+                  checked={
+                    selectedAll.includes(sectionId as never) ||
+                    dataConfig.form?.products?.filter((name: string) => name.includes(sectionId))
+                      .length ===
+                      sectionGroup?.reduce(
+                        (acc: number, { subGroups }: any) =>
+                          acc +
+                          // eslint-disable-next-line no-unsafe-optional-chaining
+                          subGroups?.reduce(
+                            (acc: number, { products }: any) => acc + products.length,
+                            0,
+                          ),
+                        0,
+                      )
+                  }
                   onChange={() => {
                     selectAll(index);
                   }}
-                  // onClick={e => e.stopPropagation()}
                 />
               }
               content={
@@ -162,12 +175,7 @@ export const PosConfigContent: React.FC<Pick<SectorProductPosContainerProps, 'da
                           {!!products.length && (
                             <div className="mb-3">
                               <div className="mb-4">
-                                <span
-                                  onClick={() => console.log(products)}
-                                  className="text-black-light"
-                                >
-                                  Produtos
-                                </span>
+                                <span className="text-black-light">Produtos</span>
                               </div>
                               <div
                                 style={{
@@ -238,7 +246,7 @@ export const PosConfigContent: React.FC<Pick<SectorProductPosContainerProps, 'da
                 </>
               }
             />
-          </Fragment>
+          </div>
         ))}
     </Fragment>
   );

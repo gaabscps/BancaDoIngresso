@@ -7,6 +7,7 @@ import useForm from '@/hooks/useForm';
 import validators from '@/helpers/validators';
 import { toast } from 'react-toastify';
 import { useDialog } from '@/hooks/useDialog';
+import { unmask, updateMask as updateMaskCashNumber } from '@/helpers/masks/cashNumber';
 import { useParams } from 'react-router-dom';
 import DiscountCoupon from '@/model/DiscountCoupon';
 import {
@@ -309,15 +310,20 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
                 FormInputNameToPaymentSettings.physicalSaleAllowCreditCardPayment
               ],
             ),
-            debit: +formDataPaymentSettings[FormInputNameToPaymentSettings.physicalSaleDebit],
-            credit: +formDataPaymentSettings[FormInputNameToPaymentSettings.physicalSaleCredit],
+            debit: +unmask(
+              formDataPaymentSettings[FormInputNameToPaymentSettings.physicalSaleDebit],
+            ),
             bankSlip: 0,
-            pix: +formDataPaymentSettings[FormInputNameToPaymentSettings.physicalSalePix],
-            administrateTax:
-              +formDataPaymentSettings[FormInputNameToPaymentSettings.physicalSaleAdministrateTax],
+            credit: +unmask(
+              formDataPaymentSettings[FormInputNameToPaymentSettings.physicalSaleCredit],
+            ),
+            pix: +unmask(formDataPaymentSettings[FormInputNameToPaymentSettings.physicalSalePix]),
+            administrateTax: +unmask(
+              formDataPaymentSettings[FormInputNameToPaymentSettings.physicalSaleAdministrateTax],
+            ),
             installments:
               +formDataPaymentSettings[FormInputNameToPaymentSettings.physicalSaleInstallments],
-            fee: +formDataPaymentSettings[FormInputNameToPaymentSettings.physicalSaleFee],
+            fee: +unmask(formDataPaymentSettings[FormInputNameToPaymentSettings.physicalSaleFee]),
           },
           websiteSale: {
             allowCreditCardPayment: convertToBoolean(
@@ -325,15 +331,21 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
                 FormInputNameToPaymentSettings.websiteSaleAllowCreditCardPayment
               ],
             ),
-            credit: +formDataPaymentSettings[FormInputNameToPaymentSettings.websiteSaleCredit],
-            bankSlip: +formDataPaymentSettings[FormInputNameToPaymentSettings.websiteSaleBankSlip],
-            debit: 0,
-            pix: +formDataPaymentSettings[FormInputNameToPaymentSettings.websiteSalePix],
-            administrateTax:
-              +formDataPaymentSettings[FormInputNameToPaymentSettings.websiteSaleAdministrateTax],
-            installments:
-              +formDataPaymentSettings[FormInputNameToPaymentSettings.websiteSaleInstallments],
-            fee: +formDataPaymentSettings[FormInputNameToPaymentSettings.websiteSaleFee],
+            credit: +unmask(
+              formDataPaymentSettings[FormInputNameToPaymentSettings.websiteSaleCredit],
+            ),
+            bankSlip: +unmask(
+              formDataPaymentSettings[FormInputNameToPaymentSettings.websiteSaleBankSlip],
+            ),
+
+            pix: +unmask(formDataPaymentSettings[FormInputNameToPaymentSettings.websiteSalePix]),
+            administrateTax: +unmask(
+              formDataPaymentSettings[FormInputNameToPaymentSettings.websiteSaleAdministrateTax],
+            ),
+            installments: +unmask(
+              formDataPaymentSettings[FormInputNameToPaymentSettings.websiteSaleInstallments],
+            ),
+            fee: +unmask(formDataPaymentSettings[FormInputNameToPaymentSettings.websiteSaleFee]),
           },
           allowDiscount: convertToBoolean(
             formDataPaymentSettings[FormInputNameToPaymentSettings.allowDiscount],
@@ -436,44 +448,44 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
         FormInputNameToPaymentSettings.physicalSaleAllowCreditCardPayment,
       )(String(ticket.payment.physicalSale.allowCreditCardPayment));
       onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.physicalSaleDebit)(
-        String(ticket.payment.physicalSale.debit),
+        updateMaskCashNumber(String(ticket.payment.physicalSale.debit)),
       );
       onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.physicalSaleCredit)(
-        String(ticket.payment.physicalSale.credit),
+        updateMaskCashNumber(String(ticket.payment.physicalSale.credit)),
       );
       onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.physicalSalePix)(
-        String(ticket.payment.physicalSale.pix),
+        updateMaskCashNumber(String(ticket.payment.physicalSale.pix)),
       );
       onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.physicalSaleAdministrateTax)(
-        String(ticket.payment.physicalSale.administrateTax),
+        updateMaskCashNumber(String(ticket.payment.physicalSale.administrateTax)),
       );
       onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.physicalSaleInstallments)(
         String(ticket.payment.physicalSale.installments),
       );
       onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.physicalSaleFee)(
-        String(ticket.payment.physicalSale.fee),
+        updateMaskCashNumber(String(ticket.payment.physicalSale.fee)),
       );
 
       onChangeFormInputPaymentSettings(
         FormInputNameToPaymentSettings.websiteSaleAllowCreditCardPayment,
       )(String(ticket.payment.websiteSale.allowCreditCardPayment));
       onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.websiteSaleBankSlip)(
-        String(ticket.payment.websiteSale.bankSlip),
+        updateMaskCashNumber(String(ticket.payment.websiteSale.bankSlip)),
       );
       onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.websiteSaleCredit)(
-        String(ticket.payment.websiteSale.credit),
+        updateMaskCashNumber(String(ticket.payment.websiteSale.credit)),
       );
       onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.websiteSalePix)(
-        String(ticket.payment.websiteSale.pix),
+        updateMaskCashNumber(String(ticket.payment.websiteSale.pix)),
       );
       onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.websiteSaleAdministrateTax)(
-        String(ticket.payment.websiteSale.administrateTax),
+        updateMaskCashNumber(String(ticket.payment.websiteSale.administrateTax)),
       );
       onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.websiteSaleInstallments)(
         String(ticket.payment.websiteSale.installments),
       );
       onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.websiteSaleFee)(
-        String(ticket.payment.websiteSale.fee),
+        updateMaskCashNumber(String(ticket.payment.websiteSale.fee)),
       );
       onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.allowDiscount)(
         String(ticket.payment.allowDiscount),

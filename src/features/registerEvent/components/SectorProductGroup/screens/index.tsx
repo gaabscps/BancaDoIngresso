@@ -29,7 +29,7 @@ export interface NameFiles {
 
 export const SectorProductGroupScreen: React.FC<
   Omit<TabSectorProductActionsProps, 'onFirstTab' | 'backTab'>
-> = ({ nextTab }): JSX.Element => {
+> = ({ nextTab, controllerEvent }): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
   const [nameFiles, setNameFiles] = useState<NameFiles>({});
   const [nameFilesSub, setNameFilesSub] = useState<NameFiles>({});
@@ -375,6 +375,7 @@ export const SectorProductGroupScreen: React.FC<
     onGetProductSubGroupList: handleFecthProductSubGroupList,
     onGetGroup: handleOnGetGroup,
     onCancelEdit: handleOnCancelEditGroup,
+    onGetGroupOption: controllerEvent.handleGetGroupList,
   };
 
   useEffect(() => {

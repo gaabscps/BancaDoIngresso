@@ -1,7 +1,8 @@
-import { FormData, FormErrors, OnChangeFormInput } from '@/hooks';
+import { FormData, FormErrors, IsFormValid, OnChangeFormInput } from '@/hooks';
 
 export interface formSectorProductProps {
   formData: FormData;
   formErrors: FormErrors;
   onChangeFormInput: OnChangeFormInput;
+  isFormValidSectorProduct: IsFormValid;
 }

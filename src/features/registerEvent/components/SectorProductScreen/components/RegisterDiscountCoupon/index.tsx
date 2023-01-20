@@ -95,16 +95,17 @@ export const RegisterDiscountCoupon: React.FC<RegisterContentProps> = ({ formDis
                   <InputText
                     name="discount"
                     type="number"
-                    label="Desconto"
+                    className={!item.discountType ? 'input__disabled' : ''}
+                    label="Valor do desconto"
                     placeholder="R$40,00 ou 50%"
-                    value={String(item.discount)}
-                    onChange={e =>
+                    value={String(item.discount) || ''}
+                    onChange={e => {
                       handleChangeDiscountCoupon(
                         'discount',
                         index,
                         e.target.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1'),
-                      )
-                    }
+                      );
+                    }}
                     error={undefined}
                   />
                 </Col>

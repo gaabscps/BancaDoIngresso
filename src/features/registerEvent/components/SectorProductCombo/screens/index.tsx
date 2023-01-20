@@ -56,6 +56,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
   backTab,
   nextTab,
   onFirstTab,
+  controllerEvent,
 }): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
   const [nameFiles, setNameFiles] = useState<NameFiles | undefined>({});
@@ -320,10 +321,10 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
       if (isFormValidCombo()) {
         const productData = product.map(prod => ({
           id: prod?.id,
-          name: prod.name,
+          name: prod.name || undefined,
           amount: Number(prod.amount),
         }));
-        if (productData) {
+        if (productData.find(e => e.name !== undefined)) {
           const payload = {
             id: formDataCombo[FormInputNameCombo.id] || undefined,
             group: {
@@ -339,7 +340,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
             amount: +formDataCombo[FormInputNameCombo.amount],
             totalValue: +formDataCombo[FormInputNameCombo.totalValue],
             imageBase64: formDataCombo[FormInputNameCombo.imageBase64Combo],
-            products: productData,
+            products: productData.length > 0 ? productData : undefined,
           };
 
           // cenário de criação
@@ -348,10 +349,10 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
           }
 
           // condição para remover o produto caso o campo esteja vazio
-          payload.products = payload.products.filter(prod => prod.name !== '');
+          payload.products = payload?.products?.filter(prod => prod.name !== '');
 
           // Condição para remover o id do produto caso seja um novo produto
-          payload.products.forEach(productObject => {
+          payload?.products?.forEach(productObject => {
             if (productObject.id === '') {
               // eslint-disable-next-line no-param-reassign
               delete productObject.id;
@@ -497,7 +498,6 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
       const { data } = await api.get(`event/section-product/${id}/combo`);
 
       setComboList(data ?? []);
-      console.log(comboList);
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
@@ -540,7 +540,6 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
     try {
       setState(States.loading);
       if (comboSelected) {
-        console.log(comboSelected);
         resetFormCombo();
         handleOnChangeFileInput(comboSelected.image)(undefined);
         setNameFiles(undefined);
@@ -862,6 +861,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
       controllerFormCombo={controllerFormCombo}
       controllerFormComboConfig={controllerFormComboConfig}
       controllerFormDiscountCoupon={controllerFormDiscountCoupon}
+      controllerEvent={controllerEvent}
       comboRequests={controllerComboRequests}
       onToggle={onToggle}
       shouldShowModal={shouldShowModal}

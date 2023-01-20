@@ -60,7 +60,8 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
     onChangeFormInputGroup,
     setErrorsGroup,
   } = controllerFormGroup;
-  const { onGetProductSubGroupList, onSaveGroup, onGetGroup, onCancelEdit } = controllerRequest;
+  const { onGetProductSubGroupList, onSaveGroup, onGetGroup, onCancelEdit, onGetGroupOption } =
+    controllerRequest;
   const titleRef = React.useRef<HTMLInputElement>(null);
 
   return (
@@ -244,12 +245,7 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
                                 className="d-flex align-items-center"
                                 style={{ flexWrap: 'nowrap' }}
                               >
-                                <span
-                                  onClick={() => window.console.log('item', group)}
-                                  className="secondary-table-title ml-5 mr-2"
-                                >
-                                  Subgrupo
-                                </span>
+                                <span className="secondary-table-title ml-5 mr-2">Subgrupo</span>
                                 {group.subGroups.length !== 1 ? (
                                   <DropdonwFlags
                                     style={{ color: '#000 !important', fontWeight: '500' }}
@@ -306,6 +302,7 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
             className="ml-3"
             onClick={() => {
               onNextTab();
+              onGetGroupOption();
             }}
           />
         </div>

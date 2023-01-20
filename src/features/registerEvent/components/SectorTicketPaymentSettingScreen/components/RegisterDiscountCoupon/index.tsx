@@ -77,7 +77,7 @@ export const RegisterDiscountCoupon: React.FC<RegisterContentProps> = ({
                 <FormGroup className="mb-2">
                   <InputText
                     name={`discount-${index}`}
-                    label="Desconto (%)"
+                    label="Desconto"
                     addon="%"
                     placeholder="0"
                     maxLength={5}
