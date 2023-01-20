@@ -693,7 +693,7 @@ export const SectorTicketMainSettingsScreen: React.FC<
           name: item.name,
           startDate: item.startDate,
           endDate: item.endDate,
-          commission: item.commission,
+          commission: +item.commission,
           amount: item.amount,
           unitValue: validators.applyDecimalMask(String(item.unitValue)),
           totalValue: validators.applyDecimalMask(String(item.totalValue)),
