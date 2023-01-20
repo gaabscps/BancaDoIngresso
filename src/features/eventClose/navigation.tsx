@@ -3,7 +3,7 @@ import { Route } from '@/navigation/Route';
 import { HomeEventCloseScreen } from '@/features/eventClose/screens/Home';
 import { GeneralCollectionScreen } from './screens/GeneralCollection';
 import { IncomeScreen } from './screens/Income';
-import { IncomeManualEntriesScreen } from './screens/incomeManualEntries';
+import { IncomeManualEntriesScreen } from './screens/IncomeManualEntries';
 import { ExpenseManualEntriesScreen } from './screens/Expense';
 import { HomeMachineEventCloseScreen } from './screens/HomeMachine';
 import { MachinesTicketSalesScreen } from './screens/MachinesTicketSales';
