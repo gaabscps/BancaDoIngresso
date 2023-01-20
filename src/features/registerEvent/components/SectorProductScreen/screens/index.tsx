@@ -131,14 +131,14 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
       physicalSaleCredit: [validators.required],
       physicalSalePix: [validators.required],
       physicalSaleAdministrateTax: [validators.required],
-      physicalSaleInstallments: [validators.required],
+      physicalSaleInstallments: [validators.required, validators.between(0, 24)],
       physicalSaleFee: [validators.required],
       websiteSaleAllowCreditCardPayment: [validators.required],
       websiteSaleCredit: [validators.required],
       websiteSalePix: [validators.required],
       websiteSaleAdministrateTax: [validators.required],
       websiteSaleBankSlip: [validators.required],
-      websiteSaleInstallments: [validators.required],
+      websiteSaleInstallments: [validators.required, validators.between(0, 24)],
       websiteSaleFee: [validators.required],
       allowDiscountCoupon: [validators.required],
       waiter: [validators.required],
@@ -182,6 +182,7 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
 
   const handleOnConfirmDeleteTopProduct = async (productSelected: any): Promise<void> => {
     try {
+      setState(States.loading);
       await api.delete(`/event/section-product/${params?.id}/product/${productSelected.id}`);
       toast.success('Produto excluído com sucesso!');
       handleGetProductList(params.id);
@@ -190,6 +191,7 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
       throw new Error(err.response?.data.message);
     } finally {
       confirmDelete.hide();
+      setState(States.default);
     }
   };
 
@@ -341,6 +343,7 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
 
   const handleOnSaveProduct = async (): Promise<void> => {
     try {
+      setState(States.loading);
       if (isFormValidProduct()) {
         const payload = {
           id: formDataProduct[FormInputNameProduct.id] ?? '',
@@ -369,11 +372,14 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
     } catch (error) {
       const err = error as AxiosError | any;
       throw new Error(err.response.data.message);
+    } finally {
+      setState(States.loading);
     }
   };
 
   const handleOnSaveConfigProduct = async (productSelected: any): Promise<void> => {
     try {
+      setState(States.loading);
       if (isFormValidConfigProduct()) {
         const payloadDiscountCoupon = discountCoupon.map(item => ({
           id: item.id,
@@ -451,6 +457,8 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
+    } finally {
+      setState(States.loading);
     }
   };
 

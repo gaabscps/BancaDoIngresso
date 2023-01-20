@@ -251,6 +251,7 @@ export const SectorTicketMainSettingsScreen: React.FC<
 
         onToggle();
         handleFecthSectorList();
+        resetFormSector();
       }
     } catch (error) {
       const err = error as AxiosError;
@@ -400,6 +401,7 @@ export const SectorTicketMainSettingsScreen: React.FC<
         if (!batchExists) {
           setBatchList([...batchList, payload]);
           onChangeFormInputBatchs(FormInputNameToBatch.name)('');
+          resetFormBatchs();
           toast.success('Lote adicionado com sucesso!');
         } else {
           toast.error('Lote com o mesmo nome já existe');

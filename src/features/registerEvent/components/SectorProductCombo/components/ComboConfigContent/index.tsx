@@ -4,7 +4,11 @@ import React from 'react';
 import { ButtonGroup, InputText, SelectCustom, TooltipCustom } from '@/components';
 import DiscountCoupon from '@/model/DiscountCoupon';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
-import { updateMask as updateMaskCash, unmask as unmaskCash } from '@/helpers/masks/cashNumber';
+import {
+  updateMask as updateMaskCash,
+  unmask as unmaskCash,
+  updateMask,
+} from '@/helpers/masks/cashNumber';
 import { Card, Col, Form, FormGroup, Row } from 'reactstrap';
 import { CustomTable } from '@/components/Table';
 import { X } from 'react-feather';
@@ -198,7 +202,7 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                 value={formDataComboConfig[FormInputNameComboConfig.physicalSaleDebit]}
                 onChange={e =>
                   onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSaleDebit)(
-                    e?.target?.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1') as string,
+                    updateMask(e?.target?.value) as string,
                   )
                 }
                 placeholder="0"
@@ -215,7 +219,7 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                 value={formDataComboConfig[FormInputNameComboConfig.physicalSaleCredit]}
                 onChange={e =>
                   onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSaleCredit)(
-                    e?.target?.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1') as string,
+                    updateMask(e?.target?.value) as string,
                   )
                 }
                 placeholder="0"
@@ -232,7 +236,7 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                 value={formDataComboConfig[FormInputNameComboConfig.physicalSalePix]}
                 onChange={e =>
                   onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSalePix)(
-                    e?.target?.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1') as string,
+                    updateMask(e?.target?.value) as string,
                   )
                 }
                 placeholder="0"
@@ -249,7 +253,7 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                 onChange={e =>
                   onChangeFormInputComboConfig(
                     FormInputNameComboConfig.physicalSaleAdministrateTax,
-                  )(e?.target?.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1') as string)
+                  )(updateMask(e?.target?.value) as string)
                 }
                 placeholder="0"
                 error={
@@ -291,7 +295,7 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                 value={formDataComboConfig[FormInputNameComboConfig.physicalSaleFee]}
                 onChange={e =>
                   onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSaleFee)(
-                    e?.target?.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1') as string,
+                    updateMask(e?.target?.value) as string,
                   )
                 }
                 placeholder="Ex: 4"
@@ -342,7 +346,7 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                 value={formDataComboConfig[FormInputNameComboConfig.websiteSaleBankSlip]}
                 onChange={e =>
                   onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSaleBankSlip)(
-                    e?.target?.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1') as string,
+                    updateMask(e?.target?.value) as string,
                   )
                 }
                 placeholder="0"
@@ -359,7 +363,7 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                 value={formDataComboConfig[FormInputNameComboConfig.websiteSaleCredit]}
                 onChange={e =>
                   onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSaleCredit)(
-                    e?.target?.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1') as string,
+                    updateMask(e?.target?.value) as string,
                   )
                 }
                 placeholder="0"
@@ -376,7 +380,7 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                 value={formDataComboConfig[FormInputNameComboConfig.websiteSalePix]}
                 onChange={e =>
                   onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSalePix)(
-                    e?.target?.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1') as string,
+                    updateMask(e?.target?.value) as string,
                   )
                 }
                 placeholder="0"
@@ -392,7 +396,7 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                 value={formDataComboConfig[FormInputNameComboConfig.websiteSaleAdministrateTax]}
                 onChange={e =>
                   onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSaleAdministrateTax)(
-                    e?.target?.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1') as string,
+                    updateMask(e?.target?.value) as string,
                   )
                 }
                 placeholder="0"
@@ -435,7 +439,7 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                 value={formDataComboConfig[FormInputNameComboConfig.websiteSaleFee]}
                 onChange={e =>
                   onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSaleFee)(
-                    e?.target?.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1') as string,
+                    updateMask(e?.target?.value) as string,
                   )
                 }
                 placeholder="Ex: 4"
@@ -465,7 +469,7 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                 value={formDataComboConfig[FormInputNameComboConfig.waiter]}
                 onChange={e =>
                   onChangeFormInputComboConfig(FormInputNameComboConfig.waiter)(
-                    e?.target?.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1') as string,
+                    updateMask(e?.target?.value) as string,
                   )
                 }
                 placeholder="0"

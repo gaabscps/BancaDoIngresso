@@ -24,6 +24,8 @@ import { DeleteContent } from '@/components/DeleteContent';
 import EventGroupSubgroup from '@/model/EventGroupSubgroup';
 import EventProduct from '@/model/EventProduct';
 import { convertToBoolean } from '@/helpers/common/convertToBoolean';
+import { unmask } from '@/helpers/masks/cashNumber';
+import { toPercentage } from '@/helpers/common/amount';
 import {
   comboActionsProps,
   comboRequestProps,
@@ -150,14 +152,14 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
       physicalSaleCredit: [validators.required, validators.between(0, 99)],
       physicalSalePix: [validators.required, validators.between(0, 99)],
       physicalSaleAdministrateTax: [validators.required, validators.between(0, 99)],
-      physicalSaleInstallments: [validators.required, validators.between(0, 10)],
+      physicalSaleInstallments: [validators.required, validators.between(0, 24)],
       physicalSaleFee: [validators.required, validators.between(0, 99)],
       websiteSaleAllowCreditCardPayment: [validators.required],
       websiteSaleBankSlip: [validators.required, validators.between(0, 99)],
       websiteSaleCredit: [validators.required, validators.between(0, 99)],
       websiteSalePix: [validators.required, validators.between(0, 99)],
       websiteSaleAdministrateTax: [validators.required, validators.between(0, 99)],
-      websiteSaleInstallments: [validators.required, validators.between(0, 10)],
+      websiteSaleInstallments: [validators.required, validators.between(0, 24)],
       websiteSaleFee: [validators.required, validators.between(0, 99)],
       waiter: [validators.required, validators.between(0, 99)],
       partialPayment: [validators.required],
@@ -387,27 +389,29 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
             allowCreditCardPayment: convertToBoolean(
               formDataComboConfig[FormInputNameComboConfig.physicalSaleAllowCreditCardPayment],
             ),
-            debit: +formDataComboConfig[FormInputNameComboConfig.physicalSaleDebit],
-            credit: +formDataComboConfig[FormInputNameComboConfig.physicalSaleCredit],
-            pix: +formDataComboConfig[FormInputNameComboConfig.physicalSalePix],
-            administrateTax:
-              +formDataComboConfig[FormInputNameComboConfig.physicalSaleAdministrateTax],
+            debit: +unmask(formDataComboConfig[FormInputNameComboConfig.physicalSaleDebit]),
+            credit: +unmask(formDataComboConfig[FormInputNameComboConfig.physicalSaleCredit]),
+            pix: +unmask(formDataComboConfig[FormInputNameComboConfig.physicalSalePix]),
+            administrateTax: +unmask(
+              formDataComboConfig[FormInputNameComboConfig.physicalSaleAdministrateTax],
+            ),
             installments: +formDataComboConfig[FormInputNameComboConfig.physicalSaleInstallments],
-            fee: +formDataComboConfig[FormInputNameComboConfig.physicalSaleFee],
+            fee: +unmask(formDataComboConfig[FormInputNameComboConfig.physicalSaleFee]),
           },
           websiteSale: {
             allowCreditCardPayment: convertToBoolean(
               formDataComboConfig[FormInputNameComboConfig.websiteSaleAllowCreditCardPayment],
             ),
-            credit: +formDataComboConfig[FormInputNameComboConfig.websiteSaleCredit],
-            pix: +formDataComboConfig[FormInputNameComboConfig.websiteSalePix],
-            administrateTax:
-              +formDataComboConfig[FormInputNameComboConfig.websiteSaleAdministrateTax],
-            bankSlip: +formDataComboConfig[FormInputNameComboConfig.websiteSaleBankSlip],
+            credit: +unmask(formDataComboConfig[FormInputNameComboConfig.websiteSaleCredit]),
+            pix: +unmask(formDataComboConfig[FormInputNameComboConfig.websiteSalePix]),
+            administrateTax: +unmask(
+              formDataComboConfig[FormInputNameComboConfig.websiteSaleAdministrateTax],
+            ),
+            bankSlip: +unmask(formDataComboConfig[FormInputNameComboConfig.websiteSaleBankSlip]),
             installments: +formDataComboConfig[FormInputNameComboConfig.websiteSaleInstallments],
-            fee: +formDataComboConfig[FormInputNameComboConfig.websiteSaleFee],
+            fee: +unmask(formDataComboConfig[FormInputNameComboConfig.websiteSaleFee]),
           },
-          waiter: +formDataComboConfig[FormInputNameComboConfig.waiter],
+          waiter: +unmask(formDataComboConfig[FormInputNameComboConfig.waiter]),
           partialPayment: convertToBoolean(
             formDataComboConfig[FormInputNameComboConfig.partialPayment],
           ),
@@ -492,10 +496,10 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
     }
   };
   // Get para montar a tabela de combos já cadastrados
-  const handleGetComboList = async (id: string): Promise<void> => {
+  const handleGetComboList = async (): Promise<void> => {
     try {
       setState(States.loading);
-      const { data } = await api.get(`event/section-product/${id}/combo`);
+      const { data } = await api.get(`event/section-product/${params.id}/combo`);
 
       setComboList(data ?? []);
     } catch (error) {
@@ -587,7 +591,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
         }`,
       );
 
-      handleGetComboList(params.id);
+      handleGetComboList();
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
@@ -608,7 +612,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
         }`,
       );
 
-      handleGetComboList(params.id);
+      handleGetComboList();
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
@@ -623,7 +627,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
       setState(States.loading);
       await api.delete(`/event/section-product/${params?.id}/combo/${comboSelected.id}`);
       toast.success('Combo excluído com sucesso!');
-      handleGetComboList(params.id);
+      handleGetComboList();
     } catch (error) {
       const err = error as AxiosError | any;
       throw new Error(err.response?.data.message);
@@ -725,6 +729,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
     getComboConfig: handleGetComboConfig,
     getDiscount: handleGetDiscount,
     removeDiscountCoupon: handleRemoveDiscountCoupon,
+    getComboList: handleGetComboList,
   };
 
   useEffect(() => {
@@ -734,7 +739,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
   }, [visible]);
 
   useEffect(() => {
-    handleGetComboList(params.id);
+    handleGetComboList();
     handleFecthProductGroupList(params.id);
     handleGetProductSubGroupList(params.id);
     handleFecthProductList(params.id);
@@ -779,67 +784,54 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSaleDebit)(
         String(
-          (comboConfig?.physicalSale?.debit && (+comboConfig.physicalSale.debit).toFixed(2)) || '',
+          (comboConfig?.physicalSale?.debit && toPercentage(comboConfig?.physicalSale?.debit)) ||
+            '',
         ),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSaleCredit)(
         String(
-          (comboConfig?.physicalSale?.credit && (+comboConfig.physicalSale.credit).toFixed(2)) ||
+          (comboConfig?.physicalSale?.credit && toPercentage(comboConfig?.physicalSale?.credit)) ||
             '',
         ),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSalePix)(
-        String(
-          (comboConfig?.physicalSale?.pix && (+comboConfig.physicalSale.pix).toFixed(2)) || '',
-        ),
+        toPercentage(comboConfig?.physicalSale?.pix) || '',
       );
+
       onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSaleAdministrateTax)(
-        String(
-          (comboConfig?.physicalSale?.administrateTax &&
-            (+comboConfig.physicalSale.administrateTax).toFixed(2)) ||
-            '',
-        ),
+        toPercentage(comboConfig?.physicalSale?.administrateTax || ''),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSaleInstallments)(
-        String(comboConfig?.physicalSale?.installments || ''),
+        comboConfig?.physicalSale?.installments
+          ? String(comboConfig?.physicalSale?.installments)
+          : '',
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.physicalSaleFee)(
-        String(
-          (comboConfig?.physicalSale?.fee && (+comboConfig.physicalSale.fee).toFixed(2)) || '',
-        ),
+        toPercentage(comboConfig?.physicalSale?.fee || ''),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSaleAllowCreditCardPayment)(
-        String(comboConfig?.websiteSale?.allowCreditCardPayment || 'true'),
+        toPercentage(comboConfig?.websiteSale?.allowCreditCardPayment || 'true'),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSaleCredit)(
-        String(
-          (comboConfig?.websiteSale?.credit && (+comboConfig.websiteSale.credit).toFixed(2)) || '',
-        ),
+        toPercentage(comboConfig?.websiteSale?.credit || ''),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSaleBankSlip)(
-        String(
-          (comboConfig?.websiteSale?.bankSlip && (+comboConfig.websiteSale.bankSlip).toFixed(2)) ||
-            '',
-        ),
+        toPercentage(comboConfig?.websiteSale?.bankSlip || ''),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSalePix)(
-        String((comboConfig?.websiteSale?.pix && (+comboConfig.websiteSale.pix).toFixed(2)) || ''),
+        toPercentage(comboConfig?.websiteSale?.pix || ''),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSaleAdministrateTax)(
-        String(
-          (comboConfig?.websiteSale?.administrateTax &&
-            (+comboConfig.websiteSale.administrateTax).toFixed(2)) ||
-            '',
-        ),
+        toPercentage(comboConfig?.websiteSale?.administrateTax || ''),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSaleInstallments)(
         String(comboConfig?.websiteSale?.installments || ''),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.websiteSaleFee)(
-        String((comboConfig?.websiteSale?.fee && (+comboConfig.websiteSale.fee).toFixed(2)) || ''),
+        toPercentage(comboConfig?.websiteSale?.fee || ''),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.waiter)(
-        String((comboConfig?.waiter && (+comboConfig.waiter).toFixed(2)) || ''),
+        toPercentage(comboConfig?.waiter || ''),
       );
       onChangeFormInputComboConfig(FormInputNameComboConfig.partialPayment)(
         String(comboConfig?.partialPayment || 'true'),

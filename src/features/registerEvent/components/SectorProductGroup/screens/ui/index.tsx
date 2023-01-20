@@ -226,7 +226,11 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
                     listGroupSubGroup.map((group, index) => (
                       <React.Fragment key={index}>
                         {index > 0 ? <hr style={{ margin: '25px 0px 30px -50px' }} /> : null}
-                        <div className={groupsState ? 'disabled-content' : ''}>
+                        <div
+                          className={
+                            groupsState && groupsState.id !== group.id ? 'disabled-content' : ''
+                          }
+                        >
                           <div
                             style={{ marginRight: '20px' }}
                             className="mb-3 mt-3 ml-5 d-flex align-items-center "
