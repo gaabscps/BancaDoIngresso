@@ -32,10 +32,6 @@
     color: #828282;
   }
 
-  .dd-input + .dd-menu {
-    display: none;
-  }
-
   .dd-input:checked + .dd-menu {
     display: block;
   }
@@ -73,9 +69,6 @@
     display: flex;
     width: 30px;
   }
-}
-.hiddenDisplay {
-  display: none;
 }
 
 .svg-icon {
