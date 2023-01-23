@@ -273,6 +273,7 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
 
             <SuperCollapse
               title="POS’s inseridos"
+              count={posList.length}
               content={
                 // change 0 to index
                 posList.length > 0

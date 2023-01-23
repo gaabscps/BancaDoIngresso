@@ -7,7 +7,7 @@ import useForm from '@/hooks/useForm';
 import validators from '@/helpers/validators';
 import { toast } from 'react-toastify';
 import { useDialog } from '@/hooks/useDialog';
-import { unmask, updateMask as updateMaskCashNumber } from '@/helpers/masks/cashNumber';
+import { unmask } from '@/helpers/masks/cashNumber';
 import { useParams } from 'react-router-dom';
 import DiscountCoupon from '@/model/DiscountCoupon';
 import {
@@ -20,6 +20,7 @@ import {
   TabSectorTicketActionsProps,
 } from '@/features/registerEvent/screens/SectorTicket/ui';
 import { convertToBoolean } from '@/helpers/common/convertToBoolean';
+import { toPercentage } from '@/helpers/common/amount';
 import { formPaymentSettingsProps, PaymentSettingsActionsProps } from '../types';
 
 export default interface PayloadSectorTicketPaymentSettings {
@@ -257,7 +258,7 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
           code: item.code,
           amount: item.amount,
           discountType: item.discountType,
-          discount: item.discount ?? 0,
+          discount: +unmask(String(item.discount || 0)) ?? 0,
         }));
 
         const payload = {
@@ -448,44 +449,44 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
         FormInputNameToPaymentSettings.physicalSaleAllowCreditCardPayment,
       )(String(ticket.payment.physicalSale.allowCreditCardPayment));
       onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.physicalSaleDebit)(
-        updateMaskCashNumber(String(ticket.payment.physicalSale.debit)),
+        toPercentage(ticket.payment.physicalSale.debit),
       );
       onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.physicalSaleCredit)(
-        updateMaskCashNumber(String(ticket.payment.physicalSale.credit)),
+        toPercentage(ticket.payment.physicalSale.credit),
       );
       onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.physicalSalePix)(
-        updateMaskCashNumber(String(ticket.payment.physicalSale.pix)),
+        toPercentage(ticket.payment.physicalSale.pix),
       );
       onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.physicalSaleAdministrateTax)(
-        updateMaskCashNumber(String(ticket.payment.physicalSale.administrateTax)),
+        toPercentage(ticket.payment.physicalSale.administrateTax),
       );
       onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.physicalSaleInstallments)(
         String(ticket.payment.physicalSale.installments),
       );
       onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.physicalSaleFee)(
-        updateMaskCashNumber(String(ticket.payment.physicalSale.fee)),
+        toPercentage(ticket.payment.physicalSale.fee),
       );
 
       onChangeFormInputPaymentSettings(
         FormInputNameToPaymentSettings.websiteSaleAllowCreditCardPayment,
       )(String(ticket.payment.websiteSale.allowCreditCardPayment));
       onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.websiteSaleBankSlip)(
-        updateMaskCashNumber(String(ticket.payment.websiteSale.bankSlip)),
+        toPercentage(ticket.payment.websiteSale.bankSlip),
       );
       onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.websiteSaleCredit)(
-        updateMaskCashNumber(String(ticket.payment.websiteSale.credit)),
+        toPercentage(ticket.payment.websiteSale.credit),
       );
       onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.websiteSalePix)(
-        updateMaskCashNumber(String(ticket.payment.websiteSale.pix)),
+        toPercentage(ticket.payment.websiteSale.pix),
       );
       onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.websiteSaleAdministrateTax)(
-        updateMaskCashNumber(String(ticket.payment.websiteSale.administrateTax)),
+        toPercentage(ticket.payment.websiteSale.administrateTax),
       );
       onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.websiteSaleInstallments)(
         String(ticket.payment.websiteSale.installments),
       );
       onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.websiteSaleFee)(
-        updateMaskCashNumber(String(ticket.payment.websiteSale.fee)),
+        toPercentage(ticket.payment.websiteSale.fee),
       );
       onChangeFormInputPaymentSettings(FormInputNameToPaymentSettings.allowDiscount)(
         String(ticket.payment.allowDiscount),

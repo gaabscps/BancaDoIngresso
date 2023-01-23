@@ -3,6 +3,7 @@ import React from 'react';
 import DiscountCoupon from '@/model/DiscountCoupon';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { Col, Form, FormGroup, Row } from 'reactstrap';
+import { updateMask as updateMaskCash } from '@/helpers/masks/cashNumber';
 
 interface RegisterContentProps {
   handleAddDiscountCoupon: () => void;
@@ -83,11 +84,7 @@ export const RegisterDiscountCoupon: React.FC<RegisterContentProps> = ({
                     maxLength={5}
                     value={String(item.discount || '')}
                     onChange={e =>
-                      handleChangeDiscountCoupon(
-                        'discount',
-                        index,
-                        e.target.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1'),
-                      )
+                      handleChangeDiscountCoupon('discount', index, updateMaskCash(e.target.value))
                     }
                     error={undefined}
                   />

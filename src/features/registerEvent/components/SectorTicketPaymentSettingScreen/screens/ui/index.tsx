@@ -685,7 +685,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
                         name: item.name,
                         code: item.code,
                         amount: item.amount,
-                        discount: item.discount,
+                        discount: `${item.discount || 0} %`,
                         actions: (
                           <React.Fragment>
                             <Pen

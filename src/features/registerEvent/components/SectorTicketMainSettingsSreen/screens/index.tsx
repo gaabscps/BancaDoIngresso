@@ -27,7 +27,7 @@ import {
   SectorTicketContainerProps,
   TabSectorTicketActionsProps,
 } from '@/features/registerEvent/screens/SectorTicket/ui';
-// import { unmask as unmaskCash } from '@/helpers/masks/cashNumber';
+
 import { unmask } from '@/helpers/masks/cashNumber';
 import { toPercentage } from '@/helpers/common/amount';
 import {
@@ -462,7 +462,6 @@ export const SectorTicketMainSettingsScreen: React.FC<
   const handleOnEditBatch = async (batchSelected: TicketBatch): Promise<void> => {
     try {
       if (isFormValidBatchs()) {
-        // edit batch from list
         const newBatchList: any = batchList.map((batch: TicketBatch) => {
           const payloadStartData = dayjs(
             `${formDataBatchs[FormInputNameToBatch.startDate]}T${
@@ -482,7 +481,7 @@ export const SectorTicketMainSettingsScreen: React.FC<
               name: formDataBatchs[FormInputNameToBatch.name],
               startDate: payloadStartData,
               endDate: payloadEndData,
-              commission: toPercentage(+formDataBatchs[FormInputNameToBatch.commission]),
+              commission: +unmask(formDataBatchs[FormInputNameToBatch.commission]),
               amount: +formDataBatchs[FormInputNameToBatch.amount],
               unitValue: formDataBatchs[FormInputNameToBatch.unitValue],
               totalValue: formDataBatchs[FormInputNameToBatch.totalValue],
@@ -695,7 +694,7 @@ export const SectorTicketMainSettingsScreen: React.FC<
           name: item.name,
           startDate: item.startDate,
           endDate: item.endDate,
-          commission: +item.commission,
+          commission: item.commission,
           amount: item.amount,
           unitValue: validators.applyDecimalMask(String(item.unitValue)),
           totalValue: validators.applyDecimalMask(String(item.totalValue)),

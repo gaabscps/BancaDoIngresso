@@ -101,8 +101,8 @@ export const PdvEventSubPdvScreen: React.FC<Omit<PdvEventSubPdvScreenProps, 'nex
         setListUsers(newListUsers);
       }
     } catch (error) {
-      const err = error as AxiosError;
-      toast.error(err.message);
+      const err = error as AxiosError | any;
+      toast.error(err.response.data.details);
     } finally {
       setState(States.default);
     }
