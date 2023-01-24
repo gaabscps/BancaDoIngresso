@@ -274,76 +274,82 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({
           return acc;
         }, {});
 
-        const comboSameSection = form.combos?.reduce((acc: any, item: any) => {
-          const [sectionId, categoryGroupId, categorySubGroupId, combosId] = item.split('_');
+        let comboSameSection;
+        if (form.combos && form.combos.length > 0) {
+          comboSameSection = form.combos?.reduce((acc: any, item: any) => {
+            const [sectionId, categoryGroupId, categorySubGroupId, combosId] = item.split('_');
 
-          // push product to section
-          if (acc[sectionId]) {
-            acc[sectionId].combos.push({
-              id: combosId,
-              categorySubGroup: {
-                id: categorySubGroupId,
-                categoryGroup: {
-                  id: categoryGroupId,
-                },
-              },
-            });
-          } else {
-            acc[sectionId] = {
-              section: {
-                id: sectionId,
-              },
-              combos: [
-                {
-                  id: combosId,
-                  categorySubGroup: {
-                    id: categorySubGroupId,
-                    categoryGroup: {
-                      id: categoryGroupId,
-                    },
+            // push product to section
+            if (acc[sectionId]) {
+              acc[sectionId].combos.push({
+                id: combosId,
+                categorySubGroup: {
+                  id: categorySubGroupId,
+                  categoryGroup: {
+                    id: categoryGroupId,
                   },
                 },
-              ],
-            };
-          }
+              });
+            } else {
+              acc[sectionId] = {
+                section: {
+                  id: sectionId,
+                },
+                combos: [
+                  {
+                    id: combosId,
+                    categorySubGroup: {
+                      id: categorySubGroupId,
+                      categoryGroup: {
+                        id: categoryGroupId,
+                      },
+                    },
+                  },
+                ],
+              };
+            }
 
-          return acc;
-        }, {});
+            return acc;
+          }, {});
+        }
 
         const productSameSectionArray = Object.values(productSameSection);
-        const comboSameSectionArray = Object.values(comboSameSection);
+        const comboSameSectionArray = comboSameSection ? Object.values(comboSameSection) : [];
 
-        const productAndComboSameSection = productSameSectionArray.map((item: any) => {
-          const combo = comboSameSectionArray.find(
-            (comboItem: any) => comboItem.section.id === item.section.id,
-          );
-          if (combo) {
-            return {
-              section: item.section,
-              products: item.products,
-              combos: combo,
-            };
-          }
+        let productAndComboSameSection = [];
+        if (comboSameSectionArray.length > 0) {
+          productAndComboSameSection = productSameSectionArray.map((item: any) => {
+            const combo = comboSameSectionArray.find(
+              (comboItem: any) => comboItem.section.id === item.section.id,
+            );
+            if (combo) {
+              return {
+                section: item.section,
+                products: item.products,
+                combos: combo,
+              };
+            }
 
-          return item;
-        });
+            return item;
+          });
+        } else {
+          productAndComboSameSection = productSameSectionArray;
+        }
 
-        const payload = {
+        let payload = {
           pos: {
             id: formDataPos[FormInputNamePos.pos],
           },
           waiter: +unmask(formDataPos[FormInputNamePos.waiter]),
           commission: +unmask(formDataPos[FormInputNamePos.commission]),
           allowDiscount: convertToBoolean(formDataPos[FormInputNamePos.allowDiscount]),
-          // if combo is not selected, send only product, if product is not selected, send only combo, if both are selected, send both
-          eventSections:
-            // eslint-disable-next-line no-nested-ternary
-            productAndComboSameSection.length > 0
-              ? productAndComboSameSection
-              : form.combos?.length
-              ? comboSameSectionArray
-              : productSameSectionArray,
+          eventSections: [],
         };
+        if (productAndComboSameSection.length > 0)
+          payload = { ...payload, eventSections: productAndComboSameSection as any };
+        else if (comboSameSectionArray.length > 0)
+          payload = { ...payload, eventSections: comboSameSectionArray as any };
+        else payload = { ...payload, eventSections: productSameSectionArray as any };
 
         const reponse = await api.post(`/event/section-product/${params.id}/pos`, payload);
         if (reponse) toast.success('Dados salvos com sucesso!');
@@ -358,7 +364,7 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({
         setState(States.default);
       }
     } else {
-      toast.error('Vincule ao menos um produto à POS');
+      toast.error('É necessário selecionar pelo menos um produto ou combo!');
     }
   };
 

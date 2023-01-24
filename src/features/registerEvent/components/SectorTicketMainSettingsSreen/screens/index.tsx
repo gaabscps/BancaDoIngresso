@@ -640,7 +640,9 @@ export const SectorTicketMainSettingsScreen: React.FC<
       onChangeFormInputBatchs(FormInputNameToBatch.endTime)(
         String(batch?.endDate).split('T')[1].slice(0, 5) ?? '',
       );
-      onChangeFormInputBatchs(FormInputNameToBatch.commission)(String(batch.commission));
+      onChangeFormInputBatchs(FormInputNameToBatch.commission)(
+        String(toPercentage(batch.commission)),
+      );
       onChangeFormInputBatchs(FormInputNameToBatch.amount)(String(batch.amount));
       onChangeFormInputBatchs(FormInputNameToBatch.unitValue)(String(batch.unitValue));
       onChangeFormInputBatchs(FormInputNameToBatch.totalValue)(String(batch.totalValue));

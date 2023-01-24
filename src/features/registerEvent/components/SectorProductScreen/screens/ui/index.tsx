@@ -206,8 +206,9 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
                                       className={productStates.product ? 'disabled-content' : ''}
                                     >
                                       <div className="d-flex align-items-center">
-                                        <div className="mt-3">
+                                        <div className="mt-3 w-100">
                                           <Switch
+                                            buttonAlign={{ top: '4.5px' }}
                                             name={`allowSellingWebsite-${product.id}`}
                                             label="Vender online"
                                             onChange={() =>

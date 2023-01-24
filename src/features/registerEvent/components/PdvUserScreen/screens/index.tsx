@@ -172,8 +172,8 @@ export const PdvUserScreen: React.FC<PdvUserScreenProps> = ({ pdvId, nextTab, ba
       await api.post(`/event/pdv/${params.id}/user`, request);
       await getPdvUsers(originalUsers);
     } catch (error) {
-      const err = error as AxiosError;
-      toast.error(err.message);
+      const err = error as AxiosError | any;
+      toast.error(err.detail.message);
     } finally {
       setState(States.default);
     }

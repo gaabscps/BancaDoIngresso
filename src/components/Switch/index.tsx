@@ -10,6 +10,7 @@ interface SwitchProps extends InputHTMLAttributes<HTMLInputElement> {
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   checked: boolean | undefined;
+  buttonAlign?: React.CSSProperties;
 }
 
 export const Switch: FC<SwitchProps> = ({
@@ -21,6 +22,7 @@ export const Switch: FC<SwitchProps> = ({
   checked,
   wrapperClass,
   error,
+  buttonAlign,
 }) => {
   const displayStyle = checked ? 'switch-success' : 'switch-danger';
   return (
@@ -41,7 +43,7 @@ export const Switch: FC<SwitchProps> = ({
             checked={checked}
           />
           <span className={`${displayStyle} switch`}>
-            <span className="switch-handle" />
+            <span style={buttonAlign} className="switch-handle" />
           </span>
         </span>
       </label>
