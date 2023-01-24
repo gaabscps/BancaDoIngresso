@@ -1,4 +1,6 @@
 import { DataList } from '@/components/DataList';
+import { toPercentage } from '@/helpers/common/amount';
+import { toCurrency } from '@/helpers/masks/toCurrency';
 import TicketBatch from '@/model/TicketBatch';
 import Tickets from '@/model/Tickets';
 import dayjs from 'dayjs';
@@ -49,7 +51,7 @@ export const SectorTicket: React.FC<SectorTicketProps> = ({ ticket }) => (
                   },
                   {
                     title: '% comissão:',
-                    content: batch.commission || '--',
+                    content: `${toPercentage(batch.commission)}%` || '--',
                   },
                   {
                     title: 'Qtd de ingresso:',
@@ -65,12 +67,13 @@ export const SectorTicket: React.FC<SectorTicketProps> = ({ ticket }) => (
                   },
                   {
                     title: 'Valor unitário:',
-                    content: `R$ ${batch.unitValue}` || '--',
+                    content: toCurrency(batch.unitValue) || '--',
                   },
                   {
                     title: <div style={{ fontWeight: '700' }}>Valor total:</div>,
                     content:
-                      <div style={{ fontWeight: '700' }}>{`R$ ${batch.totalValue}`}</div> || '--',
+                      <div style={{ fontWeight: '700' }}>{toCurrency(batch.totalValue)}</div> ||
+                      '--',
                   },
                 ]}
               />

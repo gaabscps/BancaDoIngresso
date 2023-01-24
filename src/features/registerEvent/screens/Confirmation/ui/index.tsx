@@ -33,13 +33,16 @@ export const ConfirmationEventContainer: React.FC<ConfirmationEventContainerProp
     <Container className="mainContainer" fluid={true}>
       <Row>
         <Col md={12}>
-          <DataConfirmation event={event} />
-
-          {event?.tickets && <SectorTicket ticket={ticket} />}
-
-          {event?.products && <SectorProduct event={event} />}
-
-          {event?.pdvs && <SectorPdv event={event} />}
+          {event?.id ? (
+            <>
+              <DataConfirmation event={event} />
+              <SectorTicket ticket={ticket} />
+              <SectorProduct event={event} />
+              <SectorPdv event={event} />
+            </>
+          ) : (
+            <h5>Evento não encontrado</h5>
+          )}
         </Col>
       </Row>
     </Container>

@@ -3,6 +3,8 @@ import EventSectionGet from '@/model/EventSectionGet';
 import { DataList } from '@/components/DataList';
 import React from 'react';
 import Event from '@/model/Event';
+import { toCurrency } from '@/helpers/masks/toCurrency';
+import { toPercentage } from '@/helpers/common/amount';
 
 interface SectorProductProps {
   event: Event | undefined;
@@ -20,34 +22,28 @@ export const SectorProduct: React.FC<SectorProductProps> = ({ event }) => {
     },
     {
       title: 'Valor un',
-      content: event?.products?.map(item => `R$ ${item.unitValue}`) || '--',
+      content: event?.products?.map(item => toCurrency(item.unitValue)) || '--',
     },
     {
       title: 'Total estimado',
-      content: event?.products?.map(item => `R$ ${item.totalValue}`) || '--',
+      content: event?.products?.map(item => toCurrency(item.totalValue)) || '--',
     },
     {
       title: 'Tx Deb',
-      content: event?.products?.map(
-        item => `${Number(item.physicalSale?.debit).toFixed(2)}%` || '--',
-      ),
+      content: event?.products?.map(item => `${toPercentage(item.physicalSale?.debit)}%` || '--'),
     },
     {
       title: 'Tx Cred',
-      content: event?.products?.map(
-        item => `${Number(item.physicalSale?.credit).toFixed(2)}%` || '--',
-      ),
+      content: event?.products?.map(item => `${toPercentage(item.physicalSale?.credit)}%` || '--'),
     },
     {
       title: 'Tx Pix ',
-      content: event?.products?.map(
-        item => `${Number(item.physicalSale?.pix).toFixed(2)}%` || '--',
-      ),
+      content: event?.products?.map(item => `${toPercentage(item.physicalSale?.pix)}%` || '--'),
     },
     {
       title: 'Tx Admin',
       content: event?.products?.map(
-        item => `${Number(item.physicalSale?.administrateTax).toFixed(2)}%` || '--',
+        item => `${toPercentage(item.physicalSale?.administrateTax)}%` || '--',
       ),
     },
     {
@@ -56,9 +52,7 @@ export const SectorProduct: React.FC<SectorProductProps> = ({ event }) => {
     },
     {
       title: 'Jur mês',
-      content: event?.products?.map(
-        item => `${Number(item.physicalSale?.fee).toFixed(2)}%` || '--',
-      ),
+      content: event?.products?.map(item => `${toPercentage(item.physicalSale?.fee)}%` || '--'),
     },
   ];
 

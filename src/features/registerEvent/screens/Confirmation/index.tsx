@@ -32,16 +32,14 @@ export const ConfirmationEventScreen: React.FC = (): JSX.Element => {
       setState(States.default);
     }
   };
+
   const handleFetchTicket = async (id: 'string'): Promise<void> => {
     try {
-      setState(States.loading);
       const { data } = await api.get<Ticket>(`event/ticket/${id}`);
       setTicket(data ?? {});
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
-    } finally {
-      setState(States.default);
     }
   };
 
