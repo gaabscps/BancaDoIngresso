@@ -200,13 +200,6 @@ export const PdvEventSubPdvContainer: React.FC<SubPdvContainerProps> = ({
               theme="noneBorder"
               onClick={() => subPdvActions.onReturnTap()}
             />
-            <Button
-              title="Adicionar PDV"
-              theme="outlineDark"
-              className="ml-3"
-              onClick={() => undefined}
-              disabled={formData[FormInputName.hasSubPdv] !== 'true'}
-            />
           </div>
         </div>
       </Container>

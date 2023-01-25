@@ -20,6 +20,7 @@ import EventPdvTicket from '@/model/EventPdvTicket';
 import EventTicket from '@/model/EventTicket';
 import { FormInputName as FormInputMainName } from '../../components/MainPdvContent';
 import { mainPdvStatesProps } from '../../components/PdvScreen/types';
+import { useEvent } from '../../hook/useEvent';
 
 interface PdvTicket {
   ticket: Ticket;
@@ -54,6 +55,8 @@ export const PdvEventScreen: React.FC = (): JSX.Element => {
   const [eventPDVs, setEventPDVs] = useState<EventPdv[]>([]);
   const [mainPdvList, setMainPdvList] = useState<Pdv[]>([]);
   const [link, setLink] = useState<string>(undefined as unknown as string);
+
+  const { eventState, onChange: onChangeEvent } = useEvent();
 
   const {
     formData: formDataPdv,
@@ -499,6 +502,8 @@ export const PdvEventScreen: React.FC = (): JSX.Element => {
       formMainPdv={controllerFormMainPdv}
       mainPdvActions={controllerMainPdvActions}
       mainPdvStates={controllerMainPdvStates}
+      onChangeEvent={onChangeEvent}
+      eventState={eventState}
       onChangeSelectedPdv={handleChangeSelectedPdv}
       getEventPdvTickets={getEventPdvTickets}
       handleSetPdvLink={handleSetPdvLink}

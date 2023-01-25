@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { Fragment } from 'react';
-import { ButtonGroup, Loading, Tab, TooltipCustom } from '@/components';
+import { Button, ButtonGroup, Loading, Tab, TooltipCustom } from '@/components';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import { ReactComponent as Info } from '@/assets/images/svg/infoTooltip.svg';
@@ -39,6 +39,8 @@ export interface PdvContainerProps {
   formMainPdv: formMainPdvProductProps;
   mainPdvActions: mainPdvActionsProps;
   mainPdvStates: mainPdvStatesProps;
+  eventState: any;
+  onChangeEvent: any;
   onChangeSelectedPdv: (value: string) => void;
   getEventPdvTickets: () => void;
   handleSetPdvLink: (link: string) => void;
@@ -69,6 +71,8 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
   formMainPdv,
   mainPdvActions,
   mainPdvStates,
+  eventState,
+  onChangeEvent,
   setNumberTab,
   onChangeSelectedPdv,
   getEventPdvTickets,
@@ -245,6 +249,21 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
             />
           </>
         )}
+        <div className="footer-register-event">
+          <Button
+            title="Voltar"
+            theme="noneBorder"
+            onClick={() => {
+              onChangeEvent({ ...eventState, currentStep: eventState.currentStep - 1 });
+            }}
+          />
+          <Button
+            title="Avançar para Confirmação"
+            onClick={() => {
+              onChangeEvent({ ...eventState, currentStep: eventState.currentStep + 1 });
+            }}
+          />
+        </div>
       </Container>
     </Fragment>
   );
