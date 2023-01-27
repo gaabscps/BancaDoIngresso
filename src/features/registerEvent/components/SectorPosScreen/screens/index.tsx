@@ -275,7 +275,7 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({
         }, {});
 
         let comboSameSection;
-        if (form.combos && form.combos.length > 0) {
+        if (form.combos) {
           comboSameSection = form.combos?.reduce((acc: any, item: any) => {
             const [sectionId, categoryGroupId, categorySubGroupId, combosId] = item.split('_');
 
@@ -317,7 +317,7 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({
         const comboSameSectionArray = comboSameSection ? Object.values(comboSameSection) : [];
 
         let productAndComboSameSection = [];
-        if (comboSameSectionArray.length > 0) {
+        if (comboSameSectionArray && comboSameSectionArray.length > 0) {
           productAndComboSameSection = productSameSectionArray.map((item: any) => {
             const combo = comboSameSectionArray.find(
               (comboItem: any) => comboItem.section.id === item.section.id,
@@ -347,7 +347,7 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({
         };
         if (productAndComboSameSection.length > 0)
           payload = { ...payload, eventSections: productAndComboSameSection as any };
-        else if (comboSameSectionArray.length > 0)
+        else if (comboSameSectionArray && comboSameSectionArray.length > 0)
           payload = { ...payload, eventSections: comboSameSectionArray as any };
         else payload = { ...payload, eventSections: productSameSectionArray as any };
 

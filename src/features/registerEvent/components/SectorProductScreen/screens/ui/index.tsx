@@ -11,7 +11,7 @@ import { CustomTable } from '@/components/Table';
 import { ActionProps } from '@/components/Dialog';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
-import { ReactComponent as Config } from '@/assets/images/svg/config.svg';
+import { ReactComponent as ItemConfig } from '@/assets/images/svg/ItemConfig.svg';
 import ProductIcon from '@/assets/images/svg/Product';
 import { controllerEventProps } from '@/features/registerEvent/screens/SectorTicket/types';
 import { columnsProducts } from './table';
@@ -218,9 +218,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
                                           />
                                         </div>
                                         <div className="ml-4">
-                                          <Config
-                                            height={20}
-                                            width={20}
+                                          <ItemConfig
                                             className={`mr-4 svg-icon action-icon ${
                                               product?.physicalSale && product?.websiteSale
                                                 ? ''
@@ -235,15 +233,13 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
                                             }}
                                           />
                                           <Pen
-                                            height={20}
-                                            width={20}
                                             className="mr-4 svg-icon action-icon"
                                             onClick={(): Promise<void> =>
                                               productActions.onGet(product)
                                             }
                                           />
                                           <Trash
-                                            className="svg-icon svg-icon-trash"
+                                            className="svg-icon svg-icon-trash action-icon"
                                             onClick={() => {
                                               modalConfig.onShowModalDelete(product);
                                             }}

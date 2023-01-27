@@ -322,7 +322,11 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
                               data={[
                                 {
                                   serialNumber: pos.serialNumber,
-                                  date: dayjs(pos.expirationDate).format('DD/MM/YYYY'),
+                                  date:
+                                    dayjs(pos.expirationDate).format('DD/MM/YYYY') ===
+                                    'Invalid Date'
+                                      ? '-----'
+                                      : dayjs(pos.expirationDate).format('DD/MM/YYYY'),
                                   waiter: `${waiter && (+waiter).toFixed(2)}%`,
                                   commission: `${commission && (+commission).toFixed(2)}%`,
                                   actions: (

@@ -41,6 +41,8 @@ export interface PdvContainerProps {
   mainPdvStates: mainPdvStatesProps;
   eventState: any;
   onChangeEvent: any;
+  inputRef: any;
+  isFormValidMainPdv: () => boolean;
   onChangeSelectedPdv: (value: string) => void;
   getEventPdvTickets: () => void;
   handleSetPdvLink: (link: string) => void;
@@ -73,6 +75,8 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
   mainPdvStates,
   eventState,
   onChangeEvent,
+  inputRef,
+  isFormValidMainPdv,
   setNumberTab,
   onChangeSelectedPdv,
   getEventPdvTickets,
@@ -111,6 +115,9 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
         handleCheckTicket={handleCheckTicket}
         nextTab={handleNextTab}
         backTab={handleBackTab}
+        numberTab={numberTab}
+        isFormValidMainPdv={isFormValidMainPdv}
+        inputRef={inputRef}
       />
     </>,
     <>
@@ -166,13 +173,15 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
                 formMainPdv={formMainPdv}
                 mainPdvActions={mainPdvActions}
                 mainPdvStates={mainPdvStates}
+                inputRef={inputRef}
+                numberTab={numberTab}
               />
             </div>
             <hr className="mt-5 mb-5" />
             <SuperCollapse
               title={`PDV’s adicionados`}
               content={
-                mainPdvStates.eventPDVs.length > 0 ? (
+                mainPdvStates.eventPDVs && mainPdvStates.eventPDVs.length > 0 ? (
                   mainPdvStates.eventPDVs.map((item, index) => (
                     <React.Fragment key={index}>
                       <div className="mb-5">
@@ -257,12 +266,14 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
               onChangeEvent({ ...eventState, currentStep: eventState.currentStep - 1 });
             }}
           />
-          <Button
-            title="Avançar para Confirmação"
-            onClick={() => {
-              onChangeEvent({ ...eventState, currentStep: eventState.currentStep + 1 });
-            }}
-          />
+          {numberTab === 4 || formData[FormInputName.isPdv] === 'false' ? (
+            <Button
+              title="Avançar para Confirmação"
+              onClick={() => {
+                onChangeEvent({ ...eventState, currentStep: eventState.currentStep + 1 });
+              }}
+            />
+          ) : null}
         </div>
       </Container>
     </Fragment>

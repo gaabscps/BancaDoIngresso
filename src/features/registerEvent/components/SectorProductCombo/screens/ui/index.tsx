@@ -503,7 +503,7 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                                         }}
                                         className={
                                           selected.wasConfig
-                                            ? 'mr-3 action-icon'
+                                            ? 'mr-3 action-icon svg-icon'
                                             : 'mr-3 action-icon svg-icon-error'
                                         }
                                       />
@@ -512,10 +512,10 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                                           getComboConfig(selected);
                                           getComboSelected(selected);
                                         }}
-                                        className="mr-3 action-icon"
+                                        className="mr-3 action-icon svg-icon"
                                       />
                                       <Trash
-                                        className="action-icon"
+                                        className="action-icon svg-icon-trash"
                                         onClick={() => onShowDeleteCombo(selected)}
                                       />
                                     </>

@@ -57,8 +57,7 @@ export const PdvEventTicketContainer: React.FC<Props> = ({
         </div>
       )}
 
-      {eventTicketsPDV &&
-        eventTicketsPDV.length > 0 &&
+      {eventTicketsPDV && eventTicketsPDV.length > 0 ? (
         eventTicketsPDV.map((line, index) => (
           <Row key={index}>
             {line.events.map(data => (
@@ -94,7 +93,10 @@ export const PdvEventTicketContainer: React.FC<Props> = ({
               </Col>
             ))}
           </Row>
-        ))}
+        ))
+      ) : (
+        <div>Não há ingressos cadastrados para este evento</div>
+      )}
 
       <div className="d-flex justify-content-end">
         <div>

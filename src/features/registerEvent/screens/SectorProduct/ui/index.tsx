@@ -140,16 +140,18 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
               onChangeEvent({ ...eventState, currentStep: eventState.currentStep - 1 });
             }}
           />
-          <Button
-            title="Avançar para PDV"
-            onClick={() => {
-              if (isFormValidSectorProduct() && lastStep && lastStep.length > 0) {
-                onChangeEvent({ ...eventState, currentStep: eventState.currentStep + 1 });
-              } else {
-                toast.error('Preencha todas as etapas para avançar para o próximo passo');
-              }
-            }}
-          />
+          {numberTab === 4 || formData[FormInputName.isProduct] === 'false' ? (
+            <Button
+              title="Avançar para PDV"
+              onClick={() => {
+                if (isFormValidSectorProduct() && lastStep && lastStep.length > 0) {
+                  onChangeEvent({ ...eventState, currentStep: eventState.currentStep + 1 });
+                } else {
+                  toast.error('Preencha todas as etapas para avançar para o próximo passo');
+                }
+              }}
+            />
+          ) : null}
         </div>
       </Container>
     </Fragment>

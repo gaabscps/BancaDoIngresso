@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FormInputName, PdvEventContainer, States } from '@/features/registerEvent/screens/Pdv/ui';
 import useForm from '@/hooks/useForm';
 import { toast } from 'react-toastify';
@@ -57,6 +57,7 @@ export const PdvEventScreen: React.FC = (): JSX.Element => {
   const [link, setLink] = useState<string>(undefined as unknown as string);
 
   const { eventState, onChange: onChangeEvent } = useEvent();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const {
     formData: formDataPdv,
@@ -107,13 +108,13 @@ export const PdvEventScreen: React.FC = (): JSX.Element => {
     try {
       setState(States.loading);
       await api.delete(`/event/pdv/${params.id}/${mainPdvSelected.id}`);
-      await handleFecthPdvList();
       toast.success('Pdv excluído com sucesso!');
-      confirmDelete.hide();
+      await handleFecthPdvList();
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
     } finally {
+      confirmDelete.hide();
       setState(States.default);
     }
   };
@@ -471,6 +472,7 @@ export const PdvEventScreen: React.FC = (): JSX.Element => {
 
         await api.post(`/event/pdv/${params.id}/main`, eventPdvMain);
         await saveEventPdvTickets();
+        handleFecthPdvList();
       } catch (error) {
         const err = error as AxiosError;
         toast.error(err.message);
@@ -481,10 +483,10 @@ export const PdvEventScreen: React.FC = (): JSX.Element => {
   };
 
   const handleNextTab = async (): Promise<void> => {
-    if (numberTab === 0) {
+    if (isFormValidMainPdv()) {
       await saveEventPdvMain();
+      setNumberTab(numberTab + 1);
     }
-    setNumberTab(numberTab + 1);
   };
 
   useEffect(() => {
@@ -511,6 +513,8 @@ export const PdvEventScreen: React.FC = (): JSX.Element => {
       handleCheckTicket={handleCheckTicket}
       setNumberTab={setNumberTab}
       nextTab={handleNextTab}
+      inputRef={inputRef}
+      isFormValidMainPdv={isFormValidMainPdv}
     />
   );
 };

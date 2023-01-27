@@ -164,7 +164,6 @@ export const SectorConfigContent: React.FC<
                     onChange={() => {
                       selectAll(index);
                     }}
-                    onClick={e => e.stopPropagation()}
                   />
                 }
                 content={
@@ -187,15 +186,14 @@ export const SectorConfigContent: React.FC<
                                 <Checkbox
                                   label={name}
                                   name={name}
-                                  checked={dataConfig.form?.products?.includes(
-                                    `${categoryGroupId}_${categorySubGroupId}_${id}`,
+                                  checked={dataConfig.form?.products?.reduce(
+                                    (acc: boolean, name: string) =>
+                                      acc || name.includes(`${categorySubGroupId}_${id}`),
+                                    false,
                                   )}
-                                  onChange={() =>
-                                    handleChange(
-                                      'products',
-                                      `${categoryGroupId}_${categorySubGroupId}_${id}`,
-                                    )
-                                  }
+                                  onChange={() => {
+                                    handleChange('products', `${categorySubGroupId}_${id}`);
+                                  }}
                                 />
                               </div>
                             ))}

@@ -223,7 +223,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
           name: formDataDiscount[FormInputNameDiscountCoupon.discountsName],
           code: formDataDiscount[FormInputNameDiscountCoupon.discountsCode],
           amount: +formDataDiscount[FormInputNameDiscountCoupon.discountsAmount],
-          discount: +formDataDiscount[FormInputNameDiscountCoupon.discountsDiscount],
+          discount: +unmask(formDataDiscount[FormInputNameDiscountCoupon.discountsDiscount]),
           discountType: +formDataDiscount[FormInputNameDiscountCoupon.discountType],
         };
 

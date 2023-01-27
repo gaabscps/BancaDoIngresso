@@ -154,6 +154,7 @@ export const PdvProductContainer: React.FC<SectorProductPosContainerProps> = ({
         <SuperCollapse
           disabled={formData[FormInputName.allowProduct] !== 'true'}
           title="Setores e produtos inseridos"
+          count={tableContent.length}
           content={tableContent.map((eventSectionProduct, index) => (
             <>
               <div className="d-flex w-100 justify-content-between">

@@ -255,14 +255,17 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
               onChangeEvent({ ...eventState, currentStep: eventState.currentStep - 1 });
             }}
           />
-          <Button
-            title="Avançar para Setor e produto"
-            onClick={() => {
-              if (isFormValid()) {
-                onChangeEvent({ ...eventState, currentStep: eventState.currentStep + 1 });
-              }
-            }}
-          />
+          {(ticketStates?.ticketList && ticketStates?.ticketList?.length > 0) ||
+          formData[FormInputName.isTicket] === 'false' ? (
+            <Button
+              title="Avançar para Setor e produto"
+              onClick={() => {
+                if (isFormValid()) {
+                  onChangeEvent({ ...eventState, currentStep: eventState.currentStep + 1 });
+                }
+              }}
+            />
+          ) : null}
         </div>
       </Container>
     </Fragment>

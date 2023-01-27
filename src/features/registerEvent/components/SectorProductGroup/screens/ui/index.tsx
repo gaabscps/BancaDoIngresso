@@ -220,6 +220,7 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
                 noPadding={true}
                 overflow={true}
                 title={'Grupos cadastrados'}
+                count={listGroupSubGroup.length}
                 content={
                   listGroupSubGroup.length > 0 ? (
                     // eslint-disable-next-line no-shadow
@@ -276,11 +277,11 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
                               <div className="d-flex align-items-center">
                                 <Pen
                                   onClick={() => onGetGroup(group)}
-                                  className="ml-5 action-icon"
+                                  className="ml-5 svg-icon action-icon"
                                 />
                                 <Trash
                                   onClick={() => onShowDeleteProduct(group?.id || '')}
-                                  className="ml-5 action-icon"
+                                  className="ml-5 svg-icon-trash action-icon"
                                 />
                               </div>
                             </div>

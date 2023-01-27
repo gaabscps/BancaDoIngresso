@@ -21,9 +21,14 @@ export enum FormInputName {
 export const MainPdvContent: React.FC<
   Pick<
     PdvContainerProps,
-    'onChangeSelectedPdv' | 'formMainPdv' | 'mainPdvActions' | 'mainPdvStates'
+    | 'onChangeSelectedPdv'
+    | 'formMainPdv'
+    | 'mainPdvActions'
+    | 'mainPdvStates'
+    | 'inputRef'
+    | 'numberTab'
   >
-> = ({ onChangeSelectedPdv, formMainPdv, mainPdvActions, mainPdvStates }) => {
+> = ({ onChangeSelectedPdv, formMainPdv, mainPdvActions, mainPdvStates, inputRef, numberTab }) => {
   const { formData, formErrors, onChangeFormInput } = formMainPdv;
 
   const pdvDataSelected = mainPdvStates?.mainPdvList.find((item: Pdv) => item.id === formData.pdv);
@@ -37,6 +42,8 @@ export const MainPdvContent: React.FC<
     >
       <FormGroup className="mb-2">
         <SelectCustom
+          refSelect={inputRef}
+          disabled={numberTab !== 0}
           name="pdv"
           label="PDV"
           placeholder="Digite ou selecione o PDV"

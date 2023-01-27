@@ -202,10 +202,12 @@ export const PdvUserScreen: React.FC<PdvUserScreenProps> = ({ pdvId, nextTab, ba
 
   useEffect(() => {
     handleGetUsers();
+    getPdvUsers(usersSelected);
   }, [pdvId]);
 
   useEffect(() => {
     handleGetUsers();
+    getPdvUsers(usersSelected);
   }, []);
 
   return (

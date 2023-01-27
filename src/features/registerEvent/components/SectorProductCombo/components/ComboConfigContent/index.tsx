@@ -6,7 +6,7 @@ import DiscountCoupon from '@/model/DiscountCoupon';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import {
   updateMask as updateMaskCash,
-  unmask as unmaskCash,
+  // unmask as unmaskCash,
   updateMask,
 } from '@/helpers/masks/cashNumber';
 import { Card, Col, Form, FormGroup, Row } from 'reactstrap';
@@ -612,10 +612,10 @@ export const RegisterContentComboConfig: React.FC<RegisterContentProps> = ({
                             formDataDiscount.discountType === '0'
                               ? onChangeFormInputDiscount(
                                   FormInputNameDiscountCoupon.discountsDiscount,
-                                )(unmaskCash(unitValueMoney))
+                                )(unitValueMoney)
                               : onChangeFormInputDiscount(
                                   FormInputNameDiscountCoupon.discountsDiscount,
-                                )(unmaskCash(unitValueMoney));
+                                )(unitValueMoney);
                           }}
                           error={
                             formErrorsDiscount.discountsDiscount &&

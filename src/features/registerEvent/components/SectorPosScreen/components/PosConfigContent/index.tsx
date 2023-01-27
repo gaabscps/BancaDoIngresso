@@ -78,27 +78,26 @@ export const PosConfigContent: React.FC<
 
   const selectAll = (index: number) => {
     const { sectionGroup, sectionId } = dataConfig.configList[index];
-
     const _products = dataConfig.form.products || [];
     const _combos = dataConfig.form.combos || [];
     const _selectAll = selectedAll || [];
 
     if (selectedAll.includes(sectionId as never)) {
+      // Remove all products and combos associated with the sectionId from the form data
       const filteredProducts = _products.filter((name: string) => !name.includes(sectionId));
       const filteredCombos = _combos.filter((name: string) => !name.includes(sectionId));
 
+      // Update the form data with the filtered products and combos
       dataConfig.setForm({
         ...dataConfig.form,
         products: filteredProducts,
         combos: filteredCombos,
       });
 
+      // Remove the sectionId from the selectedAll array
       const findedIndex = _selectAll.findIndex((name: string) => name.includes(sectionId));
       _selectAll.splice(findedIndex, 1);
     } else {
-      const filteredProducts = _products.filter((name: string) => !name.includes(sectionId));
-      const filteredCombos = _combos.filter((name: string) => !name.includes(sectionId));
-
       const newProducts: any[] = [];
       const newCombos: any[] = [];
 
@@ -114,12 +113,14 @@ export const PosConfigContent: React.FC<
         }),
       );
 
+      // Update the form data with the new products and combos
       dataConfig.setForm({
         ...dataConfig.form,
-        products: [...filteredProducts, ...newProducts],
-        combos: [...filteredCombos, ...newCombos],
+        products: [..._products, ...newProducts],
+        combos: [..._combos, ...newCombos],
       });
 
+      // Add the sectionId to the selectedAll array
       _selectAll.push(sectionId as never);
     }
     setSelectedAll(_selectAll);

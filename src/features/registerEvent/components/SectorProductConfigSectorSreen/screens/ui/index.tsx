@@ -9,7 +9,7 @@ import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
 import { CustomTable } from '@/components/Table';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
-import { ReactComponent as Config } from '@/assets/images/svg/config.svg';
+import { ReactComponent as ItemConfig } from '@/assets/images/svg/ItemConfig.svg';
 import { ActionProps } from '@/components/Dialog';
 import SectorIcon from '@/assets/images/svg/Sector';
 import { controllerEventProps } from '@/features/registerEvent/screens/SectorTicket/types';
@@ -210,7 +210,7 @@ export const SectorProductConfigSectorContainer: React.FC<
                             >
                               <div className="d-flex align-items-center">
                                 <div className="ml-4">
-                                  <Config
+                                  <ItemConfig
                                     className="mr-4 svg-icon action-icon"
                                     onClick={(): void => {
                                       modalConfig.onShouldShowModal({
@@ -225,8 +225,6 @@ export const SectorProductConfigSectorContainer: React.FC<
                                     }}
                                   />
                                   <Pen
-                                    width={17}
-                                    height={17}
                                     className="mr-4 svg-icon action-icon"
                                     onClick={(): void =>
                                       configSectorActions.onGet({
@@ -237,9 +235,7 @@ export const SectorProductConfigSectorContainer: React.FC<
                                     }
                                   />
                                   <Trash
-                                    width={17}
-                                    height={17}
-                                    className="svg-icon svg-icon-trash"
+                                    className="svg-icon svg-icon-trash action-icon"
                                     onClick={() => {
                                       modalConfig.onShowModalDelete({
                                         sectionId,

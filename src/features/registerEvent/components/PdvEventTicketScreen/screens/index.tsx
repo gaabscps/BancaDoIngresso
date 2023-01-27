@@ -15,6 +15,9 @@ interface PdvEventTickScreenProps extends TabPdvActionsProps {
   pdvId?: string;
   eventTicketsPDV: EventTicketPDVLine[];
   link: string;
+  numberTab: number;
+  inputRef: React.RefObject<HTMLInputElement>;
+  isFormValidMainPdv: () => boolean;
   getEventPdvTickets: () => void;
   handleSetPdvLink: (link: string) => void;
   handleOnGetTickets: () => void;
@@ -25,6 +28,9 @@ export const PdvEventTickScreen: React.FC<Omit<PdvEventTickScreenProps, 'firstTa
   pdvId,
   eventTicketsPDV,
   link,
+  numberTab,
+  inputRef,
+  isFormValidMainPdv,
   getEventPdvTickets,
   handleSetPdvLink,
   handleOnGetTickets,
@@ -36,7 +42,12 @@ export const PdvEventTickScreen: React.FC<Omit<PdvEventTickScreenProps, 'firstTa
   const [state, setState] = useState<States>(States.default);
 
   const handleNextTab = async (): Promise<void> => {
-    nextTab();
+    if (numberTab === 0 && isFormValidMainPdv()) {
+      nextTab();
+    } else {
+      inputRef.current?.focus();
+      toast.error('Selecione um PDV');
+    }
   };
 
   const handleBackTab = (): void => {

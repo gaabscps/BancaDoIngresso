@@ -200,7 +200,7 @@ export const PdvEventPosContainer: React.FC<PosContainerProps> = ({
               onClick={() => posActions.onReturnTap()}
             />
             <Button
-              title="Proxima etapa"
+              title="Próxima etapa"
               theme="outlineDark"
               className="ml-3"
               onClick={async () => {
