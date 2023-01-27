@@ -373,7 +373,7 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
       const err = error as AxiosError | any;
       throw new Error(err.response.data.message);
     } finally {
-      setState(States.loading);
+      setState(States.default);
     }
   };
 
@@ -444,6 +444,7 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
             ) ?? true,
           discountCoupons: payloadDiscountCoupon,
         };
+
         const reponse = await api.post(
           `/event/section-product/${params.id}/product/config`,
           payload,
@@ -458,7 +459,7 @@ export const SectorProductScreen: React.FC<TabSectorProductActionsProps> = ({
       const err = error as AxiosError;
       toast.error(err.message);
     } finally {
-      setState(States.loading);
+      setState(States.default);
     }
   };
 

@@ -317,16 +317,17 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({
         const comboSameSectionArray = comboSameSection ? Object.values(comboSameSection) : [];
 
         let productAndComboSameSection = [];
+
         if (comboSameSectionArray && comboSameSectionArray.length > 0) {
           productAndComboSameSection = productSameSectionArray.map((item: any) => {
             const combo = comboSameSectionArray.find(
               (comboItem: any) => comboItem.section.id === item.section.id,
-            );
-            if (combo) {
+            ) as { combos: any };
+            if (combo && combo.combos) {
               return {
                 section: item.section,
                 products: item.products,
-                combos: combo,
+                combos: combo.combos,
               };
             }
 
@@ -358,7 +359,6 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({
         onToggle();
       } catch (error) {
         const err = error as AxiosError | any;
-        console.log(posList);
         toast.error(err.response?.data.message);
       } finally {
         setState(States.default);

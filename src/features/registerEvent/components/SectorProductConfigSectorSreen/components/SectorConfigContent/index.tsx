@@ -23,9 +23,11 @@ export const SectorConfigContent: React.FC<
   const [selectedAll, setSelectedAll] = useState([]);
 
   const checkSelectedAll = (value: string) => {
-    const { subGroups } = controllerEvent.sectorConfig.find(({ categoryGroupId }: any) =>
+    const sectorConfig = controllerEvent.sectorConfig.find(({ categoryGroupId }: any) =>
       value.includes(categoryGroupId),
     );
+    if (!sectorConfig) return;
+    const { subGroups } = sectorConfig;
     const {
       categorySubGroupId,
       products,
@@ -55,6 +57,8 @@ export const SectorConfigContent: React.FC<
   };
 
   const handleChange = (name: string, value: string) => {
+    console.log(`name: ${name}`);
+    console.log(`value: ${value}`);
     const key = dataConfig.form[name] || [];
     const findedIndex = key.findIndex((id: string) => id.includes(value));
     if (findedIndex !== -1) key.splice(findedIndex, 1);
@@ -192,7 +196,10 @@ export const SectorConfigContent: React.FC<
                                     false,
                                   )}
                                   onChange={() => {
-                                    handleChange('products', `${categorySubGroupId}_${id}`);
+                                    handleChange(
+                                      'products',
+                                      `${categoryGroupId}_${categorySubGroupId}_${id}`,
+                                    );
                                   }}
                                 />
                               </div>

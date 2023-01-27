@@ -133,19 +133,24 @@ export const SectorProductConfigSectorScreen: React.FC<
   };
 
   const handleOnSaveConfigSector = async (): Promise<void> => {
-    const productChecked = form.products?.map((value: any) => {
-      const productId = value.split('_')[2];
-      return {
-        id: productId,
-      };
-    });
-
-    const combosChecked = form.combos?.map((value: any) => {
-      const comboId = value.split('_')[2];
-      return {
-        id: comboId,
-      };
-    });
+    let productChecked;
+    let combosChecked;
+    if (form.products?.length > 0) {
+      productChecked = form.products?.map((value: any) => {
+        const productId = value.split('_')[2];
+        return {
+          id: productId,
+        };
+      });
+    }
+    if (form.combos?.length > 0) {
+      combosChecked = form.combos?.map((value: any) => {
+        const comboId = value.split('_')[2];
+        return {
+          id: comboId,
+        };
+      });
+    }
 
     if (productChecked?.length > 0 || combosChecked?.length > 0) {
       try {

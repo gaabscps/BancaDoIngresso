@@ -31,7 +31,7 @@ function SuperCollapse(props: Props): JSX.Element {
       <div className={`${props.disabled ? '' : 'card-no-border'}`} style={{ marginBottom: '50px' }}>
         <div
           style={props.responsive ? { minWidth: '1040px' } : {}}
-          className={`collapseTable d-flex justify-content-between collapseTableText position-relative collapse-no-border  ${
+          className={`collapseTable d-flex justify-content-between collapseTableText position-relative collapse-no-border action-icon  ${
             props.disabled ? 'collapse-disabled' : ''
           } ${props.className} ${open ? ' border-bottom-collapse' : 'collapse-no-border'}`}
           onClick={() => setOpen(!open)}
