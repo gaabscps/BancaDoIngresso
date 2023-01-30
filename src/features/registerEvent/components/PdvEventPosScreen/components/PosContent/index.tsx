@@ -38,6 +38,7 @@ export const PosContent: React.FC<Pick<PosContainerProps, 'formPosRegister' | 'p
                 name="name"
                 label="POS"
                 placeholder="Digite ou selecione a POS"
+                disabled={!!posStates.pos}
                 value={formData[FormInputName.name]}
                 onChange={e => onChangeFormInput(FormInputName.name)(e?.value as string)}
                 error={formErrors.name && formErrors.name[0]}

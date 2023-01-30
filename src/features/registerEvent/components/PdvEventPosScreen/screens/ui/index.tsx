@@ -210,6 +210,7 @@ export const PdvEventPosContainer: React.FC<PosContainerProps> = ({
               title="Voltar etapa"
               theme="noneBorder"
               onClick={() => posActions.onReturnTap()}
+              disabled={!!posStates?.pos}
             />
             <Button
               title="Próxima etapa"
@@ -218,6 +219,7 @@ export const PdvEventPosContainer: React.FC<PosContainerProps> = ({
               onClick={async () => {
                 await posActions.onNextTap();
               }}
+              disabled={!!posStates?.pos}
             />
           </div>
         </div>

@@ -104,6 +104,7 @@ export const PdvProductContainer: React.FC<SectorProductPosContainerProps> = ({
                       label: data.sectionNome,
                     }))}
                     error={formErrors.sector && formErrors.sector[0]}
+                    disabled={sectionProduct && sectionProduct.length > 0}
                   />
                 </Col>
                 <Col md={5}>
