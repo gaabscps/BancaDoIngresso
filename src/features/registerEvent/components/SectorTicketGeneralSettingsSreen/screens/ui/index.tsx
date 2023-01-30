@@ -35,7 +35,7 @@ export const SectorTicketGeneralSettingsContainer: React.FC<
         <SectorTicketGeneralSettingsContent formGeneralSettings={formGeneralSettings} />
       </div>
       <div className="d-flex justify-content-between">
-        <div>
+        {/* <div>
           {ticketStates?.ticket ? (
             <Button
               title="Salvar"
@@ -45,7 +45,7 @@ export const SectorTicketGeneralSettingsContainer: React.FC<
               }}
             />
           ) : null}
-        </div>
+        </div> */}
         <div className="d-flex">
           <div className="m-2 mr-5">
             <BackOnTop />
@@ -56,7 +56,7 @@ export const SectorTicketGeneralSettingsContainer: React.FC<
             onClick={() => generalSettingsActions.onReturnTab()}
           />
           <Button
-            title="Adicionar ingresso"
+            title={`${ticketStates?.ticket ? 'Salvar ingresso' : 'Adicionar ingresso'}`}
             theme="outlineDark"
             className="ml-3"
             onClick={async () => {

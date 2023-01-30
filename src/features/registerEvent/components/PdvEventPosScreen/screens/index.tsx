@@ -12,6 +12,8 @@ import { useParams } from 'react-router-dom';
 import Pdv from '@/model/Pdv';
 import CardFees from '@/model/CardFees';
 import EventPdvPos from '@/model/EventPdvPos';
+import { unmask } from '@/helpers/masks/cashNumber';
+import { toPercentage } from '@/helpers/common/amount';
 import {
   formPosConfigProps,
   formPosProps,
@@ -229,7 +231,7 @@ export const PdvEventPosScreen: React.FC<Omit<PdvEventPosScreen, 'firstTab'>> = 
 
       onChangeFormInputPosRegister(FormInputNameRegister.name)(posSelected.pos.id as string);
       onChangeFormInputPosRegister(FormInputNameRegister.partialPayment)(
-        String(posSelected.waiter),
+        toPercentage(posSelected.waiter),
       );
     }
   };
@@ -257,7 +259,9 @@ export const PdvEventPosScreen: React.FC<Omit<PdvEventPosScreen, 'firstTab'>> = 
         const request = {
           pdv,
           pos: posReq,
-          waiter: formDataPosRegister[FormInputNameRegister.partialPayment] as unknown as number,
+          waiter: unmask(
+            formDataPosRegister[FormInputNameRegister.partialPayment],
+          ) as unknown as number,
         } as EventPdvPos;
 
         await api.post<EventPdvPos>(`/event/pdv/${params.id}/pos/`, request);

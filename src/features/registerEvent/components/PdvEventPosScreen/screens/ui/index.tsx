@@ -4,7 +4,7 @@ import { Button, ButtonGroup, Dialog, Loading } from '@/components';
 import { Container, FormGroup } from 'reactstrap';
 import { PosContent } from '@/features/registerEvent/components/PdvEventPosScreen/components/PosContent';
 import { CustomTable } from '@/components/Table';
-import { ReactComponent as Config } from '@/assets/images/svg/config.svg';
+import { ReactComponent as ItemConfig } from '@/assets/images/svg/ItemConfig.svg';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
@@ -110,11 +110,18 @@ export const PdvEventPosContainer: React.FC<PosContainerProps> = ({
         </FormGroup>
         {formData[FormInputName.hasPos] === 'true' && (
           <>
-            <div className="card-ligth-color mb-5">
+            <div className="card-ligth-color mb-4">
               <PosContent formPosRegister={formPosRegister} posStates={posStates} />
               <div className="d-flex justify-content-end">
-                <div className="mr-5 link-green" onClick={() => onInsertPos()}>
-                  Inserir POS
+                <div
+                  className="mr-5 link-green"
+                  onClick={() => {
+                    // eslint-disable-next-line no-unused-expressions
+                    posStates.pos ? onInsertPos() : onInsertPos();
+                    posActions.onCancelEdit();
+                  }}
+                >
+                  {posStates.pos ? 'Salvar POS' : 'Inserir POS'}
                 </div>
               </div>
             </div>
@@ -123,7 +130,10 @@ export const PdvEventPosContainer: React.FC<PosContainerProps> = ({
               content={
                 posStates.posList.length > 0
                   ? posStates.posList.map((item, index) => (
-                      <React.Fragment key={index}>
+                      <div
+                        className={`${index === posStates.posList.length - 1 ? 'mb-3' : 'mb-5'}`}
+                        key={index}
+                      >
                         <div className="mb-5">
                           <span className="secondary-table-title">POS #{index + 1}</span>
                           <span className="secondary-table-title font-weight-bold">
@@ -138,9 +148,10 @@ export const PdvEventPosContainer: React.FC<PosContainerProps> = ({
                             {
                               id: item.pos.id,
                               numberPos: item.pos.serialNumber,
-                              expirationDate: dayjs(item.pos.expirationDate).format(
-                                'DD/MM/YYYY HH:mm:ss',
-                              ),
+                              expirationDate:
+                                item.pos.expirationDate === null
+                                  ? '-----'
+                                  : dayjs(item.pos.expirationDate).format('DD/MM/YYYY HH:mm:ss'),
                               partialPayment: item.waiter
                                 ? `${toPercentage(item.waiter)} %`
                                 : `${toPercentage(0)} %`,
@@ -149,7 +160,7 @@ export const PdvEventPosContainer: React.FC<PosContainerProps> = ({
                                   <div className={`${posStates.pos ? 'disabled-content' : null}`}>
                                     <div className="d-flex align-items-center">
                                       <div className="ml-4">
-                                        <Config
+                                        <ItemConfig
                                           className="mr-4 svg-icon action-icon"
                                           onClick={(): void => {
                                             modalConfig.onShouldShowModal({
@@ -178,7 +189,8 @@ export const PdvEventPosContainer: React.FC<PosContainerProps> = ({
                           ]}
                           theme="secondaryWithoutBorder"
                         />
-                      </React.Fragment>
+                        {index === posStates.posList.length - 1 ? null : <hr className="mt-5" />}
+                      </div>
                     ))
                   : // <div className="collapseTableText">
                     'Nenhuma POS cadastrado. Aqui será exibida uma lista das POS cadastrados'

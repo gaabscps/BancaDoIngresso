@@ -515,6 +515,7 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
       handleRemoveDiscountCoupon={handleRemoveDiscountCoupon}
       listDiscountCoupon={listDiscountCoupon}
       handleOnDiscountCoupon={handleOnDiscountCoupon}
+      ticketStates={ticketStates}
       backTab={backTab}
       nextTab={nextTab}
       paymentSettingsActions={controllerPaymentSettingsActions}

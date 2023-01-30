@@ -19,7 +19,6 @@ export const columnsPosEvent: TableColumn<DataRowPosEvent>[] = [
   {
     name: 'Porcentagem do Garçom',
     selector: row => row.partialPayment,
-    right: true,
   },
   {
     name: '',

@@ -2,6 +2,7 @@
 import React, { Fragment } from 'react';
 import { InputText, SelectCustom } from '@/components';
 import { Col, Form, FormGroup, Row } from 'reactstrap';
+import { updateMask as updateMaskCash } from '@/helpers/masks/cashNumber';
 import { PosContainerProps } from '../../screens/ui';
 
 // eslint-disable-next-line no-shadow
@@ -58,9 +59,7 @@ export const PosContent: React.FC<Pick<PosContainerProps, 'formPosRegister' | 'p
                 className="w-input-sm"
                 value={formData[FormInputName.partialPayment]}
                 onChange={e =>
-                  onChangeFormInput(FormInputName.partialPayment)(
-                    e?.target?.value.replace(/\D/g, '').replace(/(\d{2})$/, '.$1') as string,
-                  )
+                  onChangeFormInput(FormInputName.partialPayment)(updateMaskCash(e?.target?.value))
                 }
                 error={formErrors.partialPayment && formErrors.partialPayment[0]}
               />

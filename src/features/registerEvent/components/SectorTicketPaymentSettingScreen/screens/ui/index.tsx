@@ -16,6 +16,7 @@ import { updateMask as updateMaskCashNumber } from '@/helpers/masks/cashNumber';
 import { formPaymentSettingsProps, PaymentSettingsActionsProps } from '../../types';
 import { RegisterDiscountCoupon } from '../../components/RegisterDiscountCoupon';
 import { columnsDiscountCoupon } from './table';
+import { ticketStatesProps } from '../../../SectorTicketGeneralSettingsSreen/types';
 
 // eslint-disable-next-line no-shadow
 export enum States {
@@ -40,6 +41,7 @@ interface SectorTicketMainSettingsContainerProps {
   visible: boolean;
   discountCoupon: DiscountCoupon[];
   listDiscountCoupon: DiscountCoupon[];
+  ticketStates: ticketStatesProps;
   handleOnDiscountCoupon: () => Promise<void>;
   handleChangeDiscountCoupon: (name: string, index: number, value: string) => void;
   handleAddDiscountCoupon: () => void;
@@ -122,6 +124,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
   visible,
   discountCoupon,
   listDiscountCoupon,
+  ticketStates,
   handleOnDiscountCoupon,
   handleRemoveDiscountCoupon,
   handleChangeDiscountCoupon,
@@ -736,8 +739,8 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
           leftIcon={TicketIcon()}
         />
 
-        <div className="d-flex justify-content-between">
-          <div>
+        <div className="d-flex justify-content-end">
+          {/* <div>
             <Button
               title="Salvar"
               theme="noneBorder"
@@ -745,7 +748,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
                 await paymentSettingsActions.onSave();
               }}
             />
-          </div>
+          </div> */}
           <div className="d-flex">
             <div className="m-2 mr-5">
               <BackOnTop />
@@ -758,7 +761,7 @@ export const SectorTicketPaymentSettingsContainer: React.FC<
               }}
             />
             <Button
-              title="Próxima etapa"
+              title={ticketStates.ticket ? 'Salvar e avançar' : 'Próxima etapa'}
               theme="outlineDark"
               className="ml-3"
               onClick={async () => {

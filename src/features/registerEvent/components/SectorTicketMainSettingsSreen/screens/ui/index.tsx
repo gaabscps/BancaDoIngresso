@@ -223,8 +223,8 @@ export const SectorTicketMainSettingsContainer: React.FC<
             count={batchStates?.batchList?.length}
           />
         </div>
-        <div className="d-flex justify-content-between">
-          <div>
+        <div className="d-flex justify-content-end">
+          {/* <div>
             {ticketStates?.ticket ? (
               <Button
                 title="Salvar"
@@ -234,14 +234,14 @@ export const SectorTicketMainSettingsContainer: React.FC<
                 }}
               />
             ) : null}
-          </div>
+          </div> */}
           <div className="d-flex">
             <div className="m-2 mr-5">
               <BackOnTop />
             </div>
             <div>
               <Button
-                title="Próxima etapa"
+                title={`${ticketStates?.ticket ? 'Salvar e avançar' : 'Próxima etapa'}`}
                 theme="outlineDark"
                 onClick={async () => {
                   await mainSettingsActions.onNextTab();
