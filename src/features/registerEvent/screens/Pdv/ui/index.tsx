@@ -184,6 +184,7 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
                 mainPdvStates.eventPDVs && mainPdvStates.eventPDVs.length > 0 ? (
                   mainPdvStates.eventPDVs.map((item, index) => (
                     <React.Fragment key={index}>
+                      {index > 0 ? <hr style={{ margin: '25px -30px 30px -30px' }} /> : null}
                       <div className="mb-5">
                         <span className="secondary-table-title">PDV #{index + 1}</span>
                         <span className="secondary-table-title font-weight-bold">
@@ -203,7 +204,7 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
                                 : undefined,
                             users:
                               item.pdv.users && item.pdv.users.length > 0
-                                ? item.pdv.users.map(data => data.name)
+                                ? item.pdv.users.map(data => `${data.name}, `)
                                 : undefined,
                             actions: (
                               <React.Fragment>

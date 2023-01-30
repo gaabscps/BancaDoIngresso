@@ -189,7 +189,9 @@ export const PdvEventPosContainer: React.FC<PosContainerProps> = ({
                           ]}
                           theme="secondaryWithoutBorder"
                         />
-                        {index === posStates.posList.length - 1 ? null : <hr className="mt-5" />}
+                        {index === posStates.posList.length - 1 ? null : (
+                          <hr style={{ margin: '25px -30px 30px -30px' }} className="mt-5" />
+                        )}
                       </div>
                     ))
                   : // <div className="collapseTableText">

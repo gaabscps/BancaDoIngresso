@@ -257,7 +257,9 @@ export const PdvProductContainer: React.FC<SectorProductPosContainerProps> = ({
                         }))}
                       />
                     </div>
-                    {index === tableContent.length - 1 ? null : <hr className="mt-5" />}
+                    {index === tableContent.length - 1 ? null : (
+                      <hr style={{ margin: '25px -30px 30px -30px' }} className="mt-5" />
+                    )}
                   </div>
                 ))
               : 'Nenhum produto inserido'
