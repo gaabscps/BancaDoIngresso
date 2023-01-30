@@ -68,6 +68,7 @@ export const PdvProductScreen: React.FC<PdvProductScreenProps> = ({ pdvId, nextT
   const [sectionsProductsAndCombos, setSectionsProductsAndCombos] = useState<
     SectionProductsAndCombos[]
   >([]);
+  const [sectionProduct, setSectionProduct] = useState<ProductAndCombo[]>([]);
   const [tableContent, setTableContent] = useState<SectionProductsAndCombos[]>([]);
   const [productsAndCombos, setProductsAndCombos] = useState<ProductAndCombo[]>([]);
 
@@ -385,6 +386,17 @@ export const PdvProductScreen: React.FC<PdvProductScreenProps> = ({ pdvId, nextT
     }
   };
 
+  const handleOnCancelEditProduct = (): void => {
+    try {
+      setSectionProduct([]);
+      setProductsAndCombos([]);
+      resetFormProduct();
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    }
+  };
+
   const handleOnEditProduct = (sectionId: string, productId: string): void => {
     let list: ProductAndCombo[] = [];
     originalSectionsProductsAndCombos.forEach(data => {
@@ -392,6 +404,7 @@ export const PdvProductScreen: React.FC<PdvProductScreenProps> = ({ pdvId, nextT
         list = data.productsAndCombos;
       }
     });
+    setSectionProduct(list);
     setProductsAndCombos(list);
     onChangeFormInputProduct(FormInputName.sector)(sectionId);
     onChangeFormInputProduct(FormInputName.product)(productId);
@@ -430,11 +443,13 @@ export const PdvProductScreen: React.FC<PdvProductScreenProps> = ({ pdvId, nextT
       <PdvProductContainer
         state={state}
         controllerFormPos={controllerFormPos}
+        sectionProduct={sectionProduct}
         onChangeSection={handleChangeSection}
         onAddAll={handleOnAddAll}
         onAddProduct={handleOnAddProduct}
         onEditProduct={handleOnEditProduct}
         onShowDeleteProduct={handleOnShowDeleteProduct}
+        onCancelEdit={handleOnCancelEditProduct}
         nextTab={nextTab}
         backTab={backTab}
       />
