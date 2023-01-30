@@ -1,3 +1,4 @@
+/* eslint-disable no-prototype-builtins */
 /* eslint-disable array-callback-return */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -234,6 +235,16 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({
     }
   };
 
+  const mergeObjects = (sourceA: any, sourceB: any): object => {
+    const obj = {};
+    const keys = Object.keys(sourceA).concat(Object.keys(sourceB));
+    keys.forEach((key) => {
+      if (sourceA.hasOwnProperty(key)) obj[key] = sourceA[key];
+      if (sourceB.hasOwnProperty(key)) obj[key] = sourceB[key];
+    });
+    return obj;
+  };
+
   const handleOnSavePos = async (): Promise<void> => {
     if (form.products?.length) {
       try {
@@ -316,26 +327,12 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({
         const productSameSectionArray = Object.values(productSameSection);
         const comboSameSectionArray = comboSameSection ? Object.values(comboSameSection) : [];
 
-        let productAndComboSameSection = [];
+        let productAndComboSameSection = {};
 
-        if (comboSameSectionArray && comboSameSectionArray.length > 0) {
-          productAndComboSameSection = productSameSectionArray.map((item: any) => {
-            const combo = comboSameSectionArray.find(
-              (comboItem: any) => comboItem.section.id === item.section.id,
-            ) as { combos: any };
-            if (combo && combo.combos) {
-              return {
-                section: item.section,
-                products: item.products,
-                combos: combo.combos,
-              };
-            }
+        productAndComboSameSection = mergeObjects(productSameSection, comboSameSection);
 
-            return item;
-          });
-        } else {
-          productAndComboSameSection = productSameSectionArray;
-        }
+        // format productAndComboSameSection to array
+        productAndComboSameSection = Object.values(productAndComboSameSection);
 
         let payload = {
           pos: {
@@ -346,7 +343,7 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({
           allowDiscount: convertToBoolean(formDataPos[FormInputNamePos.allowDiscount]),
           eventSections: [],
         };
-        if (productAndComboSameSection.length > 0)
+        if (productAndComboSameSection)
           payload = { ...payload, eventSections: productAndComboSameSection as any };
         else if (comboSameSectionArray && comboSameSectionArray.length > 0)
           payload = { ...payload, eventSections: comboSameSectionArray as any };
