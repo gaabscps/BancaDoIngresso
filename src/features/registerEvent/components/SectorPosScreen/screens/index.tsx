@@ -235,12 +235,18 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({
     }
   };
 
-  const mergeObjects = (sourceA: any, sourceB: any): object => {
-    const obj = {};
+  const mergeObjects = (
+    sourceA: { [key: string]: any },
+    sourceB: { [key: string]: any },
+  ): { [key: string]: any } => {
+    const obj: { [key: string]: any } = {};
     const keys = Object.keys(sourceA).concat(Object.keys(sourceB));
-    keys.forEach((key) => {
+    keys.forEach(key => {
       if (sourceA.hasOwnProperty(key)) obj[key] = sourceA[key];
       if (sourceB.hasOwnProperty(key)) obj[key] = sourceB[key];
+      if (sourceA.hasOwnProperty(key) && sourceB.hasOwnProperty(key)) {
+        obj[key] = sourceA[key] + sourceB[key];
+      }
     });
     return obj;
   };
@@ -324,30 +330,31 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({
           }, {});
         }
 
-        const productSameSectionArray = Object.values(productSameSection);
-        const comboSameSectionArray = comboSameSection ? Object.values(comboSameSection) : [];
+        // const productSameSectionArray = Object.values(productSameSection);
+        // const comboSameSectionArray = comboSameSection ? Object.values(comboSameSection) : [];
 
         let productAndComboSameSection = {};
 
         productAndComboSameSection = mergeObjects(productSameSection, comboSameSection);
+        console.log(mergeObjects(productSameSection, comboSameSection));
 
         // format productAndComboSameSection to array
         productAndComboSameSection = Object.values(productAndComboSameSection);
 
-        let payload = {
+        const payload = {
           pos: {
             id: formDataPos[FormInputNamePos.pos],
           },
           waiter: +unmask(formDataPos[FormInputNamePos.waiter]),
           commission: +unmask(formDataPos[FormInputNamePos.commission]),
           allowDiscount: convertToBoolean(formDataPos[FormInputNamePos.allowDiscount]),
-          eventSections: [],
+          eventSections: productAndComboSameSection,
         };
-        if (productAndComboSameSection)
-          payload = { ...payload, eventSections: productAndComboSameSection as any };
-        else if (comboSameSectionArray && comboSameSectionArray.length > 0)
-          payload = { ...payload, eventSections: comboSameSectionArray as any };
-        else payload = { ...payload, eventSections: productSameSectionArray as any };
+        // if (productAndComboSameSection)
+        //   payload = { ...payload, eventSections: productAndComboSameSection as any };
+        // else if (comboSameSectionArray && comboSameSectionArray.length > 0)
+        //   payload = { ...payload, eventSections: comboSameSectionArray as any };
+        // else payload = { ...payload, eventSections: productSameSectionArray as any };
 
         const reponse = await api.post(`/event/section-product/${params.id}/pos`, payload);
         if (reponse) toast.success('Dados salvos com sucesso!');
