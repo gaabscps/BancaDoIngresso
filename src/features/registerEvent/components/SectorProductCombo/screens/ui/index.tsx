@@ -435,7 +435,7 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                             }
                             key={indexCombo}
                           >
-                            <div className="ml-3 mt-3 d-flex align-items-center">
+                            <div className="ml-3 d-flex align-items-center">
                               <span
                                 style={{ whiteSpace: 'nowrap', fontWeight: '300' }}
                                 className="secondary-table-title"
@@ -444,7 +444,7 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                                 <span style={{ transform: 'scale(5)' }}> · </span>
                                 <span style={{ fontWeight: '500' }}>{selected.name}</span>
                               </span>
-                              <div className="mt-4 d-flex w-100 justify-content-end">
+                              <div className="d-flex w-100 justify-content-end">
                                 <Switch
                                   label="Vender online"
                                   className="ml-5 action-icon"
@@ -466,7 +466,7 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                               </div>
                             </div>
                             <CustomTable
-                              theme="secondary"
+                              theme="secondaryWithoutBorder"
                               numberRowsPerPage={0}
                               progressPending={false}
                               columns={[
@@ -533,6 +533,9 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
                                 action: '',
                               }))}
                             />
+                            {indexCombo !== comboList.length - 1 ? (
+                              <hr style={{ margin: '25px -30px 30px -30px' }} />
+                            ) : null}
                           </div>
                         ))
                       ) : (

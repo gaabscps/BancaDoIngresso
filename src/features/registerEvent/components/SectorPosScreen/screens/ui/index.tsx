@@ -12,7 +12,7 @@ import {
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
 import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { ReactComponent as Trash } from '@/assets/images/svg/lixeira.svg';
-import { ReactComponent as Config } from '@/assets/images/svg/config.svg';
+import { ReactComponent as ItemConfig } from '@/assets/images/svg/ItemConfig.svg';
 import { updateMask as updateMaskCash } from '@/helpers/masks/cashNumber';
 import { CustomTable } from '@/components/Table';
 import React from 'react';
@@ -337,7 +337,7 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
                                           : null
                                       }`}
                                     >
-                                      <Config
+                                      <ItemConfig
                                         className="mr-4 svg-icon action-icon"
                                         onClick={(): void => {
                                           onShouldShowModal({
@@ -356,7 +356,6 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
                                         }}
                                       />
                                       <Pen
-                                        width={15}
                                         className="mr-4 svg-icon action-icon"
                                         onClick={() =>
                                           handleOnGetPos({
@@ -370,8 +369,7 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
                                         }
                                       />
                                       <Trash
-                                        width={13}
-                                        className="action-icon svg-icon-trash"
+                                        className="svg-icon svg-icon-trash action-icon"
                                         onClick={() => handleOnShowDeletePos(pos as unknown as Pos)}
                                       />
                                     </div>

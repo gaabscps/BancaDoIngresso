@@ -226,7 +226,6 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
                     // eslint-disable-next-line no-shadow
                     listGroupSubGroup.map((group, index) => (
                       <React.Fragment key={index}>
-                        {index > 0 ? <hr style={{ margin: '25px 0px 30px -50px' }} /> : null}
                         <div
                           className={
                             groupsState && groupsState.id !== group.id ? 'disabled-content' : ''
@@ -286,6 +285,7 @@ export const SectorProductGroupContainer: React.FC<SectorProductGroupContainerPr
                               </div>
                             </div>
                           </div>
+                          {index === listGroupSubGroup.length - 1 ? null : <hr />}
                         </div>
                       </React.Fragment>
                     ))

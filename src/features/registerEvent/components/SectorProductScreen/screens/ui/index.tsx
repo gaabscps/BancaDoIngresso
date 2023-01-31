@@ -155,7 +155,6 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
                         : '';
                     return (
                       <React.Fragment key={indexSubGroup}>
-                        {indexGroup > 0 ? <hr style={{ margin: '25px -30px 30px -30px' }} /> : null}
                         <div className={disabledProduct}>
                           <div className="mb-5">
                             <span className="secondary-table-title">
@@ -254,6 +253,9 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
                             theme="secondaryWithoutBorder"
                           />
                         </div>
+                        {indexGroup !== productStates.productList.length - 1 ? (
+                          <hr style={{ margin: '25px -30px 30px -30px' }} />
+                        ) : null}
                       </React.Fragment>
                     );
                   }),
