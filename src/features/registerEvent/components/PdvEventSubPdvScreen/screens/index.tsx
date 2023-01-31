@@ -20,6 +20,7 @@ import {
 } from '../types';
 import { States, PdvEventSubPdvContainer, ShouldShowModal, FormInputName } from './ui';
 import { FormInputName as FormInputNameSubPdv } from '../components/SubPdvContent';
+import { mainPdvStatesProps } from '../../PdvScreen/types';
 
 type UrlParams = {
   id: string;
@@ -27,6 +28,7 @@ type UrlParams = {
 
 interface PdvEventSubPdvScreenProps extends TabPdvActionsProps {
   pdvId?: string;
+  mainPdvStates: mainPdvStatesProps;
 }
 
 export const PdvEventSubPdvScreen: React.FC<Omit<PdvEventSubPdvScreenProps, 'nextTab'>> = ({
@@ -66,6 +68,24 @@ export const PdvEventSubPdvScreen: React.FC<Omit<PdvEventSubPdvScreenProps, 'nex
     },
     formatters: {},
   });
+
+  const handleInsertSubPdv = async (): Promise<void> => {
+    try {
+      setState(States.loading);
+      console.log('subPdv', subPdv);
+      const payload = {
+        subPdv,
+        users: usersSelected,
+      };
+
+      await api.post<any>(`/event/pdv/${params.id}/sub-pdv`, payload);
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
 
   const handleGetSubPdvs = async (users: User[]): Promise<void> => {
     try {
@@ -342,6 +362,7 @@ export const PdvEventSubPdvScreen: React.FC<Omit<PdvEventSubPdvScreenProps, 'nex
     const selected = subPdvOptions.find(data => data.id === value);
     if (selected && selected.users && selected.users.length > 0) {
       setUsersSelected(selected.users);
+      setSubPdv(selected);
     }
   };
 
@@ -385,6 +406,7 @@ export const PdvEventSubPdvScreen: React.FC<Omit<PdvEventSubPdvScreenProps, 'nex
     onCancelEdit: handleOnCancelEditSubPdv,
     onFirstTab: firstTab,
     onReturnTap: handleBackTab,
+    onInsertSubPdv: handleInsertSubPdv,
   };
 
   useEffect(() => {

@@ -40,6 +40,7 @@ export interface subPdvActionsProps {
   onCancelEdit: () => void;
   onFirstTab: () => void;
   onReturnTap: () => void;
+  onInsertSubPdv: () => void;
 }
 
 export interface onShouldShowSubPdvSettingsProps {

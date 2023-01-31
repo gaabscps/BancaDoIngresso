@@ -127,10 +127,20 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
       <PdvProductScreen pdvId={pdvId} nextTab={handleNextTab} backTab={handleBackTab} />
     </>,
     <>
-      <PdvUserScreen pdvId={pdvId} nextTab={handleNextTab} backTab={handleBackTab} />
+      <PdvUserScreen
+        mainPdvStates={mainPdvStates}
+        pdvId={pdvId}
+        nextTab={handleNextTab}
+        backTab={handleBackTab}
+      />
     </>,
     <>
-      <PdvEventSubPdvScreen pdvId={pdvId} backTab={handleBackTab} firstTab={handleOnFirstTab} />
+      <PdvEventSubPdvScreen
+        mainPdvStates={mainPdvStates}
+        pdvId={pdvId}
+        backTab={handleBackTab}
+        firstTab={handleOnFirstTab}
+      />
     </>,
   ];
 

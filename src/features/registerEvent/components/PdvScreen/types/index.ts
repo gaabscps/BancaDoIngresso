@@ -47,6 +47,7 @@ export interface mainPdvStatesProps {
   mainPdvList: Pdv[];
   setMainPdvList: React.Dispatch<React.SetStateAction<Pdv[]>>;
   eventPDVs: EventPdv[];
+  link: string;
 }
 
 export interface mainPdvActionsProps {

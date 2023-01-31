@@ -198,6 +198,7 @@ export const PdvEventScreen: React.FC = (): JSX.Element => {
     mainPdvList,
     setMainPdvList,
     eventPDVs,
+    link,
   };
 
   const controllerFormPdv = {

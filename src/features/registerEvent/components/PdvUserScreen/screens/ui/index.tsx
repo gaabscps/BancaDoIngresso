@@ -54,7 +54,7 @@ export const PdvUserContainer: React.FC<SectorProductUserProps> = ({
     (item: User) => item.id === formData.user,
   );
 
-  const dataTableUser = controllerAppendUser.usersSelected?.map(item => ({
+  const dataTableUser = controllerAppendUser.listUsers?.map(item => ({
     id: item.id,
     name: item.name,
     login: item.cpf,
@@ -118,7 +118,7 @@ export const PdvUserContainer: React.FC<SectorProductUserProps> = ({
             <Row className="no-gutters">
               <Col md={5}>
                 <h5 className="mb-4 border-bottom-title fw-400">Usuários inseridos no PDV</h5>
-                {controllerAppendUser.usersSelected.length > 0 ? (
+                {controllerAppendUser.listUsers.length > 0 ? (
                   <CustomTable
                     columns={[
                       {

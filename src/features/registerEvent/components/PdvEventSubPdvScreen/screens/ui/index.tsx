@@ -78,7 +78,10 @@ export const PdvEventSubPdvContainer: React.FC<SubPdvContainerProps> = ({
           {
             [ShouldShowModal.configProduct]: {
               title: subPdvStates?.subPdv ? 'Salvar' : 'Cadastrar novo Sub PDV',
-              onClick: (): void => modalConfig.onToggle(),
+              onClick: (): void => {
+                subPdvActions.onInsertSubPdv();
+                modalConfig.onToggle();
+              },
             },
           }[modalConfig.shouldShowModal],
         ]}

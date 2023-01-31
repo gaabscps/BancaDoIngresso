@@ -14,6 +14,7 @@ import { useParams } from 'react-router-dom';
 import PdvUser from '@/model/PdvUser';
 import { PdvUserContainer } from './ui';
 import { formPdvUserProps } from '../types';
+import { mainPdvStatesProps } from '../../PdvScreen/types';
 // import { formPdvProductProps } from '../types';
 
 // eslint-disable-next-line no-shadow
@@ -64,6 +65,7 @@ type UrlParams = {
 
 interface PdvUserScreenProps extends SectorProductPosContainerProps {
   pdvId?: string;
+  mainPdvStates: mainPdvStatesProps;
 }
 
 export const PdvUserScreen: React.FC<PdvUserScreenProps> = ({ pdvId, nextTab, backTab }) => {
