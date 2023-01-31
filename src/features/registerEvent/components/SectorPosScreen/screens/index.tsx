@@ -244,8 +244,12 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({
     keys.forEach(key => {
       if (sourceA.hasOwnProperty(key)) obj[key] = sourceA[key];
       if (sourceB.hasOwnProperty(key)) obj[key] = sourceB[key];
+      // if sourceA and sourceB have the same key, concat the values in a single object
       if (sourceA.hasOwnProperty(key) && sourceB.hasOwnProperty(key)) {
-        obj[key] = sourceA[key] + sourceB[key];
+        obj[key] = {
+          ...sourceA[key],
+          ...sourceB[key],
+        };
       }
     });
     return obj;
@@ -336,7 +340,6 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({
         let productAndComboSameSection = {};
 
         productAndComboSameSection = mergeObjects(productSameSection, comboSameSection);
-        console.log(mergeObjects(productSameSection, comboSameSection));
 
         // format productAndComboSameSection to array
         productAndComboSameSection = Object.values(productAndComboSameSection);
