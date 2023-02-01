@@ -196,8 +196,10 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
                     <React.Fragment key={index}>
                       {index > 0 ? <hr style={{ margin: '25px -30px 30px -30px' }} /> : null}
                       <div className="mb-5">
-                        <span className="secondary-table-title">PDV #{index + 1}</span>
-                        <span className="secondary-table-title font-weight-bold">
+                        <span style={{ fontWeight: '300' }} className="secondary-table-title">
+                          PDV #{index + 1}
+                        </span>
+                        <span style={{ fontWeight: '500' }} className="secondary-table-title">
                           <b> ·</b> {item.pdv.name}
                         </span>
                       </div>
@@ -230,7 +232,7 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
                                         onClick={(): void => mainPdvActions.onGet(item.pdv)}
                                       />
                                       <Trash
-                                        className="svg-icon svg-icon-trash"
+                                        className="svg-icon action-icon svg-icon-trash"
                                         onClick={() => {
                                           mainPdvActions.onShowModalDelete(item.pdv);
                                         }}
@@ -256,6 +258,12 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
               buttonAction={() => mainPdvActions.onCancelEdit()}
               showButtonOnTitle={!!mainPdvStates?.mainPdv}
             />
+            <div className="mb-4">
+              <h6>Adicionando PDV</h6>
+              <h6 className="text-darkgray">
+                Preencha as 5 (CINCO) etapas abaixo para adicionar um PDV
+              </h6>
+            </div>
             <Tab
               titles={[
                 'Ingressos por PDV',
