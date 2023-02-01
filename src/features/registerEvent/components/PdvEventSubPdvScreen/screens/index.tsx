@@ -74,7 +74,12 @@ export const PdvEventSubPdvScreen: React.FC<Omit<PdvEventSubPdvScreenProps, 'nex
       setState(States.loading);
       console.log('subPdv', subPdv);
       const payload = {
-        subPdv,
+        subPdv: {
+          ...subPdv,
+          pdv: {
+            id: pdvId,
+          },
+        },
         users: usersSelected,
       };
 
