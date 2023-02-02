@@ -70,36 +70,40 @@ export const SectorProduct: React.FC<SectorProductProps> = ({ event }) => (
               },
               {
                 title: 'Tx Deb',
-                content: section.products.map(
-                  item => `${toPercentage(item.physicalSale?.debit)}%` || '--',
+                content: section.products.map(item =>
+                  item.physicalSale?.debit ? `${toPercentage(item.physicalSale?.debit)}%` : '--',
                 ),
               },
               {
                 title: 'Tx Cred',
-                content: section.products.map(
-                  item => `${toPercentage(item.physicalSale?.credit)}%` || '--',
+                content: section.products.map(item =>
+                  item.physicalSale?.credit ? `${toPercentage(item.physicalSale?.credit)}%` : '--',
                 ),
               },
               {
                 title: 'Tx Pix ',
-                content: section.products.map(
-                  item => `${toPercentage(item.physicalSale?.pix)}%` || '--',
+                content: section.products.map(item =>
+                  item.physicalSale?.pix ? `${toPercentage(item.physicalSale?.pix)}%` : '--',
                 ),
               },
               {
                 title: 'Tx Admin',
-                content: section.products.map(
-                  item => `${toPercentage(item.physicalSale?.administrateTax)}%` || '--',
+                content: section.products.map(item =>
+                  item.physicalSale?.administrateTax
+                    ? `${toPercentage(item.physicalSale?.administrateTax)}%`
+                    : '--',
                 ),
               },
               {
                 title: 'Parcelas',
-                content: section.products.map(item => item.physicalSale?.installments || '--'),
+                content: section.products.map(item =>
+                  item.physicalSale?.installments ? item.physicalSale?.installments : '--',
+                ),
               },
               {
                 title: 'Jur mês',
-                content: section.products.map(
-                  item => `${toPercentage(item.physicalSale?.fee)}%` || '--',
+                content: section.products.map(item =>
+                  item.physicalSale?.fee ? `${toPercentage(item.physicalSale?.fee)}%` : '--',
                 ),
               },
             ]}
