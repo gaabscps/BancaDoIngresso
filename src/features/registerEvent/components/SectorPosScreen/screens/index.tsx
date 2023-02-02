@@ -256,53 +256,16 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({
   };
 
   const handleOnSavePos = async (): Promise<void> => {
-    try {
-      setState(States.loading);
-      const productSameSection = form.products?.reduce((acc: any, item: any) => {
-        const [sectionId, categoryGroupId, categorySubGroupId, productsId] = item.split('_');
-
-        // push product to section
-        if (acc[sectionId]) {
-          acc[sectionId].products.push({
-            id: productsId,
-            categorySubGroup: {
-              id: categorySubGroupId,
-              categoryGroup: {
-                id: categoryGroupId,
-              },
-            },
-          });
-        } else {
-          acc[sectionId] = {
-            section: {
-              id: sectionId,
-            },
-            products: [
-              {
-                id: productsId,
-                categorySubGroup: {
-                  id: categorySubGroupId,
-                  categoryGroup: {
-                    id: categoryGroupId,
-                  },
-                },
-              },
-            ],
-          };
-        }
-
-        return acc;
-      }, {});
-
-      let comboSameSection;
-      if (form.combos) {
-        comboSameSection = form.combos?.reduce((acc: any, item: any) => {
-          const [sectionId, categoryGroupId, categorySubGroupId, combosId] = item.split('_');
+    if (form.products?.length > 0 || form.combos?.length > 0) {
+      try {
+        setState(States.loading);
+        const productSameSection = form.products?.reduce((acc: any, item: any) => {
+          const [sectionId, categoryGroupId, categorySubGroupId, productsId] = item.split('_');
 
           // push product to section
           if (acc[sectionId]) {
-            acc[sectionId].combos.push({
-              id: combosId,
+            acc[sectionId].products.push({
+              id: productsId,
               categorySubGroup: {
                 id: categorySubGroupId,
                 categoryGroup: {
@@ -315,9 +278,9 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({
               section: {
                 id: sectionId,
               },
-              combos: [
+              products: [
                 {
-                  id: combosId,
+                  id: productsId,
                   categorySubGroup: {
                     id: categorySubGroupId,
                     categoryGroup: {
@@ -331,43 +294,84 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({
 
           return acc;
         }, {});
+
+        let comboSameSection;
+        if (form.combos) {
+          comboSameSection = form.combos?.reduce((acc: any, item: any) => {
+            const [sectionId, categoryGroupId, categorySubGroupId, combosId] = item.split('_');
+
+            // push product to section
+            if (acc[sectionId]) {
+              acc[sectionId].combos.push({
+                id: combosId,
+                categorySubGroup: {
+                  id: categorySubGroupId,
+                  categoryGroup: {
+                    id: categoryGroupId,
+                  },
+                },
+              });
+            } else {
+              acc[sectionId] = {
+                section: {
+                  id: sectionId,
+                },
+                combos: [
+                  {
+                    id: combosId,
+                    categorySubGroup: {
+                      id: categorySubGroupId,
+                      categoryGroup: {
+                        id: categoryGroupId,
+                      },
+                    },
+                  },
+                ],
+              };
+            }
+
+            return acc;
+          }, {});
+        }
+
+        // const productSameSectionArray = Object.values(productSameSection);
+        // const comboSameSectionArray = comboSameSection ? Object.values(comboSameSection) : [];
+
+        let productAndComboSameSection = {};
+
+        productAndComboSameSection = mergeObjects(productSameSection, comboSameSection);
+
+        // format productAndComboSameSection to array
+        productAndComboSameSection = Object.values(productAndComboSameSection);
+
+        const payload = {
+          pos: {
+            id: formDataPos[FormInputNamePos.pos],
+          },
+          waiter: +unmask(formDataPos[FormInputNamePos.waiter]),
+          commission: +unmask(formDataPos[FormInputNamePos.commission]),
+          allowDiscount: convertToBoolean(formDataPos[FormInputNamePos.allowDiscount]),
+          eventSections: productAndComboSameSection,
+        };
+        // if (productAndComboSameSection)
+        //   payload = { ...payload, eventSections: productAndComboSameSection as any };
+        // else if (comboSameSectionArray && comboSameSectionArray.length > 0)
+        //   payload = { ...payload, eventSections: comboSameSectionArray as any };
+        // else payload = { ...payload, eventSections: productSameSectionArray as any };
+
+        const reponse = await api.post(`/event/section-product/${params.id}/pos`, payload);
+        if (reponse) toast.success('Dados salvos com sucesso!');
+
+        handleGetPosList(params.id);
+        onToggle();
+      } catch (error) {
+        const err = error as AxiosError | any;
+        toast.error(err.response?.data.message);
+      } finally {
+        setState(States.default);
       }
-
-      // const productSameSectionArray = Object.values(productSameSection);
-      // const comboSameSectionArray = comboSameSection ? Object.values(comboSameSection) : [];
-
-      let productAndComboSameSection = {};
-
-      productAndComboSameSection = mergeObjects(productSameSection, comboSameSection);
-
-      // format productAndComboSameSection to array
-      productAndComboSameSection = Object.values(productAndComboSameSection);
-
-      const payload = {
-        pos: {
-          id: formDataPos[FormInputNamePos.pos],
-        },
-        waiter: +unmask(formDataPos[FormInputNamePos.waiter]),
-        commission: +unmask(formDataPos[FormInputNamePos.commission]),
-        allowDiscount: convertToBoolean(formDataPos[FormInputNamePos.allowDiscount]),
-        eventSections: productAndComboSameSection,
-      };
-      // if (productAndComboSameSection)
-      //   payload = { ...payload, eventSections: productAndComboSameSection as any };
-      // else if (comboSameSectionArray && comboSameSectionArray.length > 0)
-      //   payload = { ...payload, eventSections: comboSameSectionArray as any };
-      // else payload = { ...payload, eventSections: productSameSectionArray as any };
-
-      const reponse = await api.post(`/event/section-product/${params.id}/pos`, payload);
-      if (reponse) toast.success('Dados salvos com sucesso!');
-
-      handleGetPosList(params.id);
-      onToggle();
-    } catch (error) {
-      const err = error as AxiosError | any;
-      toast.error(err.response?.data.message);
-    } finally {
-      setState(States.default);
+    } else {
+      toast.error('É necessário selecionar pelo menos um produto ou combo!');
     }
   };
 
