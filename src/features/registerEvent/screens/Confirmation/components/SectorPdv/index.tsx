@@ -2,6 +2,7 @@ import { DataList } from '@/components/DataList';
 import React from 'react';
 import Event from '@/model/Event';
 import { toPercentage } from '@/helpers/common/amount';
+import { formatToCPF } from 'brazilian-values';
 
 export interface SectorPdvProps {
   event: Event | undefined;
@@ -59,7 +60,9 @@ export const SectorPdv: React.FC<SectorPdvProps> = ({ event }) => (
               title: 'Usuários do PDV:',
               content:
                 item?.pdv?.users?.length > 0
-                  ? item?.pdv?.users?.map((user: any) => user?.name)
+                  ? item?.pdv?.users?.map(
+                      (user: any) => `${formatToCPF(user?.cpf)} (${user?.name})`,
+                    )
                   : ['Nenhum usuario cadastrado'],
             },
           ]}
