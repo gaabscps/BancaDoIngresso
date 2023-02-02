@@ -1497,7 +1497,7 @@ body
   user-select: none !important;
 }
 .input-action-disabled {
-  cursor: not-allowed;
+  cursor: not-allowed !important;
   pointer-events: none;
   -webkit-touch-callout: none;
   -webkit-user-select: none;

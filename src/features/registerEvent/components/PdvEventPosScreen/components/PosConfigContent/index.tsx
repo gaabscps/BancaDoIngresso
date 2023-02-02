@@ -1,5 +1,6 @@
 /* eslint-disable import/no-unresolved */
 import { ButtonGroup, InputText, SelectCustom } from '@/components';
+import { updateMask } from '@/helpers/masks/cashNumber';
 import React, { Fragment } from 'react';
 import { Col, Form, FormGroup, Row } from 'reactstrap';
 
@@ -51,19 +52,6 @@ export const PosConfigContent: React.FC<any> = ({ formPosConfig }) => {
     { label: '24', value: '24' },
   ];
 
-  const optionLimiteCount = [
-    { label: '1', value: '1' },
-    { label: '2', value: '2' },
-    { label: '3', value: '3' },
-    { label: '4', value: '4' },
-    { label: '5', value: '5' },
-    { label: '6', value: '6' },
-    { label: '7', value: '7' },
-    { label: '8', value: '8' },
-    { label: '9', value: '9' },
-    { label: '10', value: '10' },
-  ];
-
   return (
     <Fragment>
       <Form
@@ -102,13 +90,11 @@ export const PosConfigContent: React.FC<any> = ({ formPosConfig }) => {
                 name="physicalSaleDebit"
                 label="Débito %"
                 className="w-input-sm"
-                maxLength={2}
+                maxLength={5}
                 value={formData[FormInputName.physicalSaleDebit]}
                 placeholder="0"
                 onChange={e =>
-                  onChangeFormInput(FormInputName.physicalSaleDebit)(
-                    e.target.value.replace(/\D/g, ''),
-                  )
+                  onChangeFormInput(FormInputName.physicalSaleDebit)(updateMask(e.target.value))
                 }
                 error={formErrors.physicalSaleDebit && formErrors.physicalSaleDebit[0]}
                 disabled={formData[FormInputName.physicalSaleAllowCreditCardPayment] !== 'true'}
@@ -117,13 +103,11 @@ export const PosConfigContent: React.FC<any> = ({ formPosConfig }) => {
                 name="physicalSaleCredit"
                 label="Crédito %"
                 className="w-input-sm"
-                maxLength={2}
+                maxLength={5}
                 value={formData[FormInputName.physicalSaleCredit]}
                 placeholder="0"
                 onChange={e =>
-                  onChangeFormInput(FormInputName.physicalSaleCredit)(
-                    e.target.value.replace(/\D/g, ''),
-                  )
+                  onChangeFormInput(FormInputName.physicalSaleCredit)(updateMask(e.target.value))
                 }
                 error={formErrors.physicalSaleCredit && formErrors.physicalSaleCredit[0]}
                 disabled={formData[FormInputName.physicalSaleAllowCreditCardPayment] !== 'true'}
@@ -132,13 +116,11 @@ export const PosConfigContent: React.FC<any> = ({ formPosConfig }) => {
                 name="physicalSalePix"
                 label="PIX %"
                 className="w-input-sm"
-                maxLength={2}
+                maxLength={5}
                 value={formData[FormInputName.physicalSalePix]}
                 placeholder="0"
                 onChange={e =>
-                  onChangeFormInput(FormInputName.physicalSalePix)(
-                    e.target.value.replace(/\D/g, ''),
-                  )
+                  onChangeFormInput(FormInputName.physicalSalePix)(updateMask(e.target.value))
                 }
                 error={formErrors.physicalSalePix && formErrors.physicalSalePix[0]}
                 disabled={formData[FormInputName.physicalSaleAllowCreditCardPayment] !== 'true'}
@@ -147,12 +129,12 @@ export const PosConfigContent: React.FC<any> = ({ formPosConfig }) => {
                 name="physicalSaleAdministrateTax"
                 label="Taxa admin. %"
                 className="w-input-sm"
-                maxLength={2}
+                maxLength={5}
                 value={formData[FormInputName.physicalSaleAdministrateTax]}
                 placeholder="0"
                 onChange={e =>
                   onChangeFormInput(FormInputName.physicalSaleAdministrateTax)(
-                    e.target.value.replace(/\D/g, ''),
+                    updateMask(e.target.value),
                   )
                 }
                 error={
@@ -179,15 +161,17 @@ export const PosConfigContent: React.FC<any> = ({ formPosConfig }) => {
                 disabled={formData[FormInputName.physicalSaleAllowCreditCardPayment] !== 'true'}
               />
               <span className="mt-5 mr-3 ml-3 input-label"> + </span>
-              <SelectCustom
+              <InputText
                 name="physicalSaleFee"
                 label="Juros ao mês"
                 placeholder="Ex: 4"
                 className="w-input-sm"
+                maxLength={5}
                 value={formData[FormInputName.physicalSaleFee]}
-                onChange={e => onChangeFormInput(FormInputName.physicalSaleFee)(e?.value as string)}
+                onChange={e =>
+                  onChangeFormInput(FormInputName.physicalSaleFee)(updateMask(e?.target?.value))
+                }
                 error={formErrors.physicalSaleFee && formErrors.physicalSaleFee[0]}
-                options={optionLimiteCount}
                 disabled={formData[FormInputName.physicalSaleAllowCreditCardPayment] !== 'true'}
               />
             </div>

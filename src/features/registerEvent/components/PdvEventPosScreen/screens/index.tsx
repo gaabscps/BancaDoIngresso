@@ -61,7 +61,7 @@ export const PdvEventPosScreen: React.FC<Omit<PdvEventPosScreen, 'firstTab'>> = 
     isFormValid: isFormValidPos,
   } = useForm({
     initialData: {
-      hasPos: '',
+      hasPos: 'false',
     },
     validators: {
       hasPos: [validators.required],
@@ -263,10 +263,14 @@ export const PdvEventPosScreen: React.FC<Omit<PdvEventPosScreen, 'firstTab'>> = 
             formDataPosRegister[FormInputNameRegister.partialPayment],
           ) as unknown as number,
         } as EventPdvPos;
-
+        // if (posList.find(list => list.pos.id === request.pos.id)) {
+        //   toast.error('POS já cadastrada!');
+        //   return;
+        // }
         await api.post<EventPdvPos>(`/event/pdv/${params.id}/pos/`, request);
         resetFormPosRegister();
         await getPos();
+        toast.success('POS cadastrada com sucesso!');
       } catch (error) {
         const err = error as AxiosError;
         toast.error(err.message);
@@ -294,6 +298,8 @@ export const PdvEventPosScreen: React.FC<Omit<PdvEventPosScreen, 'firstTab'>> = 
         } as CardFees;
 
         await api.post(`/event/pdv/${params.id}/pos/${pdvId}/fee/${pos?.id}`, cardFees);
+
+        toast.success('Configurações salvas com sucesso!');
 
         resetFormPosConfig();
         handleOnCancelEditPos();

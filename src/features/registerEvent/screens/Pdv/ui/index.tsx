@@ -149,7 +149,7 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
       <Loading isVisible={state === States.loading} />
       <Container className="mainContainer" fluid={true}>
         <div className="container-event">
-          <h5 className="mb-2 border-bottom-title mb-5">Pdv</h5>
+          <h5 className="mb-2 border-bottom-title mb-5">PDV</h5>
         </div>
         <FormGroup className="mb-2 d-flex ">
           <ButtonGroup
@@ -169,6 +169,7 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
               { value: false, label: 'Não' },
             ]}
             error={formErrors.isPdv && formErrors.isPdv[0]}
+            disabledAction={!!pdvId}
           />
           <TooltipCustom id="pdvInfo">
             Comece escolhendo o PDV que você quer adicionar ao evento.
@@ -188,95 +189,100 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
               />
             </div>
             <hr className="mt-5 mb-5" />
-            <SuperCollapse
-              title={`PDV’s adicionados`}
-              content={
-                mainPdvStates.eventPDVs && mainPdvStates.eventPDVs.length > 0 ? (
-                  mainPdvStates.eventPDVs.map((item, index) => (
-                    <React.Fragment key={index}>
-                      {index > 0 ? <hr style={{ margin: '25px -30px 30px -30px' }} /> : null}
-                      <div className="mb-5">
-                        <span style={{ fontWeight: '300' }} className="secondary-table-title">
-                          PDV #{index + 1}
-                        </span>
-                        <span style={{ fontWeight: '500' }} className="secondary-table-title">
-                          <b> ·</b> {item.pdv.name}
-                        </span>
-                      </div>
-                      <CustomTable
-                        numberRowsPerPage={0}
-                        progressPending={false}
-                        columns={columnsEventPdv}
-                        data={[
-                          {
-                            id: item.pdv.id,
-                            pos:
-                              item.poss && item.poss.length > 0
-                                ? item.poss.map(data => data.pos.name)
-                                : undefined,
-                            users:
-                              item.pdv.users && item.pdv.users.length > 0
-                                ? item.pdv.users.map(data => `${data.name}, `)
-                                : undefined,
-                            actions: (
-                              <React.Fragment>
-                                <div
-                                  className={`${
-                                    mainPdvStates?.mainPdv ? 'disabled-content' : null
-                                  }`}
-                                >
-                                  <div className="d-flex align-items-center">
-                                    <div className="ml-4">
-                                      <Pen
-                                        className="mr-4 svg-icon action-icon"
-                                        onClick={(): void => mainPdvActions.onGet(item.pdv)}
-                                      />
-                                      <Trash
-                                        className="svg-icon action-icon svg-icon-trash"
-                                        onClick={() => {
-                                          mainPdvActions.onShowModalDelete(item.pdv);
-                                        }}
-                                      />
+            {(pdvId || (mainPdvStates.eventPDVs && mainPdvStates.eventPDVs.length > 0)) && (
+              <>
+                <SuperCollapse
+                  title={`PDV’s adicionados`}
+                  content={
+                    mainPdvStates.eventPDVs && mainPdvStates.eventPDVs.length > 0 ? (
+                      mainPdvStates.eventPDVs.map((item, index) => (
+                        <React.Fragment key={index}>
+                          {index > 0 ? <hr style={{ margin: '25px -30px 30px -30px' }} /> : null}
+                          <div className="mb-5">
+                            <span style={{ fontWeight: '300' }} className="secondary-table-title">
+                              PDV #{index + 1}
+                            </span>
+                            <span style={{ fontWeight: '500' }} className="secondary-table-title">
+                              <b> ·</b> {item.pdv.name}
+                            </span>
+                          </div>
+                          <CustomTable
+                            numberRowsPerPage={0}
+                            progressPending={false}
+                            columns={columnsEventPdv}
+                            data={[
+                              {
+                                id: item.pdv.id,
+                                pos:
+                                  item.poss && item.poss.length > 0
+                                    ? item.poss.map(data => data.pos.name)
+                                    : undefined,
+                                users:
+                                  item.pdv.users && item.pdv.users.length > 0
+                                    ? item.pdv.users.map(data => `${data.name}, `)
+                                    : undefined,
+                                actions: (
+                                  <React.Fragment>
+                                    <div
+                                      className={`${
+                                        mainPdvStates?.mainPdv ? 'disabled-content' : null
+                                      }`}
+                                    >
+                                      <div className="d-flex align-items-center">
+                                        <div className="ml-4">
+                                          <Pen
+                                            className="mr-4 svg-icon action-icon"
+                                            onClick={(): void => mainPdvActions.onGet(item.pdv)}
+                                          />
+                                          <Trash
+                                            className="svg-icon action-icon svg-icon-trash"
+                                            onClick={() => {
+                                              mainPdvActions.onShowModalDelete(item.pdv);
+                                            }}
+                                          />
+                                        </div>
+                                      </div>
                                     </div>
-                                  </div>
-                                </div>
-                              </React.Fragment>
-                            ),
-                          },
-                        ]}
-                        theme="secondaryWithoutBorder"
-                      />
-                    </React.Fragment>
-                  ))
-                ) : (
-                  <span>Nenhum PDV adicionado</span>
-                )
-              }
-              count={mainPdvStates.eventPDVs.length}
-              leftIcon={PDVIcon()}
-              buttonTitle="Cancelar edição"
-              buttonAction={() => mainPdvActions.onCancelEdit()}
-              showButtonOnTitle={!!mainPdvStates?.mainPdv}
-            />
-            <div className="mb-4">
-              <h6>Adicionando PDV</h6>
-              <h6 className="text-darkgray">
-                Preencha as 5 (CINCO) etapas abaixo para adicionar um PDV
-              </h6>
-            </div>
-            <Tab
-              titles={[
-                'Ingressos por PDV',
-                'Inserir POS',
-                'Inserir produtos',
-                'Inserir usuários',
-                'Cadastrar Sub PDV’s',
-              ]}
-              contents={contentTabs}
-              numberStap={numberTab}
-            />
+                                  </React.Fragment>
+                                ),
+                              },
+                            ]}
+                            theme="secondaryWithoutBorder"
+                          />
+                        </React.Fragment>
+                      ))
+                    ) : (
+                      <span>Nenhum PDV adicionado</span>
+                    )
+                  }
+                  count={mainPdvStates.eventPDVs.length}
+                  leftIcon={PDVIcon()}
+                  buttonTitle="Cancelar edição"
+                  buttonAction={() => mainPdvActions.onCancelEdit()}
+                  showButtonOnTitle={!!mainPdvStates?.mainPdv}
+                />
+                <div className="mb-4">
+                  <h6>Adicionando PDV</h6>
+                  <h6 className="text-darkgray">
+                    Preencha as 5 (CINCO) etapas abaixo para adicionar um PDV
+                  </h6>
+                </div>
+                <Tab
+                  titles={[
+                    'Ingressos por PDV',
+                    'Inserir POS',
+                    'Inserir produtos',
+                    'Inserir usuários',
+                    'Cadastrar Sub PDV’s',
+                  ]}
+                  contents={contentTabs}
+                  numberStap={numberTab}
+                />
+              </>
+            )}
           </>
         )}
+
         <div className="footer-register-event">
           <Button
             title="Voltar"

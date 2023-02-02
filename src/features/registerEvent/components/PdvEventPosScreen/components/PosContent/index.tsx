@@ -42,10 +42,16 @@ export const PosContent: React.FC<Pick<PosContainerProps, 'formPosRegister' | 'p
                 value={formData[FormInputName.name]}
                 onChange={e => onChangeFormInput(FormInputName.name)(e?.value as string)}
                 error={formErrors.name && formErrors.name[0]}
-                options={posStates.posOptions.map(pos => ({
-                  value: pos.id,
-                  label: pos.name,
-                }))}
+                options={posStates.posOptions
+                  .map(pos => ({
+                    value: posStates.posList.find(posList => posList.pos.id === pos.id)
+                      ? undefined
+                      : pos.id,
+                    label: posStates.posList.find(posList => posList.pos.name === pos.name)
+                      ? undefined
+                      : pos.name,
+                  }))
+                  .filter(option => option.value !== undefined && option.label !== undefined)}
               />
             </FormGroup>
           </Col>

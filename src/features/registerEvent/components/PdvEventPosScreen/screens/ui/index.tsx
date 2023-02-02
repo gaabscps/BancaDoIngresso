@@ -175,7 +175,7 @@ export const PdvEventPosContainer: React.FC<PosContainerProps> = ({
                                           onClick={(): void => posActions.onGet(item)}
                                         />
                                         <Trash
-                                          className="svg-icon svg-icon-trash"
+                                          className="svg-icon action-icon svg-icon-trash"
                                           onClick={() => {
                                             modalConfig.onShowModalDelete(item.pos);
                                           }}

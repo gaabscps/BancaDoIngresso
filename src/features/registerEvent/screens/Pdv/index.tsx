@@ -57,7 +57,7 @@ export const PdvEventScreen: React.FC = (): JSX.Element => {
   const [link, setLink] = useState<string>(undefined as unknown as string);
 
   const { eventState, onChange: onChangeEvent } = useEvent();
-  const inputRef = useRef<HTMLInputElement>(null);
+  const PdvRef = useRef<HTMLInputElement>(null);
 
   const {
     formData: formDataPdv,
@@ -494,6 +494,10 @@ export const PdvEventScreen: React.FC = (): JSX.Element => {
     handleFecthPdvList();
   }, []);
 
+  useEffect(() => {
+    handleFecthPdvList();
+  }, [pdvId]);
+
   return (
     <PdvEventContainer
       state={state}
@@ -514,7 +518,7 @@ export const PdvEventScreen: React.FC = (): JSX.Element => {
       handleCheckTicket={handleCheckTicket}
       setNumberTab={setNumberTab}
       nextTab={handleNextTab}
-      inputRef={inputRef}
+      inputRef={PdvRef}
       isFormValidMainPdv={isFormValidMainPdv}
     />
   );

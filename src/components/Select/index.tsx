@@ -8,8 +8,8 @@ import Select, { SingleValue, ActionMeta } from 'react-select';
 import { customStyles } from './style';
 
 export interface OptionProps {
-  value?: string | number;
-  label: string;
+  value?: string | number | undefined;
+  label: string | number | undefined;
   target?: HTMLInputElement;
 }
 
@@ -19,7 +19,7 @@ export interface SelectAutoCompleteProps {
   error?: any;
   onChange?: (newValue: SingleValue<OptionProps>, actionMeta: ActionMeta<OptionProps>) => void;
   value: string | undefined;
-  options: OptionProps[];
+  options: OptionProps[] | undefined;
   placeholder?: string;
   id?: string;
   style?: React.CSSProperties;
@@ -59,7 +59,9 @@ export const SelectCustom = (props: SelectAutoCompleteProps) => {
           styles={customStyles(props)}
           className={props.className}
           noOptionsMessage={() => 'Nenhum resultado encontrado'}
-          value={props.options.find((option: OptionProps) => option.value === props.value) || null}
+          value={
+            props?.options?.find((option: OptionProps) => option.value === props.value) || null
+          }
           defaultValue={props.defaultValue}
           ref={props.refSelect}
           isDisabled={props.disabled}

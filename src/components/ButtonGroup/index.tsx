@@ -12,6 +12,7 @@ interface RadioProps {
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   value: string | number;
   disabled?: boolean;
+  disabledAction?: boolean;
   refButton?: LegacyRef<HTMLInputElement>;
   style?: CSSProperties;
 }
@@ -31,6 +32,7 @@ export const ButtonGroup: FC<RadioProps> = ({
   onChange,
   value,
   disabled,
+  disabledAction,
   refButton,
   style,
 }) => {
@@ -45,7 +47,7 @@ export const ButtonGroup: FC<RadioProps> = ({
           </label>
         </div>
       )}
-      <div className={`${disabled ? 'input-action-disabled' : ''}`}>
+      <div className={`${disabled || disabledAction ? 'input-action-disabled' : ''}`}>
         <div className={`btn-group ${isError}`} role="group">
           {options.map((option: OptionProps) => {
             const idRandom = Math.random().toString(36).substr(2, 9);
