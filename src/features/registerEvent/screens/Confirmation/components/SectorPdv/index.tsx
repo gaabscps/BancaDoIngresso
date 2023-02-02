@@ -13,7 +13,7 @@ export const SectorPdv: React.FC<SectorPdvProps> = ({ event }) => (
     <h5 className="mb-2 border-bottom-title mb-5 container-event">PDV’s</h5>
 
     {event?.pdvs?.map((item: any, index: any) => (
-      <>
+      <div style={{ overflow: 'auto' }} key={index}>
         <div className="mb-4">
           <div className="text-darkgray-regular">Nome do PDV</div>
           <div>{item.pdv.name}</div>
@@ -79,7 +79,7 @@ export const SectorPdv: React.FC<SectorPdvProps> = ({ event }) => (
           ]}
         />
         {event?.pdvs && index === event.pdvs.length - 1 ? null : <hr />}
-      </>
+      </div>
     ))}
   </>
 );

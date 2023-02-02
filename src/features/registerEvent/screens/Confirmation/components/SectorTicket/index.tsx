@@ -15,7 +15,7 @@ export const SectorTicket: React.FC<SectorTicketProps> = ({ ticket }) => (
   <>
     <h5 className="mb-2 border-bottom-title mb-5 container-event">Setores e Ingressos</h5>
     {ticket?.tickets?.map((item: Tickets, index: React.Key | null | undefined) => (
-      <>
+      <div style={{ overflow: 'auto' }} key={index}>
         <div className="mb-4">
           <div className="mb-2 text-darkgray-regular">Nome do setor:</div>
           <div>{item?.name || '--'}</div>
@@ -83,7 +83,7 @@ export const SectorTicket: React.FC<SectorTicketProps> = ({ ticket }) => (
         {ticket.tickets.length - 1 !== index && (
           <div key={index} className="mb-5 mt-5" style={{ borderBottom: 'solid 1px #D9D9D9' }} />
         )}
-      </>
+      </div>
     ))}
   </>
 );

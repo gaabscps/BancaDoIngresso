@@ -74,7 +74,9 @@ export const DataConfirmation: React.FC<DataConfirmationProps> = ({ event }) => 
       <div className="container-event">
         <h5 className="mb-2 border-bottom-title mb-5">Confirmação de dados</h5>
       </div>
-      <DataList data={dataConfirmation} />
+      <div style={{ overflow: 'auto' }}>
+        <DataList data={dataConfirmation} />
+      </div>
     </>
   );
 };

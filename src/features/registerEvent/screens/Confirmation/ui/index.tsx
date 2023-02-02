@@ -5,7 +5,6 @@ import React, { Fragment } from 'react';
 import { Loading } from '@/components';
 import { Col, Container, Row } from 'reactstrap';
 import Event from '@/model/Event';
-import Ticket from '@/model/Ticket';
 import { DataConfirmation } from '../components/DataConfirmation';
 import { SectorTicket } from '../components/SectorTicket';
 import { SectorProduct } from '../components/SectorProduct';
@@ -20,7 +19,7 @@ export enum States {
 interface ConfirmationEventContainerProps {
   state: States;
   event: Event | undefined;
-  ticket: Ticket | undefined;
+  ticket: any;
 }
 
 export const ConfirmationEventContainer: React.FC<ConfirmationEventContainerProps> = ({
@@ -36,9 +35,11 @@ export const ConfirmationEventContainer: React.FC<ConfirmationEventContainerProp
           {event?.id ? (
             <>
               <DataConfirmation event={event} />
-              <SectorTicket ticket={ticket} />
-              <SectorProduct event={event} />
-              <SectorPdv event={event} />
+              {ticket.tickets && ticket.tickets.length > 0 && <SectorTicket ticket={ticket} />}
+              {event.sectionproductsAndCombos && event.sectionproductsAndCombos.length > 0 && (
+                <SectorProduct event={event} />
+              )}
+              {event.pdvs && event.pdvs.length > 0 && <SectorPdv event={event} />}
             </>
           ) : (
             <h5>Evento não encontrado</h5>
