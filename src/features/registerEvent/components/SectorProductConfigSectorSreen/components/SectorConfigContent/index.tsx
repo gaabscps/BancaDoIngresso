@@ -57,8 +57,6 @@ export const SectorConfigContent: React.FC<
   };
 
   const handleChange = (name: string, value: string) => {
-    console.log(`name: ${name}`);
-    console.log(`value: ${value}`);
     const key = dataConfig.form[name] || [];
     const findedIndex = key.findIndex((id: string) => id.includes(value));
     if (findedIndex !== -1) key.splice(findedIndex, 1);

@@ -186,8 +186,8 @@ export const GeneralInformationContent: React.FC<
                   <b className="linked-event">
                     {
                       fatherEventStates.fatherEventList.find(
-                        valueFatherEvent => valueFatherEvent.id === fatherEventStates.fatherEvent,
-                      ).name
+                        valueFatherEvent => valueFatherEvent?.id === fatherEventStates?.fatherEvent,
+                      )?.name
                     }
                   </b>
                   <div

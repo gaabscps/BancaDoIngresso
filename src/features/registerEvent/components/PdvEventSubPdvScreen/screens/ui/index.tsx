@@ -152,8 +152,10 @@ export const PdvEventSubPdvContainer: React.FC<SubPdvContainerProps> = ({
                         columns={columnsSubPdvEvent}
                         data={[
                           {
-                            id: item.id,
-                            users: item.users.map(data => data.name),
+                            id: item?.id,
+                            users: item?.users?.map(data =>
+                              item?.users?.length === 1 ? data.name : `${data.name}, `,
+                            ),
                             link: '',
                             actions: (
                               <React.Fragment>

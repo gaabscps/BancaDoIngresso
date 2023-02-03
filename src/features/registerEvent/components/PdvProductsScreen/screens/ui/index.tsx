@@ -6,7 +6,6 @@ import {
   SelectCustom,
 } from '@/components';
 import SuperCollapse from '@/components/sharedComponents/SuperCollapse';
-import { ReactComponent as Pen } from '@/assets/images/svg/pen.svg';
 import { CustomTable } from '@/components/Table';
 import React from 'react';
 import { Col, Container, Form, FormGroup, Row } from 'reactstrap';
@@ -36,25 +35,19 @@ export enum FormInputName {
 interface SectorProductPosContainerProps {
   state: States;
   controllerFormPos: formPdvProductProps;
-  sectionProduct: any;
-  onCancelEdit: () => void;
   nextTab: () => void;
   backTab: () => void;
   onChangeSection: (sectionId: string) => void;
   onAddAll: () => void;
   onAddProduct: () => void;
-  onEditProduct: (sectionId: string, productId: string) => void;
   onShowDeleteProduct: (sectionId: string, productId: string) => void;
 }
 export const PdvProductContainer: React.FC<SectorProductPosContainerProps> = ({
   state,
   controllerFormPos,
-  sectionProduct,
-  onCancelEdit,
   onChangeSection,
   onAddAll,
   onAddProduct,
-  onEditProduct,
   onShowDeleteProduct,
   nextTab,
   backTab,
@@ -65,9 +58,7 @@ export const PdvProductContainer: React.FC<SectorProductPosContainerProps> = ({
     <>
       <Loading isVisible={state === States.loading} />
       <Container className="mainContainer" fluid={true}>
-        <h6 className="mb-5">
-          {sectionProduct && sectionProduct.length > 0 ? 'Editando produtos' : 'Inserindo produtos'}
-        </h6>
+        <h6 className="mb-5">Inserindo produtos</h6>
         <Form>
           <FormGroup>
             <ButtonGroup
@@ -104,7 +95,6 @@ export const PdvProductContainer: React.FC<SectorProductPosContainerProps> = ({
                       label: data.sectionNome,
                     }))}
                     error={formErrors.sector && formErrors.sector[0]}
-                    disabled={sectionProduct && sectionProduct.length > 0}
                   />
                 </Col>
                 <Col md={5}>
@@ -145,9 +135,7 @@ export const PdvProductContainer: React.FC<SectorProductPosContainerProps> = ({
                           : ''
                       }`}
                     >
-                      {sectionProduct && sectionProduct.length > 0
-                        ? 'Salvar produto'
-                        : 'Inserir produto'}
+                      Inserir produto
                     </div>
                   </div>
                 </Col>
@@ -164,30 +152,12 @@ export const PdvProductContainer: React.FC<SectorProductPosContainerProps> = ({
           disabled={formData[FormInputName.allowProduct] !== 'true'}
           title="Setores e produtos inseridos"
           count={tableContent.length}
-          buttonTitle="Cancelar edição"
-          buttonAction={() => {
-            onCancelEdit();
-          }}
-          showButtonOnTitle={sectionProduct && sectionProduct.length > 0}
           content={
             tableContent && tableContent.length > 0
               ? tableContent.map((eventSectionProduct, index) => (
                   <div
-                    className={`${index === tableContent.length - 1 ? 'mb-0' : 'mb-5'} ${
-                      eventSectionProduct.sectionId !== formData[FormInputName.sector] &&
-                      sectionProduct &&
-                      sectionProduct.length > 0
-                        ? 'disabled-content'
-                        : ''
-                    }`}
+                    className={`${index === tableContent.length - 1 ? 'mb-0' : 'mb-5'}`}
                     key={index}
-                    onClick={() => {
-                      console.log(
-                        formData[FormInputName.sector],
-                        eventSectionProduct.sectionId,
-                        eventSectionProduct.sectionId !== formData[FormInputName.sector],
-                      );
-                    }}
                   >
                     <div className="d-flex w-100 justify-content-between">
                       <div className="mb-3 w-100">
@@ -236,23 +206,15 @@ export const PdvProductContainer: React.FC<SectorProductPosContainerProps> = ({
                           amount: productAndCombo.amount,
                           value: productAndCombo.value,
                           actions: (
-                            <>
-                              <Pen
-                                className="mr-4 svg-icon action-icon"
-                                onClick={() =>
-                                  onEditProduct(eventSectionProduct.sectionId, productAndCombo.id)
-                                }
-                              />
-                              <X
-                                className="action-icon svg-icon-trash"
-                                onClick={() =>
-                                  onShowDeleteProduct(
-                                    eventSectionProduct.sectionId,
-                                    productAndCombo.id,
-                                  )
-                                }
-                              />
-                            </>
+                            <X
+                              className="action-icon svg-icon-trash"
+                              onClick={() =>
+                                onShowDeleteProduct(
+                                  eventSectionProduct.sectionId,
+                                  productAndCombo.id,
+                                )
+                              }
+                            />
                           ),
                         }))}
                       />
@@ -268,12 +230,7 @@ export const PdvProductContainer: React.FC<SectorProductPosContainerProps> = ({
         />
 
         <div className="d-flex justify-content-end">
-          <Button
-            title="Voltar etapa"
-            theme="noneBorder"
-            onClick={() => backTab()}
-            disabled={sectionProduct && sectionProduct.length > 0}
-          />
+          <Button title="Voltar etapa" theme="noneBorder" onClick={() => backTab()} />
           <Button
             title="Próxima etapa"
             theme="outlineDark"
@@ -281,7 +238,6 @@ export const PdvProductContainer: React.FC<SectorProductPosContainerProps> = ({
             onClick={async () => {
               nextTab();
             }}
-            disabled={sectionProduct && sectionProduct.length > 0}
           />
         </div>
       </Container>

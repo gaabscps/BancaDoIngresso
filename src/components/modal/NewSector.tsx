@@ -41,7 +41,6 @@ const NewSector = (props: Props): JSX.Element => {
         },
       });
     }
-    // console.log('form', form);
   };
 
   const handleSubmit = async (): Promise<void> => {

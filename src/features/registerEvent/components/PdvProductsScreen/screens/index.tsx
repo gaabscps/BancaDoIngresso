@@ -62,13 +62,10 @@ export const PdvProductScreen: React.FC<PdvProductScreenProps> = ({ pdvId, nextT
   const params = useParams<UrlParams>();
   const [state, setState] = useState<States>(States.default);
   const [productSectionEvent, setProductSectionEvent] = useState<ProductSectionEvent[]>([]);
-  const [originalSectionsProductsAndCombos, setOriginalSectionsProductsAndCombos] = useState<
-    SectionProductsAndCombos[]
-  >([]);
+
   const [sectionsProductsAndCombos, setSectionsProductsAndCombos] = useState<
     SectionProductsAndCombos[]
   >([]);
-  const [sectionProduct, setSectionProduct] = useState<ProductAndCombo[]>([]);
   const [tableContent, setTableContent] = useState<SectionProductsAndCombos[]>([]);
   const [productsAndCombos, setProductsAndCombos] = useState<ProductAndCombo[]>([]);
 
@@ -137,7 +134,7 @@ export const PdvProductScreen: React.FC<PdvProductScreenProps> = ({ pdvId, nextT
                       group: group.categoryGroupName,
                       subGroup: subGroup.categorySubGroupName,
                       amount: `${combo.amount}`,
-                      value: formatValueToCurrency(String(combo.totalValue / combo.amount)).masked,
+                      value: formatValueToCurrency(String(combo.totalValue)).masked,
                       actions: '',
                       type: ProductAndComboType.COMBO,
                     };
@@ -172,9 +169,6 @@ export const PdvProductScreen: React.FC<PdvProductScreenProps> = ({ pdvId, nextT
         );
         setProductSectionEvent(response.data);
         const list = toSectionProductsAndCombos(response.data);
-        const original = JSON.stringify(list);
-        const originalList = JSON.parse(original);
-        setOriginalSectionsProductsAndCombos(originalList);
         table.forEach(data => {
           // eslint-disable-next-line no-plusplus
           for (let e = 0; e < list.length; e++) {
@@ -294,6 +288,7 @@ export const PdvProductScreen: React.FC<PdvProductScreenProps> = ({ pdvId, nextT
           await api.post(`/event/pdv/${params.id}/product`, eventPdvProduct);
           await getProductsAndCombos();
           resetFormProduct();
+          toast.success('Produtos adicionados com sucesso');
         } catch (error) {
           const err = error as AxiosError;
           toast.error(err.message);
@@ -359,6 +354,7 @@ export const PdvProductScreen: React.FC<PdvProductScreenProps> = ({ pdvId, nextT
           await api.post(`/event/pdv/${params.id}/product`, eventPdvProduct);
           await getProductsAndCombos();
           resetFormProduct();
+          toast.success('Produto adicionado com sucesso');
         }
       } catch (error) {
         const err = error as AxiosError;
@@ -384,30 +380,6 @@ export const PdvProductScreen: React.FC<PdvProductScreenProps> = ({ pdvId, nextT
     } finally {
       setState(States.default);
     }
-  };
-
-  const handleOnCancelEditProduct = (): void => {
-    try {
-      setSectionProduct([]);
-      setProductsAndCombos([]);
-      resetFormProduct();
-    } catch (error) {
-      const err = error as AxiosError;
-      toast.error(err.message);
-    }
-  };
-
-  const handleOnEditProduct = (sectionId: string, productId: string): void => {
-    let list: ProductAndCombo[] = [];
-    originalSectionsProductsAndCombos.forEach(data => {
-      if (data.sectionId === sectionId) {
-        list = data.productsAndCombos;
-      }
-    });
-    setSectionProduct(list);
-    setProductsAndCombos(list);
-    onChangeFormInputProduct(FormInputName.sector)(sectionId);
-    onChangeFormInputProduct(FormInputName.product)(productId);
   };
 
   const handleOnShowDeleteProduct = (sectionId: string, productId: string): void => {
@@ -443,13 +415,10 @@ export const PdvProductScreen: React.FC<PdvProductScreenProps> = ({ pdvId, nextT
       <PdvProductContainer
         state={state}
         controllerFormPos={controllerFormPos}
-        sectionProduct={sectionProduct}
         onChangeSection={handleChangeSection}
         onAddAll={handleOnAddAll}
         onAddProduct={handleOnAddProduct}
-        onEditProduct={handleOnEditProduct}
         onShowDeleteProduct={handleOnShowDeleteProduct}
-        onCancelEdit={handleOnCancelEditProduct}
         nextTab={nextTab}
         backTab={backTab}
       />

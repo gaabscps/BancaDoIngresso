@@ -72,7 +72,6 @@ export const PdvEventSubPdvScreen: React.FC<Omit<PdvEventSubPdvScreenProps, 'nex
   const handleInsertSubPdv = async (): Promise<void> => {
     try {
       setState(States.loading);
-      console.log('subPdv', subPdv);
       const payload = {
         subPdv: {
           ...subPdv,
@@ -245,8 +244,12 @@ export const PdvEventSubPdvScreen: React.FC<Omit<PdvEventSubPdvScreenProps, 'nex
       const newUsersSelected = usersSelected.filter(item => item.id !== user.id);
       setUsersSelected(newUsersSelected);
     } catch (error) {
-      const err = error as AxiosError;
-      toast.error(err.message);
+      const err = error as AxiosError | any;
+      toast.error(
+        err.response?.data.details[0].includes('SubPdv não vinculado ao evento')
+          ? 'Não é possível remover o usuário de um subpdv que não está vinculado ao evento'
+          : err.message,
+      );
     } finally {
       setState(States.default);
     }

@@ -117,8 +117,6 @@ const Sample = (): JSX.Element => {
       discountCoupons: form.discountCoupons,
       allowPaymentBankSlip: false,
     };
-    console.log(createTicketPayment);
-    // dispatch(ticketPaymentRequest(eventId, createTicketPayment));
   };
 
   return (
