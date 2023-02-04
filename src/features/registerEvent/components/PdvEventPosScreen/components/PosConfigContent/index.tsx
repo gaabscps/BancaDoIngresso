@@ -88,7 +88,7 @@ export const PosConfigContent: React.FC<any> = ({ formPosConfig }) => {
             <FormGroup>
               <InputText
                 name="physicalSaleDebit"
-                label="Débito %"
+                label="Débito"
                 className="w-input-sm"
                 maxLength={5}
                 value={formData[FormInputName.physicalSaleDebit]}
@@ -98,10 +98,11 @@ export const PosConfigContent: React.FC<any> = ({ formPosConfig }) => {
                 }
                 error={formErrors.physicalSaleDebit && formErrors.physicalSaleDebit[0]}
                 disabled={formData[FormInputName.physicalSaleAllowCreditCardPayment] !== 'true'}
+                addon="%"
               />
               <InputText
                 name="physicalSaleCredit"
-                label="Crédito %"
+                label="Crédito"
                 className="w-input-sm"
                 maxLength={5}
                 value={formData[FormInputName.physicalSaleCredit]}
@@ -111,10 +112,11 @@ export const PosConfigContent: React.FC<any> = ({ formPosConfig }) => {
                 }
                 error={formErrors.physicalSaleCredit && formErrors.physicalSaleCredit[0]}
                 disabled={formData[FormInputName.physicalSaleAllowCreditCardPayment] !== 'true'}
+                addon="%"
               />
               <InputText
                 name="physicalSalePix"
-                label="PIX %"
+                label="PIX"
                 className="w-input-sm"
                 maxLength={5}
                 value={formData[FormInputName.physicalSalePix]}
@@ -124,10 +126,11 @@ export const PosConfigContent: React.FC<any> = ({ formPosConfig }) => {
                 }
                 error={formErrors.physicalSalePix && formErrors.physicalSalePix[0]}
                 disabled={formData[FormInputName.physicalSaleAllowCreditCardPayment] !== 'true'}
+                addon="%"
               />
               <InputText
                 name="physicalSaleAdministrateTax"
-                label="Taxa admin. %"
+                label="Taxa admin."
                 className="w-input-sm"
                 maxLength={5}
                 value={formData[FormInputName.physicalSaleAdministrateTax]}
@@ -142,6 +145,7 @@ export const PosConfigContent: React.FC<any> = ({ formPosConfig }) => {
                   formErrors.physicalSaleAdministrateTax[0]
                 }
                 disabled={formData[FormInputName.physicalSaleAllowCreditCardPayment] !== 'true'}
+                addon="%"
               />
             </FormGroup>
             <div className="d-flex">
@@ -173,6 +177,7 @@ export const PosConfigContent: React.FC<any> = ({ formPosConfig }) => {
                 }
                 error={formErrors.physicalSaleFee && formErrors.physicalSaleFee[0]}
                 disabled={formData[FormInputName.physicalSaleAllowCreditCardPayment] !== 'true'}
+                addon="%"
               />
             </div>
           </Col>

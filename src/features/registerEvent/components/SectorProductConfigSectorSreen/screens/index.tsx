@@ -51,7 +51,6 @@ export const SectorProductConfigSectorScreen: React.FC<
   // const [sectorConfig, setSectorConfig] = useState([]);
   const [sectorList, setSectorList] = useState<Section[]>([]);
   const [sectorTableList, setSectorTableList] = useState<Section[]>([]);
-
   const [configList, setConfigList] = useState<Section[]>([]);
 
   const [sectorDropdown, setSectorDropdown] = useState<Section[]>([]);
@@ -386,6 +385,11 @@ export const SectorProductConfigSectorScreen: React.FC<
       onChangeFormInputConfigSector(FormInputNameConfigSector.imageBase64Sector)(
         sector.imageBase64Sector,
       );
+      setFormNameFiles(sector.imageBase64Sector);
+      setFormNameFiles(filesValues => ({
+        ...filesValues,
+        [FormInputNameConfigSector.imageBase64Sector]: sector.imageBase64Sector?.split('/').pop(),
+      }));
     }
   }, [sector]);
 

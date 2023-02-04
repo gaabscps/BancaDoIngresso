@@ -142,7 +142,7 @@ export const ProductRegisterContent: React.FC<
                 label: item.name,
               }))}
               error={formErrors.name && formErrors.name[0]}
-              disabled={formData[FormInputNameProduct.subgroup] === ''}
+              disabled={formData[FormInputNameProduct.subgroup] === '' || productStates.product}
             />
           </FormGroup>
           <FormGroup className="mb-2">

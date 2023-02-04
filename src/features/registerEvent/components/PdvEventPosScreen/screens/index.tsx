@@ -118,22 +118,24 @@ export const PdvEventPosScreen: React.FC<Omit<PdvEventPosScreen, 'firstTab'>> = 
         posSelected.cardFees.allowCreditCardPayment ? 'true' : 'false',
       );
       onChangeFormInputPosConfig(FormInputNameConfig.physicalSaleDebit)(
-        posSelected.cardFees.debit ? String(posSelected.cardFees.debit) : '',
+        posSelected.cardFees.debit ? toPercentage(posSelected.cardFees.debit) : '',
       );
       onChangeFormInputPosConfig(FormInputNameConfig.physicalSaleCredit)(
-        posSelected.cardFees.credit ? String(posSelected.cardFees.credit) : '',
+        posSelected.cardFees.credit ? toPercentage(posSelected.cardFees.credit) : '',
       );
       onChangeFormInputPosConfig(FormInputNameConfig.physicalSalePix)(
-        posSelected.cardFees.pix ? String(posSelected.cardFees.pix) : '',
+        posSelected.cardFees.pix ? toPercentage(posSelected.cardFees.pix) : '',
       );
       onChangeFormInputPosConfig(FormInputNameConfig.physicalSaleAdministrateTax)(
-        posSelected.cardFees.administrateTax ? String(posSelected.cardFees.administrateTax) : '',
+        posSelected.cardFees.administrateTax
+          ? toPercentage(posSelected.cardFees.administrateTax)
+          : '',
       );
       onChangeFormInputPosConfig(FormInputNameConfig.physicalSaleInstallments)(
         posSelected.cardFees.installments ? String(posSelected.cardFees.installments) : '',
       );
       onChangeFormInputPosConfig(FormInputNameConfig.physicalSaleFee)(
-        posSelected.cardFees.fee ? String(posSelected.cardFees.fee) : '',
+        posSelected.cardFees.fee ? toPercentage(posSelected.cardFees.fee) : '',
       );
     }
     setShouldShowModal(value);
@@ -287,14 +289,14 @@ export const PdvEventPosScreen: React.FC<Omit<PdvEventPosScreen, 'firstTab'>> = 
         const cardFees = {
           allowCreditCardPayment:
             formDataPosConfig[FormInputNameConfig.physicalSaleAllowCreditCardPayment] === 'true',
-          debit: Number(formDataPosConfig[FormInputNameConfig.physicalSaleDebit]),
-          credit: Number(formDataPosConfig[FormInputNameConfig.physicalSaleCredit]),
-          pix: Number(formDataPosConfig[FormInputNameConfig.physicalSalePix]),
-          administrateTax: Number(
+          debit: +unmask(formDataPosConfig[FormInputNameConfig.physicalSaleDebit]),
+          credit: +unmask(formDataPosConfig[FormInputNameConfig.physicalSaleCredit]),
+          pix: +unmask(formDataPosConfig[FormInputNameConfig.physicalSalePix]),
+          administrateTax: +unmask(
             formDataPosConfig[FormInputNameConfig.physicalSaleAdministrateTax],
           ),
           installments: Number(formDataPosConfig[FormInputNameConfig.physicalSaleInstallments]),
-          fee: Number(formDataPosConfig[FormInputNameConfig.physicalSaleFee]),
+          fee: +unmask(formDataPosConfig[FormInputNameConfig.physicalSaleFee]),
         } as CardFees;
 
         await api.post(`/event/pdv/${params.id}/pos/${pdvId}/fee/${pos?.id}`, cardFees);
