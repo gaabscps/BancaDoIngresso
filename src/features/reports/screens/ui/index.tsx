@@ -13,6 +13,7 @@ import { Card, Container } from 'reactstrap';
 
 import { CollapseTable } from '@/components/CollapseTable';
 import validators from '@/helpers/validators';
+import { ReportFooter } from '@/components/ReportFooter';
 import { GeneralSale } from '../../components/GeneralSale';
 
 export interface ReportsContentProps {
@@ -29,19 +30,24 @@ export const ReportsContent: React.FC<ReportsContentProps> = ({
   generalSale,
 }) => {
   const [reportContent, setReportContent] = React.useState('');
+  const [hasFooter, setHasFooter] = React.useState(false);
 
   const reports = [
     {
       title: 'Vendas gerais',
+      footer: false,
     },
     {
       title: 'Vendas por data',
+      footer: true,
     },
     {
       title: 'Vendas por PDV',
+      footer: false,
     },
     {
       title: 'Vendas por SubPDV',
+      footer: false,
     },
   ];
 
@@ -80,6 +86,33 @@ export const ReportsContent: React.FC<ReportsContentProps> = ({
     {
       title: 'Valor Total',
       width: 200,
+    },
+  ];
+
+  const footerData = [
+    {
+      title: 'Ingressos emitidos: ',
+      value: saleDate.amountIssued,
+    },
+    {
+      title: 'Ingressos vendidos: ',
+      value: saleDate.amountSold,
+    },
+    {
+      title: 'Cortesias: ',
+      value: saleDate.amountCourtesy,
+    },
+    {
+      title: 'Faturamento: ',
+      value: `R$ ${updateMaskCash(String(saleDate.billingValue))}`,
+    },
+    {
+      title: 'Descontos: ',
+      value: `R$ ${updateMaskCash(String(saleDate.discount))}`,
+    },
+    {
+      title: 'Faturamento com descontos: ',
+      value: `R$ ${updateMaskCash(String(saleDate.netIncome))}`,
     },
   ];
 
@@ -230,7 +263,10 @@ export const ReportsContent: React.FC<ReportsContentProps> = ({
                 backgroundColor: report.title === reportContent ? '#3CAFC8' : '#FFFFFF',
                 color: report.title === reportContent ? '#FFFFFF' : '#000000',
               }}
-              onClick={() => setReportContent(report.title)}
+              onClick={() => {
+                setReportContent(report.title);
+                setHasFooter(report.footer);
+              }}
             >
               {report.title}
             </Card>
@@ -295,18 +331,7 @@ export const ReportsContent: React.FC<ReportsContentProps> = ({
         )}
         {reportContent === 'Vendas por PDV' && <div className="pageTitle">Vendas por PDVs</div>}
       </Container>
-      <Card className="report-footer">
-        <div className="d-flex justify-content-between">
-          <div className="report-summary">
-            <span className="text-small-darkgray-regular">Ingressos emitidos: </span>
-            <span className="text-small-darkgray-700 circle-separator">50.000</span>
-          </div>
-          <div className="report-summary">
-            <span className="text-small-darkgray-regular">Ingressos emitidos: </span>
-            <span className="text-small-darkgray-700 circle-separator">50.000</span>
-          </div>
-        </div>
-      </Card>
+      <ReportFooter data={footerData} hasFooter={hasFooter} />
     </>
   );
 };

@@ -1599,14 +1599,9 @@ body
   padding: 22px 21px;
 }
 .circle-separator {
-  &::after {
-    vertical-align: middle;
-    flex-direction: row;
-    padding-left: 10px;
-    font-size: 8px;
-    content: '⬤';
-    color: #e6e6e6;
-  }
+  vertical-align: middle;
+  font-size: 12px;
+  color: #e6e6e6;
 }
 
 .collapseTableGrid {
