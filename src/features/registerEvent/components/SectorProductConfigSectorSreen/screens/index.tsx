@@ -383,13 +383,14 @@ export const SectorProductConfigSectorScreen: React.FC<
 
       onChangeFormInputConfigSector(FormInputNameConfigSector.section)(sector.sectionId);
       onChangeFormInputConfigSector(FormInputNameConfigSector.imageBase64Sector)(
-        sector.imageBase64Sector,
+        sector.sectionImage,
       );
       setFormNameFiles(sector.imageBase64Sector);
       setFormNameFiles(filesValues => ({
         ...filesValues,
-        [FormInputNameConfigSector.imageBase64Sector]: sector.imageBase64Sector?.split('/').pop(),
+        [FormInputNameConfigSector.imageBase64Sector]: sector.sectionImage?.split('/').pop(),
       }));
+      console.log(sector.sectionImage);
     }
   }, [sector]);
 

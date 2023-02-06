@@ -164,7 +164,7 @@ export const SectorProductConfigSectorContainer: React.FC<
           content={
             configSectorStates.sectorTableList.length > 0
               ? configSectorStates.sectorTableList.map(
-                  ({ sectionId, sectionNome, sectionGroup }, index) => {
+                  ({ sectionId, sectionNome, sectionGroup, sectionImage }, index) => {
                     // total products by sectionGroup[].subGroups[].products[]
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     const totalProducts = sectionGroup.reduce((acc: any, { subGroups }: any) => {
@@ -231,6 +231,7 @@ export const SectorProductConfigSectorContainer: React.FC<
                                         sectionId,
                                         sectionNome,
                                         sectionGroup,
+                                        sectionImage,
                                       })
                                     }
                                   />
