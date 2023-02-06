@@ -20,6 +20,7 @@ import { PdvProductScreen } from '@/features/registerEvent/components/PdvProduct
 import { PdvUserScreen } from '@/features/registerEvent/components/PdvUserScreen/screens';
 import { PdvEventSubPdvScreen } from '@/features/registerEvent/components/PdvEventSubPdvScreen/screens';
 import PDVIcon from '@/assets/images/svg/Pdv';
+import EventPhaseCompletion from '@/model/EventPhaseCompletion';
 import { columnsEventPdv } from './table';
 import { EventTicketPDVLine } from '..';
 
@@ -42,6 +43,7 @@ export interface PdvContainerProps {
   eventState: any;
   onChangeEvent: any;
   inputRef: any;
+  phaseCompletion: EventPhaseCompletion | undefined;
   isFormValidMainPdv: () => boolean;
   onChangeSelectedPdv: (value: string) => void;
   getEventPdvTickets: () => void;
@@ -76,6 +78,7 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
   eventState,
   onChangeEvent,
   inputRef,
+  phaseCompletion,
   isFormValidMainPdv,
   setNumberTab,
   onChangeSelectedPdv,
@@ -104,44 +107,62 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
   };
 
   const contentTabs = [
-    <>
-      <PdvEventTickScreen
-        pdvId={pdvId}
-        eventTicketsPDV={eventTicketsPDV}
-        link={link}
-        getEventPdvTickets={getEventPdvTickets}
-        handleSetPdvLink={handleSetPdvLink}
-        handleOnGetTickets={handleOnGetTickets}
-        handleCheckTicket={handleCheckTicket}
-        nextTab={handleNextTab}
-        backTab={handleBackTab}
-        numberTab={numberTab}
-        isFormValidMainPdv={isFormValidMainPdv}
-        inputRef={inputRef}
-      />
-    </>,
-    <>
-      <PdvEventPosScreen pdvId={pdvId} nextTab={handleNextTab} backTab={handleBackTab} />
-    </>,
-    <>
-      <PdvProductScreen pdvId={pdvId} nextTab={handleNextTab} backTab={handleBackTab} />
-    </>,
-    <>
-      <PdvUserScreen
-        mainPdvStates={mainPdvStates}
-        pdvId={pdvId}
-        nextTab={handleNextTab}
-        backTab={handleBackTab}
-      />
-    </>,
-    <>
-      <PdvEventSubPdvScreen
-        mainPdvStates={mainPdvStates}
-        pdvId={pdvId}
-        backTab={handleBackTab}
-        firstTab={handleOnFirstTab}
-      />
-    </>,
+    {
+      component: (
+        <PdvEventTickScreen
+          pdvId={pdvId}
+          eventTicketsPDV={eventTicketsPDV}
+          link={link}
+          getEventPdvTickets={getEventPdvTickets}
+          handleSetPdvLink={handleSetPdvLink}
+          handleOnGetTickets={handleOnGetTickets}
+          handleCheckTicket={handleCheckTicket}
+          nextTab={handleNextTab}
+          backTab={handleBackTab}
+          numberTab={numberTab}
+          isFormValidMainPdv={isFormValidMainPdv}
+          inputRef={inputRef}
+        />
+      ),
+      completion: !!phaseCompletion?.pdv?.ticket,
+      title: 'Ingressos por PDV',
+    },
+    {
+      component: (
+        <PdvEventPosScreen pdvId={pdvId} nextTab={handleNextTab} backTab={handleBackTab} />
+      ),
+      completion: !!phaseCompletion?.pdv?.pos,
+      title: 'Inserir POS',
+    },
+    {
+      component: <PdvProductScreen pdvId={pdvId} nextTab={handleNextTab} backTab={handleBackTab} />,
+      completion: !!phaseCompletion?.pdv?.product,
+      title: 'Inserir produtos',
+    },
+    {
+      component: (
+        <PdvUserScreen
+          mainPdvStates={mainPdvStates}
+          pdvId={pdvId}
+          nextTab={handleNextTab}
+          backTab={handleBackTab}
+        />
+      ),
+      completion: !!phaseCompletion?.pdv?.user,
+      title: 'Inserir usuários',
+    },
+    {
+      component: (
+        <PdvEventSubPdvScreen
+          mainPdvStates={mainPdvStates}
+          pdvId={pdvId}
+          backTab={handleBackTab}
+          firstTab={handleOnFirstTab}
+        />
+      ),
+      completion: !!phaseCompletion?.pdv?.subPdv,
+      title: 'Cadastrar Sub PDV’s',
+    },
   ];
 
   return (
@@ -270,17 +291,7 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
                   Preencha as 5 (CINCO) etapas abaixo para adicionar um PDV
                 </h6>
               </div>
-              <Tab
-                titles={[
-                  'Ingressos por PDV',
-                  'Inserir POS',
-                  'Inserir produtos',
-                  'Inserir usuários',
-                  'Cadastrar Sub PDV’s',
-                ]}
-                contents={contentTabs}
-                numberStap={numberTab}
-              />
+              <Tab contents={contentTabs} numberStap={numberTab} />
             </>
           </>
         )}

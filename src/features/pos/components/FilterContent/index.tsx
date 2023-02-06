@@ -22,7 +22,7 @@ export const FilterContent: React.FC<FilterContentProps> = ({
 }) => {
   const optionFilter = [
     { label: 'Nome', value: 'name' },
-    { label: 'Numero de Série', value: 'serialNumber' },
+    { label: 'Número de Série', value: 'serialNumber' },
   ];
 
   return (
@@ -45,7 +45,7 @@ export const FilterContent: React.FC<FilterContentProps> = ({
                 ?.label ?? ''
             }
             placeholder={
-              formData[FormInputName.filterSearch] === 'name' ? 'Nome da POS' : 'Numero de Série'
+              formData[FormInputName.filterSearch] === 'name' ? 'Nome da POS' : 'Número de Série'
             }
             maxLength={30}
             value={formData[FormInputName.inputSearch]}

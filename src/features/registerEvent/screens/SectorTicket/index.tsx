@@ -10,6 +10,7 @@ import { useParams } from 'react-router-dom';
 import { useConfirmDelete } from '@/hooks/useConfirmDelete';
 import { DeleteContent } from '@/components/DeleteContent';
 import Ticket from '@/model/Ticket';
+import EventPhaseCompletion from '@/model/EventPhaseCompletion';
 import { formSectorTicketProps, ticketStepProps } from './types';
 import {
   ticketActionsProps,
@@ -20,7 +21,11 @@ type UrlParams = {
   id: string;
 };
 
-export const SectorTicketScreen: React.FC = (): JSX.Element => {
+export interface TicketProps {
+  phaseCompletion: EventPhaseCompletion | undefined;
+}
+
+export const SectorTicketScreen: React.FC<TicketProps> = ({ phaseCompletion }): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
 
   const [ticket, setTicket] = useState<Ticket>();
@@ -146,6 +151,7 @@ export const SectorTicketScreen: React.FC = (): JSX.Element => {
   const controllerTicketStep: ticketStepProps = {
     ticketState,
     setTicketState,
+    phaseCompletion,
   };
 
   return (

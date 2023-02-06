@@ -18,6 +18,7 @@ import EventSectionTicket from '@/model/EventSectionTicket';
 import EventPdvTicket from '@/model/EventPdvTicket';
 
 import EventTicket from '@/model/EventTicket';
+import EventPhaseCompletion from '@/model/EventPhaseCompletion';
 import { FormInputName as FormInputMainName } from '../../components/MainPdvContent';
 import { mainPdvStatesProps } from '../../components/PdvScreen/types';
 import { useEvent } from '../../hook/useEvent';
@@ -44,7 +45,11 @@ type UrlParams = {
   id: string;
 };
 
-export const PdvEventScreen: React.FC = (): JSX.Element => {
+export interface PdvProps {
+  phaseCompletion: EventPhaseCompletion | undefined;
+}
+
+export const PdvEventScreen: React.FC<PdvProps> = ({ phaseCompletion }): JSX.Element => {
   const params = useParams<UrlParams>();
   const [state, setState] = useState<States>(States.default);
   const [pdvId, setPdvId] = useState<string>();
@@ -520,6 +525,7 @@ export const PdvEventScreen: React.FC = (): JSX.Element => {
       nextTab={handleNextTab}
       inputRef={PdvRef}
       isFormValidMainPdv={isFormValidMainPdv}
+      phaseCompletion={phaseCompletion}
     />
   );
 };

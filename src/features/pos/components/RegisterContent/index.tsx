@@ -62,8 +62,8 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
           <FormGroup className="mb-2">
             <InputText
               name="serialNumber"
-              label="Numero de Série da POS"
-              placeholder="Digite o numero de Série da POS"
+              label="Número de Série da POS"
+              placeholder="Digite o número de Série da POS"
               value={formData[FormInputName.serialNumber]}
               onChange={e => onChangeFormInput(FormInputName.serialNumber)(e.target.value)}
               error={formErrors.serialNumber && formErrors.serialNumber[0]}

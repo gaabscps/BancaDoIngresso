@@ -6,8 +6,9 @@ import { useEvent } from '../../hook/useEvent';
 
 interface ProgressStepProps {
   steps: {
-    Component: JSX.Element;
+    component: JSX.Element;
     title: string;
+    completion: boolean;
   }[];
   currentStep: number;
 }
@@ -18,7 +19,7 @@ export const ProgressStep = ({ currentStep, steps }: ProgressStepProps): JSX.Ele
   const newSteps =
     steps &&
     steps.map((step, index) => {
-      if (index < currentStep) {
+      if (index < currentStep || step.completion) {
         return { ...step, status: 'done' };
       }
       if (index === currentStep) {

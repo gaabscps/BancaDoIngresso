@@ -10,6 +10,7 @@ import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import ProductGroup from '@/model/ProductGroup';
 import ProductSectionEvent from '@/model/SectionProductEvent';
+import EventPhaseCompletion from '@/model/EventPhaseCompletion';
 import { formSectorProductProps } from './types';
 import { useEvent } from '../../hook/useEvent';
 import { controllerEventProps } from '../SectorTicket/types';
@@ -17,7 +18,14 @@ import { controllerEventProps } from '../SectorTicket/types';
 type UrlParams = {
   id: string;
 };
-export const SectorProductScreen: React.FC = (): JSX.Element => {
+
+export interface SectorProductProps {
+  phaseCompletion: EventPhaseCompletion | undefined;
+}
+
+export const SectorProductScreen: React.FC<SectorProductProps> = ({
+  phaseCompletion,
+}): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
   const [lastStep, setLastStep] = useState<any>([]);
   const [groupOptions, setGroupOptions] = useState<ProductGroup[]>([]);
@@ -148,6 +156,7 @@ export const SectorProductScreen: React.FC = (): JSX.Element => {
     <SectorProductContainer
       controllerEvent={controllerEvent}
       formSectorProduct={controllerFormSectorProduct}
+      phaseCompletion={phaseCompletion}
       state={state}
     />
   );

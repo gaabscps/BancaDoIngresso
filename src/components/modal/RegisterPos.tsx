@@ -134,7 +134,7 @@ const RegisterPos = ({ show, setShow, idPos, reload, saveRequest }: Props): JSX.
         <Input
           label="Nº de série da POS"
           type="number"
-          placeholder="Digite o nº de serie da POS"
+          placeholder="Digite o nº de série da POS"
           register={register}
           name="serialNumber"
           error={errors?.serialNumber?.message}

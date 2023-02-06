@@ -130,7 +130,7 @@ const Sample = (): JSX.Element => {
       selector: row => row.name,
     },
     {
-      name: 'Nº de serie',
+      name: 'Nº de série',
       selector: row => row.serial,
     },
     {

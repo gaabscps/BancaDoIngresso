@@ -1,5 +1,6 @@
 import { FormData, FormErrors, IsFormValid, OnChangeFormInput } from '@/hooks';
 import Ticket from '@/model/Ticket';
+import EventPhaseCompletion from '@/model/EventPhaseCompletion';
 
 export interface formSectorTicketProps {
   formData: FormData;
@@ -11,6 +12,7 @@ export interface formSectorTicketProps {
 export interface ticketStepProps {
   ticketState: Ticket | undefined;
   setTicketState: (ticketStep: Ticket) => void;
+  phaseCompletion: EventPhaseCompletion | undefined;
 }
 
 export interface controllerEventProps {

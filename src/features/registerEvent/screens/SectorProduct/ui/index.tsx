@@ -11,6 +11,7 @@ import { SectorProductScreen } from '@/features/registerEvent/components/SectorP
 import { SectorProductConfigSectorScreen } from '@/features/registerEvent/components/SectorProductConfigSectorSreen/screens';
 import { SectorPosScreen } from '@/features/registerEvent/components/SectorPosScreen/screens';
 import { toast } from 'react-toastify';
+import EventPhaseCompletion from '@/model/EventPhaseCompletion';
 import { formSectorProductProps } from '../types';
 import { controllerEventProps } from '../../SectorTicket/types';
 
@@ -24,6 +25,7 @@ export interface SectorProductContainerProps {
   state: States;
   formSectorProduct: formSectorProductProps;
   controllerEvent: controllerEventProps;
+  phaseCompletion: EventPhaseCompletion | undefined;
 }
 
 // eslint-disable-next-line no-shadow
@@ -42,6 +44,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
   state,
   formSectorProduct,
   controllerEvent,
+  phaseCompletion,
 }) => {
   const { formData, formErrors, onChangeFormInput } = formSectorProduct;
   const [numberTab, setNumberTab] = useState(0);
@@ -65,29 +68,59 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
   };
 
   const contentTabs = [
-    <SectorProductGroupScreen nextTab={handleNextTab} controllerEvent={controllerEvent} />,
-    <SectorProductScreen
-      controllerEvent={controllerEvent}
-      nextTab={handleNextTab}
-      backTab={handleBackTab}
-      onFirstTab={handleOnFirstTab}
-    />,
-    <SectorProductComboScreen
-      nextTab={handleNextTab}
-      backTab={handleBackTab}
-      onFirstTab={handleOnFirstTab}
-      controllerEvent={controllerEvent}
-    />,
-    <SectorProductConfigSectorScreen
-      nextTab={handleNextTab}
-      backTab={handleBackTab}
-      controllerEvent={controllerEvent}
-    />,
-    <SectorPosScreen
-      nextTab={handleNextTab}
-      backTab={handleBackTab}
-      controllerEvent={controllerEvent}
-    />,
+    {
+      component: (
+        <SectorProductGroupScreen nextTab={handleNextTab} controllerEvent={controllerEvent} />
+      ),
+      completion: !!phaseCompletion?.sectionProduct?.group,
+      title: 'Cadastro de grupos',
+    },
+    {
+      component: (
+        <SectorProductScreen
+          controllerEvent={controllerEvent}
+          nextTab={handleNextTab}
+          backTab={handleBackTab}
+          onFirstTab={handleOnFirstTab}
+        />
+      ),
+      completion: !!phaseCompletion?.sectionProduct?.product,
+      title: 'Cadastro de produtos',
+    },
+    {
+      component: (
+        <SectorProductComboScreen
+          nextTab={handleNextTab}
+          backTab={handleBackTab}
+          onFirstTab={handleOnFirstTab}
+          controllerEvent={controllerEvent}
+        />
+      ),
+      completion: !!phaseCompletion?.sectionProduct?.combo,
+      title: 'Cadastro de combos',
+    },
+    {
+      component: (
+        <SectorProductConfigSectorScreen
+          nextTab={handleNextTab}
+          backTab={handleBackTab}
+          controllerEvent={controllerEvent}
+        />
+      ),
+      completion: !!phaseCompletion?.sectionProduct?.section,
+      title: 'Configs de setores',
+    },
+    {
+      component: (
+        <SectorPosScreen
+          nextTab={handleNextTab}
+          backTab={handleBackTab}
+          controllerEvent={controllerEvent}
+        />
+      ),
+      completion: !!phaseCompletion?.sectionProduct?.pos,
+      title: 'Configurações de POS',
+    },
   ];
   return (
     <Fragment>
@@ -119,17 +152,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
               </span>
             </div>
 
-            <Tab
-              titles={[
-                'Cadastro de grupos',
-                'Cadastro de produtos',
-                'Cadastro de combos',
-                'Configs de setores',
-                'Configurações de POS',
-              ]}
-              contents={contentTabs}
-              numberStap={numberTab}
-            />
+            <Tab contents={contentTabs} numberStap={numberTab} />
           </>
         )}
         <div className="footer-register-event">

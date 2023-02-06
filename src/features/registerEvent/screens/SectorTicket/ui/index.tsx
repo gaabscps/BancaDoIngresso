@@ -92,34 +92,45 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
   };
 
   const contentTabs = [
-    <>
-      <SectorTicketMainSettingsScreen
-        ticketStates={ticketStates}
-        ticketStep={ticketStep}
-        nextTab={handleNextTab}
-        onFirstTab={handleOnFirstTab}
-        reloadTickets={handleReloadTickets}
-      />
-    </>,
-    <>
-      <SectorTicketPaymentSettingsScreen
-        ticketStates={ticketStates}
-        ticketStep={ticketStep}
-        nextTab={handleNextTab}
-        backTab={handleBackTab}
-        onFirstTab={handleOnFirstTab}
-      />
-      ,
-    </>,
-    <>
-      <SectorTicketGeneralSettingsScreen
-        ticketStates={ticketStates}
-        ticketStep={ticketStep}
-        nextTab={handleNextTab}
-        backTab={handleBackTab}
-        onFirstTab={handleOnFirstTab}
-      />
-    </>,
+    {
+      component: (
+        <SectorTicketMainSettingsScreen
+          ticketStates={ticketStates}
+          ticketStep={ticketStep}
+          nextTab={handleNextTab}
+          onFirstTab={handleOnFirstTab}
+          reloadTickets={handleReloadTickets}
+        />
+      ),
+      completion: !!ticketStep?.phaseCompletion?.ticket?.mainSettings,
+      title: 'Configurações principais',
+    },
+    {
+      component: (
+        <SectorTicketPaymentSettingsScreen
+          ticketStates={ticketStates}
+          ticketStep={ticketStep}
+          nextTab={handleNextTab}
+          backTab={handleBackTab}
+          onFirstTab={handleOnFirstTab}
+        />
+      ),
+      completion: !!ticketStep?.phaseCompletion?.ticket?.payment,
+      title: 'Configurações de pagamento',
+    },
+    {
+      component: (
+        <SectorTicketGeneralSettingsScreen
+          ticketStates={ticketStates}
+          ticketStep={ticketStep}
+          nextTab={handleNextTab}
+          backTab={handleBackTab}
+          onFirstTab={handleOnFirstTab}
+        />
+      ),
+      completion: !!ticketStep?.phaseCompletion?.ticket?.generalSettings,
+      title: 'Configurações gerais',
+    },
   ];
 
   // focus on tab
@@ -235,15 +246,7 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
                 ) : null}
               </div>
             </div>
-            <Tab
-              numberStap={numberTab}
-              titles={[
-                'Configurações principais',
-                'Configurações de pagamento',
-                'Configurações gerais',
-              ]}
-              contents={contentTabs}
-            />
+            <Tab numberStap={numberTab} contents={contentTabs} />
           </>
         )}
         <hr className="mt-5" />

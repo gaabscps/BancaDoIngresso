@@ -10,6 +10,7 @@ import { ArrowLeft, X } from 'react-feather';
 import { Link } from 'react-router-dom';
 import { Card, Container } from 'reactstrap';
 import { ReportFooter } from '@/components/ReportFooter';
+import dayjs from 'dayjs';
 import { GeneralSale } from '../../components/GeneralSale';
 import { SaleDate } from '../../components/SaleDate';
 
@@ -122,7 +123,7 @@ export const ReportsContent: React.FC<ReportsContentProps> = ({
               <ArrowLeft color={colors.black} className="arrow-left" />
             </Link>
             <h5 className="ml-3 mb-0 mt-2 pageTitle">
-              {event.name} - {event.date}
+              {event.name} - {dayjs(event.date).format('DD/MM/YYYY')}
             </h5>
           </div>
           <div className="button-filter-container">

@@ -34,7 +34,6 @@
     cursor: not-allowed;
     &.active-tabs {
       display: flex;
-      flex-direction: column;
       justify-content: center;
       color: #050100;
       cursor: default;

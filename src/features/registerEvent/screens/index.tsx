@@ -1,6 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import api from '@/services/api';
+import EventPhaseCompletion from '@/model/EventPhaseCompletion';
+import { Loading } from '@/components';
+import { toast } from 'react-toastify';
+import { useParams } from 'react-router-dom';
 import { ProgressStep } from '../components/ProgressStep';
-
 import { useEvent } from '../hook/useEvent';
 import '@/features/registerEvent/components/ProgressStep/styles.scss';
 import { GeneralInformationScreen } from './GeneralInformation';
@@ -15,8 +19,28 @@ export enum States {
   loading = 'loading',
 }
 
+type UrlParams = {
+  id: 'string';
+};
+
 export const EventScreen: React.FC = (): JSX.Element => {
+  const [state, setState] = React.useState<States>(States.default);
+  const [phaseCompletion, setPhaseCompletion] = useState<EventPhaseCompletion | undefined>();
   const { eventState, onChange: onChangeEvent } = useEvent();
+  const params = useParams<UrlParams>();
+
+  const handleGetEventPhaseCompletion = async (): Promise<void> => {
+    try {
+      setState(States.loading);
+      const { data } = await api.get(`/event/phase-completion/${params.id}`);
+      setPhaseCompletion(data);
+    } catch (error) {
+      const err = error as Error;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
 
   useEffect(() => {
     // verify if router is '/event/create'
@@ -24,37 +48,44 @@ export const EventScreen: React.FC = (): JSX.Element => {
     if (isCreate) {
       onChangeEvent({ ...eventState, currentStep: 0 });
     }
+    handleGetEventPhaseCompletion();
   }, [eventState.currentStep]);
 
   const steps = [
     {
-      Component: <GeneralInformationScreen />,
+      component: <GeneralInformationScreen />,
       title: 'Informações gerais',
+      completion: !!phaseCompletion?.generalInformation,
     },
     {
-      Component: <SectorTicketScreen />,
+      component: <SectorTicketScreen phaseCompletion={phaseCompletion} />,
       title: 'Setor e Ingresso',
+      completion: !!phaseCompletion?.ticket.completion,
     },
     {
-      Component: <SectorProductScreen />,
+      component: <SectorProductScreen phaseCompletion={phaseCompletion} />,
       title: 'Setor e Produto',
+      completion: !!phaseCompletion?.sectionProduct.completion,
     },
     {
-      Component: <PdvEventScreen />,
+      component: <PdvEventScreen phaseCompletion={phaseCompletion} />,
       title: 'PDV',
+      completion: !!phaseCompletion?.pdv.completion,
     },
     {
-      Component: <ConfirmationEventScreen />,
+      component: <ConfirmationEventScreen />,
       title: 'Confirmação',
+      completion: !!phaseCompletion?.confirmation,
     },
   ];
 
   return (
     <>
+      <Loading isVisible={state === States.loading} />
       <ProgressStep steps={steps} currentStep={eventState.currentStep} />
       {steps.map((step, index) => {
         if (index === eventState.currentStep) {
-          return <React.Fragment key={index}>{step.Component}</React.Fragment>;
+          return <React.Fragment key={index}>{step.component}</React.Fragment>;
         }
         return null;
       })}

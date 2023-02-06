@@ -3,13 +3,17 @@ import './styles.scss';
 
 import { ReactComponent as CheckTab } from '@/assets/images/svg/CheckTab.svg';
 
+type Contents = {
+  component: JSX.Element;
+  completion: boolean;
+  title: string;
+};
 interface TabProps {
-  titles: string[];
-  contents: string[] | React.ReactNode[];
+  contents: Contents[];
   numberStap: number;
 }
 
-export const Tab: FC<TabProps> = ({ titles, contents, numberStap }) => {
+export const Tab: FC<TabProps> = ({ contents, numberStap }) => {
   const [ToggleState, setToggleState] = useState(0);
 
   // set ToggleState when numberStap change
@@ -30,14 +34,14 @@ export const Tab: FC<TabProps> = ({ titles, contents, numberStap }) => {
     <div className="tab-component">
       <div className="container-header">
         <div className="tab-list">
-          {titles.map((title, index) => (
+          {contents.map((content, index) => (
             <div
               key={index}
               className={`tabs ${getActiveClass(index, 'active-tabs')}`}
               // onClick={() => toggleTab(index)}
             >
-              {ToggleState > index ? <CheckTab className="mr-2" /> : ''}
-              {title}
+              {ToggleState > index || content.completion ? <CheckTab className="mr-2" /> : ''}
+              {content.title}
               <div className={`${getActiveClass(index, 'active-indicator')}`} />
             </div>
           ))}
@@ -45,7 +49,7 @@ export const Tab: FC<TabProps> = ({ titles, contents, numberStap }) => {
         <div className="content-container">
           {contents.map((content, index) => (
             <div key={index} className={`content ${getActiveClass(index, 'active-content')}`}>
-              {content}
+              {content.component}
             </div>
           ))}
         </div>
