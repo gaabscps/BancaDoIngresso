@@ -11,24 +11,58 @@ import { Link } from 'react-router-dom';
 import { Card, Container } from 'reactstrap';
 import { ReportFooter } from '@/components/ReportFooter';
 import dayjs from 'dayjs';
+import { Dialog } from '@/components';
+import { ActionProps } from '@/components/Dialog';
 import { GeneralSale } from '../../components/GeneralSale';
 import { SaleDate } from '../../components/SaleDate';
+import { ControllerFormProps, ControllerModalProps } from '../../types';
+import { FilterContent } from '../../components/FilterContent';
+
+// eslint-disable-next-line no-shadow
+export enum ShouldShowModal {
+  filter = 'filter',
+}
 
 export interface ReportsContentProps {
   event: any;
   eventChild: any;
   generalSale: any;
   saleDate: any;
+  shouldShowModal: ShouldShowModal;
+  controllerModal: ControllerModalProps;
+  controllerFormFilter: ControllerFormProps;
+  filter: {
+    filterSearch: string;
+    inputSearch: string;
+    lastDate: string;
+  };
+  onShouldShowModal: ({
+    value,
+    newTitleModal,
+  }: {
+    value: ShouldShowModal;
+    newTitleModal: string | React.ReactNode;
+  }) => void;
 }
 
 export const ReportsContent: React.FC<ReportsContentProps> = ({
   event,
+  filter,
   eventChild,
   saleDate,
   generalSale,
+  controllerModal,
+  controllerFormFilter,
+  onShouldShowModal,
 }) => {
   const [reportContent, setReportContent] = React.useState('');
   const [hasFooter, setHasFooter] = React.useState(false);
+
+  const renderActionDialogToCancelFilter: ActionProps = {
+    title: 'Limpar',
+    onClick: (): Promise<void> => controllerFormFilter.clearFilter(),
+    theme: 'noneBorder',
+  };
 
   const reports = [
     {
@@ -116,6 +150,25 @@ export const ReportsContent: React.FC<ReportsContentProps> = ({
 
   return (
     <>
+      <Dialog
+        title={controllerModal.title}
+        visible={controllerModal.visible}
+        onClose={controllerModal.onToggle}
+        position="right"
+        actions={[
+          {
+            [ShouldShowModal.filter]: renderActionDialogToCancelFilter,
+          }[controllerModal.shouldShowModal],
+          {
+            [ShouldShowModal.filter]: {
+              title: 'Aplicar',
+              onClick: (): void => controllerFormFilter.OnFilter(),
+            },
+          }[controllerModal.shouldShowModal],
+        ]}
+      >
+        <FilterContent controllerFormFilter={controllerFormFilter} />
+      </Dialog>
       <Container className="mainContainer" fluid={true}>
         <div className="d-flex justify-content-between" style={{ paddingBottom: '30px' }}>
           <div className="pageTitle d-flex">
@@ -128,24 +181,47 @@ export const ReportsContent: React.FC<ReportsContentProps> = ({
           </div>
           <div className="button-filter-container">
             <div className="filter-container">
-              <div className="filter-content" onClick={() => undefined}>
+              <div
+                className="filter-content"
+                onClick={(): void => {
+                  controllerModal.onToggle();
+                  onShouldShowModal({
+                    value: ShouldShowModal.filter,
+                    newTitleModal: '',
+                  });
+                }}
+              >
                 <FilterVector />
               </div>
             </div>
           </div>
         </div>
-        <div
-          className="mb-5"
-          style={{
-            background: 'rgba(130, 130, 130, 0.1)',
-            borderRadius: '20px',
-            padding: '3px 20px',
-            width: 'fit-content',
-          }}
-        >
-          <span style={{ color: '#828282' }}>De: 10/05/2022, Até: 12/05/2022</span>
-          <X size={12} className="ml-2" style={{ color: '#828282' }} />
-        </div>
+        {filter.filterSearch && (
+          <div
+            className="mb-5"
+            style={{
+              background: 'rgba(130, 130, 130, 0.1)',
+              borderRadius: '20px',
+              padding: '3px 20px',
+              width: 'fit-content',
+            }}
+          >
+            <span style={{ color: '#828282' }}>
+              {filter.filterSearch === 'date'
+                ? `De: ${dayjs(filter.inputSearch).format('DD/MM/YYYY')}, Até: ${dayjs(
+                    filter.lastDate,
+                  ).format('DD/MM/YYYY')}`
+                : filter.inputSearch}
+            </span>
+            <X
+              onClick={() => controllerFormFilter.clearFilter()}
+              size={12}
+              className="ml-2 action-icon"
+              style={{ color: '#828282' }}
+            />
+          </div>
+        )}
+
         <div
           className="mb-4"
           style={{
