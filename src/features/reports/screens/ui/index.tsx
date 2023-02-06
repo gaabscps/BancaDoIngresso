@@ -8,13 +8,10 @@ import { colors } from '@/styles/colors';
 import React from 'react';
 import { ArrowLeft, X } from 'react-feather';
 import { Link } from 'react-router-dom';
-
 import { Card, Container } from 'reactstrap';
-
-import { CollapseTable } from '@/components/CollapseTable';
-import validators from '@/helpers/validators';
 import { ReportFooter } from '@/components/ReportFooter';
 import { GeneralSale } from '../../components/GeneralSale';
+import { SaleDate } from '../../components/SaleDate';
 
 export interface ReportsContentProps {
   event: any;
@@ -124,7 +121,9 @@ export const ReportsContent: React.FC<ReportsContentProps> = ({
             <Link to={`${process.env.PUBLIC_URL}/dashboard/event`}>
               <ArrowLeft color={colors.black} className="arrow-left" />
             </Link>
-            <h5 className="ml-3 mb-0 mt-2 pageTitle">{event.name}</h5>
+            <h5 className="ml-3 mb-0 mt-2 pageTitle">
+              {event.name} - {event.date}
+            </h5>
           </div>
           <div className="button-filter-container">
             <div className="filter-container">
@@ -279,56 +278,9 @@ export const ReportsContent: React.FC<ReportsContentProps> = ({
         {reportContent === 'Vendas gerais' && <GeneralSale generalSaleState={generalSale} />}
 
         {reportContent === 'Vendas por data' && (
-          <>
-            <h5>Vendas por data</h5>
-            {saleDate?.dates?.map((date: any, index: any) => (
-              <CollapseTable
-                key={index}
-                titleColumn={titleColumn}
-                titleDataRow={[
-                  {
-                    data: date.date,
-                    width: 300,
-                  },
-                  {
-                    data: date.amountSold,
-                    width: 200,
-                  },
-                  {
-                    data: date.amountCourtesy,
-                    width: 100,
-                  },
-                  {
-                    data: `R$ ${updateMaskCash(validators.applyDecimalMask(String(date.value)))}`,
-                    width: 200,
-                  },
-                ]}
-                contentColumn={contentColumn}
-                contentDataRow={[
-                  {
-                    data: date?.details.map((ticket: any) => ticket.name),
-                    width: 300,
-                  },
-                  {
-                    data: date?.details.map((ticket: any) => ticket.amountSold),
-                    width: 200,
-                  },
-                  {
-                    data: date?.details.map((ticket: any) => ticket.goal),
-                    width: 100,
-                  },
-                  {
-                    data: date?.details.map(
-                      (ticket: any) =>
-                        `R$ ${updateMaskCash(validators.applyDecimalMask(String(ticket.value)))}`,
-                    ),
-                    width: 200,
-                  },
-                ]}
-              />
-            ))}
-          </>
+          <SaleDate saleDate={saleDate} titleColumn={titleColumn} contentColumn={contentColumn} />
         )}
+
         {reportContent === 'Vendas por PDV' && <div className="pageTitle">Vendas por PDVs</div>}
       </Container>
       <ReportFooter data={footerData} hasFooter={hasFooter} />

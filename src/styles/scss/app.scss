@@ -1570,6 +1570,7 @@ body
   grid-row-gap: 30px;
   .report-menu-card {
     box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.02);
+    white-space: nowrap;
     min-width: 182px;
     width: fit-content;
     align-items: center;
