@@ -58,7 +58,7 @@ const Pagination: React.FC<PaginationProps> = (props: PaginationProps) => {
           );
         }
         return (
-          <li key={pageNumber} className={`${pageNumber === currentPage ? 'active' : ''}`}>
+          <li key={index} className={`${pageNumber === currentPage ? 'active' : ''}`}>
             <span onClick={() => onPageChange(+pageNumber)}>{pageNumber}</span>
           </li>
         );
