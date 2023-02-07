@@ -56,9 +56,15 @@ interface SectorProductPosContainerProps {
 
 interface PdvProductScreenProps extends SectorProductPosContainerProps {
   pdvId?: string;
+  handleGetEventPhaseCompletion: () => void;
 }
 
-export const PdvProductScreen: React.FC<PdvProductScreenProps> = ({ pdvId, nextTab, backTab }) => {
+export const PdvProductScreen: React.FC<PdvProductScreenProps> = ({
+  pdvId,
+  nextTab,
+  backTab,
+  handleGetEventPhaseCompletion,
+}) => {
   const params = useParams<UrlParams>();
   const [state, setState] = useState<States>(States.default);
   const [productSectionEvent, setProductSectionEvent] = useState<ProductSectionEvent[]>([]);
@@ -197,6 +203,7 @@ export const PdvProductScreen: React.FC<PdvProductScreenProps> = ({ pdvId, nextT
         setState(States.default);
       }
     }
+    handleGetEventPhaseCompletion();
   };
 
   const handleChangeSection = (sectionId: string): void => {
@@ -365,6 +372,16 @@ export const PdvProductScreen: React.FC<PdvProductScreenProps> = ({ pdvId, nextT
     }
   };
 
+  const handleHasProduct = async (b: string): Promise<void> => {
+    try {
+      handleGetEventPhaseCompletion();
+      setState(States.loading);
+      await api.patch(`/event/pdv/${params.id}/product/${pdvId}/has/${b}`);
+    } finally {
+      setState(States.default);
+    }
+  };
+
   const handleOnConfirmDelete = async (sectionId: string, productId: string): Promise<void> => {
     try {
       setState(States.loading);
@@ -375,8 +392,8 @@ export const PdvProductScreen: React.FC<PdvProductScreenProps> = ({ pdvId, nextT
       toast.success('Setor e produtos excluídos com sucesso!');
       confirmDelete.hide();
     } catch (error) {
-      const err = error as AxiosError;
-      toast.error(err.message);
+      const err = error as AxiosError | any;
+      toast.error(err.response?.data.details[0]);
     } finally {
       setState(States.default);
     }
@@ -421,6 +438,7 @@ export const PdvProductScreen: React.FC<PdvProductScreenProps> = ({ pdvId, nextT
         onShowDeleteProduct={handleOnShowDeleteProduct}
         nextTab={nextTab}
         backTab={backTab}
+        handleHasProduct={handleHasProduct}
       />
     </>
   );

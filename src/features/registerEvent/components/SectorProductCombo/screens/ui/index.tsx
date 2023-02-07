@@ -179,7 +179,7 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
               name="allowCombo"
               value={formDataCombo[FormInputNameCombo.allowCombo]}
               onChange={e => {
-                comboRequests.onHandleHasCombo();
+                comboRequests.onHandleHasCombo(e.target.value);
                 onChangeFormInputCombo(FormInputNameCombo.allowCombo)(e.target.value);
               }}
               options={[

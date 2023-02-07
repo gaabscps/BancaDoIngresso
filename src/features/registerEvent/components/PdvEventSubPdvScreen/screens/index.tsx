@@ -29,10 +29,14 @@ type UrlParams = {
 interface PdvEventSubPdvScreenProps extends TabPdvActionsProps {
   pdvId?: string;
   mainPdvStates: mainPdvStatesProps;
+  resetFormMainPdv: () => void;
+  handleGetEventPhaseCompletion: () => void;
 }
 
 export const PdvEventSubPdvScreen: React.FC<Omit<PdvEventSubPdvScreenProps, 'nextTab'>> = ({
   pdvId,
+  resetFormMainPdv,
+  handleGetEventPhaseCompletion,
   backTab,
   firstTab,
 }): JSX.Element => {
@@ -236,6 +240,16 @@ export const PdvEventSubPdvScreen: React.FC<Omit<PdvEventSubPdvScreenProps, 'nex
     */
   };
 
+  const handleHasSubPdv = async (b: string): Promise<void> => {
+    try {
+      handleGetEventPhaseCompletion();
+      setState(States.loading);
+      await api.patch(`/event/pdv/${params.id}/sub-pdv/${pdvId}/has/${b}`);
+    } finally {
+      setState(States.default);
+    }
+  };
+
   const handleRemoveUser = async (user: User): Promise<void> => {
     try {
       setState(States.loading);
@@ -430,6 +444,7 @@ export const PdvEventSubPdvScreen: React.FC<Omit<PdvEventSubPdvScreenProps, 'nex
 
   return (
     <PdvEventSubPdvContainer
+      resetFormMainPdv={resetFormMainPdv}
       state={state}
       formSubPdv={controllerFormSubPdv}
       formSubPdvRegister={controllerFormSubPdvRegister}
@@ -438,6 +453,7 @@ export const PdvEventSubPdvScreen: React.FC<Omit<PdvEventSubPdvScreenProps, 'nex
       modalConfig={controllerModalConfig}
       appendUser={controllerAppendUser}
       changeSubPdvModal={handleChangeSubPdvModal}
+      handleHasSubPdv={handleHasSubPdv}
     />
   );
 };

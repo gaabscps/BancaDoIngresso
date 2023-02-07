@@ -23,12 +23,15 @@ type UrlParams = {
 
 export interface TicketProps {
   phaseCompletion: EventPhaseCompletion | undefined;
+  handleGetEventPhaseCompletion: () => void;
 }
 
-export const SectorTicketScreen: React.FC<TicketProps> = ({ phaseCompletion }): JSX.Element => {
+export const SectorTicketScreen: React.FC<TicketProps> = ({
+  phaseCompletion,
+  handleGetEventPhaseCompletion,
+}): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
   const [ticket, setTicket] = useState<Ticket>();
-  const [hasTicket, setHasTicket] = useState<boolean>(!!phaseCompletion?.ticket.completion);
   const [ticketState, setTicketState] = useState<Ticket>();
   const [ticketList, setTicketList] = useState<Ticket[]>([]);
   const params = useParams<UrlParams>();
@@ -60,7 +63,7 @@ export const SectorTicketScreen: React.FC<TicketProps> = ({ phaseCompletion }): 
       // filter father event when event type is father
       const { tickets } = data;
       setTicketList(tickets ?? []);
-      if ((tickets && tickets.length > 0) || hasTicket) {
+      if (tickets && tickets.length > 0) {
         onChangeFormInputSectorTicket('isTicket')('true');
       }
     } catch (error) {
@@ -121,11 +124,11 @@ export const SectorTicketScreen: React.FC<TicketProps> = ({ phaseCompletion }): 
     });
   };
 
-  const handleHasTicket = async (): Promise<void> => {
+  const handleHasTicket = async (b: string): Promise<void> => {
     try {
       setState(States.loading);
-      await api.patch(`/event/ticket/${params.id}/has/${!hasTicket}`);
-      setHasTicket(!hasTicket);
+      await api.patch(`/event/ticket/${params.id}/has/${b}`);
+      handleGetEventPhaseCompletion();
     } finally {
       setState(States.default);
     }
@@ -143,7 +146,6 @@ export const SectorTicketScreen: React.FC<TicketProps> = ({ phaseCompletion }): 
     onCancelEdit: handleOnCancelEditTicket,
     onShowDelete: handleOnShowDeleteTicket,
     onHasTicket: handleHasTicket,
-    hasTicket,
   };
 
   useEffect(() => {

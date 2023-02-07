@@ -47,9 +47,13 @@ type UrlParams = {
 
 export interface PdvProps {
   phaseCompletion: EventPhaseCompletion | undefined;
+  handleGetEventPhaseCompletion: () => void;
 }
 
-export const PdvEventScreen: React.FC<PdvProps> = ({ phaseCompletion }): JSX.Element => {
+export const PdvEventScreen: React.FC<PdvProps> = ({
+  phaseCompletion,
+  handleGetEventPhaseCompletion,
+}): JSX.Element => {
   const params = useParams<UrlParams>();
   const [state, setState] = useState<States>(States.default);
   const [pdvId, setPdvId] = useState<string>();
@@ -218,6 +222,7 @@ export const PdvEventScreen: React.FC<PdvProps> = ({ phaseCompletion }): JSX.Ele
     formErrors: formErrorsMainPdv,
     onChangeFormInput: onChangeFormInputMainPdv,
     isFormValid: isFormValidMainPdv,
+    resetFormMainPdv,
   };
 
   const handleChangeSelectedPdv = (value: string): void => {
@@ -251,6 +256,16 @@ export const PdvEventScreen: React.FC<PdvProps> = ({ phaseCompletion }): JSX.Ele
         );
         break;
       }
+    }
+  };
+
+  const handleHasPdv = async (b: string): Promise<void> => {
+    try {
+      handleGetEventPhaseCompletion();
+      setState(States.loading);
+      await api.patch(`/event/pdv/${params.id}/has/${b}`);
+    } finally {
+      setState(States.default);
     }
   };
 
@@ -526,6 +541,8 @@ export const PdvEventScreen: React.FC<PdvProps> = ({ phaseCompletion }): JSX.Ele
       inputRef={PdvRef}
       isFormValidMainPdv={isFormValidMainPdv}
       phaseCompletion={phaseCompletion}
+      handleHasPdv={handleHasPdv}
+      handleGetEventPhaseCompletion={handleGetEventPhaseCompletion}
     />
   );
 };

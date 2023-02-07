@@ -21,10 +21,12 @@ type UrlParams = {
 
 export interface SectorProductProps {
   phaseCompletion: EventPhaseCompletion | undefined;
+  handleGetEventPhaseCompletion(): Promise<void>;
 }
 
 export const SectorProductScreen: React.FC<SectorProductProps> = ({
   phaseCompletion,
+  handleGetEventPhaseCompletion,
 }): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
   const [lastStep, setLastStep] = useState<any>([]);
@@ -127,6 +129,16 @@ export const SectorProductScreen: React.FC<SectorProductProps> = ({
     }
   };
 
+  const handleHasProduct = async (b: string): Promise<void> => {
+    try {
+      setState(States.loading);
+      await api.patch(`/event/product/${params.id}/has/${b}`);
+      handleGetEventPhaseCompletion();
+    } finally {
+      setState(States.default);
+    }
+  };
+
   const controllerFormSectorProduct: formSectorProductProps = {
     formData: formDataSectorProduct,
     formErrors: formErrorsSectorProduct,
@@ -158,6 +170,8 @@ export const SectorProductScreen: React.FC<SectorProductProps> = ({
       formSectorProduct={controllerFormSectorProduct}
       phaseCompletion={phaseCompletion}
       state={state}
+      onHandleHasProduct={handleHasProduct}
+      handleGetEventPhaseCompletion={handleGetEventPhaseCompletion}
     />
   );
 };

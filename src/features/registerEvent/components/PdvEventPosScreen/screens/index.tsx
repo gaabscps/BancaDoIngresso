@@ -32,10 +32,12 @@ type UrlParams = {
 
 interface PdvEventPosScreen extends TabPdvActionsProps {
   pdvId?: string;
+  handleGetEventPhaseCompletion: () => void;
 }
 
 export const PdvEventPosScreen: React.FC<Omit<PdvEventPosScreen, 'firstTab'>> = ({
   pdvId,
+  handleGetEventPhaseCompletion,
   backTab,
   nextTab,
 }): JSX.Element => {
@@ -155,6 +157,7 @@ export const PdvEventPosScreen: React.FC<Omit<PdvEventPosScreen, 'firstTab'>> = 
       }
       setPosList(response.data);
     }
+    handleGetEventPhaseCompletion();
   };
 
   const handleOnConfirmDelete = async (posSelected: Pos): Promise<void> => {
@@ -167,6 +170,16 @@ export const PdvEventPosScreen: React.FC<Omit<PdvEventPosScreen, 'firstTab'>> = 
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
+  const handleHasPos = async (b: string): Promise<void> => {
+    try {
+      handleGetEventPhaseCompletion();
+      setState(States.loading);
+      await api.patch(`/event/pdv/${params.id}/pos/${pdvId}/has/${b}`);
     } finally {
       setState(States.default);
     }
@@ -306,6 +319,7 @@ export const PdvEventPosScreen: React.FC<Omit<PdvEventPosScreen, 'firstTab'>> = 
         resetFormPosConfig();
         handleOnCancelEditPos();
         onToggle();
+        await handleGetEventPhaseCompletion();
         await getPos();
       } catch (error) {
         const err = error as AxiosError;
@@ -374,6 +388,7 @@ export const PdvEventPosScreen: React.FC<Omit<PdvEventPosScreen, 'firstTab'>> = 
       posStates={controllerPosStates}
       posActions={controllerPosActions}
       modalConfig={controllerModalConfig}
+      handleHasPos={handleHasPos}
     />
   );
 };

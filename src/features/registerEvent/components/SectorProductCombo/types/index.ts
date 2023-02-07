@@ -64,5 +64,5 @@ export interface comboRequestProps {
   getDiscount: (comboSelected: any) => Promise<void>;
   removeDiscountCoupon: (comboSelected: any, discountCouponSelected: any) => Promise<void>;
   getComboList: () => Promise<void>;
-  onHandleHasCombo: () => Promise<void>;
+  onHandleHasCombo: (b: string) => Promise<void>;
 }

@@ -32,6 +32,7 @@ export interface formMainPdvProductProps {
   formErrors: FormErrors;
   onChangeFormInput: OnChangeFormInput;
   isFormValid: IsFormValid;
+  resetFormMainPdv: () => void;
 }
 
 export interface formPdvProductProps {

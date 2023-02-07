@@ -66,7 +66,7 @@ export interface SectorProductPosContainerProps {
   dataConfig: dataConfigStatesProps;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleOnChangePosSwitch: (comboSelected: any) => void;
-  onHandleHasPos: () => void;
+  onHandleHasPos: (b: string) => Promise<void>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleOnGetPos: (comboSelected: any) => void;
   handleOnCancelEditPos: () => void;
@@ -153,7 +153,7 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
               name="allowPos"
               value={controllerFormAllowPos.formData[FormInputNameAllowPos.allowPos]}
               onChange={e => {
-                onHandleHasPos();
+                onHandleHasPos(e?.target?.value);
                 controllerFormAllowPos.onChangeFormInput(FormInputNameAllowPos.allowPos)(
                   e?.target?.value as string,
                 );

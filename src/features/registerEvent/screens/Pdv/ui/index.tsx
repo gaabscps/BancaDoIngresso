@@ -44,6 +44,8 @@ export interface PdvContainerProps {
   onChangeEvent: any;
   inputRef: any;
   phaseCompletion: EventPhaseCompletion | undefined;
+  handleGetEventPhaseCompletion: () => void;
+  handleHasPdv: (b: string) => Promise<void>;
   isFormValidMainPdv: () => boolean;
   onChangeSelectedPdv: (value: string) => void;
   getEventPdvTickets: () => void;
@@ -79,6 +81,7 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
   onChangeEvent,
   inputRef,
   phaseCompletion,
+  handleGetEventPhaseCompletion,
   isFormValidMainPdv,
   setNumberTab,
   onChangeSelectedPdv,
@@ -87,6 +90,7 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
   handleOnGetTickets,
   handleCheckTicket,
   nextTab,
+  handleHasPdv,
 }) => {
   const { formData, formErrors, onChangeFormInput } = formPdv;
 
@@ -129,13 +133,25 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
     },
     {
       component: (
-        <PdvEventPosScreen pdvId={pdvId} nextTab={handleNextTab} backTab={handleBackTab} />
+        <PdvEventPosScreen
+          handleGetEventPhaseCompletion={handleGetEventPhaseCompletion}
+          pdvId={pdvId}
+          nextTab={handleNextTab}
+          backTab={handleBackTab}
+        />
       ),
       completion: !!phaseCompletion?.pdv?.pos,
       title: 'Inserir POS',
     },
     {
-      component: <PdvProductScreen pdvId={pdvId} nextTab={handleNextTab} backTab={handleBackTab} />,
+      component: (
+        <PdvProductScreen
+          handleGetEventPhaseCompletion={handleGetEventPhaseCompletion}
+          pdvId={pdvId}
+          nextTab={handleNextTab}
+          backTab={handleBackTab}
+        />
+      ),
       completion: !!phaseCompletion?.pdv?.product,
       title: 'Inserir produtos',
     },
@@ -154,6 +170,8 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
     {
       component: (
         <PdvEventSubPdvScreen
+          resetFormMainPdv={formMainPdv.resetFormMainPdv}
+          handleGetEventPhaseCompletion={handleGetEventPhaseCompletion}
           mainPdvStates={mainPdvStates}
           pdvId={pdvId}
           backTab={handleBackTab}
@@ -184,7 +202,10 @@ export const PdvEventContainer: React.FC<PdvContainerProps> = ({
             }
             name="isPdv"
             value={formData[FormInputName.isPdv]}
-            onChange={e => onChangeFormInput(FormInputName.isPdv)(e.target.value)}
+            onChange={e => {
+              handleHasPdv(e.target.value);
+              onChangeFormInput(FormInputName.isPdv)(e.target.value);
+            }}
             options={[
               { value: true, label: 'Sim' },
               { value: false, label: 'Não' },

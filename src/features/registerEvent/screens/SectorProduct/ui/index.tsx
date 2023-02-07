@@ -26,6 +26,8 @@ export interface SectorProductContainerProps {
   formSectorProduct: formSectorProductProps;
   controllerEvent: controllerEventProps;
   phaseCompletion: EventPhaseCompletion | undefined;
+  onHandleHasProduct: (b: string) => void;
+  handleGetEventPhaseCompletion: () => void;
 }
 
 // eslint-disable-next-line no-shadow
@@ -39,6 +41,7 @@ export type TabSectorProductActionsProps = {
   onFirstTab: () => void;
   controllerEvent: controllerEventProps;
   phaseCompletion?: EventPhaseCompletion | undefined;
+  handleGetEventPhaseCompletion: () => void;
 };
 
 export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
@@ -46,6 +49,8 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
   formSectorProduct,
   controllerEvent,
   phaseCompletion,
+  onHandleHasProduct,
+  handleGetEventPhaseCompletion,
 }) => {
   const { formData, formErrors, onChangeFormInput } = formSectorProduct;
   const [numberTab, setNumberTab] = useState(0);
@@ -71,7 +76,11 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
   const contentTabs = [
     {
       component: (
-        <SectorProductGroupScreen nextTab={handleNextTab} controllerEvent={controllerEvent} />
+        <SectorProductGroupScreen
+          handleGetEventPhaseCompletion={handleGetEventPhaseCompletion}
+          nextTab={handleNextTab}
+          controllerEvent={controllerEvent}
+        />
       ),
       completion: !!phaseCompletion?.sectionProduct?.group,
       title: 'Cadastro de grupos',
@@ -79,6 +88,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
     {
       component: (
         <SectorProductScreen
+          handleGetEventPhaseCompletion={handleGetEventPhaseCompletion}
           controllerEvent={controllerEvent}
           nextTab={handleNextTab}
           backTab={handleBackTab}
@@ -96,6 +106,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
           onFirstTab={handleOnFirstTab}
           controllerEvent={controllerEvent}
           phaseCompletion={phaseCompletion}
+          handleGetEventPhaseCompletion={handleGetEventPhaseCompletion}
         />
       ),
       completion: !!phaseCompletion?.sectionProduct?.combo,
@@ -104,6 +115,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
     {
       component: (
         <SectorProductConfigSectorScreen
+          handleGetEventPhaseCompletion={handleGetEventPhaseCompletion}
           nextTab={handleNextTab}
           backTab={handleBackTab}
           controllerEvent={controllerEvent}
@@ -119,6 +131,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
           backTab={handleBackTab}
           controllerEvent={controllerEvent}
           phaseCompletion={phaseCompletion}
+          handleGetEventPhaseCompletion={handleGetEventPhaseCompletion}
         />
       ),
       completion: !!phaseCompletion?.sectionProduct?.pos,
@@ -137,7 +150,10 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
             label="Este evento terá produtos?"
             name="isProduct"
             value={formData[FormInputName.isProduct]}
-            onChange={e => onChangeFormInput(FormInputName.isProduct)(e.target.value)}
+            onChange={e => {
+              onHandleHasProduct(e.target.value);
+              onChangeFormInput(FormInputName.isProduct)(e.target.value);
+            }}
             options={[
               { value: true, label: 'Sim' },
               { value: false, label: 'Não' },

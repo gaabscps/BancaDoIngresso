@@ -151,7 +151,7 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
             name="isTicket"
             value={formData[FormInputName.isTicket]}
             onChange={e => {
-              ticketActions.onHasTicket();
+              ticketActions.onHasTicket(e.target.value);
               onChangeFormInput(FormInputName.isTicket)(e.target.value);
             }}
             options={[

@@ -60,6 +60,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
   onFirstTab,
   controllerEvent,
   phaseCompletion,
+  handleGetEventPhaseCompletion,
 }): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
   const [nameFiles, setNameFiles] = useState<NameFiles | undefined>({});
@@ -622,10 +623,11 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
     }
   };
 
-  const handleHasCombo = async (): Promise<void> => {
+  const handleHasCombo = async (b: string): Promise<void> => {
     try {
+      handleGetEventPhaseCompletion();
       setState(States.loading);
-      await api.patch(`/event/ticket/${params.id}/has/${!hasCombo}`);
+      await api.patch(`/event/combos/${params.id}/has/${b}`);
       setHasCombo(!hasCombo);
     } finally {
       setState(States.default);

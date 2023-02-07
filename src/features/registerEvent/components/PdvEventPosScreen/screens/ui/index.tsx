@@ -46,6 +46,7 @@ export interface PosContainerProps {
   posStates: posStatesProps;
   posActions: posActionsProps;
   modalConfig: modalConfigPosSettingsProps;
+  handleHasPos: (b: string) => Promise<void>;
 }
 
 export const PdvEventPosContainer: React.FC<PosContainerProps> = ({
@@ -56,6 +57,7 @@ export const PdvEventPosContainer: React.FC<PosContainerProps> = ({
   posStates,
   posActions,
   modalConfig,
+  handleHasPos,
 }) => {
   const { formData, formErrors, onInsertPos, onChangeFormInput } = formPos;
 
@@ -99,6 +101,7 @@ export const PdvEventPosContainer: React.FC<PosContainerProps> = ({
             name="hasPos"
             value={formData[FormInputName.hasPos]}
             onChange={e => {
+              handleHasPos(e.target.value);
               onChangeFormInput(FormInputName.hasPos)(e.target.value);
             }}
             options={[

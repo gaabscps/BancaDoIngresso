@@ -43,6 +43,8 @@ export interface SubPdvContainerProps {
   subPdvActions: subPdvActionsProps;
   appendUser: ContractorControllerUser;
   modalConfig: modalConfigSubPdvSettingsProps;
+  resetFormMainPdv: () => void;
+  handleHasSubPdv: (b: string) => Promise<void>;
   changeSubPdvModal: (value: string) => void;
 }
 
@@ -54,6 +56,8 @@ export const PdvEventSubPdvContainer: React.FC<SubPdvContainerProps> = ({
   subPdvActions,
   appendUser,
   modalConfig,
+  // resetFormMainPdv,
+  handleHasSubPdv,
   changeSubPdvModal,
 }) => {
   const { formData, formErrors, onChangeFormInput } = formSubPdv;
@@ -108,6 +112,7 @@ export const PdvEventSubPdvContainer: React.FC<SubPdvContainerProps> = ({
             name="hasSubPdv"
             value={formData[FormInputName.hasSubPdv]}
             onChange={e => {
+              handleHasSubPdv(e.target.value);
               onChangeFormInput(FormInputName.hasSubPdv)(e.target.value);
             }}
             options={[
@@ -205,6 +210,15 @@ export const PdvEventSubPdvContainer: React.FC<SubPdvContainerProps> = ({
               theme="noneBorder"
               onClick={() => subPdvActions.onReturnTap()}
             />
+            {/* <Button
+              title="Concluir"
+              theme="outlineDark"
+              className="ml-3"
+              onClick={() => {
+                subPdvActions.onFirstTab();
+                resetFormMainPdv();
+              }}
+            /> */}
           </div>
         </div>
       </Container>

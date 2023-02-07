@@ -41,6 +41,7 @@ interface SectorProductPosContainerProps {
   onAddAll: () => void;
   onAddProduct: () => void;
   onShowDeleteProduct: (sectionId: string, productId: string) => void;
+  handleHasProduct: (b: string) => Promise<void>;
 }
 export const PdvProductContainer: React.FC<SectorProductPosContainerProps> = ({
   state,
@@ -51,6 +52,7 @@ export const PdvProductContainer: React.FC<SectorProductPosContainerProps> = ({
   onShowDeleteProduct,
   nextTab,
   backTab,
+  handleHasProduct,
 }) => {
   const { formData, formErrors, sections, productsAndCombos, tableContent, onChangeFormInput } =
     controllerFormPos;
@@ -65,9 +67,10 @@ export const PdvProductContainer: React.FC<SectorProductPosContainerProps> = ({
               label="Permitir produto?"
               name="allowPos"
               value={formData[FormInputName.allowProduct]}
-              onChange={e =>
-                onChangeFormInput(FormInputName.allowProduct)(e?.target?.value as string)
-              }
+              onChange={e => {
+                handleHasProduct(e?.target?.value);
+                onChangeFormInput(FormInputName.allowProduct)(e?.target?.value);
+              }}
               options={[
                 { value: true, label: 'Sim' },
                 { value: false, label: 'Não' },
@@ -144,90 +147,92 @@ export const PdvProductContainer: React.FC<SectorProductPosContainerProps> = ({
             <Row>
               <Col></Col>
             </Row>
+            <SuperCollapse
+              disabled={formData[FormInputName.allowProduct] !== 'true'}
+              title="Setores e produtos inseridos"
+              count={tableContent.length}
+              content={
+                tableContent && tableContent.length > 0
+                  ? tableContent.map((eventSectionProduct, index) => (
+                      <div
+                        className={`${index === tableContent.length - 1 ? 'mb-0' : 'mb-5'}`}
+                        key={index}
+                      >
+                        <div className="d-flex w-100 justify-content-between">
+                          <div className="mb-3 w-100">
+                            <span className="secondary-table-title light-text">
+                              Setor{index + 1}{' '}
+                            </span>
+                            <span className="secondary-table-title name">
+                              • {eventSectionProduct.sectionNome}
+                            </span>
+                          </div>
+                        </div>
+                        <div>
+                          <CustomTable
+                            theme="secondaryWithoutBorder"
+                            numberRowsPerPage={0}
+                            progressPending={false}
+                            columns={[
+                              {
+                                name: 'Produto',
+                                selector: row => row.product,
+                              },
+                              {
+                                name: 'Grupo',
+                                selector: row => row.group,
+                              },
+                              {
+                                name: 'Subgrupo',
+                                selector: row => row.subGroup,
+                              },
+                              {
+                                name: 'Quantidade',
+                                selector: row => row.amount,
+                              },
+                              {
+                                name: 'Valor unitário',
+                                selector: row => row.value,
+                              },
+                              {
+                                name: '',
+                                selector: row => row.actions,
+                                right: true,
+                              },
+                            ]}
+                            data={eventSectionProduct.productsAndCombos.map(productAndCombo => ({
+                              product: productAndCombo.product,
+                              group: productAndCombo.group,
+                              subGroup: productAndCombo.subGroup,
+                              amount: productAndCombo.amount,
+                              value: productAndCombo.value,
+                              actions: (
+                                <X
+                                  className="action-icon svg-icon-trash"
+                                  onClick={() =>
+                                    onShowDeleteProduct(
+                                      eventSectionProduct.sectionId,
+                                      productAndCombo.id,
+                                    )
+                                  }
+                                />
+                              ),
+                            }))}
+                          />
+                        </div>
+                        {index === tableContent.length - 1 ? null : (
+                          <hr style={{ margin: '25px -30px 30px -30px' }} className="mt-5" />
+                        )}
+                      </div>
+                    ))
+                  : 'Nenhum produto inserido'
+              }
+              leftIcon={ProductIcon()}
+            />
           </>
         ) : (
           <div className="pb-4"></div>
         )}
-        <SuperCollapse
-          disabled={formData[FormInputName.allowProduct] !== 'true'}
-          title="Setores e produtos inseridos"
-          count={tableContent.length}
-          content={
-            tableContent && tableContent.length > 0
-              ? tableContent.map((eventSectionProduct, index) => (
-                  <div
-                    className={`${index === tableContent.length - 1 ? 'mb-0' : 'mb-5'}`}
-                    key={index}
-                  >
-                    <div className="d-flex w-100 justify-content-between">
-                      <div className="mb-3 w-100">
-                        <span className="secondary-table-title light-text">Setor{index + 1} </span>
-                        <span className="secondary-table-title name">
-                          • {eventSectionProduct.sectionNome}
-                        </span>
-                      </div>
-                    </div>
-                    <div>
-                      <CustomTable
-                        theme="secondaryWithoutBorder"
-                        numberRowsPerPage={0}
-                        progressPending={false}
-                        columns={[
-                          {
-                            name: 'Produto',
-                            selector: row => row.product,
-                          },
-                          {
-                            name: 'Grupo',
-                            selector: row => row.group,
-                          },
-                          {
-                            name: 'Subgrupo',
-                            selector: row => row.subGroup,
-                          },
-                          {
-                            name: 'Quantidade',
-                            selector: row => row.amount,
-                          },
-                          {
-                            name: 'Valor unitário',
-                            selector: row => row.value,
-                          },
-                          {
-                            name: '',
-                            selector: row => row.actions,
-                            right: true,
-                          },
-                        ]}
-                        data={eventSectionProduct.productsAndCombos.map(productAndCombo => ({
-                          product: productAndCombo.product,
-                          group: productAndCombo.group,
-                          subGroup: productAndCombo.subGroup,
-                          amount: productAndCombo.amount,
-                          value: productAndCombo.value,
-                          actions: (
-                            <X
-                              className="action-icon svg-icon-trash"
-                              onClick={() =>
-                                onShowDeleteProduct(
-                                  eventSectionProduct.sectionId,
-                                  productAndCombo.id,
-                                )
-                              }
-                            />
-                          ),
-                        }))}
-                      />
-                    </div>
-                    {index === tableContent.length - 1 ? null : (
-                      <hr style={{ margin: '25px -30px 30px -30px' }} className="mt-5" />
-                    )}
-                  </div>
-                ))
-              : 'Nenhum produto inserido'
-          }
-          leftIcon={ProductIcon()}
-        />
 
         <div className="d-flex justify-content-end">
           <Button title="Voltar etapa" theme="noneBorder" onClick={() => backTab()} />

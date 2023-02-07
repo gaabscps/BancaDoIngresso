@@ -43,6 +43,7 @@ interface SectorProductPosContainerProps {
   backTab: () => void;
   controllerEvent: controllerEventProps;
   phaseCompletion?: EventPhaseCompletion | undefined;
+  handleGetEventPhaseCompletion: () => void;
 }
 
 type UrlParams = {
@@ -52,7 +53,7 @@ type UrlParams = {
 export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({
   backTab,
   controllerEvent,
-  phaseCompletion,
+  handleGetEventPhaseCompletion,
 }) => {
   const [state, setState] = useState<States>(States.default);
   const { title, visible, onChangeTitle, onToggle } = useDialog();
@@ -61,7 +62,6 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({
   );
   const [form, setForm] = useState<any>({});
   const [configList, setConfigList] = useState<ProductSectionEvent[]>([]);
-  const [hasPos, setHasPos] = useState<boolean>(!!phaseCompletion?.sectionProduct.pos);
   const [pos, setPos] = useState<any>();
   const [posList, setPosList] = useState<any[]>([]);
 
@@ -378,11 +378,11 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({
     }
   };
 
-  const handleHasPos = async (): Promise<void> => {
+  const handleHasPos = async (b: string): Promise<void> => {
     try {
       setState(States.loading);
-      await api.patch(`/event/ticket/${params.id}/has/${!hasPos}`);
-      setHasPos(!hasPos);
+      await api.patch(`/event/pos/${params.id}/has/${b}`);
+      handleGetEventPhaseCompletion();
     } finally {
       setState(States.default);
     }

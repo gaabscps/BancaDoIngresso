@@ -58,17 +58,32 @@ export const EventScreen: React.FC = (): JSX.Element => {
       completion: !!phaseCompletion?.generalInformation,
     },
     {
-      component: <SectorTicketScreen phaseCompletion={phaseCompletion} />,
+      component: (
+        <SectorTicketScreen
+          handleGetEventPhaseCompletion={handleGetEventPhaseCompletion}
+          phaseCompletion={phaseCompletion}
+        />
+      ),
       title: 'Setor e Ingresso',
       completion: !!phaseCompletion?.ticket.completion,
     },
     {
-      component: <SectorProductScreen phaseCompletion={phaseCompletion} />,
+      component: (
+        <SectorProductScreen
+          handleGetEventPhaseCompletion={handleGetEventPhaseCompletion}
+          phaseCompletion={phaseCompletion}
+        />
+      ),
       title: 'Setor e Produto',
       completion: !!phaseCompletion?.sectionProduct.completion,
     },
     {
-      component: <PdvEventScreen phaseCompletion={phaseCompletion} />,
+      component: (
+        <PdvEventScreen
+          handleGetEventPhaseCompletion={handleGetEventPhaseCompletion}
+          phaseCompletion={phaseCompletion}
+        />
+      ),
       title: 'PDV',
       completion: !!phaseCompletion?.pdv.completion,
     },
