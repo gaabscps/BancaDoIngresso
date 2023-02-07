@@ -81,6 +81,26 @@ export const ReportsContent: React.FC<ReportsContentProps> = ({
       title: 'Vendas por SubPDV',
       footer: false,
     },
+    {
+      title: 'Sangria',
+      footer: false,
+    },
+    {
+      title: 'Rastreamento',
+      footer: false,
+    },
+    {
+      title: 'Vendas de produtos',
+      footer: false,
+    },
+    {
+      title: 'Validação',
+      footer: false,
+    },
+    {
+      title: 'Terminais',
+      footer: false,
+    },
   ];
 
   const contentColumn = [

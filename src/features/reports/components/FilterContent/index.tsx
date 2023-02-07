@@ -23,7 +23,7 @@ export const FilterContent: React.FC<FilterContentProps> = ({ controllerFormFilt
   ];
 
   const option = [
-    { label: 'Todos', value: 'Todos' },
+    { label: 'Bar do seu Zé', value: 'Bar do seu Zé' },
     { label: 'Aguardando', value: 'Aguardando' },
     { label: 'Em andamento', value: 'Em andamento' },
     { label: 'Finalizado', value: 'Finalizado' },
