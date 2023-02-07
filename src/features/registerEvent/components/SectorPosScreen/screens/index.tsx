@@ -23,6 +23,7 @@ import ProductSectionEvent from '@/model/SectionProductEvent';
 import { unmask } from '@/helpers/masks/cashNumber';
 import { toPercentage } from '@/helpers/common/amount';
 import { controllerEventProps } from '@/features/registerEvent/screens/SectorTicket/types';
+import EventPhaseCompletion from '@/model/EventPhaseCompletion';
 import {
   dataConfigStatesProps,
   formAllowPosProps,
@@ -41,6 +42,7 @@ interface SectorProductPosContainerProps {
   nextTab: () => void;
   backTab: () => void;
   controllerEvent: controllerEventProps;
+  phaseCompletion?: EventPhaseCompletion | undefined;
 }
 
 type UrlParams = {
@@ -50,6 +52,7 @@ type UrlParams = {
 export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({
   backTab,
   controllerEvent,
+  phaseCompletion,
 }) => {
   const [state, setState] = useState<States>(States.default);
   const { title, visible, onChangeTitle, onToggle } = useDialog();
@@ -58,7 +61,7 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({
   );
   const [form, setForm] = useState<any>({});
   const [configList, setConfigList] = useState<ProductSectionEvent[]>([]);
-
+  const [hasPos, setHasPos] = useState<boolean>(!!phaseCompletion?.sectionProduct.pos);
   const [pos, setPos] = useState<any>();
   const [posList, setPosList] = useState<any[]>([]);
 
@@ -375,6 +378,16 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({
     }
   };
 
+  const handleHasPos = async (): Promise<void> => {
+    try {
+      setState(States.loading);
+      await api.patch(`/event/ticket/${params.id}/has/${!hasPos}`);
+      setHasPos(!hasPos);
+    } finally {
+      setState(States.default);
+    }
+  };
+
   const handleOnConfirmDeleteToPos = async (posSelected: Pos): Promise<void> => {
     try {
       setState(States.loading);
@@ -474,6 +487,7 @@ export const SectorPosScreen: React.FC<SectorProductPosContainerProps> = ({
         handleOnCancelEditPos={handleOnCancelEditPos}
         posState={pos}
         setPosState={setPos}
+        onHandleHasPos={handleHasPos}
       />
     </>
   );

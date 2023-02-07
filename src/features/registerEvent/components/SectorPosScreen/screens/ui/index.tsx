@@ -66,6 +66,7 @@ export interface SectorProductPosContainerProps {
   dataConfig: dataConfigStatesProps;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleOnChangePosSwitch: (comboSelected: any) => void;
+  onHandleHasPos: () => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handleOnGetPos: (comboSelected: any) => void;
   handleOnCancelEditPos: () => void;
@@ -80,16 +81,17 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
   controllerFormAllowPos,
   controllerModalConfig,
   controllerEvent,
-  handleOnSavePos,
-  backTab,
   posList,
   posOptions,
   dataConfig,
+  posState,
+  handleOnSavePos,
+  backTab,
+  onHandleHasPos,
   handleOnShowDeletePos,
   handleOnChangePosSwitch,
   handleOnGetPos,
   handleOnCancelEditPos,
-  posState,
   setPosState,
 }) => {
   const { formData, formErrors, onChangeFormInput } = controllerFormPos;
@@ -150,11 +152,12 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
               label="Permitir POS?"
               name="allowPos"
               value={controllerFormAllowPos.formData[FormInputNameAllowPos.allowPos]}
-              onChange={e =>
+              onChange={e => {
+                onHandleHasPos();
                 controllerFormAllowPos.onChangeFormInput(FormInputNameAllowPos.allowPos)(
                   e?.target?.value as string,
-                )
-              }
+                );
+              }}
               options={[
                 { value: true, label: 'Sim' },
                 { value: false, label: 'Não' },

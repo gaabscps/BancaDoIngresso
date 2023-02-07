@@ -38,6 +38,7 @@ export type TabSectorProductActionsProps = {
   backTab: () => void;
   onFirstTab: () => void;
   controllerEvent: controllerEventProps;
+  phaseCompletion?: EventPhaseCompletion | undefined;
 };
 
 export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
@@ -94,6 +95,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
           backTab={handleBackTab}
           onFirstTab={handleOnFirstTab}
           controllerEvent={controllerEvent}
+          phaseCompletion={phaseCompletion}
         />
       ),
       completion: !!phaseCompletion?.sectionProduct?.combo,
@@ -116,6 +118,7 @@ export const SectorProductContainer: React.FC<SectorProductContainerProps> = ({
           nextTab={handleNextTab}
           backTab={handleBackTab}
           controllerEvent={controllerEvent}
+          phaseCompletion={phaseCompletion}
         />
       ),
       completion: !!phaseCompletion?.sectionProduct?.pos,

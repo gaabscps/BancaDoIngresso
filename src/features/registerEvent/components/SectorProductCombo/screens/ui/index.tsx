@@ -178,7 +178,10 @@ export const SectorProductComboContainer: React.FC<SectorProductComboContainerPr
               label="Este evento terá combos?"
               name="allowCombo"
               value={formDataCombo[FormInputNameCombo.allowCombo]}
-              onChange={e => onChangeFormInputCombo(FormInputNameCombo.allowCombo)(e.target.value)}
+              onChange={e => {
+                comboRequests.onHandleHasCombo();
+                onChangeFormInputCombo(FormInputNameCombo.allowCombo)(e.target.value);
+              }}
               options={[
                 { value: true, label: 'Sim' },
                 { value: false, label: 'Não' },

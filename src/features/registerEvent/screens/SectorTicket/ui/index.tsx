@@ -150,7 +150,10 @@ export const SectorTicketContainer: React.FC<SectorTicketContainerProps> = ({
             label="Este evento terá ingressos?"
             name="isTicket"
             value={formData[FormInputName.isTicket]}
-            onChange={e => onChangeFormInput(FormInputName.isTicket)(e.target.value)}
+            onChange={e => {
+              ticketActions.onHasTicket();
+              onChangeFormInput(FormInputName.isTicket)(e.target.value);
+            }}
             options={[
               { value: true, label: 'Sim' },
               { value: false, label: 'Não' },

@@ -67,6 +67,8 @@ export interface ticketActionsProps {
   onGetAll: (eventId: string) => void;
   onCancelEdit: () => void;
   onShowDelete: (ticketSelected: Tickets) => void;
+  onHasTicket: () => Promise<void>;
+  hasTicket: boolean;
 }
 
 export interface sectorStatesProps {

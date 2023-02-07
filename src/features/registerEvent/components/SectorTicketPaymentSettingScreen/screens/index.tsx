@@ -251,6 +251,7 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
     isBntNext: boolean;
   }): Promise<void> => {
     try {
+      setState(States.loading);
       if (isFormValidtPaymentSettings()) {
         const payloadDiscountCoupon = listDiscountCoupon.map(item => ({
           id: item.id,
@@ -368,6 +369,8 @@ export const SectorTicketPaymentSettingsScreen: React.FC<
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
+    } finally {
+      setState(States.default);
     }
   };
 

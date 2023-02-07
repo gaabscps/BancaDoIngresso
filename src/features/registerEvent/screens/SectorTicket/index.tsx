@@ -27,14 +27,11 @@ export interface TicketProps {
 
 export const SectorTicketScreen: React.FC<TicketProps> = ({ phaseCompletion }): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
-
   const [ticket, setTicket] = useState<Ticket>();
+  const [hasTicket, setHasTicket] = useState<boolean>(!!phaseCompletion?.ticket.completion);
   const [ticketState, setTicketState] = useState<Ticket>();
-
   const [ticketList, setTicketList] = useState<Ticket[]>([]);
-
   const params = useParams<UrlParams>();
-
   const confirmDelete = useConfirmDelete();
 
   const {
@@ -63,7 +60,7 @@ export const SectorTicketScreen: React.FC<TicketProps> = ({ phaseCompletion }): 
       // filter father event when event type is father
       const { tickets } = data;
       setTicketList(tickets ?? []);
-      if (tickets && tickets.length > 0) {
+      if ((tickets && tickets.length > 0) || hasTicket) {
         onChangeFormInputSectorTicket('isTicket')('true');
       }
     } catch (error) {
@@ -124,6 +121,16 @@ export const SectorTicketScreen: React.FC<TicketProps> = ({ phaseCompletion }): 
     });
   };
 
+  const handleHasTicket = async (): Promise<void> => {
+    try {
+      setState(States.loading);
+      await api.patch(`/event/ticket/${params.id}/has/${!hasTicket}`);
+      setHasTicket(!hasTicket);
+    } finally {
+      setState(States.default);
+    }
+  };
+
   const controllerTicketStates: ticketStatesProps = {
     ticket,
     ticketList,
@@ -135,6 +142,8 @@ export const SectorTicketScreen: React.FC<TicketProps> = ({ phaseCompletion }): 
     onGetAll: handleFecthTicketsList,
     onCancelEdit: handleOnCancelEditTicket,
     onShowDelete: handleOnShowDeleteTicket,
+    onHasTicket: handleHasTicket,
+    hasTicket,
   };
 
   useEffect(() => {

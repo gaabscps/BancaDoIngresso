@@ -59,6 +59,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
   nextTab,
   onFirstTab,
   controllerEvent,
+  phaseCompletion,
 }): JSX.Element => {
   const [state, setState] = useState<States>(States.default);
   const [nameFiles, setNameFiles] = useState<NameFiles | undefined>({});
@@ -70,7 +71,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
   const [combo, setCombo] = useState<any>();
   const [comboConfig, setComboConfig] = useState<any>();
   const [comboList, setComboList] = useState<SectorProductCombo[]>([]);
-
+  const [hasCombo, setHasCombo] = useState<boolean>(!!phaseCompletion?.sectionProduct.combo);
   const [product, setProduct] = useState<SectorProductComboProduct[]>([
     { id: '', name: '', amount: 0 },
   ]);
@@ -93,7 +94,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
     setFormErrors: setErrorsCombo,
   } = useForm({
     initialData: {
-      allowCombo: 'true',
+      allowCombo: String(hasCombo),
       id: '',
       name: '',
       allowSellingWebsite: `true`,
@@ -621,6 +622,16 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
     }
   };
 
+  const handleHasCombo = async (): Promise<void> => {
+    try {
+      setState(States.loading);
+      await api.patch(`/event/ticket/${params.id}/has/${!hasCombo}`);
+      setHasCombo(!hasCombo);
+    } finally {
+      setState(States.default);
+    }
+  };
+
   // Delete para excluir um combo
   const handleOnConfirmDeleteCombo = async (comboSelected: any): Promise<void> => {
     try {
@@ -730,6 +741,7 @@ export const SectorProductComboScreen: React.FC<TabSectorProductActionsProps> = 
     getDiscount: handleGetDiscount,
     removeDiscountCoupon: handleRemoveDiscountCoupon,
     getComboList: handleGetComboList,
+    onHandleHasCombo: handleHasCombo,
   };
 
   useEffect(() => {

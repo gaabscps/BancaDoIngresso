@@ -231,6 +231,7 @@ export const SectorTicketMainSettingsScreen: React.FC<
 
   const handleOnSaveSector = async (): Promise<void> => {
     try {
+      setState(States.loading);
       if (isFormValidSector()) {
         const payload = {
           id: sector?.id,
@@ -256,11 +257,14 @@ export const SectorTicketMainSettingsScreen: React.FC<
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
+    } finally {
+      setState(States.loading);
     }
   };
 
   const handleOnSaveMainSettings = async ({ isBntNext }: { isBntNext: boolean }): Promise<void> => {
     try {
+      setState(States.loading);
       const isFormValid = isFormValidMainSettings();
       // validate percentageHalfPrice and amountHalfPrice if hasHalfPrice is true
       if (
@@ -364,11 +368,14 @@ export const SectorTicketMainSettingsScreen: React.FC<
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
+    } finally {
+      setState(States.default);
     }
   };
 
   const handleOnAddBatch = async (): Promise<void> => {
     try {
+      setState(States.loading);
       if (isFormValidBatchs()) {
         const payloadStartData = dayjs(
           `${formDataBatchs[FormInputNameToBatch.startDate]}T${
@@ -410,6 +417,10 @@ export const SectorTicketMainSettingsScreen: React.FC<
     } catch (error) {
       const err = error as AxiosError;
       toast.error(err.message);
+    } finally {
+      setTimeout(() => {
+        setState(States.default);
+      }, 500);
     }
   };
 
