@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import api from '@/services/api';
 import EventPhaseCompletion from '@/model/EventPhaseCompletion';
 import { Loading } from '@/components';
-import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
 import { ProgressStep } from '../components/ProgressStep';
 import { useEvent } from '../hook/useEvent';
@@ -31,12 +30,11 @@ export const EventScreen: React.FC = (): JSX.Element => {
 
   const handleGetEventPhaseCompletion = async (): Promise<void> => {
     try {
-      setState(States.loading);
-      const { data } = await api.get(`/event/phase-completion/${params.id}`);
-      setPhaseCompletion(data);
-    } catch (error) {
-      const err = error as Error;
-      toast.error(err.message);
+      if (params.id) {
+        setState(States.loading);
+        const { data } = await api.get(`/event/phase-completion/${params.id}`);
+        setPhaseCompletion(data);
+      }
     } finally {
       setState(States.default);
     }

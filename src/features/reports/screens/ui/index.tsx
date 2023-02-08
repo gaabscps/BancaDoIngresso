@@ -17,6 +17,7 @@ import { GeneralSale } from '../../components/GeneralSale';
 import { SaleDate } from '../../components/SaleDate';
 import { ControllerFormProps, ControllerModalProps } from '../../types';
 import { FilterContent } from '../../components/FilterContent';
+import { SalePdv } from '../../components/SalePdv';
 
 // eslint-disable-next-line no-shadow
 export enum ShouldShowModal {
@@ -75,7 +76,7 @@ export const ReportsContent: React.FC<ReportsContentProps> = ({
     },
     {
       title: 'Vendas por PDV',
-      footer: false,
+      footer: true,
     },
     {
       title: 'Vendas por SubPDV',
@@ -378,7 +379,9 @@ export const ReportsContent: React.FC<ReportsContentProps> = ({
           <SaleDate saleDate={saleDate} titleColumn={titleColumn} contentColumn={contentColumn} />
         )}
 
-        {reportContent === 'Vendas por PDV' && <div className="pageTitle">Vendas por PDVs</div>}
+        {reportContent === 'Vendas por PDV' && (
+          <SalePdv salePdv={saleDate} titleColumn={titleColumn} contentColumn={contentColumn} />
+        )}
       </Container>
       <ReportFooter data={footerData} hasFooter={hasFooter} />
     </>
