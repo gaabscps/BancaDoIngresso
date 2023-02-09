@@ -90,6 +90,7 @@ interface EventContainerProps {
     newTitleModal: string | React.ReactNode;
     event?: Event;
   }) => void;
+  onClone: (eventId: string) => void;
 }
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const EventContainer: React.FC<EventContainerProps> = ({
@@ -126,6 +127,7 @@ export const EventContainer: React.FC<EventContainerProps> = ({
   clearFilterStatus,
   handleOnSaveVoucher,
   onShouldShowModal,
+  onClone,
 }) => {
   const { eventState: eventStateContext, onChange: onChangeEvent } = useEvent();
   const dataEventType = [
@@ -239,6 +241,13 @@ export const EventContainer: React.FC<EventContainerProps> = ({
               history.push({
                 pathname: `/dashboard/event/reports/${event.id}`,
               });
+            },
+          },
+          {
+            title: 'Clonar',
+            icon: <Report />,
+            action: () => {
+              onClone(event.id);
             },
           },
           event.eventStatus === 1

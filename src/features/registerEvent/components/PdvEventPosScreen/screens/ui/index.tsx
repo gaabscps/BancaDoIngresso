@@ -152,9 +152,9 @@ export const PdvEventPosContainer: React.FC<PosContainerProps> = ({
                               id: item.pos.id,
                               numberPos: item.pos.serialNumber,
                               expirationDate:
-                                item.pos.expirationDate === null
+                                item.bindingDate === null
                                   ? '-----'
-                                  : dayjs(item.pos.expirationDate).format('DD/MM/YYYY HH:mm:ss'),
+                                  : dayjs(item.bindingDate).format('DD/MM/YYYY HH:mm:ss'),
                               partialPayment: item.waiter
                                 ? `${toPercentage(item.waiter)} %`
                                 : `${toPercentage(0)} %`,

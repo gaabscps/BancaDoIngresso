@@ -7,4 +7,5 @@ export default interface EventPdvPos {
   pos: Pos;
   waiter: number;
   cardFees: CardFees;
+  bindingDate: Date;
 }

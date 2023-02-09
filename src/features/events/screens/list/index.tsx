@@ -17,6 +17,7 @@ import { useConfirmDelete } from '@/hooks/useConfirmDelete';
 import { EventRequestParams, EventResponse } from '../../types';
 import { FormInputName } from '../../components/RegisterVoucher';
 import { DeleteContent } from '../../components/DeleteContent';
+import { CloneContent } from '../../components/CloneContent';
 
 export interface PayloadEvent {
   name: string;
@@ -338,6 +339,50 @@ export const EventScreen: React.FC = () => {
     toast.success('Código copiado');
   };
 
+  const handleCloneEvent = async (eventId: string): Promise<void> => {
+    try {
+      setState(States.loading);
+      handleOnClose();
+      await api.post(`event/copy/${eventId}`);
+      handleFetch({ ...currentPage, ...pagination });
+      handleFetchAll();
+    } catch (error) {
+      const err = error as AxiosError;
+      toast.error(err.message);
+    } finally {
+      setState(States.default);
+    }
+  };
+
+  // eslint-disable-next-line no-shadow
+  const handleOnShowCloneEvent = (eventId: string): void => {
+    let eventTitle = '';
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0; i < listEvent.length; i++) {
+      if (listEvent[i].id === eventId) {
+        eventTitle = listEvent[i].name;
+        break;
+      }
+    }
+    confirmDelete.show({
+      title: '',
+      children: <CloneContent title={eventTitle} />,
+      actions: [
+        {
+          title: 'Não, quero manter',
+          theme: 'noneBorder',
+          onClick: (): void => handleOnClose(),
+        },
+        {
+          title: 'Sim, quero clonar',
+          onClick: async () => {
+            handleCloneEvent(eventId);
+          },
+        },
+      ],
+    });
+  };
+
   useEffect(() => {
     handleFetch({ ...currentPage, ...pagination });
     handleFetchAll();
@@ -378,6 +423,7 @@ export const EventScreen: React.FC = () => {
       copyToClipboard={copyToClipboard}
       isFormValidVoucher={isFormValidVoucher}
       handleOnShowDeleteProduct={handleOnShowDeleteProduct}
+      onClone={handleOnShowCloneEvent}
     />
   );
 };

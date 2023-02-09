@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Col, Form, FormGroup, Row } from 'reactstrap';
 import { Button, InputText, SelectCustom, Switch } from '@/components';
 import { FormData, FormErrors, OnChangeFormInput } from '@/hooks/useForm';
@@ -75,6 +75,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
   contractorState,
   controllerAppendUser,
 }) => {
+  const [isDisable, setIsDisable] = useState<boolean>(true);
   const refSelectUser = useRef<any>(null);
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   const onClearSelectUser = () => {
@@ -278,6 +279,11 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
                 onChangeFormInput(FormInputName.zipCode)(e.target.value);
                 if (e.target.value.length === 9 && isValidCEP(e.target.value)) {
                   cep(e.target.value).then(data => {
+                    if (!data.neighborhood && !data.street) {
+                      setIsDisable(false);
+                    } else {
+                      setIsDisable(true);
+                    }
                     onChangeFormInput(FormInputName.state)(data.state);
                     onChangeFormInput(FormInputName.city)(data.city);
                     onChangeFormInput(FormInputName.district)(data.neighborhood);
@@ -327,7 +333,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
               value={formData[FormInputName.district]}
               onChange={e => onChangeFormInput(FormInputName.district)(e.target.value)}
               error={formErrors.district && formErrors.district[0]}
-              disabled
+              disabled={isDisable}
             />
           </FormGroup>
 
@@ -339,7 +345,7 @@ export const RegisterContent: React.FC<RegisterContentProps> = ({
               value={formData[FormInputName.street]}
               onChange={e => onChangeFormInput(FormInputName.street)(e.target.value)}
               error={formErrors.street && formErrors.street[0]}
-              disabled
+              disabled={isDisable}
             />
           </FormGroup>
 

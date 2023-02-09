@@ -282,7 +282,15 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
                 posList.length > 0
                   ? posList.map(
                       (
-                        { pos, waiter, commission, actived, eventSections, allowDiscount },
+                        {
+                          bindingDate,
+                          pos,
+                          waiter,
+                          commission,
+                          actived,
+                          eventSections,
+                          allowDiscount,
+                        },
                         indexPos,
                       ) => (
                         <React.Fragment key={indexPos}>
@@ -326,10 +334,9 @@ export const SectorPosContainer: React.FC<SectorProductPosContainerProps> = ({
                                 {
                                   serialNumber: pos.serialNumber,
                                   date:
-                                    dayjs(pos.expirationDate).format('DD/MM/YYYY') ===
-                                    'Invalid Date'
+                                    dayjs(bindingDate).format('DD/MM/YYYY') === 'Invalid Date'
                                       ? '-----'
-                                      : dayjs(pos.expirationDate).format('DD/MM/YYYY'),
+                                      : dayjs(bindingDate).format('DD/MM/YYYY'),
                                   waiter: `${waiter && (+waiter).toFixed(2)}%`,
                                   commission: `${commission && (+commission).toFixed(2)}%`,
                                   actions: (
