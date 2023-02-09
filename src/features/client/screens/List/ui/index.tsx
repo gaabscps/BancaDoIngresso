@@ -115,24 +115,24 @@ export const ClientContainer: React.FC<Props> = ({
     return className;
   };
   const dataTableClient = listClient?.map(item => ({
-    id: item.id,
-    name: item.name,
-    cpf: updateMaskCPF(item.cpf),
-    cellPhone: updateMaskPhone(item.cellPhone),
-    email: item.email,
+    id: item?.id,
+    name: item?.name || '-----',
+    cpf: item?.cpf ? updateMaskCPF(item?.cpf) : '-----',
+    cellPhone: item?.cellPhone ? updateMaskPhone(item?.cellPhone) : '-----',
+    email: item?.email || '-----',
     actions: (
       <React.Fragment>
-        {item.comments && item.comments.length > 0 && (
+        {item?.comments && item?.comments.length > 0 && (
           <span
             className="badge badge-custom position-absolute top-0 start-100 translate-middle rounded-pill bg-danger"
             style={{ marginLeft: '12px' }}
           >
-            {item.comments.length}
+            {item?.comments.length}
           </span>
         )}
 
         <Comment
-          className={getClassName(item.comments && item.comments.length > 0)}
+          className={getClassName(item?.comments && item?.comments.length > 0)}
           onClick={(): void =>
             onShouldShowModal({
               value: ShouldShowModal.comment,
@@ -142,9 +142,9 @@ export const ClientContainer: React.FC<Props> = ({
           }
         />
 
-        <Fraud className={getClassName(item.fraudAlert)} onClick={() => onAlterFraudAlert(item)} />
+        <Fraud className={getClassName(item?.fraudAlert)} onClick={() => onAlterFraudAlert(item)} />
         <X
-          className={getClassName(item.status === StatusType.INACTIVE)}
+          className={getClassName(item?.status === StatusType.INACTIVE)}
           onClick={() => onBockClient(item)}
         />
         <Pen
@@ -152,7 +152,7 @@ export const ClientContainer: React.FC<Props> = ({
           onClick={(): void =>
             onShouldShowModal({
               value: ShouldShowModal.client,
-              newTitleModal: `Editar ${item.name}`,
+              newTitleModal: `Editar ${item?.name}`,
               client: item,
             })
           }
