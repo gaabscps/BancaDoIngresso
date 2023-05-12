@@ -1,110 +1,110 @@
-name: CI
-on:
-  push:
-    branches:
-      - develop
-      - release
-      - master
+# name: CI
+# on:
+#   push:
+#     branches:
+#       - develop
+#       - release
+#       - master
 
-jobs:
-  deploy-dev:
-    name: Deploy - DEV
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    if: github.ref == 'refs/heads/develop'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v1
+# jobs:
+#   deploy-dev:
+#     name: Deploy - DEV
+#     runs-on: ubuntu-latest
+#     timeout-minutes: 15
+#     if: github.ref == 'refs/heads/develop'
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v1
 
-      - name: Writing .env file
-        run: 'echo "${{ secrets.ENVIRONMENT_VARIABLES_DEV }}" > .env'
+#       - name: Writing .env file
+#         run: 'echo "${{ secrets.ENVIRONMENT_VARIABLES_DEV }}" > .env'
       
-      - name: Install dependencies
-        run: yarn
+#       - name: Install dependencies
+#         run: yarn
 
-      - name: Updating the caniuse-lite database with browsers
-        run: npx browserslist@latest --update-db
+#       - name: Updating the caniuse-lite database with browsers
+#         run: npx browserslist@latest --update-db
 
-      - name: Build app
-        run: yarn build
-        env:
-          CI: ''
+#       - name: Build app
+#         run: yarn build
+#         env:
+#           CI: ''
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_DEV }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_DEV }}
-          aws-region: us-east-1
+#       - name: Configure AWS Credentials
+#         uses: aws-actions/configure-aws-credentials@v1
+#         with:
+#           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_DEV }}
+#           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_DEV }}
+#           aws-region: us-east-1
 
-      - name: Deploy to S3
-        run: aws s3 sync . s3://dev-bdi-adm/
-        working-directory: ./build
+#       - name: Deploy to S3
+#         run: aws s3 sync . s3://dev-bdi-adm/
+#         working-directory: ./build
 
-  deploy-hmg:
-    name: Deploy - HMG
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    if: github.ref == 'refs/heads/release'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v1
+#   deploy-hmg:
+#     name: Deploy - HMG
+#     runs-on: ubuntu-latest
+#     timeout-minutes: 15
+#     if: github.ref == 'refs/heads/release'
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v1
 
-      - name: Writing .env file
-        run: 'echo "${{ secrets.ENVIRONMENT_VARIABLES_HMG }}" > .env'
+#       - name: Writing .env file
+#         run: 'echo "${{ secrets.ENVIRONMENT_VARIABLES_HMG }}" > .env'
       
-      - name: Install dependencies
-        run: yarn
+#       - name: Install dependencies
+#         run: yarn
 
-      - name: Updating the caniuse-lite database with browsers
-        run: npx browserslist@latest --update-db
+#       - name: Updating the caniuse-lite database with browsers
+#         run: npx browserslist@latest --update-db
 
-      - name: Build app
-        run: yarn build
-        env:
-          CI: ''
+#       - name: Build app
+#         run: yarn build
+#         env:
+#           CI: ''
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_DEV }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_DEV }}
-          aws-region: us-east-1
+#       - name: Configure AWS Credentials
+#         uses: aws-actions/configure-aws-credentials@v1
+#         with:
+#           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_DEV }}
+#           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_DEV }}
+#           aws-region: us-east-1
 
-      - name: Deploy to S3
-        run: aws s3 sync . s3://hmg-bdi-adm/
-        working-directory: ./build
+#       - name: Deploy to S3
+#         run: aws s3 sync . s3://hmg-bdi-adm/
+#         working-directory: ./build
 
-  deploy-prd:
-    name: Deploy - PRD
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    if: github.ref == 'refs/heads/master'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v1
+#   deploy-prd:
+#     name: Deploy - PRD
+#     runs-on: ubuntu-latest
+#     timeout-minutes: 15
+#     if: github.ref == 'refs/heads/master'
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v1
 
-      - name: Writing .env file
-        run: 'echo "${{ secrets.ENVIRONMENT_VARIABLES_PRD }}" > .env'
+#       - name: Writing .env file
+#         run: 'echo "${{ secrets.ENVIRONMENT_VARIABLES_PRD }}" > .env'
       
-      - name: Install dependencies
-        run: yarn
+#       - name: Install dependencies
+#         run: yarn
 
-      - name: Updating the caniuse-lite database with browsers
-        run: npx browserslist@latest --update-db
+#       - name: Updating the caniuse-lite database with browsers
+#         run: npx browserslist@latest --update-db
 
-      - name: Build app
-        run: yarn build
-        env:
-          CI: ''
+#       - name: Build app
+#         run: yarn build
+#         env:
+#           CI: ''
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_DEV }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_DEV }}
-          aws-region: us-east-1
+#       - name: Configure AWS Credentials
+#         uses: aws-actions/configure-aws-credentials@v1
+#         with:
+#           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_DEV }}
+#           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_DEV }}
+#           aws-region: us-east-1
 
-      - name: Deploy to S3
-        run: aws s3 sync . s3://prd-bdi-adm/
-        working-directory: ./build
+#       - name: Deploy to S3
+#         run: aws s3 sync . s3://prd-bdi-adm/
+#         working-directory: ./build
