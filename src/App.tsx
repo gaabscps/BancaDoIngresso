@@ -10,17 +10,18 @@ import 'dayjs';
 import 'dayjs/locale/pt-br';
 import 'react-toastify/dist/ReactToastify.min.css';
 import '@/styles/index.scss';
+import { Sidebar } from './components/Sidebar';
 
 export const App: React.FC = (): JSX.Element => (
   <Fragment>
     <Provider store={store}>
       <BrowserRouter>
         <ConfirmDeleteProvider>
+          <Sidebar />
           <Navigation />
         </ConfirmDeleteProvider>
       </BrowserRouter>
     </Provider>
-
     <ToastContainer />
   </Fragment>
 );

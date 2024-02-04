@@ -7,5 +7,5 @@ export const EVENTS_ROUTES = {
 };
 
 export const EventsNavigation = (): JSX.Element => (
-  <Route exact path={EVENTS_ROUTES.itself} component={EventScreen} isPrivateRoute />
+  <Route exact path={EVENTS_ROUTES.itself} component={EventScreen} isPrivateRoute={false} />
 );

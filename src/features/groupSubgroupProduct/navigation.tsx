@@ -11,6 +11,6 @@ export const GroupSubgroupProductNavigation = (): JSX.Element => (
     exact
     path={GROUPSUBGROUPPRODUCT_ROUTES.itself}
     component={GroupProductScreen}
-    isPrivateRoute
+    isPrivateRoute={false}
   />
 );

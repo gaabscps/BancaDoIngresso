@@ -11,6 +11,6 @@ export const PaymentGatewayNavigation = (): JSX.Element => (
     exact
     path={PAYMENTGATEWAY_ROUTES.itself}
     component={PaymentGatewayScreen}
-    isPrivateRoute
+    isPrivateRoute={false}
   />
 );

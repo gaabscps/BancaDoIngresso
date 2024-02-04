@@ -7,5 +7,5 @@ export const REPORTS_ROUTES = {
 };
 
 export const ReportsNavigation = (): JSX.Element => (
-  <Route exact path={REPORTS_ROUTES.itself} component={ReportsScreen} isPrivateRoute />
+  <Route exact path={REPORTS_ROUTES.itself} component={ReportsScreen} isPrivateRoute={false} />
 );

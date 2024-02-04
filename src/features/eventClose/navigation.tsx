@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route } from '@/navigation/Route';
-import { HomeEventCloseScreen } from '@/features/eventClose/screens/Home';
+// import { HomeEventCloseScreen } from '@/features/eventClose/screens/Home';
 import { GeneralCollectionScreen } from './screens/GeneralCollection';
 import { IncomeScreen } from './screens/Income';
 import { IncomeManualEntriesScreen } from './screens/incomeManualEntries';
@@ -26,49 +26,49 @@ export const EVENTCLOSE_ROUTES = {
 
 export const EventCloseNavigation = (): JSX.Element => (
   <>
-    <Route exact path={EVENTCLOSE_ROUTES.itself} component={HomeEventCloseScreen} isPrivateRoute />
+    {/* <Route exact path={EVENTCLOSE_ROUTES.itself} component={HomeEventCloseScreen} isPrivateRoute={false} /> */}
     <Route
       exact
       path={EVENTCLOSE_ROUTES.generalCollection}
       component={GeneralCollectionScreen}
-      isPrivateRoute
+      isPrivateRoute={false}
     />
-    <Route exact path={EVENTCLOSE_ROUTES.income} component={IncomeScreen} isPrivateRoute />
+    <Route exact path={EVENTCLOSE_ROUTES.income} component={IncomeScreen} isPrivateRoute={false} />
     <Route
       exact
       path={EVENTCLOSE_ROUTES.incomeManualEntries}
       component={IncomeManualEntriesScreen}
-      isPrivateRoute
+      isPrivateRoute={false}
     />
     <Route
       exact
       path={EVENTCLOSE_ROUTES.expense}
       component={ExpenseManualEntriesScreen}
-      isPrivateRoute
+      isPrivateRoute={false}
     />
     <Route
       exact
       path={EVENTCLOSE_ROUTES.machines}
       component={HomeMachineEventCloseScreen}
-      isPrivateRoute
+      isPrivateRoute={false}
     />
     <Route
       exact
       path={EVENTCLOSE_ROUTES.machinesTicketSales}
       component={MachinesTicketSalesScreen}
-      isPrivateRoute
+      isPrivateRoute={false}
     />
     <Route
       exact
       path={EVENTCLOSE_ROUTES.machinesProductSale}
       component={MachinesProductSalesScreen}
-      isPrivateRoute
+      isPrivateRoute={false}
     />
     <Route
       exact
       path={EVENTCLOSE_ROUTES.machinesReport}
       component={MachinesReportScreen}
-      isPrivateRoute
+      isPrivateRoute={false}
     />
   </>
 );

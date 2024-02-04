@@ -7,5 +7,5 @@ export const COMBO_ROUTES = {
 };
 
 export const ComboNavigation = (): JSX.Element => (
-  <Route exact path={COMBO_ROUTES.itself} component={ComboScreen} isPrivateRoute />
+  <Route exact path={COMBO_ROUTES.itself} component={ComboScreen} />
 );

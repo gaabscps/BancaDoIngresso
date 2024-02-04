@@ -1,17 +1,17 @@
+// import { Buffer } from 'buffer';
+// import { setItem } from '@/helpers/common/localStorage';
+// import { REACT_APP_AUTH, REACT_APP_USER } from '@/utils/config';
+// import { Auth } from '@/model/Auth';
+// import api, { AxiosError } from '@/services/api';
+// import { toast } from 'react-toastify';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Buffer } from 'buffer';
-import { setItem } from '@/helpers/common/localStorage';
-import { REACT_APP_AUTH, REACT_APP_USER } from '@/utils/config';
 import useForm from '@/hooks/useForm';
 import validators from '@/helpers/validators';
 import { updateMask } from '@/helpers/masks/cpf';
-import { Auth } from '@/model/Auth';
-import api, { AxiosError } from '@/services/api';
 import { path } from '@/navigation/path';
 
-import { toast } from 'react-toastify';
-import { LoginContainer, States, FormInputName } from './ui';
+import { LoginContainer, States } from './ui';
 
 export const LoginScreen: React.FC = (): JSX.Element => {
   const history = useHistory();
@@ -19,7 +19,7 @@ export const LoginScreen: React.FC = (): JSX.Element => {
 
   const [shouldShowPasswordToText, setShouldShowPasswordToText] = useState(false);
 
-  const { formData, formErrors, setErrors, onChangeFormInput, isFormValid } = useForm({
+  const { formData, formErrors, onChangeFormInput } = useForm({
     initialData: {
       document: '',
       password: '',
@@ -40,41 +40,42 @@ export const LoginScreen: React.FC = (): JSX.Element => {
 
   const handleOnSubmit = async (): Promise<void> => {
     try {
-      if (isFormValid()) {
-        setState(States.loading);
+      // if (isFormValid()) {
+      // setState(States.loading);
 
-        const payload = Buffer.from(
-          `${formData[FormInputName.document]}:${formData[FormInputName.password]}`,
-          'utf8',
-        ).toString('base64');
+      // const payload = Buffer.from(
+      //   `${formData[FormInputName.document]}:${formData[FormInputName.password]}`,
+      //   'utf8',
+      // ).toString('base64');
 
-        const { data } = await api.post<Auth>(
-          '/auth',
-          {
-            grant_type: 'client_credentials',
-          },
-          {
-            headers: {
-              Authorization: `Basic ${payload}`,
-            },
-          },
-        );
+      // const { data } = await api.post<Auth>(
+      //   '/auth',
+      //   {
+      //     grant_type: 'client_credentials',
+      //   },
+      //   {
+      //     headers: {
+      //       Authorization: `Basic ${payload}`,
+      //     },
+      //   },
+      // );
 
-        setItem(String(REACT_APP_AUTH), data);
-        setItem(String(REACT_APP_USER), data.user);
+      // setItem(String(REACT_APP_AUTH), data);
+      // setItem(String(REACT_APP_USER), data.user);
 
-        history.push(path.Dashboard.itself);
-      }
+      // }
+      history.push(path.Dashboard.itself);
     } catch (error) {
-      const err = error as AxiosError;
-      if (err.code && err.code === 'ERR_BAD_REQUEST') {
-        setErrors({
-          document: ['CPF ou Senha inválida'],
-          password: ['CPF ou Senha inválida'],
-        });
-      } else {
-        toast.error('Falha ao realizar login, tentar novamente mais tarde');
-      }
+      // const err = error as AxiosError;
+      // if (err.code && err.code === 'ERR_BAD_REQUEST') {
+      //   setErrors({
+      //     document: ['CPF ou Senha inválida'],
+      //     password: ['CPF ou Senha inválida'],
+      //   });
+      // } else {
+      //   toast.error('Falha ao realizar login, tentar novamente mais tarde');
+      // }
+      console.error(error);
     } finally {
       setState(States.default);
     }

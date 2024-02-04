@@ -7,5 +7,10 @@ export const PERMISSION_ROUTES = {
 };
 
 export const PermissionNavigation = (): JSX.Element => (
-  <Route exact path={PERMISSION_ROUTES.itself} component={PermissionScreen} isPrivateRoute />
+  <Route
+    exact
+    path={PERMISSION_ROUTES.itself}
+    component={PermissionScreen}
+    isPrivateRoute={false}
+  />
 );

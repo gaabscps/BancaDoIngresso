@@ -7,5 +7,5 @@ export const USER_ROUTES = {
 };
 
 export const UserNavigation = (): JSX.Element => (
-  <Route exact path={USER_ROUTES.itself} component={UserScreen} isPrivateRoute />
+  <Route exact path={USER_ROUTES.itself} component={UserScreen} isPrivateRoute={false} />
 );

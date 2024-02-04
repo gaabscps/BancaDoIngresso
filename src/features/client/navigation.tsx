@@ -7,5 +7,5 @@ export const CLIENT_ROUTES = {
 };
 
 export const ClientNavigation = (): JSX.Element => (
-  <Route exact path={CLIENT_ROUTES.itself} component={ClientScreen} isPrivateRoute />
+  <Route exact path={CLIENT_ROUTES.itself} component={ClientScreen} isPrivateRoute={false} />
 );

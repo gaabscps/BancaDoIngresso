@@ -7,5 +7,5 @@ export const TICKET_ROUTES = {
 };
 
 export const TicketNavigation = (): JSX.Element => (
-  <Route exact path={TICKET_ROUTES.itself} component={TicketScreen} isPrivateRoute />
+  <Route exact path={TICKET_ROUTES.itself} component={TicketScreen} isPrivateRoute={false} />
 );

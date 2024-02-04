@@ -7,5 +7,5 @@ export const PDV_ROUTES = {
 };
 
 export const PdvNavigation = (): JSX.Element => (
-  <Route exact path={PDV_ROUTES.itself} component={PdvScreen} isPrivateRoute />
+  <Route exact path={PDV_ROUTES.itself} component={PdvScreen} isPrivateRoute={false} />
 );

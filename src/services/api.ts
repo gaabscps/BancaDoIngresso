@@ -3,30 +3,30 @@ import { toast } from 'react-toastify';
 import { getItem, getBoolean, removeItem } from '@/helpers/common/localStorage';
 import { Auth } from '@/model/Auth';
 import handleSweetAlert from '@/helpers/sweetAlerts';
-import { REACT_APP_BASE_URL, REACT_APP_SUFFIX_BASE_URL, REACT_APP_AUTH } from '@/utils/config';
+// import { REACT_APP_BASE_URL, REACT_APP_SUFFIX_BASE_URL, REACT_APP_AUTH } from '@/utils/config';
 
-const baseUrl = String(REACT_APP_BASE_URL);
-const prefixBaseUrl = String(REACT_APP_SUFFIX_BASE_URL);
-const appAuth = String(REACT_APP_AUTH);
+// const baseUrl = String(REACT_APP_BASE_URL);
+// const prefixBaseUrl = String(REACT_APP_SUFFIX_BASE_URL);
+// const appAuth = String(REACT_APP_AUTH);
 
 export type AxiosErrorResponse = {
   message: string | string[];
 };
 
 const createHeader = (): AxiosRequestHeaders => {
-  const isAuthenticated = getBoolean(appAuth);
+  const isAuthenticated = getBoolean('true');
   const headers: AxiosRequestHeaders = {
     ContentType: 'application/json',
   };
   if (isAuthenticated) {
-    const authData: Auth = getItem(appAuth);
+    const authData: Auth = getItem('true');
     headers.Authorization = `Bearer ${authData.token}`;
   }
   return headers;
 };
 
 const api = axios.create({
-  baseURL: baseUrl + prefixBaseUrl,
+  baseURL: 'http://localhost:3333',
   responseType: 'json',
   headers: createHeader(),
 });
@@ -60,7 +60,7 @@ api.interceptors.response.use(
     }
 
     if (response.status === 401 && response?.data?.message === 'Token Invalid') {
-      removeItem(appAuth);
+      removeItem('appAuth');
       handleSweetAlert(
         'warn',
         'Opss...',

@@ -7,5 +7,10 @@ export const PAYMENT_ROUTES = {
 };
 
 export const PaymentMethodsNavigation = (): JSX.Element => (
-  <Route exact path={PAYMENT_ROUTES.itself} component={PaymentMethodsScreen} isPrivateRoute />
+  <Route
+    exact
+    path={PAYMENT_ROUTES.itself}
+    component={PaymentMethodsScreen}
+    isPrivateRoute={false}
+  />
 );

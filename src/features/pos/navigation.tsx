@@ -7,5 +7,5 @@ export const POS_ROUTES = {
 };
 
 export const PosNavigation = (): JSX.Element => (
-  <Route exact path={POS_ROUTES.itself} component={PosScreen} isPrivateRoute />
+  <Route exact path={POS_ROUTES.itself} component={PosScreen} isPrivateRoute={false} />
 );

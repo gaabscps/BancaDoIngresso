@@ -7,5 +7,5 @@ export const MODULE_ROUTES = {
 };
 
 export const ModuleNavigation = (): JSX.Element => (
-  <Route exact path={MODULE_ROUTES.itself} component={ModuleScreen} isPrivateRoute />
+  <Route exact path={MODULE_ROUTES.itself} component={ModuleScreen} isPrivateRoute={false} />
 );

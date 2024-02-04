@@ -7,5 +7,5 @@ export const MENU_ROUTES = {
 };
 
 export const MenuNavigation = (): JSX.Element => (
-  <Route exact path={MENU_ROUTES.itself} component={MenuScreen} isPrivateRoute />
+  <Route exact path={MENU_ROUTES.itself} component={MenuScreen} isPrivateRoute={false} />
 );

@@ -9,7 +9,12 @@ export const REGISTEREVENT_ROUTES = {
 
 export const RegisterEventNavigation = (): JSX.Element => (
   <React.Fragment>
-    <Route exact path={REGISTEREVENT_ROUTES.itself} component={EventScreen} isPrivateRoute />
-    <Route exact path={REGISTEREVENT_ROUTES.edit} component={EventScreen} isPrivateRoute />
+    <Route
+      exact
+      path={REGISTEREVENT_ROUTES.itself}
+      component={EventScreen}
+      isPrivateRoute={false}
+    />
+    <Route exact path={REGISTEREVENT_ROUTES.edit} component={EventScreen} isPrivateRoute={false} />
   </React.Fragment>
 );

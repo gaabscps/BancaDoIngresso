@@ -7,5 +7,5 @@ export const COMPANY_ROUTES = {
 };
 
 export const ContractorNavigation = (): JSX.Element => (
-  <Route exact path={COMPANY_ROUTES.itself} component={ContractorScreen} isPrivateRoute />
+  <Route exact path={COMPANY_ROUTES.itself} component={ContractorScreen} isPrivateRoute={false} />
 );

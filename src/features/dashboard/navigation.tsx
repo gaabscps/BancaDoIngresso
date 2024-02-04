@@ -7,5 +7,5 @@ export const DASHBOARD_ROUTES = {
 };
 
 export const DashboardNavigation = (): JSX.Element => (
-  <Route exact path={DASHBOARD_ROUTES.itself} component={HomeScreen} isPrivateRoute />
+  <Route exact path={DASHBOARD_ROUTES.itself} component={HomeScreen} />
 );

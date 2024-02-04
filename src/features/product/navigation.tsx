@@ -7,5 +7,5 @@ export const PRODUTCT_ROUTES = {
 };
 
 export const ProductNavigation = (): JSX.Element => (
-  <Route exact path={PRODUTCT_ROUTES.itself} component={ProductScreen} isPrivateRoute />
+  <Route exact path={PRODUTCT_ROUTES.itself} component={ProductScreen} isPrivateRoute={false} />
 );

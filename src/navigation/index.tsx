@@ -29,6 +29,8 @@ import { renderRoutes } from './utils';
 import { Route } from './Route';
 import { path } from './path';
 
+const isMobile = window.innerWidth < 768;
+
 const Navigation: React.FC = (): JSX.Element => {
   const authRoutes = renderRoutes(AuthNavigation);
   const clientRoutes = renderRoutes(ClientNavigation);
@@ -54,35 +56,37 @@ const Navigation: React.FC = (): JSX.Element => {
   const EventCloseRoutes = renderRoutes(EventCloseNavigation);
 
   return (
-    <EventProvider>
-      <PdvProvider>
-        <Switch>
-          {authRoutes}
-          {clientRoutes}
-          {dashboardRoutes}
-          {moduleRoutes}
-          {permissionRoutes}
-          {menuRoutes}
-          {subMenuRoutes}
-          {userRoutes}
-          {pdvRoutes}
-          {posRoutes}
-          {paymentMethodsRoutes}
-          {paymentGatewayRoutes}
-          {productsCombosRoutes}
-          {productRoutes}
-          {comboRoutes}
-          {GroupSubgroupProductRoutes}
-          {CompanyRoutes}
-          {RegisterEventRoutes}
-          {TicketRoutes}
-          {ReportsRoutes}
-          {eventsRoutes}
-          {EventCloseRoutes}
-          <Route path={path.Initial.All} component={Error404} />
-        </Switch>
-      </PdvProvider>
-    </EventProvider>
+    <div style={!isMobile ? { marginLeft: '280px' } : {}}>
+      <EventProvider>
+        <PdvProvider>
+          <Switch>
+            {authRoutes}
+            {clientRoutes}
+            {dashboardRoutes}
+            {moduleRoutes}
+            {permissionRoutes}
+            {menuRoutes}
+            {subMenuRoutes}
+            {userRoutes}
+            {pdvRoutes}
+            {posRoutes}
+            {paymentMethodsRoutes}
+            {paymentGatewayRoutes}
+            {productsCombosRoutes}
+            {productRoutes}
+            {comboRoutes}
+            {GroupSubgroupProductRoutes}
+            {CompanyRoutes}
+            {RegisterEventRoutes}
+            {TicketRoutes}
+            {ReportsRoutes}
+            {eventsRoutes}
+            {EventCloseRoutes}
+            <Route path={path.Initial.All} component={Error404} />
+          </Switch>
+        </PdvProvider>
+      </EventProvider>
+    </div>
   );
 };
 

@@ -11,6 +11,6 @@ export const ProductsCombosNavigation = (): JSX.Element => (
     exact
     path={PRODUTCTSCOMBOS_ROUTES.itself}
     component={HomeProductComboScreen}
-    isPrivateRoute
+    isPrivateRoute={false}
   />
 );
